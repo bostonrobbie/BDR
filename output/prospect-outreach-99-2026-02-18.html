@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Testsigma Prospect Outreach - Batch 99 (Feb 18, 2026)</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f7fa; color: #1a1a2e; line-height: 1.6; padding: 20px; }
+.container { max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 1.8rem; color: #1a1a2e; margin-bottom: 4px; }
+.subtitle { color: #666; font-size: 0.95rem; margin-bottom: 20px; }
+.section-title { font-size: 1.3rem; color: #1a1a2e; margin: 30px 0 15px; border-bottom: 2px solid #4361ee; padding-bottom: 6px; }
+
+/* Pre-brief */
+.pre-brief { background: #eef2ff; border-left: 4px solid #4361ee; padding: 16px 20px; border-radius: 8px; margin-bottom: 20px; }
+.pre-brief h3 { font-size: 1rem; color: #4361ee; margin-bottom: 8px; }
+.pre-brief li { font-size: 0.88rem; margin-bottom: 4px; color: #333; }
+
+/* Stats */
+.stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.stat-box { background: #fff; padding: 12px 18px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); min-width: 110px; }
+.stat-num { font-size: 1.4rem; font-weight: 700; color: #4361ee; }
+.stat-label { font-size: 0.75rem; color: #888; }
+
+/* A/B info */
+.ab-info { background: #fff7ed; border-left: 4px solid #f59e0b; padding: 10px 16px; border-radius: 6px; margin-bottom: 20px; font-size: 0.88rem; }
+
+/* Filters */
+.filter-bar { background: #fff; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 20px; flex-wrap: wrap; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+.filter-bar label { font-size: 0.82rem; color: #555; }
+.filter-bar select { padding: 4px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.82rem; }
+
+/* Tracker table */
+.table-wrap { overflow-x: auto; margin-bottom: 30px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.8rem; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th { background: #4361ee; color: #fff; padding: 8px 10px; text-align: left; font-weight: 600; white-space: nowrap; }
+td { padding: 6px 10px; border-bottom: 1px solid #eee; vertical-align: top; }
+tr:hover { background: #f0f4ff; }
+.url-cell { font-size: 0.72rem; word-break: break-all; max-width: 100px; }
+.name-cell a { font-weight: 600; }
+.ab-cell { font-weight: 600; font-size: 0.85rem; }
+.status-dd, .reply-dd { font-size: 0.75rem; padding: 3px 5px; border: 1px solid #ddd; border-radius: 4px; max-width: 130px; }
+
+/* Badges */
+.badge { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 0.68rem; font-weight: 600; margin: 1px 2px; white-space: nowrap; }
+.badge-qa { background: #d4edda; color: #155724; }
+.badge-vp { background: #d6eaf8; color: #1a5276; }
+.badge-inf { background: #e8f5e9; color: #2e7d32; }
+.badge-bi { background: #ffeaa7; color: #856404; }
+.badge-fin { background: #e8daef; color: #6c3483; }
+.badge-tech { background: #fce4ec; color: #880e4f; }
+.badge-health { background: #e0f7fa; color: #00695c; }
+.badge-ecom { background: #fff3e0; color: #e65100; }
+.badge-tel { background: #e3f2fd; color: #1565c0; }
+.badge-other { background: #f5f5f5; color: #616161; }
+
+/* Priority badges */
+.pri-badge { display: inline-block; width: 26px; height: 26px; line-height: 26px; text-align: center; border-radius: 50%; font-weight: 700; font-size: 0.82rem; color: #fff; }
+.pri-hot { background: #e74c3c; }
+.pri-warm { background: #f39c12; }
+.pri-std { background: #3498db; }
+.pri-low { background: #95a5a6; }
+
+/* Personalization score */
+.p-score { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 700; }
+.p-score-3 { background: #d4edda; color: #155724; }
+.p-score-2 { background: #fff3cd; color: #856404; }
+.p-score-1 { background: #f8d7da; color: #721c24; }
+
+/* Prospect cards */
+.card { background: #fff; border-radius: 10px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-left: 4px solid #4361ee; overflow: hidden; }
+.card-header { padding: 14px 20px; cursor: pointer; }
+.card-header:hover { background: #f8f9ff; }
+.card-header h3 { font-size: 1rem; color: #1a1a2e; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; }
+.card-meta { font-size: 0.82rem; color: #888; }
+.card-body { padding: 0 20px 20px; }
+
+/* Research */
+.research-section { background: #fafbfc; padding: 14px; border-radius: 6px; margin-bottom: 14px; border: 1px solid #eee; }
+.research-section h4 { font-size: 0.88rem; color: #4361ee; margin-bottom: 8px; }
+.research-block { font-size: 0.82rem; color: #555; margin-bottom: 6px; line-height: 1.5; }
+
+/* Message blocks */
+.msg-block { margin-bottom: 16px; padding: 14px; background: #fafbfc; border-radius: 6px; border: 1px solid #eee; }
+.msg-block h4 { font-size: 0.88rem; color: #4361ee; margin-bottom: 6px; }
+.msg-subject { font-weight: 600; color: #1a1a2e; margin-bottom: 6px; font-size: 0.88rem; }
+.msg-body { font-size: 0.85rem; color: #333; white-space: pre-line; line-height: 1.6; padding: 10px 14px; background: #fff; border-radius: 4px; border: 1px solid #eee; }
+.call-block { border-left: 3px solid #27ae60; }
+.call-body { background: #f0fdf4; }
+.copy-btn { background: #4361ee; color: #fff; border: none; padding: 5px 12px; border-radius: 5px; cursor: pointer; font-size: 0.75rem; margin-top: 6px; margin-right: 6px; }
+.copy-btn:hover { background: #3a56d4; }
+.copy-btn.copied { background: #27ae60; }
+.copy-sub { background: #e0e7ff; color: #4361ee; border: 1px solid #c7d2fe; padding: 4px 10px; border-radius: 5px; cursor: pointer; font-size: 0.75rem; margin-top: 6px; }
+.copy-sub:hover { background: #c7d2fe; }
+.copy-sub.copied { background: #27ae60; color: #fff; border-color: #27ae60; }
+
+/* Objection */
+.objection-block { margin-bottom: 14px; padding: 14px; background: #fff8f0; border-radius: 6px; border: 1px solid #fde68a; }
+.objection-block h4 { font-size: 0.88rem; color: #d97706; margin-bottom: 6px; }
+.objection-q { font-size: 0.85rem; margin-bottom: 6px; }
+.objection-a { font-size: 0.85rem; color: #555; }
+
+/* Prep card */
+.prep-card { margin-top: 14px; padding: 16px; background: #eef2ff; border-radius: 8px; border: 2px solid #4361ee; }
+.prep-card h4 { font-size: 1rem; color: #4361ee; margin-bottom: 10px; }
+.prep-section { font-size: 0.85rem; margin-bottom: 8px; line-height: 1.5; }
+.prep-section ol { margin-left: 20px; margin-top: 4px; }
+.prep-section li { margin-bottom: 3px; }
+
+/* Links */
+a { color: #4361ee; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stats { flex-direction: column; }
+  .filter-bar { flex-direction: column; gap: 8px; }
+  .card-header h3 { font-size: 0.92rem; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Testsigma Prospect Outreach - Batch 99</h1>
+
+<p class="subtitle">3 Prospects with Research-Backed Personalized Sequences - Feb 18, 2026</p>
+
+<div class="stats">
+  <div class="stat-box"><div class="stat-num">3</div><div class="stat-label">Prospects</div></div>
+  <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">QA Leaders</div></div>
+  <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">VP Eng</div></div>
+  <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">Buyer Intent</div></div>
+  <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">Hot (5)</div></div>
+  <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">Warm (4)</div></div>
+</div>
+
+<div class="ab-info"><strong>A/B Test:</strong> pain_hook: A = Flaky/brittle tests (maintenance angle), B = Release velocity/speed angle</div>
+
+<div class="filter-bar">
+  <label>Priority: <select id="filterPriority" onchange="applyFilters()">
+    <option value="all">All</option>
+    <option value="5">Hot (5)</option>
+    <option value="4">Warm (4)</option>
+    <option value="45">Hot + Warm</option>
+  </select></label>
+  <label>Persona: <select id="filterPersona" onchange="applyFilters()">
+    <option value="all">All</option>
+    <option value="QA">QA Leaders</option>
+    <option value="VP Eng">VP Engineering</option>
+    <option value="Influencer">Influencer</option>
+  </select></label>
+  <label>Status: <select id="filterStatus" onchange="applyFilters()">
+    <option value="all">All</option>
+    <option value="Not Started">Not Started</option>
+    <option value="Touch 1 Sent">Touch 1 Sent</option>
+    <option value="Replied">Replied</option>
+    <option value="Meeting Booked">Meeting Booked</option>
+  </select></label>
+</div>
+
+<h2 class="section-title">Prospect Tracker</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Pri</th><th>#</th><th>Name</th><th>Title</th><th>Company</th><th>Tags</th><th>A/B</th><th>P.Score</th><th>Status</th><th>Reply Tag</th><th>LinkedIn</th></tr></thead>
+<tbody>
+<tr class="prospect-row" data-id="con_792a9de36907" data-priority="2" data-persona="vp_eng">
+  <td><span class="pri-badge pri-low">2</span></td>
+  <td>1</td>
+  <td class="name-cell"><a href="#card-con_792a9de36907" onclick="scrollToCard('con_792a9de36907')">Bob Kumar</a></td>
+  <td>VP Engineering</td>
+  <td>HealthCo Digital</td>
+  <td><span class="badge badge-health">Healthcare</span></td>
+  <td class="ab-cell">A</td>
+  <td><span class="p-score p-score-2">2</span></td>
+  <td><select class="status-dd" data-cid="con_792a9de36907" onchange="saveStatus(this)">
+  <option value="Not Started">Not Started</option>
+  <option value="Touch 1 Sent">Touch 1 Sent</option>
+  <option value="Call 1 Made">Call 1 Made</option>
+  <option value="Touch 3 Sent">Touch 3 Sent</option>
+  <option value="Call 2 Made">Call 2 Made</option>
+  <option value="Touch 5 Sent">Touch 5 Sent</option>
+  <option value="Touch 6 Sent">Touch 6 Sent</option>
+  <option value="Replied">Replied</option>
+  <option value="Meeting Booked">Meeting Booked</option>
+  <option value="Not Interested">Not Interested</option>
+  <option value="Bounced">Bounced</option>
+  <option value="Dormant">Dormant</option>
+  <option value="Re-Engaged">Re-Engaged</option>
+</select></td>
+  <td><select class="reply-dd" data-cid="con_792a9de36907" onchange="saveReplyTag(this)">
+  <option value="">- Reply Tag -</option>
+  <option value="Opener">Opener</option>
+  <option value="Pain hook">Pain hook</option>
+  <option value="Proof point">Proof point</option>
+  <option value="Timing">Timing</option>
+  <option value="Referral">Referral</option>
+  <option value="Not interested">Not interested</option>
+  <option value="Unknown">Unknown</option>
+</select></td>
+  <td class="url-cell"><a href="https://linkedin.com/in/bobkumar" target="_blank">Open</a></td>
+</tr>
+<tr class="prospect-row" data-id="con_d2ed02e6a6fc" data-priority="2" data-persona="qa_leader">
+  <td><span class="pri-badge pri-low">2</span></td>
+  <td>2</td>
+  <td class="name-cell"><a href="#card-con_d2ed02e6a6fc" onclick="scrollToCard('con_d2ed02e6a6fc')">Alice Chen</a></td>
+  <td>Director of QA</td>
+  <td>Acme FinTech</td>
+  <td><span class="badge badge-fin">FinTech</span></td>
+  <td class="ab-cell">B</td>
+  <td><span class="p-score p-score-2">2</span></td>
+  <td><select class="status-dd" data-cid="con_d2ed02e6a6fc" onchange="saveStatus(this)">
+  <option value="Not Started">Not Started</option>
+  <option value="Touch 1 Sent">Touch 1 Sent</option>
+  <option value="Call 1 Made">Call 1 Made</option>
+  <option value="Touch 3 Sent">Touch 3 Sent</option>
+  <option value="Call 2 Made">Call 2 Made</option>
+  <option value="Touch 5 Sent">Touch 5 Sent</option>
+  <option value="Touch 6 Sent">Touch 6 Sent</option>
+  <option value="Replied">Replied</option>
+  <option value="Meeting Booked">Meeting Booked</option>
+  <option value="Not Interested">Not Interested</option>
+  <option value="Bounced">Bounced</option>
+  <option value="Dormant">Dormant</option>
+  <option value="Re-Engaged">Re-Engaged</option>
+</select></td>
+  <td><select class="reply-dd" data-cid="con_d2ed02e6a6fc" onchange="saveReplyTag(this)">
+  <option value="">- Reply Tag -</option>
+  <option value="Opener">Opener</option>
+  <option value="Pain hook">Pain hook</option>
+  <option value="Proof point">Proof point</option>
+  <option value="Timing">Timing</option>
+  <option value="Referral">Referral</option>
+  <option value="Not interested">Not interested</option>
+  <option value="Unknown">Unknown</option>
+</select></td>
+  <td class="url-cell"><a href="https://linkedin.com/in/alicechen" target="_blank">Open</a></td>
+</tr>
+<tr class="prospect-row" data-id="con_bd94398580d0" data-priority="1" data-persona="qa_leader">
+  <td><span class="pri-badge pri-low">1</span></td>
+  <td>3</td>
+  <td class="name-cell"><a href="#card-con_bd94398580d0" onclick="scrollToCard('con_bd94398580d0')">Carol Martinez</a></td>
+  <td>Head of Quality Engineering</td>
+  <td>RetailMax</td>
+  <td><span class="badge badge-ecom">E-Commerce</span></td>
+  <td class="ab-cell">A</td>
+  <td><span class="p-score p-score-2">2</span></td>
+  <td><select class="status-dd" data-cid="con_bd94398580d0" onchange="saveStatus(this)">
+  <option value="Not Started">Not Started</option>
+  <option value="Touch 1 Sent">Touch 1 Sent</option>
+  <option value="Call 1 Made">Call 1 Made</option>
+  <option value="Touch 3 Sent">Touch 3 Sent</option>
+  <option value="Call 2 Made">Call 2 Made</option>
+  <option value="Touch 5 Sent">Touch 5 Sent</option>
+  <option value="Touch 6 Sent">Touch 6 Sent</option>
+  <option value="Replied">Replied</option>
+  <option value="Meeting Booked">Meeting Booked</option>
+  <option value="Not Interested">Not Interested</option>
+  <option value="Bounced">Bounced</option>
+  <option value="Dormant">Dormant</option>
+  <option value="Re-Engaged">Re-Engaged</option>
+</select></td>
+  <td><select class="reply-dd" data-cid="con_bd94398580d0" onchange="saveReplyTag(this)">
+  <option value="">- Reply Tag -</option>
+  <option value="Opener">Opener</option>
+  <option value="Pain hook">Pain hook</option>
+  <option value="Proof point">Proof point</option>
+  <option value="Timing">Timing</option>
+  <option value="Referral">Referral</option>
+  <option value="Not interested">Not interested</option>
+  <option value="Unknown">Unknown</option>
+</select></td>
+  <td class="url-cell"><a href="https://linkedin.com/in/carolm" target="_blank">Open</a></td>
+</tr>
+</tbody></table></div>
+
+<h2 class="section-title">Prospect Detail Cards</h2>
+
+<div class="card" id="card-con_792a9de36907">
+<div class="card-header" onclick="toggleCard('con_792a9de36907')">
+  <h3><span class="pri-badge pri-std">2</span> 1. Bob Kumar</h3>
+  <p class="card-meta">VP Engineering &bull; HealthCo Digital &bull; Group A &bull; vp_eng</p>
+</div>
+<div class="card-body" id="body-con_792a9de36907" style="display:none;">
+<div class="research-section">
+<h4>Research</h4>
+<div class="research-block">
+<strong>Profile:</strong> VP Engineering at HealthCo Digital; Experienced VP Engineering focused on automation and quality.; Leading QA and testing efforts at HealthCo Digital
+</div>
+<div class="research-block">
+<strong>Company:</strong> HealthCo Digital is a Healthcare company.; Size: 1001-5000; Vertical: Healthcare; Known tools: katalon
+</div>
+<div class="research-block">
+<strong>Signals:</strong> New to role (&lt; 6 months); Uses: katalon; QA-related hiring: Hiring Senior QA Engineer
+</div>
+</div>
+<div class="msg-block">
+<h4>Touch 1 - InMail <span class="p-score p-score-2">P2</span></h4>
+<p class="msg-subject">Subject: Testing at VP Engineering</p>
+<div class="msg-body" id="msg_da7fda952464">Hi Bob, this is a test message for touch 1. We helped Sanofi cut regression from 3 days to 80 minutes. Worth a quick chat?</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_da7fda952464', 'body')">Copy Message</button>
+<button class="copy-sub" onclick="doCopy(this, 'Testing at VP Engineering', 'text')">Copy Subject</button>
+</div>
+<div class="msg-block call-block">
+<h4>Touch 2 - Call Snippet</h4>
+<div class="msg-body call-body" id="msg_8bd9b8f10e34">Hey Bob, this is Rob from Testsigma. Quick question about testing at Acme FinTech.</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_8bd9b8f10e34', 'body')">Copy Script</button>
+</div>
+<div class="msg-block">
+<h4>Touch 3 - Follow-up InMail <span class="p-score p-score-2">P2</span></h4>
+<p class="msg-subject">Subject: Testing at VP Engineering</p>
+<div class="msg-body" id="msg_0d7a37086671">Hi Bob, this is a test message for touch 3. We helped Sanofi cut regression from 3 days to 80 minutes. Worth a quick chat?</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_0d7a37086671', 'body')">Copy Message</button>
+<button class="copy-sub" onclick="doCopy(this, 'Testing at VP Engineering', 'text')">Copy Subject</button>
+</div>
+<div class="msg-block call-block">
+<h4>Touch 4 - Call Snippet</h4>
+<div class="msg-body call-body" id="msg_5c0063913daa">Hey Bob, this is Rob from Testsigma. Quick question about testing at Acme FinTech.</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_5c0063913daa', 'body')">Copy Script</button>
+</div>
+<div class="msg-block">
+<h4>Touch 5 - Email <span class="p-score p-score-2">P2</span></h4>
+<p class="msg-subject">Subject: Testing at VP Engineering</p>
+<div class="msg-body" id="msg_a7c7e93c62cc">Hi Bob, this is a test message for touch 5. We helped Sanofi cut regression from 3 days to 80 minutes. Worth a quick chat?</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_a7c7e93c62cc', 'body')">Copy Message</button>
+<button class="copy-sub" onclick="doCopy(this, 'Testing at VP Engineering', 'text')">Copy Subject</button>
+</div>
+<div class="msg-block">
+<h4>Touch 6 - Break-up InMail <span class="p-score p-score-2">P2</span></h4>
+<p class="msg-subject">Subject: Testing at VP Engineering</p>
+<div class="msg-body" id="msg_d5f5c8703e62">Hi Bob, this is a test message for touch 6. We helped Sanofi cut regression from 3 days to 80 minutes. Worth a quick chat?</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_d5f5c8703e62', 'body')">Copy Message</button>
+<button class="copy-sub" onclick="doCopy(this, 'Testing at VP Engineering', 'text')">Copy Subject</button>
+</div>
+<div class="prep-card" id="prep-con_792a9de36907" style="display:none;">
+<h4>Meeting Prep</h4>
+<div class="prep-section">
+<strong>Company:</strong> HealthCo Digital is a Healthcare company. (1001-5000 employees)
+</div>
+<div class="prep-section">
+<strong>Prospect:</strong> Bob Kumar, VP Engineering. Experienced VP Engineering focused on automation and quality.
+</div>
+<div class="prep-section">
+<strong>Known Tools:</strong> katalon
+</div>
+<div class="prep-section">
+<strong>Pain Hypothesis:</strong> flaky_tests
+</div>
+<div class="prep-section">
+<strong>Discovery Questions:</strong>
+<ol>
+  <li>Walk me through how your team tests HealthCo Digital's core product workflows.</li>
+  <li>What does your current automation stack look like?</li>
+  <li>Where are regression cycles hitting hardest?</li>
+  <li>Is there a timeline or leadership mandate driving this?</li>
+</ol>
+</div>
+<div class="prep-section">
+<strong>Proof Points Used:</strong> sanofi
+</div>
+<button class="copy-btn" onclick="copyPrepCard('con_792a9de36907')">Copy Prep</button>
+</div>
+</div>
+</div>
+
+<div class="card" id="card-con_d2ed02e6a6fc">
+<div class="card-header" onclick="toggleCard('con_d2ed02e6a6fc')">
+  <h3><span class="pri-badge pri-std">2</span> 2. Alice Chen</h3>
+  <p class="card-meta">Director of QA &bull; Acme FinTech &bull; Group B &bull; qa_leader</p>
+</div>
+<div class="card-body" id="body-con_d2ed02e6a6fc" style="display:none;">
+<div class="research-section">
+<h4>Research</h4>
+<div class="research-block">
+<strong>Profile:</strong> Director of QA at Acme FinTech; Experienced Director of QA focused on automation and quality.; Leading QA and testing efforts at Acme FinTech
+</div>
+<div class="research-block">
+<strong>Company:</strong> Acme FinTech is a FinTech company.; Size: 201-500; Vertical: FinTech; Known tools: cypress, selenium; News: Digital transformation initiative underway
+</div>
+<div class="research-block">
+<strong>Signals:</strong> Uses: cypress, selenium; Transformation signal: Digital transformation initiative underway; Recent funding: $50M Series C; QA-related hiring: Hiring Senior QA Engineer
+</div>
+</div>
+<div class="msg-block">
+<h4>Touch 1 - InMail <span class="p-score p-score-2">P2</span></h4>
+<p class="msg-subject">Subject: Testing at Director of QA</p>
+<div class="msg-body" id="msg_4c51c3feee6e">Hi Alice, this is a test message for touch 1. We helped Sanofi cut regression from 3 days to 80 minutes. Worth a quick chat?</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_4c51c3feee6e', 'body')">Copy Message</button>
+<button class="copy-sub" onclick="doCopy(this, 'Testing at Director of QA', 'text')">Copy Subject</button>
+</div>
+<div class="msg-block call-block">
+<h4>Touch 2 - Call Snippet</h4>
+<div class="msg-body call-body" id="msg_fd04470c133b">Hey Alice, this is Rob from Testsigma. Quick question about testing at Acme FinTech.</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_fd04470c133b', 'body')">Copy Script</button>
+</div>
+<div class="msg-block">
+<h4>Touch 3 - Follow-up InMail <span class="p-score p-score-2">P2</span></h4>
+<p class="msg-subject">Subject: Testing at Director of QA</p>
+<div class="msg-body" id="msg_fb8ab934b242">Hi Alice, this is a test message for touch 3. We helped Sanofi cut regression from 3 days to 80 minutes. Worth a quick chat?</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_fb8ab934b242', 'body')">Copy Message</button>
+<button class="copy-sub" onclick="doCopy(this, 'Testing at Director of QA', 'text')">Copy Subject</button>
+</div>
+<div class="msg-block call-block">
+<h4>Touch 4 - Call Snippet</h4>
+<div class="msg-body call-body" id="msg_24f8ef52edca">Hey Alice, this is Rob from Testsigma. Quick question about testing at Acme FinTech.</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_24f8ef52edca', 'body')">Copy Script</button>
+</div>
+<div class="msg-block">
+<h4>Touch 5 - Email <span class="p-score p-score-2">P2</span></h4>
+<p class="msg-subject">Subject: Testing at Director of QA</p>
+<div class="msg-body" id="msg_a433bebe6ef9">Hi Alice, this is a test message for touch 5. We helped Sanofi cut regression from 3 days to 80 minutes. Worth a quick chat?</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_a433bebe6ef9', 'body')">Copy Message</button>
+<button class="copy-sub" onclick="doCopy(this, 'Testing at Director of QA', 'text')">Copy Subject</button>
+</div>
+<div class="msg-block">
+<h4>Touch 6 - Break-up InMail <span class="p-score p-score-2">P2</span></h4>
+<p class="msg-subject">Subject: Testing at Director of QA</p>
+<div class="msg-body" id="msg_2141feb9dd6a">Hi Alice, this is a test message for touch 6. We helped Sanofi cut regression from 3 days to 80 minutes. Worth a quick chat?</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_2141feb9dd6a', 'body')">Copy Message</button>
+<button class="copy-sub" onclick="doCopy(this, 'Testing at Director of QA', 'text')">Copy Subject</button>
+</div>
+<div class="prep-card" id="prep-con_d2ed02e6a6fc" style="display:none;">
+<h4>Meeting Prep</h4>
+<div class="prep-section">
+<strong>Company:</strong> Acme FinTech is a FinTech company. (201-500 employees)
+</div>
+<div class="prep-section">
+<strong>Prospect:</strong> Alice Chen, Director of QA. Experienced Director of QA focused on automation and quality.
+</div>
+<div class="prep-section">
+<strong>Known Tools:</strong> cypress, selenium
+</div>
+<div class="prep-section">
+<strong>Pain Hypothesis:</strong> flaky_tests
+</div>
+<div class="prep-section">
+<strong>Discovery Questions:</strong>
+<ol>
+  <li>Walk me through how your team tests Acme FinTech's core product workflows.</li>
+  <li>What does your current automation stack look like?</li>
+  <li>Where are regression cycles hitting hardest?</li>
+  <li>Is there a timeline or leadership mandate driving this?</li>
+</ol>
+</div>
+<div class="prep-section">
+<strong>Proof Points Used:</strong> sanofi
+</div>
+<button class="copy-btn" onclick="copyPrepCard('con_d2ed02e6a6fc')">Copy Prep</button>
+</div>
+</div>
+</div>
+
+<div class="card" id="card-con_bd94398580d0">
+<div class="card-header" onclick="toggleCard('con_bd94398580d0')">
+  <h3><span class="pri-badge pri-std">1</span> 3. Carol Martinez</h3>
+  <p class="card-meta">Head of Quality Engineering &bull; RetailMax &bull; Group A &bull; qa_leader</p>
+</div>
+<div class="card-body" id="body-con_bd94398580d0" style="display:none;">
+<div class="research-section">
+<h4>Research</h4>
+<div class="research-block">
+<strong>Profile:</strong> Head of Quality Engineering at RetailMax; Experienced Head of Quality Engineering focused on automation and quality.; Leading QA and testing efforts at RetailMax
+</div>
+<div class="research-block">
+<strong>Company:</strong> RetailMax is a E-Commerce company.; Size: 201-500; Vertical: E-Commerce
+</div>
+</div>
+<div class="msg-block">
+<h4>Touch 1 - InMail <span class="p-score p-score-2">P2</span></h4>
+<p class="msg-subject">Subject: Testing at Head of Quality Engineering</p>
+<div class="msg-body" id="msg_007b41b02f27">Hi Carol, this is a test message for touch 1. We helped Sanofi cut regression from 3 days to 80 minutes. Worth a quick chat?</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_007b41b02f27', 'body')">Copy Message</button>
+<button class="copy-sub" onclick="doCopy(this, 'Testing at Head of Quality Engineering', 'text')">Copy Subject</button>
+</div>
+<div class="msg-block call-block">
+<h4>Touch 2 - Call Snippet</h4>
+<div class="msg-body call-body" id="msg_b6486eb6a1ce">Hey Carol, this is Rob from Testsigma. Quick question about testing at Acme FinTech.</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_b6486eb6a1ce', 'body')">Copy Script</button>
+</div>
+<div class="msg-block">
+<h4>Touch 3 - Follow-up InMail <span class="p-score p-score-2">P2</span></h4>
+<p class="msg-subject">Subject: Testing at Head of Quality Engineering</p>
+<div class="msg-body" id="msg_190f610f082d">Hi Carol, this is a test message for touch 3. We helped Sanofi cut regression from 3 days to 80 minutes. Worth a quick chat?</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_190f610f082d', 'body')">Copy Message</button>
+<button class="copy-sub" onclick="doCopy(this, 'Testing at Head of Quality Engineering', 'text')">Copy Subject</button>
+</div>
+<div class="msg-block call-block">
+<h4>Touch 4 - Call Snippet</h4>
+<div class="msg-body call-body" id="msg_685da8b57729">Hey Carol, this is Rob from Testsigma. Quick question about testing at Acme FinTech.</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_685da8b57729', 'body')">Copy Script</button>
+</div>
+<div class="msg-block">
+<h4>Touch 5 - Email <span class="p-score p-score-2">P2</span></h4>
+<p class="msg-subject">Subject: Testing at Head of Quality Engineering</p>
+<div class="msg-body" id="msg_1cf12b6ec64f">Hi Carol, this is a test message for touch 5. We helped Sanofi cut regression from 3 days to 80 minutes. Worth a quick chat?</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_1cf12b6ec64f', 'body')">Copy Message</button>
+<button class="copy-sub" onclick="doCopy(this, 'Testing at Head of Quality Engineering', 'text')">Copy Subject</button>
+</div>
+<div class="msg-block">
+<h4>Touch 6 - Break-up InMail <span class="p-score p-score-2">P2</span></h4>
+<p class="msg-subject">Subject: Testing at Head of Quality Engineering</p>
+<div class="msg-body" id="msg_4351d182f252">Hi Carol, this is a test message for touch 6. We helped Sanofi cut regression from 3 days to 80 minutes. Worth a quick chat?</div>
+<button class="copy-btn" onclick="doCopy(this, 'msg_4351d182f252', 'body')">Copy Message</button>
+<button class="copy-sub" onclick="doCopy(this, 'Testing at Head of Quality Engineering', 'text')">Copy Subject</button>
+</div>
+<div class="prep-card" id="prep-con_bd94398580d0" style="display:none;">
+<h4>Meeting Prep</h4>
+<div class="prep-section">
+<strong>Company:</strong> RetailMax is a E-Commerce company. (201-500 employees)
+</div>
+<div class="prep-section">
+<strong>Prospect:</strong> Carol Martinez, Head of Quality Engineering. Experienced Head of Quality Engineering focused on automation and quality.
+</div>
+<div class="prep-section">
+<strong>Pain Hypothesis:</strong> flaky_tests
+</div>
+<div class="prep-section">
+<strong>Discovery Questions:</strong>
+<ol>
+  <li>Walk me through how your team tests RetailMax's core product workflows.</li>
+  <li>What does your current automation stack look like?</li>
+  <li>Where are regression cycles hitting hardest?</li>
+  <li>Is there a timeline or leadership mandate driving this?</li>
+</ol>
+</div>
+<div class="prep-section">
+<strong>Proof Points Used:</strong> sanofi
+</div>
+<button class="copy-btn" onclick="copyPrepCard('con_bd94398580d0')">Copy Prep</button>
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+// ── Contact IDs for localStorage ──
+var CONTACT_IDS = ["con_792a9de36907", "con_d2ed02e6a6fc", "con_bd94398580d0"];
+var STORAGE_KEY = 'occ-batch-state';
+
+// ── Init: restore saved state ──
+(function() {
+  try {
+    var saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    CONTACT_IDS.forEach(function(cid) {
+      var state = saved[cid];
+      if (!state) return;
+      var statusDD = document.querySelector('.status-dd[data-cid="' + cid + '"]');
+      if (statusDD && state.status) {
+        statusDD.value = state.status;
+        // Show prep card if Meeting Booked
+        if (state.status === 'Meeting Booked') showPrep(cid);
+      }
+      var replyDD = document.querySelector('.reply-dd[data-cid="' + cid + '"]');
+      if (replyDD && state.reply_tag) replyDD.value = state.reply_tag;
+    });
+  } catch(e) {}
+})();
+
+// ── Save state to localStorage ──
+function persistState() {
+  var state = {};
+  CONTACT_IDS.forEach(function(cid) {
+    var statusDD = document.querySelector('.status-dd[data-cid="' + cid + '"]');
+    var replyDD = document.querySelector('.reply-dd[data-cid="' + cid + '"]');
+    state[cid] = {
+      status: statusDD ? statusDD.value : '',
+      reply_tag: replyDD ? replyDD.value : ''
+    };
+  });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+function saveStatus(el) {
+  var cid = el.dataset.cid;
+  if (el.value === 'Meeting Booked') showPrep(cid);
+  else hidePrep(cid);
+  persistState();
+}
+
+function saveReplyTag(el) {
+  persistState();
+}
+
+// ── Filtering ──
+function applyFilters() {
+  var pri = document.getElementById('filterPriority').value;
+  var persona = document.getElementById('filterPersona').value;
+  var status = document.getElementById('filterStatus').value;
+
+  document.querySelectorAll('.prospect-row').forEach(function(row) {
+    var show = true;
+    var rowPri = parseInt(row.dataset.priority || '0');
+    var rowPersona = row.dataset.persona || '';
+
+    if (pri === '5' && rowPri < 5) show = false;
+    if (pri === '4' && rowPri !== 4) show = false;
+    if (pri === '45' && rowPri < 4) show = false;
+    if (persona !== 'all' && rowPersona !== persona) show = false;
+
+    if (status !== 'all') {
+      var dd = row.querySelector('.status-dd');
+      if (dd && dd.value !== status) show = false;
+    }
+
+    row.style.display = show ? '' : 'none';
+  });
+}
+
+// ── Card toggling ──
+function toggleCard(cid) {
+  var body = document.getElementById('body-' + cid);
+  if (body) body.style.display = body.style.display === 'none' ? 'block' : 'none';
+}
+
+function scrollToCard(cid) {
+  var card = document.getElementById('card-' + cid);
+  if (card) {
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    var body = document.getElementById('body-' + cid);
+    if (body) body.style.display = 'block';
+  }
+}
+
+// ── Meeting prep ──
+function showPrep(cid) {
+  var el = document.getElementById('prep-' + cid);
+  if (el) el.style.display = 'block';
+}
+function hidePrep(cid) {
+  var el = document.getElementById('prep-' + cid);
+  if (el) el.style.display = 'none';
+}
+
+// ── Copy functions ──
+function doCopy(btn, val, mode) {
+  var text;
+  if (mode === 'body') {
+    var el = document.getElementById(val);
+    text = el ? el.innerText : val;
+  } else {
+    text = val;
+  }
+  var orig = btn.textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  }).catch(function() {
+    // Fallback
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyPrepCard(cid) {
+  var el = document.getElementById('prep-' + cid);
+  if (!el) return;
+  var text = el.innerText;
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = el.querySelector('.copy-btn');
+    if (btn) {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy Prep'; btn.classList.remove('copied'); }, 2000);
+    }
+  });
+}
+</script>
+</body>
+</html>

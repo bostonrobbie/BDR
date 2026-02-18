@@ -1,12 +1,14 @@
 """
 Outreach Command Center - FastAPI Backend
-REST API for all CRUD operations, dashboard stats, and agent triggers.
+REST API for CRUD, analytics, pipeline control, SSE streaming, and agent triggers.
 
 Run: uvicorn src.api.app:app --reload --port 8000
 """
 
 import sys
 import os
+import asyncio
+import json
 
 # Add project root to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
@@ -14,14 +16,13 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel
 from typing import Optional, List
-import json
 
 from src.db import models
 
-app = FastAPI(title="Outreach Command Center", version="0.1.0")
+app = FastAPI(title="Outreach Command Center", version="2.0.0")
 
 # CORS for local dev
 app.add_middleware(
@@ -139,30 +140,159 @@ class ContactUpdate(BaseModel):
     personalization_score: Optional[int] = None
     do_not_contact: Optional[int] = None
     dnc_reason: Optional[str] = None
-    notes: Optional[str] = None
+
+class PipelineStartRequest(BaseModel):
+    batch_number: int
+    target_count: Optional[int] = 25
+    ab_variable: Optional[str] = "pain_hook"
+    ab_groups: Optional[dict] = None
+    mix_ratio: Optional[dict] = None
+    auto_approve: Optional[bool] = True
+    saved_search_url: Optional[str] = None
+
+class ApprovalRequest(BaseModel):
+    decisions: dict  # message_id -> "approve" | "reject"
+
+class AgentActionRequest(BaseModel):
+    action: str  # re_score, re_research, regenerate_messages, run_qc, score_batch, generate_html, run_pre_brief
+    contact_id: Optional[str] = None
+    batch_id: Optional[str] = None
+    params: Optional[dict] = None
+
+class MessageEditRequest(BaseModel):
+    body: Optional[str] = None
+    subject_line: Optional[str] = None
+    approval_status: Optional[str] = None  # approved, rejected, edited
+
+class SyncItem(BaseModel):
+    contact_id: str
+    stage: str = None
+    reply_tag: str = None
+    notes: str = None
+
+class SyncBulk(BaseModel):
+    items: list[SyncItem]
 
 
 # ─── DASHBOARD / HOME ───────────────────────────────────────────
 
 @app.get("/")
 def serve_dashboard():
-    """Serve the main dashboard HTML."""
-    ui_path = os.path.join(os.path.dirname(__file__), "../ui/index.html")
-    if os.path.exists(ui_path):
-        return FileResponse(ui_path, media_type="text/html")
-    return {"message": "Outreach Command Center API", "version": "0.1.0", "docs": "/docs"}
+    ui_dir = os.path.join(os.path.dirname(__file__), "../ui")
+    # Try occ-dashboard.html first, then index.html
+    for name in ("occ-dashboard.html", "index.html"):
+        path = os.path.join(ui_dir, name)
+        if os.path.exists(path):
+            return FileResponse(path, media_type="text/html")
+    return {"message": "Outreach Command Center API", "version": "2.0.0", "docs": "/docs"}
 
 
 @app.get("/api/stats")
 def dashboard_stats():
-    """Get high-level dashboard statistics."""
     return models.get_dashboard_stats()
 
 
 @app.get("/api/action-queue")
-def action_queue():
-    """Get today's prioritized action queue."""
-    return models.get_action_queue()
+def smart_action_queue():
+    """Smart action queue: overdue followups, stuck prospects, re-engagement triggers, hot leads."""
+    conn = models.get_db()
+    actions = []
+
+    # 1. Overdue followups (highest priority)
+    overdue = conn.execute("""
+        SELECT f.*, c.first_name, c.last_name, c.priority_score, a.name as company_name
+        FROM followups f
+        JOIN contacts c ON f.contact_id = c.id
+        LEFT JOIN accounts a ON c.account_id = a.id
+        WHERE f.due_date <= datetime('now') AND f.completed_at IS NULL
+        ORDER BY c.priority_score DESC LIMIT 10
+    """).fetchall()
+    for f in overdue:
+        d = dict(f)
+        actions.append({
+            "type": "overdue_followup",
+            "priority": "hot",
+            "contact": f"{d['first_name']} {d['last_name']}",
+            "company": d.get("company_name", ""),
+            "contact_id": d["contact_id"],
+            "action": f"Overdue: Touch {d.get('touch_number', '?')} via {d.get('channel', '?')} was due {d.get('due_date', '')}",
+            "impact": 5,
+        })
+
+    # 2. High-priority prospects not yet touched
+    untouched = conn.execute("""
+        SELECT c.id, c.first_name, c.last_name, c.priority_score, c.stage, a.name as company_name
+        FROM contacts c
+        LEFT JOIN accounts a ON c.account_id = a.id
+        WHERE c.stage = 'new' AND c.priority_score >= 4 AND c.status = 'active'
+        ORDER BY c.priority_score DESC LIMIT 10
+    """).fetchall()
+    for c in untouched:
+        d = dict(c)
+        actions.append({
+            "type": "untouched_hot",
+            "priority": "high" if d["priority_score"] >= 5 else "medium",
+            "contact": f"{d['first_name']} {d['last_name']}",
+            "company": d.get("company_name", ""),
+            "contact_id": d["id"],
+            "action": f"Priority {d['priority_score']} prospect - not yet contacted",
+            "impact": d["priority_score"],
+        })
+
+    # 3. Prospects stuck in a stage (touched but no progress for 7+ days)
+    stuck = conn.execute("""
+        SELECT c.id, c.first_name, c.last_name, c.priority_score, c.stage, c.updated_at,
+               a.name as company_name
+        FROM contacts c
+        LEFT JOIN accounts a ON c.account_id = a.id
+        WHERE c.stage NOT IN ('new', 'replied', 'meeting_booked', 'not_interested')
+          AND c.status = 'active'
+          AND c.updated_at < datetime('now', '-7 days')
+        ORDER BY c.priority_score DESC LIMIT 8
+    """).fetchall()
+    for c in stuck:
+        d = dict(c)
+        actions.append({
+            "type": "stuck",
+            "priority": "medium",
+            "contact": f"{d['first_name']} {d['last_name']}",
+            "company": d.get("company_name", ""),
+            "contact_id": d["id"],
+            "action": f"Stuck at '{d['stage']}' since {(d.get('updated_at') or '')[:10]} - send next touch",
+            "impact": 3,
+        })
+
+    # 4. Active re-engagement signals
+    signals = conn.execute("""
+        SELECT s.id as signal_id, s.signal_type, s.description,
+               c.first_name, c.last_name, c.id as contact_id, c.priority_score,
+               a.name as company_name
+        FROM signals s
+        LEFT JOIN contacts c ON s.contact_id = c.id
+        LEFT JOIN accounts a ON s.account_id = a.id
+        WHERE (s.acted_on IS NULL OR s.acted_on = 0)
+          AND (s.expires_at IS NULL OR s.expires_at > datetime('now'))
+        ORDER BY s.created_at DESC LIMIT 5
+    """).fetchall()
+    for s in signals:
+        d = dict(s)
+        actions.append({
+            "type": "signal",
+            "priority": "high" if d.get("signal_type") == "buyer_intent" else "medium",
+            "contact": f"{d.get('first_name', '')} {d.get('last_name', '')}".strip() or "Unknown",
+            "company": d.get("company_name", ""),
+            "contact_id": d.get("contact_id"),
+            "signal_id": d.get("signal_id"),
+            "action": f"{d.get('signal_type', 'signal')}: {d.get('description', '')}",
+            "impact": 4 if d.get("signal_type") == "buyer_intent" else 3,
+        })
+
+    conn.close()
+
+    # Sort by impact score descending
+    actions.sort(key=lambda x: x.get("impact", 0), reverse=True)
+
+    return actions[:20]
 
 
 # ─── ACCOUNTS ───────────────────────────────────────────────────
@@ -171,11 +301,9 @@ def action_queue():
 def create_account(account: AccountCreate):
     return models.create_account(account.model_dump())
 
-
 @app.get("/api/accounts")
 def list_accounts(limit: int = 100, offset: int = 0, industry: str = None):
     return models.list_accounts(limit=limit, offset=offset, industry=industry)
-
 
 @app.get("/api/accounts/{account_id}")
 def get_account(account_id: str):
@@ -183,7 +311,6 @@ def get_account(account_id: str):
     if not result:
         raise HTTPException(status_code=404, detail="Account not found")
     return result
-
 
 @app.patch("/api/accounts/{account_id}")
 def update_account(account_id: str, data: dict):
@@ -199,7 +326,6 @@ def update_account(account_id: str, data: dict):
 def create_contact(contact: ContactCreate):
     return models.create_contact(contact.model_dump())
 
-
 @app.get("/api/contacts")
 def list_contacts(limit: int = 100, offset: int = 0, stage: str = None,
                   min_priority: int = None, persona_type: str = None,
@@ -209,14 +335,12 @@ def list_contacts(limit: int = 100, offset: int = 0, stage: str = None,
         min_priority=min_priority, persona_type=persona_type, account_id=account_id
     )
 
-
 @app.get("/api/contacts/{contact_id}")
 def get_contact(contact_id: str):
     result = models.get_contact(contact_id)
     if not result:
         raise HTTPException(status_code=404, detail="Contact not found")
     return result
-
 
 @app.patch("/api/contacts/{contact_id}")
 def update_contact(contact_id: str, data: ContactUpdate):
@@ -228,10 +352,8 @@ def update_contact(contact_id: str, data: ContactUpdate):
         raise HTTPException(status_code=404, detail="Contact not found")
     return result
 
-
 @app.post("/api/contacts/{contact_id}/score")
 def score_contact(contact_id: str):
-    """Compute and save priority score for a contact."""
     return models.score_and_save(contact_id)
 
 
@@ -240,10 +362,8 @@ def score_contact(contact_id: str):
 @app.post("/api/messages")
 def create_message(msg: MessageDraftCreate):
     data = msg.model_dump()
-    # Auto-compute word count
     data["word_count"] = len(data["body"].split())
     return models.create_message_draft(data)
-
 
 @app.get("/api/messages")
 def list_messages(batch_id: str = None, channel: str = None,
@@ -251,10 +371,41 @@ def list_messages(batch_id: str = None, channel: str = None,
     return models.list_messages(batch_id=batch_id, channel=channel,
                                 approval_status=approval_status, limit=limit)
 
-
 @app.get("/api/contacts/{contact_id}/messages")
 def get_contact_messages(contact_id: str):
     return models.get_messages_for_contact(contact_id)
+
+@app.patch("/api/messages/{message_id}")
+def edit_message(message_id: str, req: MessageEditRequest):
+    """Edit a message draft (inline editing from dashboard)."""
+    conn = models.get_db()
+    msg = conn.execute("SELECT * FROM message_drafts WHERE id=?", (message_id,)).fetchone()
+    if not msg:
+        conn.close()
+        raise HTTPException(status_code=404, detail="Message not found")
+
+    updates = []
+    params = []
+    if req.body is not None:
+        updates.append("body=?")
+        params.append(req.body)
+        updates.append("word_count=?")
+        params.append(len(req.body.split()))
+    if req.subject_line is not None:
+        updates.append("subject_line=?")
+        params.append(req.subject_line)
+    if req.approval_status is not None:
+        updates.append("approval_status=?")
+        params.append(req.approval_status)
+
+    if updates:
+        params.append(message_id)
+        conn.execute(f"UPDATE message_drafts SET {','.join(updates)} WHERE id=?", params)
+        conn.commit()
+
+    row = conn.execute("SELECT * FROM message_drafts WHERE id=?", (message_id,)).fetchone()
+    conn.close()
+    return dict(row)
 
 
 # ─── TOUCHPOINTS ────────────────────────────────────────────────
@@ -277,7 +428,6 @@ def log_reply(reply: ReplyLog):
 def create_opportunity(opp: OpportunityCreate):
     return models.create_opportunity(opp.model_dump())
 
-
 @app.get("/api/opportunities")
 def list_opportunities():
     conn = models.get_db()
@@ -299,7 +449,6 @@ def list_opportunities():
 def due_followups():
     return models.get_due_followups()
 
-
 @app.post("/api/followups")
 def schedule_followup(contact_id: str, touch_number: int, channel: str, days_from_now: int):
     return models.schedule_followup(contact_id, touch_number, channel, days_from_now)
@@ -311,11 +460,43 @@ def schedule_followup(contact_id: str, touch_number: int, channel: str, days_fro
 def create_batch(batch: BatchCreate):
     return models.create_batch(batch.model_dump())
 
-
 @app.get("/api/batches")
-def list_batches():
+def list_batches(limit: int = 20):
     conn = models.get_db()
-    rows = conn.execute("SELECT * FROM batches ORDER BY batch_number DESC").fetchall()
+    rows = conn.execute("""
+        SELECT b.*,
+               (SELECT COUNT(*) FROM batch_prospects WHERE batch_id=b.id) as contact_count,
+               (SELECT COUNT(*) FROM message_drafts WHERE batch_id=b.id) as message_count
+        FROM batches b
+        ORDER BY b.created_at DESC LIMIT ?
+    """, (limit,)).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+@app.get("/api/batches/{batch_id}/summary")
+def batch_summary(batch_id: str):
+    result = models.get_batch_summary(batch_id)
+    if "error" in result:
+        raise HTTPException(status_code=404, detail=result["error"])
+    return result
+
+@app.get("/api/batches/{batch_id}/messages")
+def batch_messages(batch_id: str, approval_status: str = None):
+    """Get all messages for a batch, optionally filtered by approval status."""
+    conn = models.get_db()
+    query = """
+        SELECT md.*, c.first_name, c.last_name, c.title, a.name as company_name
+        FROM message_drafts md
+        LEFT JOIN contacts c ON md.contact_id = c.id
+        LEFT JOIN accounts a ON c.account_id = a.id
+        WHERE md.batch_id = ?
+    """
+    params = [batch_id]
+    if approval_status:
+        query += " AND md.approval_status = ?"
+        params.append(approval_status)
+    query += " ORDER BY c.priority_score DESC, md.touch_number ASC"
+    rows = conn.execute(query, params).fetchall()
     conn.close()
     return [dict(r) for r in rows]
 
@@ -326,10 +507,8 @@ def list_batches():
 def reply_analytics():
     return models.get_reply_analytics()
 
-
 @app.get("/api/analytics/pipeline")
 def pipeline_analytics():
-    """Get pipeline funnel metrics."""
     conn = models.get_db()
     funnel = {
         "total_prospects": conn.execute("SELECT COUNT(*) FROM contacts WHERE status='active'").fetchone()[0],
@@ -338,26 +517,20 @@ def pipeline_analytics():
         "meetings": conn.execute("SELECT COUNT(*) FROM opportunities").fetchone()[0],
         "opportunities": conn.execute("SELECT COUNT(*) FROM opportunities WHERE opportunity_created=1").fetchone()[0],
     }
-
-    # Conversion rates
     if funnel["touched"] > 0:
         funnel["reply_rate"] = round(funnel["replied"] / funnel["touched"] * 100, 1)
     else:
         funnel["reply_rate"] = 0
-
     if funnel["replied"] > 0:
         funnel["meeting_rate"] = round(funnel["meetings"] / funnel["replied"] * 100, 1)
     else:
         funnel["meeting_rate"] = 0
-
     if funnel["meetings"] > 0:
         funnel["opp_rate"] = round(funnel["opportunities"] / funnel["meetings"] * 100, 1)
     else:
         funnel["opp_rate"] = 0
-
     conn.close()
     return funnel
-
 
 @app.get("/api/analytics/experiments")
 def experiment_analytics():
@@ -365,6 +538,202 @@ def experiment_analytics():
     rows = conn.execute("SELECT * FROM experiments ORDER BY created_at DESC").fetchall()
     conn.close()
     return [dict(r) for r in rows]
+
+@app.get("/api/analytics/batch-comparison")
+def batch_comparison():
+    """Cross-batch comparison for intelligence charts."""
+    conn = models.get_db()
+    batches = conn.execute("""
+        SELECT b.id, b.batch_number, b.ab_variable, b.ab_description, b.created_at,
+               (SELECT COUNT(*) FROM batch_prospects WHERE batch_id=b.id) as prospects,
+               (SELECT COUNT(*) FROM message_drafts WHERE batch_id=b.id) as messages,
+               (SELECT COUNT(*) FROM message_drafts WHERE batch_id=b.id AND qc_passed=1) as qc_passed,
+               (SELECT COUNT(DISTINCT r.contact_id) FROM replies r
+                JOIN batch_prospects bp ON r.contact_id=bp.contact_id
+                WHERE bp.batch_id=b.id) as replies,
+               (SELECT COUNT(*) FROM opportunities o
+                JOIN contacts c ON o.contact_id=c.id
+                JOIN batch_prospects bp ON c.id=bp.contact_id
+                WHERE bp.batch_id=b.id) as meetings,
+               (SELECT AVG(md.personalization_score) FROM message_drafts md
+                WHERE md.batch_id=b.id AND md.personalization_score > 0) as avg_personalization
+        FROM batches b ORDER BY b.batch_number ASC
+    """).fetchall()
+    conn.close()
+    results = []
+    for b in batches:
+        d = dict(b)
+        d["reply_rate"] = round(d["replies"] / d["prospects"] * 100, 1) if d["prospects"] > 0 else 0
+        d["meeting_rate"] = round(d["meetings"] / d["replies"] * 100, 1) if d["replies"] > 0 else 0
+        d["qc_pass_rate"] = round(d["qc_passed"] / d["messages"] * 100, 1) if d["messages"] > 0 else 0
+        d["avg_personalization"] = round(d["avg_personalization"] or 0, 1)
+        results.append(d)
+    return results
+
+@app.get("/api/analytics/top-messages")
+def top_messages():
+    """Top performing messages (those that got replies), ranked for pattern analysis."""
+    conn = models.get_db()
+    rows = conn.execute("""
+        SELECT md.id, md.contact_id, md.touch_number, md.channel, md.subject_line,
+               md.body as message_body, md.personalization_score, md.ab_group,
+               c.first_name, c.last_name, c.persona_type, c.title,
+               a.name as company,
+               r.reply_tag, r.summary as reply_summary
+        FROM message_drafts md
+        JOIN contacts c ON md.contact_id = c.id
+        LEFT JOIN accounts a ON c.account_id = a.id
+        LEFT JOIN replies r ON r.contact_id = md.contact_id
+        WHERE r.id IS NOT NULL
+        ORDER BY md.personalization_score DESC, r.created_at DESC
+        LIMIT 10
+    """).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+@app.get("/api/analytics/token-costs")
+def token_costs():
+    """Token usage and cost tracking - by agent, by batch, and per-prospect."""
+    conn = models.get_db()
+
+    # By agent
+    by_agent = conn.execute("""
+        SELECT agent_name,
+               COUNT(*) as runs,
+               SUM(tokens_used) as total_tokens,
+               AVG(tokens_used) as avg_tokens,
+               SUM(duration_ms) as total_duration_ms
+        FROM agent_runs
+        GROUP BY agent_name
+        ORDER BY total_tokens DESC
+    """).fetchall()
+
+    # By batch (approximate - using agent runs with batch metadata)
+    by_batch = conn.execute("""
+        SELECT b.batch_number,
+               (SELECT COUNT(*) FROM batch_prospects WHERE batch_id=b.id) as prospects,
+               (SELECT SUM(ar.tokens_used) FROM agent_runs ar
+                WHERE ar.run_type LIKE '%batch%' OR ar.batch_id=b.id) as batch_tokens
+        FROM batches b ORDER BY b.batch_number ASC
+    """).fetchall()
+
+    # Totals
+    totals = conn.execute("""
+        SELECT COUNT(*) as total_runs,
+               SUM(tokens_used) as total_tokens,
+               SUM(duration_ms) as total_duration_ms
+        FROM agent_runs
+    """).fetchone()
+
+    # Total prospects and replies for per-unit costs
+    prospect_count = conn.execute("SELECT COUNT(*) FROM contacts WHERE status='active'").fetchone()[0]
+    reply_count = conn.execute("SELECT COUNT(DISTINCT contact_id) FROM replies").fetchone()[0]
+
+    conn.close()
+
+    # Cost rate: $3/1M input tokens (Claude Sonnet estimate)
+    cost_rate = 3.0
+
+    agent_results = []
+    for r in by_agent:
+        d = dict(r)
+        d["est_cost_usd"] = round((d["total_tokens"] or 0) / 1_000_000 * cost_rate, 4)
+        agent_results.append(d)
+
+    batch_results = []
+    for b in by_batch:
+        d = dict(b)
+        tokens = d.get("batch_tokens") or 0
+        prospects = d.get("prospects") or 0
+        d["est_cost_usd"] = round(tokens / 1_000_000 * cost_rate, 4)
+        d["cost_per_prospect"] = round(d["est_cost_usd"] / prospects, 4) if prospects > 0 else 0
+        batch_results.append(d)
+
+    total_tokens = (totals["total_tokens"] or 0) if totals else 0
+    total_cost = round(total_tokens / 1_000_000 * cost_rate, 4)
+
+    return {
+        "by_agent": agent_results,
+        "by_batch": batch_results,
+        "totals": {
+            "total_runs": (totals["total_runs"] or 0) if totals else 0,
+            "total_tokens": total_tokens,
+            "total_duration_ms": (totals["total_duration_ms"] or 0) if totals else 0,
+            "est_cost_usd": total_cost,
+            "cost_per_prospect": round(total_cost / prospect_count, 4) if prospect_count > 0 else 0,
+            "cost_per_reply": round(total_cost / reply_count, 4) if reply_count > 0 else 0,
+            "prospect_count": prospect_count,
+            "reply_count": reply_count,
+        }
+    }
+
+
+# ─── SIGNALS ────────────────────────────────────────────────────
+
+@app.get("/api/signals")
+def list_signals(signal_type: str = None, active_only: bool = True, limit: int = 50):
+    """List buyer intent and re-engagement signals."""
+    conn = models.get_db()
+    query = "SELECT s.*, c.first_name, c.last_name, c.title, a.name as company_name FROM signals s LEFT JOIN contacts c ON s.contact_id=c.id LEFT JOIN accounts a ON s.account_id=a.id WHERE 1=1"
+    params = []
+    if signal_type:
+        query += " AND s.signal_type=?"
+        params.append(signal_type)
+    if active_only:
+        query += " AND (s.expires_at IS NULL OR s.expires_at > datetime('now'))"
+    query += " ORDER BY s.created_at DESC LIMIT ?"
+    params.append(limit)
+    rows = conn.execute(query, params).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+@app.post("/api/signals/{signal_id}/re-engage")
+def re_engage_signal(signal_id: str):
+    """Mark a signal as.acted_on and queue a re-engagement sequence."""
+    conn = models.get_db()
+    signal = conn.execute("SELECT * FROM signals WHERE id=?", (signal_id,)).fetchone()
+    if not signal:
+        conn.close()
+        raise HTTPException(status_code=404, detail="Signal not found")
+
+    signal_data = dict(signal)
+    contact_id = signal_data.get("contact_id")
+
+    # Mark signal as.acted_on
+    conn.execute("UPDATE signals SET acted_on=1 WHERE id=?", (signal_id,))
+
+    # Update contact stage to re-engaged
+    if contact_id:
+        conn.execute("UPDATE contacts SET stage='re_engaged' WHERE id=?", (contact_id,))
+
+    conn.commit()
+    conn.close()
+
+    return {
+        "status": "queued",
+        "signal_id": signal_id,
+        "contact_id": contact_id,
+        "trigger": signal_data.get("signal_type"),
+        "message": f"Re-engagement queued for {signal_data.get('signal_type')} signal"
+    }
+
+
+@app.post("/api/signals")
+def create_signal(data: dict):
+    """Create a manual signal for a contact."""
+    conn = models.get_db()
+    import uuid
+    signal_id = str(uuid.uuid4())[:8]
+    conn.execute("""
+        INSERT INTO signals (id, contact_id, account_id, signal_type, description, created_at)
+        VALUES (?, ?, ?, ?, ?, datetime('now'))
+    """, (signal_id, data.get("contact_id"), data.get("account_id"),
+          data.get("signal_type", "manual"), data.get("description", "")))
+    conn.commit()
+    conn.close()
+    return {"id": signal_id, "status": "created"}
 
 
 # ─── AGENT RUNS ─────────────────────────────────────────────────
@@ -397,6 +766,402 @@ def health():
         return {"status": "healthy", "tables": tables, "db_path": models.DB_PATH}
     except Exception as e:
         return JSONResponse(status_code=500, content={"status": "unhealthy", "error": str(e)})
+
+
+# ─── INTELLIGENCE ──────────────────────────────────────────────
+
+@app.get("/api/intelligence")
+def intelligence():
+    return models.get_intelligence_data()
+
+@app.get("/api/contacts/{contact_id}/prep-card")
+def prep_card(contact_id: str):
+    result = models.get_prep_card(contact_id)
+    if "error" in result:
+        raise HTTPException(status_code=404, detail=result["error"])
+    return result
+
+
+# ─── SYNC FROM HTML ────────────────────────────────────────────
+
+@app.post("/api/sync")
+def sync_html(payload: SyncBulk):
+    results = []
+    for item in payload.items:
+        r = models.sync_html_status(
+            contact_id=item.contact_id,
+            stage=item.stage,
+            reply_tag=item.reply_tag,
+            notes=item.notes,
+        )
+        results.append(r)
+    return {"synced": len(results), "results": results}
+
+
+# ─── EXPERIMENT RESULTS ────────────────────────────────────────
+
+@app.get("/api/experiments/{experiment_id}/results")
+def experiment_results(experiment_id: str):
+    result = models.get_experiment_results(experiment_id)
+    if "error" in result:
+        raise HTTPException(status_code=404, detail=result["error"])
+    return result
+
+
+# ════════════════════════════════════════════════════════════════
+# ═══ AGENTIC CONTROLS (NEW) ═══════════════════════════════════
+# ════════════════════════════════════════════════════════════════
+
+# ─── PIPELINE LAUNCHER ─────────────────────────────────────────
+
+@app.post("/api/pipeline/start")
+def start_pipeline(req: PipelineStartRequest):
+    """Launch a new batch pipeline in the background."""
+    from src.api.pipeline_runner import start_pipeline as _start
+
+    # Validation
+    if req.batch_number < 1:
+        raise HTTPException(status_code=400, detail="Batch number must be >= 1")
+    if req.target_count < 1 or req.target_count > 100:
+        raise HTTPException(status_code=400, detail="Target count must be 1-100")
+
+    # Duplicate batch number check
+    conn = models.get_db()
+    existing = conn.execute(
+        "SELECT id FROM batches WHERE batch_number=?", (req.batch_number,)
+    ).fetchone()
+    conn.close()
+    if existing:
+        raise HTTPException(
+            status_code=409,
+            detail=f"Batch #{req.batch_number} already exists. Use the next available number."
+        )
+
+    # Check no other pipeline is running
+    from src.api.pipeline_runner import list_runs
+    active = [r for r in list_runs() if r.get("status") in ("running", "approval_needed")]
+    if active:
+        raise HTTPException(
+            status_code=409,
+            detail=f"Pipeline already running (run {active[0]['run_id']}). Cancel it first or wait."
+        )
+
+    config = {
+        "target_count": req.target_count,
+        "ab_variable": req.ab_variable,
+        "ab_groups": req.ab_groups or {"A": "Variant A", "B": "Variant B"},
+        "mix_ratio": req.mix_ratio or {},
+        "auto_approve": req.auto_approve,
+        "saved_search_url": req.saved_search_url,
+    }
+
+    run = _start(req.batch_number, config)
+    return {"run_id": run.run_id, "status": run.status, "batch_number": req.batch_number}
+
+
+@app.get("/api/pipeline/runs")
+def list_pipeline_runs():
+    """List all pipeline runs (active and completed)."""
+    from src.api.pipeline_runner import list_runs
+    return list_runs()
+
+
+@app.get("/api/pipeline/runs/{run_id}")
+def get_pipeline_run(run_id: str):
+    """Get status of a specific pipeline run."""
+    from src.api.pipeline_runner import get_run
+    run = get_run(run_id)
+    if not run:
+        raise HTTPException(status_code=404, detail="Pipeline run not found")
+    return run.to_dict()
+
+
+@app.post("/api/pipeline/runs/{run_id}/cancel")
+def cancel_pipeline_run(run_id: str):
+    """Cancel a running pipeline."""
+    from src.api.pipeline_runner import cancel_run
+    success = cancel_run(run_id)
+    if not success:
+        raise HTTPException(status_code=400, detail="Cannot cancel - run not active")
+    return {"cancelled": True, "run_id": run_id}
+
+
+# ─── APPROVAL GATE ─────────────────────────────────────────────
+
+@app.post("/api/pipeline/runs/{run_id}/approve")
+def approve_pipeline_messages(run_id: str, req: ApprovalRequest):
+    """Submit message approval decisions for a paused pipeline."""
+    from src.api.pipeline_runner import approve_messages
+    success = approve_messages(run_id, req.decisions)
+    if not success:
+        raise HTTPException(status_code=400, detail="Run not in approval_needed state")
+    return {"approved": True, "run_id": run_id, "decisions": len(req.decisions)}
+
+
+@app.post("/api/pipeline/runs/{run_id}/skip-approval")
+def skip_approval(run_id: str):
+    """Auto-approve all messages and continue pipeline."""
+    from src.api.pipeline_runner import skip_approval as _skip
+    success = _skip(run_id)
+    if not success:
+        raise HTTPException(status_code=400, detail="Run not in approval_needed state")
+    return {"skipped": True, "run_id": run_id}
+
+
+# ─── SSE STREAMING ─────────────────────────────────────────────
+
+@app.get("/api/pipeline/runs/{run_id}/stream")
+async def stream_pipeline_events(run_id: str):
+    """Server-Sent Events stream for live pipeline progress."""
+    from src.api.pipeline_runner import subscribe, unsubscribe, get_run
+
+    run = get_run(run_id)
+    if not run:
+        raise HTTPException(status_code=404, detail="Pipeline run not found")
+
+    q = subscribe(run_id)
+
+    async def event_generator():
+        try:
+            while True:
+                try:
+                    # Non-blocking check with timeout
+                    msg = await asyncio.get_event_loop().run_in_executor(
+                        None, lambda: q.get(timeout=30)
+                    )
+                    yield f"event: {msg['event']}\ndata: {json.dumps(msg['data'])}\n\n"
+
+                    # Stop streaming if pipeline is done
+                    if msg["event"] in ("completed", "failed", "cancelled"):
+                        break
+                except Exception:
+                    # Send keepalive
+                    yield f": keepalive\n\n"
+
+                    # Check if run is done
+                    current = get_run(run_id)
+                    if current and current.status in ("completed", "failed", "cancelled"):
+                        yield f"event: {current.status}\ndata: {json.dumps(current.to_dict())}\n\n"
+                        break
+        finally:
+            unsubscribe(run_id, q)
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "Connection": "keep-alive"},
+    )
+
+
+# ─── AGENT ACTIONS (per-prospect) ──────────────────────────────
+
+@app.post("/api/agent/action")
+def run_agent_action(req: AgentActionRequest):
+    """Run a single agent action (re-score, QC, generate HTML, etc.)."""
+    from src.api.pipeline_runner import run_agent_action as _run
+    result = _run(
+        action=req.action,
+        contact_id=req.contact_id,
+        batch_id=req.batch_id,
+        params=req.params,
+    )
+    return result
+
+
+@app.post("/api/contacts/{contact_id}/re-score")
+def re_score_contact(contact_id: str):
+    """Re-run ICP + priority scoring for a single contact."""
+    from src.api.pipeline_runner import run_agent_action as _run
+    return _run(action="re_score", contact_id=contact_id)
+
+
+@app.post("/api/contacts/{contact_id}/run-qc")
+def run_qc_contact(contact_id: str):
+    """Re-run quality gate on all messages for a contact."""
+    from src.api.pipeline_runner import run_agent_action as _run
+    return _run(action="run_qc", contact_id=contact_id)
+
+
+@app.post("/api/contacts/{contact_id}/re-research")
+def re_research_contact(contact_id: str):
+    """Re-run company + person research for a contact."""
+    from src.api.pipeline_runner import run_agent_action as _run
+    return _run(action="re_research", contact_id=contact_id)
+
+
+@app.post("/api/contacts/{contact_id}/regenerate-messages")
+def regenerate_messages_contact(contact_id: str):
+    """Regenerate all message drafts for a contact."""
+    from src.api.pipeline_runner import run_agent_action as _run
+    return _run(action="regenerate_messages", contact_id=contact_id)
+
+
+@app.post("/api/batches/{batch_id}/score-all")
+def score_batch(batch_id: str):
+    """Re-score all contacts in a batch."""
+    from src.api.pipeline_runner import run_agent_action as _run
+    return _run(action="score_batch", batch_id=batch_id)
+
+
+@app.post("/api/batches/{batch_id}/generate-html")
+def regenerate_html(batch_id: str):
+    """Regenerate the HTML deliverable for a batch."""
+    from src.api.pipeline_runner import run_agent_action as _run
+    return _run(action="generate_html", batch_id=batch_id)
+
+
+@app.post("/api/pre-brief")
+def run_pre_brief():
+    """Generate a fresh pre-brief from accumulated data."""
+    from src.api.pipeline_runner import run_agent_action as _run
+    return _run(action="run_pre_brief")
+
+
+# ─── BATCH APPROVAL QUEUE ─────────────────────────────────────
+
+@app.get("/api/approval-queue")
+def approval_queue(batch_id: str = None, approval_status: str = None):
+    """Get messages pending approval, grouped by contact."""
+    conn = models.get_db()
+    # Build WHERE clause based on filters
+    if approval_status and approval_status != 'pending':
+        if approval_status == 'all':
+            where = "WHERE 1=1"
+        else:
+            where = "WHERE md.approval_status = ?"
+    else:
+        where = "WHERE (md.approval_status IS NULL OR md.approval_status = 'pending')"
+    query = f"""
+        SELECT md.*, c.first_name, c.last_name, c.title, c.priority_score,
+               a.name as company_name, a.industry,
+               bp.ab_group
+        FROM message_drafts md
+        JOIN contacts c ON md.contact_id = c.id
+        LEFT JOIN accounts a ON c.account_id = a.id
+        LEFT JOIN batch_prospects bp ON md.contact_id = bp.contact_id AND md.batch_id = bp.batch_id
+        {where}
+    """
+    params = []
+    if approval_status and approval_status not in ('pending', 'all'):
+        params.append(approval_status)
+    if batch_id:
+        query += " AND md.batch_id = ?"
+        params.append(batch_id)
+    query += " ORDER BY c.priority_score DESC, md.touch_number ASC"
+    rows = conn.execute(query, params).fetchall()
+    conn.close()
+
+    # Group by contact
+    grouped = {}
+    for r in rows:
+        d = dict(r)
+        cid = d["contact_id"]
+        if cid not in grouped:
+            grouped[cid] = {
+                "contact_id": cid,
+                "name": f"{d['first_name']} {d['last_name']}",
+                "title": d["title"],
+                "company": d["company_name"],
+                "industry": d["industry"],
+                "priority_score": d["priority_score"],
+                "ab_group": d["ab_group"],
+                "messages": [],
+            }
+        grouped[cid]["messages"].append(d)
+
+    return list(grouped.values())
+
+
+@app.post("/api/messages/bulk-approve")
+def bulk_approve_messages(batch_id: str, action: str = "approve"):
+    """Bulk approve or reject all pending messages in a batch."""
+    conn = models.get_db()
+    status = "approved" if action == "approve" else "rejected"
+    result = conn.execute(
+        "UPDATE message_drafts SET approval_status=? WHERE batch_id=? AND (approval_status IS NULL OR approval_status='pending')",
+        (status, batch_id)
+    )
+    conn.commit()
+    count = result.rowcount
+    conn.close()
+    return {"updated": count, "status": status, "batch_id": batch_id}
+
+
+# ─── EXPORT ────────────────────────────────────────────────────
+
+@app.get("/api/export/csv")
+def export_csv(batch_id: str = None, min_priority: int = None,
+               persona_type: str = None, stage: str = None,
+               columns: str = None):
+    """Export contacts + status as CSV for CRM import.
+    Optional column selection via comma-separated string.
+    """
+    import csv
+    import io
+    from datetime import datetime
+
+    all_columns = [
+        "first_name", "last_name", "title", "email", "linkedin_url", "phone",
+        "persona_type", "seniority_level", "stage", "priority_score",
+        "personalization_score", "predicted_objection", "objection_response",
+        "company", "industry", "domain", "employee_count", "hq_location",
+        "buyer_intent"
+    ]
+
+    selected = columns.split(",") if columns else all_columns
+    # Validate columns
+    selected = [c.strip() for c in selected if c.strip() in all_columns]
+    if not selected:
+        selected = all_columns
+
+    conn = models.get_db()
+    query = """
+        SELECT c.first_name, c.last_name, c.title, c.email, c.linkedin_url, c.phone,
+               c.persona_type, c.seniority_level, c.stage, c.priority_score,
+               c.personalization_score, c.predicted_objection, c.objection_response,
+               a.name as company, a.industry, a.domain, a.employee_count,
+               a.hq_location, a.buyer_intent
+        FROM contacts c
+        LEFT JOIN accounts a ON c.account_id = a.id
+    """
+    conditions = ["c.status = 'active'"]
+    params = []
+
+    if batch_id:
+        query = query.replace("LEFT JOIN accounts", "JOIN batch_prospects bp ON c.id = bp.contact_id LEFT JOIN accounts")
+        conditions.append("bp.batch_id = ?")
+        params.append(batch_id)
+    if min_priority:
+        conditions.append("c.priority_score >= ?")
+        params.append(min_priority)
+    if persona_type:
+        conditions.append("c.persona_type = ?")
+        params.append(persona_type)
+    if stage:
+        conditions.append("c.stage = ?")
+        params.append(stage)
+
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+    query += " ORDER BY c.priority_score DESC"
+
+    rows = conn.execute(query, params).fetchall()
+    conn.close()
+
+    output = io.StringIO()
+    writer = csv.DictWriter(output, fieldnames=selected, extrasaction="ignore")
+    writer.writeheader()
+    for r in rows:
+        writer.writerow(dict(r))
+
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M")
+    filename = f"occ-export-{timestamp}.csv"
+
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
+    )
 
 
 if __name__ == "__main__":

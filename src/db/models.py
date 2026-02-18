@@ -18,7 +18,9 @@ def get_db():
     """Get a database connection with row_factory for dict-like access."""
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA journal_mode=WAL")
+    # Use DELETE journal mode in test environment to avoid WAL locking
+    journal_mode = os.environ.get("OCC_JOURNAL_MODE", "WAL")
+    conn.execute(f"PRAGMA journal_mode={journal_mode}")
     conn.execute("PRAGMA foreign_keys=ON")
     return conn
 
@@ -548,8 +550,8 @@ def save_research(data: dict) -> dict:
         json.dumps(data.get("career_history", [])), data.get("responsibilities"),
         json.dumps(data.get("tech_stack_signals", [])),
         json.dumps(data.get("pain_indicators", [])),
-        data.get("recent_activity"), data.get("company_products"),
-        data.get("company_metrics"), data.get("company_news"),
+        data.get("recent_activity"), json.dumps(data.get("company_products", [])),
+        json.dumps(data.get("company_metrics", {})), data.get("company_news"),
         data.get("hiring_signals"), json.dumps(data.get("sources", [])),
         data.get("confidence_score", 3), data.get("agent_run_id"), now
     ))
@@ -734,3 +736,370 @@ def get_action_queue() -> list:
         })
 
     return sorted(items, key=lambda x: 0 if x["priority"] == "hot" else 1)
+
+
+# ─── PREP CARD ─────────────────────────────────────────────────
+
+def get_prep_card(contact_id: str) -> dict:
+    """Aggregate research + messages + touchpoints + reply data for meeting prep."""
+    contact = get_contact(contact_id)
+    if not contact:
+        return {"error": "Contact not found"}
+
+    account = get_account(contact["account_id"]) if contact.get("account_id") else {}
+
+    conn = get_db()
+
+    # Person research
+    person_row = conn.execute("""
+        SELECT * FROM research_snapshots
+        WHERE contact_id=? AND entity_type='person'
+        ORDER BY created_at DESC LIMIT 1
+    """, (contact_id,)).fetchone()
+    person = {}
+    if person_row:
+        pr = dict(person_row)
+        person = {
+            "headline": pr.get("headline", ""),
+            "about": pr.get("summary", ""),
+            "responsibilities": pr.get("responsibilities", ""),
+            "career_history": json.loads(pr["career_history"]) if pr.get("career_history") else [],
+        }
+
+    # Company research
+    company_row = conn.execute("""
+        SELECT * FROM research_snapshots
+        WHERE account_id=? AND entity_type='company'
+        ORDER BY created_at DESC LIMIT 1
+    """, (contact.get("account_id", ""),)).fetchone()
+    company = {}
+    if company_row:
+        cr = dict(company_row)
+        company = {
+            "description": cr.get("summary", ""),
+            "known_tools": json.loads(cr["tech_stack_signals"]) if cr.get("tech_stack_signals") else [],
+            "recent_news": cr.get("company_news", ""),
+            "hiring_signals": cr.get("hiring_signals", ""),
+        }
+
+    # Messages
+    messages = conn.execute("""
+        SELECT * FROM message_drafts WHERE contact_id=?
+        ORDER BY touch_number ASC
+    """, (contact_id,)).fetchall()
+    messages = [dict(m) for m in messages]
+
+    # Reply data
+    replies = conn.execute("""
+        SELECT * FROM replies WHERE contact_id=?
+        ORDER BY replied_at DESC
+    """, (contact_id,)).fetchall()
+    replies = [dict(r) for r in replies]
+
+    # Signals
+    signals = conn.execute("""
+        SELECT * FROM signals
+        WHERE contact_id=? OR account_id=?
+        ORDER BY detected_at DESC
+    """, (contact_id, contact.get("account_id", ""))).fetchall()
+    signals = [dict(s) for s in signals]
+
+    conn.close()
+
+    # What triggered the reply
+    reply_trigger = ""
+    if replies:
+        reply_trigger = replies[0].get("reply_tag", "Unknown")
+
+    # Pain hypothesis from messages
+    pain = ""
+    for m in messages:
+        if m.get("pain_hook"):
+            pain = m["pain_hook"]
+            break
+
+    # Known tools
+    known_tools = company.get("known_tools", [])
+    if isinstance(known_tools, str):
+        try:
+            known_tools = json.loads(known_tools)
+        except (json.JSONDecodeError, TypeError):
+            known_tools = []
+
+    return {
+        "contact": contact,
+        "account": account or {},
+        "person_research": person,
+        "company_research": company,
+        "messages": messages,
+        "replies": replies,
+        "signals": signals,
+        "reply_trigger": reply_trigger,
+        "pain_hypothesis": pain,
+        "known_tools": known_tools,
+    }
+
+
+# ─── BATCH SUMMARY ────────────────────────────────────────────
+
+def get_batch_summary(batch_id: str) -> dict:
+    """Batch-level stats: sent, replied, meetings, by persona/vertical."""
+    conn = get_db()
+
+    batch = conn.execute("SELECT * FROM batches WHERE id=?", (batch_id,)).fetchone()
+    if not batch:
+        conn.close()
+        return {"error": "Batch not found"}
+
+    # Contact count
+    contact_count = conn.execute(
+        "SELECT COUNT(*) FROM batch_prospects WHERE batch_id=?", (batch_id,)
+    ).fetchone()[0]
+
+    # Persona breakdown
+    persona_rows = conn.execute("""
+        SELECT c.persona_type, COUNT(*) as cnt
+        FROM batch_prospects bp
+        JOIN contacts c ON bp.contact_id = c.id
+        WHERE bp.batch_id=?
+        GROUP BY c.persona_type
+    """, (batch_id,)).fetchall()
+
+    # Vertical breakdown
+    vertical_rows = conn.execute("""
+        SELECT a.industry, COUNT(*) as cnt
+        FROM batch_prospects bp
+        JOIN contacts c ON bp.contact_id = c.id
+        LEFT JOIN accounts a ON c.account_id = a.id
+        WHERE bp.batch_id=?
+        GROUP BY a.industry
+    """, (batch_id,)).fetchall()
+
+    # Messages
+    msg_count = conn.execute(
+        "SELECT COUNT(*) FROM message_drafts WHERE batch_id=?", (batch_id,)
+    ).fetchone()[0]
+
+    qc_passed = conn.execute(
+        "SELECT COUNT(*) FROM message_drafts WHERE batch_id=? AND qc_passed=1", (batch_id,)
+    ).fetchone()[0]
+
+    # Touches sent from this batch
+    touch_count = conn.execute("""
+        SELECT COUNT(*) FROM touchpoints tp
+        JOIN message_drafts md ON tp.message_draft_id = md.id
+        WHERE md.batch_id=?
+    """, (batch_id,)).fetchone()[0]
+
+    # Replies from this batch
+    reply_count = conn.execute("""
+        SELECT COUNT(*) FROM replies r
+        JOIN contacts c ON r.contact_id = c.id
+        JOIN batch_prospects bp ON bp.contact_id = c.id AND bp.batch_id=?
+    """, (batch_id,)).fetchone()[0]
+
+    # Meetings from this batch
+    meeting_count = conn.execute("""
+        SELECT COUNT(*) FROM opportunities o
+        JOIN contacts c ON o.contact_id = c.id
+        JOIN batch_prospects bp ON bp.contact_id = c.id AND bp.batch_id=?
+        WHERE o.status IN ('meeting_booked','meeting_held')
+    """, (batch_id,)).fetchone()[0]
+
+    conn.close()
+
+    return {
+        "batch": dict(batch),
+        "contact_count": contact_count,
+        "personas": {r["persona_type"]: r["cnt"] for r in persona_rows},
+        "verticals": {r["industry"] or "Other": r["cnt"] for r in vertical_rows},
+        "messages_generated": msg_count,
+        "messages_qc_passed": qc_passed,
+        "touches_sent": touch_count,
+        "replies": reply_count,
+        "meetings": meeting_count,
+        "reply_rate": round(reply_count / max(touch_count, 1) * 100, 1),
+    }
+
+
+# ─── INTELLIGENCE DATA ────────────────────────────────────────
+
+def get_intelligence_data() -> dict:
+    """Aggregated analytics for Intelligence page."""
+    conn = get_db()
+    intelligence = {}
+
+    # Reply rates by persona
+    rows = conn.execute("""
+        SELECT c.persona_type,
+               COUNT(DISTINCT tp.id) as touches,
+               COUNT(DISTINCT r.id) as replies
+        FROM contacts c
+        LEFT JOIN touchpoints tp ON tp.contact_id = c.id
+        LEFT JOIN replies r ON r.contact_id = c.id
+        WHERE c.persona_type IS NOT NULL
+        GROUP BY c.persona_type
+    """).fetchall()
+    intelligence["by_persona"] = [
+        {"persona": r["persona_type"], "touches": r["touches"], "replies": r["replies"],
+         "rate": round(r["replies"] / max(r["touches"], 1) * 100, 1)}
+        for r in rows
+    ]
+
+    # Reply rates by vertical
+    rows = conn.execute("""
+        SELECT a.industry,
+               COUNT(DISTINCT tp.id) as touches,
+               COUNT(DISTINCT r.id) as replies
+        FROM contacts c
+        LEFT JOIN accounts a ON c.account_id = a.id
+        LEFT JOIN touchpoints tp ON tp.contact_id = c.id
+        LEFT JOIN replies r ON r.contact_id = c.id
+        WHERE a.industry IS NOT NULL
+        GROUP BY a.industry
+    """).fetchall()
+    intelligence["by_vertical"] = [
+        {"vertical": r["industry"], "touches": r["touches"], "replies": r["replies"],
+         "rate": round(r["replies"] / max(r["touches"], 1) * 100, 1)}
+        for r in rows
+    ]
+
+    # Reply rates by proof point
+    rows = conn.execute("""
+        SELECT md.proof_point_used,
+               COUNT(DISTINCT tp.id) as touches,
+               COUNT(DISTINCT r.id) as replies
+        FROM message_drafts md
+        LEFT JOIN touchpoints tp ON tp.message_draft_id = md.id
+        LEFT JOIN replies r ON r.touchpoint_id = tp.id
+        WHERE md.proof_point_used IS NOT NULL
+        GROUP BY md.proof_point_used
+    """).fetchall()
+    intelligence["by_proof_point"] = [
+        {"proof_point": r["proof_point_used"], "touches": r["touches"], "replies": r["replies"],
+         "rate": round(r["replies"] / max(r["touches"], 1) * 100, 1)}
+        for r in rows
+    ]
+
+    # Reply rates by personalization score
+    rows = conn.execute("""
+        SELECT md.personalization_score,
+               COUNT(DISTINCT tp.id) as touches,
+               COUNT(DISTINCT r.id) as replies
+        FROM message_drafts md
+        LEFT JOIN touchpoints tp ON tp.message_draft_id = md.id
+        LEFT JOIN replies r ON r.touchpoint_id = tp.id
+        WHERE md.personalization_score IS NOT NULL
+        GROUP BY md.personalization_score
+    """).fetchall()
+    intelligence["by_personalization"] = [
+        {"score": r["personalization_score"], "touches": r["touches"], "replies": r["replies"],
+         "rate": round(r["replies"] / max(r["touches"], 1) * 100, 1)}
+        for r in rows
+    ]
+
+    conn.close()
+    return intelligence
+
+
+# ─── SYNC FROM HTML ────────────────────────────────────────────
+
+def sync_html_status(contact_id: str, stage: str = None,
+                     reply_tag: str = None, notes: str = None) -> dict:
+    """Accept status updates from HTML localStorage sync."""
+    update = {}
+    if stage:
+        update["stage"] = stage
+
+    if update:
+        update_contact(contact_id, update)
+
+    # Log reply tag if provided
+    if reply_tag:
+        log_reply({
+            "contact_id": contact_id,
+            "reply_tag": reply_tag,
+            "summary": notes or "",
+        })
+
+    return {"success": True, "synced": True, "contact_id": contact_id}
+
+
+# ─── EXPERIMENT RESULTS ────────────────────────────────────────
+
+def get_experiment_results(experiment_id: str) -> dict:
+    """A/B test metrics with sample sizes."""
+    conn = get_db()
+
+    exp = conn.execute("SELECT * FROM experiments WHERE id=?", (experiment_id,)).fetchone()
+    if not exp:
+        conn.close()
+        return {"error": "Experiment not found"}
+    exp = dict(exp)
+
+    variable = exp.get("variable", "")
+
+    # Get batch IDs for this experiment
+    try:
+        batch_ids = json.loads(exp.get("batches_included", "[]"))
+    except (json.JSONDecodeError, TypeError):
+        batch_ids = []
+
+    if not batch_ids:
+        conn.close()
+        return {"experiment": exp, "results": {"A": {}, "B": {}}, "conclusion": "No batches linked"}
+
+    placeholders = ",".join("?" for _ in batch_ids)
+
+    # Group A metrics
+    a_touches = conn.execute(f"""
+        SELECT COUNT(DISTINCT tp.id) FROM touchpoints tp
+        JOIN message_drafts md ON tp.message_draft_id = md.id
+        WHERE md.batch_id IN ({placeholders}) AND md.ab_group='A'
+    """, batch_ids).fetchone()[0]
+
+    a_replies = conn.execute(f"""
+        SELECT COUNT(DISTINCT r.id) FROM replies r
+        JOIN touchpoints tp ON r.touchpoint_id = tp.id
+        JOIN message_drafts md ON tp.message_draft_id = md.id
+        WHERE md.batch_id IN ({placeholders}) AND md.ab_group='A'
+    """, batch_ids).fetchone()[0]
+
+    # Group B metrics
+    b_touches = conn.execute(f"""
+        SELECT COUNT(DISTINCT tp.id) FROM touchpoints tp
+        JOIN message_drafts md ON tp.message_draft_id = md.id
+        WHERE md.batch_id IN ({placeholders}) AND md.ab_group='B'
+    """, batch_ids).fetchone()[0]
+
+    b_replies = conn.execute(f"""
+        SELECT COUNT(DISTINCT r.id) FROM replies r
+        JOIN touchpoints tp ON r.touchpoint_id = tp.id
+        JOIN message_drafts md ON tp.message_draft_id = md.id
+        WHERE md.batch_id IN ({placeholders}) AND md.ab_group='B'
+    """, batch_ids).fetchone()[0]
+
+    conn.close()
+
+    a_rate = round(a_replies / max(a_touches, 1) * 100, 1)
+    b_rate = round(b_replies / max(b_touches, 1) * 100, 1)
+
+    # Simple conclusion
+    min_sample = 10
+    if a_touches < min_sample or b_touches < min_sample:
+        conclusion = f"Insufficient data (need {min_sample}+ touches per group)"
+    elif a_rate > b_rate * 1.2:
+        conclusion = f"Group A winning ({a_rate}% vs {b_rate}%)"
+    elif b_rate > a_rate * 1.2:
+        conclusion = f"Group B winning ({b_rate}% vs {a_rate}%)"
+    else:
+        conclusion = f"No significant difference ({a_rate}% vs {b_rate}%)"
+
+    return {
+        "experiment": exp,
+        "results": {
+            "A": {"desc": exp.get("group_a_desc", ""), "touches": a_touches, "replies": a_replies, "rate": a_rate},
+            "B": {"desc": exp.get("group_b_desc", ""), "touches": b_touches, "replies": b_replies, "rate": b_rate},
+        },
+        "conclusion": conclusion,
+    }
