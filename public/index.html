@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outreach Command Center</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7"></script>
+<style>
+:root {
+    --bg: #0f1117; --bg2: #1a1d27; --bg3: #242833; --bd: #2d3140;
+    --tx: #e4e6ed; --tx2: #8b90a0; --tx3: #5c6070;
+    --ac: #6366f1; --ac2: #818cf8; --gn: #22c55e; --gn2: #16a34a;
+    --rd: #ef4444; --yl: #eab308; --or: #f97316; --cy: #06b6d4;
+    --r: 8px; --g: 12px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg); color:var(--tx); line-height:1.5; }
+a { color:var(--ac2); text-decoration:none; cursor:pointer; }
+
+/* Layout */
+.shell { display:flex; height:100vh; }
+.sidebar { width:220px; background:var(--bg2); border-right:1px solid var(--bd); display:flex; flex-direction:column; flex-shrink:0; }
+.sidebar-logo { padding:16px 20px; font-size:14px; font-weight:700; color:var(--ac2); border-bottom:1px solid var(--bd); }
+.sidebar-logo span { color:var(--tx2); font-weight:400; font-size:11px; display:block; margin-top:2px; }
+.nav { flex:1; padding:8px; overflow-y:auto; }
+.nav-item { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:6px; cursor:pointer; font-size:13px; color:var(--tx2); transition:all .15s; user-select:none; }
+.nav-item:hover { background:var(--bg3); color:var(--tx); }
+.nav-item.active { background:var(--ac); color:#fff; }
+.nav-item .badge { margin-left:auto; background:var(--rd); color:#fff; font-size:10px; padding:1px 6px; border-radius:10px; font-weight:600; min-width:18px; text-align:center; }
+.nav-sep { height:1px; background:var(--bd); margin:6px 8px; }
+.main { flex:1; overflow-y:auto; }
+.page { display:none; padding:20px; max-width:1400px; }
+.page.active { display:block; }
+.page-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:8px; }
+.page-hdr h1 { font-size:18px; font-weight:600; }
+
+/* Mode badge */
+.mode-badge { font-size:10px; padding:2px 8px; border-radius:10px; font-weight:600; }
+.mode-badge.offline { background:rgba(249,115,22,.15); color:var(--or); }
+.mode-badge.online { background:rgba(34,197,94,.15); color:var(--gn); }
+
+/* KPI */
+.kpi-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:var(--g); margin-bottom:16px; }
+.kpi { background:var(--bg2); border:1px solid var(--bd); border-radius:var(--r); padding:14px 16px; }
+.kpi-label { font-size:11px; color:var(--tx2); text-transform:uppercase; letter-spacing:.5px; }
+.kpi-val { font-size:24px; font-weight:700; margin:2px 0; }
+.kpi-sub { font-size:11px; }
+.kpi-sub.up { color:var(--gn); } .kpi-sub.dn { color:var(--rd); }
+
+/* Card */
+.card { background:var(--bg2); border:1px solid var(--bd); border-radius:var(--r); padding:16px; margin-bottom:var(--g); }
+.card h3 { font-size:13px; font-weight:600; margin-bottom:10px; color:var(--tx2); text-transform:uppercase; letter-spacing:.5px; }
+.card canvas { max-height:280px; }
+
+/* Grid */
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:var(--g); }
+.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:var(--g); }
+
+/* Table */
+.tbl { width:100%; border-collapse:collapse; font-size:13px; }
+.tbl thead th { text-align:left; padding:8px 10px; border-bottom:2px solid var(--bd); color:var(--tx2); font-size:11px; text-transform:uppercase; letter-spacing:.5px; cursor:pointer; white-space:nowrap; user-select:none; }
+.tbl thead th:hover { color:var(--tx); }
+.tbl thead th.sorted::after { content:" ▼"; font-size:9px; }
+.tbl thead th.sorted.asc::after { content:" ▲"; }
+.tbl tbody td { padding:8px 10px; border-bottom:1px solid var(--bd); }
+.tbl tbody tr:hover { background:var(--bg3); cursor:pointer; }
+
+/* Tags */
+.tag { display:inline-block; padding:1px 8px; border-radius:4px; font-size:11px; font-weight:600; }
+.tag-hot { background:rgba(239,68,68,.15); color:var(--rd); }
+.tag-warm { background:rgba(249,115,22,.15); color:var(--or); }
+.tag-std { background:rgba(99,102,241,.15); color:var(--ac2); }
+.tag-qa { background:rgba(34,197,94,.15); color:var(--gn); }
+.tag-gn { background:rgba(34,197,94,.15); color:var(--gn); }
+.tag-vp { background:rgba(6,182,212,.15); color:var(--cy); }
+.tag-intent { background:rgba(234,179,8,.15); color:var(--yl); }
+
+/* Buttons */
+.btn { padding:6px 14px; border-radius:6px; border:1px solid var(--bd); background:var(--bg3); color:var(--tx); font-size:12px; cursor:pointer; transition:all .15s; display:inline-flex; align-items:center; gap:6px; white-space:nowrap; }
+.btn:hover { border-color:var(--ac); color:var(--ac2); }
+.btn:disabled { opacity:.5; cursor:not-allowed; }
+.btn-primary { background:var(--ac); border-color:var(--ac); color:#fff; }
+.btn-primary:hover { background:var(--ac2); }
+.btn-danger { background:var(--rd); border-color:var(--rd); color:#fff; }
+.btn-success { background:var(--gn2); border-color:var(--gn2); color:#fff; }
+.btn-sm { padding:3px 8px; font-size:11px; }
+.btn-group { display:flex; gap:4px; flex-wrap:wrap; }
+select.sel { background:var(--bg3); border:1px solid var(--bd); color:var(--tx); padding:4px 8px; border-radius:4px; font-size:12px; }
+input.inp { background:var(--bg3); border:1px solid var(--bd); color:var(--tx); padding:5px 10px; border-radius:4px; font-size:12px; outline:none; }
+input.inp:focus, select.sel:focus { border-color:var(--ac); }
+input.inp.err { border-color:var(--rd); }
+.err-msg { color:var(--rd); font-size:11px; margin-top:2px; display:none; }
+.err-msg.show { display:block; }
+
+/* Spinner */
+.spinner { display:inline-block; width:14px; height:14px; border:2px solid var(--bd); border-top-color:var(--ac2); border-radius:50%; animation:spin .6s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* Pipeline progress */
+.pipeline-progress { background:var(--bg2); border:1px solid var(--bd); border-radius:var(--r); padding:20px; margin-bottom:16px; }
+.phase-track { display:flex; gap:4px; margin:12px 0; }
+.phase-step { flex:1; height:32px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:600; text-transform:uppercase; transition:all .3s; position:relative; }
+.phase-step.pending { background:var(--bg3); color:var(--tx3); }
+.phase-step.active { background:var(--ac); color:#fff; animation:pulse 1.5s infinite; }
+.phase-step.done { background:var(--gn2); color:#fff; }
+.phase-step.failed { background:var(--rd); color:#fff; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.7} }
+.progress-bar { height:6px; background:var(--bg3); border-radius:3px; overflow:hidden; margin-top:8px; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--ac),var(--gn)); transition:width .5s; border-radius:3px; }
+.run-timer { font-size:11px; color:var(--tx3); font-variant-numeric:tabular-nums; }
+
+/* Approval cards */
+.approval-card { background:var(--bg3); border:1px solid var(--bd); border-radius:var(--r); padding:14px; margin-bottom:10px; transition:all .2s; }
+.approval-card.approved { border-color:var(--gn); opacity:.6; }
+.approval-card.rejected { border-color:var(--rd); opacity:.4; }
+.approval-card .msg-body { font-size:12px; color:var(--tx2); white-space:pre-wrap; line-height:1.6; margin:8px 0; padding:10px; background:var(--bg2); border-radius:4px; border:1px solid var(--bd); min-height:60px; outline:none; transition:border-color .2s; }
+.approval-card .msg-body.editing { border-color:var(--ac); box-shadow:0 0 0 1px var(--ac); }
+.approval-card .msg-subj { font-size:12px; font-weight:600; color:var(--yl); margin-bottom:4px; }
+.approval-card .msg-meta { display:flex; gap:8px; flex-wrap:wrap; font-size:11px; color:var(--tx3); align-items:center; }
+.msg-word-count { font-variant-numeric:tabular-nums; }
+.msg-save-indicator { color:var(--gn); font-size:11px; opacity:0; transition:opacity .3s; }
+.msg-save-indicator.show { opacity:1; }
+
+/* Detail panel */
+.detail-panel { position:fixed; right:0; top:0; width:540px; height:100vh; background:var(--bg2); border-left:1px solid var(--bd); transform:translateX(100%); transition:transform .25s ease; z-index:100; overflow-y:auto; padding:20px; }
+.detail-panel.open { transform:translateX(0); }
+.detail-close { position:absolute; top:12px; right:12px; background:none; border:none; color:var(--tx2); cursor:pointer; font-size:18px; padding:4px 8px; }
+.detail-close:hover { color:var(--tx); }
+
+/* Signal card */
+.signal-card { background:var(--bg3); border-left:3px solid var(--yl); border-radius:0 var(--r) var(--r) 0; padding:10px 14px; margin-bottom:8px; }
+.signal-card .sig-type { font-size:11px; font-weight:600; color:var(--yl); text-transform:uppercase; }
+.signal-card .sig-detail { font-size:12px; color:var(--tx2); margin-top:2px; }
+.signal-card .sig-age { font-size:10px; color:var(--tx3); margin-top:2px; }
+.signal-card.actioned { opacity:.5; border-left-color:var(--gn); }
+
+/* Action queue items */
+.action-item { display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--bd); font-size:13px; align-items:flex-start; }
+.action-item:last-child { border-bottom:none; }
+.action-icon { width:28px; height:28px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; }
+.action-icon.overdue { background:rgba(239,68,68,.15); color:var(--rd); }
+.action-icon.hot { background:rgba(234,179,8,.15); color:var(--yl); }
+.action-icon.stuck { background:rgba(249,115,22,.15); color:var(--or); }
+.action-icon.signal { background:rgba(99,102,241,.15); color:var(--ac2); }
+
+/* Filters */
+.filters-bar { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }
+.filters-bar label { font-size:11px; color:var(--tx2); }
+
+/* Form row */
+.form-row { margin-bottom:12px; }
+.form-row label { display:block; font-size:12px; color:var(--tx2); margin-bottom:4px; }
+
+/* Tabs */
+.tab-bar { display:flex; gap:2px; margin-bottom:16px; border-bottom:1px solid var(--bd); padding-bottom:0; }
+.tab-item { padding:8px 16px; font-size:12px; color:var(--tx2); cursor:pointer; border-bottom:2px solid transparent; transition:all .15s; user-select:none; }
+.tab-item:hover { color:var(--tx); }
+.tab-item.active { color:var(--ac2); border-bottom-color:var(--ac); }
+.tab-content { display:none; }
+.tab-content.active { display:block; }
+
+/* Confirm dialog */
+.confirm-overlay { position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:200; display:none; align-items:center; justify-content:center; }
+.confirm-overlay.show { display:flex; }
+.confirm-box { background:var(--bg2); border:1px solid var(--bd); border-radius:12px; padding:24px; width:400px; max-width:90vw; }
+.confirm-box h3 { font-size:15px; margin-bottom:8px; }
+.confirm-box p { font-size:13px; color:var(--tx2); margin-bottom:16px; }
+.confirm-actions { display:flex; gap:8px; justify-content:flex-end; }
+
+/* Empty */
+.empty { padding:40px; text-align:center; color:var(--tx3); font-size:13px; }
+
+/* Toast */
+.toast { position:fixed; bottom:20px; right:20px; background:var(--bg2); border:1px solid var(--bd); border-radius:var(--r); padding:12px 20px; font-size:13px; z-index:300; opacity:0; transform:translateY(10px); transition:all .3s; pointer-events:none; box-shadow:0 4px 20px rgba(0,0,0,.4); }
+.toast.show { opacity:1; transform:translateY(0); pointer-events:auto; }
+.toast.success { border-color:var(--gn); } .toast.error { border-color:var(--rd); }
+
+/* Responsive */
+@media(max-width:900px) { .sidebar{width:60px;} .sidebar-logo span,.nav-item span:not(.badge){display:none;} .grid2,.grid3{grid-template-columns:1fr;} .detail-panel{width:100%;} }
+@media print { .sidebar,.toast,.confirm-overlay{display:none!important;} .main{overflow:visible;} .page{max-width:none;} }
+
+/* Modal */
+.modal { position:fixed; inset:0; background:rgba(0,0,0,.6); display:flex; align-items:center; justify-content:center; z-index:100; }
+.modal-content { background:var(--bg2); border:1px solid var(--bd); border-radius:var(--r); padding:20px; width:400px; max-width:90vw; }
+
+/* Badge variants */
+.badge-gn { background:rgba(34,197,94,.15); color:var(--gn); padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; }
+.badge-rd { background:rgba(239,68,68,.15); color:var(--rd); padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; }
+.badge-yl { background:rgba(234,179,8,.15); color:var(--yl); padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; }
+
+/* Table */
+.tbl { width:100%; border-collapse:collapse; font-size:12px; }
+.tbl th { text-align:left; padding:8px; border-bottom:2px solid var(--bd); color:var(--tx2); font-size:11px; text-transform:uppercase; }
+.tbl td { padding:8px; border-bottom:1px solid var(--bd); }
+.tbl tr:hover { background:var(--bg3); }
+
+/* Input */
+.input { background:var(--bg); border:1px solid var(--bd); border-radius:4px; padding:8px 12px; color:var(--tx); font-size:13px; }
+.input:focus { border-color:var(--ac); outline:none; }
+.sel { background:var(--bg); border:1px solid var(--bd); border-radius:4px; padding:8px 12px; color:var(--tx); font-size:13px; cursor:pointer; }
+.sel:focus { border-color:var(--ac); outline:none; }
+
+</style>
+</head>
+<body>
+<div class="shell">
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="sidebar-logo">OCC<span>Outreach Command Center</span></div>
+    <nav class="nav">
+        <div class="nav-item active" onclick="showPage('home')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M2 6h12"/></svg><span>Home</span><span class="badge" id="badge-actions" style="display:none">0</span></div>
+        <div class="nav-item" onclick="showPage('pipeline')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h10M5 8h6M7 13h2"/></svg><span>Pipeline</span></div>
+        <div class="nav-sep"></div>
+        <div class="nav-item" onclick="showPage('launch')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5,3 19,12 5,21" transform="scale(0.7)"/></svg><span>Launch Batch</span></div>
+        <div class="nav-item" onclick="showPage('approval')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l4 4 6-8"/></svg><span>Approval</span><span class="badge" id="badge-approval" style="display:none">0</span></div>
+        <div class="nav-sep"></div>
+        <div class="nav-item" onclick="showPage('intelligence')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 13V8M7 13V5M11 13V2"/></svg><span>Intelligence</span></div>
+        <div class="nav-item" onclick="showPage('experiments')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="5"/><path d="M8 3v10M3 8h10"/></svg><span>Experiments</span></div>
+        <div class="nav-item" onclick="showPage('signals')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h4l-1 6 10-12H12z" transform="scale(0.85)"/></svg><span>Signals</span></div>
+        <div class="nav-sep"></div>
+        <div class="nav-item" onclick="showPage('agents')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="14" height="8" rx="2"/><path d="M4 4V2M12 4V2"/></svg><span>Agent Logs</span></div>
+        <div class="nav-sep"></div>
+        <div class="nav-item" data-page="email" onclick="showPage('email')">📧 Email Channel</div>
+        <div class="nav-item" data-page="swarm" onclick="showPage('swarm')">🐝 Agent Swarm</div>
+        <div class="nav-item" data-page="health" onclick="showPage('health')">🏥 System Health</div>
+    </nav>
+    <div style="padding:12px;border-top:1px solid var(--bd);font-size:11px;color:var(--tx3);">
+        <span class="mode-badge offline" id="mode-badge">Offline</span>
+        <span style="margin-left:6px" id="api-status">API not connected</span>
+    </div>
+</div>
+
+<!-- Main content -->
+<div class="main">
+
+<!-- ═══ HOME ═══ -->
+<div class="page active" id="page-home">
+    <div class="page-hdr"><h1>Dashboard</h1><button class="btn btn-sm" onclick="refreshAll()">Refresh</button></div>
+    <div class="kpi-row" id="kpi-row"></div>
+
+    <!-- Active Pipeline Run (#2) -->
+    <div id="active-run-container" style="display:none;">
+        <div class="pipeline-progress" id="pipeline-progress">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div><strong id="run-title">Pipeline Running</strong><span id="run-status" style="margin-left:8px;font-size:12px;color:var(--tx2);"></span></div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <span class="run-timer" id="run-timer">0:00</span>
+                    <button class="btn btn-sm btn-danger" id="cancel-run-btn" onclick="cancelRun()">Cancel</button>
+                </div>
+            </div>
+            <div class="phase-track" id="phase-track"></div>
+            <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+            <div id="phase-detail" style="font-size:11px;color:var(--tx3);margin-top:6px;"></div>
+        </div>
+    </div>
+
+    <div class="grid2">
+        <!-- Smart Action Queue (#8) -->
+        <div class="card"><h3>Action Queue</h3><div id="action-queue"><div class="empty">Loading...</div></div></div>
+        <div class="card"><h3>Pipeline Funnel</h3><canvas id="chart-funnel"></canvas></div>
+    </div>
+    <div class="grid2">
+        <div class="card"><h3>Reply Rate by Persona</h3><canvas id="chart-persona"></canvas></div>
+        <div class="card"><h3>Reply Rate by Vertical</h3><canvas id="chart-vertical"></canvas></div>
+    </div>
+</div>
+
+<!-- ═══ PIPELINE ═══ -->
+<div class="page" id="page-pipeline">
+    <div class="page-hdr"><h1>Prospect Pipeline</h1>
+        <div class="btn-group">
+            <button class="btn btn-sm" onclick="showExportModal()">Export CSV</button>
+            <button class="btn btn-sm" onclick="refreshPipeline()">Refresh</button>
+        </div>
+    </div>
+    <div class="filters-bar">
+        <label>Priority</label><select class="sel" id="f-priority" onchange="filterPipeline()"><option value="">All</option><option value="5">Hot (5)</option><option value="4">Warm (4+)</option><option value="3">Standard (3+)</option></select>
+        <label>Persona</label><select class="sel" id="f-persona" onchange="filterPipeline()"><option value="">All</option><option value="qa_leader">QA Leader</option><option value="vp_eng">VP Eng</option></select>
+        <label>Stage</label><select class="sel" id="f-stage" onchange="filterPipeline()"><option value="">All</option><option value="new">New</option><option value="touch_1_sent">Touch 1</option><option value="touch_3_sent">Touch 3</option><option value="replied">Replied</option><option value="meeting_booked">Meeting</option><option value="not_interested">Not Interested</option><option value="re_engaged">Re-Engaged</option></select>
+        <label>Search</label><input class="inp" id="f-search" placeholder="Name, company..." oninput="filterPipeline()" style="width:180px;">
+        <span id="pipeline-count" style="font-size:11px;color:var(--tx3);margin-left:auto;"></span>
+    </div>
+    <div style="overflow-x:auto;">
+        <table class="tbl" id="pipeline-table">
+            <thead><tr>
+                <th onclick="sortPipeline('priority_score')">Pri</th>
+                <th onclick="sortPipeline('name')">Name</th>
+                <th>Title</th>
+                <th onclick="sortPipeline('company_name')">Company</th>
+                <th>Persona</th>
+                <th onclick="sortPipeline('stage')">Stage</th>
+                <th onclick="sortPipeline('personalization_score')">P-Score</th>
+                <th>Actions</th>
+            </tr></thead>
+            <tbody id="pipeline-body"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ═══ LAUNCH BATCH (#1) ═══ -->
+<div class="page" id="page-launch">
+    <div class="page-hdr"><h1>Launch New Batch</h1></div>
+    <div class="grid2">
+        <div class="card">
+            <h3>Batch Configuration</h3>
+            <div id="launch-error" style="display:none;background:rgba(239,68,68,.1);border:1px solid var(--rd);border-radius:var(--r);padding:10px;margin-bottom:12px;font-size:12px;color:var(--rd);"></div>
+            <div class="form-row">
+                <label>Batch Number</label>
+                <input class="inp" id="launch-batch-num" type="number" min="1" value="1" style="width:100%;">
+                <div class="err-msg" id="err-batch-num">Batch number must be >= 1</div>
+            </div>
+            <div class="form-row">
+                <label>Target Prospects (1-100)</label>
+                <input class="inp" id="launch-target" type="number" min="1" max="100" value="25" style="width:100%;">
+                <div class="err-msg" id="err-target">Must be between 1 and 100</div>
+            </div>
+            <div class="form-row">
+                <label>A/B Variable</label>
+                <select class="sel" id="launch-ab-var" style="width:100%;">
+                    <option value="pain_hook">Pain Hook</option>
+                    <option value="proof_point_style">Proof Point Style</option>
+                    <option value="opener_style">Opener Style</option>
+                    <option value="ask_intensity">Ask Intensity</option>
+                    <option value="message_length">Message Length</option>
+                </select>
+            </div>
+            <div class="form-row"><label>Group A Description</label><input class="inp" id="launch-group-a" value="Flaky/brittle tests angle" style="width:100%;"></div>
+            <div class="form-row"><label>Group B Description</label><input class="inp" id="launch-group-b" value="Release velocity angle" style="width:100%;"></div>
+            <div class="form-row"><label>Saved Search URL (optional)</label><input class="inp" id="launch-search-url" placeholder="https://www.linkedin.com/sales/search/..." style="width:100%;"></div>
+            <div class="form-row">
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                    <input type="checkbox" id="launch-auto-approve"> Auto-approve messages (skip approval gate)
+                </label>
+            </div>
+            <div style="margin-top:16px;display:flex;gap:8px;">
+                <button class="btn btn-primary" onclick="launchBatch()" id="launch-btn">Launch Pipeline</button>
+            </div>
+        </div>
+        <div class="card">
+            <h3>Previous Batches</h3>
+            <div id="batch-list"><div class="empty">Loading...</div></div>
+        </div>
+    </div>
+    <div class="card" id="pre-brief-card" style="display:none;">
+        <h3>Pre-Brief (What's Working)</h3>
+        <div id="pre-brief-content"></div>
+    </div>
+</div>
+
+<!-- ═══ APPROVAL (#3 + #7) ═══ -->
+<div class="page" id="page-approval">
+    <div class="page-hdr"><h1>Message Approval Queue</h1>
+        <div class="btn-group">
+            <button class="btn btn-success btn-sm" onclick="confirmBulk('approve')">Approve All</button>
+            <button class="btn btn-danger btn-sm" onclick="confirmBulk('reject')">Reject All</button>
+        </div>
+    </div>
+    <div class="filters-bar">
+        <label>Filter</label>
+        <select class="sel" id="approval-filter" onchange="loadApprovalQueue()">
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+            <option value="">All</option>
+        </select>
+        <span id="approval-count" style="font-size:11px;color:var(--tx3);margin-left:auto;"></span>
+    </div>
+    <div id="approval-queue"><div class="empty">No messages pending approval.</div></div>
+</div>
+
+<!-- ═══ INTELLIGENCE (#5) ═══ -->
+<div class="page" id="page-intelligence">
+    <div class="page-hdr"><h1>Intelligence</h1>
+        <div class="btn-group">
+            <button class="btn btn-sm" onclick="window.print()">Print</button>
+            <button class="btn btn-sm" onclick="loadIntelligence()">Refresh</button>
+        </div>
+    </div>
+    <div class="kpi-row" id="intel-kpis"></div>
+    <div class="tab-bar" id="intel-tabs">
+        <div class="tab-item active" onclick="showIntelTab('breakdowns')">Breakdowns</div>
+        <div class="tab-item" onclick="showIntelTab('trends')">Trends</div>
+        <div class="tab-item" onclick="showIntelTab('ab')">A/B Results</div>
+        <div class="tab-item" onclick="showIntelTab('top')">Top Messages</div>
+    </div>
+    <div class="tab-content active" id="intel-tab-breakdowns">
+        <div class="grid2">
+            <div class="card"><h3>Reply Rate by Persona</h3><canvas id="intel-persona"></canvas></div>
+            <div class="card"><h3>Reply Rate by Vertical</h3><canvas id="intel-vertical"></canvas></div>
+        </div>
+        <div class="grid2">
+            <div class="card"><h3>Reply Rate by Proof Point</h3><canvas id="intel-proof"></canvas></div>
+            <div class="card"><h3>Reply Rate by Personalization Score</h3><canvas id="intel-pscore"></canvas></div>
+        </div>
+    </div>
+    <div class="tab-content" id="intel-tab-trends">
+        <div class="card"><h3>Batch Performance Over Time</h3><canvas id="intel-trend"></canvas></div>
+        <div class="grid2">
+            <div class="card"><h3>Batch Funnel Comparison</h3><canvas id="intel-funnel-compare"></canvas></div>
+            <div class="card"><h3>Reply Rate Trend by Batch</h3><canvas id="intel-reply-trend"></canvas></div>
+        </div>
+    </div>
+    <div class="tab-content" id="intel-tab-ab">
+        <div class="card"><h3>A/B Test Results Across Batches</h3><div id="intel-ab-table" style="overflow-x:auto;"></div></div>
+    </div>
+    <div class="tab-content" id="intel-tab-top">
+        <div class="card"><h3>Top Performing Messages</h3><div id="intel-top-messages"><div class="empty">Reply data needed to rank messages</div></div></div>
+    </div>
+</div>
+
+<!-- ═══ EXPERIMENTS ═══ -->
+<div class="page" id="page-experiments">
+    <div class="page-hdr"><h1>A/B Experiments</h1></div>
+    <div id="experiments-list"><div class="empty">Loading...</div></div>
+    <div class="card" style="margin-top:16px;"><h3>A/B Head-to-Head Comparison</h3><canvas id="ab-head-to-head"></canvas></div>
+</div>
+
+<!-- ═══ SIGNALS (#6) ═══ -->
+<div class="page" id="page-signals">
+    <div class="page-hdr"><h1>Signals &amp; Re-Engagement</h1>
+        <div class="btn-group">
+            <button class="btn btn-sm" onclick="showAddSignalForm()">+ Add Signal</button>
+            <button class="btn btn-sm" onclick="loadSignals()">Refresh</button>
+        </div>
+    </div>
+    <div class="filters-bar">
+        <label>Type</label>
+        <select class="sel" id="sig-filter" onchange="loadSignals()">
+            <option value="">All</option>
+            <option value="buyer_intent">Buyer Intent</option>
+            <option value="hiring_signal">Hiring</option>
+            <option value="funding">Funding</option>
+            <option value="competitor_tool">Competitor Tool</option>
+            <option value="recently_hired">Recently Hired</option>
+            <option value="manual">Manual</option>
+        </select>
+        <label><input type="checkbox" id="sig-show-actioned" onchange="loadSignals()"> Show actioned</label>
+    </div>
+    <div id="signals-list"><div class="empty">Loading...</div></div>
+    <div id="add-signal-form" style="display:none;" class="card">
+        <h3>Add Manual Signal</h3>
+        <div class="form-row"><label>Contact ID</label><input class="inp" id="sig-contact-id" style="width:100%;" placeholder="Contact ID"></div>
+        <div class="form-row"><label>Signal Type</label>
+            <select class="sel" id="sig-new-type" style="width:100%;">
+                <option value="buyer_intent">Buyer Intent</option>
+                <option value="hiring_signal">Hiring Signal</option>
+                <option value="funding">Funding</option>
+                <option value="competitor_tool">Competitor Tool</option>
+                <option value="manual">Manual / Other</option>
+            </select>
+        </div>
+        <div class="form-row"><label>Description</label><input class="inp" id="sig-description" style="width:100%;" placeholder="What did you observe?"></div>
+        <button class="btn btn-primary btn-sm" onclick="addSignal()">Create Signal</button>
+    </div>
+</div>
+
+<!-- ═══ AGENT LOGS ═══ -->
+<div class="page" id="page-agents">
+    <div class="page-hdr"><h1>Agent Run History</h1><button class="btn btn-sm" onclick="loadAgentRuns()">Refresh</button></div>
+    <div style="overflow-x:auto;">
+        <table class="tbl"><thead><tr><th>Agent</th><th>Type</th><th>Status</th><th>Tokens</th><th>Duration</th><th>Started</th></tr></thead>
+        <tbody id="agent-runs-body"></tbody></table>
+    </div>
+</div>
+
+<!-- ═══ COSTS (#9) ═══ -->
+<div class="page" id="page-costs">
+    <div class="page-hdr"><h1>Token &amp; Cost Tracking</h1><button class="btn btn-sm" onclick="loadCosts()">Refresh</button></div>
+    <div class="kpi-row" id="cost-kpis"></div>
+    <div class="grid2">
+        <div class="card"><h3>Token Usage by Agent</h3><canvas id="chart-costs-agent"></canvas></div>
+        <div class="card"><h3>Cost per Batch</h3><canvas id="chart-costs-batch"></canvas></div>
+    </div>
+</div>
+
+
+<!-- EMAIL CHANNEL PAGE -->
+<div class="page" id="page-email">
+    <div class="page-hdr"><h1>Email Channel</h1>
+        <div style="display:flex;gap:8px;">
+            <button class="btn btn-sm" onclick="loadEmailPage()">Refresh</button>
+            <button class="btn btn-sm btn-primary" onclick="showAddIdentity()">Add Sender</button>
+        </div>
+    </div>
+    
+    <!-- Email Health KPIs -->
+    <div class="kpi-row" id="email-kpis"></div>
+    
+    <!-- Tabs: Identities | Suppression | Events | Pacing -->
+    <div class="tab-row" style="display:flex;gap:4px;margin-bottom:12px;">
+        <button class="btn btn-sm active" onclick="showEmailTab('identities',this)">Sender Accounts</button>
+        <button class="btn btn-sm" onclick="showEmailTab('suppression',this)">Suppression List</button>
+        <button class="btn btn-sm" onclick="showEmailTab('events',this)">Events Log</button>
+        <button class="btn btn-sm" onclick="showEmailTab('pacing',this)">Pacing Rules</button>
+    </div>
+    
+    <!-- Tab content areas -->
+    <div id="email-tab-identities" class="email-tab"></div>
+    <div id="email-tab-suppression" class="email-tab" style="display:none"></div>
+    <div id="email-tab-events" class="email-tab" style="display:none"></div>
+    <div id="email-tab-pacing" class="email-tab" style="display:none"></div>
+    
+    <!-- Add Identity Modal -->
+    <div id="add-identity-modal" class="modal" style="display:none">
+        <div class="modal-content">
+            <h3>Add Sender Account</h3>
+            <div style="display:grid;gap:8px;margin:12px 0;">
+                <input class="input" id="new-email" placeholder="Email address" />
+                <input class="input" id="new-display-name" placeholder="Display name (e.g. Rob Gorham)" />
+                <input class="input" id="new-daily-limit" type="number" value="25" placeholder="Daily send limit" />
+                <input class="input" id="new-warmup-cap" type="number" value="5" placeholder="Warmup daily cap" />
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+                <button class="btn btn-sm" onclick="hideAddIdentity()">Cancel</button>
+                <button class="btn btn-sm btn-primary" onclick="createIdentity()">Add</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Suppression Modal -->
+    <div id="add-suppression-modal" class="modal" style="display:none">
+        <div class="modal-content">
+            <h3>Add to Suppression List</h3>
+            <div style="display:grid;gap:8px;margin:12px 0;">
+                <input class="input" id="sup-email" placeholder="Email to suppress" />
+                <select class="sel" id="sup-reason">
+                    <option value="opt_out">Opt-out requested</option>
+                    <option value="hard_bounce">Hard bounce</option>
+                    <option value="do_not_contact">Do not contact</option>
+                    <option value="competitor">Competitor</option>
+                    <option value="manual">Manual removal</option>
+                </select>
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+                <button class="btn btn-sm" onclick="document.getElementById('add-suppression-modal').style.display='none'">Cancel</button>
+                <button class="btn btn-sm btn-primary" onclick="addSuppression()">Suppress</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- AGENT SWARM PAGE -->
+<div class="page" id="page-swarm">
+    <div class="page-hdr"><h1>Agent Swarm</h1>
+        <div style="display:flex;gap:8px;">
+            <button class="btn btn-sm" onclick="loadSwarmPage()">Refresh</button>
+            <button class="btn btn-sm btn-primary" onclick="showLaunchSwarm()">Launch Swarm</button>
+        </div>
+    </div>
+    
+    <!-- Swarm Status KPIs -->
+    <div class="kpi-row" id="swarm-kpis"></div>
+    
+    <!-- Active Swarm Progress -->
+    <div id="swarm-active" class="card" style="margin-bottom:12px;display:none">
+        <h3 style="margin-bottom:8px;">Active Swarm Run</h3>
+        <div id="swarm-progress"></div>
+    </div>
+    
+    <!-- Swarm Run History -->
+    <div class="card">
+        <h3 style="margin-bottom:8px;">Run History</h3>
+        <div id="swarm-history"></div>
+    </div>
+    
+    <!-- Launch Modal -->
+    <div id="launch-swarm-modal" class="modal" style="display:none">
+        <div class="modal-content">
+            <h3>Launch Agent Swarm</h3>
+            <div style="display:grid;gap:8px;margin:12px 0;">
+                <label style="font-size:12px;color:var(--tx2);">Batch</label>
+                <select class="sel" id="swarm-batch"></select>
+                <label style="font-size:12px;color:var(--tx2);">Max Parallel Workers</label>
+                <input class="input" id="swarm-workers" type="number" value="3" min="1" max="5" />
+                <label style="font-size:12px;color:var(--tx2);">Channels</label>
+                <div style="display:flex;gap:12px;">
+                    <label><input type="checkbox" id="ch-linkedin" checked /> LinkedIn</label>
+                    <label><input type="checkbox" id="ch-email" checked /> Email</label>
+                </div>
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+                <button class="btn btn-sm" onclick="document.getElementById('launch-swarm-modal').style.display='none'">Cancel</button>
+                <button class="btn btn-sm btn-primary" id="btn-launch-swarm" onclick="launchSwarm()">Launch</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SYSTEM HEALTH PAGE -->
+<div class="page" id="page-health">
+    <div class="page-hdr"><h1>System Health</h1>
+        <button class="btn btn-sm" onclick="loadHealthPage()">Refresh</button>
+    </div>
+    
+    <!-- Health KPIs -->
+    <div class="kpi-row" id="health-kpis"></div>
+    
+    <!-- Feature Flags -->
+    <div class="card" style="margin-bottom:12px;">
+        <h3 style="margin-bottom:8px;">Feature Flags</h3>
+        <div id="feature-flags"></div>
+    </div>
+    
+    <!-- Table Counts -->
+    <div class="card" style="margin-bottom:12px;">
+        <h3 style="margin-bottom:8px;">Database Tables</h3>
+        <div id="table-counts"></div>
+    </div>
+    
+    <!-- Recent Errors -->
+    <div class="card" style="margin-bottom:12px;">
+        <h3 style="margin-bottom:8px;">Recent Errors</h3>
+        <div id="recent-errors"></div>
+    </div>
+    
+    <!-- Daily Insights -->
+    <div class="card">
+        <h3 style="margin-bottom:8px;">Daily Summary</h3>
+        <div id="daily-insights"></div>
+    </div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<!-- Confirm dialog -->
+<div class="confirm-overlay" id="confirm-dialog">
+    <div class="confirm-box">
+        <h3 id="confirm-title">Confirm</h3>
+        <p id="confirm-message">Are you sure?</p>
+        <div class="confirm-actions">
+            <button class="btn btn-sm" onclick="closeConfirm()">Cancel</button>
+            <button class="btn btn-sm btn-primary" id="confirm-yes" onclick="">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<!-- Export modal (#10) -->
+<div class="confirm-overlay" id="export-modal">
+    <div class="confirm-box" style="width:500px;">
+        <h3>Export to CSV</h3>
+        <div class="form-row"><label>Batch</label>
+            <select class="sel" id="export-batch" style="width:100%;"><option value="">All contacts</option></select>
+        </div>
+        <div class="form-row"><label>Min Priority</label>
+            <select class="sel" id="export-pri" style="width:100%;"><option value="">Any</option><option value="4">4+ (Warm/Hot)</option><option value="5">5 (Hot only)</option></select>
+        </div>
+        <div class="form-row"><label>Persona</label>
+            <select class="sel" id="export-persona" style="width:100%;"><option value="">All</option><option value="qa_leader">QA Leaders</option><option value="vp_eng">VP Eng</option></select>
+        </div>
+        <div class="form-row"><label>Columns (comma-separated, or leave blank for all)</label>
+            <input class="inp" id="export-columns" style="width:100%;" placeholder="first_name,last_name,title,email,company,stage...">
+        </div>
+        <div class="confirm-actions">
+            <button class="btn btn-sm" onclick="closeExportModal()">Cancel</button>
+            <button class="btn btn-sm btn-primary" onclick="doExport()">Download CSV</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+const API = window.location.origin;
+let apiOnline = false;
+let contacts = [], messages = [], batches = [];
+let activeRunId = null, sseSource = null, runStartTime = null, timerInterval = null;
+const charts = {};
+let pipelineSortCol = 'priority_score', pipelineSortDir = 'desc';
+
+// ═══════════════════════════════════════════════════════
+// API HELPERS
+// ═══════════════════════════════════════════════════════
+async function api(path, opts = {}) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+    try {
+        const r = await fetch(API + path, {
+            headers: {'Content-Type':'application/json', ...opts.headers},
+            ...opts,
+            signal: controller.signal,
+        });
+        clearTimeout(timeout);
+        if (!r.ok) {
+            const err = await r.json().catch(() => ({detail: r.statusText}));
+            throw new Error(err.detail || `HTTP ${r.status}`);
+        }
+        if (r.headers.get('content-type')?.includes('json')) return r.json();
+        return r.text();
+    } catch(e) {
+        clearTimeout(timeout);
+        if (e.name !== 'AbortError') {
+            console.warn('API error:', path, e.message);
+        }
+        return null;
+    }
+}
+
+async function apiPost(path, body, method='POST') {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    try {
+        const r = await fetch(API + path, {
+            method,
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(body),
+            signal: controller.signal,
+        });
+        clearTimeout(timeout);
+        const data = await r.json().catch(() => null);
+        if (!r.ok) throw new Error(data?.detail || `HTTP ${r.status}`);
+        return data;
+    } catch(e) {
+        clearTimeout(timeout);
+        return {_error: true, message: e.message};
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+(async function init() {
+    const health = await api('/api/health');
+    if (health && health.status === 'healthy') {
+        apiOnline = true;
+        document.getElementById('mode-badge').textContent = 'Online';
+        document.getElementById('mode-badge').className = 'mode-badge online';
+        document.getElementById('api-status').textContent = `v2.0 - ${health.tables} tables`;
+    }
+    await refreshAll();
+    await loadBatches();
+    checkActiveRuns();
+})();
+
+async function refreshAll() {
+    await Promise.all([loadStats(), loadPipeline(), loadActionQueue(), loadIntelligenceHome()]);
+}
+
+// ═══════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════
+function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-'+id)?.classList.add('active');
+    // Match both onclick and data-page attributes for nav items
+    const navSelector = `.nav-item[onclick="showPage('${id}')"], .nav-item[data-page="${id}"]`;
+    document.querySelector(navSelector)?.classList.add('active');
+    if (id === 'intelligence') loadIntelligence();
+    if (id === 'experiments') loadExperiments();
+    if (id === 'signals') loadSignals();
+    if (id === 'agents') loadAgentRuns();
+    if (id === 'costs') loadCosts();
+    if (id === 'approval') loadApprovalQueue();
+    if (id === 'launch') { loadBatches(); loadPreBrief(); }
+    if (id === 'email') loadEmailPage();
+    if (id === 'swarm') loadSwarmPage();
+    if (id === 'health') loadHealthPage();
+}
+
+// ═══════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════
+function kpi(label, val, sub='') {
+    return `<div class="kpi"><div class="kpi-label">${label}</div><div class="kpi-val">${val}</div>${sub?`<div class="kpi-sub">${sub}</div>`:''}</div>`;
+}
+
+function toast(msg, type='info') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = `toast show ${type}`;
+    clearTimeout(el._t);
+    el._t = setTimeout(() => el.className = 'toast', 3500);
+}
+
+function timeAgo(dateStr) {
+    if (!dateStr) return '';
+    const diff = Date.now() - new Date(dateStr).getTime();
+    const mins = Math.floor(diff/60000);
+    if (mins < 60) return `${mins}m ago`;
+    const hrs = Math.floor(mins/60);
+    if (hrs < 24) return `${hrs}h ago`;
+    return `${Math.floor(hrs/24)}d ago`;
+}
+
+function showConfirm(title, message, onConfirm) {
+    document.getElementById('confirm-title').textContent = title;
+    document.getElementById('confirm-message').textContent = message;
+    document.getElementById('confirm-yes').onclick = () => { closeConfirm(); onConfirm(); };
+    document.getElementById('confirm-dialog').classList.add('show');
+}
+function closeConfirm() { document.getElementById('confirm-dialog').classList.remove('show'); }
+
+// ═══════════════════════════════════════════════════════
+// HOME: KPIs + Charts
+// ═══════════════════════════════════════════════════════
+async function loadStats() {
+    const stats = await api('/api/stats');
+    if (!stats) return;
+    document.getElementById('kpi-row').innerHTML = [
+        kpi('Prospects', stats.total_contacts || 0),
+        kpi('Touched', stats.touches_sent || 0),
+        kpi('Replies', stats.total_replies || 0, `${(stats.reply_rate||0).toFixed(1)}% rate`),
+        kpi('Meetings', stats.meetings_booked || 0),
+        kpi('Pipeline', stats.opportunities_created || 0),
+        kpi('Pending', stats.pending_followups || 0),
+    ].join('');
+}
+
+// Smart Action Queue (#8)
+async function loadActionQueue() {
+    const q = await api('/api/action-queue');
+    const el = document.getElementById('action-queue');
+    if (!q || !q.length) { el.innerHTML = '<div class="empty">No pending actions - nice work!</div>'; document.getElementById('badge-actions').style.display='none'; return; }
+    document.getElementById('badge-actions').style.display = '';
+    document.getElementById('badge-actions').textContent = q.length;
+    el.innerHTML = q.slice(0,12).map(a => {
+        const iconClass = a.type === 'overdue_followup' ? 'overdue' : a.type === 'untouched_hot' ? 'hot' : a.type === 'stuck' ? 'stuck' : 'signal';
+        const icon = a.type === 'overdue_followup' ? '!' : a.type === 'untouched_hot' ? '★' : a.type === 'stuck' ? '⏱' : '⚡';
+        return `<div class="action-item">
+            <div class="action-icon ${iconClass}">${icon}</div>
+            <div style="flex:1;min-width:0;">
+                <div><strong>${a.contact||''}</strong> <span style="color:var(--tx3);font-size:11px;">${a.company||''}</span></div>
+                <div style="font-size:12px;color:var(--tx2);margin-top:1px;">${a.action||''}</div>
+            </div>
+            ${a.contact_id ? `<button class="btn btn-sm" onclick="event.stopPropagation();openDetail('${a.contact_id}')">View</button>` : ''}
+        </div>`;
+    }).join('');
+}
+
+async function loadIntelligenceHome() {
+    const funnel = await api('/api/analytics/pipeline');
+    if (!funnel) return;
+    if (charts.funnel) charts.funnel.destroy();
+    charts.funnel = new Chart(document.getElementById('chart-funnel'), {
+        type:'bar', data:{
+            labels:['Prospects','Touched','Replied','Meetings','Opps'],
+            datasets:[{data:[funnel.total_prospects,funnel.touched,funnel.replied,funnel.meetings,funnel.opportunities],
+                backgroundColor:['#6366f1','#818cf8','#22c55e','#eab308','#f97316'],borderRadius:4}]
+        }, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#2d3140'},ticks:{color:'#8b90a0'}},x:{grid:{display:false},ticks:{color:'#8b90a0'}}}}
+    });
+
+    const intel = await api('/api/intelligence');
+    if (!intel) return;
+    renderMiniChart('chart-persona', intel.by_persona, 'persona');
+    renderMiniChart('chart-vertical', intel.by_vertical, 'vertical');
+}
+
+function renderMiniChart(canvasId, data, labelKey) {
+    if (!data || !data.length) return;
+    if (charts[canvasId]) charts[canvasId].destroy();
+    charts[canvasId] = new Chart(document.getElementById(canvasId), {
+        type:'bar', data:{
+            labels: data.map(d => d[labelKey]||'unknown'),
+            datasets:[{label:'Reply Rate %', data: data.map(d => d.rate||0), backgroundColor:'#6366f1',borderRadius:4}]
+        }, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{color:'#2d3140'},ticks:{color:'#8b90a0'}},y:{grid:{display:false},ticks:{color:'#8b90a0',font:{size:11}}}}}
+    });
+}
+
+// ═══════════════════════════════════════════════════════
+// PIPELINE TABLE
+// ═══════════════════════════════════════════════════════
+async function loadPipeline() {
+    const data = await api('/api/contacts?limit=500');
+    if (!data) return;
+    contacts = data;
+    renderPipeline(contacts);
+}
+
+function refreshPipeline() { loadPipeline(); }
+
+function sortPipeline(col) {
+    if (pipelineSortCol === col) pipelineSortDir = pipelineSortDir === 'desc' ? 'asc' : 'desc';
+    else { pipelineSortCol = col; pipelineSortDir = 'desc'; }
+    filterPipeline();
+}
+
+function renderPipeline(list) {
+    const body = document.getElementById('pipeline-body');
+    document.getElementById('pipeline-count').textContent = `${list.length} contacts`;
+    if (!list.length) { body.innerHTML = '<tr><td colspan="8" class="empty">No contacts</td></tr>'; return; }
+    body.innerHTML = list.map(c => {
+        const pri = c.priority_score || 0;
+        const priClass = pri >= 5 ? 'tag-hot' : pri >= 4 ? 'tag-warm' : 'tag-std';
+        const persona = c.persona_type === 'qa_leader' ? 'tag-qa' : 'tag-vp';
+        return `<tr onclick="openDetail('${c.id}')">
+            <td><span class="tag ${priClass}">${pri}</span></td>
+            <td><strong>${c.first_name} ${c.last_name}</strong></td>
+            <td style="font-size:12px;color:var(--tx2);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${c.title||''}</td>
+            <td>${c.company_name||''}</td>
+            <td><span class="tag ${persona}">${c.persona_type||''}</span></td>
+            <td style="font-size:12px">${c.stage||'new'}</td>
+            <td>${c.personalization_score||'-'}</td>
+            <td>
+                <div class="btn-group" onclick="event.stopPropagation()">
+                    <button class="btn btn-sm" onclick="agentAction(this,'re-score','${c.id}')">Re-Score</button>
+                    <button class="btn btn-sm" onclick="agentAction(this,'run-qc','${c.id}')">QC</button>
+                    <button class="btn btn-sm" onclick="agentAction(this,'re-research','${c.id}')">Research</button>
+                    <button class="btn btn-sm" onclick="agentAction(this,'regenerate-messages','${c.id}')">Regen</button>
+                </div>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+function filterPipeline() {
+    const pri = document.getElementById('f-priority').value;
+    const persona = document.getElementById('f-persona').value;
+    const stage = document.getElementById('f-stage').value;
+    const search = document.getElementById('f-search').value.toLowerCase();
+    let filtered = contacts;
+    if (pri) filtered = filtered.filter(c => (c.priority_score||0) >= parseInt(pri));
+    if (persona) filtered = filtered.filter(c => c.persona_type === persona);
+    if (stage) filtered = filtered.filter(c => c.stage === stage);
+    if (search) filtered = filtered.filter(c =>
+        `${c.first_name} ${c.last_name} ${c.title} ${c.company_name}`.toLowerCase().includes(search));
+
+    // Sort
+    filtered.sort((a, b) => {
+        let av = a[pipelineSortCol], bv = b[pipelineSortCol];
+        if (pipelineSortCol === 'name') { av = `${a.first_name} ${a.last_name}`; bv = `${b.first_name} ${b.last_name}`; }
+        if (av == null) av = ''; if (bv == null) bv = '';
+        const cmp = typeof av === 'number' ? av - bv : String(av).localeCompare(String(bv));
+        return pipelineSortDir === 'asc' ? cmp : -cmp;
+    });
+
+    renderPipeline(filtered);
+}
+
+// ═══════════════════════════════════════════════════════
+// AGENT ACTIONS (#4) - with loading state
+// ═══════════════════════════════════════════════════════
+async function agentAction(btn, action, contactId) {
+    const origText = btn.textContent;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>';
+    const r = await apiPost(`/api/contacts/${contactId}/${action}`, {});
+    btn.disabled = false;
+    btn.textContent = origText;
+    if (r && !r._error) {
+        toast(`${action.replace(/-/g,' ')} complete`, 'success');
+        loadPipeline();
+    } else {
+        toast(r?.message || `${action} failed`, 'error');
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+// DETAIL PANEL (#4 - full actions)
+// ═══════════════════════════════════════════════════════
+async function openDetail(cid) {
+    let panel = document.getElementById('detail-panel');
+    if (!panel) {
+        panel = document.createElement('div');
+        panel.id = 'detail-panel';
+        panel.className = 'detail-panel';
+        document.body.appendChild(panel);
+    }
+    const [contact, msgs, prep] = await Promise.all([
+        api(`/api/contacts/${cid}`),
+        api(`/api/contacts/${cid}/messages`),
+        api(`/api/contacts/${cid}/prep-card`),
+    ]);
+    if (!contact) return;
+    panel.innerHTML = `
+        <button class="detail-close" onclick="document.getElementById('detail-panel').classList.remove('open')">&times;</button>
+        <h2>${contact.first_name} ${contact.last_name}</h2>
+        <div style="font-size:13px;color:var(--tx2);margin-bottom:16px;">${contact.title||''} ${contact.company_name ? '@ '+contact.company_name : ''}</div>
+        <div class="btn-group" style="margin-bottom:16px;">
+            <button class="btn btn-sm" onclick="agentAction(this,'re-score','${cid}')">Re-Score</button>
+            <button class="btn btn-sm" onclick="agentAction(this,'run-qc','${cid}')">Run QC</button>
+            <button class="btn btn-sm" onclick="agentAction(this,'re-research','${cid}')">Re-Research</button>
+            <button class="btn btn-sm" onclick="agentAction(this,'regenerate-messages','${cid}')">Regen Messages</button>
+            ${contact.linkedin_url ? `<a class="btn btn-sm" href="${contact.linkedin_url}" target="_blank" rel="noopener">LinkedIn</a>` : ''}
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;font-size:12px;">
+            <div><span style="color:var(--tx2)">Priority:</span> <strong>${contact.priority_score||'-'}</strong></div>
+            <div><span style="color:var(--tx2)">Persona:</span> <strong>${contact.persona_type||'-'}</strong></div>
+            <div><span style="color:var(--tx2)">Stage:</span> <strong>${contact.stage||'new'}</strong></div>
+            <div><span style="color:var(--tx2)">P-Score:</span> <strong>${contact.personalization_score||'-'}</strong></div>
+        </div>
+        ${prep && prep.pain_hypothesis ? `<div class="card"><h3>Pain Hypothesis</h3><div style="font-size:12px;color:var(--tx2)">${prep.pain_hypothesis}</div></div>` : ''}
+        ${prep && prep.known_tools?.length ? `<div class="card"><h3>Known Tools</h3><div style="font-size:12px;color:var(--tx2)">${prep.known_tools.join(', ')}</div></div>` : ''}
+        ${prep && prep.predicted_objection ? `<div class="card"><h3>Predicted Objection</h3><div style="font-size:12px;color:var(--yl);margin-bottom:4px;">${prep.predicted_objection}</div><div style="font-size:12px;color:var(--tx2)">${prep.objection_response||''}</div></div>` : ''}
+        <div class="card"><h3>Messages (${msgs?.length||0})</h3>
+            ${(msgs||[]).map(m => `
+                <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:var(--r);padding:10px;margin-bottom:8px;">
+                    <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;">
+                        <span style="color:var(--ac2);font-weight:600;">Touch ${m.touch_number} - ${m.channel}</span>
+                        <span style="color:${m.qc_passed?'var(--gn)':'var(--rd)'}">${m.qc_passed?'QC Pass':'QC Fail'}</span>
+                    </div>
+                    ${m.subject_line ? `<div style="font-size:12px;font-weight:600;color:var(--yl);margin-bottom:4px;">${m.subject_line}</div>` : ''}
+                    <div style="font-size:12px;color:var(--tx2);white-space:pre-wrap;">${m.body||''}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    panel.classList.add('open');
+}
+
+// ═══════════════════════════════════════════════════════
+// LAUNCH BATCH (#1 - with validation)
+// ═══════════════════════════════════════════════════════
+async function loadBatches() {
+    const data = await api('/api/batches?limit=20');
+    if (!data) return;
+    batches = data;
+    const el = document.getElementById('batch-list');
+    if (!data.length) { el.innerHTML = '<div class="empty">No batches yet. Launch your first one!</div>'; return; }
+
+    const maxNum = Math.max(...data.map(b => b.batch_number || 0));
+    document.getElementById('launch-batch-num').value = maxNum + 1;
+
+    // Populate export batch dropdown
+    const exportSel = document.getElementById('export-batch');
+    exportSel.innerHTML = '<option value="">All contacts</option>' + data.map(b =>
+        `<option value="${b.id}">Batch ${b.batch_number} (${b.contact_count||0} contacts)</option>`
+    ).join('');
+
+    el.innerHTML = data.map(b => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd);font-size:13px;">
+            <div><strong>Batch ${b.batch_number||'?'}</strong> <span style="color:var(--tx2)">${b.contact_count||0} prospects, ${b.message_count||0} msgs</span></div>
+            <div class="btn-group">
+                <span class="tag ${b.status==='complete'?'tag-qa':'tag-warm'}">${b.status||'unknown'}</span>
+                <button class="btn btn-sm" onclick="regenerateHTML('${b.id}',this)">Regen HTML</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+async function loadPreBrief() {
+    const data = await apiPost('/api/pre-brief', {});
+    const card = document.getElementById('pre-brief-card');
+    if (!data || data._error || !data.data?.insights) { card.style.display = 'none'; return; }
+    card.style.display = 'block';
+    document.getElementById('pre-brief-content').innerHTML = data.data.insights.map(ins => `
+        <div style="display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd);font-size:13px;">
+            <div style="font-weight:600;color:var(--ac2);min-width:140px;">${ins.label||ins.category||''}</div>
+            <div style="color:var(--tx2);">${ins.value||ins.insight||''}</div>
+        </div>
+    `).join('');
+}
+
+async function launchBatch() {
+    // Clear errors
+    document.getElementById('launch-error').style.display = 'none';
+    document.querySelectorAll('.err-msg').forEach(e => e.classList.remove('show'));
+    document.querySelectorAll('.inp.err').forEach(e => e.classList.remove('err'));
+
+    const batchNum = parseInt(document.getElementById('launch-batch-num').value);
+    const target = parseInt(document.getElementById('launch-target').value);
+    let valid = true;
+
+    if (!batchNum || batchNum < 1) {
+        document.getElementById('launch-batch-num').classList.add('err');
+        document.getElementById('err-batch-num').classList.add('show');
+        valid = false;
+    }
+    if (!target || target < 1 || target > 100) {
+        document.getElementById('launch-target').classList.add('err');
+        document.getElementById('err-target').classList.add('show');
+        valid = false;
+    }
+    if (!valid) return;
+
+    const btn = document.getElementById('launch-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Launching...';
+
+    const body = {
+        batch_number: batchNum,
+        target_count: target,
+        ab_variable: document.getElementById('launch-ab-var').value,
+        ab_groups: {
+            A: document.getElementById('launch-group-a').value,
+            B: document.getElementById('launch-group-b').value,
+        },
+        auto_approve: document.getElementById('launch-auto-approve').checked,
+        saved_search_url: document.getElementById('launch-search-url').value || null,
+    };
+
+    const result = await apiPost('/api/pipeline/start', body);
+    btn.disabled = false;
+    btn.textContent = 'Launch Pipeline';
+
+    if (result && !result._error && result.run_id) {
+        activeRunId = result.run_id;
+        toast(`Pipeline launched: Batch #${batchNum}`, 'success');
+        showPage('home');
+        connectSSE(result.run_id);
+        showPipelineProgress();
+        startTimer();
+    } else {
+        const errEl = document.getElementById('launch-error');
+        errEl.textContent = result?.message || 'Launch failed. Check your configuration.';
+        errEl.style.display = 'block';
+    }
+}
+
+async function regenerateHTML(batchId, btn) {
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>'; }
+    const r = await apiPost(`/api/batches/${batchId}/generate-html`, {});
+    if (btn) { btn.disabled = false; btn.textContent = 'Regen HTML'; }
+    if (r && !r._error) toast('HTML regenerated', 'success');
+    else toast(r?.message || 'Regeneration failed', 'error');
+}
+
+// ═══════════════════════════════════════════════════════
+// PIPELINE PROGRESS (#2 - with timer + reconnect)
+// ═══════════════════════════════════════════════════════
+const PHASES = ['initialize','pre_brief','extract','research','score','ab_assign','messages','qc','approval','generate_html','finalize'];
+
+function showPipelineProgress() {
+    const container = document.getElementById('active-run-container');
+    container.style.display = 'block';
+    document.getElementById('phase-track').innerHTML = PHASES.map(p =>
+        `<div class="phase-step pending" id="phase-${p}" title="${p.replace(/_/g,' ')}">${p.replace(/_/g,' ').substring(0,6)}</div>`
+    ).join('');
+}
+
+function startTimer() {
+    runStartTime = Date.now();
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+        if (!runStartTime) return;
+        const elapsed = Math.floor((Date.now() - runStartTime) / 1000);
+        const m = Math.floor(elapsed / 60);
+        const s = elapsed % 60;
+        document.getElementById('run-timer').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+    }, 1000);
+}
+
+function stopTimer() {
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = null;
+}
+
+function connectSSE(runId) {
+    if (sseSource) sseSource.close();
+    sseSource = new EventSource(`${API}/api/pipeline/runs/${runId}/stream`);
+
+    sseSource.addEventListener('phase_start', e => {
+        const d = JSON.parse(e.data);
+        const el = document.getElementById('phase-'+d.phase);
+        if (el) el.className = 'phase-step active';
+        document.getElementById('run-status').textContent = `Phase: ${d.phase.replace(/_/g,' ')}`;
+        document.getElementById('progress-fill').style.width = (d.progress_pct||0) + '%';
+        if (d.detail) document.getElementById('phase-detail').textContent = d.detail;
+    });
+
+    sseSource.addEventListener('phase_complete', e => {
+        const d = JSON.parse(e.data);
+        const el = document.getElementById('phase-'+d.phase);
+        if (el) el.className = 'phase-step done';
+        document.getElementById('progress-fill').style.width = (d.progress_pct||0) + '%';
+        if (d.detail) document.getElementById('phase-detail').textContent = d.detail;
+    });
+
+    sseSource.addEventListener('phase_progress', e => {
+        const d = JSON.parse(e.data);
+        if (d.detail) document.getElementById('phase-detail').textContent = d.detail;
+    });
+
+    sseSource.addEventListener('approval_needed', () => {
+        toast('Pipeline paused - review messages in Approval tab', 'info');
+        document.getElementById('badge-approval').style.display = '';
+        document.getElementById('badge-approval').textContent = '!';
+        document.getElementById('run-status').textContent = 'Awaiting Approval';
+    });
+
+    sseSource.addEventListener('completed', () => {
+        toast('Pipeline completed!', 'success');
+        document.getElementById('run-status').textContent = 'Completed';
+        document.getElementById('progress-fill').style.width = '100%';
+        document.getElementById('cancel-run-btn').style.display = 'none';
+        stopTimer();
+        sseSource.close(); sseSource = null; activeRunId = null;
+        refreshAll();
+    });
+
+    sseSource.addEventListener('failed', e => {
+        const d = JSON.parse(e.data);
+        toast(`Pipeline failed: ${d.error||'unknown'}`, 'error');
+        document.getElementById('run-status').textContent = 'Failed';
+        const el = document.getElementById('phase-'+(d.current_phase||''));
+        if (el) el.className = 'phase-step failed';
+        stopTimer();
+        sseSource.close(); sseSource = null;
+    });
+
+    sseSource.addEventListener('cancelled', () => {
+        toast('Pipeline cancelled', 'info');
+        document.getElementById('run-status').textContent = 'Cancelled';
+        stopTimer();
+        sseSource.close(); sseSource = null; activeRunId = null;
+    });
+
+    // Reconnect on error
+    sseSource.onerror = () => {
+        setTimeout(() => {
+            if (activeRunId) connectSSE(activeRunId);
+        }, 3000);
+    };
+}
+
+async function cancelRun() {
+    if (!activeRunId) return;
+    showConfirm('Cancel Pipeline', 'This will stop the current pipeline run. Are you sure?', async () => {
+        await apiPost(`/api/pipeline/runs/${activeRunId}/cancel`, {});
+    });
+}
+
+async function checkActiveRuns() {
+    const runs = await api('/api/pipeline/runs');
+    if (!runs) return;
+    const active = runs.find(r => r.status === 'running' || r.status === 'approval_needed');
+    if (active) {
+        activeRunId = active.run_id;
+        showPipelineProgress();
+        startTimer();
+        for (const phase of PHASES) {
+            const el = document.getElementById('phase-'+phase);
+            if (!el) continue;
+            if (active.phase_results && active.phase_results[phase]) el.className = 'phase-step done';
+            else if (phase === active.current_phase) el.className = 'phase-step active';
+        }
+        const pct = active.total_phases > 0 ? ((active.current_phase_index||0) / active.total_phases * 100) : 0;
+        document.getElementById('progress-fill').style.width = pct + '%';
+        document.getElementById('run-status').textContent = active.status === 'approval_needed' ? 'Awaiting Approval' : `Phase: ${(active.current_phase||'').replace(/_/g,' ')}`;
+        connectSSE(active.run_id);
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+// APPROVAL QUEUE (#3 + #7 inline editing)
+// ═══════════════════════════════════════════════════════
+async function loadApprovalQueue() {
+    const filter = document.getElementById('approval-filter')?.value || 'pending';
+    const data = await api(`/api/approval-queue${filter ? '?approval_status='+filter : ''}`);
+    const el = document.getElementById('approval-queue');
+    if (!data || !data.length) {
+        el.innerHTML = '<div class="empty">No messages ' + (filter || 'pending') + '.</div>';
+        document.getElementById('badge-approval').style.display = 'none';
+        document.getElementById('approval-count').textContent = '';
+        return;
+    }
+
+    const totalMsgs = data.reduce((s,g) => s + g.messages.length, 0);
+    document.getElementById('approval-count').textContent = `${totalMsgs} messages across ${data.length} contacts`;
+    if (filter === 'pending') {
+        document.getElementById('badge-approval').style.display = '';
+        document.getElementById('badge-approval').textContent = totalMsgs;
+    }
+
+    el.innerHTML = data.map(group => `
+        <div class="card" style="border-left:3px solid var(--ac);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <div><strong>${group.name}</strong> <span style="color:var(--tx2);font-size:12px;">${group.title||''} ${group.company ? '@ '+group.company : ''}</span></div>
+                <div class="btn-group">
+                    <span class="tag tag-${(group.priority_score||0)>=4?'hot':'std'}">P${group.priority_score||0}</span>
+                    ${group.ab_group ? `<span class="tag">${group.ab_group}</span>` : ''}
+                </div>
+            </div>
+            ${group.messages.map(m => {
+                const wc = (m.body||'').split(/\s+/).filter(Boolean).length;
+                return `<div class="approval-card ${m.approval_status==='approved'?'approved':m.approval_status==='rejected'?'rejected':''}" id="msg-${m.id}">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <span style="font-size:11px;font-weight:600;color:var(--ac2);">Touch ${m.touch_number} - ${m.channel} ${m.touch_type ? '('+m.touch_type+')' : ''}</span>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-success" onclick="approveMsg('${m.id}',this)">Approve</button>
+                            <button class="btn btn-sm btn-danger" onclick="rejectMsg('${m.id}',this)">Reject</button>
+                            <button class="btn btn-sm" onclick="toggleEdit('${m.id}')">Edit</button>
+                            <span class="msg-save-indicator" id="save-${m.id}">Saved</span>
+                        </div>
+                    </div>
+                    ${m.subject_line ? `<div class="msg-subj">${m.subject_line}</div>` : ''}
+                    <div class="msg-body" id="body-${m.id}" data-original="${encodeURIComponent(m.body||'')}">${m.body||''}</div>
+                    <div class="msg-meta">
+                        ${m.pain_hook ? `<span class="tag">${m.pain_hook}</span>` : ''}
+                        ${m.proof_point_used ? `<span class="tag">${m.proof_point_used}</span>` : ''}
+                        ${m.personalization_score ? `<span class="tag">P-Score: ${m.personalization_score}</span>` : ''}
+                        <span class="msg-word-count" id="wc-${m.id}">${wc} words</span>
+                    </div>
+                </div>`;
+            }).join('')}
+        </div>
+    `).join('');
+}
+
+function toggleEdit(msgId) {
+    const el = document.getElementById('body-'+msgId);
+    if (el.classList.contains('editing')) {
+        el.classList.remove('editing');
+        el.contentEditable = 'false';
+        // Save
+        const newBody = el.textContent;
+        apiPost(`/api/messages/${msgId}`, {body: newBody}, 'PATCH').then(r => {
+            if (r && !r._error) {
+                const saveEl = document.getElementById('save-'+msgId);
+                saveEl.classList.add('show');
+                setTimeout(() => saveEl.classList.remove('show'), 2000);
+            }
+        });
+        // Update word count
+        document.getElementById('wc-'+msgId).textContent = newBody.split(/\s+/).filter(Boolean).length + ' words';
+    } else {
+        el.classList.add('editing');
+        el.contentEditable = 'true';
+        el.focus();
+        // Store original for undo
+        if (!el.dataset.editOriginal) el.dataset.editOriginal = el.textContent;
+    }
+}
+
+async function approveMsg(msgId, btn) {
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>'; }
+    await apiPost(`/api/messages/${msgId}`, {approval_status:'approved'}, 'PATCH');
+    const card = document.getElementById('msg-'+msgId);
+    if (card) card.classList.add('approved');
+    if (btn) { btn.disabled = false; btn.textContent = 'Approve'; }
+    toast('Approved', 'success');
+}
+
+async function rejectMsg(msgId, btn) {
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>'; }
+    await apiPost(`/api/messages/${msgId}`, {approval_status:'rejected'}, 'PATCH');
+    const card = document.getElementById('msg-'+msgId);
+    if (card) card.classList.add('rejected');
+    if (btn) { btn.disabled = false; btn.textContent = 'Reject'; }
+    toast('Rejected', 'info');
+}
+
+function confirmBulk(action) {
+    if (!batches.length) return;
+    const label = action === 'approve' ? 'approve' : 'reject';
+    showConfirm(`Bulk ${label}`, `This will ${label} ALL pending messages in the latest batch. Continue?`, async () => {
+        const batchId = batches[0].id;
+        await apiPost(`/api/messages/bulk-approve?batch_id=${batchId}&action=${action}`, {});
+        toast(`All messages ${label}d`, 'success');
+        loadApprovalQueue();
+        if (activeRunId && action === 'approve') {
+            await apiPost(`/api/pipeline/runs/${activeRunId}/skip-approval`, {});
+        }
+    });
+}
+
+// ═══════════════════════════════════════════════════════
+// INTELLIGENCE (#5 - tabbed, with full charts)
+// ═══════════════════════════════════════════════════════
+function showIntelTab(tabId) {
+    document.querySelectorAll('#page-intelligence .tab-item').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('#page-intelligence .tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelector(`#page-intelligence .tab-item[onclick*="${tabId}"]`)?.classList.add('active');
+    document.getElementById('intel-tab-'+tabId)?.classList.add('active');
+}
+
+async function loadIntelligence() {
+    const [intel, comparison, experiments, topMsgs] = await Promise.all([
+        api('/api/intelligence'),
+        api('/api/analytics/batch-comparison'),
+        api('/api/analytics/experiments'),
+        api('/api/analytics/top-messages'),
+    ]);
+
+    // KPI summary
+    if (intel) {
+        const totalSent = (intel.by_persona||[]).reduce((s,d) => s + (d.total||0), 0);
+        const totalReplies = (intel.by_persona||[]).reduce((s,d) => s + (d.replies||0), 0);
+        const overallRate = totalSent > 0 ? (totalReplies / totalSent * 100).toFixed(1) : '0.0';
+        const bestPersona = [...(intel.by_persona||[])].sort((a,b) => (b.rate||0) - (a.rate||0))[0];
+        const bestVertical = [...(intel.by_vertical||[])].sort((a,b) => (b.rate||0) - (a.rate||0))[0];
+        const bestProof = [...(intel.by_proof_point||[])].sort((a,b) => (b.rate||0) - (a.rate||0))[0];
+
+        document.getElementById('intel-kpis').innerHTML = [
+            kpi('Overall Reply Rate', overallRate + '%'),
+            kpi('Total Prospects', totalSent),
+            kpi('Total Replies', totalReplies),
+            kpi('Best Persona', bestPersona?.persona || '-'),
+            kpi('Best Vertical', bestVertical?.vertical || '-'),
+            kpi('Best Proof Point', bestProof ? (bestProof.proof_point||'').substring(0,20) : '-'),
+        ].join('');
+
+        renderBarChart('intel-persona', intel.by_persona, 'persona', 'rate', 'Reply Rate %');
+        renderBarChart('intel-vertical', intel.by_vertical, 'vertical', 'rate', 'Reply Rate %');
+        renderBarChart('intel-proof', intel.by_proof_point, 'proof_point', 'rate', 'Reply Rate %');
+        renderBarChart('intel-pscore', intel.by_personalization, 'score', 'rate', 'Reply Rate %');
+    }
+
+    if (comparison?.length) {
+        // Batch trend line
+        destroyChart('intel-trend');
+        charts['intel-trend'] = new Chart(document.getElementById('intel-trend'), {
+            type:'line', data:{
+                labels: comparison.map(b => `Batch ${b.batch_number}`),
+                datasets:[
+                    {label:'Prospects', data: comparison.map(b => b.prospects), borderColor:'#6366f1', tension:.3, fill:false, pointRadius:4},
+                    {label:'Replies', data: comparison.map(b => b.replies), borderColor:'#22c55e', tension:.3, fill:false, pointRadius:4},
+                    {label:'Meetings', data: comparison.map(b => b.meetings), borderColor:'#eab308', tension:.3, fill:false, pointRadius:4},
+                ]
+            }, options:chartOpts()
+        });
+
+        // Funnel comparison
+        destroyChart('intel-funnel-compare');
+        charts['intel-funnel-compare'] = new Chart(document.getElementById('intel-funnel-compare'), {
+            type:'bar', data:{
+                labels: comparison.map(b => `Batch ${b.batch_number}`),
+                datasets:[
+                    {label:'Prospects', data: comparison.map(b => b.prospects), backgroundColor:'#6366f1', borderRadius:4},
+                    {label:'Messages', data: comparison.map(b => b.messages), backgroundColor:'#818cf8', borderRadius:4},
+                    {label:'Replies', data: comparison.map(b => b.replies), backgroundColor:'#22c55e', borderRadius:4},
+                    {label:'Meetings', data: comparison.map(b => b.meetings), backgroundColor:'#eab308', borderRadius:4},
+                ]
+            }, options:chartOpts()
+        });
+
+        // Reply rate trend
+        destroyChart('intel-reply-trend');
+        charts['intel-reply-trend'] = new Chart(document.getElementById('intel-reply-trend'), {
+            type:'line', data:{
+                labels: comparison.map(b => `Batch ${b.batch_number}`),
+                datasets:[
+                    {label:'Reply Rate %', data: comparison.map(b => b.reply_rate||0), borderColor:'#22c55e', backgroundColor:'rgba(34,197,94,.1)', fill:true, tension:.3, pointRadius:4},
+                    {label:'Meeting Rate %', data: comparison.map(b => b.meeting_rate||0), borderColor:'#eab308', backgroundColor:'rgba(234,179,8,.1)', fill:true, tension:.3, pointRadius:4},
+                ]
+            }, options:{...chartOpts(), scales:{...chartOpts().scales, y:{...chartOpts().scales?.y, ticks:{...chartOpts().scales?.y?.ticks, callback:v=>v+'%'}}}}
+        });
+    }
+
+    // A/B Results Table
+    if (experiments?.length) {
+        let html = '<table class="tbl"><thead><tr><th>Variable</th><th>Group A</th><th>Group B</th><th>A Rate</th><th>B Rate</th><th>Winner</th><th>Sample</th></tr></thead><tbody>';
+        for (const exp of experiments) {
+            let desc = {}; try { desc = JSON.parse(exp.ab_description || '{}'); } catch(e) {}
+            const winner = exp.winner || (exp.group_a_rate > exp.group_b_rate ? 'A' : exp.group_b_rate > exp.group_a_rate ? 'B' : '-');
+            const winColor = winner === 'A' ? 'var(--gn)' : winner === 'B' ? 'var(--cy)' : 'var(--tx2)';
+            const total = (exp.group_a_count||0) + (exp.group_b_count||0);
+            html += `<tr>
+                <td><strong>${exp.variable||exp.ab_variable||'?'}</strong></td>
+                <td style="font-size:12px;">${desc.A||'Variant A'} (${exp.group_a_count||0})</td>
+                <td style="font-size:12px;">${desc.B||'Variant B'} (${exp.group_b_count||0})</td>
+                <td>${(exp.group_a_rate||0).toFixed(1)}%</td>
+                <td>${(exp.group_b_rate||0).toFixed(1)}%</td>
+                <td style="color:${winColor};font-weight:600;">${winner}</td>
+                <td style="font-size:11px;color:var(--tx3);">${total} ${total<50?'(low)':''}</td>
+            </tr>`;
+        }
+        html += '</tbody></table>';
+        document.getElementById('intel-ab-table').innerHTML = html;
+    } else {
+        document.getElementById('intel-ab-table').innerHTML = '<div class="empty">No A/B experiments yet</div>';
+    }
+
+    // Top Messages
+    if (topMsgs?.length) {
+        document.getElementById('intel-top-messages').innerHTML = topMsgs.map((m, i) => `
+            <div style="padding:12px 0;${i<topMsgs.length-1?'border-bottom:1px solid var(--bd);':''}">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                    <span style="font-weight:600;font-size:13px;">#${i+1} - ${m.first_name||''} ${m.last_name||''} @ ${m.company||''}</span>
+                    <span class="tag tag-gn">${m.reply_tag||'Replied'}</span>
+                </div>
+                <div style="font-size:11px;color:var(--tx2);margin-bottom:6px;">Touch ${m.touch_number||'?'} | ${m.channel||'InMail'} | Persona: ${m.persona_type||'?'} | P-Score: ${m.personalization_score||'?'}</div>
+                <div style="font-size:12px;color:var(--tx);background:var(--bg);padding:10px;border-radius:6px;white-space:pre-wrap;max-height:140px;overflow-y:auto;line-height:1.6;">${(m.body||m.message_body||'').substring(0,400)}</div>
+            </div>
+        `).join('');
+    }
+}
+
+function chartOpts() {
+    return {responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8b90a0',usePointStyle:true,padding:12}},tooltip:{mode:'index',intersect:false}},scales:{y:{beginAtZero:true,grid:{color:'#2d3140'},ticks:{color:'#8b90a0'}},x:{grid:{display:false},ticks:{color:'#8b90a0'}}}};
+}
+
+function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
+
+function renderBarChart(canvasId, data, labelKey, valueKey, label) {
+    if (!data?.length) return;
+    destroyChart(canvasId);
+    const colors = ['#6366f1','#22c55e','#eab308','#f97316','#06b6d4','#ef4444','#818cf8','#16a34a'];
+    charts[canvasId] = new Chart(document.getElementById(canvasId), {
+        type:'bar', data:{
+            labels: data.map(d => String(d[labelKey]||'unknown')),
+            datasets:[{label, data: data.map(d => d[valueKey]||0), backgroundColor: data.map((_,i) => colors[i%colors.length]), borderRadius:4}]
+        }, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.parsed.x.toFixed(1)}%`}}},scales:{x:{beginAtZero:true,grid:{color:'#2d3140'},ticks:{color:'#8b90a0',callback:v=>v+'%'}},y:{grid:{display:false},ticks:{color:'#8b90a0',font:{size:11}}}}}
+    });
+}
+
+// ═══════════════════════════════════════════════════════
+// EXPERIMENTS
+// ═══════════════════════════════════════════════════════
+async function loadExperiments() {
+    const data = await api('/api/analytics/experiments');
+    const el = document.getElementById('experiments-list');
+    if (!data?.length) { el.innerHTML = '<div class="empty">No experiments yet</div>'; return; }
+    el.innerHTML = data.map(exp => {
+        let desc = ''; try { desc = JSON.parse(exp.ab_description || '{}'); } catch(e) { desc = {}; }
+        const winner = exp.winner || ((exp.group_a_rate||0) > (exp.group_b_rate||0) ? 'A leads' : (exp.group_b_rate||0) > (exp.group_a_rate||0) ? 'B leads' : 'Tied');
+        const total = (exp.group_a_count||0) + (exp.group_b_count||0);
+        return `<div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <strong>${exp.variable||exp.ab_variable||'?'}</strong>
+                <span class="tag ${exp.winner?'tag-qa':'tag-std'}">${winner}</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0;">
+                <div style="background:var(--bg);padding:10px;border-radius:6px;border-left:3px solid #6366f1;">
+                    <div style="font-size:11px;color:var(--tx2);">Group A: ${desc.A||'Variant A'}</div>
+                    <div style="font-size:20px;font-weight:700;">${(exp.group_a_rate||0).toFixed(1)}%</div>
+                    <div style="font-size:11px;color:var(--tx3);">${exp.group_a_count||0} prospects</div>
+                </div>
+                <div style="background:var(--bg);padding:10px;border-radius:6px;border-left:3px solid #06b6d4;">
+                    <div style="font-size:11px;color:var(--tx2);">Group B: ${desc.B||'Variant B'}</div>
+                    <div style="font-size:20px;font-weight:700;">${(exp.group_b_rate||0).toFixed(1)}%</div>
+                    <div style="font-size:11px;color:var(--tx3);">${exp.group_b_count||0} prospects</div>
+                </div>
+            </div>
+            <div style="font-size:11px;color:var(--tx3);">Sample: ${total} total ${total<50?'(need more data for significance)':''}</div>
+        </div>`;
+    }).join('');
+
+    if (data.length) {
+        destroyChart('ab-head-to-head');
+        charts['ab-head-to-head'] = new Chart(document.getElementById('ab-head-to-head'), {
+            type:'bar', data:{
+                labels: data.map(e => (e.variable||e.ab_variable||'?').substring(0,20)),
+                datasets:[
+                    {label:'Group A', data: data.map(e => e.group_a_rate||0), backgroundColor:'#6366f1', borderRadius:4},
+                    {label:'Group B', data: data.map(e => e.group_b_rate||0), backgroundColor:'#06b6d4', borderRadius:4},
+                ]
+            }, options:{...chartOpts(), scales:{...chartOpts().scales, y:{...chartOpts().scales?.y, ticks:{color:'#8b90a0',callback:v=>v+'%'}}}}
+        });
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+// SIGNALS (#6 - with re-engage action + add signal)
+// ═══════════════════════════════════════════════════════
+async function loadSignals() {
+    const type = document.getElementById('sig-filter')?.value || '';
+    const showActioned = document.getElementById('sig-show-actioned')?.checked;
+    let url = `/api/signals?signal_type=${type}`;
+    if (showActioned) url += '&active_only=false';
+    const data = await api(url);
+    const el = document.getElementById('signals-list');
+    if (!data?.length) { el.innerHTML = '<div class="empty">No active signals</div>'; return; }
+    el.innerHTML = data.map(s => `
+        <div class="signal-card ${s.actioned ? 'actioned' : ''}">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div style="flex:1;">
+                    <div class="sig-type">${s.signal_type||'signal'}</div>
+                    <div class="sig-detail"><strong>${s.first_name||''} ${s.last_name||''}</strong> ${s.company_name ? '@ '+s.company_name : ''}</div>
+                    <div style="font-size:11px;color:var(--tx3);margin-top:2px;">${s.description||s.detail||''}</div>
+                    <div class="sig-age">${s.actioned ? 'Actioned ' + timeAgo(s.actioned_at) : timeAgo(s.created_at)}</div>
+                </div>
+                ${!s.actioned ? `<button class="btn btn-sm" onclick="reEngageSignal('${s.id}',this)">Re-Engage</button>` :
+                    '<span class="tag tag-gn" style="margin-top:4px;">Actioned</span>'}
+            </div>
+        </div>
+    `).join('');
+}
+
+async function reEngageSignal(signalId, btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>';
+    const r = await apiPost(`/api/signals/${signalId}/re-engage`, {});
+    if (r && !r._error) {
+        toast(`Re-engagement queued: ${r.trigger||'signal'}`, 'success');
+        loadSignals();
+    } else {
+        btn.disabled = false;
+        btn.textContent = 'Re-Engage';
+        toast(r?.message || 'Re-engage failed', 'error');
+    }
+}
+
+function showAddSignalForm() {
+    const form = document.getElementById('add-signal-form');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+
+async function addSignal() {
+    const r = await apiPost('/api/signals', {
+        contact_id: document.getElementById('sig-contact-id').value || null,
+        signal_type: document.getElementById('sig-new-type').value,
+        description: document.getElementById('sig-description').value,
+    });
+    if (r && !r._error) {
+        toast('Signal created', 'success');
+        document.getElementById('add-signal-form').style.display = 'none';
+        document.getElementById('sig-contact-id').value = '';
+        document.getElementById('sig-description').value = '';
+        loadSignals();
+    } else {
+        toast(r?.message || 'Failed to create signal', 'error');
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+// AGENT LOGS
+// ═══════════════════════════════════════════════════════
+async function loadAgentRuns() {
+    const data = await api('/api/agent-runs?limit=50');
+    const body = document.getElementById('agent-runs-body');
+    if (!data?.length) { body.innerHTML = '<tr><td colspan="6" class="empty">No agent runs yet</td></tr>'; return; }
+    body.innerHTML = data.map(r => {
+        const dur = r.duration_ms ? `${(r.duration_ms/1000).toFixed(1)}s` : '-';
+        const statusClass = r.status==='completed'?'tag-qa':r.status==='failed'?'tag-hot':'tag-std';
+        return `<tr>
+            <td><strong>${r.agent_name||'-'}</strong></td>
+            <td style="font-size:12px;color:var(--tx2)">${r.run_type||'-'}</td>
+            <td><span class="tag ${statusClass}">${r.status}</span></td>
+            <td>${(r.tokens_used||0).toLocaleString()}</td>
+            <td>${dur}</td>
+            <td style="font-size:11px;color:var(--tx3)">${timeAgo(r.started_at)}</td>
+        </tr>`;
+    }).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// COSTS (#9 - per-batch, per-prospect, per-reply)
+// ═══════════════════════════════════════════════════════
+async function loadCosts() {
+    const data = await api('/api/analytics/token-costs');
+    if (!data) return;
+
+    const t = data.totals || {};
+    const byAgent = data.by_agent || [];
+    const byBatch = data.by_batch || [];
+
+    document.getElementById('cost-kpis').innerHTML = [
+        kpi('Total Tokens', (t.total_tokens||0).toLocaleString()),
+        kpi('Est. Cost', '$'+(t.est_cost_usd||0).toFixed(2)),
+        kpi('Total Runs', t.total_runs||0),
+        kpi('Cost/Prospect', '$'+(t.cost_per_prospect||0).toFixed(4)),
+        kpi('Cost/Reply', '$'+(t.cost_per_reply||0).toFixed(4)),
+        kpi('Replies', t.reply_count||0),
+    ].join('');
+
+    // Agent doughnut
+    if (byAgent.length) {
+        destroyChart('chart-costs-agent');
+        const colors = ['#6366f1','#22c55e','#eab308','#f97316','#06b6d4','#ef4444','#818cf8'];
+        charts['chart-costs-agent'] = new Chart(document.getElementById('chart-costs-agent'), {
+            type:'doughnut', data:{
+                labels: byAgent.map(d => d.agent_name||'unknown'),
+                datasets:[{data: byAgent.map(d => d.total_tokens||0), backgroundColor: colors, borderWidth:0}]
+            }, options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'right',labels:{color:'#8b90a0',usePointStyle:true,padding:10}}}}
+        });
+    }
+
+    // Cost per batch bar
+    if (byBatch.length) {
+        destroyChart('chart-costs-batch');
+        charts['chart-costs-batch'] = new Chart(document.getElementById('chart-costs-batch'), {
+            type:'bar', data:{
+                labels: byBatch.map(b => `Batch ${b.batch_number}`),
+                datasets:[
+                    {label:'Cost ($)', data: byBatch.map(b => b.est_cost_usd||0), backgroundColor:'#6366f1', borderRadius:4},
+                    {label:'Cost/Prospect ($)', data: byBatch.map(b => b.cost_per_prospect||0), backgroundColor:'#22c55e', borderRadius:4},
+                ]
+            }, options:{...chartOpts(), scales:{...chartOpts().scales, y:{...chartOpts().scales?.y, ticks:{color:'#8b90a0',callback:v=>'$'+v.toFixed(2)}}}}
+        });
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+// EXPORT (#10 - with column selection + filters)
+// ═══════════════════════════════════════════════════════
+function showExportModal() {
+    document.getElementById('export-modal').classList.add('show');
+}
+function closeExportModal() {
+    document.getElementById('export-modal').classList.remove('show');
+}
+function doExport() {
+    const params = new URLSearchParams();
+    const batch = document.getElementById('export-batch').value;
+    const pri = document.getElementById('export-pri').value;
+    const persona = document.getElementById('export-persona').value;
+    const cols = document.getElementById('export-columns').value.trim();
+    if (batch) params.set('batch_id', batch);
+    if (pri) params.set('min_priority', pri);
+    if (persona) params.set('persona_type', persona);
+    if (cols) params.set('columns', cols);
+    window.open(`${API}/api/export/csv?${params.toString()}`, '_blank');
+    closeExportModal();
+    toast('CSV download started', 'success');
+}
+
+
+// ═══════════════════════════════════════════════════════
+// EMAIL CHANNEL
+// ═══════════════════════════════════════════════════════
+
+async function loadEmailPage() {
+    // Load health KPIs
+    const health = await api('/api/email/health');
+    if (!health) {
+        document.getElementById('email-kpis').innerHTML = '<p style="color:var(--tx3)">Failed to load email health</p>';
+    } else {
+        document.getElementById('email-kpis').innerHTML = `
+            <div class="kpi"><div class="kpi-label">Total Sent</div><div class="kpi-val">${health.total_sent||0}</div></div>
+            <div class="kpi"><div class="kpi-label">Sent Today</div><div class="kpi-val">${health.today_sent||0}</div></div>
+            <div class="kpi"><div class="kpi-label">Bounces</div><div class="kpi-val">${health.bounces||0}</div><div class="kpi-sub ${health.bounce_rate>2?'dn':'up'}">${health.bounce_rate||0}%</div></div>
+            <div class="kpi"><div class="kpi-label">Opt-outs</div><div class="kpi-val">${health.opt_outs||0}</div><div class="kpi-sub">${health.opt_out_rate||0}%</div></div>
+            <div class="kpi"><div class="kpi-label">Suppressed</div><div class="kpi-val">${health.suppressed_contacts||0}</div></div>
+            <div class="kpi"><div class="kpi-label">Health</div><div class="kpi-val" style="color:${health.health_status==='good'?'var(--gn)':health.health_status==='warning'?'var(--yl)':'var(--rd)'}">${(health.health_status||'unknown').toUpperCase()}</div></div>
+        `;
+    }
+    
+    // Load identities tab
+    loadEmailIdentities();
+}
+
+async function loadEmailIdentities() {
+    const ids = await api('/api/email/identities?active_only=false');
+    const html = (ids||[]).length ? `<table class="tbl"><thead><tr><th>Email</th><th>Display Name</th><th>Sent Today</th><th>Daily Limit</th><th>Warmup Cap</th><th>All Time</th><th>Status</th></tr></thead><tbody>${
+        (ids||[]).map(i => `<tr>
+            <td>${i.email_address}</td>
+            <td>${i.display_name||''}</td>
+            <td>${i.total_sent_today||0}</td>
+            <td>${i.daily_send_limit||25}</td>
+            <td>${i.warmup_phase?i.warmup_daily_cap:'N/A'}</td>
+            <td>${i.total_sent_all_time||0}</td>
+            <td><span class="badge ${i.is_active?'badge-gn':'badge-rd'}">${i.is_active?'Active':'Inactive'}</span></td>
+        </tr>`).join('')
+    }</tbody></table>` : '<p style="color:var(--tx2)">No sender accounts configured. Add one to get started.</p>';
+    document.getElementById('email-tab-identities').innerHTML = html;
+}
+
+function showEmailTab(tab, btn) {
+    document.querySelectorAll('.email-tab').forEach(t => t.style.display='none');
+    document.getElementById('email-tab-'+tab).style.display='block';
+    btn?.parentElement.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+    btn?.classList.add('active');
+    
+    if (tab==='suppression') loadSuppression();
+    else if (tab==='events') loadEmailEvents();
+    else if (tab==='pacing') loadPacing();
+    else loadEmailIdentities();
+}
+
+async function loadSuppression() {
+    const list = await api('/api/email/suppression');
+    document.getElementById('email-tab-suppression').innerHTML = `
+        <div style="margin-bottom:8px;"><button class="btn btn-sm" onclick="document.getElementById('add-suppression-modal').style.display='flex'">Add to Suppression</button></div>
+        ${(list||[]).length ? `<table class="tbl"><thead><tr><th>Email</th><th>Reason</th><th>Source</th><th>Added</th><th>Action</th></tr></thead><tbody>${
+            list.map(s => `<tr><td>${s.email_address}</td><td>${s.reason}</td><td>${s.source||'manual'}</td><td>${(s.added_at||'').slice(0,10)}</td><td><button class="btn btn-sm btn-danger" onclick="removeSuppression('${s.email_address}')">Remove</button></td></tr>`).join('')
+        }</tbody></table>` : '<p style="color:var(--tx2)">Suppression list is empty.</p>'}
+    `;
+}
+
+async function addSuppression() {
+    const email = document.getElementById('sup-email').value;
+    const reason = document.getElementById('sup-reason').value;
+    if (!email) return;
+    await apiPost('/api/email/suppression', {email_address:email, reason:reason});
+    document.getElementById('add-suppression-modal').style.display='none';
+    toast('Added to suppression list','success');
+    loadSuppression();
+}
+
+async function removeSuppression(email) {
+    await fetch(API+'/api/email/suppression?email='+encodeURIComponent(email), {method:'DELETE'});
+    toast('Removed from suppression','info');
+    loadSuppression();
+}
+
+async function loadEmailEvents() {
+    const events = await api('/api/email/events');
+    document.getElementById('email-tab-events').innerHTML = (events||[]).length ? `<table class="tbl"><thead><tr><th>Type</th><th>Email</th><th>Source</th><th>Details</th><th>Date</th></tr></thead><tbody>${
+        events.map(e => `<tr><td><span class="badge ${e.event_type.includes('bounce')?'badge-rd':e.event_type==='reply'?'badge-gn':'badge-yl'}">${e.event_type}</span></td><td>${e.email_address||''}</td><td>${e.event_source||''}</td><td>${e.details||''}</td><td>${(e.created_at||'').slice(0,16)}</td></tr>`).join('')
+    }</tbody></table>` : '<p style="color:var(--tx2)">No email events logged yet.</p>';
+}
+
+async function loadPacing() {
+    const data = await api('/api/email/pacing');
+    if (!data) data = {};
+    let html = '<div style="display:grid;gap:12px;">';
+    if (data && data.identities) {
+        html += data.identities.map(i => `
+            <div class="card" style="padding:12px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <div><strong>${i.email}</strong></div>
+                    <span class="badge ${i.ok?'badge-gn':'badge-rd'}">${i.ok?'Can Send':'Limit Reached'}</span>
+                </div>
+                <div style="margin-top:8px;">
+                    <div style="background:var(--bg);border-radius:4px;height:8px;overflow:hidden;">
+                        <div style="background:${i.ok?'var(--gn)':'var(--rd)'};height:100%;width:${Math.min(100,i.sent_today/Math.max(i.limit,1)*100)}%;transition:width .3s;"></div>
+                    </div>
+                    <div style="font-size:11px;color:var(--tx2);margin-top:4px;">${i.sent_today} / ${i.limit} sent today, ${i.remaining} remaining</div>
+                </div>
+            </div>
+        `).join('');
+    }
+    html += `<div style="font-size:11px;color:var(--tx2);">Total remaining across all accounts: <strong>${data.total_remaining||0}</strong></div></div>`;
+    document.getElementById('email-tab-pacing').innerHTML = html;
+}
+
+function showAddIdentity() { document.getElementById('add-identity-modal').style.display='flex'; }
+function hideAddIdentity() { document.getElementById('add-identity-modal').style.display='none'; }
+
+async function createIdentity() {
+    const data = {
+        email_address: document.getElementById('new-email').value,
+        display_name: document.getElementById('new-display-name').value,
+        daily_send_limit: parseInt(document.getElementById('new-daily-limit').value)||25,
+        warmup_daily_cap: parseInt(document.getElementById('new-warmup-cap').value)||5,
+    };
+    if (!data.email_address) return;
+    const r = await apiPost('/api/email/identities', data);
+    if (r && !r._error) {
+        hideAddIdentity();
+        toast('Sender account added','success');
+        loadEmailIdentities();
+        loadEmailPage();
+    } else {
+        toast(r?.message||'Failed to add','error');
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+// AGENT SWARM
+// ═══════════════════════════════════════════════════════
+
+async function loadSwarmPage() {
+    const runs = await api('/api/swarm/runs');
+    if (!runs) {
+        document.getElementById('swarm-kpis').innerHTML = '';
+        document.getElementById('swarm-history').innerHTML = '<p style="color:var(--tx2)">Failed to load swarm data.</p>';
+        return;
+    }
+
+    // KPIs
+    const total = (runs||[]).length;
+    const running = (runs||[]).filter(r => r.status==='running').length;
+    const completed = (runs||[]).filter(r => r.status==='completed').length;
+    const failed = (runs||[]).filter(r => r.status==='error').length;
+    
+    document.getElementById('swarm-kpis').innerHTML = `
+        <div class="kpi"><div class="kpi-label">Total Runs</div><div class="kpi-val">${total}</div></div>
+        <div class="kpi"><div class="kpi-label">Active</div><div class="kpi-val" style="color:${running?'var(--yl)':'var(--tx2)'}">${running}</div></div>
+        <div class="kpi"><div class="kpi-label">Completed</div><div class="kpi-val" style="color:var(--gn)">${completed}</div></div>
+        <div class="kpi"><div class="kpi-label">Failed</div><div class="kpi-val" style="color:${failed?'var(--rd)':'var(--tx2)'}">${failed}</div></div>
+    `;
+    
+    // Active swarm
+    const activeRun = (runs||[]).find(r => r.status==='running');
+    if (activeRun) {
+        document.getElementById('swarm-active').style.display='block';
+        const detail = await api('/api/swarm/runs/'+activeRun.id);
+        const tasks = detail.tasks||[];
+        const done = tasks.filter(t=>t.status==='completed').length;
+        const err = tasks.filter(t=>t.status==='error').length;
+        const pend = tasks.filter(t=>t.status==='pending'||t.status==='running').length;
+        document.getElementById('swarm-progress').innerHTML = `
+            <div style="display:flex;gap:16px;margin-bottom:8px;">
+                <span>Tasks: ${done} done, ${err} errors, ${pend} pending</span>
+                <button class="btn btn-sm btn-danger" onclick="cancelSwarm('${activeRun.id}')">Cancel</button>
+            </div>
+            <div style="background:var(--bg);border-radius:4px;height:12px;overflow:hidden;">
+                <div style="background:var(--gn);height:100%;width:${Math.round(done/Math.max(tasks.length,1)*100)}%;transition:width .3s;"></div>
+            </div>
+        `;
+    } else {
+        document.getElementById('swarm-active').style.display='none';
+    }
+    
+    // History table
+    document.getElementById('swarm-history').innerHTML = (runs||[]).length ? `<table class="tbl"><thead><tr><th>ID</th><th>Type</th><th>Status</th><th>Tasks</th><th>Started</th><th>Duration</th></tr></thead><tbody>${
+        (runs||[]).map(r => {
+            const dur = r.completed_at && r.started_at ? Math.round((new Date(r.completed_at)-new Date(r.started_at))/1000) : '';
+            return `<tr>
+                <td style="font-family:monospace;font-size:11px;">${(r.id||'').slice(0,12)}</td>
+                <td>${r.swarm_type||''}</td>
+                <td><span class="badge ${r.status==='completed'?'badge-gn':r.status==='running'?'badge-yl':'badge-rd'}">${r.status}</span></td>
+                <td>${r.completed_tasks||r.completed_task||0}/${r.total_tasks||0} (${r.failed_tasks||0} err)</td>
+                <td>${(r.started_at||'').slice(0,16)}</td>
+                <td>${dur?dur+'s':''}</td>
+            </tr>`;
+        }).join('')
+    }</tbody></table>` : '<p style="color:var(--tx2)">No swarm runs yet.</p>';
+}
+
+function showLaunchSwarm() {
+    // Populate batch dropdown
+    api('/api/batches').then(batches => {
+        document.getElementById('swarm-batch').innerHTML = '<option value="">All contacts</option>' +
+            (batches||[]).map(b => `<option value="${b.id}">Batch #${b.batch_number} (${b.prospect_count||0} prospects)</option>`).join('');
+    });
+    document.getElementById('launch-swarm-modal').style.display='flex';
+}
+
+async function launchSwarm() {
+    const btn = document.getElementById('btn-launch-swarm');
+    btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Launching...';
+    
+    const batchId = document.getElementById('swarm-batch').value;
+    const workers = parseInt(document.getElementById('swarm-workers').value)||3;
+    const channels = [];
+    if (document.getElementById('ch-linkedin').checked) channels.push('linkedin');
+    if (document.getElementById('ch-email').checked) channels.push('email');
+    
+    const body = {max_workers:workers, channels:channels};
+    if (batchId) body.batch_id = batchId;
+    
+    const r = await apiPost('/api/swarm/start', body);
+    btn.disabled=false; btn.textContent='Launch';
+    document.getElementById('launch-swarm-modal').style.display='none';
+    
+    if (r && !r._error) {
+        toast('Swarm launched','success');
+        loadSwarmPage();
+    } else {
+        toast(r?.message||'Launch failed','error');
+    }
+}
+
+async function cancelSwarm(runId) {
+    await apiPost('/api/swarm/runs/'+runId+'/cancel', {});
+    toast('Swarm cancelled','info');
+    loadSwarmPage();
+}
+
+// ═══════════════════════════════════════════════════════
+// SYSTEM HEALTH
+// ═══════════════════════════════════════════════════════
+
+async function loadHealthPage() {
+    const [health, daily] = await Promise.all([
+        api('/api/system/health'),
+        api('/api/insights/daily'),
+    ]);
+    if (!health) health = {};
+    if (!daily) daily = {};
+
+    // KPIs
+    const errCount = (health.recent_errors||[]).length;
+    document.getElementById('health-kpis').innerHTML = `
+        <div class="kpi"><div class="kpi-label">Status</div><div class="kpi-val" style="color:var(--gn)">${health.status||'unknown'}</div></div>
+        <div class="kpi"><div class="kpi-label">Active Agents</div><div class="kpi-val">${health.active_agent_runs||0}</div></div>
+        <div class="kpi"><div class="kpi-label">Active Swarms</div><div class="kpi-val">${health.active_swarms||0}</div></div>
+        <div class="kpi"><div class="kpi-label">Recent Errors</div><div class="kpi-val" style="color:${errCount?'var(--rd)':'var(--gn)'}">${errCount}</div></div>
+        <div class="kpi"><div class="kpi-label">Email Health</div><div class="kpi-val" style="color:${health.email_health?.health_status==='good'?'var(--gn)':'var(--yl)'}">${(health.email_health?.health_status||'N/A').toUpperCase()}</div></div>
+    `;
+    
+    // Feature flags
+    document.getElementById('feature-flags').innerHTML = (health.feature_flags||[]).map(f => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bd);">
+            <div><strong>${f.flag_name}</strong><span style="color:var(--tx2);font-size:11px;margin-left:8px;">${f.description||''}</span></div>
+            <label style="cursor:pointer;"><input type="checkbox" ${f.enabled?'checked':''} onchange="toggleFlag('${f.flag_name}',this.checked)" /> ${f.enabled?'ON':'OFF'}</label>
+        </div>
+    `).join('');
+    
+    // Table counts
+    const tables = health.tables||{};
+    document.getElementById('table-counts').innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;">${
+        Object.entries(tables).map(([name,count]) => `
+            <div style="display:flex;justify-content:space-between;padding:4px 8px;background:var(--bg);border-radius:4px;font-size:12px;">
+                <span>${name}</span><span style="color:${count>=0?'var(--ac2)':'var(--rd)'};">${count>=0?count:'missing'}</span>
+            </div>
+        `).join('')
+    }</div>`;
+    
+    // Recent errors
+    document.getElementById('recent-errors').innerHTML = (health.recent_errors||[]).length ? `<div style="display:grid;gap:6px;">${
+        health.recent_errors.map(e => `
+            <div style="padding:8px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:4px;font-size:12px;">
+                <strong>${e.agent_name||'Unknown'}</strong> <span style="color:var(--tx2);">${(e.started_at||'').slice(0,16)}</span>
+                <div style="color:var(--rd);margin-top:4px;">${e.error_message||'No error message'}</div>
+            </div>
+        `).join('')
+    }</div>` : '<p style="color:var(--gn);font-size:12px;">No recent errors.</p>';
+    
+    // Daily insights
+    if (daily) {
+        document.getElementById('daily-insights').innerHTML = `
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+                <div class="kpi"><div class="kpi-label">Touches Today</div><div class="kpi-val">${daily.activity?.touches_sent||0}</div></div>
+                <div class="kpi"><div class="kpi-label">Replies Today</div><div class="kpi-val">${daily.activity?.replies_received||0}</div></div>
+                <div class="kpi"><div class="kpi-label">Meetings Today</div><div class="kpi-val">${daily.activity?.meetings_booked||0}</div></div>
+            </div>
+            <div style="margin-top:8px;font-size:12px;color:var(--tx2);">
+                Due followups: ${daily.pending?.due_followups||0} | Pending approvals: ${daily.pending?.pending_approvals||0}
+            </div>
+        `;
+    }
+}
+
+async function toggleFlag(name, enabled) {
+    const result = await apiPost(`/api/feature-flags/${name}?enabled=${enabled ? 'true' : 'false'}`, {});
+    if (result && !result._error) {
+        toast(name+' '+(enabled?'enabled':'disabled'), 'success');
+        loadHealthPage();
+    } else {
+        toast(result?.message || 'Failed to toggle flag', 'error');
+    }
+}
+
+</script>
+</body>
+</html>
