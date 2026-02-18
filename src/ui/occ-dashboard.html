@@ -178,6 +178,28 @@ input.inp.err { border-color:var(--rd); }
 /* Responsive */
 @media(max-width:900px) { .sidebar{width:60px;} .sidebar-logo span,.nav-item span:not(.badge){display:none;} .grid2,.grid3{grid-template-columns:1fr;} .detail-panel{width:100%;} }
 @media print { .sidebar,.toast,.confirm-overlay{display:none!important;} .main{overflow:visible;} .page{max-width:none;} }
+
+/* Modal */
+.modal { position:fixed; inset:0; background:rgba(0,0,0,.6); display:flex; align-items:center; justify-content:center; z-index:100; }
+.modal-content { background:var(--bg2); border:1px solid var(--bd); border-radius:var(--r); padding:20px; width:400px; max-width:90vw; }
+
+/* Badge variants */
+.badge-gn { background:rgba(34,197,94,.15); color:var(--gn); padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; }
+.badge-rd { background:rgba(239,68,68,.15); color:var(--rd); padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; }
+.badge-yl { background:rgba(234,179,8,.15); color:var(--yl); padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; }
+
+/* Table */
+.tbl { width:100%; border-collapse:collapse; font-size:12px; }
+.tbl th { text-align:left; padding:8px; border-bottom:2px solid var(--bd); color:var(--tx2); font-size:11px; text-transform:uppercase; }
+.tbl td { padding:8px; border-bottom:1px solid var(--bd); }
+.tbl tr:hover { background:var(--bg3); }
+
+/* Input */
+.input { background:var(--bg); border:1px solid var(--bd); border-radius:4px; padding:8px 12px; color:var(--tx); font-size:13px; }
+.input:focus { border-color:var(--ac); outline:none; }
+.sel { background:var(--bg); border:1px solid var(--bd); border-radius:4px; padding:8px 12px; color:var(--tx); font-size:13px; cursor:pointer; }
+.sel:focus { border-color:var(--ac); outline:none; }
+
 </style>
 </head>
 <body>
@@ -197,7 +219,10 @@ input.inp.err { border-color:var(--rd); }
         <div class="nav-item" onclick="showPage('signals')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h4l-1 6 10-12H12z" transform="scale(0.85)"/></svg><span>Signals</span></div>
         <div class="nav-sep"></div>
         <div class="nav-item" onclick="showPage('agents')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="14" height="8" rx="2"/><path d="M4 4V2M12 4V2"/></svg><span>Agent Logs</span></div>
-        <div class="nav-item" onclick="showPage('costs')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v12M5 5h6M5 9h6"/></svg><span>Costs</span></div>
+        <div class="nav-sep"></div>
+        <div class="nav-item" data-page="email" onclick="showPage('email')">📧 Email Channel</div>
+        <div class="nav-item" data-page="swarm" onclick="showPage('swarm')">🐝 Agent Swarm</div>
+        <div class="nav-item" data-page="health" onclick="showPage('health')">🏥 System Health</div>
     </nav>
     <div style="padding:12px;border-top:1px solid var(--bd);font-size:11px;color:var(--tx3);">
         <span class="mode-badge offline" id="mode-badge">Offline</span>
@@ -448,6 +473,153 @@ input.inp.err { border-color:var(--rd); }
     </div>
 </div>
 
+
+<!-- EMAIL CHANNEL PAGE -->
+<div class="page" id="page-email">
+    <div class="page-hdr"><h1>Email Channel</h1>
+        <div style="display:flex;gap:8px;">
+            <button class="btn btn-sm" onclick="loadEmailPage()">Refresh</button>
+            <button class="btn btn-sm btn-primary" onclick="showAddIdentity()">Add Sender</button>
+        </div>
+    </div>
+    
+    <!-- Email Health KPIs -->
+    <div class="kpi-row" id="email-kpis"></div>
+    
+    <!-- Tabs: Identities | Suppression | Events | Pacing -->
+    <div class="tab-row" style="display:flex;gap:4px;margin-bottom:12px;">
+        <button class="btn btn-sm active" onclick="showEmailTab('identities',this)">Sender Accounts</button>
+        <button class="btn btn-sm" onclick="showEmailTab('suppression',this)">Suppression List</button>
+        <button class="btn btn-sm" onclick="showEmailTab('events',this)">Events Log</button>
+        <button class="btn btn-sm" onclick="showEmailTab('pacing',this)">Pacing Rules</button>
+    </div>
+    
+    <!-- Tab content areas -->
+    <div id="email-tab-identities" class="email-tab"></div>
+    <div id="email-tab-suppression" class="email-tab" style="display:none"></div>
+    <div id="email-tab-events" class="email-tab" style="display:none"></div>
+    <div id="email-tab-pacing" class="email-tab" style="display:none"></div>
+    
+    <!-- Add Identity Modal -->
+    <div id="add-identity-modal" class="modal" style="display:none">
+        <div class="modal-content">
+            <h3>Add Sender Account</h3>
+            <div style="display:grid;gap:8px;margin:12px 0;">
+                <input class="input" id="new-email" placeholder="Email address" />
+                <input class="input" id="new-display-name" placeholder="Display name (e.g. Rob Gorham)" />
+                <input class="input" id="new-daily-limit" type="number" value="25" placeholder="Daily send limit" />
+                <input class="input" id="new-warmup-cap" type="number" value="5" placeholder="Warmup daily cap" />
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+                <button class="btn btn-sm" onclick="hideAddIdentity()">Cancel</button>
+                <button class="btn btn-sm btn-primary" onclick="createIdentity()">Add</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Suppression Modal -->
+    <div id="add-suppression-modal" class="modal" style="display:none">
+        <div class="modal-content">
+            <h3>Add to Suppression List</h3>
+            <div style="display:grid;gap:8px;margin:12px 0;">
+                <input class="input" id="sup-email" placeholder="Email to suppress" />
+                <select class="sel" id="sup-reason">
+                    <option value="opt_out">Opt-out requested</option>
+                    <option value="hard_bounce">Hard bounce</option>
+                    <option value="do_not_contact">Do not contact</option>
+                    <option value="competitor">Competitor</option>
+                    <option value="manual">Manual removal</option>
+                </select>
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+                <button class="btn btn-sm" onclick="document.getElementById('add-suppression-modal').style.display='none'">Cancel</button>
+                <button class="btn btn-sm btn-primary" onclick="addSuppression()">Suppress</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- AGENT SWARM PAGE -->
+<div class="page" id="page-swarm">
+    <div class="page-hdr"><h1>Agent Swarm</h1>
+        <div style="display:flex;gap:8px;">
+            <button class="btn btn-sm" onclick="loadSwarmPage()">Refresh</button>
+            <button class="btn btn-sm btn-primary" onclick="showLaunchSwarm()">Launch Swarm</button>
+        </div>
+    </div>
+    
+    <!-- Swarm Status KPIs -->
+    <div class="kpi-row" id="swarm-kpis"></div>
+    
+    <!-- Active Swarm Progress -->
+    <div id="swarm-active" class="card" style="margin-bottom:12px;display:none">
+        <h3 style="margin-bottom:8px;">Active Swarm Run</h3>
+        <div id="swarm-progress"></div>
+    </div>
+    
+    <!-- Swarm Run History -->
+    <div class="card">
+        <h3 style="margin-bottom:8px;">Run History</h3>
+        <div id="swarm-history"></div>
+    </div>
+    
+    <!-- Launch Modal -->
+    <div id="launch-swarm-modal" class="modal" style="display:none">
+        <div class="modal-content">
+            <h3>Launch Agent Swarm</h3>
+            <div style="display:grid;gap:8px;margin:12px 0;">
+                <label style="font-size:12px;color:var(--tx2);">Batch</label>
+                <select class="sel" id="swarm-batch"></select>
+                <label style="font-size:12px;color:var(--tx2);">Max Parallel Workers</label>
+                <input class="input" id="swarm-workers" type="number" value="3" min="1" max="5" />
+                <label style="font-size:12px;color:var(--tx2);">Channels</label>
+                <div style="display:flex;gap:12px;">
+                    <label><input type="checkbox" id="ch-linkedin" checked /> LinkedIn</label>
+                    <label><input type="checkbox" id="ch-email" checked /> Email</label>
+                </div>
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+                <button class="btn btn-sm" onclick="document.getElementById('launch-swarm-modal').style.display='none'">Cancel</button>
+                <button class="btn btn-sm btn-primary" id="btn-launch-swarm" onclick="launchSwarm()">Launch</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SYSTEM HEALTH PAGE -->
+<div class="page" id="page-health">
+    <div class="page-hdr"><h1>System Health</h1>
+        <button class="btn btn-sm" onclick="loadHealthPage()">Refresh</button>
+    </div>
+    
+    <!-- Health KPIs -->
+    <div class="kpi-row" id="health-kpis"></div>
+    
+    <!-- Feature Flags -->
+    <div class="card" style="margin-bottom:12px;">
+        <h3 style="margin-bottom:8px;">Feature Flags</h3>
+        <div id="feature-flags"></div>
+    </div>
+    
+    <!-- Table Counts -->
+    <div class="card" style="margin-bottom:12px;">
+        <h3 style="margin-bottom:8px;">Database Tables</h3>
+        <div id="table-counts"></div>
+    </div>
+    
+    <!-- Recent Errors -->
+    <div class="card" style="margin-bottom:12px;">
+        <h3 style="margin-bottom:8px;">Recent Errors</h3>
+        <div id="recent-errors"></div>
+    </div>
+    
+    <!-- Daily Insights -->
+    <div class="card">
+        <h3 style="margin-bottom:8px;">Daily Summary</h3>
+        <div id="daily-insights"></div>
+    </div>
+</div>
+
 </div><!-- /main -->
 </div><!-- /shell -->
 
@@ -575,6 +747,9 @@ function showPage(id) {
     if (id === 'costs') loadCosts();
     if (id === 'approval') loadApprovalQueue();
     if (id === 'launch') { loadBatches(); loadPreBrief(); }
+    if (id === 'email') loadEmailPage();
+    if (id === 'swarm') loadSwarmPage();
+    if (id === 'health') loadHealthPage();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1503,6 +1678,300 @@ function doExport() {
     closeExportModal();
     toast('CSV download started', 'success');
 }
+
+
+// ═══════════════════════════════════════════════════════
+// EMAIL CHANNEL
+// ═══════════════════════════════════════════════════════
+
+async function loadEmailPage() {
+    // Load health KPIs
+    const health = await api('/api/email/health');
+    document.getElementById('email-kpis').innerHTML = `
+        <div class="kpi"><div class="kpi-label">Total Sent</div><div class="kpi-val">${health.total_sent||0}</div></div>
+        <div class="kpi"><div class="kpi-label">Sent Today</div><div class="kpi-val">${health.today_sent||0}</div></div>
+        <div class="kpi"><div class="kpi-label">Bounces</div><div class="kpi-val">${health.bounces||0}</div><div class="kpi-sub ${health.bounce_rate>2?'dn':'up'}">${health.bounce_rate||0}%</div></div>
+        <div class="kpi"><div class="kpi-label">Opt-outs</div><div class="kpi-val">${health.opt_outs||0}</div><div class="kpi-sub">${health.opt_out_rate||0}%</div></div>
+        <div class="kpi"><div class="kpi-label">Suppressed</div><div class="kpi-val">${health.suppressed_contacts||0}</div></div>
+        <div class="kpi"><div class="kpi-label">Health</div><div class="kpi-val" style="color:${health.health_status==='good'?'var(--gn)':health.health_status==='warning'?'var(--yl)':'var(--rd)'}">${(health.health_status||'unknown').toUpperCase()}</div></div>
+    `;
+    
+    // Load identities tab
+    loadEmailIdentities();
+}
+
+async function loadEmailIdentities() {
+    const ids = await api('/api/email/identities?active_only=false');
+    const html = (ids||[]).length ? `<table class="tbl"><thead><tr><th>Email</th><th>Display Name</th><th>Sent Today</th><th>Daily Limit</th><th>Warmup Cap</th><th>All Time</th><th>Status</th></tr></thead><tbody>${
+        (ids||[]).map(i => `<tr>
+            <td>${i.email_address}</td>
+            <td>${i.display_name||''}</td>
+            <td>${i.total_sent_today||0}</td>
+            <td>${i.daily_send_limit||25}</td>
+            <td>${i.warmup_phase?i.warmup_daily_cap:'N/A'}</td>
+            <td>${i.total_sent_all_time||0}</td>
+            <td><span class="badge ${i.is_active?'badge-gn':'badge-rd'}">${i.is_active?'Active':'Inactive'}</span></td>
+        </tr>`).join('')
+    }</tbody></table>` : '<p style="color:var(--tx2)">No sender accounts configured. Add one to get started.</p>';
+    document.getElementById('email-tab-identities').innerHTML = html;
+}
+
+function showEmailTab(tab, btn) {
+    document.querySelectorAll('.email-tab').forEach(t => t.style.display='none');
+    document.getElementById('email-tab-'+tab).style.display='block';
+    btn?.parentElement.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+    btn?.classList.add('active');
+    
+    if (tab==='suppression') loadSuppression();
+    else if (tab==='events') loadEmailEvents();
+    else if (tab==='pacing') loadPacing();
+    else loadEmailIdentities();
+}
+
+async function loadSuppression() {
+    const list = await api('/api/email/suppression');
+    document.getElementById('email-tab-suppression').innerHTML = `
+        <div style="margin-bottom:8px;"><button class="btn btn-sm" onclick="document.getElementById('add-suppression-modal').style.display='flex'">Add to Suppression</button></div>
+        ${(list||[]).length ? `<table class="tbl"><thead><tr><th>Email</th><th>Reason</th><th>Source</th><th>Added</th><th>Action</th></tr></thead><tbody>${
+            list.map(s => `<tr><td>${s.email_address}</td><td>${s.reason}</td><td>${s.source||'manual'}</td><td>${(s.added_at||'').slice(0,10)}</td><td><button class="btn btn-sm btn-danger" onclick="removeSuppression('${s.email_address}')">Remove</button></td></tr>`).join('')
+        }</tbody></table>` : '<p style="color:var(--tx2)">Suppression list is empty.</p>'}
+    `;
+}
+
+async function addSuppression() {
+    const email = document.getElementById('sup-email').value;
+    const reason = document.getElementById('sup-reason').value;
+    if (!email) return;
+    await apiPost('/api/email/suppression', {email_address:email, reason:reason});
+    document.getElementById('add-suppression-modal').style.display='none';
+    toast('Added to suppression list','success');
+    loadSuppression();
+}
+
+async function removeSuppression(email) {
+    await fetch(API+'/api/email/suppression?email='+encodeURIComponent(email), {method:'DELETE'});
+    toast('Removed from suppression','info');
+    loadSuppression();
+}
+
+async function loadEmailEvents() {
+    const events = await api('/api/email/events');
+    document.getElementById('email-tab-events').innerHTML = (events||[]).length ? `<table class="tbl"><thead><tr><th>Type</th><th>Email</th><th>Source</th><th>Details</th><th>Date</th></tr></thead><tbody>${
+        events.map(e => `<tr><td><span class="badge ${e.event_type.includes('bounce')?'badge-rd':e.event_type==='reply'?'badge-gn':'badge-yl'}">${e.event_type}</span></td><td>${e.email_address||''}</td><td>${e.event_source||''}</td><td>${e.details||''}</td><td>${(e.created_at||'').slice(0,16)}</td></tr>`).join('')
+    }</tbody></table>` : '<p style="color:var(--tx2)">No email events logged yet.</p>';
+}
+
+async function loadPacing() {
+    const data = await api('/api/email/pacing');
+    let html = '<div style="display:grid;gap:12px;">';
+    if (data.identities) {
+        html += data.identities.map(i => `
+            <div class="card" style="padding:12px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <div><strong>${i.email}</strong></div>
+                    <span class="badge ${i.ok?'badge-gn':'badge-rd'}">${i.ok?'Can Send':'Limit Reached'}</span>
+                </div>
+                <div style="margin-top:8px;">
+                    <div style="background:var(--bg);border-radius:4px;height:8px;overflow:hidden;">
+                        <div style="background:${i.ok?'var(--gn)':'var(--rd)'};height:100%;width:${Math.min(100,i.sent_today/Math.max(i.limit,1)*100)}%;transition:width .3s;"></div>
+                    </div>
+                    <div style="font-size:11px;color:var(--tx2);margin-top:4px;">${i.sent_today} / ${i.limit} sent today, ${i.remaining} remaining</div>
+                </div>
+            </div>
+        `).join('');
+    }
+    html += `<div style="font-size:11px;color:var(--tx2);">Total remaining across all accounts: <strong>${data.total_remaining||0}</strong></div></div>`;
+    document.getElementById('email-tab-pacing').innerHTML = html;
+}
+
+function showAddIdentity() { document.getElementById('add-identity-modal').style.display='flex'; }
+function hideAddIdentity() { document.getElementById('add-identity-modal').style.display='none'; }
+
+async function createIdentity() {
+    const data = {
+        email_address: document.getElementById('new-email').value,
+        display_name: document.getElementById('new-display-name').value,
+        daily_send_limit: parseInt(document.getElementById('new-daily-limit').value)||25,
+        warmup_daily_cap: parseInt(document.getElementById('new-warmup-cap').value)||5,
+    };
+    if (!data.email_address) return;
+    const r = await apiPost('/api/email/identities', data);
+    if (r && !r._error) {
+        hideAddIdentity();
+        toast('Sender account added','success');
+        loadEmailIdentities();
+        loadEmailPage();
+    } else {
+        toast(r?.message||'Failed to add','error');
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+// AGENT SWARM
+// ═══════════════════════════════════════════════════════
+
+async function loadSwarmPage() {
+    const runs = await api('/api/swarm/runs');
+    
+    // KPIs
+    const total = (runs||[]).length;
+    const running = (runs||[]).filter(r => r.status==='running').length;
+    const completed = (runs||[]).filter(r => r.status==='completed').length;
+    const failed = (runs||[]).filter(r => r.status==='error').length;
+    
+    document.getElementById('swarm-kpis').innerHTML = `
+        <div class="kpi"><div class="kpi-label">Total Runs</div><div class="kpi-val">${total}</div></div>
+        <div class="kpi"><div class="kpi-label">Active</div><div class="kpi-val" style="color:${running?'var(--yl)':'var(--tx2)'}">${running}</div></div>
+        <div class="kpi"><div class="kpi-label">Completed</div><div class="kpi-val" style="color:var(--gn)">${completed}</div></div>
+        <div class="kpi"><div class="kpi-label">Failed</div><div class="kpi-val" style="color:${failed?'var(--rd)':'var(--tx2)'}">${failed}</div></div>
+    `;
+    
+    // Active swarm
+    const activeRun = (runs||[]).find(r => r.status==='running');
+    if (activeRun) {
+        document.getElementById('swarm-active').style.display='block';
+        const detail = await api('/api/swarm/runs/'+activeRun.id);
+        const tasks = detail.tasks||[];
+        const done = tasks.filter(t=>t.status==='completed').length;
+        const err = tasks.filter(t=>t.status==='error').length;
+        const pend = tasks.filter(t=>t.status==='pending'||t.status==='running').length;
+        document.getElementById('swarm-progress').innerHTML = `
+            <div style="display:flex;gap:16px;margin-bottom:8px;">
+                <span>Tasks: ${done} done, ${err} errors, ${pend} pending</span>
+                <button class="btn btn-sm btn-danger" onclick="cancelSwarm('${activeRun.id}')">Cancel</button>
+            </div>
+            <div style="background:var(--bg);border-radius:4px;height:12px;overflow:hidden;">
+                <div style="background:var(--gn);height:100%;width:${Math.round(done/Math.max(tasks.length,1)*100)}%;transition:width .3s;"></div>
+            </div>
+        `;
+    } else {
+        document.getElementById('swarm-active').style.display='none';
+    }
+    
+    // History table
+    document.getElementById('swarm-history').innerHTML = (runs||[]).length ? `<table class="tbl"><thead><tr><th>ID</th><th>Type</th><th>Status</th><th>Tasks</th><th>Started</th><th>Duration</th></tr></thead><tbody>${
+        (runs||[]).map(r => {
+            const dur = r.completed_at && r.started_at ? Math.round((new Date(r.completed_at)-new Date(r.started_at))/1000) : '';
+            return `<tr>
+                <td style="font-family:monospace;font-size:11px;">${(r.id||'').slice(0,12)}</td>
+                <td>${r.swarm_type||''}</td>
+                <td><span class="badge ${r.status==='completed'?'badge-gn':r.status==='running'?'badge-yl':'badge-rd'}">${r.status}</span></td>
+                <td>${r.completed_task||0}/${r.total_tasks||0} (${r.failed_tasks||0} err)</td>
+                <td>${(r.started_at||'').slice(0,16)}</td>
+                <td>${dur?dur+'s':''}</td>
+            </tr>`;
+        }).join('')
+    }</tbody></table>` : '<p style="color:var(--tx2)">No swarm runs yet.</p>';
+}
+
+function showLaunchSwarm() {
+    // Populate batch dropdown
+    api('/api/batches').then(batches => {
+        document.getElementById('swarm-batch').innerHTML = '<option value="">All contacts</option>' +
+            (batches||[]).map(b => `<option value="${b.id}">Batch #${b.batch_number} (${b.prospect_count||0} prospects)</option>`).join('');
+    });
+    document.getElementById('launch-swarm-modal').style.display='flex';
+}
+
+async function launchSwarm() {
+    const btn = document.getElementById('btn-launch-swarm');
+    btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Launching...';
+    
+    const batchId = document.getElementById('swarm-batch').value;
+    const workers = parseInt(document.getElementById('swarm-workers').value)||3;
+    const channels = [];
+    if (document.getElementById('ch-linkedin').checked) channels.push('linkedin');
+    if (document.getElementById('ch-email').checked) channels.push('email');
+    
+    const body = {max_workers:workers, channels:channels};
+    if (batchId) body.batch_id = batchId;
+    
+    const r = await apiPost('/api/swarm/start', body);
+    btn.disabled=false; btn.textContent='Launch';
+    document.getElementById('launch-swarm-modal').style.display='none';
+    
+    if (r && !r._error) {
+        toast('Swarm launched','success');
+        loadSwarmPage();
+    } else {
+        toast(r?.message||'Launch failed','error');
+    }
+}
+
+async function cancelSwarm(runId) {
+    await apiPost('/api/swarm/runs/'+runId+'/cancel', {});
+    toast('Swarm cancelled','info');
+    loadSwarmPage();
+}
+
+// ═══════════════════════════════════════════════════════
+// SYSTEM HEALTH
+// ═══════════════════════════════════════════════════════
+
+async function loadHealthPage() {
+    const [health, daily] = await Promise.all([
+        api('/api/system/health'),
+        api('/api/insights/daily'),
+    ]);
+    
+    // KPIs
+    const errCount = (health.recent_errors||[]).length;
+    document.getElementById('health-kpis').innerHTML = `
+        <div class="kpi"><div class="kpi-label">Status</div><div class="kpi-val" style="color:var(--gn)">${health.status||'unknown'}</div></div>
+        <div class="kpi"><div class="kpi-label">Active Agents</div><div class="kpi-val">${health.active_agent_runs||0}</div></div>
+        <div class="kpi"><div class="kpi-label">Active Swarms</div><div class="kpi-val">${health.active_swarms||0}</div></div>
+        <div class="kpi"><div class="kpi-label">Recent Errors</div><div class="kpi-val" style="color:${errCount?'var(--rd)':'var(--gn)'}">${errCount}</div></div>
+        <div class="kpi"><div class="kpi-label">Email Health</div><div class="kpi-val" style="color:${health.email_health?.health_status==='good'?'var(--gn)':'var(--yl)'}">${(health.email_health?.health_status||'N/A').toUpperCase()}</div></div>
+    `;
+    
+    // Feature flags
+    document.getElementById('feature-flags').innerHTML = (health.feature_flags||[]).map(f => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bd);">
+            <div><strong>${f.flag_name}</strong><span style="color:var(--tx2);font-size:11px;margin-left:8px;">${f.description||''}</span></div>
+            <label style="cursor:pointer;"><input type="checkbox" ${f.enabled?'checked':''} onchange="toggleFlag('${f.flag_name}',this.checked)" /> ${f.enabled?'ON':'OFF'}</label>
+        </div>
+    `).join('');
+    
+    // Table counts
+    const tables = health.tables||{};
+    document.getElementById('table-counts').innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;">${
+        Object.entries(tables).map(([name,count]) => `
+            <div style="display:flex;justify-content:space-between;padding:4px 8px;background:var(--bg);border-radius:4px;font-size:12px;">
+                <span>${name}</span><span style="color:${count>=0?'var(--ac2)':'var(--rd)'};">${count>=0?count:'missing'}</span>
+            </div>
+        `).join('')
+    }</div>`;
+    
+    // Recent errors
+    document.getElementById('recent-errors').innerHTML = (health.recent_errors||[]).length ? `<div style="display:grid;gap:6px;">${
+        health.recent_errors.map(e => `
+            <div style="padding:8px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:4px;font-size:12px;">
+                <strong>${e.agent_name||'Unknown'}</strong> <span style="color:var(--tx2);">${(e.started_at||'').slice(0,16)}</span>
+                <div style="color:var(--rd);margin-top:4px;">${e.error_message||'No error message'}</div>
+            </div>
+        `).join('')
+    }</div>` : '<p style="color:var(--gn);font-size:12px;">No recent errors.</p>';
+    
+    // Daily insights
+    if (daily) {
+        document.getElementById('daily-insights').innerHTML = `
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+                <div class="kpi"><div class="kpi-label">Touches Today</div><div class="kpi-val">${daily.activity?.touches_sent||0}</div></div>
+                <div class="kpi"><div class="kpi-label">Replies Today</div><div class="kpi-val">${daily.activity?.replies_received||0}</div></div>
+                <div class="kpi"><div class="kpi-label">Meetings Today</div><div class="kpi-val">${daily.activity?.meetings_booked||0}</div></div>
+            </div>
+            <div style="margin-top:8px;font-size:12px;color:var(--tx2);">
+                Due followups: ${daily.pending?.due_followups||0} | Pending approvals: ${daily.pending?.pending_approvals||0}
+            </div>
+        `;
+    }
+}
+
+async function toggleFlag(name, enabled) {
+    await apiPost('/api/feature-flags/'+name+'?enabled='+enabled, {});
+    toast(name+' '+(enabled?'enabled':'disabled'), 'info');
+}
+
 </script>
 </body>
 </html>

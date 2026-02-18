@@ -6,6 +6,10 @@ Creates all tables, indexes, and seeds initial data.
 import sqlite3
 import os
 from datetime import datetime
+try:
+    from .migrate_v2 import run_migration as run_v2_migration
+except ImportError:
+    from migrate_v2 import run_migration as run_v2_migration
 
 DB_PATH = os.environ.get("OCC_DB_PATH", "outreach.db")
 
@@ -380,3 +384,8 @@ def verify_db(db_path=None):
 if __name__ == "__main__":
     init_db()
     verify_db()
+    print("\n[init_db] Running v2 migration...")
+    if run_v2_migration():
+        print("[init_db] v2 migration successful!")
+    else:
+        print("[init_db] WARNING: v2 migration failed")

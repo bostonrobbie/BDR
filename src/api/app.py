@@ -1167,3 +1167,389 @@ def export_csv(batch_id: str = None, min_priority: int = None,
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+# ─── EMAIL IDENTITIES ──────────────────────────────────────────
+
+class EmailIdentityCreate(BaseModel):
+    email_address: str
+    display_name: Optional[str] = None
+    daily_send_limit: Optional[int] = 25
+    warmup_phase: Optional[int] = 1
+    warmup_daily_cap: Optional[int] = 5
+
+@app.post("/api/email/identities")
+def create_identity(req: EmailIdentityCreate):
+    """Create a new email sending identity."""
+    return models.create_email_identity(req.dict())
+
+@app.get("/api/email/identities")
+def list_identities(active_only: bool = True):
+    """List all email identities."""
+    return models.list_email_identities(active_only)
+
+@app.get("/api/email/identities/{identity_id}")
+def get_identity(identity_id: str):
+    """Get a specific email identity."""
+    result = models.get_email_identity(identity_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="Identity not found")
+    return result
+
+@app.post("/api/email/identities/{identity_id}/mark-sent")
+def mark_email_sent(identity_id: str):
+    """Rob confirms an email was sent manually."""
+    pacing = models.check_pacing_ok(identity_id)
+    if not pacing["ok"]:
+        raise HTTPException(status_code=429, detail=pacing["reason"])
+    return models.increment_send_count(identity_id)
+
+@app.post("/api/email/identities/reset-daily")
+def reset_daily():
+    """Reset daily send counters (call at midnight)."""
+    models.reset_daily_counts()
+    return {"status": "reset"}
+
+
+# ─── SUPPRESSION LIST ──────────────────────────────────────────
+
+class SuppressionAdd(BaseModel):
+    email_address: str
+    reason: str
+    source: Optional[str] = "manual"
+
+@app.post("/api/email/suppression")
+def add_suppression(req: SuppressionAdd):
+    """Add email to suppression list."""
+    return models.add_to_suppression(req.email_address, req.reason, req.source)
+
+@app.get("/api/email/suppression")
+def list_suppressions(limit: int = 100):
+    """List suppressed emails."""
+    return models.list_suppressed(limit)
+
+@app.get("/api/email/suppression/check")
+def check_suppression(email: str):
+    """Check if email is suppressed."""
+    return {"email": email, "suppressed": models.is_suppressed(email)}
+
+@app.delete("/api/email/suppression")
+def remove_suppression(email: str):
+    """Remove email from suppression list."""
+    removed = models.remove_from_suppression(email)
+    if not removed:
+        raise HTTPException(status_code=404, detail="Email not in suppression list")
+    return {"removed": True, "email": email}
+
+
+# ─── EMAIL EVENTS ──────────────────────────────────────────────
+
+class EmailEventLog(BaseModel):
+    contact_id: Optional[str] = None
+    email_address: Optional[str] = None
+    event_type: str  # bounce, hard_bounce, soft_bounce, opt_out, unsubscribe, reply, open, click
+    event_source: Optional[str] = "manual"
+    details: Optional[str] = None
+
+@app.post("/api/email/events")
+def log_event(req: EmailEventLog):
+    """Log an email event (bounce, reply, open, etc.)."""
+    return models.log_email_event(req.dict())
+
+@app.get("/api/email/events")
+def list_events(contact_id: str = None, event_type: str = None, limit: int = 50):
+    """List email events."""
+    return models.get_email_events(contact_id, event_type, limit)
+
+
+# ─── PACING & DELIVERABILITY ──────────────────────────────────
+
+@app.get("/api/email/pacing")
+def get_pacing():
+    """Get current pacing rules and status."""
+    rules = models.get_pacing_rules("email")
+    identities = models.list_email_identities(active_only=True)
+    total_remaining = 0
+    identity_status = []
+    for ident in identities:
+        check = models.check_pacing_ok(ident["id"])
+        identity_status.append({
+            "id": ident["id"],
+            "email": ident["email_address"],
+            "sent_today": check.get("sent_today", 0),
+            "limit": check.get("limit", 0),
+            "remaining": check.get("remaining", 0),
+            "ok": check.get("ok", False),
+        })
+        total_remaining += check.get("remaining", 0)
+    return {"rules": rules, "identities": identity_status, "total_remaining": total_remaining}
+
+@app.get("/api/email/health")
+def email_health():
+    """Get email channel health metrics."""
+    return models.get_email_health()
+
+
+# ─── LINKEDIN CHANNEL ──────────────────────────────────────────
+
+class LinkedInEventLog(BaseModel):
+    contact_id: str
+    event_type: str  # inmail_sent, inmail_viewed, inmail_replied, connection_sent, connection_accepted, profile_viewed
+    details: Optional[str] = None
+
+@app.get("/api/linkedin/health")
+def linkedin_health():
+    """Get LinkedIn channel health metrics (daily/weekly stats, engagement rates)."""
+    return models.get_linkedin_health()
+
+@app.get("/api/linkedin/pacing")
+def linkedin_pacing(daily_limit: int = 25):
+    """Get current LinkedIn pacing status (sent today, limit, remaining)."""
+    return models.check_linkedin_pacing(daily_limit)
+
+@app.post("/api/linkedin/events")
+def log_linkedin_event(req: LinkedInEventLog):
+    """Log a LinkedIn event (inmail_sent, connection_request, etc.)."""
+    return models.log_linkedin_event(req.contact_id, req.event_type, req.details)
+
+@app.get("/api/linkedin/sequence/{contact_id}")
+def get_linkedin_sequence(contact_id: str):
+    """Get the full LinkedIn sequence status for a contact (which touches sent, which pending)."""
+    contact = models.get_contact(contact_id)
+    if not contact:
+        raise HTTPException(status_code=404, detail="Contact not found")
+
+    conn = models.get_db()
+
+    # Get all LinkedIn touchpoints for this contact
+    touchpoints = conn.execute("""
+        SELECT tp.*, md.touch_number, md.subject_line, md.body
+        FROM touchpoints tp
+        LEFT JOIN message_drafts md ON tp.message_draft_id = md.id
+        WHERE tp.contact_id=? AND tp.channel='linkedin'
+        ORDER BY md.touch_number ASC
+    """, (contact_id,)).fetchall()
+
+    # Get pending followups on LinkedIn
+    followups = conn.execute("""
+        SELECT * FROM followups
+        WHERE contact_id=? AND channel='linkedin' AND state='pending'
+        ORDER BY touch_number ASC
+    """, (contact_id,)).fetchall()
+
+    # Get all LinkedIn messages (drafts) for this contact
+    messages = conn.execute("""
+        SELECT * FROM message_drafts
+        WHERE contact_id=? AND channel='linkedin'
+        ORDER BY touch_number ASC
+    """, (contact_id,)).fetchall()
+
+    # Get LinkedIn replies
+    replies = conn.execute("""
+        SELECT * FROM replies
+        WHERE contact_id=? AND channel='linkedin'
+        ORDER BY replied_at DESC
+    """, (contact_id,)).fetchall()
+
+    conn.close()
+
+    return {
+        "contact_id": contact_id,
+        "contact_name": f"{contact.get('first_name', '')} {contact.get('last_name', '')}",
+        "company": contact.get("company_name", ""),
+        "linkedin_url": contact.get("linkedin_url", ""),
+        "touchpoints_sent": [dict(tp) for tp in touchpoints],
+        "pending_followups": [dict(fu) for fu in followups],
+        "all_messages": [dict(m) for m in messages],
+        "replies_received": [dict(r) for r in replies],
+        "sequence_summary": {
+            "touches_sent": len(touchpoints),
+            "pending_touches": len(followups),
+            "total_messages_drafted": len(messages),
+            "replies_count": len(replies),
+            "latest_reply": dict(replies[0]) if replies else None,
+        }
+    }
+
+
+# ─── SWARM CONTROL ─────────────────────────────────────────────
+
+import threading
+
+class SwarmStartRequest(BaseModel):
+    contact_ids: Optional[List[str]] = None
+    batch_id: Optional[str] = None
+    max_workers: Optional[int] = 3
+    channels: Optional[List[str]] = ["linkedin", "email"]
+
+_active_swarms = {}
+
+@app.post("/api/swarm/start")
+def start_swarm(req: SwarmStartRequest):
+    """Launch a swarm run for a batch of contacts."""
+    if not models.is_feature_enabled("agent_swarm"):
+        raise HTTPException(status_code=403, detail="Agent swarm is disabled")
+    
+    # Get contact IDs
+    contact_ids = req.contact_ids
+    if not contact_ids and req.batch_id:
+        conn = models.get_db()
+        rows = conn.execute("SELECT contact_id FROM batch_prospects WHERE batch_id=?",
+                           (req.batch_id,)).fetchall()
+        conn.close()
+        contact_ids = [r["contact_id"] for r in rows]
+    
+    if not contact_ids:
+        raise HTTPException(status_code=400, detail="No contacts specified")
+    
+    # Check for active swarm
+    active = [s for s in _active_swarms.values() if s.get("status") == "running"]
+    if active:
+        raise HTTPException(status_code=409, detail="A swarm is already running")
+    
+    try:
+        from src.agents.swarm_supervisor import SwarmSupervisor
+    except ImportError:
+        raise HTTPException(status_code=501, detail="SwarmSupervisor not available")
+    
+    config = {"max_workers": req.max_workers, "channels": req.channels}
+    supervisor = SwarmSupervisor(config)
+    
+    def run_swarm():
+        try:
+            result = supervisor.run_batch(contact_ids, req.batch_id)
+            has_errors = result.get("phases", {}).get("errors")
+            _active_swarms[supervisor.run_id] = {
+                "status": "error" if has_errors else "completed",
+                "result": result
+            }
+        except Exception as e:
+            _active_swarms[supervisor.run_id] = {"status": "error", "error": str(e)}
+    
+    thread = threading.Thread(target=run_swarm, daemon=True)
+    thread.start()
+    
+    # Wait briefly for run_id to be set
+    import time
+    time.sleep(0.5)
+    
+    run_id = supervisor.run_id
+    if run_id:
+        _active_swarms[run_id] = {"status": "running", "supervisor": supervisor}
+    
+    return {"run_id": run_id, "status": "running", "contact_count": len(contact_ids)}
+
+@app.get("/api/swarm/runs")
+def list_swarm_runs():
+    """List all swarm runs."""
+    return models.list_swarm_runs()
+
+@app.get("/api/swarm/runs/{run_id}")
+def get_swarm_run(run_id: str):
+    """Get details for a specific swarm run."""
+    run = models.get_swarm_run(run_id)
+    if not run:
+        raise HTTPException(status_code=404, detail="Swarm run not found")
+    tasks = models.get_swarm_tasks(run_id)
+    return {**run, "tasks": tasks}
+
+@app.post("/api/swarm/runs/{run_id}/cancel")
+def cancel_swarm(run_id: str):
+    """Cancel a running swarm."""
+    if run_id in _active_swarms and _active_swarms[run_id].get("supervisor"):
+        _active_swarms[run_id]["supervisor"].cancel()
+        return {"cancelled": True}
+    models.update_swarm_run(run_id, {"status": "cancelled"})
+    return {"cancelled": True}
+
+
+# ─── FEATURE FLAGS ─────────────────────────────────────────────
+
+@app.get("/api/feature-flags")
+def list_flags():
+    """List all feature flags."""
+    return models.list_feature_flags()
+
+@app.post("/api/feature-flags/{flag_name}")
+def toggle_flag(flag_name: str, enabled: bool = True):
+    """Toggle a feature flag."""
+    return models.set_feature_flag(flag_name, enabled)
+
+
+# ─── SYSTEM HEALTH ─────────────────────────────────────────────
+
+@app.get("/api/system/health")
+def system_health():
+    """Comprehensive system health check."""
+    conn = models.get_db()
+    
+    # Table counts
+    tables = {}
+    for t in ["contacts", "accounts", "message_drafts", "touchpoints", "replies",
+              "followups", "opportunities", "signals", "agent_runs", "batches",
+              "email_identities", "suppression_list", "email_events",
+              "swarm_runs", "swarm_tasks", "quality_scores", "feature_flags"]:
+        try:
+            tables[t] = conn.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]
+        except Exception:
+            tables[t] = -1  # Table doesn't exist yet
+    
+    # Recent errors
+    try:
+        recent_errors = conn.execute("""
+            SELECT id, agent_name, error_message, started_at
+            FROM agent_runs WHERE status='error'
+            ORDER BY started_at DESC LIMIT 5
+        """).fetchall()
+        recent_errors = [dict(e) for e in recent_errors]
+    except Exception:
+        recent_errors = []
+    
+    # Active runs
+    try:
+        active_runs = conn.execute(
+            "SELECT COUNT(*) FROM agent_runs WHERE status='running'"
+        ).fetchone()[0]
+    except Exception:
+        active_runs = 0
+    
+    # Active swarms
+    try:
+        active_swarms = conn.execute(
+            "SELECT COUNT(*) FROM swarm_runs WHERE status='running'"
+        ).fetchone()[0]
+    except Exception:
+        active_swarms = 0
+    
+    conn.close()
+    
+    email_health = models.get_email_health()
+    
+    return {
+        "status": "healthy",
+        "tables": tables,
+        "active_agent_runs": active_runs,
+        "active_swarms": active_swarms,
+        "recent_errors": recent_errors,
+        "email_health": email_health,
+        "feature_flags": models.list_feature_flags(),
+    }
+
+@app.get("/api/insights/daily")
+def daily_insights():
+    """Get daily summary insights."""
+    try:
+        from src.agents.swarm_supervisor import InsightsAgent
+        return InsightsAgent.daily_summary()
+    except ImportError:
+        return {"status": "insights_unavailable"}
+
+@app.get("/api/insights/weekly")
+def weekly_insights():
+    """Get weekly review insights."""
+    try:
+        from src.agents.swarm_supervisor import InsightsAgent
+        return InsightsAgent.weekly_review()
+    except ImportError:
+        return {"status": "insights_unavailable"}
+

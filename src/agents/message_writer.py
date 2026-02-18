@@ -16,6 +16,7 @@ import os
 import sys
 import re
 from typing import Optional
+from datetime import datetime
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 from src.db import models
@@ -569,6 +570,111 @@ def _determine_pain_hook(research: dict, ab_group: str = None,
         return "policy workflow regression testing"
     else:
         return "test maintenance and flaky tests"
+
+
+# ─── LINKEDIN SEQUENCE MANAGEMENT ─────────────────────────────
+
+def get_linkedin_sequence_status(contact_id: str) -> dict:
+    """Check which LinkedIn touches have been sent via touchpoints table.
+
+    Returns dict with:
+    - touches_sent: list of touch numbers sent
+    - pending_touches: list of touch numbers due but not sent
+    - next_touch: dict with details of next expected touch
+    """
+    conn = models.get_db()
+
+    # Get sent touchpoints
+    sent = conn.execute("""
+        SELECT DISTINCT touch_number FROM touchpoints
+        WHERE contact_id=? AND channel='linkedin'
+        ORDER BY touch_number ASC
+    """, (contact_id,)).fetchall()
+    touches_sent = [row[0] for row in sent]
+
+    # Get pending followups (scheduled but not yet sent)
+    pending = conn.execute("""
+        SELECT touch_number, due_date FROM followups
+        WHERE contact_id=? AND channel='linkedin' AND state='pending'
+        ORDER BY touch_number ASC
+    """, (contact_id,)).fetchall()
+    pending_touches = [dict(row) for row in pending]
+
+    # Determine next touch based on SOP
+    # Touch sequence: 1 (InMail), 3 (InMail Follow-up), 6 (Break-up)
+    linkedin_sequence = [1, 3, 6]
+    next_touch = None
+    for touch_num in linkedin_sequence:
+        if touch_num not in touches_sent:
+            # Check if there's a pending followup for this touch
+            pending_fu = next((fu for fu in pending_touches if fu["touch_number"] == touch_num), None)
+            next_touch = {
+                "touch_number": touch_num,
+                "due_date": pending_fu.get("due_date") if pending_fu else None,
+                "touch_type": "inmail" if touch_num in (1, 3) else "breakup",
+            }
+            break
+
+    conn.close()
+
+    return {
+        "contact_id": contact_id,
+        "touches_sent": touches_sent,
+        "pending_touches": pending_touches,
+        "next_touch": next_touch,
+    }
+
+
+def get_next_linkedin_touch(contact_id: str) -> Optional[dict]:
+    """Determine what the next LinkedIn touch should be based on SOP timing.
+
+    Returns dict with:
+    - touch_number: next touch number (1, 3, or 6)
+    - should_send_now: bool (true if due_date <= now)
+    - due_date: ISO string of when this touch should go out
+    - days_until_due: integer (negative if overdue)
+    - touch_type: 'inmail' or 'breakup'
+    """
+    status = get_linkedin_sequence_status(contact_id)
+    next_touch = status.get("next_touch")
+
+    if not next_touch:
+        return None
+
+    due_date_str = next_touch.get("due_date")
+    if not due_date_str:
+        return {
+            "touch_number": next_touch["touch_number"],
+            "should_send_now": True,
+            "due_date": None,
+            "days_until_due": 0,
+            "touch_type": next_touch.get("touch_type", "inmail"),
+            "status": "no_followup_scheduled",
+        }
+
+    try:
+        due_date = datetime.fromisoformat(due_date_str)
+        now = datetime.utcnow()
+        days_until = (due_date - now).days
+        should_send = due_date <= now
+
+        return {
+            "touch_number": next_touch["touch_number"],
+            "should_send_now": should_send,
+            "due_date": due_date_str,
+            "days_until_due": days_until,
+            "touch_type": next_touch.get("touch_type", "inmail"),
+            "status": "overdue" if days_until < 0 else "pending" if days_until > 0 else "due_today",
+        }
+    except (ValueError, TypeError):
+        return {
+            "touch_number": next_touch["touch_number"],
+            "should_send_now": True,
+            "due_date": due_date_str,
+            "days_until_due": 0,
+            "touch_type": next_touch.get("touch_type", "inmail"),
+            "status": "invalid_date",
+        }
 
 
 # ─── STORE GENERATED MESSAGES ─────────────────────────────────

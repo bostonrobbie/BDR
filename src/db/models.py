@@ -1103,3 +1103,527 @@ def get_experiment_results(experiment_id: str) -> dict:
         },
         "conclusion": conclusion,
     }
+
+
+# ─── EMAIL IDENTITIES ──────────────────────────────────────────
+
+def create_email_identity(data: dict) -> dict:
+    """Create a new email identity (sender account)."""
+    conn = get_db()
+    eid = data.get("id", gen_id("eid"))
+    now = datetime.utcnow().isoformat()
+    conn.execute("""
+        INSERT INTO email_identities (id, email_address, display_name, daily_send_limit,
+            warmup_phase, warmup_daily_cap, is_active, notes, created_at, updated_at)
+        VALUES (?,?,?,?,?,?,?,?,?,?)
+    """, (eid, data["email_address"], data.get("display_name"), data.get("daily_send_limit", 25),
+          data.get("warmup_phase", 1), data.get("warmup_daily_cap", 5),
+          data.get("is_active", 1), data.get("notes"), now, now))
+    conn.commit()
+    row = conn.execute("SELECT * FROM email_identities WHERE id=?", (eid,)).fetchone()
+    conn.close()
+    return dict(row) if row else {}
+
+
+def get_email_identity(identity_id: str) -> Optional[dict]:
+    """Get an email identity by ID."""
+    conn = get_db()
+    row = conn.execute("SELECT * FROM email_identities WHERE id=?", (identity_id,)).fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+
+def list_email_identities(active_only=True) -> list:
+    """List all email identities, optionally filtered to active only."""
+    conn = get_db()
+    query = "SELECT * FROM email_identities"
+    if active_only:
+        query += " WHERE is_active=1"
+    rows = conn.execute(query).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def increment_send_count(identity_id: str) -> dict:
+    """Increment send counters for an email identity."""
+    conn = get_db()
+    conn.execute("""
+        UPDATE email_identities
+        SET total_sent_today = total_sent_today + 1,
+            total_sent_all_time = total_sent_all_time + 1,
+            updated_at = datetime('now')
+        WHERE id=?
+    """, (identity_id,))
+    conn.commit()
+    row = conn.execute("SELECT * FROM email_identities WHERE id=?", (identity_id,)).fetchone()
+    conn.close()
+    return dict(row) if row else {}
+
+
+def reset_daily_counts():
+    """Reset daily send counts for all email identities."""
+    conn = get_db()
+    conn.execute("UPDATE email_identities SET total_sent_today=0, updated_at=datetime('now')")
+    conn.commit()
+    conn.close()
+
+
+# ─── SUPPRESSION LIST ──────────────────────────────────────────
+
+def add_to_suppression(email_address: str, reason: str, source: str = "manual") -> dict:
+    """Add an email address to the suppression list."""
+    conn = get_db()
+    sid = gen_id("sup")
+    try:
+        conn.execute("""
+            INSERT INTO suppression_list (id, email_address, reason, source, added_at)
+            VALUES (?,?,?,?,datetime('now'))
+        """, (sid, email_address.lower().strip(), reason, source))
+        conn.commit()
+    except sqlite3.IntegrityError:
+        conn.close()
+        return {"already_exists": True, "email": email_address}
+    row = conn.execute("SELECT * FROM suppression_list WHERE id=?", (sid,)).fetchone()
+    conn.close()
+    return dict(row)
+
+
+def is_suppressed(email_address: str) -> bool:
+    """Check if an email address is on the suppression list."""
+    conn = get_db()
+    row = conn.execute("SELECT 1 FROM suppression_list WHERE email_address=?",
+                       (email_address.lower().strip(),)).fetchone()
+    conn.close()
+    return row is not None
+
+
+def list_suppressed(limit=100) -> list:
+    """List suppressed email addresses."""
+    conn = get_db()
+    rows = conn.execute("SELECT * FROM suppression_list ORDER BY added_at DESC LIMIT ?", (limit,)).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def remove_from_suppression(email_address: str) -> bool:
+    """Remove an email from the suppression list."""
+    conn = get_db()
+    result = conn.execute("DELETE FROM suppression_list WHERE email_address=?",
+                          (email_address.lower().strip(),))
+    conn.commit()
+    conn.close()
+    return result.rowcount > 0
+
+
+# ─── EMAIL EVENTS ──────────────────────────────────────────────
+
+def log_email_event(data: dict) -> dict:
+    """Log an email event (bounce, opt-out, etc.)."""
+    conn = get_db()
+    eid = gen_id("evt")
+    conn.execute("""
+        INSERT INTO email_events (id, contact_id, email_address, event_type,
+            event_source, details, raw_data, created_at)
+        VALUES (?,?,?,?,?,?,?,datetime('now'))
+    """, (eid, data.get("contact_id"), data.get("email_address"), data["event_type"],
+          data.get("event_source", "manual"), data.get("details"),
+          json.dumps(data.get("raw_data")) if data.get("raw_data") else None))
+    conn.commit()
+    
+    # Auto-add to suppression on hard bounce or opt-out
+    if data["event_type"] in ("hard_bounce", "opt_out", "unsubscribe") and data.get("email_address"):
+        add_to_suppression(data["email_address"], data["event_type"], "auto")
+    
+    row = conn.execute("SELECT * FROM email_events WHERE id=?", (eid,)).fetchone()
+    conn.close()
+    return dict(row)
+
+
+def get_email_events(contact_id: str = None, event_type: str = None, limit=50) -> list:
+    """Get email events, optionally filtered by contact or event type."""
+    conn = get_db()
+    query = "SELECT * FROM email_events WHERE 1=1"
+    params = []
+    if contact_id:
+        query += " AND contact_id=?"
+        params.append(contact_id)
+    if event_type:
+        query += " AND event_type=?"
+        params.append(event_type)
+    query += " ORDER BY created_at DESC LIMIT ?"
+    params.append(limit)
+    rows = conn.execute(query, params).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+# ─── PACING ────────────────────────────────────────────────────
+
+def get_pacing_rules(channel: str = "email") -> list:
+    """Get active pacing rules for a channel."""
+    conn = get_db()
+    rows = conn.execute("SELECT * FROM pacing_rules WHERE channel=? AND is_active=1",
+                        (channel,)).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def check_pacing_ok(identity_id: str) -> dict:
+    """Check if we can send another email given pacing rules."""
+    identity = get_email_identity(identity_id)
+    if not identity:
+        return {"ok": False, "reason": "Identity not found"}
+    
+    rules = get_pacing_rules("email")
+    rule = rules[0] if rules else {"max_per_day": 25, "max_per_hour": 5}
+    
+    # Check daily limit
+    effective_limit = rule.get("max_per_day", 25)
+    if identity.get("warmup_phase"):
+        effective_limit = min(effective_limit, identity.get("warmup_daily_cap", 5))
+    
+    if identity.get("total_sent_today", 0) >= effective_limit:
+        return {"ok": False, "reason": f"Daily limit reached ({effective_limit})",
+                "sent_today": identity["total_sent_today"], "limit": effective_limit}
+    
+    return {"ok": True, "sent_today": identity.get("total_sent_today", 0),
+            "limit": effective_limit, "remaining": effective_limit - identity.get("total_sent_today", 0)}
+
+
+# ─── SWARM RUNS ────────────────────────────────────────────────
+
+def create_swarm_run(swarm_type: str, batch_id: str = None, config: dict = None) -> dict:
+    """Create a new swarm run."""
+    conn = get_db()
+    rid = gen_id("swarm")
+    now = datetime.utcnow().isoformat()
+    conn.execute("""
+        INSERT INTO swarm_runs (id, swarm_type, batch_id, config, status, started_at, created_at)
+        VALUES (?,?,?,?,?,?,?)
+    """, (rid, swarm_type, batch_id, json.dumps(config or {}), "running", now, now))
+    conn.commit()
+    row = conn.execute("SELECT * FROM swarm_runs WHERE id=?", (rid,)).fetchone()
+    conn.close()
+    return dict(row) if row else {}
+
+
+def update_swarm_run(run_id: str, data: dict) -> dict:
+    """Update a swarm run."""
+    conn = get_db()
+    fields = ", ".join(f"{k}=?" for k in data.keys())
+    values = list(data.values()) + [run_id]
+    conn.execute(f"UPDATE swarm_runs SET {fields} WHERE id=?", values)
+    conn.commit()
+    row = conn.execute("SELECT * FROM swarm_runs WHERE id=?", (run_id,)).fetchone()
+    conn.close()
+    return dict(row) if row else {}
+
+
+def get_swarm_run(run_id: str) -> Optional[dict]:
+    """Get a swarm run by ID."""
+    conn = get_db()
+    row = conn.execute("SELECT * FROM swarm_runs WHERE id=?", (run_id,)).fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+
+def list_swarm_runs(limit=20) -> list:
+    """List recent swarm runs."""
+    conn = get_db()
+    rows = conn.execute("SELECT * FROM swarm_runs ORDER BY created_at DESC LIMIT ?", (limit,)).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+# ─── SWARM TASKS ───────────────────────────────────────────────
+
+def create_swarm_task(data: dict) -> dict:
+    """Create a new swarm task within a run."""
+    conn = get_db()
+    tid = gen_id("stask")
+    now = datetime.utcnow().isoformat()
+    dedupe_key = data.get("dedupe_key") or f"{data.get('agent_name')}:{data.get('task_type')}:{data.get('contact_id')}"
+    
+    # Check for duplicate
+    existing = conn.execute("SELECT id FROM swarm_tasks WHERE dedupe_key=? AND status IN ('pending','running','completed')",
+                            (dedupe_key,)).fetchone()
+    if existing:
+        conn.close()
+        return {"duplicate": True, "existing_id": existing[0]}
+    
+    conn.execute("""
+        INSERT INTO swarm_tasks (id, swarm_run_id, agent_name, task_type, contact_id,
+            input_data, output_data, status, dedupe_key, parent_task_id, created_at)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?)
+    """, (tid, data.get("swarm_run_id"), data["agent_name"], data["task_type"],
+          data.get("contact_id"), json.dumps(data.get("input_data", {})),
+          '{}', "pending", dedupe_key, data.get("parent_task_id"), now))
+    conn.commit()
+    row = conn.execute("SELECT * FROM swarm_tasks WHERE id=?", (tid,)).fetchone()
+    conn.close()
+    return dict(row)
+
+
+def update_swarm_task(task_id: str, data: dict) -> dict:
+    """Update a swarm task."""
+    conn = get_db()
+    if "output_data" in data and isinstance(data["output_data"], dict):
+        data["output_data"] = json.dumps(data["output_data"])
+    fields = ", ".join(f"{k}=?" for k in data.keys())
+    values = list(data.values()) + [task_id]
+    conn.execute(f"UPDATE swarm_tasks SET {fields} WHERE id=?", values)
+    conn.commit()
+    row = conn.execute("SELECT * FROM swarm_tasks WHERE id=?", (task_id,)).fetchone()
+    conn.close()
+    return dict(row) if row else {}
+
+
+def get_swarm_tasks(swarm_run_id: str, status: str = None) -> list:
+    """Get tasks in a swarm run, optionally filtered by status."""
+    conn = get_db()
+    query = "SELECT * FROM swarm_tasks WHERE swarm_run_id=?"
+    params = [swarm_run_id]
+    if status:
+        query += " AND status=?"
+        params.append(status)
+    query += " ORDER BY created_at ASC"
+    rows = conn.execute(query, params).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+# ─── QUALITY SCORES ────────────────────────────────────────────
+
+def save_quality_score(data: dict) -> dict:
+    """Save a quality score from the QA agent."""
+    conn = get_db()
+    qid = gen_id("qs")
+    conn.execute("""
+        INSERT INTO quality_scores (id, swarm_task_id, message_draft_id, grounding_score,
+            tone_score, compliance_score, hallucination_flags, overall_pass, reviewer_notes,
+            created_at)
+        VALUES (?,?,?,?,?,?,?,?,?,datetime('now'))
+    """, (qid, data.get("swarm_task_id"), data.get("message_draft_id"),
+          data.get("grounding_score", 0), data.get("tone_score", 0),
+          data.get("compliance_score", 0), json.dumps(data.get("hallucination_flags", [])),
+          data.get("overall_pass", 0), data.get("reviewer_notes")))
+    conn.commit()
+    row = conn.execute("SELECT * FROM quality_scores WHERE id=?", (qid,)).fetchone()
+    conn.close()
+    return dict(row)
+
+
+# ─── FEATURE FLAGS ─────────────────────────────────────────────
+
+def is_feature_enabled(flag_name: str) -> bool:
+    """Check if a feature flag is enabled."""
+    conn = get_db()
+    row = conn.execute("SELECT enabled FROM feature_flags WHERE flag_name=?", (flag_name,)).fetchone()
+    conn.close()
+    return bool(row and row[0])
+
+
+def set_feature_flag(flag_name: str, enabled: bool) -> dict:
+    """Enable or disable a feature flag."""
+    conn = get_db()
+    conn.execute("UPDATE feature_flags SET enabled=?, updated_at=datetime('now') WHERE flag_name=?",
+                 (1 if enabled else 0, flag_name))
+    conn.commit()
+    row = conn.execute("SELECT * FROM feature_flags WHERE flag_name=?", (flag_name,)).fetchone()
+    conn.close()
+    return dict(row) if row else {}
+
+
+def list_feature_flags() -> list:
+    """List all feature flags."""
+    conn = get_db()
+    rows = conn.execute("SELECT * FROM feature_flags ORDER BY flag_name").fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+# ─── DELIVERABILITY ANALYTICS ──────────────────────────────────
+
+def get_email_health() -> dict:
+    """Get email channel health metrics."""
+    conn = get_db()
+
+    total_sent = conn.execute("SELECT COALESCE(SUM(total_sent_all_time),0) FROM email_identities").fetchone()[0]
+    bounces = conn.execute("SELECT COUNT(*) FROM email_events WHERE event_type IN ('hard_bounce','soft_bounce')").fetchone()[0]
+    opt_outs = conn.execute("SELECT COUNT(*) FROM email_events WHERE event_type IN ('opt_out','unsubscribe')").fetchone()[0]
+    suppressed = conn.execute("SELECT COUNT(*) FROM suppression_list").fetchone()[0]
+
+    # Today's sends
+    today_sent = conn.execute("SELECT COALESCE(SUM(total_sent_today),0) FROM email_identities").fetchone()[0]
+
+    # Active identities
+    active_ids = conn.execute("SELECT COUNT(*) FROM email_identities WHERE is_active=1").fetchone()[0]
+
+    conn.close()
+
+    bounce_rate = round(bounces / max(total_sent, 1) * 100, 2)
+    opt_out_rate = round(opt_outs / max(total_sent, 1) * 100, 2)
+
+    return {
+        "total_sent": total_sent,
+        "today_sent": today_sent,
+        "bounces": bounces,
+        "opt_outs": opt_outs,
+        "suppressed_contacts": suppressed,
+        "bounce_rate": bounce_rate,
+        "opt_out_rate": opt_out_rate,
+        "active_identities": active_ids,
+        "health_status": "good" if bounce_rate < 2 and opt_out_rate < 1 else "warning" if bounce_rate < 5 else "critical"
+    }
+
+
+# ─── LINKEDIN CHANNEL SUPPORT ──────────────────────────────────
+
+def get_linkedin_daily_stats(date: str = None) -> dict:
+    """Get LinkedIn InMail stats for a specific date (defaults to today)."""
+    if not date:
+        date = datetime.utcnow().strftime("%Y-%m-%d")
+
+    conn = get_db()
+
+    # Count InMails sent today
+    inmail_sent = conn.execute("""
+        SELECT COUNT(*) FROM touchpoints
+        WHERE channel='linkedin' AND sent_at >= ? AND sent_at < datetime(?, '+1 day')
+    """, (date, date)).fetchone()[0]
+
+    # Count InMail replies today
+    inmail_replies = conn.execute("""
+        SELECT COUNT(*) FROM replies
+        WHERE channel='linkedin' AND replied_at >= ? AND replied_at < datetime(?, '+1 day')
+    """, (date, date)).fetchone()[0]
+
+    # Count connection requests sent today
+    conn_requests = conn.execute("""
+        SELECT COUNT(*) FROM signals
+        WHERE signal_type='linkedin_connection_sent' AND detected_at >= ? AND detected_at < datetime(?, '+1 day')
+    """, (date, date)).fetchone()[0]
+
+    conn.close()
+
+    return {
+        "date": date,
+        "inmails_sent": inmail_sent,
+        "inmails_replied": inmail_replies,
+        "connection_requests": conn_requests,
+        "reply_rate": round(inmail_replies / max(inmail_sent, 1) * 100, 1),
+    }
+
+
+def check_linkedin_pacing(daily_limit: int = 25) -> dict:
+    """Check if we can send another LinkedIn InMail given daily pacing limit.
+
+    Returns dict with 'ok' (bool), 'sent_today', 'limit', 'remaining'.
+    """
+    today = datetime.utcnow().strftime("%Y-%m-%d")
+
+    conn = get_db()
+    sent_today = conn.execute("""
+        SELECT COUNT(*) FROM touchpoints
+        WHERE channel='linkedin' AND sent_at >= ? AND sent_at < datetime(?, '+1 day')
+    """, (today, today)).fetchone()[0]
+    conn.close()
+
+    remaining = max(0, daily_limit - sent_today)
+    return {
+        "ok": sent_today < daily_limit,
+        "sent_today": sent_today,
+        "limit": daily_limit,
+        "remaining": remaining,
+    }
+
+
+def log_linkedin_event(contact_id: str, event_type: str, details: str = None) -> dict:
+    """Log a LinkedIn-specific event (inmail_sent, inmail_viewed, inmail_replied,
+    connection_sent, connection_accepted, profile_viewed).
+
+    Uses the signals table to track LinkedIn channel events.
+    """
+    conn = get_db()
+    sid = gen_id("sig")
+    now = datetime.utcnow().isoformat()
+
+    event_type_map = {
+        "inmail_sent": "linkedin_inmail_sent",
+        "inmail_viewed": "linkedin_inmail_viewed",
+        "inmail_replied": "linkedin_inmail_replied",
+        "connection_sent": "linkedin_connection_sent",
+        "connection_accepted": "linkedin_connection_accepted",
+        "profile_viewed": "linkedin_profile_viewed",
+    }
+
+    signal_type = event_type_map.get(event_type, event_type)
+
+    conn.execute("""
+        INSERT INTO signals (id, contact_id, signal_type, description, detected_at, created_at)
+        VALUES (?,?,?,?,?,?)
+    """, (sid, contact_id, signal_type, details or "", now, now))
+    conn.commit()
+
+    row = conn.execute("SELECT * FROM signals WHERE id=?", (sid,)).fetchone()
+    conn.close()
+    return dict(row) if row else {}
+
+
+def get_linkedin_health() -> dict:
+    """Get LinkedIn channel health metrics (daily/weekly stats, engagement rates)."""
+    today = datetime.utcnow().strftime("%Y-%m-%d")
+    week_ago = (datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d")
+
+    conn = get_db()
+
+    # Today's stats
+    today_stats = get_linkedin_daily_stats(today)
+
+    # Weekly stats
+    week_inmails = conn.execute("""
+        SELECT COUNT(*) FROM touchpoints
+        WHERE channel='linkedin' AND sent_at >= ?
+    """, (week_ago,)).fetchone()[0]
+
+    week_replies = conn.execute("""
+        SELECT COUNT(DISTINCT contact_id) FROM replies
+        WHERE channel='linkedin' AND replied_at >= ?
+    """, (week_ago,)).fetchone()[0]
+
+    # Total LinkedIn touchpoints
+    total_inmails = conn.execute("""
+        SELECT COUNT(*) FROM touchpoints WHERE channel='linkedin'
+    """).fetchone()[0]
+
+    # Connection request acceptance rate (via signals)
+    connections_sent = conn.execute("""
+        SELECT COUNT(*) FROM signals
+        WHERE signal_type='linkedin_connection_sent'
+    """).fetchone()[0]
+
+    connections_accepted = conn.execute("""
+        SELECT COUNT(*) FROM signals
+        WHERE signal_type='linkedin_connection_accepted'
+    """).fetchone()[0]
+
+    conn.close()
+
+    week_reply_rate = round(week_replies / max(week_inmails, 1) * 100, 1)
+    connection_acceptance_rate = round(connections_accepted / max(connections_sent, 1) * 100, 1)
+
+    return {
+        "today": today_stats,
+        "this_week": {
+            "inmails_sent": week_inmails,
+            "replies": week_replies,
+            "reply_rate": week_reply_rate,
+        },
+        "all_time": {
+            "total_inmails": total_inmails,
+            "connections_sent": connections_sent,
+            "connections_accepted": connections_accepted,
+            "connection_acceptance_rate": connection_acceptance_rate,
+        },
+        "health_status": "good" if week_reply_rate >= 1.0 else "warning" if week_reply_rate >= 0.5 else "low",
+    }
