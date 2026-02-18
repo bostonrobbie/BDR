@@ -2669,21 +2669,726 @@ function checkActiveRuns() {
     });
 }
 
-// STUB: Remaining functions simplified (will need full implementation from original)
-async function loadActivity() { /* implement */ }
-async function loadFlows() { /* implement */ }
-async function loadApprovalQueue() { /* implement */ }
-async function loadAccounts() { /* implement */ }
-async function loadContacts() { /* implement */ }
-async function loadDrafts() { /* implement */ }
-async function loadIntelligence() { /* implement */ }
-async function loadExperiments() { /* implement */ }
-async function loadSignals() { /* implement */ }
-async function loadAgentRuns() { /* implement */ }
-async function loadEmailPage() { /* implement */ }
-async function loadSwarmPage() { /* implement */ }
-async function loadHealthPage() { /* implement */ }
-async function loadSettings() { /* implement */ }
+// ACTIVITY PAGE
+async function loadActivity() {
+    const channel = document.getElementById('activity-channel')?.value || '';
+    const search = document.getElementById('activity-search')?.value || '';
+    const url = `/api/activity${channel || search ? '?' : ''}${channel ? `channel=${channel}` : ''}${channel && search ? '&' : ''}${search ? `search=${search}` : ''}`;
+
+    const data = await api(url);
+    const kpisEl = document.getElementById('activity-kpis');
+    const tlEl = document.getElementById('activity-timeline');
+
+    if (!data || !data.length) {
+        if (kpisEl) kpisEl.innerHTML = '';
+        if (tlEl) tlEl.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><strong>No activity</strong><br>Start your outreach campaign.</div>';
+        return;
+    }
+
+    if (kpisEl) kpisEl.innerHTML = [
+        kpi('Total', data.length),
+        kpi('Channels', [...new Set(data.map(d => d.channel))].length),
+        kpi('Contacts', [...new Set(data.map(d => d.contact_id))].length),
+    ].join('');
+
+    if (tlEl) tlEl.innerHTML = data.map(a => `
+        <div style="display:flex;gap:12px;padding:12px;border:1px solid var(--border);border-radius:6px;margin-bottom:8px;">
+            <div style="flex:1;">
+                <div><strong>${a.contact_name || 'Unknown'}</strong> <span class="tag" style="font-size:11px;">${a.channel || 'email'}</span></div>
+                <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">${a.company || ''}</div>
+                <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">${a.action || ''}</div>
+                ${a.details ? `<div style="font-size:11px;color:var(--text-muted);margin-top:4px;font-style:italic;">${a.details}</div>` : ''}
+            </div>
+            <div style="text-align:right;font-size:12px;color:var(--text-secondary);">${timeAgo(a.created_at)}</div>
+        </div>
+    `).join('');
+}
+
+// FLOWS PAGE
+async function loadFlows() {
+    const [catalog, runs] = await Promise.all([
+        api('/api/flows/catalog'),
+        api('/api/flows/runs')
+    ]);
+
+    const grid = document.getElementById('flow-cards-grid');
+    const tbody = document.getElementById('flows-runs-body');
+
+    if (grid) {
+        if (!catalog || !catalog.length) {
+            grid.innerHTML = '<div class="empty"><div class="empty-icon">🔄</div><strong>No flows</strong><br>Create a flow to get started.</div>';
+        } else {
+            grid.innerHTML = catalog.map(f => `
+                <div class="card" style="min-height:180px;display:flex;flex-direction:column;">
+                    <div style="flex:1;">
+                        <h3 style="margin-top:0;">${f.name || 'Untitled'}</h3>
+                        <p style="color:var(--text-secondary);font-size:13px;margin:8px 0;">${f.description || ''}</p>
+                        <div style="font-size:12px;color:var(--text-muted);">${f.steps || 0} steps</div>
+                    </div>
+                    <button class="btn btn-primary btn-sm" style="width:100%;margin-top:12px;">Launch Flow</button>
+                </div>
+            `).join('');
+        }
+    }
+
+    if (tbody) {
+        if (!runs || !runs.length) {
+            tbody.innerHTML = '<tr><td colspan="6"><div class="empty">No runs yet</div></td></tr>';
+        } else {
+            tbody.innerHTML = runs.map(r => `
+                <tr>
+                    <td>${r.flow_type || ''}</td>
+                    <td><span class="badge-${r.status === 'completed' ? 'gn' : r.status === 'running' ? 'bl' : 'yw'}">${r.status || 'unknown'}</span></td>
+                    <td>${r.steps_completed || 0}/${r.total_steps || 0}</td>
+                    <td>${r.duration_seconds || 0}s</td>
+                    <td style="font-size:12px;">${timeAgo(r.started_at)}</td>
+                </tr>
+            `).join('');
+        }
+    }
+}
+
+// APPROVAL QUEUE
+async function loadApprovalQueue() {
+    const status = document.getElementById('approval-filter')?.value || 'pending';
+    const data = await api(`/api/drafts?status=${status}`);
+
+    const el = document.getElementById('approval-queue');
+    const count = document.getElementById('approval-count');
+
+    if (!data || !data.length) {
+        if (el) el.innerHTML = '<div class="empty"><div class="empty-icon">✅</div><strong>All set!</strong><br>No pending approvals.</div>';
+        if (count) count.textContent = '0';
+        return;
+    }
+
+    if (count) count.textContent = data.length;
+    if (el) el.innerHTML = data.map(m => `
+        <div class="card" style="margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px;">
+                <div>
+                    <h3 style="margin:0;font-size:15px;">${m.subject || '(no subject)'}</h3>
+                    <div style="font-size:12px;color:var(--text-secondary);">${m.contact_name || 'Unknown'} • ${m.channel || 'email'}</div>
+                </div>
+                <span class="tag">${m.touch_number || 1}</span>
+            </div>
+            <div style="background:var(--bg-secondary);padding:10px;border-radius:4px;font-size:13px;margin-bottom:12px;max-height:80px;overflow:hidden;color:var(--text-secondary);">
+                ${m.body || '(no preview)'}
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-sm" onclick="showToast('Rejected', 'success')">Reject</button>
+                <button class="btn btn-sm btn-primary" onclick="showToast('Approved', 'success')">Approve</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ACCOUNTS PAGE
+async function loadAccounts() {
+    const search = document.getElementById('accounts-search')?.value || '';
+    let data = await api(`/api/accounts${search ? '?search=' + search : ''}`);
+    if (!data || !data.length) data = [];
+
+    const tbody = document.getElementById('accounts-body');
+    if (!data.length) {
+        tbody.innerHTML = '<tr><td colspan="8"><div class="empty">No accounts</div></td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = data.map(a => {
+        const intentClass = (a.intent_score || 0) >= 4 ? 'tag-hot' : (a.intent_score || 0) >= 3 ? 'tag-warm' : 'tag-std';
+        return `<tr>
+            <td><strong>${a.name || ''}</strong></td>
+            <td style="font-size:12px;">${a.domain || ''}</td>
+            <td style="font-size:12px;">${a.industry || ''}</td>
+            <td style="font-size:12px;">${a.employee_count || '-'}</td>
+            <td><span class="tag">${a.tier || 'standard'}</span></td>
+            <td><span class="tag ${intentClass}">${a.intent_score || 0}</span></td>
+            <td style="font-size:12px;">${a.contact_count || 0} contacts</td>
+            <td><button class="btn btn-sm" onclick="showToast('Opening account detail', 'success')">View</button></td>
+        </tr>`;
+    }).join('');
+}
+
+// CONTACTS PAGE
+async function loadContacts() {
+    const pri = document.getElementById('c-priority')?.value || '';
+    const persona = document.getElementById('c-persona')?.value || '';
+    const email = document.getElementById('c-email')?.value || '';
+    const search = document.getElementById('c-search')?.value || '';
+
+    let data = await api('/api/contacts?limit=500');
+    data = data?.contacts || data || [];
+
+    let filtered = data;
+    if (pri) filtered = filtered.filter(c => (c.priority_score || 0) >= parseInt(pri));
+    if (persona) filtered = filtered.filter(c => c.persona_type === persona);
+    if (email) filtered = filtered.filter(c => c.email_status === email);
+    if (search) {
+        const q = search.toLowerCase();
+        filtered = filtered.filter(c =>
+            `${c.first_name} ${c.last_name} ${c.title} ${c.company_name}`.toLowerCase().includes(q));
+    }
+
+    const count = document.getElementById('contacts-count');
+    const tbody = document.getElementById('contacts-body');
+
+    if (count) count.textContent = `${filtered.length} contacts`;
+    if (!filtered.length) {
+        tbody.innerHTML = '<tr><td colspan="9"><div class="empty">No contacts match filters</div></td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = filtered.map(c => {
+        const pri = c.priority_score || 0;
+        const priClass = pri >= 5 ? 'tag-hot' : pri >= 4 ? 'tag-warm' : 'tag-std';
+        const persona = c.persona_type === 'qa_leader' ? 'tag-qa' : 'tag-vp';
+        return `<tr onclick="openDetail('${c.id}')">
+            <td><strong>${c.first_name} ${c.last_name}</strong></td>
+            <td style="font-size:12px;">${c.title || ''}</td>
+            <td style="font-size:12px;">${c.company_name || ''}</td>
+            <td style="font-size:12px;">${c.email || ''}</td>
+            <td><span class="tag ${priClass}">${pri}</span></td>
+            <td><span class="tag ${persona}">${c.persona_type || 'unknown'}</span></td>
+            <td style="font-size:12px;">${c.stage || 'new'}</td>
+            <td style="font-size:12px;">${c.personalization_score || '-'}</td>
+            <td><button class="btn btn-sm" onclick="event.stopPropagation(); openDetail('${c.id}')">Open</button></td>
+        </tr>`;
+    }).join('');
+}
+
+// DRAFTS PAGE
+async function loadDrafts() {
+    const channel = document.getElementById('drafts-channel')?.value || '';
+    const status = document.getElementById('drafts-status')?.value || '';
+    const search = document.getElementById('drafts-search')?.value || '';
+
+    const url = `/api/drafts${channel || status || search ? '?' : ''}${channel ? `channel=${channel}` : ''}${channel && (status || search) ? '&' : ''}${status ? `status=${status}` : ''}${(channel || status) && search ? '&' : ''}${search ? `search=${search}` : ''}`;
+
+    const data = await api(url);
+    const kpisEl = document.getElementById('drafts-kpis');
+    const listEl = document.getElementById('drafts-list');
+
+    if (!data || !data.length) {
+        if (kpisEl) kpisEl.innerHTML = '';
+        if (listEl) listEl.innerHTML = '<div class="empty"><div class="empty-icon">✍️</div><strong>No drafts</strong><br>Start writing messages.</div>';
+        return;
+    }
+
+    const draft = data.filter(d => d.status === 'draft').length;
+    const approved = data.filter(d => d.status === 'approved').length;
+    const sent = data.filter(d => d.status === 'sent').length;
+
+    if (kpisEl) kpisEl.innerHTML = [
+        kpi('Drafts', draft),
+        kpi('Approved', approved),
+        kpi('Sent', sent),
+    ].join('');
+
+    if (listEl) listEl.innerHTML = data.map(m => {
+        const statusBadge = m.status === 'sent' ? 'badge-gn' : m.status === 'approved' ? 'badge-bl' : 'badge-yw';
+        return `
+            <div class="card" style="margin-bottom:12px;">
+                <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px;">
+                    <div>
+                        <h3 style="margin:0;font-size:15px;">${m.subject || '(no subject)'}</h3>
+                        <div style="font-size:12px;color:var(--text-secondary);">${m.contact_name || 'Unknown'} • ${m.channel || 'email'} • Touch ${m.touch_number || 1}</div>
+                    </div>
+                    <span class="${statusBadge}">${m.status || 'draft'}</span>
+                </div>
+                <div style="background:var(--bg-secondary);padding:10px;border-radius:4px;font-size:13px;margin-bottom:12px;max-height:60px;overflow:hidden;color:var(--text-secondary);">
+                    ${m.body || '(no preview)'}
+                </div>
+                <div style="font-size:11px;color:var(--text-muted);">${timeAgo(m.created_at)}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+// INTELLIGENCE PAGE
+async function loadIntelligence() {
+    const [persona, vertical, proof, pscore, expt, topMsgs, trend] = await Promise.all([
+        api('/api/analytics/reply-rates?group=persona'),
+        api('/api/analytics/reply-rates?group=vertical'),
+        api('/api/analytics/reply-rates?group=proof_point'),
+        api('/api/analytics/reply-rates?group=personalization_score'),
+        api('/api/analytics/experiments'),
+        api('/api/analytics/top-messages'),
+        api('/api/analytics/trends')
+    ]);
+
+    const kpisEl = document.getElementById('intel-kpis');
+    if (kpisEl) {
+        const overall = persona && persona.overall ? persona.overall : {};
+        kpisEl.innerHTML = [
+            kpi('Reply Rate', `${(overall.rate || 0).toFixed(1)}%`),
+            kpi('Total Touches', overall.touches || 0),
+            kpi('Total Replies', overall.replies || 0),
+        ].join('');
+    }
+
+    // Persona chart
+    if (persona && persona.length) {
+        if (charts['intel-persona']) charts['intel-persona'].destroy();
+        charts['intel-persona'] = new Chart(document.getElementById('intel-persona'), {
+            type: 'bar', data: {
+                labels: persona.map(p => p.persona || 'unknown'),
+                datasets: [{label: 'Reply Rate %', data: persona.map(p => p.rate || 0), backgroundColor: '#6366f1', borderRadius: 4}]
+            }, options: {
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { beginAtZero: true, grid: { color: '#1e2030' }, ticks: { color: '#94a3b8' } },
+                    y: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                }
+            }
+        });
+    }
+
+    // Vertical chart
+    if (vertical && vertical.length) {
+        if (charts['intel-vertical']) charts['intel-vertical'].destroy();
+        charts['intel-vertical'] = new Chart(document.getElementById('intel-vertical'), {
+            type: 'bar', data: {
+                labels: vertical.map(v => v.vertical || 'unknown'),
+                datasets: [{label: 'Reply Rate %', data: vertical.map(v => v.rate || 0), backgroundColor: '#10b981', borderRadius: 4}]
+            }, options: {
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { beginAtZero: true, grid: { color: '#1e2030' }, ticks: { color: '#94a3b8' } },
+                    y: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                }
+            }
+        });
+    }
+
+    // Proof point chart
+    if (proof && proof.length) {
+        if (charts['intel-proof']) charts['intel-proof'].destroy();
+        charts['intel-proof'] = new Chart(document.getElementById('intel-proof'), {
+            type: 'bar', data: {
+                labels: proof.map(p => p.proof_point || 'unknown').slice(0, 6),
+                datasets: [{label: 'Reply Rate %', data: proof.map(p => p.rate || 0).slice(0, 6), backgroundColor: '#f59e0b', borderRadius: 4}]
+            }, options: {
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { beginAtZero: true, grid: { color: '#1e2030' }, ticks: { color: '#94a3b8' } },
+                    y: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } }
+                }
+            }
+        });
+    }
+
+    // Personalization score chart
+    if (pscore && pscore.length) {
+        if (charts['intel-pscore']) charts['intel-pscore'].destroy();
+        charts['intel-pscore'] = new Chart(document.getElementById('intel-pscore'), {
+            type: 'bar', data: {
+                labels: pscore.map(p => 'Score ' + (p.score || '?')),
+                datasets: [{label: 'Reply Rate %', data: pscore.map(p => p.rate || 0), backgroundColor: '#8b5cf6', borderRadius: 4}]
+            }, options: {
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { beginAtZero: true, grid: { color: '#1e2030' }, ticks: { color: '#94a3b8' } },
+                    y: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                }
+            }
+        });
+    }
+
+    // Top messages
+    const topEl = document.getElementById('intel-top-messages');
+    if (topEl) {
+        if (!topMsgs || !topMsgs.length) {
+            topEl.innerHTML = '<div class="empty">No messages yet</div>';
+        } else {
+            topEl.innerHTML = topMsgs.slice(0, 5).map((m, i) => `
+                <div style="padding:12px;border-bottom:1px solid var(--border);${i === topMsgs.length - 1 ? 'border:none;' : ''}">
+                    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:4px;">
+                        <strong style="font-size:13px;">${m.subject || '(no subject)'}</strong>
+                        <span style="font-size:12px;color:var(--accent);">${m.reply_count || 0} replies</span>
+                    </div>
+                    <div style="font-size:11px;color:var(--text-secondary);">${m.contact_name || ''}</div>
+                </div>
+            `).join('');
+        }
+    }
+}
+
+// EXPERIMENTS PAGE
+async function loadExperiments() {
+    const data = await api('/api/experiments');
+    const el = document.getElementById('experiments-list');
+    const chartEl = document.getElementById('ab-head-to-head');
+
+    if (!data || !data.length) {
+        if (el) el.innerHTML = '<div class="empty"><div class="empty-icon">🧪</div><strong>No experiments</strong><br>Create an A/B test to get started.</div>';
+        return;
+    }
+
+    if (el) {
+        el.innerHTML = data.map(e => `
+            <div class="card" style="margin-bottom:12px;">
+                <h3 style="margin-top:0;">${e.name || 'Untitled'}</h3>
+                <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;">Variable: <strong>${e.variable || 'unknown'}</strong></div>
+                <div style="display:flex;gap:12px;margin-bottom:12px;">
+                    <div style="flex:1;background:var(--bg-secondary);padding:10px;border-radius:4px;">
+                        <div style="font-size:11px;color:var(--text-secondary);">Group A</div>
+                        <div style="font-size:13px;font-weight:600;">${e.group_a || ''}</div>
+                        <div style="font-size:12px;color:var(--accent);margin-top:4px;">${e.group_a_rate || 0}%</div>
+                    </div>
+                    <div style="flex:1;background:var(--bg-secondary);padding:10px;border-radius:4px;">
+                        <div style="font-size:11px;color:var(--text-secondary);">Group B</div>
+                        <div style="font-size:13px;font-weight:600;">${e.group_b || ''}</div>
+                        <div style="font-size:12px;color:var(--accent);margin-top:4px;">${e.group_b_rate || 0}%</div>
+                    </div>
+                </div>
+                <span class="badge-${e.status === 'active' ? 'bl' : e.status === 'complete' ? 'gn' : 'yw'}">${e.status || 'unknown'}</span>
+            </div>
+        `).join('');
+    }
+
+    if (chartEl && data.length) {
+        if (charts['ab-head-to-head']) charts['ab-head-to-head'].destroy();
+        charts['ab-head-to-head'] = new Chart(chartEl, {
+            type: 'bar', data: {
+                labels: data.slice(0, 8).map(e => e.name || 'Exp'),
+                datasets: [
+                    {label: 'Group A %', data: data.slice(0, 8).map(e => e.group_a_rate || 0), backgroundColor: '#6366f1', borderRadius: 4},
+                    {label: 'Group B %', data: data.slice(0, 8).map(e => e.group_b_rate || 0), backgroundColor: '#10b981', borderRadius: 4}
+                ]
+            }, options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: true, position: 'top' } },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#1e2030' }, ticks: { color: '#94a3b8' } },
+                    x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                }
+            }
+        });
+    }
+}
+
+// SIGNALS PAGE
+async function loadSignals() {
+    const data = await api('/api/signals');
+    const filter = document.getElementById('sig-filter')?.value || '';
+    const showActioned = document.getElementById('sig-show-actioned')?.checked;
+
+    let filtered = data || [];
+    if (filter) filtered = filtered.filter(s => s.signal_type === filter);
+    if (!showActioned) filtered = filtered.filter(s => !s.actioned);
+
+    const el = document.getElementById('signals-list');
+    if (!filtered.length) {
+        el.innerHTML = '<div class="empty"><div class="empty-icon">🎯</div><strong>No signals</strong><br>Signals will appear when triggered.</div>';
+        return;
+    }
+
+    el.innerHTML = filtered.map(s => `
+        <div class="card" style="margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:start;">
+                <div style="flex:1;">
+                    <h3 style="margin:0;font-size:14px;">${s.contact_name || 'Unknown'}</h3>
+                    <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">${s.signal_type || 'signal'}</div>
+                    <div style="font-size:13px;margin-top:8px;">${s.description || ''}</div>
+                </div>
+                <div style="text-align:right;">
+                    ${s.actioned ? '<span class="badge-gn">Actioned</span>' : '<button class="btn btn-sm btn-primary" onclick="showToast(\'Signal actioned\', \'success\')">Act</button>'}
+                </div>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:8px;">${timeAgo(s.detected_at)}</div>
+        </div>
+    `).join('');
+}
+
+// AGENT RUNS PAGE
+async function loadAgentRuns() {
+    const data = await api('/api/agent-runs');
+    const tbody = document.getElementById('agent-runs-body');
+
+    if (!data || !data.length) {
+        tbody.innerHTML = '<tr><td colspan="6"><div class="empty">No agent runs</div></td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = data.slice(0, 50).map(r => {
+        const statusClass = r.status === 'completed' ? 'badge-gn' : r.status === 'running' ? 'badge-bl' : 'badge-yw';
+        return `<tr>
+            <td>${r.agent_name || ''}</td>
+            <td>${r.run_type || ''}</td>
+            <td><span class="${statusClass}">${r.status || 'unknown'}</span></td>
+            <td style="font-size:12px;">${r.tokens_used || 0} tokens</td>
+            <td style="font-size:12px;">${r.duration_seconds || 0}s</td>
+            <td style="font-size:12px;">${timeAgo(r.started_at)}</td>
+        </tr>`;
+    }).join('');
+}
+
+// EMAIL PAGE
+async function loadEmailPage() {
+    const [health, identities, suppression, events, pacing] = await Promise.all([
+        api('/api/email/health'),
+        api('/api/email/identities'),
+        api('/api/email/suppression'),
+        api('/api/email/events'),
+        api('/api/email/pacing')
+    ]);
+
+    const kpisEl = document.getElementById('email-kpis');
+    if (kpisEl && health) {
+        kpisEl.innerHTML = [
+            kpi('Sent', health.total_sent || 0),
+            kpi('Delivered', health.delivered || 0),
+            kpi('Bounce Rate', `${(health.bounce_rate || 0).toFixed(1)}%`),
+            kpi('Suppressed', health.suppressed_count || 0),
+        ].join('');
+    }
+
+    // Identities tab
+    const idEl = document.getElementById('email-tab-identities');
+    if (idEl) {
+        if (!identities || !identities.length) {
+            idEl.innerHTML = '<div class="empty">No sender identities configured</div>';
+        } else {
+            idEl.innerHTML = identities.map(id => `
+                <div style="padding:12px;border:1px solid var(--border);border-radius:6px;margin-bottom:8px;">
+                    <div><strong>${id.email || ''}</strong></div>
+                    <div style="font-size:12px;color:var(--text-secondary);">${id.domain || ''}</div>
+                    <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">SPF: ${id.spf ? '✓' : '✗'} • DKIM: ${id.dkim ? '✓' : '✗'} • DMARC: ${id.dmarc ? '✓' : '✗'}</div>
+                </div>
+            `).join('');
+        }
+    }
+
+    // Suppression tab
+    const supEl = document.getElementById('email-tab-suppression');
+    if (supEl && suppression) {
+        supEl.innerHTML = `
+            <div style="padding:12px;background:var(--bg-secondary);border-radius:6px;margin-bottom:12px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                    <span style="color:var(--text-secondary);">Bounced</span>
+                    <strong>${suppression.bounced || 0}</strong>
+                </div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                    <span style="color:var(--text-secondary);">Complained</span>
+                    <strong>${suppression.complained || 0}</strong>
+                </div>
+                <div style="display:flex;justify-content:space-between;">
+                    <span style="color:var(--text-secondary);">Unsubscribed</span>
+                    <strong>${suppression.unsubscribed || 0}</strong>
+                </div>
+            </div>
+        `;
+    }
+
+    // Events tab
+    const evEl = document.getElementById('email-tab-events');
+    if (evEl && events && events.length) {
+        evEl.innerHTML = events.slice(0, 10).map(e => `
+            <div style="padding:8px;border-bottom:1px solid var(--border);font-size:12px;">
+                <div style="display:flex;justify-content:space-between;">
+                    <strong>${e.event_type || ''}</strong>
+                    <span style="color:var(--text-secondary);">${timeAgo(e.timestamp)}</span>
+                </div>
+                ${e.email ? `<div style="color:var(--text-secondary);">${e.email}</div>` : ''}
+            </div>
+        `).join('');
+    }
+
+    // Pacing tab
+    const pacEl = document.getElementById('email-tab-pacing');
+    if (pacEl && pacing) {
+        pacEl.innerHTML = `
+            <div style="padding:12px;background:var(--bg-secondary);border-radius:6px;">
+                <div style="margin-bottom:12px;">
+                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">Emails per hour</div>
+                    <strong>${pacing.per_hour || 0}</strong>
+                </div>
+                <div style="margin-bottom:12px;">
+                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">Emails per day</div>
+                    <strong>${pacing.per_day || 0}</strong>
+                </div>
+                <div>
+                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">Current burst</div>
+                    <strong>${pacing.burst_size || 0}</strong>
+                </div>
+            </div>
+        `;
+    }
+}
+
+// SWARM PAGE
+async function loadSwarmPage() {
+    const [runs, tasks] = await Promise.all([
+        api('/api/swarm/runs'),
+        api('/api/swarm/tasks')
+    ]);
+
+    const kpisEl = document.getElementById('swarm-kpis');
+    if (kpisEl && runs) {
+        const active = runs.filter(r => r.status === 'running').length;
+        const completed = runs.filter(r => r.status === 'completed').length;
+        kpisEl.innerHTML = [
+            kpi('Active', active),
+            kpi('Completed', completed),
+            kpi('Total', runs.length || 0),
+        ].join('');
+    }
+
+    const histEl = document.getElementById('swarm-history');
+    if (histEl) {
+        if (!runs || !runs.length) {
+            histEl.innerHTML = '<div class="empty">No swarm runs yet</div>';
+        } else {
+            histEl.innerHTML = runs.slice(0, 20).map(r => `
+                <div style="padding:12px;border:1px solid var(--border);border-radius:6px;margin-bottom:8px;">
+                    <div style="display:flex;justify-content:space-between;align-items:start;">
+                        <div>
+                            <h3 style="margin:0;font-size:14px;">${r.name || 'Swarm Run'}</h3>
+                            <div style="font-size:12px;color:var(--text-secondary);">${r.task_count || 0} tasks</div>
+                        </div>
+                        <span class="badge-${r.status === 'completed' ? 'gn' : r.status === 'running' ? 'bl' : 'yw'}">${r.status || 'unknown'}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+}
+
+// HEALTH PAGE
+async function loadHealthPage() {
+    const [health, flags, errors, insights] = await Promise.all([
+        api('/api/health'),
+        api('/api/feature-flags'),
+        api('/api/errors'),
+        api('/api/insights/daily')
+    ]);
+
+    const kpisEl = document.getElementById('health-kpis');
+    if (kpisEl && health) {
+        kpisEl.innerHTML = [
+            kpi('Status', health.status === 'healthy' ? '✓ Healthy' : '✗ Issues'),
+            kpi('Tables', health.tables ? Object.keys(health.tables).length : 0),
+            kpi('Uptime', health.uptime ? (health.uptime.toFixed(2) + '%') : '-'),
+        ].join('');
+    }
+
+    const flagEl = document.getElementById('feature-flags');
+    if (flagEl) {
+        if (!flags || !flags.length) {
+            flagEl.innerHTML = '<div class="empty">No feature flags</div>';
+        } else {
+            flagEl.innerHTML = flags.map(f => `
+                <div style="padding:10px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <strong>${f.name || ''}</strong>
+                        ${f.description ? `<div style="font-size:11px;color:var(--text-secondary);">${f.description}</div>` : ''}
+                    </div>
+                    <span class="badge-${f.enabled ? 'gn' : 'rd'}">
+                        ${f.enabled ? 'ON' : 'OFF'}
+                    </span>
+                </div>
+            `).join('');
+        }
+    }
+
+    const tableEl = document.getElementById('table-counts');
+    if (tableEl && health && health.tables) {
+        const tables = Object.entries(health.tables);
+        tableEl.innerHTML = tables.map(([name, count]) => `
+            <div style="padding:10px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;">
+                <span style="color:var(--text-secondary);">${name}</span>
+                <strong>${count || 0}</strong>
+            </div>
+        `).join('');
+    }
+
+    const errEl = document.getElementById('recent-errors');
+    if (errEl) {
+        if (!errors || !errors.length) {
+            errEl.innerHTML = '<div class="empty">No recent errors</div>';
+        } else {
+            errEl.innerHTML = errors.slice(0, 10).map(e => `
+                <div style="padding:8px;border-bottom:1px solid var(--border);font-size:12px;">
+                    <strong>${e.error_type || 'Error'}</strong>
+                    <div style="color:var(--text-secondary);margin-top:2px;">${e.message || ''}</div>
+                    <div style="color:var(--text-muted);font-size:11px;margin-top:2px;">${timeAgo(e.timestamp)}</div>
+                </div>
+            `).join('');
+        }
+    }
+
+    const insEl = document.getElementById('daily-insights');
+    if (insEl && insights) {
+        insEl.innerHTML = `
+            <div style="padding:12px;background:var(--bg-secondary);border-radius:6px;font-size:13px;line-height:1.6;">
+                ${insights.summary || 'No insights available'}
+            </div>
+        `;
+    }
+}
+
+// SETTINGS PAGE
+async function loadSettings() {
+    const [health, flags, checklist, identities] = await Promise.all([
+        api('/api/health'),
+        api('/api/feature-flags'),
+        api('/api/sender-health/checklist'),
+        api('/api/email/identities')
+    ]);
+
+    // Email checklist
+    const chkEl = document.getElementById('sender-health-checklist');
+    if (chkEl && checklist) {
+        chkEl.innerHTML = (checklist.items || []).map(item => `
+            <div style="padding:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+                <input type="checkbox" ${item.completed ? 'checked' : ''} />
+                <span>${item.name || ''}</span>
+            </div>
+        `).join('');
+    }
+
+    // Sender identities
+    const idEl = document.getElementById('sender-identities-list');
+    if (idEl && identities && identities.length) {
+        idEl.innerHTML = identities.map(id => `
+            <div style="padding:10px;border:1px solid var(--border);border-radius:6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                    <strong>${id.email || ''}</strong>
+                    <div style="font-size:11px;color:var(--text-secondary);">${id.domain || ''}</div>
+                </div>
+                <span class="badge-gn">Active</span>
+            </div>
+        `).join('');
+    }
+
+    // Feature flags
+    const flagEl = document.getElementById('settings-flags-list');
+    if (flagEl && flags && flags.length) {
+        flagEl.innerHTML = flags.map(f => `
+            <div style="padding:10px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+                <strong>${f.name || ''}</strong>
+                <span class="badge-${f.enabled ? 'gn' : 'rd'}">${f.enabled ? 'ON' : 'OFF'}</span>
+            </div>
+        `).join('');
+    }
+
+    // Table counts
+    const tableEl = document.getElementById('settings-table-counts');
+    if (tableEl && health && health.tables) {
+        const tables = Object.entries(health.tables);
+        tableEl.innerHTML = tables.map(([name, count]) => `
+            <div style="padding:10px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;">
+                <span style="color:var(--text-secondary);">${name}</span>
+                <strong>${count || 0}</strong>
+            </div>
+        `).join('');
+    }
+}
 
 function showExportModal() { document.getElementById('export-modal').classList.add('show'); }
 function closeExportModal() { document.getElementById('export-modal').classList.remove('show'); }
@@ -2700,7 +3405,14 @@ function addContact() { showToast('Contact added', 'success'); }
 function showImportContactsModal() { document.getElementById('import-contacts-modal').style.display = 'flex'; }
 function closeImportContactsModal() { document.getElementById('import-contacts-modal').style.display = 'none'; }
 function importContacts() { showToast('Contacts imported', 'success'); }
-function showImportTab(tab) { /* implement */ }
+
+function showImportTab(tab) {
+    document.getElementById('import-tab-paste').style.display = tab === 'paste' ? 'block' : 'none';
+    document.getElementById('import-tab-csv').style.display = tab === 'csv' ? 'block' : 'none';
+    document.querySelectorAll('#import-contacts-modal .tab-item').forEach((e, i) => {
+        e.classList.toggle('active', (i === 0 && tab === 'paste') || (i === 1 && tab === 'csv'));
+    });
+}
 
 function showAddSignalForm() { document.getElementById('add-signal-form').style.display = 'block'; }
 function addSignal() { showToast('Signal created', 'success'); }
@@ -2713,7 +3425,12 @@ function addSuppression() { showToast('Email suppressed', 'success'); }
 function showLaunchSwarm() { document.getElementById('launch-swarm-modal').style.display = 'flex'; }
 function launchSwarm() { showToast('Swarm launched', 'success'); }
 
-function showEmailTab(tab, btn) { /* implement */ }
+function showEmailTab(tab, btn) {
+    document.querySelectorAll('#email-tab-identities,#email-tab-suppression,#email-tab-events,#email-tab-pacing').forEach(e => e.style.display = 'none');
+    document.getElementById('email-tab-' + tab).style.display = 'block';
+    document.querySelectorAll('#page-email .tab-item').forEach(e => e.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+}
 function showIntelTab(tab) {
     document.querySelectorAll('#intel-tab-breakdowns,#intel-tab-trends,#intel-tab-ab,#intel-tab-top').forEach(e => e.classList.remove('active'));
     document.getElementById('intel-tab-' + tab).classList.add('active');
