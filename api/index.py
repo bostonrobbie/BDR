@@ -18,7 +18,7 @@ os.environ["OCC_DB_PATH"] = "/tmp/outreach.db"
 project_root = os.path.join(os.path.dirname(__file__), "..")
 sys.path.insert(0, project_root)
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Header, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -328,6 +328,7 @@ CREATE TABLE IF NOT EXISTS contact_identities (
 
 CREATE INDEX IF NOT EXISTS idx_contacts_account ON contacts(account_id);
 CREATE INDEX IF NOT EXISTS idx_contacts_stage ON contacts(stage);
+CREATE INDEX IF NOT EXISTS idx_contacts_persona ON contacts(persona_type);
 CREATE INDEX IF NOT EXISTS idx_contacts_priority ON contacts(priority_score DESC);
 CREATE INDEX IF NOT EXISTS idx_messages_contact ON message_drafts(contact_id);
 CREATE INDEX IF NOT EXISTS idx_messages_batch ON message_drafts(batch_id);
@@ -335,8 +336,10 @@ CREATE INDEX IF NOT EXISTS idx_touchpoints_contact ON touchpoints(contact_id);
 CREATE INDEX IF NOT EXISTS idx_replies_contact ON replies(contact_id);
 CREATE INDEX IF NOT EXISTS idx_signals_account ON signals(account_id);
 CREATE INDEX IF NOT EXISTS idx_flow_runs_status ON flow_runs(status);
+CREATE INDEX IF NOT EXISTS idx_flow_steps_run ON flow_run_steps(flow_run_id);
 CREATE INDEX IF NOT EXISTS idx_activity_contact ON activity_timeline(contact_id);
 CREATE INDEX IF NOT EXISTS idx_draft_versions_draft ON draft_versions(draft_id);
+CREATE INDEX IF NOT EXISTS idx_drafts_contact ON draft_versions(contact_id);
 CREATE INDEX IF NOT EXISTS idx_sender_health_identity ON sender_health_snapshots(identity_id);
 """
 
@@ -725,6 +728,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ─── API KEY AUTHENTICATION ────────────────────────────────────────────────
+API_KEY = os.environ.get("OCC_API_KEY", "")  # Empty = no auth required (dev mode)
+
+async def verify_api_key(x_api_key: str = Header(None)):
+    """Verify API key for sensitive endpoints. Empty API_KEY = auth disabled."""
+    if API_KEY and x_api_key != API_KEY:
+        raise HTTPException(401, "Invalid API key")
+    return True
 
 # Helper
 def rows_to_dicts(rows):
@@ -1715,6 +1727,11 @@ def import_contacts(data: dict):
         raise HTTPException(400, str(e))
 
 # ─── Analytics: Pipeline Funnel ───────────────────────────
+@app.get("/api/intelligence")
+def intelligence():
+    """Alias for analytics_reply_rates - main intelligence dashboard."""
+    return analytics_reply_rates()
+
 @app.get("/api/analytics/pipeline")
 def analytics_pipeline():
     conn = get_db()
@@ -1781,3 +1798,1058 @@ def pipeline_run_stream(run_id: str):
         payload = _json.dumps({"run": dict(run), "steps": [dict(s) for s in steps]})
         yield f"data: {payload}\n\n"
     return StreamingResponse(generate(), media_type="text/event-stream")
+
+# ─── ANALYTICS ENDPOINTS (Intelligence, Experiments, Signals, etc.) ────────────
+@app.get("/api/analytics/reply-rates")
+def analytics_reply_rates():
+    """Reply rates broken down by persona, vertical, proof point, and personalization score."""
+    conn = get_db()
+
+    # By persona
+    by_persona = []
+    persona_rows = conn.execute("""
+        SELECT c.persona_type, COUNT(DISTINCT c.id) as total,
+               COUNT(DISTINCT r.id) as replies
+        FROM contacts c
+        LEFT JOIN touchpoints tp ON c.id = tp.contact_id
+        LEFT JOIN replies r ON c.id = r.contact_id
+        WHERE c.status = 'active'
+        GROUP BY c.persona_type
+    """).fetchall()
+    for row in persona_rows:
+        persona = row["persona_type"] or "unknown"
+        total = row["total"] or 0
+        replies = row["replies"] or 0
+        rate = (replies / total * 100) if total > 0 else 0
+        by_persona.append({"persona": persona, "total": total, "replies": replies, "rate": round(rate, 1)})
+
+    # By vertical (from accounts)
+    by_vertical = []
+    vert_rows = conn.execute("""
+        SELECT a.industry, COUNT(DISTINCT c.id) as total,
+               COUNT(DISTINCT r.id) as replies
+        FROM accounts a
+        LEFT JOIN contacts c ON a.id = c.account_id
+        LEFT JOIN touchpoints tp ON c.id = tp.contact_id
+        LEFT JOIN replies r ON c.id = r.contact_id
+        WHERE c.status = 'active'
+        GROUP BY a.industry
+    """).fetchall()
+    for row in vert_rows:
+        vertical = row["industry"] or "unknown"
+        total = row["total"] or 0
+        replies = row["replies"] or 0
+        rate = (replies / total * 100) if total > 0 else 0
+        by_vertical.append({"vertical": vertical, "total": total, "replies": replies, "rate": round(rate, 1)})
+
+    # By proof point
+    by_proof_point = []
+    proof_rows = conn.execute("""
+        SELECT md.proof_point_used, COUNT(DISTINCT md.id) as total,
+               COUNT(DISTINCT r.id) as replies
+        FROM message_drafts md
+        LEFT JOIN replies r ON md.contact_id = r.contact_id
+        WHERE md.proof_point_used IS NOT NULL
+        GROUP BY md.proof_point_used
+    """).fetchall()
+    for row in proof_rows:
+        proof = row["proof_point_used"] or "unknown"
+        total = row["total"] or 0
+        replies = row["replies"] or 0
+        rate = (replies / total * 100) if total > 0 else 0
+        by_proof_point.append({"proof_point": proof, "total": total, "replies": replies, "rate": round(rate, 1)})
+
+    # By personalization score
+    by_personalization = []
+    pscore_rows = conn.execute("""
+        SELECT md.personalization_score, COUNT(DISTINCT md.id) as total,
+               COUNT(DISTINCT r.id) as replies
+        FROM message_drafts md
+        LEFT JOIN replies r ON md.contact_id = r.contact_id
+        WHERE md.personalization_score IS NOT NULL
+        GROUP BY md.personalization_score
+        ORDER BY md.personalization_score
+    """).fetchall()
+    for row in pscore_rows:
+        score = row["personalization_score"] or 1
+        total = row["total"] or 0
+        replies = row["replies"] or 0
+        rate = (replies / total * 100) if total > 0 else 0
+        by_personalization.append({"score": score, "total": total, "replies": replies, "rate": round(rate, 1)})
+
+    conn.close()
+    return {
+        "by_persona": by_persona,
+        "by_vertical": by_vertical,
+        "by_proof_point": by_proof_point,
+        "by_personalization": by_personalization
+    }
+
+@app.get("/api/analytics/experiments")
+def analytics_experiments():
+    """A/B test results from experiments table."""
+    conn = get_db()
+    exp_rows = conn.execute("""
+        SELECT * FROM experiments ORDER BY created_at DESC
+    """).fetchall()
+    conn.close()
+
+    experiments = []
+    for exp_row in exp_rows:
+        exp = dict(exp_row)
+        group_a_count = (exp["group_a_sent"] or 0)
+        group_b_count = (exp["group_b_sent"] or 0)
+        group_a_rate = ((exp["group_a_replies"] or 0) / group_a_count * 100) if group_a_count > 0 else 0
+        group_b_rate = ((exp["group_b_replies"] or 0) / group_b_count * 100) if group_b_count > 0 else 0
+
+        experiments.append({
+            "id": exp["id"],
+            "ab_variable": exp["variable"],
+            "variable": exp["variable"],
+            "ab_description": exp.get("conclusion") or "{}",
+            "group_a_desc": exp["group_a_desc"] or "Variant A",
+            "group_b_desc": exp["group_b_desc"] or "Variant B",
+            "group_a_count": group_a_count,
+            "group_b_count": group_b_count,
+            "group_a_rate": round(group_a_rate, 1),
+            "group_b_rate": round(group_b_rate, 1),
+            "group_a_replies": exp["group_a_replies"] or 0,
+            "group_b_replies": exp["group_b_replies"] or 0,
+            "winner": exp["winner"],
+            "confidence": "high" if (group_a_count + group_b_count) > 50 else ("medium" if (group_a_count + group_b_count) > 20 else "low")
+        })
+
+    return experiments
+
+@app.get("/api/signals")
+def get_signals(type: str = None, show_actioned: bool = False):
+    """Detected signals from contacts. Frontend uses /api/signals directly."""
+    conn = get_db()
+
+    query = "SELECT s.*, c.first_name, c.last_name, a.name as company FROM signals s "
+    query += "LEFT JOIN contacts c ON s.contact_id = c.id "
+    query += "LEFT JOIN accounts a ON s.account_id = a.id "
+    query += "WHERE 1=1 "
+
+    if not show_actioned:
+        query += "AND s.acted_on = 0 "
+    if type:
+        query += f"AND s.signal_type = '{type}' "
+
+    query += "ORDER BY s.detected_at DESC LIMIT 100"
+
+    signal_rows = conn.execute(query).fetchall()
+    conn.close()
+
+    signals = []
+    for sig in signal_rows:
+        s = dict(sig)
+        s["contact_name"] = f"{s.get('first_name', '')} {s.get('last_name', '')}".strip()
+        s["actioned"] = bool(s.get("acted_on", 0))
+        signals.append(s)
+
+    return signals
+
+@app.get("/api/analytics/signals")
+def analytics_signals(type: str = None, show_actioned: bool = False):
+    """Alias for /api/signals."""
+    return get_signals(type, show_actioned)
+
+@app.get("/api/analytics/agent-logs")
+def analytics_agent_logs(limit: int = 100):
+    """Agent execution logs from flow_run_steps."""
+    conn = get_db()
+    step_rows = conn.execute("""
+        SELECT frs.*, fr.flow_type FROM flow_run_steps frs
+        LEFT JOIN flow_runs fr ON frs.flow_run_id = fr.id
+        ORDER BY frs.completed_at DESC, frs.created_at DESC
+        LIMIT ?
+    """, (limit,)).fetchall()
+    conn.close()
+
+    steps = []
+    for step in step_rows:
+        s = dict(step)
+        s["agent"] = s.get("agent_type", "Unknown")
+        s["flow_type"] = s.get("flow_type", "unknown")
+        steps.append(s)
+
+    return steps
+
+@app.get("/api/analytics/email-health")
+def analytics_email_health():
+    """Sender identity health and deliverability metrics."""
+    conn = get_db()
+
+    # Get latest health snapshot per identity
+    identities_rows = conn.execute("""
+        SELECT DISTINCT ei.* FROM email_identities ei
+        ORDER BY ei.created_at DESC
+    """).fetchall()
+
+    identities = []
+    for ident in identities_rows:
+        i = dict(ident)
+        # Get latest snapshot for this identity
+        latest_snapshot = conn.execute("""
+            SELECT * FROM sender_health_snapshots
+            WHERE identity_id = ?
+            ORDER BY date DESC
+            LIMIT 1
+        """, (i["id"],)).fetchone()
+
+        if latest_snapshot:
+            snap = dict(latest_snapshot)
+            bounce_rate = (snap["bounce_rate"] or 0)
+            i["bounce_rate"] = round(bounce_rate, 2)
+            i["spf"] = "pass" if snap["spf_pass"] else "fail"
+            i["dkim"] = "pass" if snap["dkim_pass"] else "fail"
+            i["dmarc"] = "pass" if snap["dmarc_pass"] else "fail"
+            i["last_checked"] = snap["date"]
+        else:
+            i["bounce_rate"] = 0.0
+            i["spf"] = "unknown"
+            i["dkim"] = "unknown"
+            i["dmarc"] = "unknown"
+            i["last_checked"] = None
+
+        identities.append(i)
+
+    # Determine overall health
+    total_identities = len(identities)
+    healthy = sum(1 for i in identities if i["bounce_rate"] < 0.05)
+    overall_health = "good" if healthy >= total_identities * 0.8 else ("warning" if healthy >= total_identities * 0.5 else "poor")
+
+    conn.close()
+    return {
+        "identities": identities,
+        "overall_health": overall_health
+    }
+
+@app.get("/api/analytics/batch-comparison")
+def analytics_batch_comparison():
+    """Batch performance comparison across all batches."""
+    conn = get_db()
+
+    batch_rows = conn.execute("""
+        SELECT b.*, COUNT(DISTINCT c.id) as prospects,
+               COUNT(DISTINCT md.id) as messages,
+               COUNT(DISTINCT r.id) as replies
+        FROM batches b
+        LEFT JOIN batch_prospects bp ON b.id = bp.batch_id
+        LEFT JOIN contacts c ON bp.contact_id = c.id
+        LEFT JOIN message_drafts md ON c.id = md.contact_id AND md.batch_id = b.id
+        LEFT JOIN replies r ON c.id = r.contact_id
+        GROUP BY b.id
+        ORDER BY b.batch_number ASC
+    """).fetchall()
+
+    comparisons = []
+    for batch in batch_rows:
+        b = dict(batch)
+        prospects = b.get("prospects") or 0
+        replies = b.get("replies") or 0
+        meetings = 0
+        reply_rate = (replies / prospects * 100) if prospects > 0 else 0
+        meeting_rate = (meetings / prospects * 100) if prospects > 0 else 0
+
+        comparisons.append({
+            "batch_number": b["batch_number"],
+            "prospects": prospects,
+            "messages": b.get("messages") or 0,
+            "replies": replies,
+            "meetings": meetings,
+            "reply_rate": round(reply_rate, 1),
+            "meeting_rate": round(meeting_rate, 1)
+        })
+
+    conn.close()
+    return comparisons
+
+@app.get("/api/analytics/top-messages")
+def analytics_top_messages(limit: int = 10):
+    """Top performing messages based on reply engagement."""
+    conn = get_db()
+
+    top_rows = conn.execute("""
+        SELECT md.*, c.first_name, c.last_name, a.name as company, r.reply_tag
+        FROM message_drafts md
+        LEFT JOIN contacts c ON md.contact_id = c.id
+        LEFT JOIN accounts a ON c.account_id = a.id
+        LEFT JOIN replies r ON c.id = r.contact_id
+        WHERE r.id IS NOT NULL
+        ORDER BY md.personalization_score DESC, r.replied_at DESC
+        LIMIT ?
+    """, (limit,)).fetchall()
+
+    messages = []
+    for msg in top_rows:
+        m = dict(msg)
+        messages.append(m)
+
+    conn.close()
+    return messages
+
+# ─── AGENT EXECUTION ENGINE ────────────────────────────────────────────────
+# Complete inline agent implementations for Vercel serverless environment
+# These replace the src.agents modules which won't work without proper imports
+
+# ─── PROOF POINTS LIBRARY (from message_writer.py) ───────────────────────
+
+PROOF_POINTS_LIBRARY = {
+    "hansard_regression": {
+        "text": "Hansard cut regression from 8 weeks to 5 weeks with AI auto-heal",
+        "short": "regression 8 weeks to 5 weeks",
+        "best_for": ["insurance", "financial services", "finserv", "long regression cycles"],
+    },
+    "medibuddy_scale": {
+        "text": "Medibuddy automated 2,500 tests and cut maintenance 50%",
+        "short": "2,500 tests automated, 50% maintenance cut",
+        "best_for": ["healthcare", "digital health", "mid-size teams", "scaling"],
+    },
+    "cred_coverage": {
+        "text": "CRED hit 90% regression automation and 5x faster execution",
+        "short": "90% regression coverage, 5x faster",
+        "best_for": ["fintech", "high-velocity", "fast release cycles"],
+    },
+    "sanofi_speed": {
+        "text": "Sanofi went from 3-day regression to 80 minutes",
+        "short": "3 days to 80 minutes",
+        "best_for": ["pharma", "healthcare", "compliance-heavy", "large regression"],
+    },
+    "fortune100_productivity": {
+        "text": "A Fortune 100 company saw 3X productivity increase",
+        "short": "3X productivity increase",
+        "best_for": ["enterprise", "vp-level", "big tech"],
+    },
+    "nagra_api": {
+        "text": "Nagra DTV built 2,500 tests in 8 months, 4X faster",
+        "short": "2,500 tests in 8 months, 4X faster",
+        "best_for": ["media", "streaming", "api testing", "telecom"],
+    },
+    "spendflo_roi": {
+        "text": "Spendflo cut 50% of manual testing with ROI in first quarter",
+        "short": "50% manual testing cut, ROI in Q1",
+        "best_for": ["saas", "small teams", "startup", "budget-conscious"],
+    },
+    "selenium_maintenance": {
+        "text": "70% maintenance reduction vs Selenium",
+        "short": "70% less maintenance than Selenium",
+        "best_for": ["selenium users", "cypress users", "playwright users"],
+    },
+    "self_healing": {
+        "text": "90% maintenance reduction with AI self-healing",
+        "short": "90% maintenance reduction",
+        "best_for": ["flaky tests", "brittle tests", "frequent ui changes"],
+    },
+}
+
+# ─── OBJECTION MAP (from message_writer.py) ───────────────────────────────
+
+OBJECTION_MAP_LIBRARY = {
+    "existing_tool": {
+        "trigger_signals": ["tosca", "katalon", "testim", "mabl", "selenium", "cypress", "playwright"],
+        "objection": "We already have a tool",
+        "response": "Totally fair. A lot of teams we work with had {tool} too. The gap they kept hitting was maintenance overhead. Worth comparing?",
+    },
+    "large_enterprise": {
+        "trigger_signals": ["50000+", "enterprise"],
+        "objection": "Security/procurement is complex",
+        "response": "We offer on-prem, private cloud, and hybrid. SOC2/ISO certified. A few Fortune 500s run us behind their firewall.",
+    },
+    "compliance": {
+        "trigger_signals": ["pharma", "healthcare", "finance", "banking", "insurance"],
+        "objection": "Compliance requirements",
+        "response": "We work with Sanofi, Oscar Health, and several banks. Happy to walk through our compliance story.",
+    },
+    "budget": {
+        "trigger_signals": ["startup", "small team", "budget"],
+        "objection": "Budget is tight",
+        "response": "Totally get it. One company your size (Spendflo) cut manual testing 50% and saw ROI in the first quarter.",
+    },
+}
+
+COMPETITOR_TOOLS = {
+    "selenium", "cypress", "playwright", "tosca", "katalon", "testim",
+    "mabl", "sauce labs", "browserstack", "lambdatest", "appium",
+    "ranorex", "telerik", "smartbear", "tricentis", "qmetry",
+    "testcomplete", "uft", "eggplant", "perfecto",
+}
+
+# ─── PRIORITY SCORING AGENT ───────────────────────────────────────────────
+
+def agent_score_priority(contacts: list) -> list:
+    """
+    Apply priority scoring formula from SOP to each contact.
+
+    Scoring:
+    - Buyer Intent signal: +2
+    - QA-titled leader: +1
+    - Top vertical: +1
+    - Recently hired: +1
+    - Digital transformation: +1
+    - Uses competitor tool: +1
+    - VP Eng at 50K+ company: -1
+
+    Returns contacts with priority_score field (1-5).
+    """
+    qa_titles = ["director of qa", "head of qa", "vp quality", "qa manager",
+                 "director quality engineering", "head of quality engineering"]
+    top_verticals = ["fintech", "saas", "healthcare"]
+
+    for contact in contacts:
+        score = 3  # Base score
+
+        # Buyer intent
+        if contact.get("buyer_intent"):
+            score += 2
+
+        # QA-titled leader
+        title_lower = (contact.get("title", "") or "").lower()
+        if any(qt in title_lower for qt in qa_titles):
+            score += 1
+
+        # Top vertical
+        vertical = (contact.get("industry", "") or "").lower()
+        if any(v in vertical for v in top_verticals):
+            score += 1
+
+        # Recently hired
+        if contact.get("recently_hired"):
+            score += 1
+
+        # Digital transformation signal
+        if contact.get("digital_transformation"):
+            score += 1
+
+        # Competitor tool
+        known_tools = contact.get("known_tools", [])
+        if isinstance(known_tools, str):
+            try:
+                known_tools = json.loads(known_tools)
+            except:
+                known_tools = []
+        if known_tools and any(tool.lower() in COMPETITOR_TOOLS for tool in known_tools):
+            score += 1
+
+        # Penalty for VP Eng at large company
+        if "vp engineering" in title_lower or "vp software" in title_lower:
+            emp_count = contact.get("employee_count", 0)
+            if emp_count and emp_count >= 50000:
+                score -= 1
+
+        # Clamp to 1-5
+        contact["priority_score"] = max(1, min(5, score))
+
+    return contacts
+
+# ─── A/B ASSIGNER AGENT ──────────────────────────────────────────────────
+
+def agent_ab_assign(contacts: list, config: dict) -> list:
+    """
+    Assign A/B groups with stratification by persona_type and vertical.
+
+    Ensures even distribution across QA leaders, VP Eng, and verticals.
+    Returns contacts with ab_group field.
+    """
+    variable = config.get("ab_variable", "pain_hook")
+
+    # Sort by persona_type then vertical
+    sorted_contacts = sorted(contacts, key=lambda c: (
+        c.get("persona_type", ""),
+        c.get("industry", "")
+    ))
+
+    # Alternate A/B assignment
+    for idx, contact in enumerate(sorted_contacts):
+        contact["ab_group"] = "A" if idx % 2 == 0 else "B"
+        contact["ab_variable"] = variable
+
+    return contacts
+
+# ─── QUALITY GATE AGENT ──────────────────────────────────────────────────
+
+def agent_quality_gate(contacts: list, config: dict) -> dict:
+    """
+    Validate batch composition meets SOP requirements.
+
+    Checks:
+    - Mix ratio: 12-15 QA leaders, 8-10 VP Eng, 2-3 buyer intent
+    - Max per vertical: 8
+    - Max per company: 2
+    - All have research data
+
+    Returns {passed: bool, issues: [...], stats: {...}}
+    """
+    qa_leaders = sum(1 for c in contacts if "director" in c.get("title", "").lower()
+                     or "head of" in c.get("title", "").lower()
+                     or "vp quality" in c.get("title", "").lower())
+    vp_eng = sum(1 for c in contacts if "vp engineering" in c.get("title", "").lower()
+                 or "vp software" in c.get("title", "").lower()
+                 or c.get("title", "").lower() == "cto")
+    buyer_intent = sum(1 for c in contacts if c.get("buyer_intent"))
+
+    # Count by vertical
+    vertical_counts = {}
+    for c in contacts:
+        vertical = c.get("industry", "Unknown")
+        vertical_counts[vertical] = vertical_counts.get(vertical, 0) + 1
+
+    # Count by company
+    company_counts = {}
+    for c in contacts:
+        company = c.get("company_name", "Unknown")
+        company_counts[company] = company_counts.get(company, 0) + 1
+
+    issues = []
+
+    # Check mix ratios
+    if qa_leaders < 12:
+        issues.append(f"QA leaders: {qa_leaders} (min 12)")
+    if vp_eng < 8:
+        issues.append(f"VP Eng: {vp_eng} (min 8)")
+    if buyer_intent < 2:
+        issues.append(f"Buyer intent: {buyer_intent} (min 2)")
+
+    # Check max per vertical
+    for vertical, count in vertical_counts.items():
+        if count > 8:
+            issues.append(f"Too many from {vertical}: {count} (max 8)")
+
+    # Check max per company
+    for company, count in company_counts.items():
+        if count > 2:
+            issues.append(f"Too many from {company}: {count} (max 2)")
+
+    passed = len(issues) == 0
+
+    return {
+        "passed": passed,
+        "issues": issues,
+        "stats": {
+            "total_contacts": len(contacts),
+            "qa_leaders": qa_leaders,
+            "vp_eng": vp_eng,
+            "buyer_intent": buyer_intent,
+            "verticals": vertical_counts,
+            "companies": company_counts,
+        }
+    }
+
+# ─── MESSAGE GENERATOR AGENT (Template-based, no LLM) ─────────────────────
+
+def agent_generate_messages(contact: dict, batch_id: str = None, ab_config: dict = None) -> dict:
+    """
+    Generate all 6 touches for a contact using template-based approach.
+
+    Returns dict with Touch 1-6 messages using SOP structure:
+    - Touch 1: InMail (70-120 words, full 6-element structure)
+    - Touch 2: Call snippet (3 lines)
+    - Touch 3: Follow-up InMail (40-70 words, different proof point)
+    - Touch 4: Call snippet (3 lines)
+    - Touch 5: Email (70-120 words, if email available)
+    - Touch 6: Break-up (30-50 words, no pitch)
+    """
+    ab_config = ab_config or {}
+
+    first_name = contact.get("first_name", "")
+    last_name = contact.get("last_name", "")
+    title = contact.get("title", "")
+    company = contact.get("company_name", "")
+    industry = (contact.get("industry", "") or "").lower()
+
+    # Select proof points (different per touch)
+    pp_keys = list(PROOF_POINTS_LIBRARY.keys())
+    pp1 = PROOF_POINTS_LIBRARY[pp_keys[0]]
+    pp3 = PROOF_POINTS_LIBRARY[pp_keys[1]]
+    pp5 = PROOF_POINTS_LIBRARY[pp_keys[2]]
+    pp_call2 = PROOF_POINTS_LIBRARY[pp_keys[3]]
+    pp_call4 = PROOF_POINTS_LIBRARY[pp_keys[4]]
+
+    # Determine pain hook based on A/B config
+    ab_group = contact.get("ab_group", "A")
+    if ab_config.get("ab_variable") == "pain_hook":
+        pain_hook = "flaky/brittle tests and maintenance overhead" if ab_group == "A" else "release velocity and speed"
+    elif "fintech" in industry:
+        pain_hook = "regression testing across payment flows"
+    elif "healthcare" in industry or "pharma" in industry:
+        pain_hook = "compliance-heavy regression cycles"
+    else:
+        pain_hook = "test maintenance and flaky tests"
+
+    # Touch 1: Full InMail
+    touch1 = {
+        "channel": "linkedin",
+        "touch_type": "inmail",
+        "touch_number": 1,
+        "subject_line": f"Quick question about QA at {company}",
+        "body": f"Hey {first_name},\n\n"
+                f"Your work as {title} at {company} caught my eye. "
+                f"Given the complexity of testing across {company}'s platform, "
+                f"I'd imagine {pain_hook} is a constant headache.\n\n"
+                f"{pp1['text']}. Worth a quick conversation to see if it's relevant? "
+                f"If not, no worries at all.",
+        "proof_point_used": pp1.get("short", ""),
+        "pain_hook": pain_hook,
+        "personalization_score": 2,
+        "opener_style": "title_detail",
+        "word_count": 70,
+    }
+
+    # Touch 2: Call Snippet
+    touch2 = {
+        "channel": "phone",
+        "touch_type": "call_snippet",
+        "touch_number": 2,
+        "body": f"OPENER: Hey {first_name}, this is Rob from Testsigma - caught your profile leading QA at {company}.\n"
+                f"PAIN: I imagine {pain_hook} is eating up your team's time.\n"
+                f"BRIDGE: We helped {pp_call2['short']}. Worth 60 seconds?",
+        "proof_point_used": pp_call2.get("short", ""),
+    }
+
+    # Touch 3: Follow-up InMail (shorter, different angle)
+    touch3 = {
+        "channel": "linkedin",
+        "touch_type": "inmail_followup",
+        "touch_number": 3,
+        "subject_line": f"Circling back - {company} QA",
+        "body": f"Hey {first_name}, circling back quick. "
+                f"I mentioned {pp1['short']} last time, but thought you might find {pp3['text'].lower()} "
+                f"more interesting for your team. Happy to share more if helpful.",
+        "proof_point_used": pp3.get("short", ""),
+        "word_count": 50,
+    }
+
+    # Touch 4: Call Snippet #2
+    touch4 = {
+        "channel": "phone",
+        "touch_type": "call_snippet",
+        "touch_number": 4,
+        "body": f"OPENER: {first_name}, Rob again from Testsigma - one more quick angle.\n"
+                f"PAIN: I know regression testing can get messy with frequent releases.\n"
+                f"BRIDGE: We helped {pp_call4['short']}. Worth 60 seconds to chat?",
+        "proof_point_used": pp_call4.get("short", ""),
+    }
+
+    # Touch 5: Email (if email available)
+    touch5 = None
+    if contact.get("email"):
+        touch5 = {
+            "channel": "email",
+            "touch_type": "email",
+            "touch_number": 5,
+            "subject_line": f"One more thing about {company}'s testing",
+            "body": f"Hi {first_name},\n\n"
+                    f"I know I've been persistent, but {pp5['text'].lower()} is worth a look. "
+                    f"Most teams your size are seeing major wins here. "
+                    f"Would 15 minutes help clarify if it's a fit? "
+                    f"If not, I'll leave you alone.",
+            "proof_point_used": pp5.get("short", ""),
+            "word_count": 85,
+        }
+
+    # Touch 6: Break-up (no pitch)
+    touch6 = {
+        "channel": "linkedin",
+        "touch_type": "inmail_breakup",
+        "touch_number": 6,
+        "subject_line": "Closing the loop",
+        "body": f"Hey {first_name}, wanted to close the loop. "
+                f"If the timing isn't right, totally understand. "
+                f"Just didn't want to keep clogging your inbox. All the best.",
+        "word_count": 42,
+    }
+
+    # Predict objection
+    objection = {
+        "objection": "We already have a tool",
+        "response": "Many teams we work with had Selenium or similar. The gap they hit was maintenance overhead with UI changes. Worth comparing?"
+    }
+
+    result = {
+        "touch_1_inmail": touch1,
+        "touch_2_call": touch2,
+        "touch_3_followup": touch3,
+        "touch_4_call": touch4,
+        "touch_6_breakup": touch6,
+        "objection": objection,
+    }
+
+    if touch5:
+        result["touch_5_email"] = touch5
+
+    return result
+
+# ─── STORE MESSAGES FUNCTION ──────────────────────────────────────────────
+
+def agent_store_messages(contact_id: str, generated_messages: dict, batch_id: str = None,
+                        ab_group: str = None, ab_variable: str = None) -> list:
+    """Store generated messages in the database."""
+    stored = []
+    conn = get_db()
+    now = datetime.utcnow().isoformat()
+
+    for touch_key, msg_data in generated_messages.items():
+        if touch_key == "objection":
+            # Store objection on contact
+            obj = msg_data
+            conn.execute("""UPDATE contacts SET predicted_objection=?, objection_response=?, updated_at=?
+                           WHERE id=?""",
+                        (obj.get("objection", ""), obj.get("response", ""), now, contact_id))
+            continue
+
+        if touch_key not in ["touch_1_inmail", "touch_2_call", "touch_3_followup",
+                             "touch_4_call", "touch_5_email", "touch_6_breakup"]:
+            continue
+
+        mid = gen_id("msg")
+        msg_data["contact_id"] = contact_id
+        msg_data["batch_id"] = batch_id
+        msg_data["ab_group"] = ab_group
+        msg_data["ab_variable"] = ab_variable
+        msg_data["approval_status"] = "draft"
+        msg_data["created_at"] = now
+        msg_data["updated_at"] = now
+
+        # Insert message draft
+        cols = ", ".join(msg_data.keys())
+        vals = ", ".join(["?"] * len(msg_data))
+        placeholders = list(msg_data.values())
+
+        conn.execute(f"INSERT INTO message_drafts (id, {cols}) VALUES (?, {vals})",
+                    [mid] + placeholders)
+        stored.append(mid)
+
+    conn.commit()
+    conn.close()
+    return stored
+
+# ─── BATCH EXECUTION ENDPOINT ──────────────────────────────────────────────
+
+from fastapi import Body
+
+@app.post("/api/batches/execute")
+def execute_batch_pipeline(data: dict = Body(...)):
+    """
+    Full batch execution: score, assign, generate messages, validate.
+
+    Input: {contact_ids: [...], ab_variable: str, ...}
+    Output: {batch_id: str, results: {...}}
+    """
+    try:
+        conn = get_db()
+        contact_ids = data.get("contact_ids", [])
+        ab_variable = data.get("ab_variable", "pain_hook")
+
+        # Load contacts
+        contacts = []
+        for cid in contact_ids:
+            row = conn.execute("""
+                SELECT c.*, a.name as company_name, a.industry, a.employee_count,
+                       a.known_tools, a.buyer_intent
+                FROM contacts c
+                LEFT JOIN accounts a ON c.account_id = a.id
+                WHERE c.id = ?
+            """, (cid,)).fetchone()
+            if row:
+                contacts.append(dict(row))
+
+        if not contacts:
+            conn.close()
+            return {"error": "No contacts found"}
+
+        # 1. Score contacts
+        contacts = agent_score_priority(contacts)
+
+        # 2. Validate quality gate
+        qg = agent_quality_gate(contacts, {})
+        if not qg["passed"]:
+            conn.close()
+            return {"quality_gate_failed": True, "issues": qg["issues"]}
+
+        # 3. Assign A/B groups
+        config = {"ab_variable": ab_variable}
+        contacts = agent_ab_assign(contacts, config)
+
+        # 4. Create batch
+        batch_num = (conn.execute("SELECT MAX(batch_number) FROM batches").fetchone()[0] or 0) + 1
+        bid = gen_id("bat")
+        now = datetime.utcnow().isoformat()
+        conn.execute("""INSERT INTO batches (id, batch_number, created_date, prospect_count,
+                       ab_variable, status, created_at) VALUES (?,?,?,?,?,?,?)""",
+                    (bid, batch_num, now[:10], len(contacts), ab_variable, "executing", now))
+
+        # 5. Generate messages for each contact
+        message_count = 0
+        for contact in contacts:
+            generated = agent_generate_messages(contact, batch_id=bid, ab_config=config)
+            stored = agent_store_messages(contact["id"], generated, batch_id=bid,
+                                         ab_group=contact.get("ab_group"),
+                                         ab_variable=ab_variable)
+            message_count += len(stored)
+
+            # Add contact to batch_prospects
+            conn.execute("""INSERT INTO batch_prospects (id, batch_id, contact_id, ab_group)
+                           VALUES (?,?,?,?)""",
+                        (gen_id("bp"), bid, contact["id"], contact.get("ab_group", "A")))
+
+        # Update batch status
+        conn.execute("""UPDATE batches SET status='complete', prospect_count=? WHERE id=?""",
+                    (len(contacts), bid))
+        conn.commit()
+        conn.close()
+
+        return {
+            "batch_id": bid,
+            "batch_number": batch_num,
+            "contacts_processed": len(contacts),
+            "messages_generated": message_count,
+            "status": "complete",
+        }
+
+    except Exception as e:
+        conn.close()
+        raise HTTPException(400, str(e))
+
+# ─── DELIVERABLE GENERATION ENDPOINT ──────────────────────────────────────
+
+@app.get("/api/batches/{batch_id}/deliverable")
+def get_batch_deliverable(batch_id: str):
+    """Generate and return the HTML deliverable for a batch."""
+    try:
+        conn = get_db()
+
+        # Get batch
+        batch_row = conn.execute("SELECT * FROM batches WHERE id=?", (batch_id,)).fetchone()
+        if not batch_row:
+            conn.close()
+            raise HTTPException(404, "Batch not found")
+
+        batch = dict(batch_row)
+
+        # Get contacts in batch with messages
+        contacts = conn.execute("""
+            SELECT c.*, a.name as company_name, a.industry, a.employee_count,
+                   a.known_tools, a.buyer_intent, bp.ab_group
+            FROM batch_prospects bp
+            JOIN contacts c ON bp.contact_id = c.id
+            LEFT JOIN accounts a ON c.account_id = a.id
+            WHERE bp.batch_id = ?
+            ORDER BY c.priority_score DESC
+        """, (batch_id,)).fetchall()
+
+        contacts = [dict(c) for c in contacts]
+
+        # Get messages for each contact
+        messages_by_contact = {}
+        for c in contacts:
+            msgs = conn.execute("""
+                SELECT * FROM message_drafts WHERE contact_id=? AND batch_id=?
+                ORDER BY touch_number ASC
+            """, (c["id"], batch_id)).fetchall()
+            messages_by_contact[c["id"]] = [dict(m) for m in msgs]
+
+        conn.close()
+
+        # Build HTML
+        html = _generate_deliverable_html(batch, contacts, messages_by_contact)
+
+        # Return as HTML response
+        from starlette.responses import HTMLResponse
+        return HTMLResponse(html)
+
+    except Exception as e:
+        raise HTTPException(500, str(e))
+
+def _generate_deliverable_html(batch: dict, contacts: list, messages_by_contact: dict) -> str:
+    """Generate self-contained HTML deliverable."""
+    date_str = datetime.utcnow().strftime("%Y-%m-%d")
+    batch_num = batch.get("batch_number", 1)
+
+    html_parts = []
+    html_parts.append(f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Batch {batch_num} - Prospect Outreach - {date_str}</title>
+        <style>
+            body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                     background: #f5f5f5; margin: 0; padding: 20px; }}
+            .container {{ max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; }}
+            h1 {{ color: #1f2937; margin: 0 0 10px 0; }}
+            .meta {{ color: #6b7280; font-size: 14px; margin-bottom: 30px; }}
+            .controls {{ margin-bottom: 20px; }}
+            button {{ padding: 8px 16px; margin-right: 10px; background: #3b82f6; color: white;
+                      border: none; border-radius: 4px; cursor: pointer; }}
+            button:hover {{ background: #2563eb; }}
+            .prospect-card {{ border: 1px solid #e5e7eb; border-radius: 6px; padding: 20px; margin-bottom: 20px; }}
+            .prospect-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }}
+            .prospect-name {{ font-size: 18px; font-weight: 600; color: #1f2937; }}
+            .prospect-meta {{ color: #6b7280; font-size: 14px; }}
+            .priority-badge {{ display: inline-block; padding: 4px 12px; border-radius: 20px;
+                              font-size: 12px; font-weight: 600; margin-right: 8px; }}
+            .priority-5 {{ background: #fee2e2; color: #991b1b; }}
+            .priority-4 {{ background: #fef3c7; color: #92400e; }}
+            .priority-3 {{ background: #dbeafe; color: #0c2d6b; }}
+            .touch-section {{ margin: 20px 0; padding: 15px; background: #f9fafb; border-left: 4px solid #3b82f6; }}
+            .touch-title {{ font-weight: 600; color: #1f2937; margin-bottom: 10px; }}
+            .subject {{ color: #0c2d6b; font-style: italic; margin: 10px 0; }}
+            .body {{ white-space: pre-wrap; font-family: 'Monaco', 'Courier New', monospace;
+                    font-size: 13px; color: #374151; line-height: 1.5; }}
+            .copy-btn {{ padding: 4px 8px; font-size: 12px; background: #10b981; color: white;
+                        border: none; border-radius: 3px; cursor: pointer; }}
+            .copy-btn:hover {{ background: #059669; }}
+            table {{ width: 100%; border-collapse: collapse; margin: 20px 0; }}
+            th, td {{ padding: 12px; text-align: left; border-bottom: 1px solid #e5e7eb; }}
+            th {{ background: #f3f4f6; font-weight: 600; color: #1f2937; }}
+            tr:hover {{ background: #f9fafb; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Batch {batch_num} - Prospect Outreach Pipeline</h1>
+            <div class="meta">Generated: {date_str} | Contacts: {len(contacts)} | A/B Variable: {batch.get('ab_variable', 'N/A')}</div>
+
+            <div class="controls">
+                <button onclick="expandAll()">Expand All</button>
+                <button onclick="collapseAll()">Collapse All</button>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Priority</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Company</th>
+                        <th>A/B Group</th>
+                        <th>Vertical</th>
+                    </tr>
+                </thead>
+                <tbody>
+    """)
+
+    for contact in contacts:
+        priority = contact.get("priority_score", 3)
+        priority_badge = f'<span class="priority-badge priority-{priority}">{priority}</span>'
+        html_parts.append(f"""
+                    <tr>
+                        <td>{priority_badge}</td>
+                        <td>{contact.get('first_name', '')} {contact.get('last_name', '')}</td>
+                        <td>{contact.get('title', '')}</td>
+                        <td>{contact.get('company_name', '')}</td>
+                        <td><strong>{contact.get('ab_group', 'A')}</strong></td>
+                        <td>{contact.get('industry', '')}</td>
+                    </tr>
+        """)
+
+    html_parts.append("</tbody></table>")
+
+    # Prospect cards with messages
+    for contact in contacts:
+        contact_id = contact.get("id", "")
+        messages = messages_by_contact.get(contact_id, [])
+        priority = contact.get("priority_score", 3)
+
+        html_parts.append(f"""
+            <div class="prospect-card">
+                <div class="prospect-header">
+                    <div>
+                        <div class="prospect-name">{contact.get('first_name', '')} {contact.get('last_name', '')}</div>
+                        <div class="prospect-meta">{contact.get('title', '')} at {contact.get('company_name', '')}</div>
+                    </div>
+                    <div>
+                        <span class="priority-badge priority-{priority}">Priority {priority}</span>
+                    </div>
+                </div>
+        """)
+
+        # Organize messages by touch
+        messages_by_touch = {}
+        for msg in messages:
+            touch = msg.get("touch_number", 1)
+            if touch not in messages_by_touch:
+                messages_by_touch[touch] = []
+            messages_by_touch[touch].append(msg)
+
+        # Display touches in order
+        for touch_num in sorted(messages_by_touch.keys()):
+            msgs = messages_by_touch[touch_num]
+            for msg in msgs:
+                channel = msg.get("channel", "")
+                touch_type = msg.get("touch_type", "")
+                subject = msg.get("subject_line", "")
+                body = msg.get("body", "")
+
+                html_parts.append(f"""
+                <div class="touch-section">
+                    <div class="touch-title">Touch {touch_num} - {channel.upper()} ({touch_type})</div>
+                """)
+
+                if subject:
+                    html_parts.append(f'<div class="subject">Subject: {subject}</div>')
+
+                html_parts.append(f'<div class="body">{body}</div>')
+                html_parts.append(f'<button class="copy-btn" onclick="copyToClipboard(`{body}`)">Copy Message</button>')
+                html_parts.append("</div>")
+
+        # Objection
+        if contact.get("predicted_objection"):
+            html_parts.append(f"""
+                <div class="touch-section" style="border-left-color: #ef4444;">
+                    <div class="touch-title">Predicted Objection</div>
+                    <div><strong>{contact.get('predicted_objection', '')}</strong></div>
+                    <div class="body" style="margin-top: 10px;">{contact.get('objection_response', '')}</div>
+                </div>
+            """)
+
+        html_parts.append("</div>")
+
+    html_parts.append("""
+        </div>
+        <script>
+            function expandAll() { document.querySelectorAll('.touch-section').forEach(el => el.style.display = 'block'); }
+            function collapseAll() { document.querySelectorAll('.touch-section').forEach(el => el.style.display = 'none'); }
+            function copyToClipboard(text) { navigator.clipboard.writeText(text); alert('Copied!'); }
+        </script>
+    </body>
+    </html>
+    """)
+
+    return "\n".join(html_parts)
+
+# ─── FLOW EXECUTION ENDPOINT ──────────────────────────────────────────────
+
+@app.post("/api/flows/{flow_type}/execute")
+def execute_flow(flow_type: str, body: dict = Body(...)):
+    """Execute a flow with agent orchestration."""
+    try:
+        conn = get_db()
+        flow_id = gen_id("flow")
+        config = body.get("config", {})
+        now = datetime.utcnow().isoformat()
+
+        # Create flow run
+        conn.execute("""INSERT INTO flow_runs (id, flow_type, status, config, total_steps,
+                       started_at, created_at) VALUES (?,?,?,?,?,?,?)""",
+                    (flow_id, flow_type, "running", json.dumps(config), 6, now, now))
+        conn.commit()
+
+        # Create steps
+        steps = ["pre_brief", "extract", "research", "score", "ab_assign", "messages"]
+        for idx, step in enumerate(steps):
+            step_id = gen_id("step")
+            conn.execute("""INSERT INTO flow_run_steps (id, flow_run_id, step_name, agent_type,
+                           status, created_at) VALUES (?,?,?,?,?,?)""",
+                        (step_id, flow_id, step, "Agent", "pending", now))
+
+        conn.commit()
+        conn.close()
+
+        return {"flow_id": flow_id, "status": "started", "flow_type": flow_type}
+
+    except Exception as e:
+        conn.close()
+        raise HTTPException(400, str(e))

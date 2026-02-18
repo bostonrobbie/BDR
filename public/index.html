@@ -154,6 +154,25 @@ input.inp.err { border-color:var(--rd); }
 .err-msg { color:var(--rd); font-size:11px; margin-top:2px; display:none; }
 .err-msg.show { display:block; }
 @media(max-width:900px) { .sidebar{width:60px;} .sidebar-logo span,.nav-item span:not(.badge){display:none;} .nav-section{display:none;} .grid2,.grid3{grid-template-columns:1fr;} .detail-panel{width:100%;} }
+@media(max-width:768px) {
+    .sidebar { display:none; }
+    .main { margin-left:0; }
+    .page { padding:12px; }
+    .kpi-row { grid-template-columns:repeat(2, 1fr); gap:8px; }
+    .kpi { padding:10px 12px; }
+    .kpi-val { font-size:18px; }
+    .kpi-label { font-size:10px; }
+    .card { padding:12px; margin-bottom:8px; }
+    .tbl { font-size:12px; }
+    .tbl thead th { padding:6px 8px; font-size:10px; }
+    .tbl tbody td { padding:6px 8px; }
+    .grid2, .grid3 { grid-template-columns:1fr; }
+    .filters-bar { flex-direction:column; }
+    .filters-bar label, .filters-bar select, .filters-bar input { width:100%; }
+    .btn-group { flex-wrap:wrap; }
+    .detail-panel { width:100%; }
+    .modal-content { width:90vw; }
+}
 @media print { .sidebar,.toast,.confirm-overlay{display:none!important;} .main{overflow:visible;} .page{max-width:none;} }
 </style>
 </head>
@@ -863,7 +882,8 @@ async function apiPost(path, body, method='POST') {
         apiOnline = true;
         document.getElementById('mode-badge').textContent = 'Online';
         document.getElementById('mode-badge').className = 'mode-badge online';
-        document.getElementById('api-status').textContent = `v2.0 - ${health.tables} tables`;
+        const tableCount = health.tables ? Object.keys(health.tables).length : 0;
+        document.getElementById('api-status').textContent = `v2.0 - ${tableCount} tables`;
     }
     document.getElementById('api-url-display').textContent = API;
     await refreshAll();
@@ -998,9 +1018,14 @@ function renderMiniChart(canvasId, data, labelKey) {
 // PIPELINE TABLE
 // ═══════════════════════════════════════════════════════
 async function loadPipeline() {
+    document.getElementById('pipeline-body').innerHTML = '<tr><td colspan="8"><div class="empty">Loading...</div></td></tr>';
+
     const resp = await api('/api/contacts?limit=500');
     const data = resp?.contacts || resp || [];
-    if (!data) return;
+    if (!data) {
+        document.getElementById('pipeline-body').innerHTML = '<tr><td colspan="8"><div class="empty">No data available</div></td></tr>';
+        return;
+    }
     contacts = data;
     renderPipeline(contacts);
 }
@@ -1016,7 +1041,7 @@ function sortPipeline(col) {
 function renderPipeline(list) {
     const body = document.getElementById('pipeline-body');
     document.getElementById('pipeline-count').textContent = `${list.length} contacts`;
-    if (!list.length) { body.innerHTML = '<tr><td colspan="8" class="empty">No contacts</td></tr>'; return; }
+    if (!list.length) { body.innerHTML = '<tr><td colspan="8"><div class="empty">No prospects in pipeline</div></td></tr>'; return; }
     body.innerHTML = list.map(c => {
         const pri = c.priority_score || 0;
         const priClass = pri >= 5 ? 'tag-hot' : pri >= 4 ? 'tag-warm' : 'tag-std';
@@ -1364,8 +1389,10 @@ async function checkActiveRuns() {
 // ═══════════════════════════════════════════════════════
 async function loadApprovalQueue() {
     const filter = document.getElementById('approval-filter')?.value || 'pending';
-    const data = await api(`/api/approval-queue${filter ? '?approval_status='+filter : ''}`);
     const el = document.getElementById('approval-queue');
+    el.innerHTML = '<div class="empty">Loading...</div>';
+
+    const data = await api(`/api/approval-queue${filter ? '?approval_status='+filter : ''}`);
     if (!data || !data.length) {
         el.innerHTML = '<div class="empty">No messages ' + (filter || 'pending') + '.</div>';
         document.getElementById('badge-approval').style.display = 'none';
@@ -1955,6 +1982,9 @@ async function doExport() {
 // NEW PAGE 1: FLOWS
 // ═══════════════════════════════════════════════════════
 async function loadFlows() {
+    document.getElementById('flow-cards-grid').innerHTML = '<div class="empty" style="grid-column:1/-1;padding:40px;">Loading...</div>';
+    document.getElementById('flows-runs-body').innerHTML = '<tr><td colspan="6"><div class="empty">Loading...</div></td></tr>';
+
     const [flows, runs] = await Promise.all([
         api('/api/flows/catalog'),
         api('/api/flows/runs?limit=20')
@@ -2114,10 +2144,13 @@ async function loadActivity() {
     const channel = document.getElementById('activity-channel').value;
     const search = document.getElementById('activity-search').value;
 
+    document.getElementById('activity-timeline').innerHTML = '<div class="empty">Loading...</div>';
+
     const activities = await api(`/api/activity?channel=${channel}&limit=100`);
-    
+
     if (!activities?.activities?.length) {
         document.getElementById('activity-timeline').innerHTML = '<div class="empty">No activities found</div>';
+        document.getElementById('activity-kpis').innerHTML = '';
         return;
     }
 
@@ -2165,10 +2198,12 @@ async function loadActivity() {
 // ═══════════════════════════════════════════════════════
 async function loadAccounts() {
     const search = document.getElementById('accounts-search').value.toLowerCase();
+    document.getElementById('accounts-body').innerHTML = '<tr><td colspan="8"><div class="empty">Loading...</div></td></tr>';
+
     const data = await api('/api/accounts?limit=100');
-    
+
     if (!data?.accounts?.length) {
-        document.getElementById('accounts-body').innerHTML = '<tr><td colspan="8" class="empty">No accounts</td></tr>';
+        document.getElementById('accounts-body').innerHTML = '<tr><td colspan="8"><div class="empty">No accounts found</div></td></tr>';
         return;
     }
 
@@ -2237,10 +2272,13 @@ async function loadContacts() {
     const hasEmail = document.getElementById('c-email').value;
     const search = document.getElementById('c-search').value.toLowerCase();
 
+    document.getElementById('contacts-body').innerHTML = '<tr><td colspan="9"><div class="empty">Loading...</div></td></tr>';
+
     const resp = await api('/api/contacts?limit=500');
     const data = resp?.contacts || resp || [];
     if (!data?.length) {
-        document.getElementById('contacts-body').innerHTML = '<tr><td colspan="9" class="empty">No contacts</td></tr>';
+        document.getElementById('contacts-body').innerHTML = '<tr><td colspan="9"><div class="empty">No contacts found</div></td></tr>';
+        document.getElementById('contacts-count').textContent = '0 contacts';
         return;
     }
 
@@ -2340,10 +2378,13 @@ async function loadDrafts() {
     const status = document.getElementById('drafts-status').value;
     const search = document.getElementById('drafts-search').value.toLowerCase();
 
+    document.getElementById('drafts-list').innerHTML = '<div class="empty">Loading...</div>';
+
     const data = await api(`/api/drafts?channel=${channel}&status=${status}&limit=100`);
-    
+
     if (!data?.drafts?.length) {
         document.getElementById('drafts-list').innerHTML = '<div class="empty">No drafts found</div>';
+        document.getElementById('drafts-kpis').innerHTML = '';
         return;
     }
 
@@ -2370,10 +2411,11 @@ async function loadDrafts() {
 
     document.getElementById('drafts-list').innerHTML = filtered.map(d => {
         const wc = (d.body||'').split(/\s+/).filter(Boolean).length;
+        const contactDisplay = d.contact_name ? `${d.contact_name} @ ${d.company||'Unknown'}` : (d.company || 'Unknown Contact');
         return `<div class="card" style="padding:12px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
                 <div>
-                    <strong>${d.contact_name||'-'}</strong> @ ${d.company||'-'}
+                    <strong>${contactDisplay}</strong>
                     <div style="font-size:11px;color:var(--tx2);margin-top:2px;">Touch ${d.touch_number||'?'} | ${d.channel||'?'}</div>
                 </div>
                 <div class="btn-group">

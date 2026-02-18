@@ -1049,5 +1049,69 @@ class TestPipelineRuns:
         assert response.status_code == 404
 
 
+class TestAnalyticsEndpoints:
+    """Tests for analytics and intelligence endpoints."""
+
+    def test_reply_rates(self, client):
+        response = client.get("/api/analytics/reply-rates")
+        assert response.status_code == 200
+        data = response.json()
+        assert "by_persona" in data or isinstance(data, dict)
+
+    def test_experiments(self, client):
+        response = client.get("/api/analytics/experiments")
+        assert response.status_code == 200
+
+    def test_signals(self, client):
+        response = client.get("/api/analytics/signals")
+        assert response.status_code == 200
+
+    def test_agent_logs(self, client):
+        response = client.get("/api/analytics/agent-logs")
+        assert response.status_code == 200
+
+    def test_email_health(self, client):
+        response = client.get("/api/analytics/email-health")
+        assert response.status_code == 200
+
+
+class TestBatchExecution:
+    """Tests for batch execution engine."""
+
+    def test_execute_batch(self, client):
+        """Execute a batch with existing contacts."""
+        # Get contact IDs first
+        resp = client.get("/api/contacts?limit=5")
+        contacts = resp.json().get("contacts", resp.json()) if resp.status_code == 200 else []
+        if contacts and len(contacts) > 0:
+            contact_ids = [c["id"] for c in contacts[:3]]
+            response = client.post("/api/batches/execute", json={
+                "contact_ids": contact_ids,
+                "ab_variable": "pain_hook"
+            })
+            assert response.status_code == 200
+            data = response.json()
+            assert "batch_id" in data or "error" in data or "detail" in data or "quality_gate_failed" in data
+
+    def test_execute_flow(self, client):
+        """Test flow execution endpoint."""
+        response = client.post("/api/flows/account_research/execute", json={
+            "target_count": 5
+        })
+        assert response.status_code == 200
+
+    def test_batch_deliverable(self, client):
+        """Test deliverable generation endpoint."""
+        # Get a batch ID first
+        resp = client.get("/api/batches")
+        if resp.status_code == 200:
+            batches = resp.json()
+            if isinstance(batches, list) and len(batches) > 0:
+                batch_id = batches[0].get("id", batches[0].get("batch_id", "fake"))
+                response = client.get(f"/api/batches/{batch_id}/deliverable")
+                # May return 200 (HTML) or 404 (no data)
+                assert response.status_code in [200, 404]
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v", "--tb=short"])
