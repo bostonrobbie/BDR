@@ -16,8 +16,6 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg); color:var(--tx); line-height:1.5; }
 a { color:var(--ac2); text-decoration:none; cursor:pointer; }
-
-/* Layout */
 .shell { display:flex; height:100vh; }
 .sidebar { width:220px; background:var(--bg2); border-right:1px solid var(--bd); display:flex; flex-direction:column; flex-shrink:0; }
 .sidebar-logo { padding:16px 20px; font-size:14px; font-weight:700; color:var(--ac2); border-bottom:1px solid var(--bd); }
@@ -28,35 +26,26 @@ a { color:var(--ac2); text-decoration:none; cursor:pointer; }
 .nav-item.active { background:var(--ac); color:#fff; }
 .nav-item .badge { margin-left:auto; background:var(--rd); color:#fff; font-size:10px; padding:1px 6px; border-radius:10px; font-weight:600; min-width:18px; text-align:center; }
 .nav-sep { height:1px; background:var(--bd); margin:6px 8px; }
+.nav-section { font-size:11px; font-weight:600; color:var(--tx3); text-transform:uppercase; padding:12px 12px 6px; letter-spacing:.5px; }
 .main { flex:1; overflow-y:auto; }
 .page { display:none; padding:20px; max-width:1400px; }
 .page.active { display:block; }
 .page-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:8px; }
 .page-hdr h1 { font-size:18px; font-weight:600; }
-
-/* Mode badge */
 .mode-badge { font-size:10px; padding:2px 8px; border-radius:10px; font-weight:600; }
 .mode-badge.offline { background:rgba(249,115,22,.15); color:var(--or); }
 .mode-badge.online { background:rgba(34,197,94,.15); color:var(--gn); }
-
-/* KPI */
 .kpi-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:var(--g); margin-bottom:16px; }
 .kpi { background:var(--bg2); border:1px solid var(--bd); border-radius:var(--r); padding:14px 16px; }
 .kpi-label { font-size:11px; color:var(--tx2); text-transform:uppercase; letter-spacing:.5px; }
 .kpi-val { font-size:24px; font-weight:700; margin:2px 0; }
 .kpi-sub { font-size:11px; }
 .kpi-sub.up { color:var(--gn); } .kpi-sub.dn { color:var(--rd); }
-
-/* Card */
 .card { background:var(--bg2); border:1px solid var(--bd); border-radius:var(--r); padding:16px; margin-bottom:var(--g); }
 .card h3 { font-size:13px; font-weight:600; margin-bottom:10px; color:var(--tx2); text-transform:uppercase; letter-spacing:.5px; }
 .card canvas { max-height:280px; }
-
-/* Grid */
 .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:var(--g); }
 .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:var(--g); }
-
-/* Table */
 .tbl { width:100%; border-collapse:collapse; font-size:13px; }
 .tbl thead th { text-align:left; padding:8px 10px; border-bottom:2px solid var(--bd); color:var(--tx2); font-size:11px; text-transform:uppercase; letter-spacing:.5px; cursor:pointer; white-space:nowrap; user-select:none; }
 .tbl thead th:hover { color:var(--tx); }
@@ -64,8 +53,6 @@ a { color:var(--ac2); text-decoration:none; cursor:pointer; }
 .tbl thead th.sorted.asc::after { content:" ▲"; }
 .tbl tbody td { padding:8px 10px; border-bottom:1px solid var(--bd); }
 .tbl tbody tr:hover { background:var(--bg3); cursor:pointer; }
-
-/* Tags */
 .tag { display:inline-block; padding:1px 8px; border-radius:4px; font-size:11px; font-weight:600; }
 .tag-hot { background:rgba(239,68,68,.15); color:var(--rd); }
 .tag-warm { background:rgba(249,115,22,.15); color:var(--or); }
@@ -74,8 +61,6 @@ a { color:var(--ac2); text-decoration:none; cursor:pointer; }
 .tag-gn { background:rgba(34,197,94,.15); color:var(--gn); }
 .tag-vp { background:rgba(6,182,212,.15); color:var(--cy); }
 .tag-intent { background:rgba(234,179,8,.15); color:var(--yl); }
-
-/* Buttons */
 .btn { padding:6px 14px; border-radius:6px; border:1px solid var(--bd); background:var(--bg3); color:var(--tx); font-size:12px; cursor:pointer; transition:all .15s; display:inline-flex; align-items:center; gap:6px; white-space:nowrap; }
 .btn:hover { border-color:var(--ac); color:var(--ac2); }
 .btn:disabled { opacity:.5; cursor:not-allowed; }
@@ -89,17 +74,11 @@ select.sel { background:var(--bg3); border:1px solid var(--bd); color:var(--tx);
 input.inp { background:var(--bg3); border:1px solid var(--bd); color:var(--tx); padding:5px 10px; border-radius:4px; font-size:12px; outline:none; }
 input.inp:focus, select.sel:focus { border-color:var(--ac); }
 input.inp.err { border-color:var(--rd); }
-.err-msg { color:var(--rd); font-size:11px; margin-top:2px; display:none; }
-.err-msg.show { display:block; }
-
-/* Spinner */
 .spinner { display:inline-block; width:14px; height:14px; border:2px solid var(--bd); border-top-color:var(--ac2); border-radius:50%; animation:spin .6s linear infinite; }
 @keyframes spin { to { transform:rotate(360deg); } }
-
-/* Pipeline progress */
 .pipeline-progress { background:var(--bg2); border:1px solid var(--bd); border-radius:var(--r); padding:20px; margin-bottom:16px; }
 .phase-track { display:flex; gap:4px; margin:12px 0; }
-.phase-step { flex:1; height:32px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:600; text-transform:uppercase; transition:all .3s; position:relative; }
+.phase-step { flex:1; height:32px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:600; text-transform:uppercase; transition:all .3s; }
 .phase-step.pending { background:var(--bg3); color:var(--tx3); }
 .phase-step.active { background:var(--ac); color:#fff; animation:pulse 1.5s infinite; }
 .phase-step.done { background:var(--gn2); color:#fff; }
@@ -108,8 +87,6 @@ input.inp.err { border-color:var(--rd); }
 .progress-bar { height:6px; background:var(--bg3); border-radius:3px; overflow:hidden; margin-top:8px; }
 .progress-fill { height:100%; background:linear-gradient(90deg,var(--ac),var(--gn)); transition:width .5s; border-radius:3px; }
 .run-timer { font-size:11px; color:var(--tx3); font-variant-numeric:tabular-nums; }
-
-/* Approval cards */
 .approval-card { background:var(--bg3); border:1px solid var(--bd); border-radius:var(--r); padding:14px; margin-bottom:10px; transition:all .2s; }
 .approval-card.approved { border-color:var(--gn); opacity:.6; }
 .approval-card.rejected { border-color:var(--rd); opacity:.4; }
@@ -120,21 +97,15 @@ input.inp.err { border-color:var(--rd); }
 .msg-word-count { font-variant-numeric:tabular-nums; }
 .msg-save-indicator { color:var(--gn); font-size:11px; opacity:0; transition:opacity .3s; }
 .msg-save-indicator.show { opacity:1; }
-
-/* Detail panel */
 .detail-panel { position:fixed; right:0; top:0; width:540px; height:100vh; background:var(--bg2); border-left:1px solid var(--bd); transform:translateX(100%); transition:transform .25s ease; z-index:100; overflow-y:auto; padding:20px; }
 .detail-panel.open { transform:translateX(0); }
 .detail-close { position:absolute; top:12px; right:12px; background:none; border:none; color:var(--tx2); cursor:pointer; font-size:18px; padding:4px 8px; }
 .detail-close:hover { color:var(--tx); }
-
-/* Signal card */
 .signal-card { background:var(--bg3); border-left:3px solid var(--yl); border-radius:0 var(--r) var(--r) 0; padding:10px 14px; margin-bottom:8px; }
 .signal-card .sig-type { font-size:11px; font-weight:600; color:var(--yl); text-transform:uppercase; }
 .signal-card .sig-detail { font-size:12px; color:var(--tx2); margin-top:2px; }
 .signal-card .sig-age { font-size:10px; color:var(--tx3); margin-top:2px; }
 .signal-card.actioned { opacity:.5; border-left-color:var(--gn); }
-
-/* Action queue items */
 .action-item { display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--bd); font-size:13px; align-items:flex-start; }
 .action-item:last-child { border-bottom:none; }
 .action-icon { width:28px; height:28px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; }
@@ -142,64 +113,48 @@ input.inp.err { border-color:var(--rd); }
 .action-icon.hot { background:rgba(234,179,8,.15); color:var(--yl); }
 .action-icon.stuck { background:rgba(249,115,22,.15); color:var(--or); }
 .action-icon.signal { background:rgba(99,102,241,.15); color:var(--ac2); }
-
-/* Filters */
 .filters-bar { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }
 .filters-bar label { font-size:11px; color:var(--tx2); }
-
-/* Form row */
 .form-row { margin-bottom:12px; }
 .form-row label { display:block; font-size:12px; color:var(--tx2); margin-bottom:4px; }
-
-/* Tabs */
 .tab-bar { display:flex; gap:2px; margin-bottom:16px; border-bottom:1px solid var(--bd); padding-bottom:0; }
 .tab-item { padding:8px 16px; font-size:12px; color:var(--tx2); cursor:pointer; border-bottom:2px solid transparent; transition:all .15s; user-select:none; }
 .tab-item:hover { color:var(--tx); }
 .tab-item.active { color:var(--ac2); border-bottom-color:var(--ac); }
 .tab-content { display:none; }
 .tab-content.active { display:block; }
-
-/* Confirm dialog */
 .confirm-overlay { position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:200; display:none; align-items:center; justify-content:center; }
 .confirm-overlay.show { display:flex; }
 .confirm-box { background:var(--bg2); border:1px solid var(--bd); border-radius:12px; padding:24px; width:400px; max-width:90vw; }
 .confirm-box h3 { font-size:15px; margin-bottom:8px; }
 .confirm-box p { font-size:13px; color:var(--tx2); margin-bottom:16px; }
 .confirm-actions { display:flex; gap:8px; justify-content:flex-end; }
-
-/* Empty */
 .empty { padding:40px; text-align:center; color:var(--tx3); font-size:13px; }
-
-/* Toast */
 .toast { position:fixed; bottom:20px; right:20px; background:var(--bg2); border:1px solid var(--bd); border-radius:var(--r); padding:12px 20px; font-size:13px; z-index:300; opacity:0; transform:translateY(10px); transition:all .3s; pointer-events:none; box-shadow:0 4px 20px rgba(0,0,0,.4); }
 .toast.show { opacity:1; transform:translateY(0); pointer-events:auto; }
 .toast.success { border-color:var(--gn); } .toast.error { border-color:var(--rd); }
-
-/* Responsive */
-@media(max-width:900px) { .sidebar{width:60px;} .sidebar-logo span,.nav-item span:not(.badge){display:none;} .grid2,.grid3{grid-template-columns:1fr;} .detail-panel{width:100%;} }
-@media print { .sidebar,.toast,.confirm-overlay{display:none!important;} .main{overflow:visible;} .page{max-width:none;} }
-
-/* Modal */
 .modal { position:fixed; inset:0; background:rgba(0,0,0,.6); display:flex; align-items:center; justify-content:center; z-index:100; }
 .modal-content { background:var(--bg2); border:1px solid var(--bd); border-radius:var(--r); padding:20px; width:400px; max-width:90vw; }
-
-/* Badge variants */
 .badge-gn { background:rgba(34,197,94,.15); color:var(--gn); padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; }
 .badge-rd { background:rgba(239,68,68,.15); color:var(--rd); padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; }
 .badge-yl { background:rgba(234,179,8,.15); color:var(--yl); padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; }
-
-/* Table */
-.tbl { width:100%; border-collapse:collapse; font-size:12px; }
-.tbl th { text-align:left; padding:8px; border-bottom:2px solid var(--bd); color:var(--tx2); font-size:11px; text-transform:uppercase; }
-.tbl td { padding:8px; border-bottom:1px solid var(--bd); }
-.tbl tr:hover { background:var(--bg3); }
-
-/* Input */
-.input { background:var(--bg); border:1px solid var(--bd); border-radius:4px; padding:8px 12px; color:var(--tx); font-size:13px; }
-.input:focus { border-color:var(--ac); outline:none; }
-.sel { background:var(--bg); border:1px solid var(--bd); border-radius:4px; padding:8px 12px; color:var(--tx); font-size:13px; cursor:pointer; }
-.sel:focus { border-color:var(--ac); outline:none; }
-
+.flow-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:var(--g); margin-bottom:16px; }
+.flow-card { background:var(--bg2); border:1px solid var(--bd); border-radius:var(--r); padding:16px; }
+.flow-card h3 { font-size:14px; font-weight:600; margin-bottom:6px; }
+.flow-card .desc { font-size:12px; color:var(--tx2); margin-bottom:12px; }
+.flow-card .run-count { font-size:11px; color:var(--tx3); margin-bottom:12px; }
+.timeline { position:relative; padding:20px 0; }
+.timeline-item { display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--bd); }
+.timeline-item:last-child { border-bottom:none; }
+.timeline-icon { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; background:var(--bg3); }
+.timeline-content { flex:1; }
+.timeline-content h4 { font-size:13px; font-weight:600; margin-bottom:4px; }
+.timeline-content p { font-size:12px; color:var(--tx2); margin-bottom:4px; }
+.timeline-content .time { font-size:11px; color:var(--tx3); }
+.err-msg { color:var(--rd); font-size:11px; margin-top:2px; display:none; }
+.err-msg.show { display:block; }
+@media(max-width:900px) { .sidebar{width:60px;} .sidebar-logo span,.nav-item span:not(.badge){display:none;} .nav-section{display:none;} .grid2,.grid3{grid-template-columns:1fr;} .detail-panel{width:100%;} }
+@media print { .sidebar,.toast,.confirm-overlay{display:none!important;} .main{overflow:visible;} .page{max-width:none;} }
 </style>
 </head>
 <body>
@@ -208,21 +163,36 @@ input.inp.err { border-color:var(--rd); }
 <div class="sidebar">
     <div class="sidebar-logo">OCC<span>Outreach Command Center</span></div>
     <nav class="nav">
+        <div class="nav-section">Overview</div>
         <div class="nav-item active" onclick="showPage('home')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M2 6h12"/></svg><span>Home</span><span class="badge" id="badge-actions" style="display:none">0</span></div>
         <div class="nav-item" onclick="showPage('pipeline')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h10M5 8h6M7 13h2"/></svg><span>Pipeline</span></div>
+        <div class="nav-item" onclick="showPage('activity')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 2v12h12V2M2 8h12M8 2v12"/></svg><span>Activity</span></div>
+        
         <div class="nav-sep"></div>
+        <div class="nav-section">Workflows</div>
+        <div class="nav-item" onclick="showPage('flows')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5,3 13,8 5,13"/></svg><span>Flows</span></div>
         <div class="nav-item" onclick="showPage('launch')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5,3 19,12 5,21" transform="scale(0.7)"/></svg><span>Launch Batch</span></div>
         <div class="nav-item" onclick="showPage('approval')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l4 4 6-8"/></svg><span>Approval</span><span class="badge" id="badge-approval" style="display:none">0</span></div>
+        
         <div class="nav-sep"></div>
+        <div class="nav-section">Data</div>
+        <div class="nav-item" onclick="showPage('accounts')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M6 8v2M10 8v2"/></svg><span>Accounts</span></div>
+        <div class="nav-item" onclick="showPage('contacts')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="5" r="2"/><path d="M2 13c0-2 2-4 6-4s6 2 6 4"/></svg><span>Contacts</span></div>
+        <div class="nav-item" onclick="showPage('drafts')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h10v10H3zM7 7h2M6 10h4"/></svg><span>Drafts</span></div>
+        
+        <div class="nav-sep"></div>
+        <div class="nav-section">Analytics</div>
         <div class="nav-item" onclick="showPage('intelligence')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 13V8M7 13V5M11 13V2"/></svg><span>Intelligence</span></div>
         <div class="nav-item" onclick="showPage('experiments')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="5"/><path d="M8 3v10M3 8h10"/></svg><span>Experiments</span></div>
         <div class="nav-item" onclick="showPage('signals')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h4l-1 6 10-12H12z" transform="scale(0.85)"/></svg><span>Signals</span></div>
+        
         <div class="nav-sep"></div>
+        <div class="nav-section">System</div>
         <div class="nav-item" onclick="showPage('agents')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="14" height="8" rx="2"/><path d="M4 4V2M12 4V2"/></svg><span>Agent Logs</span></div>
-        <div class="nav-sep"></div>
-        <div class="nav-item" data-page="email" onclick="showPage('email')">📧 Email Channel</div>
-        <div class="nav-item" data-page="swarm" onclick="showPage('swarm')">🐝 Agent Swarm</div>
-        <div class="nav-item" data-page="health" onclick="showPage('health')">🏥 System Health</div>
+        <div class="nav-item" onclick="showPage('email')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h12v10H2z"/><path d="M2 3l8 5 8-5"/></svg><span>Email Channel</span></div>
+        <div class="nav-item" onclick="showPage('swarm')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="5"/><circle cx="3" cy="3" r="2"/><circle cx="13" cy="3" r="2"/></svg><span>Agent Swarm</span></div>
+        <div class="nav-item" onclick="showPage('health')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2c3 0 6 2 6 6s-3 6-6 6-6-2-6-6 3-6 6-6z"/><path d="M8 8v3M6 6l-1 1"/></svg><span>System Health</span></div>
+        <div class="nav-item" onclick="showPage('settings')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="5"/><path d="M8 3v2M8 11v2M3 8h2M11 8h2"/></svg><span>Settings</span></div>
     </nav>
     <div style="padding:12px;border-top:1px solid var(--bd);font-size:11px;color:var(--tx3);">
         <span class="mode-badge offline" id="mode-badge">Offline</span>
@@ -233,12 +203,11 @@ input.inp.err { border-color:var(--rd); }
 <!-- Main content -->
 <div class="main">
 
+
 <!-- ═══ HOME ═══ -->
 <div class="page active" id="page-home">
     <div class="page-hdr"><h1>Dashboard</h1><button class="btn btn-sm" onclick="refreshAll()">Refresh</button></div>
     <div class="kpi-row" id="kpi-row"></div>
-
-    <!-- Active Pipeline Run (#2) -->
     <div id="active-run-container" style="display:none;">
         <div class="pipeline-progress" id="pipeline-progress">
             <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -253,9 +222,7 @@ input.inp.err { border-color:var(--rd); }
             <div id="phase-detail" style="font-size:11px;color:var(--tx3);margin-top:6px;"></div>
         </div>
     </div>
-
     <div class="grid2">
-        <!-- Smart Action Queue (#8) -->
         <div class="card"><h3>Action Queue</h3><div id="action-queue"><div class="empty">Loading...</div></div></div>
         <div class="card"><h3>Pipeline Funnel</h3><canvas id="chart-funnel"></canvas></div>
     </div>
@@ -297,7 +264,35 @@ input.inp.err { border-color:var(--rd); }
     </div>
 </div>
 
-<!-- ═══ LAUNCH BATCH (#1) ═══ -->
+<!-- ═══ ACTIVITY ═══ -->
+<div class="page" id="page-activity">
+    <div class="page-hdr"><h1>Activity Timeline</h1>
+        <div class="btn-group">
+            <select class="sel" id="activity-channel" onchange="loadActivity()" style="width:120px;"><option value="">All Channels</option><option value="linkedin">LinkedIn</option><option value="email">Email</option><option value="phone">Phone</option></select>
+            <input class="inp" id="activity-search" placeholder="Search..." oninput="loadActivity()" style="width:150px;">
+            <button class="btn btn-sm" onclick="loadActivity()">Refresh</button>
+        </div>
+    </div>
+    <div class="kpi-row" id="activity-kpis"></div>
+    <div class="timeline" id="activity-timeline"><div class="empty">Loading...</div></div>
+</div>
+
+<!-- ═══ FLOWS ═══ -->
+<div class="page" id="page-flows">
+    <div class="page-hdr"><h1>Workflows</h1></div>
+    <div class="flow-grid" id="flow-cards-grid"></div>
+    <div class="card">
+        <h3>Recent Runs</h3>
+        <div style="overflow-x:auto;">
+            <table class="tbl" id="flows-runs-table">
+                <thead><tr><th>Flow</th><th>Status</th><th>Steps</th><th>Duration</th><th>Date</th><th>Actions</th></tr></thead>
+                <tbody id="flows-runs-body"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ LAUNCH BATCH ═══ -->
 <div class="page" id="page-launch">
     <div class="page-hdr"><h1>Launch New Batch</h1></div>
     <div class="grid2">
@@ -347,7 +342,7 @@ input.inp.err { border-color:var(--rd); }
     </div>
 </div>
 
-<!-- ═══ APPROVAL (#3 + #7) ═══ -->
+<!-- ═══ APPROVAL ═══ -->
 <div class="page" id="page-approval">
     <div class="page-hdr"><h1>Message Approval Queue</h1>
         <div class="btn-group">
@@ -368,7 +363,81 @@ input.inp.err { border-color:var(--rd); }
     <div id="approval-queue"><div class="empty">No messages pending approval.</div></div>
 </div>
 
-<!-- ═══ INTELLIGENCE (#5) ═══ -->
+<!-- ═══ ACCOUNTS ═══ -->
+<div class="page" id="page-accounts">
+    <div class="page-hdr"><h1>Accounts</h1>
+        <div class="btn-group">
+            <input class="inp" id="accounts-search" placeholder="Search..." oninput="loadAccounts()" style="width:180px;">
+            <button class="btn btn-sm btn-primary" onclick="showAddAccountModal()">+ Add Account</button>
+            <button class="btn btn-sm" onclick="loadAccounts()">Refresh</button>
+        </div>
+    </div>
+    <div style="overflow-x:auto;">
+        <table class="tbl" id="accounts-table">
+            <thead><tr>
+                <th>Name</th>
+                <th>Domain</th>
+                <th>Industry</th>
+                <th>Employees</th>
+                <th>Tier</th>
+                <th>Intent</th>
+                <th>Contacts</th>
+                <th>Actions</th>
+            </tr></thead>
+            <tbody id="accounts-body"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ═══ CONTACTS ═══ -->
+<div class="page" id="page-contacts">
+    <div class="page-hdr"><h1>Contacts</h1>
+        <div class="btn-group">
+            <button class="btn btn-sm btn-primary" onclick="showImportContactsModal()">Import</button>
+            <button class="btn btn-sm btn-primary" onclick="showAddContactModal()">+ Add Contact</button>
+            <button class="btn btn-sm" onclick="loadContacts()">Refresh</button>
+        </div>
+    </div>
+    <div class="filters-bar">
+        <label>Priority</label><select class="sel" id="c-priority" onchange="loadContacts()"><option value="">All</option><option value="5">Hot</option><option value="4">Warm</option><option value="3">Standard</option></select>
+        <label>Persona</label><select class="sel" id="c-persona" onchange="loadContacts()"><option value="">All</option><option value="qa_leader">QA</option><option value="vp_eng">VP Eng</option></select>
+        <label>Has Email</label><select class="sel" id="c-email" onchange="loadContacts()"><option value="">All</option><option value="true">Yes</option><option value="false">No</option></select>
+        <label>Search</label><input class="inp" id="c-search" placeholder="Name, company..." oninput="loadContacts()" style="width:180px;">
+        <span id="contacts-count" style="font-size:11px;color:var(--tx3);margin-left:auto;"></span>
+    </div>
+    <div style="overflow-x:auto;">
+        <table class="tbl" id="contacts-table">
+            <thead><tr>
+                <th>Name</th>
+                <th>Title</th>
+                <th>Company</th>
+                <th>Email</th>
+                <th>Priority</th>
+                <th>Persona</th>
+                <th>Stage</th>
+                <th>P-Score</th>
+                <th>Actions</th>
+            </tr></thead>
+            <tbody id="contacts-body"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ═══ DRAFTS ═══ -->
+<div class="page" id="page-drafts">
+    <div class="page-hdr"><h1>Message Drafts</h1>
+        <div class="btn-group">
+            <select class="sel" id="drafts-channel" onchange="loadDrafts()" style="width:120px;"><option value="">All Channels</option><option value="linkedin">LinkedIn</option><option value="email">Email</option></select>
+            <select class="sel" id="drafts-status" onchange="loadDrafts()" style="width:120px;"><option value="">All Status</option><option value="draft">Draft</option><option value="approved">Approved</option><option value="sent">Sent</option></select>
+            <input class="inp" id="drafts-search" placeholder="Search..." oninput="loadDrafts()" style="width:150px;">
+            <button class="btn btn-sm" onclick="loadDrafts()">Refresh</button>
+        </div>
+    </div>
+    <div class="kpi-row" id="drafts-kpis"></div>
+    <div id="drafts-list"><div class="empty">Loading...</div></div>
+</div>
+
+<!-- ═══ INTELLIGENCE ═══ -->
 <div class="page" id="page-intelligence">
     <div class="page-hdr"><h1>Intelligence</h1>
         <div class="btn-group">
@@ -415,7 +484,7 @@ input.inp.err { border-color:var(--rd); }
     <div class="card" style="margin-top:16px;"><h3>A/B Head-to-Head Comparison</h3><canvas id="ab-head-to-head"></canvas></div>
 </div>
 
-<!-- ═══ SIGNALS (#6) ═══ -->
+<!-- ═══ SIGNALS ═══ -->
 <div class="page" id="page-signals">
     <div class="page-hdr"><h1>Signals &amp; Re-Engagement</h1>
         <div class="btn-group">
@@ -463,18 +532,7 @@ input.inp.err { border-color:var(--rd); }
     </div>
 </div>
 
-<!-- ═══ COSTS (#9) ═══ -->
-<div class="page" id="page-costs">
-    <div class="page-hdr"><h1>Token &amp; Cost Tracking</h1><button class="btn btn-sm" onclick="loadCosts()">Refresh</button></div>
-    <div class="kpi-row" id="cost-kpis"></div>
-    <div class="grid2">
-        <div class="card"><h3>Token Usage by Agent</h3><canvas id="chart-costs-agent"></canvas></div>
-        <div class="card"><h3>Cost per Batch</h3><canvas id="chart-costs-batch"></canvas></div>
-    </div>
-</div>
-
-
-<!-- EMAIL CHANNEL PAGE -->
+<!-- ═══ EMAIL CHANNEL ═══ -->
 <div class="page" id="page-email">
     <div class="page-hdr"><h1>Email Channel</h1>
         <div style="display:flex;gap:8px;">
@@ -482,33 +540,25 @@ input.inp.err { border-color:var(--rd); }
             <button class="btn btn-sm btn-primary" onclick="showAddIdentity()">Add Sender</button>
         </div>
     </div>
-    
-    <!-- Email Health KPIs -->
     <div class="kpi-row" id="email-kpis"></div>
-    
-    <!-- Tabs: Identities | Suppression | Events | Pacing -->
     <div class="tab-row" style="display:flex;gap:4px;margin-bottom:12px;">
         <button class="btn btn-sm active" onclick="showEmailTab('identities',this)">Sender Accounts</button>
         <button class="btn btn-sm" onclick="showEmailTab('suppression',this)">Suppression List</button>
         <button class="btn btn-sm" onclick="showEmailTab('events',this)">Events Log</button>
         <button class="btn btn-sm" onclick="showEmailTab('pacing',this)">Pacing Rules</button>
     </div>
-    
-    <!-- Tab content areas -->
     <div id="email-tab-identities" class="email-tab"></div>
     <div id="email-tab-suppression" class="email-tab" style="display:none"></div>
     <div id="email-tab-events" class="email-tab" style="display:none"></div>
     <div id="email-tab-pacing" class="email-tab" style="display:none"></div>
-    
-    <!-- Add Identity Modal -->
     <div id="add-identity-modal" class="modal" style="display:none">
         <div class="modal-content">
             <h3>Add Sender Account</h3>
             <div style="display:grid;gap:8px;margin:12px 0;">
-                <input class="input" id="new-email" placeholder="Email address" />
-                <input class="input" id="new-display-name" placeholder="Display name (e.g. Rob Gorham)" />
-                <input class="input" id="new-daily-limit" type="number" value="25" placeholder="Daily send limit" />
-                <input class="input" id="new-warmup-cap" type="number" value="5" placeholder="Warmup daily cap" />
+                <input class="inp" id="new-email" placeholder="Email address" />
+                <input class="inp" id="new-display-name" placeholder="Display name (e.g. Rob Gorham)" />
+                <input class="inp" id="new-daily-limit" type="number" value="25" placeholder="Daily send limit" />
+                <input class="inp" id="new-warmup-cap" type="number" value="5" placeholder="Warmup daily cap" />
             </div>
             <div style="display:flex;gap:8px;justify-content:flex-end;">
                 <button class="btn btn-sm" onclick="hideAddIdentity()">Cancel</button>
@@ -516,13 +566,11 @@ input.inp.err { border-color:var(--rd); }
             </div>
         </div>
     </div>
-    
-    <!-- Add Suppression Modal -->
     <div id="add-suppression-modal" class="modal" style="display:none">
         <div class="modal-content">
             <h3>Add to Suppression List</h3>
             <div style="display:grid;gap:8px;margin:12px 0;">
-                <input class="input" id="sup-email" placeholder="Email to suppress" />
+                <input class="inp" id="sup-email" placeholder="Email to suppress" />
                 <select class="sel" id="sup-reason">
                     <option value="opt_out">Opt-out requested</option>
                     <option value="hard_bounce">Hard bounce</option>
@@ -539,7 +587,7 @@ input.inp.err { border-color:var(--rd); }
     </div>
 </div>
 
-<!-- AGENT SWARM PAGE -->
+<!-- ═══ AGENT SWARM ═══ -->
 <div class="page" id="page-swarm">
     <div class="page-hdr"><h1>Agent Swarm</h1>
         <div style="display:flex;gap:8px;">
@@ -547,23 +595,15 @@ input.inp.err { border-color:var(--rd); }
             <button class="btn btn-sm btn-primary" onclick="showLaunchSwarm()">Launch Swarm</button>
         </div>
     </div>
-    
-    <!-- Swarm Status KPIs -->
     <div class="kpi-row" id="swarm-kpis"></div>
-    
-    <!-- Active Swarm Progress -->
     <div id="swarm-active" class="card" style="margin-bottom:12px;display:none">
         <h3 style="margin-bottom:8px;">Active Swarm Run</h3>
         <div id="swarm-progress"></div>
     </div>
-    
-    <!-- Swarm Run History -->
     <div class="card">
         <h3 style="margin-bottom:8px;">Run History</h3>
         <div id="swarm-history"></div>
     </div>
-    
-    <!-- Launch Modal -->
     <div id="launch-swarm-modal" class="modal" style="display:none">
         <div class="modal-content">
             <h3>Launch Agent Swarm</h3>
@@ -571,7 +611,7 @@ input.inp.err { border-color:var(--rd); }
                 <label style="font-size:12px;color:var(--tx2);">Batch</label>
                 <select class="sel" id="swarm-batch"></select>
                 <label style="font-size:12px;color:var(--tx2);">Max Parallel Workers</label>
-                <input class="input" id="swarm-workers" type="number" value="3" min="1" max="5" />
+                <input class="inp" id="swarm-workers" type="number" value="3" min="1" max="5" />
                 <label style="font-size:12px;color:var(--tx2);">Channels</label>
                 <div style="display:flex;gap:12px;">
                     <label><input type="checkbox" id="ch-linkedin" checked /> LinkedIn</label>
@@ -586,44 +626,97 @@ input.inp.err { border-color:var(--rd); }
     </div>
 </div>
 
-<!-- SYSTEM HEALTH PAGE -->
+<!-- ═══ SYSTEM HEALTH ═══ -->
 <div class="page" id="page-health">
     <div class="page-hdr"><h1>System Health</h1>
         <button class="btn btn-sm" onclick="loadHealthPage()">Refresh</button>
     </div>
-    
-    <!-- Health KPIs -->
     <div class="kpi-row" id="health-kpis"></div>
-    
-    <!-- Feature Flags -->
     <div class="card" style="margin-bottom:12px;">
         <h3 style="margin-bottom:8px;">Feature Flags</h3>
         <div id="feature-flags"></div>
     </div>
-    
-    <!-- Table Counts -->
     <div class="card" style="margin-bottom:12px;">
         <h3 style="margin-bottom:8px;">Database Tables</h3>
         <div id="table-counts"></div>
     </div>
-    
-    <!-- Recent Errors -->
     <div class="card" style="margin-bottom:12px;">
         <h3 style="margin-bottom:8px;">Recent Errors</h3>
         <div id="recent-errors"></div>
     </div>
-    
-    <!-- Daily Insights -->
     <div class="card">
         <h3 style="margin-bottom:8px;">Daily Summary</h3>
         <div id="daily-insights"></div>
     </div>
 </div>
 
+<!-- ═══ SETTINGS ═══ -->
+<div class="page" id="page-settings">
+    <div class="page-hdr"><h1>Settings</h1></div>
+    <div class="tab-bar">
+        <div class="tab-item active" onclick="showSettingsTab('general')">General</div>
+        <div class="tab-item" onclick="showSettingsTab('email')">Email Setup</div>
+        <div class="tab-item" onclick="showSettingsTab('flags')">Feature Flags</div>
+        <div class="tab-item" onclick="showSettingsTab('api')">API</div>
+    </div>
+    <div class="tab-content active" id="settings-tab-general">
+        <div class="card">
+            <h3>User Settings</h3>
+            <div class="form-row">
+                <label>User Name</label>
+                <input class="inp" id="settings-name" style="width:100%;" placeholder="Your name">
+            </div>
+            <div class="form-row">
+                <label>Default Volume Cap (prospects per batch)</label>
+                <input class="inp" id="settings-volume" type="number" value="25" style="width:100%;">
+            </div>
+            <div class="form-row">
+                <label>Quality Bar Level</label>
+                <select class="sel" id="settings-quality" style="width:100%;">
+                    <option value="high">High (strictest)</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="low">Low (fastest)</option>
+                </select>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="saveGeneralSettings()">Save</button>
+        </div>
+    </div>
+    <div class="tab-content" id="settings-tab-email">
+        <div class="card">
+            <h3>Sender Health Checklist</h3>
+            <div id="sender-health-checklist"></div>
+        </div>
+        <div class="card">
+            <h3>Sender Identities</h3>
+            <div id="sender-identities-list"></div>
+            <button class="btn btn-primary btn-sm" onclick="showAddIdentity()">+ Add Sender</button>
+        </div>
+    </div>
+    <div class="tab-content" id="settings-tab-flags">
+        <div class="card">
+            <h3>Feature Flags</h3>
+            <div id="settings-flags-list"></div>
+        </div>
+    </div>
+    <div class="tab-content" id="settings-tab-api">
+        <div class="card">
+            <h3>API Status</h3>
+            <div style="padding:12px 0;">
+                <div style="margin-bottom:12px;"><span style="color:var(--tx2)">API URL:</span> <strong id="api-url-display" style="font-family:monospace;font-size:12px;"></strong></div>
+                <div style="margin-bottom:12px;"><span style="color:var(--tx2);">Status:</span> <span id="api-status-display" class="badge-gn">Online</span></div>
+            </div>
+        </div>
+        <div class="card">
+            <h3>Database Tables</h3>
+            <div id="settings-table-counts"></div>
+        </div>
+    </div>
+</div>
+
 </div><!-- /main -->
 </div><!-- /shell -->
 
-<!-- Confirm dialog -->
+<!-- Dialogs -->
 <div class="confirm-overlay" id="confirm-dialog">
     <div class="confirm-box">
         <h3 id="confirm-title">Confirm</h3>
@@ -635,7 +728,6 @@ input.inp.err { border-color:var(--rd); }
     </div>
 </div>
 
-<!-- Export modal (#10) -->
 <div class="confirm-overlay" id="export-modal">
     <div class="confirm-box" style="width:500px;">
         <h3>Export to CSV</h3>
@@ -658,13 +750,63 @@ input.inp.err { border-color:var(--rd); }
     </div>
 </div>
 
-<!-- Toast -->
+<div id="add-account-modal" class="modal" style="display:none">
+    <div class="modal-content">
+        <h3>Add Account</h3>
+        <div style="display:grid;gap:8px;margin:12px 0;">
+            <input class="inp" id="new-account-name" placeholder="Company name" />
+            <input class="inp" id="new-account-domain" placeholder="Domain (e.g. acme.com)" />
+            <input class="inp" id="new-account-industry" placeholder="Industry" />
+            <input class="inp" id="new-account-employees" type="number" placeholder="Employee count" />
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;">
+            <button class="btn btn-sm" onclick="closeAddAccountModal()">Cancel</button>
+            <button class="btn btn-sm btn-primary" onclick="addAccount()">Create</button>
+        </div>
+    </div>
+</div>
+
+<div id="add-contact-modal" class="modal" style="display:none">
+    <div class="modal-content">
+        <h3>Add Contact</h3>
+        <div style="display:grid;gap:8px;margin:12px 0;">
+            <input class="inp" id="new-contact-first" placeholder="First name" />
+            <input class="inp" id="new-contact-last" placeholder="Last name" />
+            <input class="inp" id="new-contact-title" placeholder="Title" />
+            <input class="inp" id="new-contact-company" placeholder="Company" />
+            <input class="inp" id="new-contact-email" placeholder="Email" />
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;">
+            <button class="btn btn-sm" onclick="closeAddContactModal()">Cancel</button>
+            <button class="btn btn-sm btn-primary" onclick="addContact()">Create</button>
+        </div>
+    </div>
+</div>
+
+<div id="import-contacts-modal" class="modal" style="display:none">
+    <div class="modal-content" style="width:600px;">
+        <h3>Import Contacts</h3>
+        <div class="tab-bar" style="margin-bottom:12px;">
+            <div class="tab-item active" onclick="showImportTab('paste')">Paste URLs</div>
+            <div class="tab-item" onclick="showImportTab('csv')">CSV Upload</div>
+        </div>
+        <div id="import-tab-paste" class="tab-content active">
+            <textarea class="inp" id="import-urls" style="width:100%;height:150px;resize:vertical;font-family:monospace;font-size:11px;" placeholder="Paste LinkedIn profile URLs, one per line..."></textarea>
+        </div>
+        <div id="import-tab-csv" class="tab-content" style="display:none;">
+            <input type="file" id="import-csv-file" accept=".csv" style="margin-bottom:12px;" />
+            <div style="font-size:11px;color:var(--tx2);">Expected columns: first_name, last_name, title, company, email, linkedin_url</div>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px;">
+            <button class="btn btn-sm" onclick="closeImportContactsModal()">Cancel</button>
+            <button class="btn btn-sm btn-primary" onclick="importContacts()">Import</button>
+        </div>
+    </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════════
 const API = window.location.origin;
 let apiOnline = false;
 let contacts = [], messages = [], batches = [];
@@ -672,9 +814,6 @@ let activeRunId = null, sseSource = null, runStartTime = null, timerInterval = n
 const charts = {};
 let pipelineSortCol = 'priority_score', pipelineSortDir = 'desc';
 
-// ═══════════════════════════════════════════════════════
-// API HELPERS
-// ═══════════════════════════════════════════════════════
 async function api(path, opts = {}) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 10000);
@@ -693,9 +832,7 @@ async function api(path, opts = {}) {
         return r.text();
     } catch(e) {
         clearTimeout(timeout);
-        if (e.name !== 'AbortError') {
-            console.warn('API error:', path, e.message);
-        }
+        if (e.name !== 'AbortError') console.warn('API error:', path, e.message);
         return null;
     }
 }
@@ -720,9 +857,6 @@ async function apiPost(path, body, method='POST') {
     }
 }
 
-// ═══════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════
 (async function init() {
     const health = await api('/api/health');
     if (health && health.status === 'healthy') {
@@ -731,6 +865,7 @@ async function apiPost(path, body, method='POST') {
         document.getElementById('mode-badge').className = 'mode-badge online';
         document.getElementById('api-status').textContent = `v2.0 - ${health.tables} tables`;
     }
+    document.getElementById('api-url-display').textContent = API;
     await refreshAll();
     await loadBatches();
     checkActiveRuns();
@@ -740,31 +875,29 @@ async function refreshAll() {
     await Promise.all([loadStats(), loadPipeline(), loadActionQueue(), loadIntelligenceHome()]);
 }
 
-// ═══════════════════════════════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════════════════════════════
 function showPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('page-'+id)?.classList.add('active');
-    // Match both onclick and data-page attributes for nav items
     const navSelector = `.nav-item[onclick="showPage('${id}')"], .nav-item[data-page="${id}"]`;
     document.querySelector(navSelector)?.classList.add('active');
     if (id === 'intelligence') loadIntelligence();
     if (id === 'experiments') loadExperiments();
     if (id === 'signals') loadSignals();
     if (id === 'agents') loadAgentRuns();
-    if (id === 'costs') loadCosts();
     if (id === 'approval') loadApprovalQueue();
     if (id === 'launch') { loadBatches(); loadPreBrief(); }
     if (id === 'email') loadEmailPage();
     if (id === 'swarm') loadSwarmPage();
     if (id === 'health') loadHealthPage();
+    if (id === 'flows') loadFlows();
+    if (id === 'activity') loadActivity();
+    if (id === 'accounts') loadAccounts();
+    if (id === 'contacts') loadContacts();
+    if (id === 'drafts') loadDrafts();
+    if (id === 'settings') loadSettings();
 }
 
-// ═══════════════════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════════════════
 function kpi(label, val, sub='') {
     return `<div class="kpi"><div class="kpi-label">${label}</div><div class="kpi-val">${val}</div>${sub?`<div class="kpi-sub">${sub}</div>`:''}</div>`;
 }
@@ -795,6 +928,7 @@ function showConfirm(title, message, onConfirm) {
 }
 function closeConfirm() { document.getElementById('confirm-dialog').classList.remove('show'); }
 
+
 // ═══════════════════════════════════════════════════════
 // HOME: KPIs + Charts
 // ═══════════════════════════════════════════════════════
@@ -811,7 +945,6 @@ async function loadStats() {
     ].join('');
 }
 
-// Smart Action Queue (#8)
 async function loadActionQueue() {
     const q = await api('/api/action-queue');
     const el = document.getElementById('action-queue');
@@ -919,7 +1052,6 @@ function filterPipeline() {
     if (search) filtered = filtered.filter(c =>
         `${c.first_name} ${c.last_name} ${c.title} ${c.company_name}`.toLowerCase().includes(search));
 
-    // Sort
     filtered.sort((a, b) => {
         let av = a[pipelineSortCol], bv = b[pipelineSortCol];
         if (pipelineSortCol === 'name') { av = `${a.first_name} ${a.last_name}`; bv = `${b.first_name} ${b.last_name}`; }
@@ -931,9 +1063,6 @@ function filterPipeline() {
     renderPipeline(filtered);
 }
 
-// ═══════════════════════════════════════════════════════
-// AGENT ACTIONS (#4) - with loading state
-// ═══════════════════════════════════════════════════════
 async function agentAction(btn, action, contactId) {
     const origText = btn.textContent;
     btn.disabled = true;
@@ -949,9 +1078,6 @@ async function agentAction(btn, action, contactId) {
     }
 }
 
-// ═══════════════════════════════════════════════════════
-// DETAIL PANEL (#4 - full actions)
-// ═══════════════════════════════════════════════════════
 async function openDetail(cid) {
     let panel = document.getElementById('detail-panel');
     if (!panel) {
@@ -1003,7 +1129,7 @@ async function openDetail(cid) {
 }
 
 // ═══════════════════════════════════════════════════════
-// LAUNCH BATCH (#1 - with validation)
+// LAUNCH BATCH
 // ═══════════════════════════════════════════════════════
 async function loadBatches() {
     const data = await api('/api/batches?limit=20');
@@ -1015,7 +1141,6 @@ async function loadBatches() {
     const maxNum = Math.max(...data.map(b => b.batch_number || 0));
     document.getElementById('launch-batch-num').value = maxNum + 1;
 
-    // Populate export batch dropdown
     const exportSel = document.getElementById('export-batch');
     exportSel.innerHTML = '<option value="">All contacts</option>' + data.map(b =>
         `<option value="${b.id}">Batch ${b.batch_number} (${b.contact_count||0} contacts)</option>`
@@ -1046,7 +1171,6 @@ async function loadPreBrief() {
 }
 
 async function launchBatch() {
-    // Clear errors
     document.getElementById('launch-error').style.display = 'none';
     document.querySelectorAll('.err-msg').forEach(e => e.classList.remove('show'));
     document.querySelectorAll('.inp.err').forEach(e => e.classList.remove('err'));
@@ -1110,7 +1234,7 @@ async function regenerateHTML(batchId, btn) {
 }
 
 // ═══════════════════════════════════════════════════════
-// PIPELINE PROGRESS (#2 - with timer + reconnect)
+// PIPELINE PROGRESS
 // ═══════════════════════════════════════════════════════
 const PHASES = ['initialize','pre_brief','extract','research','score','ab_assign','messages','qc','approval','generate_html','finalize'];
 
@@ -1199,7 +1323,6 @@ function connectSSE(runId) {
         sseSource.close(); sseSource = null; activeRunId = null;
     });
 
-    // Reconnect on error
     sseSource.onerror = () => {
         setTimeout(() => {
             if (activeRunId) connectSSE(activeRunId);
@@ -1236,7 +1359,7 @@ async function checkActiveRuns() {
 }
 
 // ═══════════════════════════════════════════════════════
-// APPROVAL QUEUE (#3 + #7 inline editing)
+// APPROVAL QUEUE
 // ═══════════════════════════════════════════════════════
 async function loadApprovalQueue() {
     const filter = document.getElementById('approval-filter')?.value || 'pending';
@@ -1296,7 +1419,6 @@ function toggleEdit(msgId) {
     if (el.classList.contains('editing')) {
         el.classList.remove('editing');
         el.contentEditable = 'false';
-        // Save
         const newBody = el.textContent;
         apiPost(`/api/messages/${msgId}`, {body: newBody}, 'PATCH').then(r => {
             if (r && !r._error) {
@@ -1305,13 +1427,11 @@ function toggleEdit(msgId) {
                 setTimeout(() => saveEl.classList.remove('show'), 2000);
             }
         });
-        // Update word count
         document.getElementById('wc-'+msgId).textContent = newBody.split(/\s+/).filter(Boolean).length + ' words';
     } else {
         el.classList.add('editing');
         el.contentEditable = 'true';
         el.focus();
-        // Store original for undo
         if (!el.dataset.editOriginal) el.dataset.editOriginal = el.textContent;
     }
 }
@@ -1348,8 +1468,9 @@ function confirmBulk(action) {
     });
 }
 
+
 // ═══════════════════════════════════════════════════════
-// INTELLIGENCE (#5 - tabbed, with full charts)
+// INTELLIGENCE
 // ═══════════════════════════════════════════════════════
 function showIntelTab(tabId) {
     document.querySelectorAll('#page-intelligence .tab-item').forEach(t => t.classList.remove('active'));
@@ -1366,7 +1487,6 @@ async function loadIntelligence() {
         api('/api/analytics/top-messages'),
     ]);
 
-    // KPI summary
     if (intel) {
         const totalSent = (intel.by_persona||[]).reduce((s,d) => s + (d.total||0), 0);
         const totalReplies = (intel.by_persona||[]).reduce((s,d) => s + (d.replies||0), 0);
@@ -1391,7 +1511,6 @@ async function loadIntelligence() {
     }
 
     if (comparison?.length) {
-        // Batch trend line
         destroyChart('intel-trend');
         charts['intel-trend'] = new Chart(document.getElementById('intel-trend'), {
             type:'line', data:{
@@ -1404,7 +1523,6 @@ async function loadIntelligence() {
             }, options:chartOpts()
         });
 
-        // Funnel comparison
         destroyChart('intel-funnel-compare');
         charts['intel-funnel-compare'] = new Chart(document.getElementById('intel-funnel-compare'), {
             type:'bar', data:{
@@ -1418,7 +1536,6 @@ async function loadIntelligence() {
             }, options:chartOpts()
         });
 
-        // Reply rate trend
         destroyChart('intel-reply-trend');
         charts['intel-reply-trend'] = new Chart(document.getElementById('intel-reply-trend'), {
             type:'line', data:{
@@ -1431,7 +1548,6 @@ async function loadIntelligence() {
         });
     }
 
-    // A/B Results Table
     if (experiments?.length) {
         let html = '<table class="tbl"><thead><tr><th>Variable</th><th>Group A</th><th>Group B</th><th>A Rate</th><th>B Rate</th><th>Winner</th><th>Sample</th></tr></thead><tbody>';
         for (const exp of experiments) {
@@ -1455,7 +1571,6 @@ async function loadIntelligence() {
         document.getElementById('intel-ab-table').innerHTML = '<div class="empty">No A/B experiments yet</div>';
     }
 
-    // Top Messages
     if (topMsgs?.length) {
         document.getElementById('intel-top-messages').innerHTML = topMsgs.map((m, i) => `
             <div style="padding:12px 0;${i<topMsgs.length-1?'border-bottom:1px solid var(--bd);':''}">
@@ -1488,104 +1603,82 @@ function renderBarChart(canvasId, data, labelKey, valueKey, label) {
     });
 }
 
-// ═══════════════════════════════════════════════════════
-// EXPERIMENTS
-// ═══════════════════════════════════════════════════════
 async function loadExperiments() {
     const data = await api('/api/analytics/experiments');
     const el = document.getElementById('experiments-list');
     if (!data?.length) { el.innerHTML = '<div class="empty">No experiments yet</div>'; return; }
     el.innerHTML = data.map(exp => {
         let desc = ''; try { desc = JSON.parse(exp.ab_description || '{}'); } catch(e) { desc = {}; }
-        const winner = exp.winner || ((exp.group_a_rate||0) > (exp.group_b_rate||0) ? 'A leads' : (exp.group_b_rate||0) > (exp.group_a_rate||0) ? 'B leads' : 'Tied');
-        const total = (exp.group_a_count||0) + (exp.group_b_count||0);
-        return `<div class="card">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                <strong>${exp.variable||exp.ab_variable||'?'}</strong>
-                <span class="tag ${exp.winner?'tag-qa':'tag-std'}">${winner}</span>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0;">
-                <div style="background:var(--bg);padding:10px;border-radius:6px;border-left:3px solid #6366f1;">
-                    <div style="font-size:11px;color:var(--tx2);">Group A: ${desc.A||'Variant A'}</div>
-                    <div style="font-size:20px;font-weight:700;">${(exp.group_a_rate||0).toFixed(1)}%</div>
-                    <div style="font-size:11px;color:var(--tx3);">${exp.group_a_count||0} prospects</div>
-                </div>
-                <div style="background:var(--bg);padding:10px;border-radius:6px;border-left:3px solid #06b6d4;">
-                    <div style="font-size:11px;color:var(--tx2);">Group B: ${desc.B||'Variant B'}</div>
-                    <div style="font-size:20px;font-weight:700;">${(exp.group_b_rate||0).toFixed(1)}%</div>
-                    <div style="font-size:11px;color:var(--tx3);">${exp.group_b_count||0} prospects</div>
+        const winner = exp.winner || (exp.group_a_rate > exp.group_b_rate ? 'A' : 'B');
+        const winColor = winner === 'A' ? 'var(--gn)' : 'var(--cy)';
+        return `<div class="card" style="margin-bottom:12px;padding:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div><strong>${exp.ab_variable || 'Unknown Variable'}</strong><br><span style="font-size:11px;color:var(--tx2);">A: ${desc.A||'Variant A'} vs B: ${desc.B||'Variant B'}</span></div>
+                <div style="text-align:right;">
+                    <div style="font-size:13px;"><span style="color:${winColor};font-weight:600;">Winner: ${winner}</span></div>
+                    <div style="font-size:11px;color:var(--tx2);">A: ${(exp.group_a_rate||0).toFixed(1)}% | B: ${(exp.group_b_rate||0).toFixed(1)}%</div>
+                    <div style="font-size:10px;color:var(--tx3);">n=${(exp.group_a_count||0)+(exp.group_b_count||0)}</div>
                 </div>
             </div>
-            <div style="font-size:11px;color:var(--tx3);">Sample: ${total} total ${total<50?'(need more data for significance)':''}</div>
         </div>`;
     }).join('');
-
-    if (data.length) {
+    
+    const expData = data.filter(e => e.group_a_count && e.group_b_count);
+    if (expData.length) {
         destroyChart('ab-head-to-head');
         charts['ab-head-to-head'] = new Chart(document.getElementById('ab-head-to-head'), {
             type:'bar', data:{
-                labels: data.map(e => (e.variable||e.ab_variable||'?').substring(0,20)),
+                labels: expData.map(e => (e.ab_variable||'Exp').substring(0,12)),
                 datasets:[
-                    {label:'Group A', data: data.map(e => e.group_a_rate||0), backgroundColor:'#6366f1', borderRadius:4},
-                    {label:'Group B', data: data.map(e => e.group_b_rate||0), backgroundColor:'#06b6d4', borderRadius:4},
+                    {label:'Group A', data: expData.map(e => e.group_a_rate||0), backgroundColor:'#6366f1', borderRadius:4},
+                    {label:'Group B', data: expData.map(e => e.group_b_rate||0), backgroundColor:'#22c55e', borderRadius:4}
                 ]
-            }, options:{...chartOpts(), scales:{...chartOpts().scales, y:{...chartOpts().scales?.y, ticks:{color:'#8b90a0',callback:v=>v+'%'}}}}
+            }, options:{...chartOpts(), scales:{...chartOpts().scales, y:{...chartOpts().scales?.y, ticks:{...chartOpts().scales?.y?.ticks, callback:v=>v+'%'}}}}
         });
     }
 }
 
-// ═══════════════════════════════════════════════════════
-// SIGNALS (#6 - with re-engage action + add signal)
-// ═══════════════════════════════════════════════════════
 async function loadSignals() {
-    const type = document.getElementById('sig-filter')?.value || '';
-    const showActioned = document.getElementById('sig-show-actioned')?.checked;
-    let url = `/api/signals?signal_type=${type}`;
-    if (showActioned) url += '&active_only=false';
-    const data = await api(url);
+    const filter = document.getElementById('sig-filter').value;
+    const showActioned = document.getElementById('sig-show-actioned').checked;
+    const data = await api(`/api/signals?type=${filter||''}&show_actioned=${showActioned}`);
     const el = document.getElementById('signals-list');
-    if (!data?.length) { el.innerHTML = '<div class="empty">No active signals</div>'; return; }
+    if (!data?.length) { el.innerHTML = '<div class="empty">No signals found</div>'; return; }
     el.innerHTML = data.map(s => `
-        <div class="signal-card ${s.actioned ? 'actioned' : ''}">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-                <div style="flex:1;">
-                    <div class="sig-type">${s.signal_type||'signal'}</div>
-                    <div class="sig-detail"><strong>${s.first_name||''} ${s.last_name||''}</strong> ${s.company_name ? '@ '+s.company_name : ''}</div>
-                    <div style="font-size:11px;color:var(--tx3);margin-top:2px;">${s.description||s.detail||''}</div>
-                    <div class="sig-age">${s.actioned ? 'Actioned ' + timeAgo(s.actioned_at) : timeAgo(s.created_at)}</div>
-                </div>
-                ${!s.actioned ? `<button class="btn btn-sm" onclick="reEngageSignal('${s.id}',this)">Re-Engage</button>` :
-                    '<span class="tag tag-gn" style="margin-top:4px;">Actioned</span>'}
+        <div class="signal-card ${s.actioned?'actioned':''}">
+            <div class="sig-type">${(s.signal_type||'').replace(/_/g,' ')}</div>
+            <div class="sig-detail">${s.description||''}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+                <span class="sig-age">${timeAgo(s.created_at)}</span>
+                ${!s.actioned ? `<button class="btn btn-sm btn-success" onclick="actOnSignal('${s.id}',this)">Act</button>` : '<span style="font-size:10px;color:var(--gn);">✓ Actioned</span>'}
             </div>
         </div>
     `).join('');
 }
 
-async function reEngageSignal(signalId, btn) {
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span>';
-    const r = await apiPost(`/api/signals/${signalId}/re-engage`, {});
+async function actOnSignal(signalId, btn) {
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>'; }
+    const r = await apiPost(`/api/signals/${signalId}/act`, {});
     if (r && !r._error) {
-        toast(`Re-engagement queued: ${r.trigger||'signal'}`, 'success');
+        toast('Signal actioned', 'success');
         loadSignals();
     } else {
-        btn.disabled = false;
-        btn.textContent = 'Re-Engage';
-        toast(r?.message || 'Re-engage failed', 'error');
+        if (btn) { btn.disabled = false; btn.textContent = 'Act'; }
+        toast('Action failed', 'error');
     }
 }
 
 function showAddSignalForm() {
-    const form = document.getElementById('add-signal-form');
-    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    document.getElementById('add-signal-form').style.display = 
+        document.getElementById('add-signal-form').style.display === 'none' ? 'block' : 'none';
 }
 
 async function addSignal() {
-    const r = await apiPost('/api/signals', {
-        contact_id: document.getElementById('sig-contact-id').value || null,
-        signal_type: document.getElementById('sig-new-type').value,
-        description: document.getElementById('sig-description').value,
-    });
+    const contactId = document.getElementById('sig-contact-id').value;
+    const type = document.getElementById('sig-new-type').value;
+    const desc = document.getElementById('sig-description').value;
+    if (!contactId || !type || !desc) { toast('Fill all fields', 'error'); return; }
+    const r = await apiPost('/api/signals', {contact_id:contactId, signal_type:type, description:desc});
     if (r && !r._error) {
         toast('Signal created', 'success');
         document.getElementById('add-signal-form').style.display = 'none';
@@ -1593,409 +1686,813 @@ async function addSignal() {
         document.getElementById('sig-description').value = '';
         loadSignals();
     } else {
-        toast(r?.message || 'Failed to create signal', 'error');
+        toast(r?.message || 'Creation failed', 'error');
     }
 }
 
-// ═══════════════════════════════════════════════════════
-// AGENT LOGS
-// ═══════════════════════════════════════════════════════
 async function loadAgentRuns() {
     const data = await api('/api/agent-runs?limit=50');
     const body = document.getElementById('agent-runs-body');
     if (!data?.length) { body.innerHTML = '<tr><td colspan="6" class="empty">No agent runs yet</td></tr>'; return; }
-    body.innerHTML = data.map(r => {
-        const dur = r.duration_ms ? `${(r.duration_ms/1000).toFixed(1)}s` : '-';
-        const statusClass = r.status==='completed'?'tag-qa':r.status==='failed'?'tag-hot':'tag-std';
-        return `<tr>
-            <td><strong>${r.agent_name||'-'}</strong></td>
-            <td style="font-size:12px;color:var(--tx2)">${r.run_type||'-'}</td>
-            <td><span class="tag ${statusClass}">${r.status}</span></td>
-            <td>${(r.tokens_used||0).toLocaleString()}</td>
-            <td>${dur}</td>
-            <td style="font-size:11px;color:var(--tx3)">${timeAgo(r.started_at)}</td>
-        </tr>`;
-    }).join('');
+    body.innerHTML = data.map(r => `<tr>
+        <td>${r.agent_name||'-'}</td>
+        <td>${r.run_type||'-'}</td>
+        <td><span class="tag ${r.status==='complete'?'tag-gn':r.status==='failed'?'tag-hot':'tag-std'}">${r.status||'unknown'}</span></td>
+        <td>${r.tokens_used||0}</td>
+        <td>${r.duration_ms ? (r.duration_ms/1000).toFixed(1)+'s' : '-'}</td>
+        <td>${timeAgo(r.created_at)}</td>
+    </tr>`).join('');
 }
-
-// ═══════════════════════════════════════════════════════
-// COSTS (#9 - per-batch, per-prospect, per-reply)
-// ═══════════════════════════════════════════════════════
-async function loadCosts() {
-    const data = await api('/api/analytics/token-costs');
-    if (!data) return;
-
-    const t = data.totals || {};
-    const byAgent = data.by_agent || [];
-    const byBatch = data.by_batch || [];
-
-    document.getElementById('cost-kpis').innerHTML = [
-        kpi('Total Tokens', (t.total_tokens||0).toLocaleString()),
-        kpi('Est. Cost', '$'+(t.est_cost_usd||0).toFixed(2)),
-        kpi('Total Runs', t.total_runs||0),
-        kpi('Cost/Prospect', '$'+(t.cost_per_prospect||0).toFixed(4)),
-        kpi('Cost/Reply', '$'+(t.cost_per_reply||0).toFixed(4)),
-        kpi('Replies', t.reply_count||0),
-    ].join('');
-
-    // Agent doughnut
-    if (byAgent.length) {
-        destroyChart('chart-costs-agent');
-        const colors = ['#6366f1','#22c55e','#eab308','#f97316','#06b6d4','#ef4444','#818cf8'];
-        charts['chart-costs-agent'] = new Chart(document.getElementById('chart-costs-agent'), {
-            type:'doughnut', data:{
-                labels: byAgent.map(d => d.agent_name||'unknown'),
-                datasets:[{data: byAgent.map(d => d.total_tokens||0), backgroundColor: colors, borderWidth:0}]
-            }, options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'right',labels:{color:'#8b90a0',usePointStyle:true,padding:10}}}}
-        });
-    }
-
-    // Cost per batch bar
-    if (byBatch.length) {
-        destroyChart('chart-costs-batch');
-        charts['chart-costs-batch'] = new Chart(document.getElementById('chart-costs-batch'), {
-            type:'bar', data:{
-                labels: byBatch.map(b => `Batch ${b.batch_number}`),
-                datasets:[
-                    {label:'Cost ($)', data: byBatch.map(b => b.est_cost_usd||0), backgroundColor:'#6366f1', borderRadius:4},
-                    {label:'Cost/Prospect ($)', data: byBatch.map(b => b.cost_per_prospect||0), backgroundColor:'#22c55e', borderRadius:4},
-                ]
-            }, options:{...chartOpts(), scales:{...chartOpts().scales, y:{...chartOpts().scales?.y, ticks:{color:'#8b90a0',callback:v=>'$'+v.toFixed(2)}}}}
-        });
-    }
-}
-
-// ═══════════════════════════════════════════════════════
-// EXPORT (#10 - with column selection + filters)
-// ═══════════════════════════════════════════════════════
-function showExportModal() {
-    document.getElementById('export-modal').classList.add('show');
-}
-function closeExportModal() {
-    document.getElementById('export-modal').classList.remove('show');
-}
-function doExport() {
-    const params = new URLSearchParams();
-    const batch = document.getElementById('export-batch').value;
-    const pri = document.getElementById('export-pri').value;
-    const persona = document.getElementById('export-persona').value;
-    const cols = document.getElementById('export-columns').value.trim();
-    if (batch) params.set('batch_id', batch);
-    if (pri) params.set('min_priority', pri);
-    if (persona) params.set('persona_type', persona);
-    if (cols) params.set('columns', cols);
-    window.open(`${API}/api/export/csv?${params.toString()}`, '_blank');
-    closeExportModal();
-    toast('CSV download started', 'success');
-}
-
-
-// ═══════════════════════════════════════════════════════
-// EMAIL CHANNEL
-// ═══════════════════════════════════════════════════════
 
 async function loadEmailPage() {
-    // Load health KPIs
-    const health = await api('/api/email/health');
-    if (!health) {
-        document.getElementById('email-kpis').innerHTML = '<p style="color:var(--tx3)">Failed to load email health</p>';
-    } else {
-        document.getElementById('email-kpis').innerHTML = `
-            <div class="kpi"><div class="kpi-label">Total Sent</div><div class="kpi-val">${health.total_sent||0}</div></div>
-            <div class="kpi"><div class="kpi-label">Sent Today</div><div class="kpi-val">${health.today_sent||0}</div></div>
-            <div class="kpi"><div class="kpi-label">Bounces</div><div class="kpi-val">${health.bounces||0}</div><div class="kpi-sub ${health.bounce_rate>2?'dn':'up'}">${health.bounce_rate||0}%</div></div>
-            <div class="kpi"><div class="kpi-label">Opt-outs</div><div class="kpi-val">${health.opt_outs||0}</div><div class="kpi-sub">${health.opt_out_rate||0}%</div></div>
-            <div class="kpi"><div class="kpi-label">Suppressed</div><div class="kpi-val">${health.suppressed_contacts||0}</div></div>
-            <div class="kpi"><div class="kpi-label">Health</div><div class="kpi-val" style="color:${health.health_status==='good'?'var(--gn)':health.health_status==='warning'?'var(--yl)':'var(--rd)'}">${(health.health_status||'unknown').toUpperCase()}</div></div>
-        `;
+    const [health, identities] = await Promise.all([
+        api('/api/sender-health'),
+        api('/api/email/identities')
+    ]);
+    
+    if (health) {
+        const latest = health.snapshots?.[0] || {};
+        document.getElementById('email-kpis').innerHTML = [
+            kpi('Emails Sent', latest.emails_sent || 0),
+            kpi('Bounce Rate', (latest.bounce_rate||0).toFixed(2) + '%'),
+            kpi('SPF', latest.spf_pass ? '✓ Pass' : '✗ Fail'),
+            kpi('DKIM', latest.dkim_pass ? '✓ Pass' : '✗ Fail'),
+        ].join('');
     }
+
+    if (identities?.length) {
+        document.getElementById('email-tab-identities').innerHTML = `
+            <table class="tbl"><thead><tr><th>Email</th><th>Name</th><th>Daily Limit</th><th>Warmup</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+                ${identities.map(i => `<tr>
+                    <td>${i.email_address||'-'}</td>
+                    <td>${i.display_name||'-'}</td>
+                    <td>${i.daily_limit||25}</td>
+                    <td><span class="tag ${i.warmup_status==='active'?'tag-gn':'tag-std'}">${i.warmup_status||'inactive'}</span></td>
+                    <td><span class="tag ${i.verification_status==='verified'?'tag-gn':'tag-warm'}">${i.verification_status||'pending'}</span></td>
+                    <td><button class="btn btn-sm" onclick="deleteIdentity('${i.id}',this)">Delete</button></td>
+                </tr>`).join('')}
+            </tbody></table>
+            <button class="btn btn-primary btn-sm" onclick="showAddIdentity()" style="margin-top:12px;">+ Add Sender</button>
+        `;
+    } else {
+        document.getElementById('email-tab-identities').innerHTML = '<div class="empty">No sender identities configured. Add one to get started.</div><button class="btn btn-primary btn-sm" onclick="showAddIdentity()" style="margin-top:12px;">+ Add Sender</button>';
+    }
+}
+
+function showAddIdentity() {
+    document.getElementById('add-identity-modal').style.display = 'flex';
+}
+
+function hideAddIdentity() {
+    document.getElementById('add-identity-modal').style.display = 'none';
+}
+
+async function createIdentity() {
+    const email = document.getElementById('new-email').value;
+    const name = document.getElementById('new-display-name').value;
+    const dailyLimit = parseInt(document.getElementById('new-daily-limit').value) || 25;
+    const warmupCap = parseInt(document.getElementById('new-warmup-cap').value) || 5;
     
-    // Load identities tab
-    loadEmailIdentities();
-}
-
-async function loadEmailIdentities() {
-    const ids = await api('/api/email/identities?active_only=false');
-    const html = (ids||[]).length ? `<table class="tbl"><thead><tr><th>Email</th><th>Display Name</th><th>Sent Today</th><th>Daily Limit</th><th>Warmup Cap</th><th>All Time</th><th>Status</th></tr></thead><tbody>${
-        (ids||[]).map(i => `<tr>
-            <td>${i.email_address}</td>
-            <td>${i.display_name||''}</td>
-            <td>${i.total_sent_today||0}</td>
-            <td>${i.daily_send_limit||25}</td>
-            <td>${i.warmup_phase?i.warmup_daily_cap:'N/A'}</td>
-            <td>${i.total_sent_all_time||0}</td>
-            <td><span class="badge ${i.is_active?'badge-gn':'badge-rd'}">${i.is_active?'Active':'Inactive'}</span></td>
-        </tr>`).join('')
-    }</tbody></table>` : '<p style="color:var(--tx2)">No sender accounts configured. Add one to get started.</p>';
-    document.getElementById('email-tab-identities').innerHTML = html;
-}
-
-function showEmailTab(tab, btn) {
-    document.querySelectorAll('.email-tab').forEach(t => t.style.display='none');
-    document.getElementById('email-tab-'+tab).style.display='block';
-    btn?.parentElement.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-    btn?.classList.add('active');
+    if (!email) { toast('Email required', 'error'); return; }
     
-    if (tab==='suppression') loadSuppression();
-    else if (tab==='events') loadEmailEvents();
-    else if (tab==='pacing') loadPacing();
-    else loadEmailIdentities();
+    const r = await apiPost('/api/email/identities', {
+        email_address: email,
+        display_name: name,
+        daily_limit: dailyLimit,
+        warmup_daily_cap: warmupCap
+    });
+    
+    if (r && !r._error) {
+        toast('Sender added', 'success');
+        hideAddIdentity();
+        document.getElementById('new-email').value = '';
+        document.getElementById('new-display-name').value = '';
+        loadEmailPage();
+    } else {
+        toast(r?.message || 'Failed to add sender', 'error');
+    }
 }
 
-async function loadSuppression() {
-    const list = await api('/api/email/suppression');
-    document.getElementById('email-tab-suppression').innerHTML = `
-        <div style="margin-bottom:8px;"><button class="btn btn-sm" onclick="document.getElementById('add-suppression-modal').style.display='flex'">Add to Suppression</button></div>
-        ${(list||[]).length ? `<table class="tbl"><thead><tr><th>Email</th><th>Reason</th><th>Source</th><th>Added</th><th>Action</th></tr></thead><tbody>${
-            list.map(s => `<tr><td>${s.email_address}</td><td>${s.reason}</td><td>${s.source||'manual'}</td><td>${(s.added_at||'').slice(0,10)}</td><td><button class="btn btn-sm btn-danger" onclick="removeSuppression('${s.email_address}')">Remove</button></td></tr>`).join('')
-        }</tbody></table>` : '<p style="color:var(--tx2)">Suppression list is empty.</p>'}
-    `;
+async function deleteIdentity(identityId, btn) {
+    showConfirm('Delete Sender', 'Remove this sender identity?', async () => {
+        const r = await apiPost(`/api/email/identities/${identityId}`, {}, 'DELETE');
+        if (r && !r._error) {
+            toast('Sender deleted', 'success');
+            loadEmailPage();
+        }
+    });
 }
 
 async function addSuppression() {
     const email = document.getElementById('sup-email').value;
     const reason = document.getElementById('sup-reason').value;
-    if (!email) return;
-    await apiPost('/api/email/suppression', {email_address:email, reason:reason});
-    document.getElementById('add-suppression-modal').style.display='none';
-    toast('Added to suppression list','success');
-    loadSuppression();
-}
-
-async function removeSuppression(email) {
-    await fetch(API+'/api/email/suppression?email='+encodeURIComponent(email), {method:'DELETE'});
-    toast('Removed from suppression','info');
-    loadSuppression();
-}
-
-async function loadEmailEvents() {
-    const events = await api('/api/email/events');
-    document.getElementById('email-tab-events').innerHTML = (events||[]).length ? `<table class="tbl"><thead><tr><th>Type</th><th>Email</th><th>Source</th><th>Details</th><th>Date</th></tr></thead><tbody>${
-        events.map(e => `<tr><td><span class="badge ${e.event_type.includes('bounce')?'badge-rd':e.event_type==='reply'?'badge-gn':'badge-yl'}">${e.event_type}</span></td><td>${e.email_address||''}</td><td>${e.event_source||''}</td><td>${e.details||''}</td><td>${(e.created_at||'').slice(0,16)}</td></tr>`).join('')
-    }</tbody></table>` : '<p style="color:var(--tx2)">No email events logged yet.</p>';
-}
-
-async function loadPacing() {
-    const data = await api('/api/email/pacing');
-    if (!data) data = {};
-    let html = '<div style="display:grid;gap:12px;">';
-    if (data && data.identities) {
-        html += data.identities.map(i => `
-            <div class="card" style="padding:12px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <div><strong>${i.email}</strong></div>
-                    <span class="badge ${i.ok?'badge-gn':'badge-rd'}">${i.ok?'Can Send':'Limit Reached'}</span>
-                </div>
-                <div style="margin-top:8px;">
-                    <div style="background:var(--bg);border-radius:4px;height:8px;overflow:hidden;">
-                        <div style="background:${i.ok?'var(--gn)':'var(--rd)'};height:100%;width:${Math.min(100,i.sent_today/Math.max(i.limit,1)*100)}%;transition:width .3s;"></div>
-                    </div>
-                    <div style="font-size:11px;color:var(--tx2);margin-top:4px;">${i.sent_today} / ${i.limit} sent today, ${i.remaining} remaining</div>
-                </div>
-            </div>
-        `).join('');
-    }
-    html += `<div style="font-size:11px;color:var(--tx2);">Total remaining across all accounts: <strong>${data.total_remaining||0}</strong></div></div>`;
-    document.getElementById('email-tab-pacing').innerHTML = html;
-}
-
-function showAddIdentity() { document.getElementById('add-identity-modal').style.display='flex'; }
-function hideAddIdentity() { document.getElementById('add-identity-modal').style.display='none'; }
-
-async function createIdentity() {
-    const data = {
-        email_address: document.getElementById('new-email').value,
-        display_name: document.getElementById('new-display-name').value,
-        daily_send_limit: parseInt(document.getElementById('new-daily-limit').value)||25,
-        warmup_daily_cap: parseInt(document.getElementById('new-warmup-cap').value)||5,
-    };
-    if (!data.email_address) return;
-    const r = await apiPost('/api/email/identities', data);
+    if (!email) { toast('Email required', 'error'); return; }
+    const r = await apiPost('/api/email/suppression', {email, reason});
     if (r && !r._error) {
-        hideAddIdentity();
-        toast('Sender account added','success');
-        loadEmailIdentities();
-        loadEmailPage();
+        toast('Email suppressed', 'success');
+        document.getElementById('add-suppression-modal').style.display = 'none';
+        document.getElementById('sup-email').value = '';
     } else {
-        toast(r?.message||'Failed to add','error');
+        toast(r?.message || 'Failed', 'error');
     }
 }
 
-// ═══════════════════════════════════════════════════════
-// AGENT SWARM
-// ═══════════════════════════════════════════════════════
+function showEmailTab(tab, btn) {
+    if (btn) {
+        document.querySelectorAll('.tab-row button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    document.querySelectorAll('.email-tab').forEach(t => t.style.display = 'none');
+    document.getElementById('email-tab-'+tab).style.display = 'block';
+}
 
 async function loadSwarmPage() {
-    const runs = await api('/api/swarm/runs');
-    if (!runs) {
-        document.getElementById('swarm-kpis').innerHTML = '';
-        document.getElementById('swarm-history').innerHTML = '<p style="color:var(--tx2)">Failed to load swarm data.</p>';
-        return;
+    const [active, history, batches] = await Promise.all([
+        api('/api/swarm/runs?status=active'),
+        api('/api/swarm/runs?limit=10'),
+        api('/api/batches?limit=10')
+    ]);
+
+    if (active?.length) {
+        document.getElementById('swarm-active').style.display = 'block';
+        document.getElementById('swarm-progress').innerHTML = active.map(r => `
+            <div style="padding:12px;border:1px solid var(--bd);border-radius:var(--r);margin-bottom:12px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                    <strong>${r.name||'Swarm Run'}</strong>
+                    <span class="tag tag-gn">${r.status}</span>
+                </div>
+                <div style="font-size:12px;color:var(--tx2);margin-bottom:8px;">Tasks: ${r.completed_tasks||0}/${r.total_tasks||0}</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:${r.total_tasks?((r.completed_tasks||0)/r.total_tasks*100):0}%"></div></div>
+            </div>
+        `).join('');
+    } else {
+        document.getElementById('swarm-active').style.display = 'none';
     }
 
-    // KPIs
-    const total = (runs||[]).length;
-    const running = (runs||[]).filter(r => r.status==='running').length;
-    const completed = (runs||[]).filter(r => r.status==='completed').length;
-    const failed = (runs||[]).filter(r => r.status==='error').length;
-    
-    document.getElementById('swarm-kpis').innerHTML = `
-        <div class="kpi"><div class="kpi-label">Total Runs</div><div class="kpi-val">${total}</div></div>
-        <div class="kpi"><div class="kpi-label">Active</div><div class="kpi-val" style="color:${running?'var(--yl)':'var(--tx2)'}">${running}</div></div>
-        <div class="kpi"><div class="kpi-label">Completed</div><div class="kpi-val" style="color:var(--gn)">${completed}</div></div>
-        <div class="kpi"><div class="kpi-label">Failed</div><div class="kpi-val" style="color:${failed?'var(--rd)':'var(--tx2)'}">${failed}</div></div>
-    `;
-    
-    // Active swarm
-    const activeRun = (runs||[]).find(r => r.status==='running');
-    if (activeRun) {
-        document.getElementById('swarm-active').style.display='block';
-        const detail = await api('/api/swarm/runs/'+activeRun.id);
-        const tasks = detail.tasks||[];
-        const done = tasks.filter(t=>t.status==='completed').length;
-        const err = tasks.filter(t=>t.status==='error').length;
-        const pend = tasks.filter(t=>t.status==='pending'||t.status==='running').length;
-        document.getElementById('swarm-progress').innerHTML = `
-            <div style="display:flex;gap:16px;margin-bottom:8px;">
-                <span>Tasks: ${done} done, ${err} errors, ${pend} pending</span>
-                <button class="btn btn-sm btn-danger" onclick="cancelSwarm('${activeRun.id}')">Cancel</button>
-            </div>
-            <div style="background:var(--bg);border-radius:4px;height:12px;overflow:hidden;">
-                <div style="background:var(--gn);height:100%;width:${Math.round(done/Math.max(tasks.length,1)*100)}%;transition:width .3s;"></div>
-            </div>
-        `;
+    if (history?.length) {
+        document.getElementById('swarm-history').innerHTML = `<table class="tbl"><thead><tr><th>Run</th><th>Status</th><th>Tasks</th><th>Date</th></tr></thead><tbody>
+            ${history.map(r => `<tr>
+                <td>${r.name||'Swarm Run'}</td>
+                <td><span class="tag ${r.status==='complete'?'tag-gn':'tag-std'}">${r.status}</span></td>
+                <td>${r.completed_tasks||0}/${r.total_tasks||0}</td>
+                <td>${timeAgo(r.created_at)}</td>
+            </tr>`).join('')}
+        </tbody></table>`;
     } else {
-        document.getElementById('swarm-active').style.display='none';
+        document.getElementById('swarm-history').innerHTML = '<div class="empty">No swarm runs yet</div>';
     }
-    
-    // History table
-    document.getElementById('swarm-history').innerHTML = (runs||[]).length ? `<table class="tbl"><thead><tr><th>ID</th><th>Type</th><th>Status</th><th>Tasks</th><th>Started</th><th>Duration</th></tr></thead><tbody>${
-        (runs||[]).map(r => {
-            const dur = r.completed_at && r.started_at ? Math.round((new Date(r.completed_at)-new Date(r.started_at))/1000) : '';
-            return `<tr>
-                <td style="font-family:monospace;font-size:11px;">${(r.id||'').slice(0,12)}</td>
-                <td>${r.swarm_type||''}</td>
-                <td><span class="badge ${r.status==='completed'?'badge-gn':r.status==='running'?'badge-yl':'badge-rd'}">${r.status}</span></td>
-                <td>${r.completed_tasks||r.completed_task||0}/${r.total_tasks||0} (${r.failed_tasks||0} err)</td>
-                <td>${(r.started_at||'').slice(0,16)}</td>
-                <td>${dur?dur+'s':''}</td>
-            </tr>`;
-        }).join('')
-    }</tbody></table>` : '<p style="color:var(--tx2)">No swarm runs yet.</p>';
+
+    if (batches?.length) {
+        document.getElementById('swarm-batch').innerHTML = batches.map(b => 
+            `<option value="${b.id}">Batch ${b.batch_number} (${b.contact_count||0} contacts)</option>`
+        ).join('');
+    }
 }
 
 function showLaunchSwarm() {
-    // Populate batch dropdown
-    api('/api/batches').then(batches => {
-        document.getElementById('swarm-batch').innerHTML = '<option value="">All contacts</option>' +
-            (batches||[]).map(b => `<option value="${b.id}">Batch #${b.batch_number} (${b.prospect_count||0} prospects)</option>`).join('');
-    });
-    document.getElementById('launch-swarm-modal').style.display='flex';
+    document.getElementById('launch-swarm-modal').style.display = 'flex';
 }
 
 async function launchSwarm() {
-    const btn = document.getElementById('btn-launch-swarm');
-    btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Launching...';
-    
     const batchId = document.getElementById('swarm-batch').value;
-    const workers = parseInt(document.getElementById('swarm-workers').value)||3;
+    const workers = parseInt(document.getElementById('swarm-workers').value) || 3;
     const channels = [];
     if (document.getElementById('ch-linkedin').checked) channels.push('linkedin');
     if (document.getElementById('ch-email').checked) channels.push('email');
     
-    const body = {max_workers:workers, channels:channels};
-    if (batchId) body.batch_id = batchId;
+    if (!batchId || !channels.length) { toast('Select batch and channels', 'error'); return; }
     
-    const r = await apiPost('/api/swarm/start', body);
-    btn.disabled=false; btn.textContent='Launch';
-    document.getElementById('launch-swarm-modal').style.display='none';
+    const btn = document.getElementById('btn-launch-swarm');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Launching...';
+    
+    const r = await apiPost('/api/swarm/launch', {batch_id:batchId, max_workers:workers, channels});
+    btn.disabled = false;
+    btn.textContent = 'Launch';
     
     if (r && !r._error) {
-        toast('Swarm launched','success');
+        toast('Swarm launched', 'success');
+        document.getElementById('launch-swarm-modal').style.display = 'none';
         loadSwarmPage();
     } else {
-        toast(r?.message||'Launch failed','error');
+        toast(r?.message || 'Launch failed', 'error');
     }
 }
-
-async function cancelSwarm(runId) {
-    await apiPost('/api/swarm/runs/'+runId+'/cancel', {});
-    toast('Swarm cancelled','info');
-    loadSwarmPage();
-}
-
-// ═══════════════════════════════════════════════════════
-// SYSTEM HEALTH
-// ═══════════════════════════════════════════════════════
 
 async function loadHealthPage() {
-    const [health, daily] = await Promise.all([
-        api('/api/system/health'),
-        api('/api/insights/daily'),
+    const [health, flags, insights] = await Promise.all([
+        api('/api/health'),
+        api('/api/feature-flags'),
+        api('/api/insights/daily')
     ]);
-    if (!health) health = {};
-    if (!daily) daily = {};
 
-    // KPIs
-    const errCount = (health.recent_errors||[]).length;
-    document.getElementById('health-kpis').innerHTML = `
-        <div class="kpi"><div class="kpi-label">Status</div><div class="kpi-val" style="color:var(--gn)">${health.status||'unknown'}</div></div>
-        <div class="kpi"><div class="kpi-label">Active Agents</div><div class="kpi-val">${health.active_agent_runs||0}</div></div>
-        <div class="kpi"><div class="kpi-label">Active Swarms</div><div class="kpi-val">${health.active_swarms||0}</div></div>
-        <div class="kpi"><div class="kpi-label">Recent Errors</div><div class="kpi-val" style="color:${errCount?'var(--rd)':'var(--gn)'}">${errCount}</div></div>
-        <div class="kpi"><div class="kpi-label">Email Health</div><div class="kpi-val" style="color:${health.email_health?.health_status==='good'?'var(--gn)':'var(--yl)'}">${(health.email_health?.health_status||'N/A').toUpperCase()}</div></div>
-    `;
-    
-    // Feature flags
-    document.getElementById('feature-flags').innerHTML = (health.feature_flags||[]).map(f => `
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bd);">
-            <div><strong>${f.flag_name}</strong><span style="color:var(--tx2);font-size:11px;margin-left:8px;">${f.description||''}</span></div>
-            <label style="cursor:pointer;"><input type="checkbox" ${f.enabled?'checked':''} onchange="toggleFlag('${f.flag_name}',this.checked)" /> ${f.enabled?'ON':'OFF'}</label>
-        </div>
-    `).join('');
-    
-    // Table counts
-    const tables = health.tables||{};
-    document.getElementById('table-counts').innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;">${
-        Object.entries(tables).map(([name,count]) => `
-            <div style="display:flex;justify-content:space-between;padding:4px 8px;background:var(--bg);border-radius:4px;font-size:12px;">
-                <span>${name}</span><span style="color:${count>=0?'var(--ac2)':'var(--rd)'};">${count>=0?count:'missing'}</span>
+    if (health) {
+        document.getElementById('health-kpis').innerHTML = [
+            kpi('API Status', health.status === 'healthy' ? '✓ Healthy' : '✗ Down'),
+            kpi('Total Tables', Object.keys(health.tables||{}).length),
+            kpi('Total Records', Object.values(health.tables||{}).reduce((s,v)=>s+v,0)),
+            kpi('DB Size', (health.db_size_mb||0).toFixed(0) + ' MB'),
+        ].join('');
+
+        const tableHtml = Object.entries(health.tables||{}).map(([name, count]) => 
+            `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd);"><span>${name}</span><strong>${count}</strong></div>`
+        ).join('');
+        document.getElementById('table-counts').innerHTML = tableHtml || '<div class="empty">No tables</div>';
+    }
+
+    if (flags?.length) {
+        document.getElementById('feature-flags').innerHTML = flags.map(f => `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd);">
+                <strong>${f.name||'-'}</strong>
+                <span class="tag ${f.enabled?'tag-gn':'tag-std'}">${f.enabled?'Enabled':'Disabled'}</span>
             </div>
-        `).join('')
-    }</div>`;
-    
-    // Recent errors
-    document.getElementById('recent-errors').innerHTML = (health.recent_errors||[]).length ? `<div style="display:grid;gap:6px;">${
-        health.recent_errors.map(e => `
-            <div style="padding:8px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:4px;font-size:12px;">
-                <strong>${e.agent_name||'Unknown'}</strong> <span style="color:var(--tx2);">${(e.started_at||'').slice(0,16)}</span>
-                <div style="color:var(--rd);margin-top:4px;">${e.error_message||'No error message'}</div>
+        `).join('') || '<div class="empty">No flags</div>';
+    }
+
+    if (insights?.length) {
+        document.getElementById('daily-insights').innerHTML = insights.map(i => `
+            <div style="padding:8px 0;border-bottom:1px solid var(--bd);font-size:13px;">
+                <strong>${i.metric||'-'}</strong>: <span style="color:var(--tx2);">${i.value||'-'}</span>
             </div>
-        `).join('')
-    }</div>` : '<p style="color:var(--gn);font-size:12px;">No recent errors.</p>';
-    
-    // Daily insights
-    if (daily) {
-        document.getElementById('daily-insights').innerHTML = `
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
-                <div class="kpi"><div class="kpi-label">Touches Today</div><div class="kpi-val">${daily.activity?.touches_sent||0}</div></div>
-                <div class="kpi"><div class="kpi-label">Replies Today</div><div class="kpi-val">${daily.activity?.replies_received||0}</div></div>
-                <div class="kpi"><div class="kpi-label">Meetings Today</div><div class="kpi-val">${daily.activity?.meetings_booked||0}</div></div>
-            </div>
-            <div style="margin-top:8px;font-size:12px;color:var(--tx2);">
-                Due followups: ${daily.pending?.due_followups||0} | Pending approvals: ${daily.pending?.pending_approvals||0}
-            </div>
-        `;
+        `).join('');
     }
 }
 
-async function toggleFlag(name, enabled) {
-    const result = await apiPost(`/api/feature-flags/${name}?enabled=${enabled ? 'true' : 'false'}`, {});
-    if (result && !result._error) {
-        toast(name+' '+(enabled?'enabled':'disabled'), 'success');
-        loadHealthPage();
+function showExportModal() {
+    document.getElementById('export-modal').classList.add('show');
+}
+
+function closeExportModal() {
+    document.getElementById('export-modal').classList.remove('show');
+}
+
+async function doExport() {
+    const batchId = document.getElementById('export-batch').value;
+    const minPri = document.getElementById('export-pri').value;
+    const persona = document.getElementById('export-persona').value;
+    const cols = document.getElementById('export-columns').value;
+
+    const params = new URLSearchParams();
+    if (batchId) params.append('batch_id', batchId);
+    if (minPri) params.append('min_priority', minPri);
+    if (persona) params.append('persona', persona);
+    if (cols) params.append('columns', cols);
+
+    const url = API + '/api/contacts/export?' + params.toString();
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'contacts.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    toast('Export started', 'success');
+    closeExportModal();
+}
+
+
+// ═══════════════════════════════════════════════════════
+// NEW PAGE 1: FLOWS
+// ═══════════════════════════════════════════════════════
+async function loadFlows() {
+    const [flows, runs] = await Promise.all([
+        api('/api/flows/catalog'),
+        api('/api/flows/runs?limit=20')
+    ]);
+
+    // Flow cards
+    const flowCards = [
+        {type: 'account_research', name: 'Account Research Sprint', icon: '🔍', desc: 'Deep research on target accounts'},
+        {type: 'linkedin_prospect', name: 'LinkedIn Prospecting', icon: '💼', desc: 'Find and qualify LinkedIn prospects'},
+        {type: 'email_prospect', name: 'Email Outreach', icon: '📧', desc: 'Run email campaigns'}
+    ];
+
+    const runCounts = {};
+    if (flows?.flows?.length) {
+        flows.flows.forEach(f => {
+            runCounts[f.type] = (runs?.filter(r => r.flow_type === f.type) || []).length;
+        });
+    }
+
+    document.getElementById('flow-cards-grid').innerHTML = flowCards.map(f => `
+        <div class="flow-card">
+            <div style="font-size:32px;margin-bottom:8px;">${f.icon}</div>
+            <h3>${f.name}</h3>
+            <div class="desc">${f.desc}</div>
+            <div class="run-count">Recent runs: ${runCounts[f.type]||0}</div>
+            <button class="btn btn-primary btn-sm" onclick="showFlowLaunchModal('${f.type}')">Launch</button>
+        </div>
+    `).join('');
+
+    // Recent runs table
+    if (runs?.length) {
+        document.getElementById('flows-runs-body').innerHTML = runs.map(r => `<tr>
+            <td>${r.flow_type||'-'}</td>
+            <td><span class="tag ${r.status==='complete'?'tag-gn':r.status==='failed'?'tag-rd':'tag-std'}">${r.status||'unknown'}</span></td>
+            <td>${r.steps_completed||0}/${r.total_steps||0}</td>
+            <td>${r.duration_ms ? (r.duration_ms/1000).toFixed(1)+'s' : '-'}</td>
+            <td>${timeAgo(r.created_at)}</td>
+            <td><button class="btn btn-sm" onclick="viewFlowRun('${r.id}')">View</button></td>
+        </tr>`).join('');
     } else {
-        toast(result?.message || 'Failed to toggle flag', 'error');
+        document.getElementById('flows-runs-body').innerHTML = '<tr><td colspan="6" class="empty">No recent runs</td></tr>';
+    }
+}
+
+function showFlowLaunchModal(flowType) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content" style="width:500px;">
+            <h3>Launch ${flowType.replace(/_/g,' ')}</h3>
+            <div style="display:grid;gap:12px;margin:16px 0;">
+                ${flowType === 'account_research' ? `
+                    <div class="form-row">
+                        <label>Target Domains (one per line)</label>
+                        <textarea class="inp" id="flow-domains" placeholder="acme.com&#10;techco.com" style="height:120px;resize:vertical;"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <label>Volume Cap</label>
+                        <input class="inp" id="flow-volume" type="number" value="10" />
+                    </div>
+                    <div class="form-row">
+                        <label>Quality Level</label>
+                        <select class="sel" id="flow-quality" style="width:100%;">
+                            <option value="high">High</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                ` : `
+                    <div class="form-row">
+                        <label>Volume Cap</label>
+                        <input class="inp" id="flow-volume" type="number" value="25" />
+                    </div>
+                    <div class="form-row">
+                        <label>A/B Test Variable</label>
+                        <select class="sel" id="flow-ab-var" style="width:100%;">
+                            <option value="pain_hook">Pain Hook</option>
+                            <option value="opener_style">Opener Style</option>
+                        </select>
+                    </div>
+                `}
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+                <button class="btn btn-sm" onclick="this.closest('.modal').remove()">Cancel</button>
+                <button class="btn btn-sm btn-primary" onclick="launchFlow('${flowType}',this.closest('.modal'))">Launch</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+async function launchFlow(flowType, modal) {
+    const config = {type: flowType};
+    if (flowType === 'account_research') {
+        const domains = document.getElementById('flow-domains').value.trim().split('\n').filter(Boolean);
+        if (!domains.length) { toast('Enter at least one domain', 'error'); return; }
+        config.domains = domains;
+        config.volume_cap = parseInt(document.getElementById('flow-volume').value) || 10;
+        config.quality_level = document.getElementById('flow-quality').value;
+    } else {
+        config.volume_cap = parseInt(document.getElementById('flow-volume').value) || 25;
+        config.ab_variable = document.getElementById('flow-ab-var').value;
+    }
+
+    const r = await apiPost('/api/flows/run', config);
+    if (r && !r._error) {
+        toast('Flow launched', 'success');
+        modal.remove();
+        loadFlows();
+    } else {
+        toast(r?.message || 'Launch failed', 'error');
+    }
+}
+
+async function viewFlowRun(runId) {
+    const run = await api(`/api/flows/runs/${runId}`);
+    if (!run) return;
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content" style="width:600px;max-height:80vh;overflow-y:auto;">
+            <h3>${run.flow_type} Run</h3>
+            <div style="margin:16px 0;">
+                <div style="padding:8px 0;border-bottom:1px solid var(--bd);">
+                    <strong>Status:</strong> <span class="tag ${run.status==='complete'?'tag-gn':'tag-std'}">${run.status}</span>
+                </div>
+                <div style="padding:8px 0;border-bottom:1px solid var(--bd);">
+                    <strong>Progress:</strong> ${run.steps_completed||0}/${run.total_steps||0} steps
+                </div>
+                <div style="padding:8px 0;border-bottom:1px solid var(--bd);">
+                    <strong>Duration:</strong> ${run.duration_ms ? (run.duration_ms/1000).toFixed(1)+'s' : '-'}
+                </div>
+                ${run.steps?.length ? `
+                    <div style="padding:12px 0;">
+                        <strong>Steps:</strong>
+                        ${run.steps.map(s => `
+                            <div style="padding:6px 0;font-size:12px;color:var(--tx2);">
+                                ${s.name||'-'} <span class="tag ${s.status==='complete'?'tag-gn':'tag-std'}" style="margin-left:8px;">${s.status}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+            </div>
+            <button class="btn btn-sm" onclick="this.closest('.modal').remove()">Close</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+// ═══════════════════════════════════════════════════════
+// NEW PAGE 2: ACTIVITY
+// ═══════════════════════════════════════════════════════
+async function loadActivity() {
+    const channel = document.getElementById('activity-channel').value;
+    const search = document.getElementById('activity-search').value;
+
+    const activities = await api(`/api/activity?channel=${channel}&limit=100`);
+    
+    if (!activities?.activities?.length) {
+        document.getElementById('activity-timeline').innerHTML = '<div class="empty">No activities found</div>';
+        return;
+    }
+
+    const counts = {};
+    const all = activities.activities || [];
+    all.forEach(a => {
+        counts[a.channel] = (counts[a.channel]||0) + 1;
+    });
+
+    document.getElementById('activity-kpis').innerHTML = [
+        kpi('Total Activities', all.length),
+        kpi('LinkedIn', counts.linkedin || 0),
+        kpi('Email', counts.email || 0),
+        kpi('Phone', counts.phone || 0),
+    ].join('');
+
+    let filtered = all;
+    if (search) {
+        filtered = filtered.filter(a => 
+            (a.contact_name||'').toLowerCase().includes(search.toLowerCase()) ||
+            (a.description||'').toLowerCase().includes(search.toLowerCase())
+        );
+    }
+
+    const iconMap = {linkedin:'💼', email:'📧', phone:'☎️', other:'📌'};
+    document.getElementById('activity-timeline').innerHTML = `
+        <div class="timeline">
+            ${filtered.map(a => `
+                <div class="timeline-item">
+                    <div class="timeline-icon">${iconMap[a.channel]||iconMap.other}</div>
+                    <div class="timeline-content">
+                        <h4>${a.activity_type||'Activity'}</h4>
+                        <p>${a.description||'-'}</p>
+                        <p style="margin:4px 0;"><strong>${a.contact_name||'-'}</strong> ${a.company ? '@ '+a.company : ''}</p>
+                        <div class="time">${timeAgo(a.created_at)}</div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+// ═══════════════════════════════════════════════════════
+// NEW PAGE 3: ACCOUNTS
+// ═══════════════════════════════════════════════════════
+async function loadAccounts() {
+    const search = document.getElementById('accounts-search').value.toLowerCase();
+    const data = await api('/api/accounts?limit=100');
+    
+    if (!data?.accounts?.length) {
+        document.getElementById('accounts-body').innerHTML = '<tr><td colspan="8" class="empty">No accounts</td></tr>';
+        return;
+    }
+
+    let filtered = data.accounts;
+    if (search) {
+        filtered = filtered.filter(a => 
+            (a.name||'').toLowerCase().includes(search) ||
+            (a.domain||'').toLowerCase().includes(search) ||
+            (a.industry||'').toLowerCase().includes(search)
+        );
+    }
+
+    document.getElementById('accounts-body').innerHTML = filtered.map(a => `<tr onclick="openAccountDetail('${a.id}')">
+        <td><strong>${a.name||'-'}</strong></td>
+        <td>${a.domain||'-'}</td>
+        <td>${a.industry||'-'}</td>
+        <td>${a.employee_count||'-'}</td>
+        <td><span class="tag tag-${a.tier==='hot'?'hot':a.tier==='warm'?'warm':'std'}">${a.tier||'standard'}</span></td>
+        <td>${a.buyer_intent_signals ? '⚡ Yes' : '-'}</td>
+        <td>${a.contact_count||0}</td>
+        <td><button class="btn btn-sm" onclick="event.stopPropagation();openAccountDetail('${a.id}')">View</button></td>
+    </tr>`).join('');
+}
+
+function showAddAccountModal() {
+    document.getElementById('add-account-modal').style.display = 'flex';
+}
+
+function closeAddAccountModal() {
+    document.getElementById('add-account-modal').style.display = 'none';
+}
+
+async function addAccount() {
+    const name = document.getElementById('new-account-name').value;
+    const domain = document.getElementById('new-account-domain').value;
+    const industry = document.getElementById('new-account-industry').value;
+    const employees = parseInt(document.getElementById('new-account-employees').value) || 0;
+
+    if (!name || !domain) { toast('Name and domain required', 'error'); return; }
+
+    const r = await apiPost('/api/accounts', {name, domain, industry, employee_count:employees});
+    if (r && !r._error) {
+        toast('Account created', 'success');
+        closeAddAccountModal();
+        document.getElementById('new-account-name').value = '';
+        document.getElementById('new-account-domain').value = '';
+        document.getElementById('new-account-industry').value = '';
+        document.getElementById('new-account-employees').value = '';
+        loadAccounts();
+    } else {
+        toast(r?.message || 'Creation failed', 'error');
+    }
+}
+
+function openAccountDetail(accountId) {
+    toast('Loading account details...', 'info');
+    // In a real app, this would open a detail panel
+}
+
+// ═══════════════════════════════════════════════════════
+// NEW PAGE 4: CONTACTS
+// ═══════════════════════════════════════════════════════
+async function loadContacts() {
+    const pri = document.getElementById('c-priority').value;
+    const persona = document.getElementById('c-persona').value;
+    const hasEmail = document.getElementById('c-email').value;
+    const search = document.getElementById('c-search').value.toLowerCase();
+
+    const data = await api('/api/contacts?limit=500');
+    if (!data?.length) {
+        document.getElementById('contacts-body').innerHTML = '<tr><td colspan="9" class="empty">No contacts</td></tr>';
+        return;
+    }
+
+    let filtered = data;
+    if (pri) filtered = filtered.filter(c => (c.priority_score||0) >= parseInt(pri));
+    if (persona) filtered = filtered.filter(c => c.persona_type === persona);
+    if (hasEmail === 'true') filtered = filtered.filter(c => c.email);
+    if (hasEmail === 'false') filtered = filtered.filter(c => !c.email);
+    if (search) filtered = filtered.filter(c =>
+        `${c.first_name} ${c.last_name} ${c.title} ${c.company_name}`.toLowerCase().includes(search)
+    );
+
+    document.getElementById('contacts-count').textContent = `${filtered.length} contacts`;
+    document.getElementById('contacts-body').innerHTML = filtered.map(c => {
+        const priClass = (c.priority_score||0) >= 5 ? 'tag-hot' : (c.priority_score||0) >= 4 ? 'tag-warm' : 'tag-std';
+        const persona_cls = c.persona_type === 'qa_leader' ? 'tag-qa' : 'tag-vp';
+        return `<tr onclick="openDetail('${c.id}')">
+            <td><strong>${c.first_name} ${c.last_name}</strong></td>
+            <td>${c.title||'-'}</td>
+            <td>${c.company_name||'-'}</td>
+            <td style="font-size:11px;color:var(--tx2);">${c.email||'-'}</td>
+            <td><span class="tag ${priClass}">${c.priority_score||'-'}</span></td>
+            <td><span class="tag ${persona_cls}">${c.persona_type||'-'}</span></td>
+            <td>${c.stage||'new'}</td>
+            <td>${c.personalization_score||'-'}</td>
+            <td><button class="btn btn-sm" onclick="event.stopPropagation();openDetail('${c.id}')">View</button></td>
+        </tr>`;
+    }).join('');
+}
+
+function showAddContactModal() {
+    document.getElementById('add-contact-modal').style.display = 'flex';
+}
+
+function closeAddContactModal() {
+    document.getElementById('add-contact-modal').style.display = 'none';
+}
+
+async function addContact() {
+    const first = document.getElementById('new-contact-first').value;
+    const last = document.getElementById('new-contact-last').value;
+    const title = document.getElementById('new-contact-title').value;
+    const company = document.getElementById('new-contact-company').value;
+    const email = document.getElementById('new-contact-email').value;
+
+    if (!first || !last || !company) { toast('First name, last name, and company required', 'error'); return; }
+
+    const r = await apiPost('/api/contacts', {first_name:first, last_name:last, title, company_name:company, email});
+    if (r && !r._error) {
+        toast('Contact created', 'success');
+        closeAddContactModal();
+        document.getElementById('new-contact-first').value = '';
+        document.getElementById('new-contact-last').value = '';
+        document.getElementById('new-contact-title').value = '';
+        document.getElementById('new-contact-company').value = '';
+        document.getElementById('new-contact-email').value = '';
+        loadContacts();
+    } else {
+        toast(r?.message || 'Creation failed', 'error');
+    }
+}
+
+function showImportContactsModal() {
+    document.getElementById('import-contacts-modal').style.display = 'flex';
+}
+
+function closeImportContactsModal() {
+    document.getElementById('import-contacts-modal').style.display = 'none';
+}
+
+function showImportTab(tab) {
+    document.querySelectorAll('#import-contacts-modal .tab-item').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('#import-contacts-modal .tab-content').forEach(t => t.style.display = 'none');
+    document.querySelector(`#import-contacts-modal .tab-item[onclick*="${tab}"]`)?.classList.add('active');
+    document.getElementById('import-tab-'+tab).style.display = 'block';
+}
+
+async function importContacts() {
+    const urls = document.getElementById('import-urls').value.trim().split('\n').filter(Boolean);
+    if (!urls.length) { toast('Paste at least one LinkedIn URL', 'error'); return; }
+    
+    const r = await apiPost('/api/contacts/import-linkedin', {urls});
+    if (r && !r._error) {
+        toast(`Imported ${r.count||urls.length} contacts`, 'success');
+        closeImportContactsModal();
+        loadContacts();
+    } else {
+        toast(r?.message || 'Import failed', 'error');
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+// NEW PAGE 5: DRAFTS
+// ═══════════════════════════════════════════════════════
+async function loadDrafts() {
+    const channel = document.getElementById('drafts-channel').value;
+    const status = document.getElementById('drafts-status').value;
+    const search = document.getElementById('drafts-search').value.toLowerCase();
+
+    const data = await api(`/api/drafts?channel=${channel}&status=${status}&limit=100`);
+    
+    if (!data?.drafts?.length) {
+        document.getElementById('drafts-list').innerHTML = '<div class="empty">No drafts found</div>';
+        return;
+    }
+
+    const drafts = data.drafts;
+    const counts = {};
+    drafts.forEach(d => {
+        counts[d.status] = (counts[d.status]||0) + 1;
+    });
+
+    document.getElementById('drafts-kpis').innerHTML = [
+        kpi('Total Drafts', drafts.length),
+        kpi('Draft', counts.draft || 0),
+        kpi('Approved', counts.approved || 0),
+        kpi('Sent', counts.sent || 0),
+    ].join('');
+
+    let filtered = drafts;
+    if (search) {
+        filtered = filtered.filter(d => 
+            (d.contact_name||'').toLowerCase().includes(search) ||
+            (d.body||'').toLowerCase().includes(search)
+        );
+    }
+
+    document.getElementById('drafts-list').innerHTML = filtered.map(d => {
+        const wc = (d.body||'').split(/\s+/).filter(Boolean).length;
+        return `<div class="card" style="padding:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <div>
+                    <strong>${d.contact_name||'-'}</strong> @ ${d.company||'-'}
+                    <div style="font-size:11px;color:var(--tx2);margin-top:2px;">Touch ${d.touch_number||'?'} | ${d.channel||'?'}</div>
+                </div>
+                <div class="btn-group">
+                    <span class="tag ${d.status==='draft'?'tag-std':d.status==='approved'?'tag-gn':'tag-yl'}">${d.status}</span>
+                    ${d.personalization_score ? `<span class="tag">P-Score: ${d.personalization_score}</span>` : ''}
+                </div>
+            </div>
+            <div style="background:var(--bg);padding:10px;border-radius:4px;margin-bottom:8px;font-size:12px;color:var(--tx2);white-space:pre-wrap;max-height:100px;overflow-y:auto;line-height:1.5;">${(d.body||'').substring(0,300)}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;">
+                <span style="color:var(--tx3);">${wc} words</span>
+                <div class="btn-group">
+                    <button class="btn btn-sm" onclick="copyDraft('${encodeURIComponent(d.body||'')}')">Copy</button>
+                    ${d.status === 'draft' ? `<button class="btn btn-sm btn-success" onclick="approveDraft('${d.id}')">Approve</button>` : ''}
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function copyDraft(body) {
+    const text = decodeURIComponent(body);
+    navigator.clipboard.writeText(text).then(() => {
+        toast('Copied to clipboard', 'success');
+    });
+}
+
+async function approveDraft(draftId) {
+    const r = await apiPost(`/api/drafts/${draftId}/status`, {status:'approved'});
+    if (r && !r._error) {
+        toast('Draft approved', 'success');
+        loadDrafts();
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+// NEW PAGE 6: SETTINGS
+// ═══════════════════════════════════════════════════════
+function showSettingsTab(tab) {
+    document.querySelectorAll('#page-settings .tab-item').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('#page-settings .tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelector(`#page-settings .tab-item[onclick*="${tab}"]`)?.classList.add('active');
+    document.getElementById('settings-tab-'+tab)?.classList.add('active');
+}
+
+async function loadSettings() {
+    document.getElementById('api-url-display').textContent = API;
+    
+    const [health, checklist, identities, flags] = await Promise.all([
+        api('/api/health'),
+        api('/api/sender-health/checklist'),
+        api('/api/email/identities'),
+        api('/api/feature-flags')
+    ]);
+
+    if (checklist) {
+        const items = [
+            {label:'SPF Configured', status: checklist.spf?.configured},
+            {label:'DKIM Configured', status: checklist.dkim?.configured},
+            {label:'DMARC Configured', status: checklist.dmarc?.configured},
+            {label:'Warmup Active', status: checklist.warmup?.active},
+        ];
+        document.getElementById('sender-health-checklist').innerHTML = items.map(i => `
+            <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd);">
+                <span style="color:${i.status?'var(--gn)':'var(--rd)'}; font-weight:600;">${i.status?'✓':'✗'}</span>
+                <span>${i.label}</span>
+            </div>
+        `).join('');
+    }
+
+    if (identities?.length) {
+        document.getElementById('sender-identities-list').innerHTML = `<table class="tbl" style="margin-bottom:12px;"><thead><tr><th>Email</th><th>Daily Limit</th><th>Status</th></tr></thead><tbody>
+            ${identities.map(i => `<tr>
+                <td>${i.email_address||'-'}</td>
+                <td>${i.daily_limit||25}</td>
+                <td><span class="tag ${i.verification_status==='verified'?'tag-gn':'tag-std'}">${i.verification_status||'pending'}</span></td>
+            </tr>`).join('')}
+        </tbody></table>`;
+    }
+
+    if (flags?.length) {
+        document.getElementById('settings-flags-list').innerHTML = flags.map(f => `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--bd);border-radius:var(--r);margin-bottom:8px;">
+                <div>
+                    <strong>${f.name||'-'}</strong>
+                    <div style="font-size:11px;color:var(--tx2);margin-top:2px;">${f.description||''}</div>
+                </div>
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                    <input type="checkbox" ${f.enabled?'checked':''} onchange="toggleFlag('${f.name}',this.checked)" />
+                    <span style="font-size:11px;">${f.enabled?'Enabled':'Disabled'}</span>
+                </label>
+            </div>
+        `).join('');
+    }
+
+    if (health?.tables) {
+        document.getElementById('settings-table-counts').innerHTML = Object.entries(health.tables).map(([name, count]) => `
+            <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd);">
+                <span>${name}</span>
+                <strong>${count}</strong>
+            </div>
+        `).join('');
+    }
+}
+
+async function saveGeneralSettings() {
+    const name = document.getElementById('settings-name').value;
+    const volume = parseInt(document.getElementById('settings-volume').value) || 25;
+    const quality = document.getElementById('settings-quality').value;
+
+    const r = await apiPost('/api/settings/general', {user_name:name, default_volume_cap:volume, quality_bar_level:quality});
+    if (r && !r._error) {
+        toast('Settings saved', 'success');
+    } else {
+        toast('Failed to save', 'error');
+    }
+}
+
+async function toggleFlag(flagName, enabled) {
+    const r = await apiPost(`/api/feature-flags/${flagName}?enabled=${enabled}`, {});
+    if (r && !r._error) {
+        toast(`Flag ${enabled?'enabled':'disabled'}`, 'success');
     }
 }
 

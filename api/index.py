@@ -1,6 +1,7 @@
 """
 Vercel Serverless Function - Outreach Command Center API
 Wraps the FastAPI app for Vercel deployment with /tmp SQLite.
+Includes flow management, activity timeline, drafts, sender health, and contact identities.
 """
 import os
 import sys
@@ -220,6 +221,110 @@ CREATE TABLE IF NOT EXISTS feature_flags (
     enabled INTEGER DEFAULT 1, description TEXT,
     created_at TEXT DEFAULT (datetime('now'))
 );
+CREATE TABLE IF NOT EXISTS flow_runs (
+    id TEXT PRIMARY KEY,
+    flow_type TEXT NOT NULL,
+    status TEXT DEFAULT 'running',
+    config TEXT DEFAULT '{}',
+    total_steps INTEGER DEFAULT 0,
+    completed_steps INTEGER DEFAULT 0,
+    failed_steps INTEGER DEFAULT 0,
+    warnings TEXT DEFAULT '[]',
+    started_at TEXT DEFAULT (datetime('now')),
+    completed_at TEXT,
+    duration_ms INTEGER DEFAULT 0,
+    created_by TEXT DEFAULT 'user',
+    trace_id TEXT,
+    created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE TABLE IF NOT EXISTS flow_run_steps (
+    id TEXT PRIMARY KEY,
+    flow_run_id TEXT REFERENCES flow_runs(id),
+    step_name TEXT NOT NULL,
+    agent_type TEXT NOT NULL,
+    status TEXT DEFAULT 'pending',
+    input_data TEXT DEFAULT '{}',
+    output_data TEXT DEFAULT '{}',
+    error_message TEXT,
+    tokens_used INTEGER DEFAULT 0,
+    duration_ms INTEGER DEFAULT 0,
+    started_at TEXT,
+    completed_at TEXT,
+    created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE TABLE IF NOT EXISTS flow_artifacts (
+    id TEXT PRIMARY KEY,
+    flow_run_id TEXT REFERENCES flow_runs(id),
+    artifact_type TEXT NOT NULL,
+    title TEXT,
+    content TEXT,
+    metadata TEXT DEFAULT '{}',
+    entity_type TEXT,
+    entity_id TEXT,
+    status TEXT DEFAULT 'ready',
+    created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE TABLE IF NOT EXISTS activity_timeline (
+    id TEXT PRIMARY KEY,
+    contact_id TEXT,
+    account_id TEXT,
+    channel TEXT NOT NULL,
+    activity_type TEXT NOT NULL,
+    description TEXT,
+    metadata TEXT DEFAULT '{}',
+    flow_run_id TEXT,
+    created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE TABLE IF NOT EXISTS draft_versions (
+    id TEXT PRIMARY KEY,
+    draft_id TEXT NOT NULL,
+    contact_id TEXT,
+    channel TEXT NOT NULL,
+    touch_number INTEGER,
+    subject TEXT,
+    body TEXT NOT NULL,
+    version INTEGER DEFAULT 1,
+    status TEXT DEFAULT 'draft',
+    personalization_score INTEGER,
+    proof_point TEXT,
+    pain_hook TEXT,
+    opener_style TEXT,
+    word_count INTEGER,
+    qc_passed INTEGER,
+    qc_flags TEXT DEFAULT '[]',
+    confidence_score REAL,
+    flow_run_id TEXT,
+    edited_by TEXT DEFAULT 'agent',
+    created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE TABLE IF NOT EXISTS sender_health_snapshots (
+    id TEXT PRIMARY KEY,
+    identity_id TEXT,
+    date TEXT NOT NULL,
+    emails_sent INTEGER DEFAULT 0,
+    bounces INTEGER DEFAULT 0,
+    complaints INTEGER DEFAULT 0,
+    replies INTEGER DEFAULT 0,
+    bounce_rate REAL DEFAULT 0,
+    complaint_rate REAL DEFAULT 0,
+    reply_rate REAL DEFAULT 0,
+    domain_reputation TEXT,
+    spf_pass INTEGER DEFAULT 1,
+    dkim_pass INTEGER DEFAULT 1,
+    dmarc_pass INTEGER DEFAULT 0,
+    notes TEXT,
+    created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE TABLE IF NOT EXISTS contact_identities (
+    id TEXT PRIMARY KEY,
+    contact_id TEXT REFERENCES contacts(id),
+    identity_type TEXT NOT NULL,
+    value TEXT NOT NULL,
+    verified INTEGER DEFAULT 0,
+    source TEXT,
+    is_primary INTEGER DEFAULT 0,
+    created_at TEXT DEFAULT (datetime('now'))
+);
 
 CREATE INDEX IF NOT EXISTS idx_contacts_account ON contacts(account_id);
 CREATE INDEX IF NOT EXISTS idx_contacts_stage ON contacts(stage);
@@ -229,6 +334,10 @@ CREATE INDEX IF NOT EXISTS idx_messages_batch ON message_drafts(batch_id);
 CREATE INDEX IF NOT EXISTS idx_touchpoints_contact ON touchpoints(contact_id);
 CREATE INDEX IF NOT EXISTS idx_replies_contact ON replies(contact_id);
 CREATE INDEX IF NOT EXISTS idx_signals_account ON signals(account_id);
+CREATE INDEX IF NOT EXISTS idx_flow_runs_status ON flow_runs(status);
+CREATE INDEX IF NOT EXISTS idx_activity_contact ON activity_timeline(contact_id);
+CREATE INDEX IF NOT EXISTS idx_draft_versions_draft ON draft_versions(draft_id);
+CREATE INDEX IF NOT EXISTS idx_sender_health_identity ON sender_health_snapshots(identity_id);
 """
 
 # ---------------------------------------------------------------------------
@@ -481,6 +590,113 @@ def seed_database():
             VALUES (?,?,?,?,?)""",
             (f"ff_{uuid.uuid4().hex[:12]}", name, enabled, desc, now.isoformat()))
 
+    # --- FLOW RUNS (new) ---
+    for i in range(4):
+        frid = f"flow_{uuid.uuid4().hex[:12]}"
+        flow_status = "completed" if i < 2 else "running"
+        conn.execute("""INSERT INTO flow_runs (id,flow_type,status,config,total_steps,
+            completed_steps,failed_steps,started_at,completed_at,duration_ms,created_at)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+            (frid, random.choice(["account_research", "linkedin_prospecting", "email_prospecting"]),
+             flow_status, json.dumps({"volume_cap": 10, "quality_bar": "strict"}),
+             5, 5 if flow_status == "completed" else 2,
+             0, (now - timedelta(hours=random.randint(2,24))).isoformat(),
+             (now - timedelta(hours=random.randint(0,12))).isoformat() if flow_status == "completed" else None,
+             random.randint(30000, 180000) if flow_status == "completed" else 0,
+             (now - timedelta(hours=random.randint(2,24))).isoformat()))
+
+    # --- FLOW RUN STEPS (new) ---
+    flow_runs = conn.execute("SELECT id FROM flow_runs").fetchall()
+    for fr in flow_runs:
+        flow_run_id = fr[0]
+        for step_idx in range(5):
+            step_id = f"step_{uuid.uuid4().hex[:12]}"
+            step_status = "completed" if step_idx < 4 else "pending"
+            conn.execute("""INSERT INTO flow_run_steps (id,flow_run_id,step_name,agent_type,
+                status,tokens_used,duration_ms,started_at,completed_at,created_at)
+                VALUES (?,?,?,?,?,?,?,?,?,?)""",
+                (step_id, flow_run_id, f"step_{step_idx+1}",
+                 random.choice(["ResearchAgent", "DraftingAgent", "QCAgent"]),
+                 step_status, random.randint(500, 2000) if step_status == "completed" else 0,
+                 random.randint(5000, 30000) if step_status == "completed" else 0,
+                 (now - timedelta(hours=1)).isoformat() if step_status == "completed" else None,
+                 (now - timedelta(minutes=30)).isoformat() if step_status == "completed" else None,
+                 (now - timedelta(hours=1)).isoformat()))
+
+    # --- FLOW ARTIFACTS (new) ---
+    for fr in flow_runs[:2]:
+        flow_run_id = fr[0]
+        art_id = f"art_{uuid.uuid4().hex[:12]}"
+        conn.execute("""INSERT INTO flow_artifacts (id,flow_run_id,artifact_type,title,
+            content,metadata,status,created_at)
+            VALUES (?,?,?,?,?,?,?,?)""",
+            (art_id, flow_run_id, "account_brief", "Account Research Brief",
+             json.dumps({"account": "Example Corp", "employees": 5000, "industry": "SaaS"}),
+             json.dumps({"research_depth": "comprehensive"}), "ready", now.isoformat()))
+
+    # --- ACTIVITY TIMELINE (new) ---
+    for i in range(12):
+        act_id = f"act_{uuid.uuid4().hex[:12]}"
+        contact_id = contact_ids[i % len(contact_ids)]
+        conn.execute("""INSERT INTO activity_timeline (id,contact_id,channel,activity_type,
+            description,created_at) VALUES (?,?,?,?,?,?)""",
+            (act_id, contact_id,
+             random.choice(["linkedin", "email", "phone"]),
+             random.choice(["message_sent", "reply_received", "meeting_booked", "call_made"]),
+             f"Activity on {contact_id}",
+             (now - timedelta(days=random.randint(1,20))).isoformat()))
+
+    # --- DRAFT VERSIONS (new) ---
+    for i, cid in enumerate(contact_ids[:10]):
+        draft_id = f"draft_{uuid.uuid4().hex[:12]}"
+        for v in range(1, 3):
+            dv_id = f"draftv_{uuid.uuid4().hex[:12]}"
+            conn.execute("""INSERT INTO draft_versions (id,draft_id,contact_id,channel,
+                touch_number,subject,body,version,status,personalization_score,
+                proof_point,pain_hook,opener_style,word_count,confidence_score,created_at)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                (dv_id, draft_id, cid,
+                 random.choice(["linkedin", "email"]), random.randint(1,6),
+                 f"Subject for {cid}",
+                 f"Body text for version {v}",
+                 v, "draft" if v == 1 else "approved",
+                 random.randint(1,3), random.choice(PROOF_POINTS),
+                 random.choice(PAIN_HOOKS),
+                 random.choice(["career_reference", "company_metric"]),
+                 random.randint(70, 120),
+                 0.85 + random.random() * 0.15,
+                 (now - timedelta(days=random.randint(1,10))).isoformat()))
+
+    # --- SENDER HEALTH SNAPSHOTS (new) ---
+    email_identities = conn.execute("SELECT id FROM email_identities").fetchall()
+    for eid in email_identities:
+        identity_id = eid[0]
+        for d in range(2):
+            snap_id = f"snap_{uuid.uuid4().hex[:12]}"
+            snap_date = (now - timedelta(days=d)).strftime("%Y-%m-%d")
+            conn.execute("""INSERT INTO sender_health_snapshots (id,identity_id,date,
+                emails_sent,bounces,complaints,replies,bounce_rate,complaint_rate,
+                reply_rate,domain_reputation,spf_pass,dkim_pass,dmarc_pass,created_at)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                (snap_id, identity_id, snap_date,
+                 random.randint(30, 50), random.randint(0, 2),
+                 0, random.randint(2, 8),
+                 round(random.uniform(0, 0.05), 3),
+                 0.0,
+                 round(random.uniform(0.05, 0.15), 3),
+                 "good", 1, 1, random.choice([0, 1]),
+                 now.isoformat()))
+
+    # --- CONTACT IDENTITIES (new) ---
+    for cid in contact_ids[:15]:
+        ci_id = f"ci_{uuid.uuid4().hex[:12]}"
+        conn.execute("""INSERT INTO contact_identities (id,contact_id,identity_type,
+            value,verified,is_primary,created_at)
+            VALUES (?,?,?,?,?,?,?)""",
+            (ci_id, cid, "email",
+             f"{FIRST_NAMES[contact_ids.index(cid) % len(FIRST_NAMES)].lower()}.{LAST_NAMES[contact_ids.index(cid) % len(LAST_NAMES)].lower()}@example.com",
+             1, 1, now.isoformat()))
+
     conn.commit()
     conn.close()
 
@@ -690,6 +906,33 @@ def update_contact(contact_id: str, data: dict):
     row = conn.execute("SELECT * FROM contacts WHERE id=?", (contact_id,)).fetchone()
     conn.close()
     if not row: raise HTTPException(404)
+    return dict(row)
+
+# ─── CONTACT IDENTITIES (new) ──────────────────────────
+
+@app.get("/api/contacts/{contact_id}/identities")
+def get_contact_identities(contact_id: str):
+    conn = get_db()
+    rows = rows_to_dicts(conn.execute(
+        "SELECT * FROM contact_identities WHERE contact_id=? ORDER BY is_primary DESC",
+        (contact_id,)).fetchall())
+    conn.close()
+    return rows
+
+@app.post("/api/contacts/{contact_id}/identities")
+def add_contact_identity(contact_id: str, data: dict):
+    conn = get_db()
+    ci_id = gen_id("ci")
+    now = datetime.utcnow().isoformat()
+    conn.execute("""INSERT INTO contact_identities (id,contact_id,identity_type,value,
+        verified,source,is_primary,created_at) VALUES (?,?,?,?,?,?,?,?)""",
+        (ci_id, contact_id, data.get("identity_type","email"),
+         data.get("value",""), data.get("verified",0),
+         data.get("source","manual"), data.get("is_primary",0), now))
+    conn.commit()
+    row = conn.execute("SELECT * FROM contact_identities WHERE id=?", (ci_id,)).fetchone()
+    conn.close()
+    if not row: raise HTTPException(400, "Failed to create identity")
     return dict(row)
 
 # ─── ACCOUNTS ──────────────────────────────────────────────────
@@ -952,6 +1195,312 @@ def list_opportunities():
     conn.close()
     return rows
 
+# ─── FLOW MANAGEMENT (new) ─────────────────────────────────────
+
+@app.post("/api/flows/run")
+def launch_flow(data: dict):
+    try:
+        conn = get_db()
+        flow_id = gen_id("flow")
+        flow_type = data.get("flow_type", "account_research")
+        config = data.get("config", {})
+        now = datetime.utcnow().isoformat()
+
+        # Create flow run
+        conn.execute("""INSERT INTO flow_runs (id,flow_type,status,config,total_steps,
+            started_at,created_at) VALUES (?,?,?,?,?,?,?)""",
+            (flow_id, flow_type, "running", json.dumps(config), 5, now, now))
+
+        # Create simulated steps
+        steps = ["research", "analysis", "drafting", "qc", "finalization"]
+        for idx, step in enumerate(steps):
+            step_id = gen_id("step")
+            conn.execute("""INSERT INTO flow_run_steps (id,flow_run_id,step_name,
+                agent_type,status,created_at) VALUES (?,?,?,?,?,?)""",
+                (step_id, flow_id, step, "Agent", "pending", now))
+
+        conn.commit()
+        row = conn.execute("SELECT * FROM flow_runs WHERE id=?", (flow_id,)).fetchone()
+        conn.close()
+        return dict(row) if row else {"id": flow_id, "status": "created"}
+    except Exception as e:
+        conn.close()
+        raise HTTPException(400, str(e))
+
+@app.get("/api/flows/runs")
+def list_flow_runs(flow_type: str = None, status: str = None, limit: int = 50):
+    conn = get_db()
+    q = "SELECT * FROM flow_runs WHERE 1=1"
+    params = []
+    if flow_type:
+        q += " AND flow_type=?"; params.append(flow_type)
+    if status:
+        q += " AND status=?"; params.append(status)
+    q += " ORDER BY created_at DESC LIMIT ?"
+    params.append(limit)
+    rows = rows_to_dicts(conn.execute(q, params).fetchall())
+    conn.close()
+    for r in rows:
+        parse_json_fields(r, ["config", "warnings"])
+    return rows
+
+@app.get("/api/flows/runs/{run_id}")
+def get_flow_run(run_id: str):
+    conn = get_db()
+    flow = conn.execute("SELECT * FROM flow_runs WHERE id=?", (run_id,)).fetchone()
+    if not flow:
+        conn.close()
+        raise HTTPException(404)
+
+    d = dict(flow)
+    parse_json_fields(d, ["config", "warnings"])
+
+    # Include steps and artifacts
+    steps = rows_to_dicts(conn.execute(
+        "SELECT * FROM flow_run_steps WHERE flow_run_id=? ORDER BY created_at",
+        (run_id,)).fetchall())
+    for s in steps:
+        parse_json_fields(s, ["input_data", "output_data"])
+
+    artifacts = rows_to_dicts(conn.execute(
+        "SELECT * FROM flow_artifacts WHERE flow_run_id=?", (run_id,)).fetchall())
+    for a in artifacts:
+        parse_json_fields(a, ["metadata", "content"])
+
+    conn.close()
+    d["steps"] = steps
+    d["artifacts"] = artifacts
+    return d
+
+@app.post("/api/flows/runs/{run_id}/cancel")
+def cancel_flow_run(run_id: str):
+    conn = get_db()
+    now = datetime.utcnow().isoformat()
+    conn.execute("UPDATE flow_runs SET status='cancelled', completed_at=? WHERE id=?",
+                 (now, run_id))
+    conn.commit()
+    row = conn.execute("SELECT * FROM flow_runs WHERE id=?", (run_id,)).fetchone()
+    conn.close()
+    if not row: raise HTTPException(404)
+    return dict(row)
+
+@app.get("/api/flows/catalog")
+def flow_catalog():
+    return {
+        "flows": [
+            {
+                "type": "account_research",
+                "name": "Account Research",
+                "description": "Deep research on target accounts",
+                "inputs": ["targets", "volume_cap"],
+                "outputs": ["research_snapshots", "account_briefs"]
+            },
+            {
+                "type": "linkedin_prospecting",
+                "name": "LinkedIn Prospecting",
+                "description": "Draft LinkedIn messages and InMails",
+                "inputs": ["targets", "channel"],
+                "outputs": ["draft_messages", "activity_timeline"]
+            },
+            {
+                "type": "email_prospecting",
+                "name": "Email Prospecting",
+                "description": "Draft email campaigns with personalization",
+                "inputs": ["targets", "volume_cap"],
+                "outputs": ["draft_messages", "suppression_checks"]
+            },
+        ]
+    }
+
+# ─── ACTIVITY TIMELINE (new) ───────────────────────────────────
+
+@app.get("/api/activity")
+def list_activity(channel: str = None, contact_id: str = None,
+                  account_id: str = None, limit: int = 100, offset: int = 0):
+    conn = get_db()
+    q = "SELECT * FROM activity_timeline WHERE 1=1"
+    params = []
+    if channel:
+        q += " AND channel=?"; params.append(channel)
+    if contact_id:
+        q += " AND contact_id=?"; params.append(contact_id)
+    if account_id:
+        q += " AND account_id=?"; params.append(account_id)
+    q += " ORDER BY created_at DESC LIMIT ? OFFSET ?"
+    params.extend([limit, offset])
+    rows = rows_to_dicts(conn.execute(q, params).fetchall())
+    total = conn.execute("SELECT COUNT(*) FROM activity_timeline").fetchone()[0]
+    conn.close()
+    for r in rows:
+        parse_json_fields(r, ["metadata"])
+    return {"activities": rows, "total": total}
+
+# ─── DRAFTS (new) ──────────────────────────────────────────────
+
+@app.get("/api/drafts")
+def list_drafts(channel: str = None, status: str = None,
+                contact_id: str = None, flow_run_id: str = None,
+                limit: int = 100, offset: int = 0):
+    conn = get_db()
+    q = "SELECT * FROM draft_versions WHERE 1=1"
+    params = []
+    if channel:
+        q += " AND channel=?"; params.append(channel)
+    if status:
+        q += " AND status=?"; params.append(status)
+    if contact_id:
+        q += " AND contact_id=?"; params.append(contact_id)
+    if flow_run_id:
+        q += " AND flow_run_id=?"; params.append(flow_run_id)
+    q += " ORDER BY created_at DESC LIMIT ? OFFSET ?"
+    params.extend([limit, offset])
+    rows = rows_to_dicts(conn.execute(q, params).fetchall())
+    total = conn.execute("SELECT COUNT(*) FROM draft_versions").fetchone()[0]
+    conn.close()
+    for r in rows:
+        parse_json_fields(r, ["qc_flags"])
+    return {"drafts": rows, "total": total}
+
+@app.get("/api/drafts/{draft_id}")
+def get_draft(draft_id: str):
+    conn = get_db()
+    # Get all versions of this draft
+    rows = rows_to_dicts(conn.execute(
+        "SELECT * FROM draft_versions WHERE draft_id=? ORDER BY version DESC",
+        (draft_id,)).fetchall())
+    conn.close()
+    if not rows:
+        raise HTTPException(404, "Draft not found")
+    for r in rows:
+        parse_json_fields(r, ["qc_flags"])
+    return {"versions": rows, "current": rows[0] if rows else None}
+
+@app.put("/api/drafts/{draft_id}/status")
+def update_draft_status(draft_id: str, data: dict):
+    conn = get_db()
+    new_status = data.get("status", "draft")
+    now = datetime.utcnow().isoformat()
+    conn.execute("UPDATE draft_versions SET status=?, created_at=? WHERE draft_id=?",
+                 (new_status, now, draft_id))
+    conn.commit()
+    rows = rows_to_dicts(conn.execute(
+        "SELECT * FROM draft_versions WHERE draft_id=?", (draft_id,)).fetchall())
+    conn.close()
+    if not rows:
+        raise HTTPException(404)
+    return {"updated": len(rows), "status": new_status}
+
+@app.put("/api/drafts/{draft_id}/edit")
+def edit_draft(draft_id: str, data: dict):
+    conn = get_db()
+    # Get latest version
+    latest = conn.execute(
+        "SELECT * FROM draft_versions WHERE draft_id=? ORDER BY version DESC LIMIT 1",
+        (draft_id,)).fetchone()
+
+    if not latest:
+        conn.close()
+        raise HTTPException(404)
+
+    # Create new version
+    old = dict(latest)
+    new_version = old["version"] + 1
+    new_id = gen_id("draftv")
+    now = datetime.utcnow().isoformat()
+
+    conn.execute("""INSERT INTO draft_versions (id,draft_id,contact_id,channel,touch_number,
+        subject,body,version,status,personalization_score,proof_point,pain_hook,
+        opener_style,word_count,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+        (new_id, draft_id, old["contact_id"], old["channel"], old["touch_number"],
+         data.get("subject", old.get("subject")),
+         data.get("body", old.get("body")),
+         new_version, "draft", old.get("personalization_score"),
+         old.get("proof_point"), old.get("pain_hook"),
+         old.get("opener_style"), len(data.get("body", "")),
+         now))
+
+    conn.commit()
+    row = conn.execute("SELECT * FROM draft_versions WHERE id=?", (new_id,)).fetchone()
+    conn.close()
+    return dict(row) if row else {"version": new_version}
+
+# ─── SENDER HEALTH (new) ───────────────────────────────────────
+
+@app.get("/api/sender-health")
+def get_sender_health():
+    conn = get_db()
+    health = {}
+    for row in conn.execute("""
+        SELECT s.* FROM sender_health_snapshots s
+        INNER JOIN (
+            SELECT identity_id, MAX(date) as max_date
+            FROM sender_health_snapshots GROUP BY identity_id
+        ) latest ON s.identity_id = latest.identity_id AND s.date = latest.max_date
+        ORDER BY s.identity_id
+    """).fetchall():
+        d = dict(row)
+        health[d["identity_id"]] = d
+    conn.close()
+    return {"snapshots": list(health.values())}
+
+@app.post("/api/sender-health")
+def create_sender_health_snapshot(data: dict):
+    conn = get_db()
+    snap_id = gen_id("snap")
+    now = datetime.utcnow().isoformat()
+    date_str = data.get("date", now[:10])
+
+    conn.execute("""INSERT INTO sender_health_snapshots (id,identity_id,date,
+        emails_sent,bounces,complaints,replies,bounce_rate,complaint_rate,reply_rate,
+        domain_reputation,spf_pass,dkim_pass,dmarc_pass,notes,created_at)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+        (snap_id, data.get("identity_id"),
+         date_str,
+         data.get("emails_sent", 0),
+         data.get("bounces", 0),
+         data.get("complaints", 0),
+         data.get("replies", 0),
+         data.get("bounce_rate", 0),
+         data.get("complaint_rate", 0),
+         data.get("reply_rate", 0),
+         data.get("domain_reputation", "good"),
+         data.get("spf_pass", 1),
+         data.get("dkim_pass", 1),
+         data.get("dmarc_pass", 0),
+         data.get("notes", ""),
+         now))
+
+    conn.commit()
+    row = conn.execute("SELECT * FROM sender_health_snapshots WHERE id=?", (snap_id,)).fetchone()
+    conn.close()
+    return dict(row) if row else {"id": snap_id}
+
+@app.get("/api/sender-health/checklist")
+def sender_health_checklist():
+    return {
+        "spf": {
+            "status": "pass",
+            "record": "v=spf1 include:_spf.google.com ~all",
+            "configured": True
+        },
+        "dkim": {
+            "status": "pass",
+            "selector": "default",
+            "configured": True
+        },
+        "dmarc": {
+            "status": "pass",
+            "policy": "none",
+            "configured": True,
+            "percentage": 100
+        },
+        "warmup": {
+            "active": False,
+            "phase": 0,
+            "progress_percent": 100
+        }
+    }
+
 # ─── EMAIL CHANNEL ─────────────────────────────────────────────
 
 @app.get("/api/email/identities")
@@ -1089,7 +1638,7 @@ def cost_summary():
     total_tokens = conn.execute("SELECT COALESCE(SUM(tokens_used),0) FROM agent_runs").fetchone()[0]
     total_runs = conn.execute("SELECT COUNT(*) FROM agent_runs").fetchone()[0]
     conn.close()
-    est_cost = round(total_tokens * 0.000003, 2)  # rough estimate
+    est_cost = round(total_tokens * 0.000003, 2)
     return {
         "total_tokens": total_tokens,
         "total_runs": total_runs,
@@ -1115,3 +1664,52 @@ def pipeline_status():
         "progress": 0,
         "total_steps": 0,
     }
+
+# ─── IMPORT (new) ──────────────────────────────────────────────
+
+@app.post("/api/import/accounts")
+def import_accounts(data: dict):
+    try:
+        conn = get_db()
+        domains = data.get("domains", [])
+        results = []
+        now = datetime.utcnow().isoformat()
+
+        for domain in domains:
+            aid = gen_id("acc")
+            conn.execute("""INSERT INTO accounts (id,name,domain,created_at,updated_at)
+                VALUES (?,?,?,?,?)""",
+                (aid, domain.split('.')[0].title(), domain, now, now))
+            results.append(aid)
+
+        conn.commit()
+        conn.close()
+        return {"imported": len(results), "account_ids": results}
+    except Exception as e:
+        conn.close()
+        raise HTTPException(400, str(e))
+
+@app.post("/api/import/contacts")
+def import_contacts(data: dict):
+    try:
+        conn = get_db()
+        contacts = data.get("contacts", [])
+        results = []
+        now = datetime.utcnow().isoformat()
+
+        for contact in contacts:
+            cid = gen_id("con")
+            conn.execute("""INSERT INTO contacts (id,account_id,first_name,last_name,email,
+                linkedin_url,stage,status,created_at,updated_at)
+                VALUES (?,?,?,?,?,?,?,?,?,?)""",
+                (cid, contact.get("account_id"), contact.get("first_name",""),
+                 contact.get("last_name",""), contact.get("email",""),
+                 contact.get("linkedin_url",""), "new", "active", now, now))
+            results.append(cid)
+
+        conn.commit()
+        conn.close()
+        return {"imported": len(results), "contact_ids": results}
+    except Exception as e:
+        conn.close()
+        raise HTTPException(400, str(e))
