@@ -998,7 +998,8 @@ function renderMiniChart(canvasId, data, labelKey) {
 // PIPELINE TABLE
 // ═══════════════════════════════════════════════════════
 async function loadPipeline() {
-    const data = await api('/api/contacts?limit=500');
+    const resp = await api('/api/contacts?limit=500');
+    const data = resp?.contacts || resp || [];
     if (!data) return;
     contacts = data;
     renderPipeline(contacts);
@@ -2236,7 +2237,8 @@ async function loadContacts() {
     const hasEmail = document.getElementById('c-email').value;
     const search = document.getElementById('c-search').value.toLowerCase();
 
-    const data = await api('/api/contacts?limit=500');
+    const resp = await api('/api/contacts?limit=500');
+    const data = resp?.contacts || resp || [];
     if (!data?.length) {
         document.getElementById('contacts-body').innerHTML = '<tr><td colspan="9" class="empty">No contacts</td></tr>';
         return;

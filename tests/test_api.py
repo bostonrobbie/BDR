@@ -1015,5 +1015,39 @@ class TestEdgeCases:
         assert data["total"] >= 0
 
 
+class TestAnalyticsPipeline:
+    """Tests for /api/analytics/pipeline endpoint."""
+
+    def test_pipeline_funnel(self, client):
+        response = client.get("/api/analytics/pipeline")
+        assert response.status_code == 200
+        data = response.json()
+        for key in ("total_prospects", "touched", "replied", "meetings", "opportunities"):
+            assert key in data
+        assert data["total_prospects"] >= 0
+
+
+class TestPipelineRuns:
+    """Tests for /api/pipeline/runs endpoints."""
+
+    def test_list_pipeline_runs(self, client):
+        response = client.get("/api/pipeline/runs")
+        assert response.status_code == 200
+        assert isinstance(response.json(), list)
+
+    def test_cancel_nonexistent_run(self, client):
+        response = client.post("/api/pipeline/runs/fake_run_123/cancel")
+        assert response.status_code == 200
+        assert response.json()["status"] == "cancelled"
+
+    def test_skip_approval(self, client):
+        response = client.post("/api/pipeline/runs/fake_run_456/skip-approval")
+        assert response.status_code == 200
+
+    def test_stream_nonexistent_run(self, client):
+        response = client.get("/api/pipeline/runs/fake_run_789/stream")
+        assert response.status_code == 404
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v", "--tb=short"])

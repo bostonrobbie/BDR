@@ -1713,3 +1713,71 @@ def import_contacts(data: dict):
     except Exception as e:
         conn.close()
         raise HTTPException(400, str(e))
+
+# ─── Analytics: Pipeline Funnel ───────────────────────────
+@app.get("/api/analytics/pipeline")
+def analytics_pipeline():
+    conn = get_db()
+    total = conn.execute("SELECT COUNT(*) FROM contacts").fetchone()[0]
+    touched = conn.execute("SELECT COUNT(DISTINCT contact_id) FROM touchpoints").fetchone()[0]
+    replied = conn.execute("SELECT COUNT(*) FROM contacts WHERE stage='replied'").fetchone()[0]
+    meetings = conn.execute("SELECT COUNT(*) FROM contacts WHERE stage='meeting_booked'").fetchone()[0]
+    opps = conn.execute("SELECT COUNT(*) FROM contacts WHERE stage IN ('opportunity','closed_won')").fetchone()[0]
+    conn.close()
+    return {
+        "total_prospects": total,
+        "touched": touched,
+        "replied": replied,
+        "meetings": meetings,
+        "opportunities": opps
+    }
+
+# ─── Pipeline Runs (flow_runs as pipeline runs) ──────────
+@app.get("/api/pipeline/runs")
+def list_pipeline_runs():
+    conn = get_db()
+    rows = conn.execute("""
+        SELECT * FROM flow_runs ORDER BY started_at DESC LIMIT 50
+    """).fetchall()
+    conn.close()
+    results = []
+    for r in rows:
+        d = dict(r)
+        d["run_id"] = d["id"]  # alias for frontend compat
+        results.append(d)
+    return results
+
+@app.post("/api/pipeline/runs/{run_id}/cancel")
+def cancel_pipeline_run(run_id: str):
+    conn = get_db()
+    conn.execute("UPDATE flow_runs SET status='cancelled', completed_at=? WHERE id=?",
+                 (datetime.utcnow().isoformat(), run_id))
+    conn.commit()
+    conn.close()
+    return {"status": "cancelled", "run_id": run_id}
+
+@app.post("/api/pipeline/runs/{run_id}/skip-approval")
+def skip_approval(run_id: str):
+    conn = get_db()
+    conn.execute("UPDATE flow_runs SET status='running' WHERE id=? AND status='approval_needed'",
+                 (run_id,))
+    conn.commit()
+    conn.close()
+    return {"status": "running", "run_id": run_id}
+
+@app.get("/api/pipeline/runs/{run_id}/stream")
+def pipeline_run_stream(run_id: str):
+    """Stub SSE endpoint - returns current run state."""
+    conn = get_db()
+    run = conn.execute("SELECT * FROM flow_runs WHERE id=?", (run_id,)).fetchone()
+    steps = conn.execute("SELECT * FROM flow_run_steps WHERE flow_run_id=? ORDER BY started_at",
+                         (run_id,)).fetchall()
+    conn.close()
+    if not run:
+        raise HTTPException(404, "Run not found")
+    from starlette.responses import StreamingResponse
+    import json as _json
+    def generate():
+        payload = _json.dumps({"run": dict(run), "steps": [dict(s) for s in steps]})
+        yield f"data: {payload}\n\n"
+    return StreamingResponse(generate(), media_type="text/event-stream")
