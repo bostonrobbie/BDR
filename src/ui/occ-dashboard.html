@@ -676,12 +676,15 @@ let pipelineSortCol = 'priority_score', pipelineSortDir = 'desc';
 // API HELPERS
 // ═══════════════════════════════════════════════════════
 async function api(path, opts = {}) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
     try {
         const r = await fetch(API + path, {
             headers: {'Content-Type':'application/json', ...opts.headers},
             ...opts,
-            signal: AbortSignal.timeout(10000),
+            signal: controller.signal,
         });
+        clearTimeout(timeout);
         if (!r.ok) {
             const err = await r.json().catch(() => ({detail: r.statusText}));
             throw new Error(err.detail || `HTTP ${r.status}`);
@@ -689,7 +692,8 @@ async function api(path, opts = {}) {
         if (r.headers.get('content-type')?.includes('json')) return r.json();
         return r.text();
     } catch(e) {
-        if (e.message && !e.message.includes('AbortError')) {
+        clearTimeout(timeout);
+        if (e.name !== 'AbortError') {
             console.warn('API error:', path, e.message);
         }
         return null;
@@ -697,17 +701,21 @@ async function api(path, opts = {}) {
 }
 
 async function apiPost(path, body, method='POST') {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
     try {
         const r = await fetch(API + path, {
             method,
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify(body),
-            signal: AbortSignal.timeout(15000),
+            signal: controller.signal,
         });
+        clearTimeout(timeout);
         const data = await r.json().catch(() => null);
         if (!r.ok) throw new Error(data?.detail || `HTTP ${r.status}`);
         return data;
     } catch(e) {
+        clearTimeout(timeout);
         return {_error: true, message: e.message};
     }
 }
@@ -739,7 +747,9 @@ function showPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('page-'+id)?.classList.add('active');
-    document.querySelector(`.nav-item[onclick="showPage('${id}')"]`)?.classList.add('active');
+    // Match both onclick and data-page attributes for nav items
+    const navSelector = `.nav-item[onclick="showPage('${id}')"], .nav-item[data-page="${id}"]`;
+    document.querySelector(navSelector)?.classList.add('active');
     if (id === 'intelligence') loadIntelligence();
     if (id === 'experiments') loadExperiments();
     if (id === 'signals') loadSignals();
@@ -1687,14 +1697,18 @@ function doExport() {
 async function loadEmailPage() {
     // Load health KPIs
     const health = await api('/api/email/health');
-    document.getElementById('email-kpis').innerHTML = `
-        <div class="kpi"><div class="kpi-label">Total Sent</div><div class="kpi-val">${health.total_sent||0}</div></div>
-        <div class="kpi"><div class="kpi-label">Sent Today</div><div class="kpi-val">${health.today_sent||0}</div></div>
-        <div class="kpi"><div class="kpi-label">Bounces</div><div class="kpi-val">${health.bounces||0}</div><div class="kpi-sub ${health.bounce_rate>2?'dn':'up'}">${health.bounce_rate||0}%</div></div>
-        <div class="kpi"><div class="kpi-label">Opt-outs</div><div class="kpi-val">${health.opt_outs||0}</div><div class="kpi-sub">${health.opt_out_rate||0}%</div></div>
-        <div class="kpi"><div class="kpi-label">Suppressed</div><div class="kpi-val">${health.suppressed_contacts||0}</div></div>
-        <div class="kpi"><div class="kpi-label">Health</div><div class="kpi-val" style="color:${health.health_status==='good'?'var(--gn)':health.health_status==='warning'?'var(--yl)':'var(--rd)'}">${(health.health_status||'unknown').toUpperCase()}</div></div>
-    `;
+    if (!health) {
+        document.getElementById('email-kpis').innerHTML = '<p style="color:var(--tx3)">Failed to load email health</p>';
+    } else {
+        document.getElementById('email-kpis').innerHTML = `
+            <div class="kpi"><div class="kpi-label">Total Sent</div><div class="kpi-val">${health.total_sent||0}</div></div>
+            <div class="kpi"><div class="kpi-label">Sent Today</div><div class="kpi-val">${health.today_sent||0}</div></div>
+            <div class="kpi"><div class="kpi-label">Bounces</div><div class="kpi-val">${health.bounces||0}</div><div class="kpi-sub ${health.bounce_rate>2?'dn':'up'}">${health.bounce_rate||0}%</div></div>
+            <div class="kpi"><div class="kpi-label">Opt-outs</div><div class="kpi-val">${health.opt_outs||0}</div><div class="kpi-sub">${health.opt_out_rate||0}%</div></div>
+            <div class="kpi"><div class="kpi-label">Suppressed</div><div class="kpi-val">${health.suppressed_contacts||0}</div></div>
+            <div class="kpi"><div class="kpi-label">Health</div><div class="kpi-val" style="color:${health.health_status==='good'?'var(--gn)':health.health_status==='warning'?'var(--yl)':'var(--rd)'}">${(health.health_status||'unknown').toUpperCase()}</div></div>
+        `;
+    }
     
     // Load identities tab
     loadEmailIdentities();
@@ -1763,8 +1777,9 @@ async function loadEmailEvents() {
 
 async function loadPacing() {
     const data = await api('/api/email/pacing');
+    if (!data) data = {};
     let html = '<div style="display:grid;gap:12px;">';
-    if (data.identities) {
+    if (data && data.identities) {
         html += data.identities.map(i => `
             <div class="card" style="padding:12px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -1812,7 +1827,12 @@ async function createIdentity() {
 
 async function loadSwarmPage() {
     const runs = await api('/api/swarm/runs');
-    
+    if (!runs) {
+        document.getElementById('swarm-kpis').innerHTML = '';
+        document.getElementById('swarm-history').innerHTML = '<p style="color:var(--tx2)">Failed to load swarm data.</p>';
+        return;
+    }
+
     // KPIs
     const total = (runs||[]).length;
     const running = (runs||[]).filter(r => r.status==='running').length;
@@ -1856,7 +1876,7 @@ async function loadSwarmPage() {
                 <td style="font-family:monospace;font-size:11px;">${(r.id||'').slice(0,12)}</td>
                 <td>${r.swarm_type||''}</td>
                 <td><span class="badge ${r.status==='completed'?'badge-gn':r.status==='running'?'badge-yl':'badge-rd'}">${r.status}</span></td>
-                <td>${r.completed_task||0}/${r.total_tasks||0} (${r.failed_tasks||0} err)</td>
+                <td>${r.completed_tasks||r.completed_task||0}/${r.total_tasks||0} (${r.failed_tasks||0} err)</td>
                 <td>${(r.started_at||'').slice(0,16)}</td>
                 <td>${dur?dur+'s':''}</td>
             </tr>`;
@@ -1913,7 +1933,9 @@ async function loadHealthPage() {
         api('/api/system/health'),
         api('/api/insights/daily'),
     ]);
-    
+    if (!health) health = {};
+    if (!daily) daily = {};
+
     // KPIs
     const errCount = (health.recent_errors||[]).length;
     document.getElementById('health-kpis').innerHTML = `
@@ -1968,8 +1990,13 @@ async function loadHealthPage() {
 }
 
 async function toggleFlag(name, enabled) {
-    await apiPost('/api/feature-flags/'+name+'?enabled='+enabled, {});
-    toast(name+' '+(enabled?'enabled':'disabled'), 'info');
+    const result = await apiPost(`/api/feature-flags/${name}?enabled=${enabled ? 'true' : 'false'}`, {});
+    if (result && !result._error) {
+        toast(name+' '+(enabled?'enabled':'disabled'), 'success');
+        loadHealthPage();
+    } else {
+        toast(result?.message || 'Failed to toggle flag', 'error');
+    }
 }
 
 </script>
