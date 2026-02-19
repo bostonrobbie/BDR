@@ -4425,10 +4425,10 @@ function switchEmailTab(tab) {
     document.querySelectorAll('.email-tab-content').forEach(el => el.style.display = 'none');
     const target = document.getElementById('email-tab-' + tab);
     if (target) target.style.display = '';
-    document.querySelectorAll('#email-tabs .channel-tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.textContent.trim().toLowerCase().replace(/\s+/g, '') === tab.replace(/_/g, '')) btn.classList.add('active');
-    });
+    const emailTabIdx = {overview:0,drafts:1,queue:2,analytics:3,deliverability:4};
+    const emailBtns = document.querySelectorAll('#email-tabs .channel-tab-btn');
+    emailBtns.forEach(b => b.classList.remove('active'));
+    if (emailBtns[emailTabIdx[tab]] !== undefined) emailBtns[emailTabIdx[tab]].classList.add('active');
 
     if (tab === 'overview') loadEmailOverview();
     else if (tab === 'drafts') loadEmailDrafts();
@@ -4868,10 +4868,10 @@ function switchLITab(tab) {
     document.querySelectorAll('.li-tab-content').forEach(el => el.style.display = 'none');
     const target = document.getElementById('li-tab-' + tab);
     if (target) target.style.display = '';
-    document.querySelectorAll('#linkedin-tabs .channel-tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.textContent.trim().toLowerCase() === tab) btn.classList.add('active');
-    });
+    const tabIdx = {overview:0,drafts:1,queue:2,analytics:3,review:4,replies:5,staging:6,memory:7};
+    const liBtns = document.querySelectorAll('#linkedin-tabs .channel-tab-btn');
+    liBtns.forEach(b => b.classList.remove('active'));
+    if (liBtns[tabIdx[tab]] !== undefined) liBtns[tabIdx[tab]].classList.add('active');
 
     if (tab === 'overview') loadLIOverview();
     else if (tab === 'drafts') loadLIDrafts();
