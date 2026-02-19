@@ -5835,7 +5835,7 @@ async function loadDraftsFull() {
                 if (e.target.closest('button, a')) return;
                 const card = el.parentElement;
                 const draftId = card.getAttribute('data-draft-id');
-                toggleDraftExpand(draftId);
+                toggleDraftExpandFull(draftId);
             });
         });
     } catch(e) {
@@ -6127,7 +6127,7 @@ function updateEditCharCount(draftId) {
     }
 }
 
-function toggleDraftExpand(draftId) {
+function toggleDraftExpandFull(draftId) {
     const card = document.querySelector(`[data-draft-id="${draftId}"]`);
     if (!card) return;
     const body = card.querySelector('.draft-body');
