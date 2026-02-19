@@ -4766,7 +4766,7 @@ async function loadDraftsFull() {
             const draftStatus = d.status || 'drafted';
 
             return `<div class="draft-card" data-draft-id="${draftId}">
-                <div class="draft-header" onclick="toggleDraftExpand('${draftId}')">
+                <div class="draft-header">
                     <div class="draft-header-left">
                         <div class="draft-title">
                             <strong>${esc(d.prospect_name)}</strong>
