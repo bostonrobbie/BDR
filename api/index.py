@@ -6937,6 +6937,13 @@ def enhance_draft(draft_id: str):
     """Actually rewrite a draft using stored research, not just suggest improvements."""
     conn = get_db()
     try:
+        # Create workflow_run for audit trail
+        workflow_run_id = gen_id("wf")
+        conn.execute("""INSERT INTO workflow_runs (id, workflow_type, channel, status, input_data, started_at, created_at)
+            VALUES (?, 'draft_enhancement', 'linkedin', 'running', ?, ?, ?)""",
+            (workflow_run_id, json.dumps({"draft_id": draft_id}), datetime.utcnow().isoformat(), datetime.utcnow().isoformat()))
+        conn.commit()
+
         draft = conn.execute("""
             SELECT md.*, c.first_name, c.last_name, c.title, c.persona_type,
                    c.predicted_objection, c.personalization_score as c_pscore, c.linkedin_url,
@@ -7085,6 +7092,17 @@ def enhance_draft(draft_id: str):
              draft.get("approval_status", "draft"), draft.get("personalization_score"),
              draft.get("proof_point_used"), draft.get("pain_hook"),
              len(old_body.split()), "original", datetime.utcnow().isoformat()))
+        conn.commit()
+
+        # Create workflow_step for enhancement
+        conn.execute("""INSERT INTO workflow_run_steps (id, run_id, step_name, step_type, status,
+            input_data, output_data, completed_at, created_at)
+            VALUES (?, ?, 'draft_rewrite', 'enhancement', 'succeeded', ?, ?, ?, ?)""",
+            (gen_id("ws"), workflow_run_id,
+             json.dumps({"old_body": old_body, "research_used": research_used}),
+             json.dumps({"new_body": new_body, "new_subject": new_subject}),
+             datetime.utcnow().isoformat(), datetime.utcnow().isoformat()))
+        conn.commit()
 
         # Update the draft with enhanced content
         new_version = (draft.get("version") or 1) + 1
@@ -7094,11 +7112,20 @@ def enhance_draft(draft_id: str):
             updated_at=? WHERE id=?""",
             (new_body, new_subject, new_version, new_word_count,
              best_proof.get("short", "Case study"), pain, datetime.utcnow().isoformat(), draft_id))
-
         conn.commit()
+
+        # Update workflow_run status to succeeded
+        conn.execute("""UPDATE workflow_runs SET status='succeeded', completed_at=?, output_data=?
+            WHERE id=?""",
+            (datetime.utcnow().isoformat(),
+             json.dumps({"draft_id": draft_id, "version": new_version, "word_count": new_word_count}),
+             workflow_run_id))
+        conn.commit()
+
         return {
             "status": "enhanced",
             "draft_id": draft_id,
+            "workflow_run_id": workflow_run_id,
             "old_body": old_body,
             "new_body": new_body,
             "new_subject": new_subject,
@@ -7108,6 +7135,13 @@ def enhance_draft(draft_id: str):
             "research_used": research_used,
             "research_available": bool(snapshot)
         }
+    except Exception as e:
+        error_msg = str(e)
+        conn.execute("""UPDATE workflow_runs SET status='failed', error_message=?, completed_at=?
+            WHERE id=?""",
+            (error_msg, datetime.utcnow().isoformat(), workflow_run_id))
+        conn.commit()
+        raise HTTPException(500, f"Enhancement failed: {error_msg}")
     finally:
         conn.close()
 
@@ -9216,6 +9250,383 @@ def create_owner_test_prospect():
             "account_id": acct_id,
             "draft_id": draft_id,
             "message": "Test prospect created. Go to LinkedIn Drafts to see the test draft."
+        }
+    finally:
+        conn.close()
+
+# ─── DRAFT STAGE MANAGEMENT ────────────────────────────────────────────────
+
+@app.post("/api/drafts/{draft_id}/move-stage")
+def move_draft_stage(draft_id: str, body: dict = Body(...)):
+    """Move draft to a new stage in the approval workflow."""
+    conn = get_db()
+    try:
+        target_stage = body.get("target_stage", "").lower()
+        valid_stages = ["draft", "enhanced", "approved", "staged", "queued"]
+
+        if target_stage not in valid_stages:
+            raise HTTPException(400, f"Invalid target_stage. Must be one of: {', '.join(valid_stages)}")
+
+        # Get current draft
+        draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+        if not draft:
+            raise HTTPException(404, "Draft not found")
+        draft = dict(draft)
+        current_stage = draft.get("approval_status", "draft")
+
+        # Validate transition rules
+        valid_transitions = {
+            "draft": ["enhanced"],
+            "enhanced": ["approved", "draft"],
+            "approved": ["staged", "enhanced"],
+            "staged": ["approved", "queued"],
+            "queued": ["staged"]
+        }
+
+        if target_stage not in valid_transitions.get(current_stage, []):
+            raise HTTPException(400, f"Cannot transition from '{current_stage}' to '{target_stage}'")
+
+        # Create workflow_run for this transition
+        workflow_run_id = gen_id("wf")
+        conn.execute("""INSERT INTO workflow_runs (id, workflow_type, channel, status, input_data, started_at, created_at)
+            VALUES (?, 'stage_transition', 'linkedin', 'running', ?, ?, ?)""",
+            (workflow_run_id, json.dumps({"draft_id": draft_id, "from_stage": current_stage, "to_stage": target_stage}),
+             datetime.utcnow().isoformat(), datetime.utcnow().isoformat()))
+        conn.commit()
+
+        # Update draft stage
+        conn.execute("""UPDATE message_drafts SET approval_status=?, updated_at=? WHERE id=?""",
+            (target_stage, datetime.utcnow().isoformat(), draft_id))
+        conn.commit()
+
+        # Log the transition step
+        conn.execute("""INSERT INTO workflow_run_steps (id, run_id, step_name, step_type, status, completed_at, created_at)
+            VALUES (?, ?, 'stage_transition', 'transition', 'succeeded', ?, ?)""",
+            (gen_id("ws"), workflow_run_id, datetime.utcnow().isoformat(), datetime.utcnow().isoformat()))
+        conn.commit()
+
+        # Mark workflow as succeeded
+        conn.execute("""UPDATE workflow_runs SET status='succeeded', completed_at=?, output_data=? WHERE id=?""",
+            (datetime.utcnow().isoformat(), json.dumps({"new_stage": target_stage}), workflow_run_id))
+        conn.commit()
+
+        return {
+            "status": "moved",
+            "draft_id": draft_id,
+            "from_stage": current_stage,
+            "to_stage": target_stage,
+            "workflow_run_id": workflow_run_id
+        }
+    finally:
+        conn.close()
+
+@app.post("/api/drafts/{draft_id}/restore-version/{version_id}")
+def restore_draft_version(draft_id: str, version_id: str):
+    """Restore a previous version of a draft."""
+    conn = get_db()
+    try:
+        # Get current live draft
+        current = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+        if not current:
+            raise HTTPException(404, "Draft not found")
+        current = dict(current)
+
+        # Get target version to restore
+        target_version = conn.execute("SELECT * FROM draft_versions WHERE id=?", (version_id,)).fetchone()
+        if not target_version:
+            raise HTTPException(404, "Version not found")
+        target_version = dict(target_version)
+
+        # Save current as a new version before restoring
+        conn.execute("""INSERT INTO draft_versions (id, draft_id, contact_id, channel, touch_number,
+            subject, body, version, status, personalization_score, proof_point, pain_hook,
+            word_count, edited_by, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            (gen_id("dv"), draft_id, current.get("contact_id"), current.get("channel", "linkedin"),
+             current.get("touch_number"), current.get("subject_line"), current.get("body"),
+             current.get("version", 1), current.get("approval_status", "draft"),
+             current.get("personalization_score"), current.get("proof_point_used"),
+             current.get("pain_hook"), current.get("word_count"), "restore_backup",
+             datetime.utcnow().isoformat()))
+        conn.commit()
+
+        # Restore the target version to message_drafts
+        new_version = (current.get("version") or 1) + 1
+        conn.execute("""UPDATE message_drafts SET subject_line=?, body=?, version=?, word_count=?,
+            proof_point_used=?, pain_hook=?, updated_at=? WHERE id=?""",
+            (target_version.get("subject"), target_version.get("body"), new_version,
+             target_version.get("word_count"), target_version.get("proof_point"),
+             target_version.get("pain_hook"), datetime.utcnow().isoformat(), draft_id))
+        conn.commit()
+
+        return {
+            "status": "restored",
+            "draft_id": draft_id,
+            "restored_from_version": target_version.get("version"),
+            "new_version": new_version,
+            "subject": target_version.get("subject"),
+            "body": target_version.get("body")
+        }
+    finally:
+        conn.close()
+
+# ─── EMAIL DRAFT CREATION ──────────────────────────────────────────────────
+
+@app.post("/api/email/drafts/create-from-linkedin")
+def create_email_from_linkedin(body: dict = Body(...)):
+    """Create email drafts for selected LinkedIn prospects."""
+    conn = get_db()
+    try:
+        prospect_ids = body.get("prospect_ids", [])
+        all_linkedin = body.get("all_linkedin", False)
+        limit = body.get("limit", 10)
+        count = body.get("count", 5)
+
+        if all_linkedin:
+            # Get all LinkedIn contacts up to limit
+            contacts = []
+            for row in conn.execute("""
+                SELECT c.id, c.first_name, c.last_name, c.title, c.account_id
+                FROM contacts c
+                WHERE c.id IN (SELECT DISTINCT contact_id FROM message_drafts WHERE channel='linkedin')
+                LIMIT ?
+            """, (limit,)):
+                contacts.append(dict(row))
+        else:
+            # Get specific contacts
+            placeholders = ",".join("?" * len(prospect_ids))
+            contacts = []
+            for row in conn.execute(f"""
+                SELECT c.id, c.first_name, c.last_name, c.title, c.account_id
+                FROM contacts c WHERE c.id IN ({placeholders})
+            """, prospect_ids):
+                contacts.append(dict(row))
+
+        created_drafts = []
+        for contact in contacts[:count]:
+            # Get latest LinkedIn draft for this contact to use as reference
+            ref_draft = conn.execute("""
+                SELECT subject_line, body FROM message_drafts
+                WHERE contact_id=? AND channel='linkedin'
+                ORDER BY created_at DESC LIMIT 1
+            """, (contact["id"],)).fetchone()
+
+            # Get research
+            research = conn.execute("""
+                SELECT * FROM research_snapshots
+                WHERE contact_id=? ORDER BY created_at DESC LIMIT 1
+            """, (contact["id"],)).fetchone()
+            research = dict(research) if research else {}
+
+            # Build email subject - shorter than InMail
+            if ref_draft:
+                email_subject = dict(ref_draft).get("subject_line", "Quick question")[:50]
+            else:
+                email_subject = f"Quick thought on {contact.get('title', 'testing')}"
+
+            # Build email body - 60-100 words, different structure
+            first = contact.get("first_name", "there")
+            title = contact.get("title", "")
+
+            # Personal hook
+            if research and research.get("responsibilities"):
+                hook = f"Your work {research['responsibilities'][:40]}"
+            else:
+                hook = f"Leading {title}"
+
+            # Pain point
+            pain = "test maintenance"
+            if research and research.get("pain_indicators"):
+                pains = json.loads(research["pain_indicators"]) if isinstance(research.get("pain_indicators"), str) else research.get("pain_indicators", [])
+                if pains:
+                    pain = pains[0][:40] if isinstance(pains[0], str) else "test automation"
+
+            # CTA
+            email_body = f"Hi {first},\n\n{hook} stood out.\n\nTeams tell us {pain} is their biggest bottleneck. We help teams cut that in half.\n\nWorth a quick chat?\n\nBest,\nRob"
+
+            # Create email draft
+            draft_id = gen_id("msg")
+            conn.execute("""INSERT INTO message_drafts (id, contact_id, channel, touch_number, touch_type,
+                subject_line, body, word_count, approval_status, source)
+                VALUES (?, ?, 'email', 1, 'email',
+                ?, ?, ?, 'draft', 'email_from_linkedin')""",
+                (draft_id, contact["id"], email_subject, email_body, len(email_body.split())))
+            conn.commit()
+
+            created_drafts.append({
+                "draft_id": draft_id,
+                "contact_id": contact["id"],
+                "subject": email_subject,
+                "body": email_body
+            })
+
+        return {
+            "status": "created",
+            "count": len(created_drafts),
+            "drafts": created_drafts
+        }
+    finally:
+        conn.close()
+
+# ─── QUOTA SNAPSHOTS ───────────────────────────────────────────────────────
+
+@app.post("/api/quota/verify")
+def verify_quota_snapshot(body: dict = Body(...)):
+    """Save a manual quota verification snapshot."""
+    conn = get_db()
+    try:
+        snapshot_id = gen_id("qs")
+        channel = body.get("channel", "linkedin")
+        inmails_remaining = body.get("inmails_remaining")
+        inmails_total = body.get("inmails_total")
+        note = body.get("note", "")
+
+        conn.execute("""INSERT INTO quota_settings (id, channel, inmail_remaining_month, inmail_monthly_limit,
+            source, last_verified_at, notes)
+            VALUES (?, ?, ?, ?, 'MANUAL_VERIFIED', ?, ?)""",
+            (snapshot_id, channel, inmails_remaining, inmails_total, datetime.utcnow().isoformat(), note))
+        conn.commit()
+
+        return {
+            "status": "verified",
+            "snapshot_id": snapshot_id,
+            "channel": channel,
+            "inmails_remaining": inmails_remaining,
+            "inmails_total": inmails_total,
+            "verified_at": datetime.utcnow().isoformat()
+        }
+    finally:
+        conn.close()
+
+@app.get("/api/quota/current")
+def get_current_quota():
+    """Get the latest verified quota snapshot."""
+    conn = get_db()
+    try:
+        latest = conn.execute("""
+            SELECT * FROM quota_settings
+            WHERE source='MANUAL_VERIFIED'
+            ORDER BY last_verified_at DESC LIMIT 1
+        """).fetchone()
+
+        if not latest:
+            return {"status": "unknown", "message": "No quota verification recorded"}
+
+        latest = dict(latest)
+        return {
+            "status": "verified",
+            "channel": latest.get("channel", "linkedin"),
+            "inmails_remaining": latest.get("inmail_remaining_month"),
+            "inmails_total": latest.get("inmail_monthly_limit"),
+            "verified_at": latest.get("last_verified_at"),
+            "note": latest.get("notes", "")
+        }
+    finally:
+        conn.close()
+
+# ─── COMMAND CENTER STATS ──────────────────────────────────────────────────
+
+@app.get("/api/stats/command-center")
+def get_command_center_stats():
+    """Get comprehensive Command Center statistics."""
+    conn = get_db()
+    try:
+        # Prospects
+        total_prospects = conn.execute("SELECT COUNT(*) FROM contacts").fetchone()[0]
+        prospects_with_research = conn.execute("""
+            SELECT COUNT(DISTINCT contact_id) FROM research_snapshots
+        """).fetchone()[0]
+        prospects_with_drafts = conn.execute("""
+            SELECT COUNT(DISTINCT contact_id) FROM message_drafts
+        """).fetchone()[0]
+
+        # LinkedIn drafts
+        linkedin_total = conn.execute("""
+            SELECT COUNT(*) FROM message_drafts WHERE channel='linkedin'
+        """).fetchone()[0]
+
+        # LinkedIn by stage
+        linkedin_by_stage = {}
+        for row in conn.execute("""
+            SELECT approval_status, COUNT(*) as cnt FROM message_drafts
+            WHERE channel='linkedin' GROUP BY approval_status
+        """):
+            linkedin_by_stage[row["approval_status"] or "draft"] = row["cnt"]
+
+        # LinkedIn ready to send (approved + queued)
+        linkedin_ready = linkedin_by_stage.get("approved", 0) + linkedin_by_stage.get("queued", 0)
+
+        # Email drafts
+        email_total = conn.execute("""
+            SELECT COUNT(*) FROM message_drafts WHERE channel='email'
+        """).fetchone()[0]
+
+        # Email by stage
+        email_by_stage = {}
+        for row in conn.execute("""
+            SELECT approval_status, COUNT(*) as cnt FROM message_drafts
+            WHERE channel='email' GROUP BY approval_status
+        """):
+            email_by_stage[row["approval_status"] or "draft"] = row["cnt"]
+
+        # Pipeline stats
+        total_enhanced = conn.execute("""
+            SELECT COUNT(*) FROM message_drafts WHERE approval_status='enhanced'
+        """).fetchone()[0]
+        total_approved = conn.execute("""
+            SELECT COUNT(*) FROM message_drafts WHERE approval_status='approved'
+        """).fetchone()[0]
+        total_sent = conn.execute("""
+            SELECT COUNT(*) FROM outreach_touches
+        """).fetchone()[0]
+        total_replied = conn.execute("""
+            SELECT COUNT(*) FROM outreach_responses
+        """).fetchone()[0]
+
+        # Workflow runs
+        recent_runs = []
+        for row in conn.execute("""
+            SELECT id, workflow_type, status, created_at FROM workflow_runs
+            ORDER BY created_at DESC LIMIT 5
+        """):
+            recent_runs.append({
+                "id": row["id"],
+                "workflow_type": row["workflow_type"],
+                "status": row["status"],
+                "created_at": row["created_at"]
+            })
+
+        total_workflow_runs = conn.execute("SELECT COUNT(*) FROM workflow_runs").fetchone()[0]
+        failed_runs = conn.execute("""
+            SELECT COUNT(*) FROM workflow_runs WHERE status='failed'
+        """).fetchone()[0]
+
+        return {
+            "prospects": {
+                "total": total_prospects,
+                "with_research": prospects_with_research,
+                "with_drafts": prospects_with_drafts
+            },
+            "linkedin": {
+                "total_drafts": linkedin_total,
+                "by_stage": linkedin_by_stage,
+                "ready_to_send": linkedin_ready
+            },
+            "email": {
+                "total_drafts": email_total,
+                "by_stage": email_by_stage
+            },
+            "pipeline": {
+                "total_enhanced": total_enhanced,
+                "total_approved": total_approved,
+                "total_sent": total_sent,
+                "total_replied": total_replied
+            },
+            "workflow_runs": {
+                "recent": recent_runs,
+                "total": total_workflow_runs,
+                "failed": failed_runs
+            }
         }
     finally:
         conn.close()

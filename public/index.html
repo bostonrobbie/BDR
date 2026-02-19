@@ -3482,7 +3482,7 @@ async function api(path, opts = {}) {
 
 async function apiPost(path, body, method='POST') {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
+    const timeout = setTimeout(() => controller.abort(), 30000);
     try {
         const r = await fetch(API + path, {
             method,
@@ -3598,13 +3598,21 @@ function closeConfirm() {
 // HOME PAGE
 async function loadStats() {
     const stats = await api('/api/stats');
+    const liStats = await api('/api/linkedin/stats');
+    const emailStats = await api('/api/email/stats');
+
     if (!stats) return;
 
-    // Real metrics only: total contacts, with drafts, touched, and quota remaining
+    const byStatus = liStats?.by_approval_status || {};
+    const emailByStatus = emailStats?.by_status || {};
+
     let realMetricsHtml = [
         kpi('Total Prospects', stats.total_contacts || 0),
-        kpi('With Drafts', stats.with_drafts || 0),
-        kpi('Touched', stats.touches_sent || 0),
+        kpi('LinkedIn Drafts', liStats?.total_drafts || 0),
+        kpi('Email Drafts', emailStats?.total_drafts || 0),
+        kpi('Enhanced', byStatus.enhanced || 0),
+        kpi('Approved', byStatus.approved || 0),
+        kpi('Queued', byStatus.queued || 0),
     ].join('');
 
     document.getElementById('kpi-row').innerHTML = realMetricsHtml;
@@ -4512,6 +4520,18 @@ async function loadEmailDrafts() {
     } catch(e) { console.error('Email drafts:', e); }
 }
 
+async function createEmailFromLinkedIn() {
+    const count = prompt('How many email drafts to create from LinkedIn prospects?', '10');
+    if (!count) return;
+    try {
+        const result = await apiPost('/api/email/drafts/create-from-linkedin', { all_linkedin: true, limit: parseInt(count) });
+        showToast('Created ' + result.count + ' email drafts!', 'success');
+        loadEmailDrafts();
+    } catch(e) {
+        showToast('Failed: ' + (e.message || ''), 'error');
+    }
+}
+
 async function approveEmailDraft(draftId) {
     try {
         await apiPost(`/api/email/drafts/${draftId}/approve`, {});
@@ -4894,19 +4914,18 @@ async function loadLinkedInPage() {
 
 async function loadLIQuotaBadge() {
     try {
-        const q = await api('/api/linkedin/quota');
+        const q = await api('/api/quota/current');
         const badge = document.getElementById('li-quota-badge');
         if (badge && q) {
             const remaining = q.daily?.remaining ?? '?';
-            const verified = q.source && q.source !== 'estimated';
-            const verifiedAt = q.last_verified_at;
+            const verified = q.verified_at ? true : false;
 
-            if (verified && verifiedAt) {
-                badge.innerHTML = '📨 ' + remaining + ' InMails left today <span style="font-size:9px;opacity:0.7">(verified)</span>';
+            if (verified) {
+                badge.innerHTML = '📨 ' + remaining + ' InMails left today <span style="font-size:9px;opacity:0.7">(verified at ' + (q.verified_at?.split('T')[0] || '') + ')</span>';
                 badge.style.borderColor = remaining <= 2 ? 'var(--error)' : 'var(--success)';
                 badge.style.color = remaining <= 2 ? 'var(--error)' : 'var(--success)';
             } else {
-                badge.innerHTML = '⚠️ InMail quota not set <span style="font-size:9px;">(click to update)</span>';
+                badge.innerHTML = '⚠️ Unknown - Click to verify <span style="font-size:9px;">(no verification)</span>';
                 badge.style.borderColor = 'var(--warning)';
                 badge.style.color = 'var(--warning)';
             }
@@ -5013,7 +5032,7 @@ function showQuotaUpdateModal() {
 
 async function saveQuotaSettings() {
     try {
-        await apiPost('/api/quota/settings', {
+        await apiPost('/api/quota/verify', {
             channel: 'linkedin',
             inmail_monthly_limit: parseInt(document.getElementById('quota-inmail-monthly').value) || 50,
             daily_message_limit: parseInt(document.getElementById('quota-inmail-daily').value) || 10,
@@ -5161,7 +5180,7 @@ function renderLIDraftsList(drafts) {
                     ${priorityBadge ? `<span style="font-size:10px;">${priorityBadge}</span>` : ''}
                     <strong style="font-size:14px;">${esc(name)}</strong>
                     <span style="font-size:12px;color:var(--text-muted);">${esc(company)}</span>
-                    <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:${statusColor}20;color:${statusColor};border:1px solid ${statusColor}40;">${d.approval_status || 'draft'}</span>
+                    <span data-stage-badge style="font-size:10px;padding:2px 8px;border-radius:10px;background:${statusColor}20;color:${statusColor};border:1px solid ${statusColor}40;">${d.approval_status || 'draft'}</span>
                     <span style="font-size:10px;color:var(--text-muted);">${touchLabel} (Touch ${d.touch_number || '?'})</span>
                 </div>
                 <div style="display:flex;gap:4px;flex-shrink:0;">
@@ -5171,7 +5190,7 @@ function renderLIDraftsList(drafts) {
 
             <!-- Subject line -->
             ${d.subject_line ? `<div style="font-size:12px;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
-                <strong>Subject:</strong> <span style="color:var(--text-secondary);">${subjectEscaped}</span>
+                <strong>Subject:</strong> <span data-subject style="color:var(--text-secondary);">${subjectEscaped}</span>
                 <button class="btn btn-sm" style="font-size:10px;padding:1px 6px;" onclick="copyToClip('${escJs(d.subject_line || '')}');showToast('Subject copied!')">Copy</button>
             </div>` : ''}
 
@@ -5180,12 +5199,15 @@ function renderLIDraftsList(drafts) {
 
             <!-- Action buttons -->
             <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+                ${d.approval_status === 'draft' ? `<button class="btn btn-sm" style="background:var(--warning-bg);color:var(--warning);" onclick="enhanceDraftReal('${d.id}')">✨ Enhance</button>` : ''}
+                ${d.approval_status === 'enhanced' ? `<button class="btn btn-sm" style="background:var(--warning-bg);color:var(--warning);" onclick="enhanceDraftReal('${d.id}')">✨ Enhance</button>` : ''}
+                ${d.approval_status === 'enhanced' ? `<button class="btn btn-sm" onclick="moveDraftStage('${d.id}','draft')">← Back to Draft</button>` : ''}
+                ${d.approval_status === 'enhanced' ? `<button class="btn btn-sm btn-primary" onclick="moveDraftStage('${d.id}','approved')">Approve →</button>` : ''}
+                ${d.approval_status === 'approved' ? `<button class="btn btn-sm" onclick="moveDraftStage('${d.id}','enhanced')">← Unapprove</button>` : ''}
+                ${d.approval_status === 'approved' ? `<button class="btn btn-sm btn-primary" onclick="moveDraftStage('${d.id}','staged')">Stage →</button>` : ''}
+                ${d.approval_status === 'staged' ? `<button class="btn btn-sm" onclick="moveDraftStage('${d.id}','approved')">← Back to Approved</button>` : ''}
+                ${(d.approval_status === 'draft' || d.approval_status === 'enhanced') && !d.approval_status?.includes('enhanced') ? `<button class="btn btn-sm btn-primary" onclick="moveDraftStage('${d.id}','approved')">✅ Approve</button>` : ''}
                 <button class="btn btn-sm" onclick="copyToClip(document.getElementById('draft-body-${d.id}').innerText);showToast('Message copied!')">📋 Copy Message</button>
-                <button class="btn btn-sm" style="background:var(--warning-bg);color:var(--warning);" onclick="enhanceDraftReal('${d.id}')">✨ Enhance</button>
-                ${d.approval_status === 'draft' || d.approval_status === 'enhanced' ?
-                    `<button class="btn btn-sm btn-primary" onclick="approveDraft('${d.id}')">✅ Approve</button>` : ''}
-                ${d.approval_status === 'approved' ?
-                    `<button class="btn btn-sm" style="background:var(--info-bg);border-color:var(--info);" onclick="moveDraftToStaging('${d.id}')">📤 Stage</button>` : ''}
                 <button class="btn btn-sm" onclick="toggleResearch('${d.id}')">🔍 Research</button>
                 <button class="btn btn-sm" onclick="showDraftVersions('${d.id}')">📝 Versions</button>
             </div>
@@ -5193,7 +5215,7 @@ function renderLIDraftsList(drafts) {
             <!-- Metadata row -->
             <div style="display:flex;gap:12px;font-size:10px;color:var(--text-muted);flex-wrap:wrap;">
                 <span>Words: ${d.word_count || '-'}</span>
-                <span>Version: ${d.version || 1}</span>
+                <span data-version>Version: ${d.version || 1}</span>
                 <span>Proof: ${d.proof_point_used || '-'}</span>
                 <span>P-Score: ${d.personalization_score || '-'}</span>
             </div>
@@ -5300,17 +5322,141 @@ async function toggleResearch(draftId) {
 
 // Real enhance that rewrites the draft
 async function enhanceDraftReal(draftId) {
-    showToast('Enhancing draft...', 'info');
+    const btn = event?.target || document.querySelector(`[onclick*="enhanceDraftReal('${draftId}')"]`);
+    if (btn) {
+        btn.disabled = true;
+        btn._origHTML = btn.innerHTML;
+        btn.innerHTML = '⏳ Enhancing...';
+        btn.style.opacity = '0.6';
+    }
+
+    const card = document.querySelector(`[data-draft-id="${draftId}"]`);
+    const stageBadge = card?.querySelector('[data-stage-badge]');
+    if (stageBadge) stageBadge.textContent = 'enhancing';
+
+    showToast('Enhancing draft - this may take a moment...', 'info');
+
     try {
         const result = await apiPost('/api/drafts/' + draftId + '/enhance', {});
         if (result && result.status === 'enhanced') {
-            showToast('Draft enhanced! Version ' + result.version + ' created. Research used: ' + (result.research_used || []).join(', '));
-            loadLIDrafts();
+            showToast('✅ Enhanced! Version ' + result.version + ' created.', 'success');
+
+            const bodyEl = document.getElementById('draft-body-' + draftId);
+            if (bodyEl && result.new_body) {
+                bodyEl.textContent = result.new_body;
+                bodyEl.style.background = 'rgba(46,204,113,0.05)';
+                bodyEl.style.border = '1px solid rgba(46,204,113,0.3)';
+                setTimeout(() => { bodyEl.style.background = ''; bodyEl.style.border = ''; }, 3000);
+            }
+
+            const subjectEl = card?.querySelector('[data-subject]');
+            if (subjectEl && result.new_subject) subjectEl.textContent = result.new_subject;
+
+            if (stageBadge) {
+                stageBadge.textContent = 'enhanced';
+                stageBadge.style.color = 'var(--warning)';
+                stageBadge.style.borderColor = 'var(--warning)';
+            }
+
+            const versionEl = card?.querySelector('[data-version]');
+            if (versionEl) versionEl.textContent = 'Version: ' + result.version;
+
+            refreshDraftKPIs();
+        } else if (result && result._error) {
+            showToast('❌ Enhancement failed: ' + (result.message || 'Unknown error'), 'error');
         } else {
-            showToast('Enhancement returned unexpected result', 'error');
+            showToast('⚠️ Unexpected response from enhance', 'error');
         }
     } catch(e) {
-        showToast('Enhance failed: ' + (e.message || ''), 'error');
+        showToast('❌ Enhance failed: ' + (e.message || 'Network error'), 'error');
+        if (stageBadge) stageBadge.textContent = 'draft';
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = btn._origHTML || '✨ Enhance';
+            btn.style.opacity = '';
+        }
+    }
+}
+
+async function refreshDraftKPIs() {
+    try {
+        const allData = await api('/api/linkedin/stats');
+        const byStatus = allData?.by_approval_status || {};
+        const kpiEl = document.getElementById('li-drafts-kpis');
+        if (kpiEl) {
+            kpiEl.innerHTML = [
+                kpi('Total', allData?.total_drafts || 0, '', "document.getElementById('li-draft-filter-status').value='';loadLIDrafts()"),
+                kpi('Draft', byStatus.draft || 0, '', "document.getElementById('li-draft-filter-status').value='draft';loadLIDrafts()"),
+                kpi('Enhanced', byStatus.enhanced || 0, '', "document.getElementById('li-draft-filter-status').value='enhanced';loadLIDrafts()"),
+                kpi('Approved', byStatus.approved || 0, '', "document.getElementById('li-draft-filter-status').value='approved';loadLIDrafts()"),
+                kpi('Queued', byStatus.queued || 0, '', "document.getElementById('li-draft-filter-status').value='queued';loadLIDrafts()"),
+            ].join('');
+        }
+    } catch(e) { console.error('KPI refresh error:', e); }
+}
+
+async function showDraftVersions(draftId) {
+    try {
+        const data = await api('/api/drafts/' + draftId + '/versions');
+        const versions = data?.versions || [];
+
+        if (!versions.length) {
+            showToast('No version history yet', 'info');
+            return;
+        }
+
+        const modal = document.createElement('div');
+        modal.id = 'versions-modal';
+        modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;display:flex;align-items:center;justify-content:center;';
+        modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+
+        modal.innerHTML = `
+            <div style="background:var(--bg-secondary);border-radius:var(--radius);padding:24px;max-width:700px;width:90%;max-height:80vh;overflow-y:auto;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                    <h3 style="margin:0;">Draft Versions</h3>
+                    <button class="btn btn-sm" onclick="this.closest('#versions-modal').remove()">✕ Close</button>
+                </div>
+                ${versions.map(v => `
+                    <div class="card" style="margin-bottom:12px;padding:12px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                            <div>
+                                <strong>Version ${v.version || v.version_num || '?'}</strong>
+                                <span style="font-size:11px;color:var(--text-muted);margin-left:8px;">${v.created_at || ''}</span>
+                                ${v.edited_by ? `<span style="font-size:10px;color:var(--text-muted);margin-left:8px;">(${v.edited_by})</span>` : ''}
+                            </div>
+                            <button class="btn btn-sm" onclick="restoreDraftVersion('${draftId}', '${v.id}');this.closest('#versions-modal').remove();">↩ Restore</button>
+                        </div>
+                        ${v.subject ? `<div style="font-size:11px;margin-bottom:4px;"><strong>Subject:</strong> ${v.subject}</div>` : ''}
+                        <div style="font-size:11px;white-space:pre-wrap;line-height:1.5;max-height:150px;overflow-y:auto;background:var(--bg-primary);padding:8px;border-radius:4px;">${(v.body || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        document.body.appendChild(modal);
+    } catch(e) {
+        showToast('Failed to load versions: ' + (e.message || ''), 'error');
+    }
+}
+
+async function restoreDraftVersion(draftId, versionId) {
+    if (!confirm('Restore this version? The current draft will be saved as a new version first.')) return;
+    try {
+        const result = await apiPost('/api/drafts/' + draftId + '/restore-version/' + versionId, {});
+        showToast('Version restored! Now at version ' + result.new_version, 'success');
+        loadLIDrafts();
+    } catch(e) {
+        showToast('Restore failed: ' + (e.message || ''), 'error');
+    }
+}
+
+async function moveDraftStage(draftId, targetStage) {
+    try {
+        const result = await apiPost('/api/drafts/' + draftId + '/move-stage', { target_stage: targetStage });
+        showToast('Moved to ' + targetStage, 'success');
+        loadLIDrafts();
+    } catch(e) {
+        showToast('Stage move failed: ' + (e.message || ''), 'error');
     }
 }
 
@@ -6087,44 +6233,6 @@ async function submitReply() {
 // =========================================================================
 // DRAFT VERSIONS (Enhancement with Revision History)
 // =========================================================================
-async function showDraftVersions(draftId) {
-    try {
-        const r = await fetch(API + `/api/drafts/${draftId}/versions`);
-        const data = await r.json();
-        if (!r.ok) { showToast('Error loading versions', 'error'); return; }
-        const versions = data.versions || [];
-        const current = data.current || {};
-
-        let html = `<h3 style="margin-bottom:16px;">Draft Versions</h3>`;
-        html += `<div style="margin-bottom:12px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                <strong>Current (v${current.version || 1})</strong>
-                <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:var(--accent)20;color:var(--accent);">Active</span>
-            </div>
-            <div style="padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:12px;white-space:pre-wrap;line-height:1.6;max-height:200px;overflow-y:auto;">${esc(current.body || '')}</div>
-        </div>`;
-
-        versions.forEach(v => {
-            html += `<div style="margin-bottom:12px;opacity:0.7;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                    <strong>v${v.version_number || v.version}</strong>
-                    <span style="font-size:10px;color:var(--text-muted);">${v.created_at || ''}</span>
-                </div>
-                <div style="padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:12px;white-space:pre-wrap;line-height:1.6;max-height:150px;overflow-y:auto;">${esc(v.body || '')}</div>
-                <button class="btn btn-sm" style="margin-top:6px;" onclick="revertToVersion('${draftId}', \`${escJs(v.body || '')}\`)">Revert to this version</button>
-            </div>`;
-        });
-
-        openGenericModal(html);
-    } catch(e) { showToast('Error: ' + e.message, 'error'); }
-}
-
-async function revertToVersion(draftId, body) {
-    await apiPost(`/api/drafts/${draftId}`, {body: body}, 'PATCH');
-    showToast('Reverted!');
-    closeModal();
-    loadLIDrafts();
-}
 
 async function enhanceDraftWithRevision(draftId) {
     const res = await apiPost(`/api/drafts/${draftId}/enhance-with-revision`, {});
