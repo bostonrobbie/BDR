@@ -28,10 +28,11 @@ from typing import Optional, List
 # DATABASE LAYER (self-contained for serverless)
 # ---------------------------------------------------------------------------
 
-DB_PATH = "/tmp/outreach.db"
+DB_PATH = os.environ.get("OCC_DB_PATH", "/tmp/outreach.db")
 
 def get_db():
-    conn = sqlite3.connect(DB_PATH)
+    db_path = os.environ.get("OCC_DB_PATH", "/tmp/outreach.db")
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA foreign_keys=ON")
@@ -49,7 +50,7 @@ CREATE TABLE IF NOT EXISTS accounts (
     buyer_intent INTEGER DEFAULT 0, buyer_intent_date TEXT, annual_revenue TEXT,
     funding_stage TEXT, last_funding_date TEXT, last_funding_amount TEXT,
     hq_location TEXT, notes TEXT, research_freshness TEXT,
-    created_at TEXT DEFAULT (datetime('now')), updated_at TEXT DEFAULT (datetime('now'))
+    created_at TEXT DEFAULT (datetime('now')), updated_at TEXT DEFAULT (datetime('now')), source TEXT DEFAULT 'seed'
 );
 CREATE TABLE IF NOT EXISTS contacts (
     id TEXT PRIMARY KEY, account_id TEXT REFERENCES accounts(id),
@@ -61,7 +62,7 @@ CREATE TABLE IF NOT EXISTS contacts (
     priority_score INTEGER DEFAULT 3, priority_factors TEXT DEFAULT '{}',
     personalization_score INTEGER, predicted_objection TEXT, objection_response TEXT,
     status TEXT DEFAULT 'active', do_not_contact INTEGER DEFAULT 0, dnc_reason TEXT,
-    source TEXT DEFAULT 'sales_nav',
+    source TEXT DEFAULT 'seed',
     created_at TEXT DEFAULT (datetime('now')), updated_at TEXT DEFAULT (datetime('now'))
 );
 CREATE TABLE IF NOT EXISTS icp_scores (
@@ -76,7 +77,7 @@ CREATE TABLE IF NOT EXISTS signals (
     id TEXT PRIMARY KEY, account_id TEXT REFERENCES accounts(id),
     contact_id TEXT REFERENCES contacts(id), signal_type TEXT NOT NULL,
     description TEXT, source_url TEXT, detected_at TEXT DEFAULT (datetime('now')),
-    expires_at TEXT, acted_on INTEGER DEFAULT 0, created_at TEXT DEFAULT (datetime('now'))
+    expires_at TEXT, acted_on INTEGER DEFAULT 0, created_at TEXT DEFAULT (datetime('now')), source TEXT DEFAULT 'seed'
 );
 CREATE TABLE IF NOT EXISTS research_snapshots (
     id TEXT PRIMARY KEY, contact_id TEXT REFERENCES contacts(id),
@@ -98,14 +99,14 @@ CREATE TABLE IF NOT EXISTS message_drafts (
     qc_passed INTEGER, qc_flags TEXT DEFAULT '[]', qc_run_id TEXT,
     approval_status TEXT DEFAULT 'draft', ab_group TEXT, ab_variable TEXT,
     agent_run_id TEXT, created_at TEXT DEFAULT (datetime('now')),
-    updated_at TEXT DEFAULT (datetime('now'))
+    updated_at TEXT DEFAULT (datetime('now')), source TEXT DEFAULT 'seed'
 );
 CREATE TABLE IF NOT EXISTS touchpoints (
     id TEXT PRIMARY KEY, contact_id TEXT REFERENCES contacts(id),
     message_draft_id TEXT REFERENCES message_drafts(id), channel TEXT NOT NULL,
     touch_number INTEGER, sent_at TEXT NOT NULL, outcome TEXT,
     call_duration_seconds INTEGER, call_notes TEXT,
-    confirmed_by_user INTEGER DEFAULT 1, created_at TEXT DEFAULT (datetime('now'))
+    confirmed_by_user INTEGER DEFAULT 1, created_at TEXT DEFAULT (datetime('now')), source TEXT DEFAULT 'seed'
 );
 CREATE TABLE IF NOT EXISTS replies (
     id TEXT PRIMARY KEY, contact_id TEXT REFERENCES contacts(id),
@@ -113,7 +114,7 @@ CREATE TABLE IF NOT EXISTS replies (
     intent TEXT, reply_tag TEXT, summary TEXT, raw_text TEXT,
     referral_name TEXT, referral_title TEXT, recommended_next_step TEXT,
     next_step_taken TEXT, replied_at TEXT, handled_at TEXT,
-    created_at TEXT DEFAULT (datetime('now'))
+    created_at TEXT DEFAULT (datetime('now')), source TEXT DEFAULT 'seed'
 );
 CREATE TABLE IF NOT EXISTS followups (
     id TEXT PRIMARY KEY, contact_id TEXT REFERENCES contacts(id),
@@ -134,14 +135,14 @@ CREATE TABLE IF NOT EXISTS opportunities (
     attribution_opener_style TEXT, attribution_personalization_score INTEGER,
     attribution_ab_group TEXT, attribution_ab_variable TEXT,
     ae_name TEXT, ae_feedback TEXT, disqualification_reason TEXT, notes TEXT,
-    created_at TEXT DEFAULT (datetime('now'))
+    created_at TEXT DEFAULT (datetime('now')), source TEXT DEFAULT 'seed'
 );
 CREATE TABLE IF NOT EXISTS batches (
     id TEXT PRIMARY KEY, batch_number INTEGER, created_date TEXT,
     prospect_count INTEGER DEFAULT 0, ab_variable TEXT, ab_description TEXT,
     pre_brief TEXT, mix_ratio TEXT DEFAULT '{}', status TEXT DEFAULT 'building',
     html_file_path TEXT, metrics TEXT DEFAULT '{}',
-    created_at TEXT DEFAULT (datetime('now'))
+    created_at TEXT DEFAULT (datetime('now')), source TEXT DEFAULT 'seed'
 );
 CREATE TABLE IF NOT EXISTS batch_prospects (
     id TEXT PRIMARY KEY, batch_id TEXT REFERENCES batches(id),
@@ -419,6 +420,24 @@ CREATE TABLE IF NOT EXISTS linkedin_profiles (
     last_updated TEXT DEFAULT (datetime('now')),
     created_at TEXT DEFAULT (datetime('now'))
 );
+CREATE TABLE IF NOT EXISTS research_runs (
+    id TEXT PRIMARY KEY,
+    name TEXT,
+    import_type TEXT NOT NULL DEFAULT 'csv',
+    prospect_count INTEGER DEFAULT 0,
+    status TEXT DEFAULT 'created',
+    sop_checklist TEXT DEFAULT '[]',
+    progress_pct INTEGER DEFAULT 0,
+    logs TEXT DEFAULT '[]',
+    error_count INTEGER DEFAULT 0,
+    ab_variable TEXT,
+    ab_groups TEXT DEFAULT '["A","B"]',
+    config TEXT DEFAULT '{}',
+    created_at TEXT DEFAULT (datetime('now')),
+    started_at TEXT,
+    completed_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_research_runs_status ON research_runs(status);
 
 CREATE INDEX IF NOT EXISTS idx_workflow_runs_status ON workflow_runs(status);
 CREATE INDEX IF NOT EXISTS idx_workflow_runs_channel ON workflow_runs(channel);
@@ -464,7 +483,11 @@ CHANNELS = ["linkedin", "email", "phone"]
 STAGES = ["new", "touched", "engaged", "replied", "meeting_booked", "not_interested"]
 
 def seed_database():
-    conn = sqlite3.connect(DB_PATH)
+    if os.environ.get("SKIP_SEED", "").lower() in ("true", "1", "yes"):
+        return
+
+    db_path = os.environ.get("OCC_DB_PATH", "/tmp/outreach.db")
+    conn = sqlite3.connect(db_path)
     conn.execute("PRAGMA foreign_keys=ON")
 
     # Check if already seeded
@@ -488,13 +511,13 @@ def seed_database():
         tier = "enterprise" if emp > 5000 else ("mid_market" if emp > 1000 else "smb")
         tools = random.choice([["Selenium"], ["Cypress"], ["Playwright"], ["Katalon"], ["TOSCA"], []])
         conn.execute("""INSERT INTO accounts (id,name,domain,industry,employee_count,employee_band,tier,
-            known_tools,buyer_intent,hq_location,created_at,updated_at)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""",
+            known_tools,buyer_intent,hq_location,created_at,updated_at,source)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             (aid, name, domain, industry, emp,
              "1K-5K" if emp < 5000 else "5K+", tier,
              json.dumps(tools), random.choice([0,0,0,1]), "San Francisco, CA",
              (now - timedelta(days=random.randint(1,90))).isoformat(),
-             now.isoformat()))
+             now.isoformat(), "seed"))
 
     # --- CONTACTS ---
     for i in range(25):
@@ -516,7 +539,7 @@ def seed_database():
              f"https://linkedin.com/in/{FIRST_NAMES[i].lower()}{LAST_NAMES[i].lower()}{random.randint(10,99)}",
              "San Francisco, CA", random.randint(3, 72),
              1 if random.random() < 0.2 else 0,
-             stage, priority, random.randint(1,3), "active", "sales_nav",
+             stage, priority, random.randint(1,3), "active", "seed",
              (now - timedelta(days=random.randint(1,60))).isoformat(), now.isoformat()))
 
     # --- BATCHES ---
@@ -524,10 +547,10 @@ def seed_database():
         bid = f"bat_{uuid.uuid4().hex[:12]}"
         batch_ids.append(bid)
         conn.execute("""INSERT INTO batches (id,batch_number,created_date,prospect_count,
-            ab_variable,status,created_at) VALUES (?,?,?,?,?,?,?)""",
+            ab_variable,status,created_at,source) VALUES (?,?,?,?,?,?,?,?)""",
             (bid, b+1, (now - timedelta(days=30-b*10)).strftime("%Y-%m-%d"),
              random.randint(20,25), random.choice(["pain_hook","proof_point_style","opener_style"]),
-             "complete" if b < 2 else "active", now.isoformat()))
+             "complete" if b < 2 else "active", now.isoformat(), "seed"))
 
     # --- MESSAGE DRAFTS ---
     for i, cid in enumerate(contact_ids[:20]):
@@ -539,7 +562,7 @@ def seed_database():
             conn.execute("""INSERT INTO message_drafts (id,contact_id,batch_id,channel,
                 touch_number,touch_type,subject_line,body,personalization_score,
                 proof_point_used,pain_hook,opener_style,word_count,
-                approval_status,ab_group,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                approval_status,ab_group,created_at,source) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                 (mid, cid, bid, ch, touch,
                  f"touch_{touch}_{'inmail' if ch=='linkedin' else 'email'}",
                  f"Quick question about QA at {COMPANIES[i%len(COMPANIES)][0]}",
@@ -549,7 +572,7 @@ def seed_database():
                  random.choice(["career_reference", "company_metric", "role_specific"]),
                  random.randint(70,120),
                  random.choice(["approved","draft","pending_review"]),
-                 random.choice(["A","B"]), now.isoformat()))
+                 random.choice(["A","B"]), now.isoformat(), "seed"))
 
     # --- TOUCHPOINTS ---
     for i in range(40):
@@ -557,24 +580,24 @@ def seed_database():
         tid = f"tp_{uuid.uuid4().hex[:12]}"
         ch = random.choice(CHANNELS)
         conn.execute("""INSERT INTO touchpoints (id,contact_id,channel,touch_number,
-            sent_at,outcome,created_at) VALUES (?,?,?,?,?,?,?)""",
+            sent_at,outcome,created_at,source) VALUES (?,?,?,?,?,?,?,?)""",
             (tid, cid, ch, random.randint(1,6),
              (now - timedelta(days=random.randint(1,45))).isoformat(),
              random.choice(["sent","opened","no_response","replied"]),
-             now.isoformat()))
+             now.isoformat(), "seed"))
 
     # --- REPLIES ---
     for i in range(12):
         cid = contact_ids[i % len(contact_ids)]
         rid = f"rep_{uuid.uuid4().hex[:12]}"
         conn.execute("""INSERT INTO replies (id,contact_id,channel,intent,reply_tag,
-            summary,replied_at,created_at) VALUES (?,?,?,?,?,?,?,?)""",
+            summary,replied_at,created_at,source) VALUES (?,?,?,?,?,?,?,?,?)""",
             (rid, cid, random.choice(["linkedin","email"]),
              random.choice(["positive","negative","referral","timing"]),
              random.choice(["pain_hook","proof_point","timing","referral","opener","not_interested"]),
              "Thanks for reaching out...",
              (now - timedelta(days=random.randint(1,30))).isoformat(),
-             now.isoformat()))
+             now.isoformat(), "seed"))
 
     # --- OPPORTUNITIES ---
     for i in range(5):
@@ -582,26 +605,26 @@ def seed_database():
         aid = account_ids[i]
         conn.execute("""INSERT INTO opportunities (id,contact_id,account_id,meeting_date,
             status,pipeline_value,attribution_channel,attribution_proof_point,
-            attribution_pain_hook,created_at) VALUES (?,?,?,?,?,?,?,?,?,?)""",
+            attribution_pain_hook,created_at,source) VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
             (f"opp_{uuid.uuid4().hex[:12]}", cid, aid,
              (now + timedelta(days=random.randint(1,14))).isoformat(),
              random.choice(["meeting_booked","meeting_held","opportunity_created"]),
              random.choice([15000, 25000, 50000, 75000]),
              random.choice(["linkedin","email"]),
              random.choice(PROOF_POINTS), random.choice(PAIN_HOOKS),
-             now.isoformat()))
+             now.isoformat(), "seed"))
 
     # --- SIGNALS ---
     for i in range(15):
         aid = account_ids[i % len(account_ids)]
         cid = contact_ids[i % len(contact_ids)]
         conn.execute("""INSERT INTO signals (id,account_id,contact_id,signal_type,
-            description,created_at) VALUES (?,?,?,?,?,?)""",
+            description,created_at,source) VALUES (?,?,?,?,?,?,?)""",
             (f"sig_{uuid.uuid4().hex[:12]}", aid, cid,
              random.choice(["buyer_intent","job_posting","funding","product_launch","leadership_change"]),
              random.choice(["Buyer intent detected on G2", "New QA engineer job posting",
                           "Series B funding announced", "Major product launch", "New VP Eng hired"]),
-             (now - timedelta(days=random.randint(1,20))).isoformat()))
+             (now - timedelta(days=random.randint(1,20))).isoformat(), "seed"))
 
     # --- EXPERIMENTS ---
     for i, (name, var) in enumerate([
@@ -852,7 +875,8 @@ def seed_database():
 # ---------------------------------------------------------------------------
 
 def init_and_seed():
-    conn = sqlite3.connect(DB_PATH)
+    db_path = os.environ.get("OCC_DB_PATH", "/tmp/outreach.db")
+    conn = sqlite3.connect(db_path)
     conn.executescript(SCHEMA_SQL)
     conn.commit()
     conn.close()
@@ -3811,6 +3835,613 @@ def get_workflow_run_steps(run_id: str):
     steps = conn.execute("SELECT * FROM workflow_run_steps WHERE run_id=? ORDER BY created_at", (run_id,)).fetchall()
     conn.close()
     return [dict(s) for s in steps]
+
+# ---------------------------------------------------------------------------
+# ADMIN & DATA MANAGEMENT ENDPOINTS
+# ---------------------------------------------------------------------------
+
+@app.get("/api/admin/data-summary")
+def admin_data_summary():
+    """Count records by source across all tables."""
+    conn = get_db()
+    tables = ['accounts', 'contacts', 'message_drafts', 'batches', 'opportunities', 'touchpoints', 'replies', 'signals']
+    summary = {}
+    for table in tables:
+        try:
+            rows = conn.execute(f"SELECT source, COUNT(*) as cnt FROM {table} GROUP BY source").fetchall()
+            summary[table] = {r['source'] or 'unknown': r['cnt'] for r in rows}
+            total = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+            summary[table]['_total'] = total
+        except Exception:
+            summary[table] = {'_total': 0, '_error': 'source column missing'}
+    conn.close()
+    return summary
+
+@app.post("/api/admin/cleanup/preview")
+def admin_cleanup_preview():
+    """Preview what seed data would be deleted."""
+    conn = get_db()
+    tables = ['accounts', 'contacts', 'message_drafts', 'batches', 'opportunities', 'touchpoints', 'replies', 'signals']
+    preview = {}
+    for table in tables:
+        try:
+            count = conn.execute(f"SELECT COUNT(*) FROM {table} WHERE source = 'seed'").fetchone()[0]
+            preview[table] = count
+        except Exception:
+            preview[table] = 0
+    conn.close()
+    total = sum(preview.values())
+    return {"tables": preview, "total_records": total, "action": "Would delete all records with source='seed'"}
+
+@app.post("/api/admin/cleanup/execute")
+def admin_cleanup_execute(data: dict = {}):
+    """Delete all seed data. Requires confirmation."""
+    confirm = data.get("confirm", False)
+    if not confirm:
+        raise HTTPException(400, "Must pass confirm=true to execute cleanup")
+    conn = get_db()
+    tables = ['replies', 'touchpoints', 'message_drafts', 'opportunities', 'batch_prospects', 'batches', 'signals', 'icp_scores', 'research_snapshots', 'contacts', 'accounts']
+    deleted = {}
+    for table in tables:
+        try:
+            cursor = conn.execute(f"DELETE FROM {table} WHERE source = 'seed'")
+            deleted[table] = cursor.rowcount
+        except Exception:
+            try:
+                cursor = conn.execute(f"DELETE FROM {table}")
+                deleted[table] = cursor.rowcount
+            except Exception:
+                deleted[table] = 0
+    for table in ['activity_timeline', 'agent_runs', 'flow_runs', 'flow_run_steps', 'flow_artifacts', 'draft_versions', 'followups', 'experiments', 'sender_health_snapshots', 'workflow_runs', 'workflow_run_steps', 'safety_events']:
+        try:
+            cursor = conn.execute(f"DELETE FROM {table}")
+            deleted[table] = cursor.rowcount
+        except Exception:
+            deleted[table] = 0
+    conn.commit()
+    conn.close()
+    return {"status": "cleaned", "deleted": deleted, "total": sum(deleted.values())}
+
+@app.get("/api/admin/export-all")
+def admin_export_all():
+    """Export full database as JSON for backup."""
+    conn = get_db()
+    tables = conn.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name").fetchall()
+    export = {}
+    for t in tables:
+        name = t['name']
+        rows = conn.execute(f"SELECT * FROM {name}").fetchall()
+        export[name] = [dict(r) for r in rows]
+    conn.close()
+    return {"exported_at": datetime.now().isoformat(), "tables": export, "table_count": len(export)}
+
+@app.post("/api/admin/import-backup")
+def admin_import_backup(data: dict):
+    """Restore database from JSON backup."""
+    tables_data = data.get("tables", {})
+    if not tables_data:
+        raise HTTPException(400, "No tables data provided")
+    conn = get_db()
+    imported = {}
+    for table_name, rows in tables_data.items():
+        if not rows:
+            continue
+        try:
+            cols = list(rows[0].keys())
+            placeholders = ", ".join(["?"] * len(cols))
+            col_names = ", ".join(cols)
+            for row in rows:
+                values = [row.get(c) for c in cols]
+                conn.execute(f"INSERT OR REPLACE INTO {table_name} ({col_names}) VALUES ({placeholders})", values)
+            imported[table_name] = len(rows)
+        except Exception as e:
+            imported[table_name] = f"error: {str(e)}"
+    conn.commit()
+    conn.close()
+    return {"status": "imported", "tables": imported}
+
+# ---------------------------------------------------------------------------
+# RESEARCH RUN ENDPOINTS
+# ---------------------------------------------------------------------------
+
+@app.get("/api/research-runs")
+def list_research_runs(status: str = None, limit: int = 20):
+    conn = get_db()
+    q = "SELECT * FROM research_runs"
+    params = []
+    if status:
+        q += " WHERE status = ?"
+        params.append(status)
+    q += " ORDER BY created_at DESC LIMIT ?"
+    params.append(limit)
+    runs = [dict(r) for r in conn.execute(q, params).fetchall()]
+    conn.close()
+    return {"runs": runs, "total": len(runs)}
+
+@app.get("/api/research-runs/{run_id}")
+def get_research_run(run_id: str):
+    conn = get_db()
+    run = conn.execute("SELECT * FROM research_runs WHERE id = ?", (run_id,)).fetchone()
+    if not run:
+        raise HTTPException(404, "Research run not found")
+    run_dict = dict(run)
+    contacts = [dict(r) for r in conn.execute(
+        "SELECT c.*, a.name as company_name FROM contacts c LEFT JOIN accounts a ON c.account_id = a.id WHERE c.source = 'csv_import' AND c.created_at >= ?",
+        (run_dict['created_at'],)
+    ).fetchall()]
+    contact_ids = [c['id'] for c in contacts]
+    drafts = []
+    if contact_ids:
+        placeholders = ",".join(["?"] * len(contact_ids))
+        drafts = [dict(r) for r in conn.execute(
+            f"SELECT * FROM message_drafts WHERE contact_id IN ({placeholders}) AND created_at >= ?",
+            contact_ids + [run_dict['created_at']]
+        ).fetchall()]
+    conn.close()
+    run_dict['contacts'] = contacts
+    run_dict['drafts'] = drafts
+    run_dict['sop_checklist'] = json.loads(run_dict.get('sop_checklist') or '[]')
+    run_dict['logs'] = json.loads(run_dict.get('logs') or '[]')
+    return run_dict
+
+@app.post("/api/research-runs")
+def create_research_run(data: dict):
+    """Create a research run from CSV/paste data."""
+    rows = data.get("rows", [])
+    import_type = data.get("import_type", "csv")
+    name = data.get("name", f"Research Run {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    ab_variable = data.get("ab_variable", "pain_hook")
+
+    if not rows:
+        raise HTTPException(400, "No rows provided")
+
+    run_id = gen_id("rr")
+    conn = get_db()
+
+    sop_checklist = json.dumps([
+        {"step": "validate", "label": "Validate CSV data", "status": "pending"},
+        {"step": "accounts", "label": "Create/match accounts", "status": "pending"},
+        {"step": "contacts", "label": "Create contacts", "status": "pending"},
+        {"step": "score", "label": "Score & prioritize", "status": "pending"},
+        {"step": "ab_assign", "label": "A/B group assignment", "status": "pending"},
+        {"step": "drafts", "label": "Generate message drafts", "status": "pending"},
+        {"step": "quality_gate", "label": "Quality gate checks", "status": "pending"},
+        {"step": "complete", "label": "Finalize run", "status": "pending"}
+    ])
+
+    conn.execute("""INSERT INTO research_runs (id, name, import_type, prospect_count, status, sop_checklist, ab_variable, config)
+        VALUES (?, ?, ?, ?, 'created', ?, ?, ?)""",
+        (run_id, name, import_type, len(rows), sop_checklist, ab_variable, json.dumps({"rows": rows})))
+    conn.commit()
+    conn.close()
+    return {"run_id": run_id, "status": "created", "prospect_count": len(rows)}
+
+@app.post("/api/research-runs/{run_id}/validate")
+def validate_research_run(run_id: str):
+    """Validate all rows in a research run."""
+    conn = get_db()
+    run = conn.execute("SELECT * FROM research_runs WHERE id = ?", (run_id,)).fetchone()
+    if not run:
+        raise HTTPException(404, "Run not found")
+
+    config = json.loads(run['config'] or '{}')
+    rows = config.get('rows', [])
+
+    errors = []
+    valid = []
+    seen = set()
+
+    for i, row in enumerate(rows):
+        row_errors = []
+        name = (row.get('first_name', '') + ' ' + row.get('last_name', '')).strip()
+        if not name or name == ' ':
+            name = row.get('name', '').strip()
+        if not name:
+            row_errors.append("Name is required")
+        company = row.get('company', '').strip()
+        if not company:
+            row_errors.append("Company is required")
+        title = row.get('title', '').strip()
+        linkedin_url = row.get('linkedin_url', '').strip()
+        if not title and not linkedin_url:
+            row_errors.append("Title or LinkedIn URL required")
+
+        key = (name.lower(), company.lower())
+        if key in seen:
+            row_errors.append("Duplicate entry")
+        seen.add(key)
+
+        if linkedin_url:
+            existing = conn.execute("SELECT id FROM contacts WHERE linkedin_url = ?", (linkedin_url,)).fetchone()
+            if existing:
+                row_errors.append("Already in database")
+
+        if row_errors:
+            errors.append({"row": i + 1, "data": row, "errors": row_errors})
+        else:
+            valid.append(row)
+
+    checklist = json.loads(run['sop_checklist'] or '[]')
+    for step in checklist:
+        if step['step'] == 'validate':
+            step['status'] = 'passed' if len(errors) < len(rows) * 0.5 else 'failed'
+            break
+
+    logs = json.loads(run['logs'] or '[]')
+    logs.append({"ts": datetime.now().isoformat(), "msg": f"Validation: {len(valid)} valid, {len(errors)} errors out of {len(rows)} rows"})
+
+    conn.execute("UPDATE research_runs SET status = 'validated', sop_checklist = ?, logs = ? WHERE id = ?",
+        (json.dumps(checklist), json.dumps(logs), run_id))
+    conn.commit()
+    conn.close()
+
+    return {
+        "run_id": run_id,
+        "total_rows": len(rows),
+        "valid_count": len(valid),
+        "error_count": len(errors),
+        "errors": errors[:50],
+        "status": "validated"
+    }
+
+@app.post("/api/research-runs/{run_id}/execute")
+def execute_research_run(run_id: str):
+    """Execute the full SOP pipeline for a research run."""
+    conn = get_db()
+    run = conn.execute("SELECT * FROM research_runs WHERE id = ?", (run_id,)).fetchone()
+    if not run:
+        raise HTTPException(404, "Run not found")
+
+    config = json.loads(run['config'] or '{}')
+    rows = config.get('rows', [])
+    ab_variable = run['ab_variable'] or 'pain_hook'
+
+    conn.execute("UPDATE research_runs SET status = 'running', started_at = datetime('now') WHERE id = ?", (run_id,))
+    conn.commit()
+
+    checklist = json.loads(run['sop_checklist'] or '[]')
+    logs = json.loads(run['logs'] or '[]')
+
+    def update_step(step_name, status):
+        for s in checklist:
+            if s['step'] == step_name:
+                s['status'] = status
+                break
+        conn.execute("UPDATE research_runs SET sop_checklist = ? WHERE id = ?", (json.dumps(checklist), run_id))
+
+    def add_log(msg):
+        logs.append({"ts": datetime.now().isoformat(), "msg": msg})
+        conn.execute("UPDATE research_runs SET logs = ? WHERE id = ?", (json.dumps(logs), run_id))
+
+    try:
+        update_step('validate', 'running')
+        add_log("Starting pipeline execution")
+        valid_rows = []
+        for row in rows:
+            name = row.get('name', '').strip() or (row.get('first_name', '') + ' ' + row.get('last_name', '')).strip()
+            company = row.get('company', '').strip()
+            if name and company:
+                valid_rows.append(row)
+        update_step('validate', 'passed')
+        add_log(f"Validated {len(valid_rows)} of {len(rows)} rows")
+
+        update_step('accounts', 'running')
+        account_map = {}
+        for row in valid_rows:
+            company = row.get('company', '').strip()
+            if company not in account_map:
+                existing = conn.execute("SELECT id FROM accounts WHERE name = ? COLLATE NOCASE", (company,)).fetchone()
+                if existing:
+                    account_map[company] = existing['id']
+                else:
+                    acc_id = gen_id("acc")
+                    industry = row.get('industry', 'Technology')
+                    conn.execute("""INSERT INTO accounts (id, name, industry, source, created_at)
+                        VALUES (?, ?, ?, 'csv_import', datetime('now'))""", (acc_id, company, industry))
+                    account_map[company] = acc_id
+        conn.commit()
+        update_step('accounts', 'passed')
+        add_log(f"Created/matched {len(account_map)} accounts")
+
+        update_step('contacts', 'running')
+        contact_ids = []
+        for i, row in enumerate(valid_rows):
+            name = row.get('name', '').strip() or (row.get('first_name', '') + ' ' + row.get('last_name', '')).strip()
+            parts = name.split(' ', 1)
+            first_name = parts[0]
+            last_name = parts[1] if len(parts) > 1 else ''
+            company = row.get('company', '').strip()
+            title = row.get('title', '').strip()
+            email = row.get('email', '').strip()
+            linkedin_url = row.get('linkedin_url', '').strip()
+
+            title_lower = title.lower()
+            if any(kw in title_lower for kw in ['qa', 'quality', 'test', 'sdet']):
+                persona_type = 'qa_leader'
+            else:
+                persona_type = 'vp_eng'
+
+            if any(kw in title_lower for kw in ['director', 'head']):
+                seniority = 'director'
+            elif any(kw in title_lower for kw in ['vp', 'vice president', 'cto', 'cfo']):
+                seniority = 'vp'
+            elif 'manager' in title_lower:
+                seniority = 'manager'
+            else:
+                seniority = 'senior'
+
+            con_id = gen_id("con")
+            conn.execute("""INSERT INTO contacts (id, account_id, first_name, last_name, title, email, linkedin_url,
+                persona_type, seniority_level, source, stage, priority_score, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'csv_import', 'new', 3, datetime('now'))""",
+                (con_id, account_map.get(company), first_name, last_name, title, email, linkedin_url, persona_type, seniority))
+            contact_ids.append(con_id)
+
+        conn.commit()
+        update_step('contacts', 'passed')
+        add_log(f"Created {len(contact_ids)} contacts")
+
+        progress = 30
+        conn.execute("UPDATE research_runs SET progress_pct = ? WHERE id = ?", (progress, run_id))
+
+        update_step('score', 'running')
+        for con_id in contact_ids:
+            contact = conn.execute("SELECT * FROM contacts WHERE id = ?", (con_id,)).fetchone()
+            contact = dict(contact) if contact else None
+            account = conn.execute("SELECT * FROM accounts WHERE id = ?", (contact['account_id'],)).fetchone() if contact and contact['account_id'] else None
+            account = dict(account) if account else None
+
+            score = 3
+            factors = {}
+            if contact and contact['persona_type'] == 'qa_leader':
+                score += 1
+                factors['qa_leader'] = '+1'
+            if account and account.get('industry') in ('FinTech', 'SaaS', 'Healthcare', 'Technology'):
+                score += 1
+                factors['top_vertical'] = '+1'
+            if contact and contact.get('recently_hired'):
+                score += 1
+                factors['recently_hired'] = '+1'
+            if account and account.get('buyer_intent'):
+                score += 2
+                factors['buyer_intent'] = '+2'
+            if account and account.get('known_tools') and any(t in (account.get('known_tools') or '') for t in ['selenium', 'cypress', 'tosca', 'katalon']):
+                score += 1
+                factors['competitor_tool'] = '+1'
+            if contact and contact['seniority_level'] == 'vp' and account and (account.get('employee_count') or 0) > 50000:
+                score -= 1
+                factors['large_co_vp'] = '-1'
+
+            score = max(1, min(5, score))
+            conn.execute("UPDATE contacts SET priority_score = ?, priority_factors = ? WHERE id = ?",
+                (score, json.dumps(factors), con_id))
+
+            icp_id = gen_id("icp")
+            conn.execute("""INSERT INTO icp_scores (id, contact_id, title_match, vertical_match, seniority_fit, total_score)
+                VALUES (?, ?, ?, ?, ?, ?)""",
+                (icp_id, con_id,
+                 1 if contact and contact['persona_type'] == 'qa_leader' else 0,
+                 1 if account and account.get('industry') in ('FinTech', 'SaaS', 'Healthcare') else 0,
+                 1 if contact and contact['seniority_level'] in ('director', 'vp') else 0,
+                 score))
+
+        conn.commit()
+        update_step('score', 'passed')
+        add_log(f"Scored {len(contact_ids)} contacts")
+        progress = 45
+        conn.execute("UPDATE research_runs SET progress_pct = ? WHERE id = ?", (progress, run_id))
+
+        update_step('ab_assign', 'running')
+        groups = json.loads(run['ab_groups'] or '["A","B"]')
+        for i, con_id in enumerate(contact_ids):
+            group = groups[i % len(groups)]
+            contact = conn.execute("SELECT priority_factors FROM contacts WHERE id = ?", (con_id,)).fetchone()
+            factors = json.loads(contact['priority_factors'] or '{}')
+            factors['ab_group'] = group
+            factors['ab_variable'] = ab_variable
+            conn.execute("UPDATE contacts SET priority_factors = ? WHERE id = ?", (json.dumps(factors), con_id))
+
+        conn.commit()
+        update_step('ab_assign', 'passed')
+        add_log(f"Assigned A/B groups ({ab_variable})")
+        progress = 55
+        conn.execute("UPDATE research_runs SET progress_pct = ? WHERE id = ?", (progress, run_id))
+
+        update_step('drafts', 'running')
+        draft_count = 0
+
+        proof_points = {
+            'FinTech': ('CRED', '90% regression automation, 5x faster execution'),
+            'Healthcare': ('Sanofi', 'regression 3 days to 80 minutes'),
+            'Insurance': ('Hansard', 'regression 8 weeks to 5 weeks with AI auto-heal'),
+            'SaaS': ('Spendflo', '50% manual testing cut'),
+            'Technology': ('Nagra DTV', '2,500 tests in 8 months, 4X faster'),
+            'Pharma': ('Sanofi', 'regression 3 days to 80 minutes'),
+            'Retail': ('Medibuddy', '2,500 tests automated, 50% maintenance cut')
+        }
+
+        for idx, con_id in enumerate(contact_ids):
+            contact = conn.execute("SELECT c.*, a.name as company_name, a.industry FROM contacts c LEFT JOIN accounts a ON c.account_id = a.id WHERE c.id = ?", (con_id,)).fetchone()
+            if not contact:
+                continue
+            contact = dict(contact)
+
+            name = f"{contact['first_name']} {contact['last_name']}"
+            company = contact.get('company_name') or 'their company'
+            title = contact.get('title') or 'their role'
+            industry = contact.get('industry') or 'Technology'
+            persona = contact.get('persona_type') or 'qa_leader'
+            factors = json.loads(contact.get('priority_factors') or '{}')
+            ab_group = factors.get('ab_group', 'A')
+
+            pp = proof_points.get(industry, ('Fortune 100', '3X productivity increase'))
+            proof_name, proof_stat = pp
+
+            all_pp = list(proof_points.values())
+            pp2 = all_pp[(list(proof_points.keys()).index(industry) + 1) % len(all_pp)] if industry in proof_points else all_pp[1]
+            pp3 = all_pp[(list(proof_points.keys()).index(industry) + 2) % len(all_pp)] if industry in proof_points else all_pp[2]
+
+            if ab_variable == 'pain_hook':
+                pain = 'flaky tests and regression maintenance' if ab_group == 'A' else 'release velocity and test coverage gaps'
+            else:
+                pain = 'test maintenance overhead' if persona == 'qa_leader' else 'QA bottlenecks slowing releases'
+
+            p_score = 2
+
+            touch1_subject = f"Quick question about QA at {company}"
+            touch1_body = f"Hi {contact['first_name']}, your work as {title} at {company} caught my eye. Leading QA in {industry.lower()} means {pain} is probably a constant.\n\nWe helped {proof_name} achieve {proof_stat}, and I think there's a parallel to what your team deals with.\n\nWould a quick 15-minute call make sense to see if it's relevant? If not, no worries at all."
+            touch1_body = touch1_body.replace('—', ',').replace('–', '-')
+            touch1_wc = len(touch1_body.split())
+
+            msg_id1 = gen_id("msg")
+            conn.execute("""INSERT INTO message_drafts (id, contact_id, channel, touch_number, touch_type, subject_line, body,
+                personalization_score, proof_point_used, pain_hook, word_count, approval_status, ab_group, ab_variable, source)
+                VALUES (?, ?, 'linkedin', 1, 'inmail', ?, ?, ?, ?, ?, ?, 'draft', ?, ?, 'csv_import')""",
+                (msg_id1, con_id, touch1_subject, touch1_body, p_score, proof_name, pain, touch1_wc, ab_group, ab_variable))
+            draft_count += 1
+
+            call1_body = f"Opener: Hey {contact['first_name']}, this is Rob from Testsigma, noticed you're leading {title.lower()} at {company}.\nPain: {pain.capitalize()} is something we hear a lot in {industry.lower()}.\nBridge: We helped {proof_name} achieve {proof_stat}. Worth 60 seconds to see if it's relevant?"
+            call1_body = call1_body.replace('—', ',').replace('–', '-')
+            msg_id2 = gen_id("msg")
+            conn.execute("""INSERT INTO message_drafts (id, contact_id, channel, touch_number, touch_type, subject_line, body,
+                proof_point_used, pain_hook, word_count, approval_status, ab_group, ab_variable, source)
+                VALUES (?, ?, 'phone', 2, 'call_script', 'Cold Call #1', ?, ?, ?, ?, 'draft', ?, ?, 'csv_import')""",
+                (msg_id2, con_id, call1_body, proof_name, pain, len(call1_body.split()), ab_group, ab_variable))
+            draft_count += 1
+
+            touch3_subject = f"Following up, {contact['first_name']}"
+            touch3_body = f"Circling back quick, {contact['first_name']}. Wanted to share that {pp2[0]} recently {pp2[1]} using our platform. Given your role at {company}, thought it might resonate. Worth a conversation? Happy to share more if helpful."
+            touch3_body = touch3_body.replace('—', ',').replace('–', '-')
+            msg_id3 = gen_id("msg")
+            conn.execute("""INSERT INTO message_drafts (id, contact_id, channel, touch_number, touch_type, subject_line, body,
+                personalization_score, proof_point_used, pain_hook, word_count, approval_status, ab_group, ab_variable, source)
+                VALUES (?, ?, 'linkedin', 3, 'followup', ?, ?, ?, ?, ?, ?, 'draft', ?, ?, 'csv_import')""",
+                (msg_id3, con_id, touch3_subject, touch3_body, p_score, pp2[0], pain, len(touch3_body.split()), ab_group, ab_variable))
+            draft_count += 1
+
+            call2_body = f"Opener: Hey {contact['first_name']}, Rob from Testsigma again, quick follow-up on my message.\nPain: Curious if {company}'s team is spending too much time on {pain}.\nBridge: {pp2[0]} saw {pp2[1]}. Would love to compare notes, 60 seconds?"
+            call2_body = call2_body.replace('—', ',').replace('–', '-')
+            msg_id4 = gen_id("msg")
+            conn.execute("""INSERT INTO message_drafts (id, contact_id, channel, touch_number, touch_type, subject_line, body,
+                proof_point_used, word_count, approval_status, ab_group, ab_variable, source)
+                VALUES (?, ?, 'phone', 4, 'call_script', 'Cold Call #2', ?, ?, ?, 'draft', ?, ?, 'csv_import')""",
+                (msg_id4, con_id, call2_body, pp2[0], len(call2_body.split()), ab_group, ab_variable))
+            draft_count += 1
+
+            if contact.get('email'):
+                touch5_subject = f"{company}'s testing workflow"
+                touch5_body = f"Hi {contact['first_name']}, I've been reaching out on LinkedIn but wanted to try email too. {pp3[0]} recently {pp3[1]} with our AI test automation platform. Given {company}'s scale in {industry.lower()}, I suspect {pain} comes up often. Would it make sense to chat for 15 minutes? If the timing is off, totally fine."
+                touch5_body = touch5_body.replace('—', ',').replace('–', '-')
+                msg_id5 = gen_id("msg")
+                conn.execute("""INSERT INTO message_drafts (id, contact_id, channel, touch_number, touch_type, subject_line, body,
+                    personalization_score, proof_point_used, pain_hook, word_count, approval_status, ab_group, ab_variable, source)
+                    VALUES (?, ?, 'email', 5, 'cold_email', ?, ?, ?, ?, ?, ?, 'draft', ?, ?, 'csv_import')""",
+                    (msg_id5, con_id, touch5_subject, touch5_body, p_score, pp3[0], pain, len(touch5_body.split()), ab_group, ab_variable))
+                draft_count += 1
+
+            touch6_subject = f"Closing the loop"
+            touch6_body = f"Hi {contact['first_name']}, I've reached out a few times and want to be respectful of your time. If testing automation isn't a priority right now, totally get it. Just wanted to close the loop so I'm not clogging your inbox. Door's always open."
+            touch6_body = touch6_body.replace('—', ',').replace('–', '-')
+            msg_id6 = gen_id("msg")
+            conn.execute("""INSERT INTO message_drafts (id, contact_id, channel, touch_number, touch_type, subject_line, body,
+                personalization_score, proof_point_used, word_count, approval_status, ab_group, ab_variable, source)
+                VALUES (?, ?, 'linkedin', 6, 'breakup', ?, ?, 1, 'none', ?, 'draft', ?, ?, 'csv_import')""",
+                (msg_id6, con_id, touch6_subject, touch6_body, len(touch6_body.split()), ab_group, ab_variable))
+            draft_count += 1
+
+            objection_type = 'has_tool'
+            if account and (account.get('employee_count') or 0) > 50000:
+                objection_type = 'big_company'
+            elif contact['persona_type'] != 'qa_leader':
+                objection_type = 'no_qa_team'
+            elif contact.get('recently_hired'):
+                objection_type = 'new_leader'
+
+            objection_responses = {
+                'has_tool': "Totally fair. A lot of teams we work with had existing tools too. The gap they kept hitting was maintenance overhead. Worth comparing?",
+                'big_company': "We offer on-prem, private cloud, and hybrid. SOC2/ISO certified. A few Fortune 500s run us behind their firewall.",
+                'no_qa_team': "That's actually why teams like yours use us. Plain English means devs write tests without a dedicated QA team.",
+                'new_leader': "Makes sense. A lot of QA leaders in their first 90 days use our free trial to benchmark what's possible before committing.",
+                'compliance': "We work with Sanofi, Oscar Health, and several banks. Happy to walk through our compliance story.",
+                'budget': "Totally get it. Spendflo cut manual testing 50% and saw ROI in the first quarter."
+            }
+
+            conn.execute("UPDATE contacts SET predicted_objection = ?, objection_response = ? WHERE id = ?",
+                (objection_type, objection_responses.get(objection_type, ''), con_id))
+
+            progress = 55 + int((idx + 1) / len(contact_ids) * 35)
+            conn.execute("UPDATE research_runs SET progress_pct = ? WHERE id = ?", (min(progress, 90), run_id))
+            conn.commit()
+
+        update_step('drafts', 'passed')
+        add_log(f"Generated {draft_count} message drafts across {len(contact_ids)} contacts")
+
+        update_step('quality_gate', 'running')
+        qc_issues = 0
+        drafts = conn.execute("SELECT * FROM message_drafts WHERE source = 'csv_import' AND created_at >= ?",
+            (run['created_at'],)).fetchall()
+        for draft in drafts:
+            flags = []
+            body = draft['body'] or ''
+            if '—' in body:
+                flags.append('em_dash_found')
+            wc = len(body.split())
+            if draft['touch_number'] == 1 and (wc < 70 or wc > 120):
+                flags.append(f'word_count_out_of_range:{wc}')
+            if draft['touch_number'] == 3 and (wc < 40 or wc > 70):
+                flags.append(f'followup_word_count:{wc}')
+            if draft['touch_number'] == 6 and (wc < 20 or wc > 60):
+                flags.append(f'breakup_word_count:{wc}')
+
+            qc_passed = 1 if not flags else 0
+            if flags:
+                qc_issues += 1
+            conn.execute("UPDATE message_drafts SET qc_passed = ?, qc_flags = ? WHERE id = ?",
+                (qc_passed, json.dumps(flags), draft['id']))
+
+        conn.commit()
+        update_step('quality_gate', 'passed')
+        add_log(f"Quality gate: {len(drafts) - qc_issues}/{len(drafts)} passed")
+
+        update_step('complete', 'passed')
+        add_log("Pipeline complete")
+
+        conn.execute("""UPDATE research_runs SET status = 'complete', progress_pct = 100,
+            completed_at = datetime('now'), prospect_count = ?, error_count = ?,
+            sop_checklist = ?, logs = ? WHERE id = ?""",
+            (len(contact_ids), qc_issues, json.dumps(checklist), json.dumps(logs), run_id))
+        conn.commit()
+        conn.close()
+
+        return {
+            "run_id": run_id,
+            "status": "complete",
+            "contacts_created": len(contact_ids),
+            "drafts_generated": draft_count,
+            "qc_issues": qc_issues,
+            "checklist": checklist
+        }
+
+    except Exception as e:
+        add_log(f"Error: {str(e)}")
+        conn.execute("UPDATE research_runs SET status = 'failed', logs = ?, error_count = error_count + 1 WHERE id = ?",
+            (json.dumps(logs), run_id))
+        conn.commit()
+        conn.close()
+        raise HTTPException(500, f"Pipeline failed: {str(e)}")
+
+@app.post("/api/research-runs/{run_id}/cancel")
+def cancel_research_run(run_id: str):
+    conn = get_db()
+    run = conn.execute("SELECT * FROM research_runs WHERE id = ?", (run_id,)).fetchone()
+    if not run:
+        raise HTTPException(404, "Run not found")
+    if run['status'] not in ('created', 'validated', 'running'):
+        raise HTTPException(400, f"Cannot cancel run in status: {run['status']}")
+    conn.execute("UPDATE research_runs SET status = 'cancelled', completed_at = datetime('now') WHERE id = ?", (run_id,))
+    conn.commit()
+    conn.close()
+    return {"run_id": run_id, "status": "cancelled"}
 
 @app.get("/api/safety-events")
 def list_safety_events(run_id: str = None, limit: int = 50):

@@ -1498,5 +1498,247 @@ class TestSOPCompliance:
                     assert breakup["word_count"] <= 150  # allow some margin
 
 
+# =============================================================================
+# RESEARCH RUNS TESTS
+# =============================================================================
+class TestResearchRuns:
+    """Tests for the research run pipeline."""
+
+    def test_list_research_runs(self, client):
+        r = client.get("/api/research-runs")
+        assert r.status_code == 200
+        assert "runs" in r.json()
+
+    def test_create_research_run(self, client):
+        rows = [
+            {"name": "Jane Doe", "title": "Director of QA", "company": "Acme Corp", "email": "jane@acme.com"},
+            {"name": "John Smith", "title": "VP Engineering", "company": "TechCo", "linkedin_url": "https://linkedin.com/in/jsmith"}
+        ]
+        r = client.post("/api/research-runs", json={"rows": rows, "import_type": "csv"})
+        assert r.status_code == 200
+        data = r.json()
+        assert "run_id" in data
+        assert data["prospect_count"] == 2
+        assert data["status"] == "created"
+
+    def test_create_run_empty_rows(self, client):
+        r = client.post("/api/research-runs", json={"rows": []})
+        assert r.status_code == 400
+
+    def test_validate_research_run(self, client):
+        rows = [
+            {"name": "Jane Doe", "title": "QA Manager", "company": "Stripe"},
+            {"name": "", "title": "VP Eng", "company": ""},  # Invalid: no name/company
+            {"name": "Bob Lee", "title": "SDET Lead", "company": "Datadog"}
+        ]
+        r = client.post("/api/research-runs", json={"rows": rows})
+        run_id = r.json()["run_id"]
+
+        r2 = client.post(f"/api/research-runs/{run_id}/validate")
+        assert r2.status_code == 200
+        data = r2.json()
+        assert data["valid_count"] == 2
+        assert data["error_count"] == 1
+
+    def test_execute_research_run(self, client):
+        rows = [
+            {"name": "Sarah Chen", "title": "Director of QA", "company": "Stripe", "email": "sarah@stripe.com"},
+            {"name": "Mike Johnson", "title": "VP Engineering", "company": "Datadog"}
+        ]
+        r = client.post("/api/research-runs", json={"rows": rows, "ab_variable": "pain_hook"})
+        run_id = r.json()["run_id"]
+
+        r2 = client.post(f"/api/research-runs/{run_id}/execute")
+        assert r2.status_code == 200
+        data = r2.json()
+        assert data["status"] == "complete"
+        assert data["contacts_created"] == 2
+        assert data["drafts_generated"] >= 10  # At least 5 touches per contact
+
+    def test_execute_creates_all_touches(self, client):
+        rows = [{"name": "Test User", "title": "QA Lead", "company": "TestCo", "email": "test@testco.com"}]
+        r = client.post("/api/research-runs", json={"rows": rows})
+        run_id = r.json()["run_id"]
+        r2 = client.post(f"/api/research-runs/{run_id}/execute")
+        assert r2.status_code == 200
+        # With email: should get touch 1,2,3,4,5,6 = 6 drafts
+        assert r2.json()["drafts_generated"] == 6
+
+    def test_execute_without_email_skips_touch5(self, client):
+        rows = [{"name": "Test User", "title": "QA Lead", "company": "TestCo"}]
+        r = client.post("/api/research-runs", json={"rows": rows})
+        run_id = r.json()["run_id"]
+        r2 = client.post(f"/api/research-runs/{run_id}/execute")
+        assert r2.status_code == 200
+        # Without email: should get touch 1,2,3,4,6 = 5 drafts
+        assert r2.json()["drafts_generated"] == 5
+
+    def test_execute_tags_source_csv_import(self, client):
+        rows = [{"name": "Test User", "title": "QA Lead", "company": "ImportCo"}]
+        r = client.post("/api/research-runs", json={"rows": rows})
+        run_id = r.json()["run_id"]
+        client.post(f"/api/research-runs/{run_id}/execute")
+
+        # Verify source tag on contacts
+        conn = get_db()
+        contact = conn.execute("SELECT source FROM contacts WHERE first_name = 'Test' AND last_name = 'User'").fetchone()
+        assert contact is not None
+        assert contact["source"] == "csv_import"
+        conn.close()
+
+    def test_execute_scores_contacts(self, client):
+        rows = [{"name": "QA Director", "title": "Director of QA", "company": "FinCo"}]
+        r = client.post("/api/research-runs", json={"rows": rows})
+        run_id = r.json()["run_id"]
+        client.post(f"/api/research-runs/{run_id}/execute")
+
+        conn = get_db()
+        contact = conn.execute("SELECT priority_score, persona_type FROM contacts WHERE first_name = 'QA'").fetchone()
+        assert contact is not None
+        assert contact["persona_type"] == "qa_leader"
+        assert contact["priority_score"] >= 3  # QA leader gets +1
+        conn.close()
+
+    def test_execute_no_em_dashes(self, client):
+        rows = [{"name": "Em Dash Test", "title": "QA Manager", "company": "DashCo"}]
+        r = client.post("/api/research-runs", json={"rows": rows})
+        run_id = r.json()["run_id"]
+        client.post(f"/api/research-runs/{run_id}/execute")
+
+        conn = get_db()
+        drafts = conn.execute("SELECT body FROM message_drafts WHERE source = 'csv_import'").fetchall()
+        for d in drafts:
+            assert '\u2014' not in d['body'], f"Em dash found in draft: {d['body'][:50]}"
+        conn.close()
+
+    def test_get_research_run_detail(self, client):
+        rows = [{"name": "Detail Test", "title": "QA Lead", "company": "DetailCo"}]
+        r = client.post("/api/research-runs", json={"rows": rows})
+        run_id = r.json()["run_id"]
+        client.post(f"/api/research-runs/{run_id}/execute")
+
+        r2 = client.get(f"/api/research-runs/{run_id}")
+        assert r2.status_code == 200
+        data = r2.json()
+        assert data["status"] == "complete"
+        assert "sop_checklist" in data
+        assert "logs" in data
+
+    def test_cancel_research_run(self, client):
+        rows = [{"name": "Cancel Test", "title": "QA", "company": "CancelCo"}]
+        r = client.post("/api/research-runs", json={"rows": rows})
+        run_id = r.json()["run_id"]
+
+        r2 = client.post(f"/api/research-runs/{run_id}/cancel")
+        assert r2.status_code == 200
+        assert r2.json()["status"] == "cancelled"
+
+    def test_run_not_found(self, client):
+        r = client.get("/api/research-runs/nonexistent")
+        assert r.status_code == 404
+
+
+# =============================================================================
+# ADMIN & DATA MANAGEMENT TESTS
+# =============================================================================
+class TestAdminDataManagement:
+    """Tests for admin data management endpoints."""
+
+    def test_data_summary(self, client):
+        r = client.get("/api/admin/data-summary")
+        assert r.status_code == 200
+        data = r.json()
+        assert "contacts" in data
+        assert "accounts" in data
+        assert data["contacts"]["_total"] >= 25  # Seeded contacts
+
+    def test_data_summary_shows_seed_source(self, client):
+        r = client.get("/api/admin/data-summary")
+        data = r.json()
+        assert "seed" in data["contacts"]
+        assert data["contacts"]["seed"] >= 25
+
+    def test_cleanup_preview(self, client):
+        r = client.post("/api/admin/cleanup/preview")
+        assert r.status_code == 200
+        data = r.json()
+        assert "tables" in data
+        assert "total_records" in data
+        assert data["total_records"] > 0
+
+    def test_cleanup_requires_confirmation(self, client):
+        r = client.post("/api/admin/cleanup/execute", json={})
+        assert r.status_code == 400
+
+    def test_cleanup_execute(self, client):
+        # First check we have seed data
+        before = client.get("/api/admin/data-summary").json()
+        assert before["contacts"]["_total"] >= 25
+
+        # Execute cleanup
+        r = client.post("/api/admin/cleanup/execute", json={"confirm": True})
+        assert r.status_code == 200
+        data = r.json()
+        assert data["status"] == "cleaned"
+        assert data["total"] > 0
+
+    def test_export_all(self, client):
+        r = client.get("/api/admin/export-all")
+        assert r.status_code == 200
+        data = r.json()
+        assert "tables" in data
+        assert "exported_at" in data
+        assert len(data["tables"]) > 0
+
+    def test_import_backup(self, client):
+        # Export first
+        export = client.get("/api/admin/export-all").json()
+
+        # Clean
+        client.post("/api/admin/cleanup/execute", json={"confirm": True})
+
+        # Import back
+        r = client.post("/api/admin/import-backup", json=export)
+        assert r.status_code == 200
+        data = r.json()
+        assert data["status"] == "imported"
+
+    def test_import_empty_fails(self, client):
+        r = client.post("/api/admin/import-backup", json={"tables": {}})
+        assert r.status_code == 400
+
+
+# =============================================================================
+# SOURCE TAGGING TESTS
+# =============================================================================
+class TestSourceTagging:
+    """Tests for source column tagging."""
+
+    def test_seed_contacts_tagged(self, client):
+        conn = get_db()
+        seeds = conn.execute("SELECT COUNT(*) as cnt FROM contacts WHERE source = 'seed'").fetchone()
+        assert seeds["cnt"] >= 25
+        conn.close()
+
+    def test_seed_accounts_tagged(self, client):
+        conn = get_db()
+        seeds = conn.execute("SELECT COUNT(*) as cnt FROM accounts WHERE source = 'seed'").fetchone()
+        assert seeds["cnt"] >= 20
+        conn.close()
+
+    def test_imported_contacts_not_seed(self, client):
+        rows = [{"name": "Import Test", "title": "QA", "company": "ImportTestCo"}]
+        client.post("/api/research-runs", json={"rows": rows})
+        # After creating a run and executing, contacts should be csv_import
+        run_id = client.post("/api/research-runs", json={"rows": rows}).json()["run_id"]
+        client.post(f"/api/research-runs/{run_id}/execute")
+
+        conn = get_db()
+        imported = conn.execute("SELECT source FROM contacts WHERE first_name = 'Import'").fetchone()
+        assert imported is not None
+        assert imported["source"] == "csv_import"
+        conn.close()
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v", "--tb=short"])

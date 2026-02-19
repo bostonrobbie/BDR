@@ -1229,92 +1229,42 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
         <span>Outreach Command Center</span>
     </div>
     <nav class="nav">
-        <div class="nav-section">Overview</div>
+        <div class="nav-section">HOME</div>
         <div class="nav-item active" onclick="showPage('home')">
-            <span>🏠</span>
-            <span>Home</span>
+            <span class="nav-icon">🏠</span> <span>Today's Plan</span>
             <span class="badge" id="badge-actions" style="display:none">0</span>
         </div>
-        <div class="nav-item" onclick="showPage('pipeline')">
-            <span>📊</span>
-            <span>Pipeline</span>
-        </div>
-        <div class="nav-item" onclick="showPage('activity')">
-            <span>⏱</span>
-            <span>Activity</span>
-        </div>
 
-        <div class="nav-sep"></div>
-        <div class="nav-section">Workflows</div>
-        <div class="nav-item" onclick="showPage('flows')">
-            <span>▶</span>
-            <span>Flows</span>
+        <div class="nav-section">WORK</div>
+        <div class="nav-item" onclick="showPage('prospects')">
+            <span class="nav-icon">👥</span> <span>Prospects</span>
+            <span class="badge" id="badge-prospects" style="display:none">0</span>
         </div>
-        <div class="nav-item" onclick="showPage('launch')">
-            <span>🚀</span>
-            <span>Launch Batch</span>
-        </div>
-        <div class="nav-item" onclick="showPage('approval')">
-            <span>✓</span>
-            <span>Approval</span>
-            <span class="badge" id="badge-approval" style="display:none">0</span>
-        </div>
-
-        <div class="nav-sep"></div>
-        <div class="nav-section">Data</div>
-        <div class="nav-item" onclick="showPage('accounts')">
-            <span>🏢</span>
-            <span>Accounts</span>
-        </div>
-        <div class="nav-item" onclick="showPage('contacts')">
-            <span>👤</span>
-            <span>Contacts</span>
+        <div class="nav-item" onclick="showPage('runs')">
+            <span class="nav-icon">🚀</span> <span>Research Runs</span>
+            <span class="badge" id="badge-runs" style="display:none">0</span>
         </div>
         <div class="nav-item" onclick="showPage('drafts')">
-            <span>✎</span>
-            <span>Drafts</span>
+            <span class="nav-icon">📝</span> <span>Drafts</span>
+            <span class="badge" id="badge-drafts" style="display:none">0</span>
         </div>
 
-        <div class="nav-sep"></div>
-        <div class="nav-section">Analytics</div>
-        <div class="nav-item" onclick="showPage('intelligence')">
-            <span>📈</span>
-            <span>Intelligence</span>
-        </div>
-        <div class="nav-item" onclick="showPage('experiments')">
-            <span>⊕</span>
-            <span>Experiments</span>
-        </div>
-        <div class="nav-item" onclick="showPage('signals')">
-            <span>⚡</span>
-            <span>Signals</span>
+        <div class="nav-section">INSIGHTS</div>
+        <div class="nav-item" onclick="showPage('analytics')">
+            <span class="nav-icon">📊</span> <span>Analytics</span>
         </div>
 
-        <div class="nav-sep"></div>
-        <div class="nav-section">System</div>
-        <div class="nav-item" onclick="showPage('agents')">
-            <span>🤖</span>
-            <span>Agent Logs</span>
+        <div class="nav-section">OPERATIONS</div>
+        <div class="nav-item" onclick="showPage('system')">
+            <span class="nav-icon">⚙️</span> <span>System</span>
         </div>
-        <div class="nav-item" onclick="showPage('linkedin')">
-            <span>🔗</span>
-            <span>LinkedIn Channel</span>
-        </div>
-        <div class="nav-item" onclick="showPage('email')">
-            <span>✉</span>
-            <span>Email Channel</span>
-        </div>
-        <div class="nav-item" onclick="showPage('swarm')">
-            <span>🐝</span>
-            <span>Agent Swarm</span>
-        </div>
-        <div class="nav-item" onclick="showPage('health')">
-            <span>💚</span>
-            <span>System Health</span>
+
+        <div class="nav-section">ADMIN</div>
+        <div class="nav-item" onclick="showPage('data')">
+            <span class="nav-icon">💾</span> <span>Data</span>
         </div>
         <div class="nav-item" onclick="showPage('settings')">
-            <span>⚙</span>
-            <span>Settings</span>
+            <span class="nav-icon">🔧</span> <span>Settings</span>
         </div>
     </nav>
     <div class="sidebar-status">
@@ -2153,6 +2103,254 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
     </div>
 </div>
 
+<!-- PROSPECTS -->
+<div class="page" id="page-prospects">
+    <div class="page-hdr"><h1>Prospects</h1>
+        <div style="display:flex;gap:8px">
+            <button class="btn" onclick="showPage('runs')">+ Import Prospects</button>
+            <select class="inp" id="prospects-filter" onchange="filterProspects()" style="width:160px">
+                <option value="">All Stages</option>
+                <option value="new">New</option>
+                <option value="touched">Touched</option>
+                <option value="engaged">Engaged</option>
+                <option value="replied">Replied</option>
+                <option value="meeting_booked">Meeting Booked</option>
+            </select>
+        </div>
+    </div>
+    <div class="kpi-row" id="prospects-kpis"></div>
+    <div class="card" style="margin-top:16px">
+        <div style="display:flex;gap:12px;margin-bottom:12px">
+            <div class="tab-item active" onclick="showProspectsTab('contacts')">Contacts</div>
+            <div class="tab-item" onclick="showProspectsTab('accounts')">Accounts</div>
+            <div class="tab-item" onclick="showProspectsTab('activity')">Activity</div>
+        </div>
+        <div class="tab-content active" id="prospects-tab-contacts">
+            <div style="overflow-x:auto"><table class="tbl"><thead><tr>
+                <th>Priority</th><th>Name</th><th>Title</th><th>Company</th><th>Stage</th><th>Persona</th><th>Source</th>
+            </tr></thead><tbody id="prospects-contacts-body"></tbody></table></div>
+        </div>
+        <div class="tab-content" id="prospects-tab-accounts">
+            <div style="overflow-x:auto"><table class="tbl"><thead><tr>
+                <th>Company</th><th>Industry</th><th>Employees</th><th>Contacts</th><th>Intent</th>
+            </tr></thead><tbody id="prospects-accounts-body"></tbody></table></div>
+        </div>
+        <div class="tab-content" id="prospects-tab-activity">
+            <div id="prospects-activity-list" style="max-height:500px;overflow-y:auto"></div>
+        </div>
+    </div>
+    <div id="prospects-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--text-secondary)">
+        <div style="font-size:48px;margin-bottom:16px">👥</div>
+        <h3 style="margin-bottom:8px">No prospects yet</h3>
+        <p style="margin-bottom:16px">Upload a CSV from Sales Navigator to get started</p>
+        <button class="btn btn-primary" onclick="showPage('runs')">Start Research Run</button>
+    </div>
+</div>
+
+<!-- RESEARCH RUNS -->
+<div class="page" id="page-runs">
+    <div class="page-hdr"><h1>Research Runs</h1>
+        <button class="btn btn-primary" onclick="showRunWizard()">+ New Research Run</button>
+    </div>
+    <div class="kpi-row" id="runs-kpis"></div>
+
+    <!-- Run Wizard -->
+    <div id="run-wizard" style="display:none">
+        <div class="card" style="margin-top:16px">
+            <div style="display:flex;gap:8px;margin-bottom:20px">
+                <div class="phase-step active" id="wiz-step-upload">1. Upload</div>
+                <div class="phase-step" id="wiz-step-validate">2. Validate</div>
+                <div class="phase-step" id="wiz-step-config">3. Configure</div>
+                <div class="phase-step" id="wiz-step-execute">4. Execute</div>
+            </div>
+
+            <!-- Step 1: Upload -->
+            <div id="wiz-upload" class="wiz-panel">
+                <h3 style="margin-bottom:12px">Upload Prospects</h3>
+                <p style="color:var(--text-secondary);margin-bottom:16px">Export leads from Sales Navigator as CSV, or paste LinkedIn profile URLs</p>
+                <div style="display:flex;gap:12px;margin-bottom:16px">
+                    <div class="tab-item active" onclick="showWizUploadTab('csv')">CSV Upload</div>
+                    <div class="tab-item" onclick="showWizUploadTab('paste')">Paste URLs/Data</div>
+                </div>
+                <div id="wiz-upload-csv" class="tab-content active">
+                    <div style="border:2px dashed var(--border);border-radius:var(--radius-lg);padding:40px;text-align:center;margin-bottom:16px;cursor:pointer" onclick="document.getElementById('csv-file-input').click()">
+                        <div style="font-size:32px;margin-bottom:8px">📁</div>
+                        <p>Drop CSV here or click to browse</p>
+                        <p style="color:var(--text-muted);font-size:11px;margin-top:4px">Supports Sales Navigator export format</p>
+                        <input type="file" id="csv-file-input" accept=".csv" style="display:none" onchange="handleCSVUpload(event)">
+                    </div>
+                </div>
+                <div id="wiz-upload-paste" class="tab-content" style="display:none">
+                    <textarea id="paste-data-input" class="inp" rows="8" placeholder="Paste prospect data here. Format: one per line&#10;Name, Title, Company, LinkedIn URL&#10;&#10;Example:&#10;Jane Smith, Director of QA, Stripe, https://linkedin.com/in/janesmith" style="width:100%;font-family:monospace;font-size:12px"></textarea>
+                    <button class="btn" style="margin-top:8px" onclick="handlePasteUpload()">Parse Data</button>
+                </div>
+                <div id="csv-preview" style="display:none;margin-top:16px">
+                    <h4 style="margin-bottom:8px">Preview (<span id="csv-row-count">0</span> rows)</h4>
+                    <div style="overflow-x:auto;max-height:300px"><table class="tbl" id="csv-preview-table"></table></div>
+                    <button class="btn btn-primary" style="margin-top:12px" onclick="wizGoToValidate()">Continue to Validation →</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Validate -->
+            <div id="wiz-validate" class="wiz-panel" style="display:none">
+                <h3 style="margin-bottom:12px">Validation Results</h3>
+                <div id="validation-summary" style="margin-bottom:16px"></div>
+                <div style="overflow-x:auto;max-height:400px"><table class="tbl" id="validation-table"></table></div>
+                <div style="display:flex;gap:8px;margin-top:12px">
+                    <button class="btn" onclick="wizGoToUpload()">← Back</button>
+                    <button class="btn btn-primary" id="btn-go-config" onclick="wizGoToConfig()">Continue to Configure →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Configure -->
+            <div id="wiz-config" class="wiz-panel" style="display:none">
+                <h3 style="margin-bottom:12px">Run Configuration</h3>
+                <div class="grid2">
+                    <div class="form-row">
+                        <label>Run Name</label>
+                        <input class="inp" id="run-name-input" placeholder="e.g., Batch 4 - FinTech QA Leaders">
+                    </div>
+                    <div class="form-row">
+                        <label>A/B Test Variable</label>
+                        <select class="inp" id="ab-variable-select">
+                            <option value="pain_hook">Pain Hook (maintenance vs velocity)</option>
+                            <option value="proof_point_style">Proof Point (named vs anonymous)</option>
+                            <option value="opener_style">Opener (career vs company)</option>
+                            <option value="ask_intensity">Ask (direct vs soft)</option>
+                            <option value="message_length">Length (tight vs full)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card" style="background:var(--bg-primary);margin-top:16px;padding:16px">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                        <span style="color:var(--success);font-size:18px">🔒</span>
+                        <strong>DRY RUN Mode Active</strong>
+                    </div>
+                    <p style="color:var(--text-secondary);font-size:12px">All outputs are drafts only. No messages will be sent. No LinkedIn actions will be taken.</p>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:16px">
+                    <button class="btn" onclick="wizGoToValidate()">← Back</button>
+                    <button class="btn btn-primary" onclick="wizExecute()">🚀 Launch Research Run</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Execute -->
+            <div id="wiz-execute" class="wiz-panel" style="display:none">
+                <h3 style="margin-bottom:12px">Pipeline Execution</h3>
+                <div style="background:var(--bg-primary);border-radius:var(--radius-md);padding:16px;margin-bottom:16px">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+                        <span>Progress</span>
+                        <span id="exec-progress-pct">0%</span>
+                    </div>
+                    <div style="background:var(--bg-elevated);border-radius:4px;height:8px;overflow:hidden">
+                        <div id="exec-progress-bar" style="background:var(--accent);height:100%;width:0%;transition:width 300ms ease"></div>
+                    </div>
+                </div>
+                <div id="sop-checklist" style="margin-bottom:16px"></div>
+                <div style="background:var(--bg-primary);border-radius:var(--radius-md);padding:12px;max-height:200px;overflow-y:auto;font-family:monospace;font-size:11px;color:var(--text-secondary)" id="exec-logs"></div>
+                <div id="exec-result" style="display:none;margin-top:16px"></div>
+                <div style="display:flex;gap:8px;margin-top:12px">
+                    <button class="btn btn-danger" id="btn-cancel-run" onclick="cancelRun()">Cancel</button>
+                    <button class="btn btn-primary" id="btn-view-drafts" style="display:none" onclick="showPage('drafts')">View Drafts →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Run History -->
+    <div class="card" style="margin-top:16px" id="runs-history-card">
+        <h3 style="margin-bottom:12px">Run History</h3>
+        <div style="overflow-x:auto"><table class="tbl"><thead><tr>
+            <th>Run</th><th>Date</th><th>Prospects</th><th>Status</th><th>Drafts</th><th>Progress</th><th>Actions</th>
+        </tr></thead><tbody id="runs-history-body"></tbody></table></div>
+        <div id="runs-empty" style="display:none;text-align:center;padding:40px;color:var(--text-secondary)">
+            <div style="font-size:36px;margin-bottom:12px">🚀</div>
+            <p>No research runs yet. Click "+ New Research Run" to get started.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ANALYTICS -->
+<div class="page" id="page-analytics">
+    <div class="page-hdr"><h1>Analytics</h1></div>
+    <div class="kpi-row" id="analytics-kpis"></div>
+    <div class="card" style="margin-top:16px">
+        <div style="display:flex;gap:12px;margin-bottom:16px">
+            <div class="tab-item active" onclick="showAnalyticsTab('performance')">Performance</div>
+            <div class="tab-item" onclick="showAnalyticsTab('experiments')">A/B Tests</div>
+            <div class="tab-item" onclick="showAnalyticsTab('signals')">Signals</div>
+        </div>
+        <div class="tab-content active" id="analytics-tab-performance">
+            <div class="grid2" id="analytics-charts"></div>
+            <div id="analytics-breakdown"></div>
+        </div>
+        <div class="tab-content" id="analytics-tab-experiments">
+            <div id="analytics-experiments"></div>
+        </div>
+        <div class="tab-content" id="analytics-tab-signals">
+            <div id="analytics-signals"></div>
+        </div>
+    </div>
+</div>
+
+<!-- SYSTEM -->
+<div class="page" id="page-system">
+    <div class="page-hdr"><h1>System</h1></div>
+    <div class="card" style="margin-top:16px">
+        <div style="display:flex;gap:12px;margin-bottom:16px">
+            <div class="tab-item active" onclick="showSystemTab('health')">Health</div>
+            <div class="tab-item" onclick="showSystemTab('agents')">Agent Logs</div>
+            <div class="tab-item" onclick="showSystemTab('email')">Email</div>
+            <div class="tab-item" onclick="showSystemTab('linkedin')">LinkedIn</div>
+        </div>
+        <div class="tab-content active" id="system-tab-health">
+            <div class="kpi-row" id="system-health-kpis"></div>
+            <div id="system-health-content"></div>
+        </div>
+        <div class="tab-content" id="system-tab-agents">
+            <div style="overflow-x:auto"><table class="tbl"><thead><tr>
+                <th>Agent</th><th>Type</th><th>Status</th><th>Duration</th><th>Time</th>
+            </tr></thead><tbody id="system-agents-body"></tbody></table></div>
+        </div>
+        <div class="tab-content" id="system-tab-email">
+            <div id="system-email-content"></div>
+        </div>
+        <div class="tab-content" id="system-tab-linkedin">
+            <div id="system-linkedin-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- DATA (Admin) -->
+<div class="page" id="page-data">
+    <div class="page-hdr"><h1>Data Management</h1></div>
+    <div class="kpi-row" id="data-kpis"></div>
+    <div class="grid2" style="margin-top:16px">
+        <div class="card">
+            <h3 style="margin-bottom:12px">Data Lineage</h3>
+            <div id="data-lineage"></div>
+        </div>
+        <div class="card">
+            <h3 style="margin-bottom:12px">Actions</h3>
+            <div style="display:flex;flex-direction:column;gap:8px">
+                <button class="btn" onclick="exportAllData()">💾 Export All Data (JSON)</button>
+                <button class="btn" onclick="document.getElementById('import-file-input').click()">📥 Import Backup</button>
+                <input type="file" id="import-file-input" accept=".json" style="display:none" onchange="handleImportBackup(event)">
+                <hr style="border-color:var(--border)">
+                <button class="btn btn-danger" onclick="showCleanupPreview()">🗑️ Clear Seed Data</button>
+            </div>
+        </div>
+    </div>
+    <div id="cleanup-preview" style="display:none;margin-top:16px" class="card">
+        <h3 style="margin-bottom:12px;color:var(--warning)">⚠️ Cleanup Preview</h3>
+        <div id="cleanup-preview-content"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn" onclick="document.getElementById('cleanup-preview').style.display='none'">Cancel</button>
+            <button class="btn btn-danger" onclick="executeCleanup()">Confirm: Delete Seed Data</button>
+        </div>
+    </div>
+</div>
+
 </div><!-- /main -->
 </div><!-- /shell -->
 
@@ -2349,6 +2547,11 @@ function showPage(id) {
     const navItem = document.querySelector(`.nav-item[onclick="showPage('${id}')"]`);
     if (navItem) navItem.classList.add('active');
 
+    if (id === 'prospects') loadProspectsPage();
+    if (id === 'runs') loadRunsPage();
+    if (id === 'analytics') loadAnalyticsPage();
+    if (id === 'system') loadSystemPage();
+    if (id === 'data') loadDataPage();
     if (id === 'intelligence') loadIntelligence();
     if (id === 'experiments') loadExperiments();
     if (id === 'signals') loadSignals();
@@ -4050,6 +4253,539 @@ function copyDraftBody(draftId) {
             navigator.clipboard.writeText(d.body).then(() => showToast('Draft copied!', 'success'));
         }
     });
+}
+
+// =====================================================
+// PROSPECTS PAGE
+// =====================================================
+function showProspectsTab(tab) {
+    document.querySelectorAll('#page-prospects .tab-item').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('#page-prospects .tab-content').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('prospects-tab-' + tab).classList.add('active');
+}
+
+async function loadProspectsPage() {
+    try {
+        const [statsData, contactsData, accountsData, activityData] = await Promise.all([
+            api('/api/stats'),
+            api('/api/contacts?limit=200'),
+            api('/api/accounts?limit=200'),
+            api('/api/activity?limit=50')
+        ]);
+
+        const el = document.getElementById('prospects-kpis');
+        el.innerHTML = `
+            <div class="kpi"><div class="kpi-label">Total Contacts</div><div class="kpi-val">${statsData.total_contacts || 0}</div></div>
+            <div class="kpi"><div class="kpi-label">Replied</div><div class="kpi-val">${statsData.total_replies || 0}</div></div>
+            <div class="kpi"><div class="kpi-label">Meetings</div><div class="kpi-val">${statsData.total_meetings || 0}</div></div>
+            <div class="kpi"><div class="kpi-label">Reply Rate</div><div class="kpi-val">${(statsData.reply_rate || 0).toFixed(1)}%</div></div>
+        `;
+
+        const contacts = contactsData.contacts || contactsData || [];
+        const tbody = document.getElementById('prospects-contacts-body');
+        if (contacts.length === 0) {
+            document.getElementById('prospects-empty').style.display = 'block';
+            tbody.closest('.card').style.display = 'none';
+        } else {
+            document.getElementById('prospects-empty').style.display = 'none';
+            tbody.closest('.card').style.display = 'block';
+            tbody.innerHTML = contacts.map(c => `<tr>
+                <td><span class="tag ${c.priority_score >= 4 ? 'tag-hot' : c.priority_score >= 3 ? 'tag-warm' : ''}">${c.priority_score || '-'}</span></td>
+                <td>${c.first_name || ''} ${c.last_name || ''}</td>
+                <td>${c.title || ''}</td>
+                <td>${c.company_name || c.account_id || ''}</td>
+                <td><span class="tag">${c.stage || 'new'}</span></td>
+                <td><span class="tag ${c.persona_type === 'qa_leader' ? 'tag-qa' : ''}">${c.persona_type || ''}</span></td>
+                <td><span class="tag" style="font-size:10px">${c.source || ''}</span></td>
+            </tr>`).join('');
+        }
+
+        const accounts = accountsData.accounts || accountsData || [];
+        document.getElementById('prospects-accounts-body').innerHTML = accounts.map(a => `<tr>
+            <td>${a.name || ''}</td>
+            <td>${a.industry || ''}</td>
+            <td>${a.employee_count || '-'}</td>
+            <td>${a.contact_count || '-'}</td>
+            <td>${a.buyer_intent ? '<span class="tag tag-hot">Intent</span>' : '-'}</td>
+        </tr>`).join('');
+
+        const activities = activityData.activities || activityData || [];
+        document.getElementById('prospects-activity-list').innerHTML = activities.map(a => `
+            <div style="padding:8px 0;border-bottom:1px solid var(--border-subtle)">
+                <span style="color:var(--text-muted);font-size:11px">${a.created_at || ''}</span>
+                <span style="margin-left:8px">${a.description || a.event_type || ''}</span>
+            </div>
+        `).join('') || '<p style="color:var(--text-muted)">No activity yet</p>';
+    } catch(e) { console.error('loadProspectsPage:', e); }
+}
+
+function filterProspects() {
+    const stage = document.getElementById('prospects-filter').value;
+    const rows = document.querySelectorAll('#prospects-contacts-body tr');
+    rows.forEach(r => {
+        if (!stage) { r.style.display = ''; return; }
+        const stageCell = r.cells[4]?.textContent?.trim()?.toLowerCase();
+        r.style.display = stageCell === stage ? '' : 'none';
+    });
+}
+
+// =====================================================
+// RESEARCH RUNS PAGE
+// =====================================================
+let wizardRows = [];
+let currentRunId = null;
+
+async function loadRunsPage() {
+    try {
+        const data = await api('/api/research-runs');
+        const runs = data.runs || [];
+
+        const kpis = document.getElementById('runs-kpis');
+        const total = runs.length;
+        const complete = runs.filter(r => r.status === 'complete').length;
+        const running = runs.filter(r => r.status === 'running').length;
+        const totalProspects = runs.reduce((s, r) => s + (r.prospect_count || 0), 0);
+        kpis.innerHTML = `
+            <div class="kpi"><div class="kpi-label">Total Runs</div><div class="kpi-val">${total}</div></div>
+            <div class="kpi"><div class="kpi-label">Completed</div><div class="kpi-val">${complete}</div></div>
+            <div class="kpi"><div class="kpi-label">Running</div><div class="kpi-val">${running}</div></div>
+            <div class="kpi"><div class="kpi-label">Prospects Imported</div><div class="kpi-val">${totalProspects}</div></div>
+        `;
+
+        const tbody = document.getElementById('runs-history-body');
+        const emptyEl = document.getElementById('runs-empty');
+        if (runs.length === 0) {
+            emptyEl.style.display = 'block';
+            tbody.parentElement.parentElement.style.display = 'none';
+        } else {
+            emptyEl.style.display = 'none';
+            tbody.parentElement.parentElement.style.display = '';
+            tbody.innerHTML = runs.map(r => `<tr>
+                <td><strong>${r.name || r.id}</strong></td>
+                <td>${r.created_at || ''}</td>
+                <td>${r.prospect_count || 0}</td>
+                <td><span class="tag ${r.status === 'complete' ? 'tag-warm' : r.status === 'running' ? 'tag-hot' : ''}">${r.status}</span></td>
+                <td>${r.draft_count || '-'}</td>
+                <td>
+                    <div style="background:var(--bg-elevated);border-radius:4px;height:6px;width:80px;overflow:hidden">
+                        <div style="background:var(--accent);height:100%;width:${r.progress_pct || 0}%"></div>
+                    </div>
+                </td>
+                <td><a onclick="viewRunDetail('${r.id}')">View</a></td>
+            </tr>`).join('');
+        }
+    } catch(e) { console.error('loadRunsPage:', e); }
+}
+
+function showRunWizard() {
+    document.getElementById('run-wizard').style.display = 'block';
+    document.getElementById('runs-history-card').style.display = 'none';
+    wizGoToUpload();
+}
+
+function hideRunWizard() {
+    document.getElementById('run-wizard').style.display = 'none';
+    document.getElementById('runs-history-card').style.display = 'block';
+    loadRunsPage();
+}
+
+function wizGoToUpload() {
+    ['upload','validate','config','execute'].forEach(s => {
+        document.getElementById('wiz-' + s).style.display = 'none';
+        document.getElementById('wiz-step-' + s).classList.remove('active','done');
+    });
+    document.getElementById('wiz-upload').style.display = 'block';
+    document.getElementById('wiz-step-upload').classList.add('active');
+}
+
+function wizGoToValidate() {
+    ['upload','validate','config','execute'].forEach(s => document.getElementById('wiz-' + s).style.display = 'none');
+    document.getElementById('wiz-validate').style.display = 'block';
+    document.getElementById('wiz-step-upload').classList.remove('active');
+    document.getElementById('wiz-step-upload').classList.add('done');
+    document.getElementById('wiz-step-validate').classList.add('active');
+    runValidation();
+}
+
+function wizGoToConfig() {
+    ['upload','validate','config','execute'].forEach(s => document.getElementById('wiz-' + s).style.display = 'none');
+    document.getElementById('wiz-config').style.display = 'block';
+    document.getElementById('wiz-step-validate').classList.remove('active');
+    document.getElementById('wiz-step-validate').classList.add('done');
+    document.getElementById('wiz-step-config').classList.add('active');
+}
+
+function showWizUploadTab(tab) {
+    document.querySelectorAll('#wiz-upload .tab-item').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('wiz-upload-csv').style.display = tab === 'csv' ? 'block' : 'none';
+    document.getElementById('wiz-upload-paste').style.display = tab === 'paste' ? 'block' : 'none';
+}
+
+function handleCSVUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const text = e.target.result;
+        const lines = text.split('\n').filter(l => l.trim());
+        if (lines.length < 2) { showToast('CSV must have a header row and at least one data row', 'error'); return; }
+
+        const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/['"]/g, ''));
+        wizardRows = [];
+        for (let i = 1; i < lines.length; i++) {
+            const vals = lines[i].split(',').map(v => v.trim().replace(/['"]/g, ''));
+            const row = {};
+            headers.forEach((h, j) => { row[h] = vals[j] || ''; });
+            if (!row.name && row.first_name) row.name = row.first_name + ' ' + (row.last_name || '');
+            if (!row.company && row.company_name) row.company = row.company_name;
+            if (!row.linkedin_url && row.linkedin) row.linkedin_url = row.linkedin;
+            wizardRows.push(row);
+        }
+
+        showCSVPreview();
+    };
+    reader.readAsText(file);
+}
+
+function handlePasteUpload() {
+    const text = document.getElementById('paste-data-input').value.trim();
+    if (!text) { showToast('Please paste some data first', 'error'); return; }
+
+    const lines = text.split('\n').filter(l => l.trim());
+    wizardRows = [];
+    for (const line of lines) {
+        const parts = line.split(',').map(p => p.trim());
+        if (parts.length >= 3) {
+            wizardRows.push({
+                name: parts[0],
+                title: parts[1],
+                company: parts[2],
+                linkedin_url: parts[3] || ''
+            });
+        }
+    }
+
+    if (wizardRows.length === 0) { showToast('Could not parse any rows. Use format: Name, Title, Company, LinkedIn URL', 'error'); return; }
+    showCSVPreview();
+}
+
+function showCSVPreview() {
+    document.getElementById('csv-row-count').textContent = wizardRows.length;
+    const table = document.getElementById('csv-preview-table');
+    const cols = ['name', 'title', 'company', 'email', 'linkedin_url'];
+    table.innerHTML = '<thead><tr>' + cols.map(c => `<th>${c}</th>`).join('') + '</tr></thead><tbody>' +
+        wizardRows.slice(0, 10).map(r => '<tr>' + cols.map(c => `<td>${r[c] || ''}</td>`).join('') + '</tr>').join('') +
+        (wizardRows.length > 10 ? `<tr><td colspan="${cols.length}" style="text-align:center;color:var(--text-muted)">... and ${wizardRows.length - 10} more rows</td></tr>` : '') +
+        '</tbody>';
+    document.getElementById('csv-preview').style.display = 'block';
+}
+
+async function runValidation() {
+    try {
+        const createResp = await apiPost('/api/research-runs', { rows: wizardRows, import_type: 'csv' });
+        currentRunId = createResp.run_id;
+
+        const valResp = await apiPost(`/api/research-runs/${currentRunId}/validate`, {});
+
+        const summary = document.getElementById('validation-summary');
+        const passRate = valResp.valid_count / valResp.total_rows * 100;
+        summary.innerHTML = `
+            <div style="display:flex;gap:16px">
+                <div class="kpi" style="flex:1"><div class="kpi-label">Total Rows</div><div class="kpi-val">${valResp.total_rows}</div></div>
+                <div class="kpi" style="flex:1"><div class="kpi-label">Valid</div><div class="kpi-val" style="color:var(--success)">${valResp.valid_count}</div></div>
+                <div class="kpi" style="flex:1"><div class="kpi-label">Errors</div><div class="kpi-val" style="color:${valResp.error_count > 0 ? 'var(--error)' : 'var(--success)'}">${valResp.error_count}</div></div>
+                <div class="kpi" style="flex:1"><div class="kpi-label">Pass Rate</div><div class="kpi-val">${passRate.toFixed(0)}%</div></div>
+            </div>
+        `;
+
+        if (valResp.errors && valResp.errors.length > 0) {
+            const table = document.getElementById('validation-table');
+            table.innerHTML = '<thead><tr><th>Row</th><th>Name</th><th>Company</th><th>Errors</th></tr></thead><tbody>' +
+                valResp.errors.map(e => `<tr style="color:var(--error)">
+                    <td>${e.row}</td>
+                    <td>${e.data?.name || e.data?.first_name || '-'}</td>
+                    <td>${e.data?.company || '-'}</td>
+                    <td>${e.errors.join(', ')}</td>
+                </tr>`).join('') + '</tbody>';
+        }
+
+        document.getElementById('btn-go-config').disabled = valResp.valid_count === 0;
+    } catch(e) {
+        document.getElementById('validation-summary').innerHTML = `<p style="color:var(--error)">Validation failed: ${e.message}</p>`;
+    }
+}
+
+async function wizExecute() {
+    ['upload','validate','config','execute'].forEach(s => document.getElementById('wiz-' + s).style.display = 'none');
+    document.getElementById('wiz-execute').style.display = 'block';
+    document.getElementById('wiz-step-config').classList.remove('active');
+    document.getElementById('wiz-step-config').classList.add('done');
+    document.getElementById('wiz-step-execute').classList.add('active');
+
+    const name = document.getElementById('run-name-input').value || undefined;
+    const abVar = document.getElementById('ab-variable-select').value;
+
+    const checklist = document.getElementById('sop-checklist');
+    const steps = ['validate', 'accounts', 'contacts', 'score', 'ab_assign', 'drafts', 'quality_gate', 'complete'];
+    const labels = ['Validate CSV data', 'Create/match accounts', 'Create contacts', 'Score & prioritize', 'A/B group assignment', 'Generate message drafts', 'Quality gate checks', 'Finalize run'];
+    checklist.innerHTML = steps.map((s, i) => `
+        <div class="phase-step" id="sop-${s}" style="display:flex;align-items:center;gap:8px;padding:6px 0">
+            <span id="sop-icon-${s}" style="font-size:16px">⏳</span>
+            <span>${labels[i]}</span>
+        </div>
+    `).join('');
+
+    try {
+        const resp = await apiPost(`/api/research-runs/${currentRunId}/execute`, {});
+
+        document.getElementById('exec-progress-pct').textContent = '100%';
+        document.getElementById('exec-progress-bar').style.width = '100%';
+
+        if (resp.checklist) {
+            resp.checklist.forEach(s => {
+                const icon = document.getElementById('sop-icon-' + s.step);
+                if (icon) icon.textContent = s.status === 'passed' ? '✅' : s.status === 'failed' ? '❌' : '⏳';
+            });
+        }
+
+        document.getElementById('exec-result').style.display = 'block';
+        document.getElementById('exec-result').innerHTML = `
+            <div style="background:var(--success-bg);border:1px solid var(--success);border-radius:var(--radius-md);padding:16px">
+                <h4 style="color:var(--success);margin-bottom:8px">✅ Research Run Complete</h4>
+                <p>Created ${resp.contacts_created || 0} contacts with ${resp.drafts_generated || 0} message drafts.</p>
+                ${resp.qc_issues > 0 ? `<p style="color:var(--warning);margin-top:4px">⚠️ ${resp.qc_issues} quality gate issues found.</p>` : ''}
+            </div>
+        `;
+
+        document.getElementById('btn-cancel-run').style.display = 'none';
+        document.getElementById('btn-view-drafts').style.display = 'inline-flex';
+        document.getElementById('wiz-step-execute').classList.remove('active');
+        document.getElementById('wiz-step-execute').classList.add('done');
+
+    } catch(e) {
+        document.getElementById('exec-result').style.display = 'block';
+        document.getElementById('exec-result').innerHTML = `
+            <div style="background:var(--error-bg);border:1px solid var(--error);border-radius:var(--radius-md);padding:16px">
+                <h4 style="color:var(--error)">❌ Pipeline Failed</h4>
+                <p>${e.message || 'Unknown error'}</p>
+            </div>
+        `;
+    }
+}
+
+async function cancelRun() {
+    if (!currentRunId) return;
+    try {
+        await apiPost(`/api/research-runs/${currentRunId}/cancel`, {});
+        showToast('Run cancelled', 'warning');
+        hideRunWizard();
+    } catch(e) { showToast('Cancel failed: ' + e.message, 'error'); }
+}
+
+async function viewRunDetail(runId) {
+    try {
+        const data = await api(`/api/research-runs/${runId}`);
+        const checklist = data.sop_checklist || [];
+        const logs = data.logs || [];
+        alert(`Run: ${data.name}\nStatus: ${data.status}\nProspects: ${data.prospect_count}\nContacts: ${(data.contacts || []).length}\nDrafts: ${(data.drafts || []).length}\n\nLogs:\n${logs.map(l => l.msg).join('\n')}`);
+    } catch(e) { showToast('Failed to load run: ' + e.message, 'error'); }
+}
+
+// =====================================================
+// ANALYTICS PAGE
+// =====================================================
+function showAnalyticsTab(tab) {
+    document.querySelectorAll('#page-analytics .tab-item').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('#page-analytics .tab-content').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('analytics-tab-' + tab).classList.add('active');
+}
+
+async function loadAnalyticsPage() {
+    try {
+        const [stats, intelligence, experiments, signals] = await Promise.all([
+            api('/api/stats'),
+            api('/api/analytics/intelligence').catch(() => ({})),
+            api('/api/experiments').catch(() => ({experiments: []})),
+            api('/api/signals').catch(() => ({signals: []}))
+        ]);
+
+        const kpis = document.getElementById('analytics-kpis');
+        kpis.innerHTML = `
+            <div class="kpi"><div class="kpi-label">Reply Rate</div><div class="kpi-val">${(stats.reply_rate || 0).toFixed(1)}%</div></div>
+            <div class="kpi"><div class="kpi-label">Meeting Rate</div><div class="kpi-val">${(stats.meeting_rate || 0).toFixed(1)}%</div></div>
+            <div class="kpi"><div class="kpi-label">Total Sent</div><div class="kpi-val">${stats.total_sent || 0}</div></div>
+            <div class="kpi"><div class="kpi-label">Signals Active</div><div class="kpi-val">${(signals.signals || []).length}</div></div>
+        `;
+
+        const breakdown = intelligence.breakdowns || intelligence;
+        document.getElementById('analytics-breakdown').innerHTML = breakdown && typeof breakdown === 'object' ?
+            '<pre style="color:var(--text-secondary);font-size:11px;white-space:pre-wrap">' + JSON.stringify(breakdown, null, 2) + '</pre>' :
+            '<p style="color:var(--text-muted)">No performance data yet. Complete a research run to see analytics.</p>';
+
+        const exps = experiments.experiments || [];
+        document.getElementById('analytics-experiments').innerHTML = exps.length > 0 ?
+            exps.map(e => `<div class="card" style="margin-bottom:8px;padding:12px">
+                <strong>${e.name || e.variable}</strong>
+                <span class="tag" style="margin-left:8px">${e.status || 'active'}</span>
+                <p style="color:var(--text-secondary);margin-top:4px">${e.description || ''}</p>
+            </div>`).join('') :
+            '<p style="color:var(--text-muted)">No A/B tests yet. Start a research run with an A/B variable to begin testing.</p>';
+
+        const sigs = signals.signals || [];
+        document.getElementById('analytics-signals').innerHTML = sigs.length > 0 ?
+            sigs.map(s => `<div style="padding:8px 0;border-bottom:1px solid var(--border-subtle)">
+                <span class="tag ${s.signal_type === 'buyer_intent' ? 'tag-hot' : ''}">${s.signal_type}</span>
+                <span style="margin-left:8px">${s.description || ''}</span>
+                <span style="color:var(--text-muted);margin-left:8px;font-size:11px">${s.detected_at || ''}</span>
+            </div>`).join('') :
+            '<p style="color:var(--text-muted)">No signals detected yet.</p>';
+    } catch(e) { console.error('loadAnalyticsPage:', e); }
+}
+
+// =====================================================
+// SYSTEM PAGE
+// =====================================================
+function showSystemTab(tab) {
+    document.querySelectorAll('#page-system .tab-item').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('#page-system .tab-content').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('system-tab-' + tab).classList.add('active');
+}
+
+async function loadSystemPage() {
+    try {
+        const [health, agents, dryrun] = await Promise.all([
+            api('/api/health').catch(() => ({status: 'ok'})),
+            api('/api/analytics/agent-logs?limit=20').catch(() => ({runs: []})),
+            api('/api/system/dry-run').catch(() => ({dry_run: true}))
+        ]);
+
+        const kpis = document.getElementById('system-health-kpis');
+        kpis.innerHTML = `
+            <div class="kpi"><div class="kpi-label">API Status</div><div class="kpi-val" style="color:var(--success)">Online</div></div>
+            <div class="kpi"><div class="kpi-label">DRY RUN</div><div class="kpi-val" style="color:var(--warning)">${dryrun.dry_run ? 'ON' : 'OFF'}</div></div>
+        `;
+
+        const agentRuns = agents.runs || agents.agent_runs || [];
+        document.getElementById('system-agents-body').innerHTML = agentRuns.map(a => `<tr>
+            <td>${a.agent_type || a.type || ''}</td>
+            <td>${a.run_type || ''}</td>
+            <td><span class="tag">${a.status || ''}</span></td>
+            <td>${a.duration_ms ? (a.duration_ms / 1000).toFixed(1) + 's' : '-'}</td>
+            <td style="font-size:11px">${a.created_at || ''}</td>
+        </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--text-muted)">No agent runs yet</td></tr>';
+
+        try {
+            const linkedin = await api('/api/linkedin/stats');
+            document.getElementById('system-linkedin-content').innerHTML = `
+                <div class="kpi-row">
+                    <div class="kpi"><div class="kpi-label">Profiles</div><div class="kpi-val">${linkedin.profiles || 0}</div></div>
+                    <div class="kpi"><div class="kpi-label">Drafts</div><div class="kpi-val">${linkedin.drafts || 0}</div></div>
+                    <div class="kpi"><div class="kpi-label">DRY RUN</div><div class="kpi-val" style="color:var(--warning)">${linkedin.dry_run ? 'ON' : 'OFF'}</div></div>
+                </div>
+            `;
+        } catch(e) {}
+
+        try {
+            const email = await api('/api/email/stats');
+            document.getElementById('system-email-content').innerHTML = `
+                <div class="kpi-row">
+                    <div class="kpi"><div class="kpi-label">Identities</div><div class="kpi-val">${email.identities || 0}</div></div>
+                    <div class="kpi"><div class="kpi-label">Suppressed</div><div class="kpi-val">${email.suppressed || 0}</div></div>
+                </div>
+            `;
+        } catch(e) {
+            document.getElementById('system-email-content').innerHTML = '<p style="color:var(--text-muted)">Email stats unavailable</p>';
+        }
+    } catch(e) { console.error('loadSystemPage:', e); }
+}
+
+// =====================================================
+// DATA PAGE (Admin)
+// =====================================================
+async function loadDataPage() {
+    try {
+        const summary = await api('/api/admin/data-summary');
+
+        const kpis = document.getElementById('data-kpis');
+        let totalSeed = 0, totalImport = 0, totalAll = 0;
+        Object.values(summary).forEach(t => {
+            totalSeed += (t.seed || 0);
+            totalImport += (t.csv_import || 0) + (t.paste_import || 0) + (t.manual || 0);
+            totalAll += (t._total || 0);
+        });
+        kpis.innerHTML = `
+            <div class="kpi"><div class="kpi-label">Total Records</div><div class="kpi-val">${totalAll}</div></div>
+            <div class="kpi"><div class="kpi-label">Seed Data</div><div class="kpi-val" style="color:var(--warning)">${totalSeed}</div></div>
+            <div class="kpi"><div class="kpi-label">Imported</div><div class="kpi-val" style="color:var(--success)">${totalImport}</div></div>
+        `;
+
+        const lineage = document.getElementById('data-lineage');
+        lineage.innerHTML = Object.entries(summary).map(([table, counts]) => `
+            <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border-subtle)">
+                <span>${table}</span>
+                <span>
+                    ${counts._total || 0} total
+                    ${counts.seed ? ` <span class="tag" style="font-size:10px">${counts.seed} seed</span>` : ''}
+                    ${counts.csv_import ? ` <span class="tag tag-warm" style="font-size:10px">${counts.csv_import} imported</span>` : ''}
+                </span>
+            </div>
+        `).join('');
+    } catch(e) { console.error('loadDataPage:', e); }
+}
+
+async function exportAllData() {
+    try {
+        const data = await api('/api/admin/export-all');
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `occ-backup-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('Backup exported successfully', 'success');
+    } catch(e) { showToast('Export failed: ' + e.message, 'error'); }
+}
+
+async function handleImportBackup(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+        try {
+            const data = JSON.parse(e.target.result);
+            const resp = await apiPost('/api/admin/import-backup', data);
+            showToast('Backup imported: ' + JSON.stringify(resp.tables), 'success');
+            loadDataPage();
+        } catch(err) { showToast('Import failed: ' + err.message, 'error'); }
+    };
+    reader.readAsText(file);
+}
+
+async function showCleanupPreview() {
+    try {
+        const preview = await apiPost('/api/admin/cleanup/preview', {});
+        const content = document.getElementById('cleanup-preview-content');
+        content.innerHTML = `
+            <p style="margin-bottom:12px">This will delete <strong>${preview.total_records}</strong> seed/demo records:</p>
+            ${Object.entries(preview.tables).map(([t, c]) => c > 0 ? `<div style="padding:4px 0">${t}: <strong>${c}</strong> records</div>` : '').join('')}
+            <p style="margin-top:12px;color:var(--warning)">This action is safe. Seed data will regenerate on next server restart unless SKIP_SEED=true is set.</p>
+        `;
+        document.getElementById('cleanup-preview').style.display = 'block';
+    } catch(e) { showToast('Preview failed: ' + e.message, 'error'); }
+}
+
+async function executeCleanup() {
+    try {
+        const resp = await apiPost('/api/admin/cleanup/execute', {confirm: true});
+        showToast(`Cleaned ${resp.total} records`, 'success');
+        document.getElementById('cleanup-preview').style.display = 'none';
+        loadDataPage();
+    } catch(e) { showToast('Cleanup failed: ' + e.message, 'error'); }
 }
 
 </script>
