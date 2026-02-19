@@ -511,6 +511,64 @@ CREATE TABLE IF NOT EXISTS research_evidence (
     source_url TEXT,
     created_at TEXT DEFAULT (datetime('now'))
 );
+
+CREATE TABLE IF NOT EXISTS outreach_touches (
+    id TEXT PRIMARY KEY,
+    contact_id TEXT REFERENCES contacts(id),
+    draft_id TEXT REFERENCES message_drafts(id),
+    channel TEXT NOT NULL,
+    touch_number INTEGER,
+    touch_type TEXT,
+    sent_at TEXT,
+    sent_method TEXT DEFAULT 'manual_copy',
+    message_hash TEXT,
+    proof_point_used TEXT,
+    pain_hook TEXT,
+    opener_style TEXT,
+    personalization_score INTEGER,
+    ab_group TEXT,
+    batch_id TEXT,
+    created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS outreach_responses (
+    id TEXT PRIMARY KEY,
+    touch_id TEXT REFERENCES outreach_touches(id),
+    contact_id TEXT REFERENCES contacts(id),
+    response_type TEXT NOT NULL,
+    response_text TEXT,
+    sentiment TEXT,
+    interest_level TEXT,
+    what_resonated TEXT,
+    objection_encountered TEXT,
+    referral_name TEXT,
+    referral_title TEXT,
+    reply_time_hours INTEGER,
+    received_at TEXT,
+    tags TEXT DEFAULT '[]',
+    notes TEXT,
+    created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS outreach_outcomes (
+    id TEXT PRIMARY KEY,
+    contact_id TEXT REFERENCES contacts(id),
+    outcome_type TEXT NOT NULL,
+    meeting_date TEXT,
+    meeting_notes TEXT,
+    opportunity_created INTEGER DEFAULT 0,
+    opportunity_value TEXT,
+    learnings TEXT,
+    what_worked TEXT,
+    what_didnt TEXT,
+    created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_touches_contact ON outreach_touches(contact_id);
+CREATE INDEX IF NOT EXISTS idx_touches_channel ON outreach_touches(channel);
+CREATE INDEX IF NOT EXISTS idx_responses_touch ON outreach_responses(touch_id);
+CREATE INDEX IF NOT EXISTS idx_responses_contact ON outreach_responses(contact_id);
+CREATE INDEX IF NOT EXISTS idx_outcomes_contact ON outreach_outcomes(contact_id);
 """
 
 # ---------------------------------------------------------------------------
@@ -550,426 +608,8 @@ CHANNELS = ["linkedin", "email", "phone"]
 STAGES = ["new", "touched", "engaged", "replied", "meeting_booked", "not_interested"]
 
 def seed_database():
-    if os.environ.get("SKIP_SEED", "").lower() in ("true", "1", "yes"):
-        return
-
-    db_path = os.environ.get("OCC_DB_PATH", "/tmp/outreach.db")
-    conn = sqlite3.connect(db_path)
-    conn.execute("PRAGMA foreign_keys=ON")
-
-    # Check if already seeded
-    count = conn.execute("SELECT COUNT(*) FROM accounts").fetchone()[0]
-    if count > 0:
-        conn.close()
-        return
-
-    now = datetime.utcnow()
-    random.seed(42)
-
-    account_ids = []
-    contact_ids = []
-    batch_ids = []
-    message_ids = []
-
-    # --- ACCOUNTS ---
-    for i, (name, domain, industry, emp) in enumerate(COMPANIES):
-        aid = f"acc_{uuid.uuid4().hex[:12]}"
-        account_ids.append(aid)
-        tier = "enterprise" if emp > 5000 else ("mid_market" if emp > 1000 else "smb")
-        tools = random.choice([["Selenium"], ["Cypress"], ["Playwright"], ["Katalon"], ["TOSCA"], []])
-        conn.execute("""INSERT INTO accounts (id,name,domain,industry,employee_count,employee_band,tier,
-            known_tools,buyer_intent,hq_location,created_at,updated_at,source)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-            (aid, name, domain, industry, emp,
-             "1K-5K" if emp < 5000 else "5K+", tier,
-             json.dumps(tools), random.choice([0,0,0,1]), "San Francisco, CA",
-             (now - timedelta(days=random.randint(1,90))).isoformat(),
-             now.isoformat(), "seed"))
-
-    # --- CONTACTS ---
-    for i in range(25):
-        cid = f"con_{uuid.uuid4().hex[:12]}"
-        contact_ids.append(cid)
-        acct = account_ids[i % len(account_ids)]
-        is_qa = i < 15
-        title = random.choice(TITLES_QA) if is_qa else random.choice(TITLES_VP)
-        persona = "qa_leader" if is_qa else "vp_eng"
-        priority = random.randint(2, 5)
-        stage = random.choice(STAGES)
-        conn.execute("""INSERT INTO contacts (id,account_id,first_name,last_name,title,persona_type,
-            seniority_level,email,linkedin_url,location,tenure_months,recently_hired,
-            stage,priority_score,personalization_score,status,source,created_at,updated_at)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-            (cid, acct, FIRST_NAMES[i], LAST_NAMES[i], title, persona,
-             "director" if "Director" in title or "Head" in title else ("vp" if "VP" in title or "CTO" in title else "manager"),
-             f"{FIRST_NAMES[i].lower()}.{LAST_NAMES[i].lower()}@{COMPANIES[i%len(COMPANIES)][1]}",
-             f"https://linkedin.com/in/{FIRST_NAMES[i].lower()}{LAST_NAMES[i].lower()}{random.randint(10,99)}",
-             "San Francisco, CA", random.randint(3, 72),
-             1 if random.random() < 0.2 else 0,
-             stage, priority, random.randint(1,3), "active", "seed",
-             (now - timedelta(days=random.randint(1,60))).isoformat(), now.isoformat()))
-
-    # --- BATCHES ---
-    for b in range(3):
-        bid = f"bat_{uuid.uuid4().hex[:12]}"
-        batch_ids.append(bid)
-        conn.execute("""INSERT INTO batches (id,batch_number,created_date,prospect_count,
-            ab_variable,status,created_at,source) VALUES (?,?,?,?,?,?,?,?)""",
-            (bid, b+1, (now - timedelta(days=30-b*10)).strftime("%Y-%m-%d"),
-             random.randint(20,25), random.choice(["pain_hook","proof_point_style","opener_style"]),
-             "complete" if b < 2 else "active", now.isoformat(), "seed"))
-
-    # --- MESSAGE DRAFTS ---
-    for i, cid in enumerate(contact_ids[:20]):
-        for touch in [1, 3, 5, 6]:
-            mid = f"msg_{uuid.uuid4().hex[:12]}"
-            message_ids.append(mid)
-            bid = batch_ids[i % len(batch_ids)]
-            ch = "linkedin" if touch in [1,3,6] else "email"
-            company_name = COMPANIES[i%len(COMPANIES)][0]
-            first = FIRST_NAMES[i%25]
-            proof = random.choice(PROOF_POINTS)
-            pain = random.choice(PAIN_HOOKS)
-            opener = random.choice(["career_reference", "company_metric", "role_specific"])
-            # Generate realistic full messages per touch type
-            if touch == 1:
-                subject = f"Quick question re: {company_name}"
-                body = (f"Your role leading QA at {company_name} caught my attention - "
-                    f"the scope of what you're managing there is impressive.\n\n"
-                    f"Teams scaling test automation at companies like {company_name} "
-                    f"often hit a wall with {pain} as the product surface grows.\n\n"
-                    f"{proof}\n\n"
-                    f"Would love to share how that could apply to {company_name}. "
-                    f"If it's not relevant, no worries at all.")
-            elif touch == 3:
-                subject = f"Following up - {company_name}"
-                body = (f"Circling back quick, {first} - wanted to share one more angle.\n\n"
-                    f"{proof}\n\n"
-                    f"Thought it might resonate given what your team at {company_name} "
-                    f"is likely dealing with. Happy to share more if helpful.")
-            elif touch == 5:
-                subject = f"One more thought - {company_name} QA"
-                body = (f"Hi {first}, quick note from a different angle.\n\n"
-                    f"A lot of QA leaders at companies like {company_name} tell us their "
-                    f"biggest pain is {pain}.\n\n"
-                    f"{proof}\n\n"
-                    f"Worth a quick chat? If the timing is off, totally fine.")
-            else:  # touch 6 (breakup)
-                subject = f"Closing the loop - {company_name}"
-                body = (f"Hi {first}, I've reached out a few times and want to be "
-                    f"respectful of your time.\n\n"
-                    f"If test automation isn't a priority right now at {company_name}, "
-                    f"totally get it. Just wanted to close the loop so I'm not clogging "
-                    f"your inbox.\n\n"
-                    f"If things change down the road, happy to reconnect. Wishing you "
-                    f"and the team well.")
-            wc = len(body.split())
-            conn.execute("""INSERT INTO message_drafts (id,contact_id,batch_id,channel,
-                touch_number,touch_type,subject_line,body,personalization_score,
-                proof_point_used,pain_hook,opener_style,word_count,
-                approval_status,ab_group,created_at,source) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-                (mid, cid, bid, ch, touch,
-                 f"touch_{touch}_{'inmail' if ch=='linkedin' else 'email'}",
-                 subject, body,
-                 random.randint(1,3), proof, pain, opener, wc,
-                 random.choice(["approved","draft","pending_review"]),
-                 random.choice(["A","B"]), now.isoformat(), "seed"))
-
-    # --- TOUCHPOINTS ---
-    for i in range(40):
-        cid = contact_ids[i % len(contact_ids)]
-        tid = f"tp_{uuid.uuid4().hex[:12]}"
-        ch = random.choice(CHANNELS)
-        conn.execute("""INSERT INTO touchpoints (id,contact_id,channel,touch_number,
-            sent_at,outcome,created_at,source) VALUES (?,?,?,?,?,?,?,?)""",
-            (tid, cid, ch, random.randint(1,6),
-             (now - timedelta(days=random.randint(1,45))).isoformat(),
-             random.choice(["sent","opened","no_response","replied"]),
-             now.isoformat(), "seed"))
-
-    # --- REPLIES ---
-    for i in range(12):
-        cid = contact_ids[i % len(contact_ids)]
-        rid = f"rep_{uuid.uuid4().hex[:12]}"
-        conn.execute("""INSERT INTO replies (id,contact_id,channel,intent,reply_tag,
-            summary,replied_at,created_at,source) VALUES (?,?,?,?,?,?,?,?,?)""",
-            (rid, cid, random.choice(["linkedin","email"]),
-             random.choice(["positive","negative","referral","timing"]),
-             random.choice(["pain_hook","proof_point","timing","referral","opener","not_interested"]),
-             "Thanks for reaching out...",
-             (now - timedelta(days=random.randint(1,30))).isoformat(),
-             now.isoformat(), "seed"))
-
-    # --- OPPORTUNITIES ---
-    for i in range(5):
-        cid = contact_ids[i]
-        aid = account_ids[i]
-        conn.execute("""INSERT INTO opportunities (id,contact_id,account_id,meeting_date,
-            status,pipeline_value,attribution_channel,attribution_proof_point,
-            attribution_pain_hook,created_at,source) VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
-            (f"opp_{uuid.uuid4().hex[:12]}", cid, aid,
-             (now + timedelta(days=random.randint(1,14))).isoformat(),
-             random.choice(["meeting_booked","meeting_held","opportunity_created"]),
-             random.choice([15000, 25000, 50000, 75000]),
-             random.choice(["linkedin","email"]),
-             random.choice(PROOF_POINTS), random.choice(PAIN_HOOKS),
-             now.isoformat(), "seed"))
-
-    # --- SIGNALS ---
-    for i in range(15):
-        aid = account_ids[i % len(account_ids)]
-        cid = contact_ids[i % len(contact_ids)]
-        conn.execute("""INSERT INTO signals (id,account_id,contact_id,signal_type,
-            description,created_at,source) VALUES (?,?,?,?,?,?,?)""",
-            (f"sig_{uuid.uuid4().hex[:12]}", aid, cid,
-             random.choice(["buyer_intent","job_posting","funding","product_launch","leadership_change"]),
-             random.choice(["Buyer intent detected on G2", "New QA engineer job posting",
-                          "Series B funding announced", "Major product launch", "New VP Eng hired"]),
-             (now - timedelta(days=random.randint(1,20))).isoformat(), "seed"))
-
-    # --- EXPERIMENTS ---
-    for i, (name, var) in enumerate([
-        ("Pain Hook: Flaky vs Speed", "pain_hook"),
-        ("Proof Point: Named vs Anonymous", "proof_point_style"),
-        ("Opener: Career vs Company", "opener_style"),
-    ]):
-        conn.execute("""INSERT INTO experiments (id,name,variable,group_a_desc,group_b_desc,
-            status,group_a_sent,group_a_replies,group_b_sent,group_b_replies,
-            created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
-            (f"exp_{uuid.uuid4().hex[:12]}", name, var,
-             f"Group A: {var} variant 1", f"Group B: {var} variant 2",
-             "active", random.randint(20,40), random.randint(0,4),
-             random.randint(20,40), random.randint(0,4), now.isoformat()))
-
-    # --- AGENT RUNS ---
-    for i in range(20):
-        conn.execute("""INSERT INTO agent_runs (id,run_type,agent_name,status,
-            tokens_used,duration_ms,started_at,completed_at) VALUES (?,?,?,?,?,?,?,?)""",
-            (f"run_{uuid.uuid4().hex[:12]}",
-             random.choice(["research","scoring","drafting","qc","swarm"]),
-             random.choice(["ResearchAgent","ScoringAgent","DraftingAgent","QCAgent","SwarmSupervisor"]),
-             random.choice(["completed","completed","completed","failed"]),
-             random.randint(500,5000), random.randint(1000,30000),
-             (now - timedelta(hours=random.randint(1,72))).isoformat(),
-             now.isoformat()))
-
-    # --- FOLLOWUPS ---
-    for i in range(8):
-        cid = contact_ids[i % len(contact_ids)]
-        conn.execute("""INSERT INTO followups (id,contact_id,touch_number,channel,
-            due_date,state,created_at) VALUES (?,?,?,?,?,?,?)""",
-            (f"fu_{uuid.uuid4().hex[:12]}", cid, random.randint(2,6),
-             random.choice(CHANNELS),
-             (now + timedelta(days=random.randint(-3,7))).strftime("%Y-%m-%d"),
-             random.choice(["pending","pending","completed"]), now.isoformat()))
-
-    # --- EMAIL IDENTITIES ---
-    conn.execute("""INSERT INTO email_identities (id,email_address,display_name,
-        daily_limit,warmup_phase,warmup_day,reputation_score,is_active,created_at)
-        VALUES (?,?,?,?,?,?,?,?,?)""",
-        ("eid_primary", "rob@testsigma.com", "Rob Gorham",
-         50, 0, 30, 98.5, 1, now.isoformat()))
-    conn.execute("""INSERT INTO email_identities (id,email_address,display_name,
-        daily_limit,warmup_phase,warmup_day,reputation_score,is_active,created_at)
-        VALUES (?,?,?,?,?,?,?,?,?)""",
-        ("eid_secondary", "rgorham@testsigma.com", "Rob G",
-         30, 1, 12, 92.0, 1, now.isoformat()))
-
-    # --- PACING RULES ---
-    conn.execute("""INSERT INTO pacing_rules (id,identity_id,channel,max_per_day,
-        max_per_hour,min_gap_seconds,is_active) VALUES (?,?,?,?,?,?,?)""",
-        ("pr_1", "eid_primary", "email", 50, 10, 120, 1))
-
-    # --- SWARM RUNS ---
-    for i in range(5):
-        conn.execute("""INSERT INTO swarm_runs (id,swarm_type,status,total_tasks,
-            completed_tasks,failed_tasks,started_at) VALUES (?,?,?,?,?,?,?)""",
-            (f"swarm_{uuid.uuid4().hex[:12]}", "full_batch",
-             random.choice(["completed","completed","running"]),
-             random.randint(20,50), random.randint(15,45), random.randint(0,3),
-             (now - timedelta(hours=random.randint(1,48))).isoformat()))
-
-    # --- FEATURE FLAGS ---
-    for name, enabled, desc in [
-        ("email_sending", 1, "Enable live email sending"),
-        ("auto_followup", 0, "Auto-schedule followups"),
-        ("swarm_mode", 1, "Enable agent swarm orchestration"),
-        ("quality_gate", 1, "QC gate before message approval"),
-        ("buyer_intent_boost", 1, "Boost priority for buyer intent signals"),
-    ]:
-        conn.execute("""INSERT INTO feature_flags (id,name,enabled,description,created_at)
-            VALUES (?,?,?,?,?)""",
-            (f"ff_{uuid.uuid4().hex[:12]}", name, enabled, desc, now.isoformat()))
-
-    # --- FLOW RUNS (new) ---
-    for i in range(4):
-        frid = f"flow_{uuid.uuid4().hex[:12]}"
-        flow_status = "completed" if i < 2 else "running"
-        conn.execute("""INSERT INTO flow_runs (id,flow_type,status,config,total_steps,
-            completed_steps,failed_steps,started_at,completed_at,duration_ms,created_at)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
-            (frid, random.choice(["account_research", "linkedin_prospecting", "email_prospecting"]),
-             flow_status, json.dumps({"volume_cap": 10, "quality_bar": "strict"}),
-             5, 5 if flow_status == "completed" else 2,
-             0, (now - timedelta(hours=random.randint(2,24))).isoformat(),
-             (now - timedelta(hours=random.randint(0,12))).isoformat() if flow_status == "completed" else None,
-             random.randint(30000, 180000) if flow_status == "completed" else 0,
-             (now - timedelta(hours=random.randint(2,24))).isoformat()))
-
-    # --- FLOW RUN STEPS (new) ---
-    flow_runs = conn.execute("SELECT id FROM flow_runs").fetchall()
-    for fr in flow_runs:
-        flow_run_id = fr[0]
-        for step_idx in range(5):
-            step_id = f"step_{uuid.uuid4().hex[:12]}"
-            step_status = "completed" if step_idx < 4 else "pending"
-            conn.execute("""INSERT INTO flow_run_steps (id,flow_run_id,step_name,agent_type,
-                status,tokens_used,duration_ms,started_at,completed_at,created_at)
-                VALUES (?,?,?,?,?,?,?,?,?,?)""",
-                (step_id, flow_run_id, f"step_{step_idx+1}",
-                 random.choice(["ResearchAgent", "DraftingAgent", "QCAgent"]),
-                 step_status, random.randint(500, 2000) if step_status == "completed" else 0,
-                 random.randint(5000, 30000) if step_status == "completed" else 0,
-                 (now - timedelta(hours=1)).isoformat() if step_status == "completed" else None,
-                 (now - timedelta(minutes=30)).isoformat() if step_status == "completed" else None,
-                 (now - timedelta(hours=1)).isoformat()))
-
-    # --- FLOW ARTIFACTS (new) ---
-    for fr in flow_runs[:2]:
-        flow_run_id = fr[0]
-        art_id = f"art_{uuid.uuid4().hex[:12]}"
-        conn.execute("""INSERT INTO flow_artifacts (id,flow_run_id,artifact_type,title,
-            content,metadata,status,created_at)
-            VALUES (?,?,?,?,?,?,?,?)""",
-            (art_id, flow_run_id, "account_brief", "Account Research Brief",
-             json.dumps({"account": "Example Corp", "employees": 5000, "industry": "SaaS"}),
-             json.dumps({"research_depth": "comprehensive"}), "ready", now.isoformat()))
-
-    # --- ACTIVITY TIMELINE (new) ---
-    for i in range(12):
-        act_id = f"act_{uuid.uuid4().hex[:12]}"
-        contact_id = contact_ids[i % len(contact_ids)]
-        conn.execute("""INSERT INTO activity_timeline (id,contact_id,channel,activity_type,
-            description,created_at) VALUES (?,?,?,?,?,?)""",
-            (act_id, contact_id,
-             random.choice(["linkedin", "email", "phone"]),
-             random.choice(["message_sent", "reply_received", "meeting_booked", "call_made"]),
-             f"Activity on {contact_id}",
-             (now - timedelta(days=random.randint(1,20))).isoformat()))
-
-    # --- DRAFT VERSIONS (new) ---
-    for i, cid in enumerate(contact_ids[:10]):
-        draft_id = f"draft_{uuid.uuid4().hex[:12]}"
-        for v in range(1, 3):
-            dv_id = f"draftv_{uuid.uuid4().hex[:12]}"
-            conn.execute("""INSERT INTO draft_versions (id,draft_id,contact_id,channel,
-                touch_number,subject,body,version,status,personalization_score,
-                proof_point,pain_hook,opener_style,word_count,confidence_score,created_at)
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-                (dv_id, draft_id, cid,
-                 random.choice(["linkedin", "email"]), random.randint(1,6),
-                 f"Subject for {cid}",
-                 f"Body text for version {v}",
-                 v, "draft" if v == 1 else "approved",
-                 random.randint(1,3), random.choice(PROOF_POINTS),
-                 random.choice(PAIN_HOOKS),
-                 random.choice(["career_reference", "company_metric"]),
-                 random.randint(70, 120),
-                 0.85 + random.random() * 0.15,
-                 (now - timedelta(days=random.randint(1,10))).isoformat()))
-
-    # --- SENDER HEALTH SNAPSHOTS (new) ---
-    email_identities = conn.execute("SELECT id FROM email_identities").fetchall()
-    for eid in email_identities:
-        identity_id = eid[0]
-        for d in range(2):
-            snap_id = f"snap_{uuid.uuid4().hex[:12]}"
-            snap_date = (now - timedelta(days=d)).strftime("%Y-%m-%d")
-            conn.execute("""INSERT INTO sender_health_snapshots (id,identity_id,date,
-                emails_sent,bounces,complaints,replies,bounce_rate,complaint_rate,
-                reply_rate,domain_reputation,spf_pass,dkim_pass,dmarc_pass,created_at)
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-                (snap_id, identity_id, snap_date,
-                 random.randint(30, 50), random.randint(0, 2),
-                 0, random.randint(2, 8),
-                 round(random.uniform(0, 0.05), 3),
-                 0.0,
-                 round(random.uniform(0.05, 0.15), 3),
-                 "good", 1, 1, random.choice([0, 1]),
-                 now.isoformat()))
-
-    # --- CONTACT IDENTITIES (new) ---
-    for cid in contact_ids[:15]:
-        ci_id = f"ci_{uuid.uuid4().hex[:12]}"
-        conn.execute("""INSERT INTO contact_identities (id,contact_id,identity_type,
-            value,verified,is_primary,created_at)
-            VALUES (?,?,?,?,?,?,?)""",
-            (ci_id, cid, "email",
-             f"{FIRST_NAMES[contact_ids.index(cid) % len(FIRST_NAMES)].lower()}.{LAST_NAMES[contact_ids.index(cid) % len(LAST_NAMES)].lower()}@example.com",
-             1, 1, now.isoformat()))
-
-    # --- WORKFLOW DEFINITIONS ---
-    workflows = [
-        ("wf_account_research", "Account Research", "account_research", "linkedin",
-         "Research a target account: company overview, ICP fit, org structure, pain hypothesis",
-         '["validate_input","gather_company_data","analyze_icp_fit","identify_pain_points","generate_brief"]',
-         '["company_name_required","domain_check"]'),
-        ("wf_prospect_shortlist", "Prospect Shortlist Builder", "prospect_shortlist", "linkedin",
-         "Filter and score a list of prospects against ICP criteria, flag exclusions",
-         '["validate_csv","filter_titles","score_icp","flag_exclusions","rank_output"]',
-         '["icp_title_match","seniority_check"]'),
-        ("wf_linkedin_draft", "LinkedIn Message Drafts", "linkedin_message_draft", "linkedin",
-         "Generate personalized LinkedIn messages using SOP rules: opener, pain hook, proof point, soft ask",
-         '["load_prospect","load_research","select_proof_point","generate_variants","quality_gate","finalize"]',
-         '["no_em_dashes","word_count_check","personalization_check","six_element_check"]'),
-        ("wf_followup_sequence", "Follow-Up Sequence Planner", "followup_sequence", "linkedin",
-         "Create follow-up 1, follow-up 2, and break-up message for non-responders",
-         '["load_original","analyze_angle","draft_followup1","draft_followup2","draft_breakup","quality_gate"]',
-         '["different_angle_check","word_count_check","no_guilt_trip"]'),
-        ("wf_daily_plan", "Daily BDR Plan Generator", "daily_plan", "multi",
-         "Generate today's prioritized action checklist based on pipeline state and targets",
-         '["load_pipeline","identify_hot","identify_overdue","plan_touches","generate_checklist"]',
-         '[]'),
-        ("wf_email_draft", "Email Draft Generator", "email_draft", "email",
-         "Generate personalized cold email with subject line, body, and follow-ups",
-         '["load_prospect","load_research","generate_subject","generate_body","quality_gate","finalize"]',
-         '["no_em_dashes","deliverability_check","subject_length","word_count_check"]'),
-        ("wf_call_prep", "Cold Call Prep", "call_prep", "phone",
-         "Generate 3-line call script snippet: opener, pain hypothesis, bridge to ask",
-         '["load_prospect","load_research","generate_opener","generate_pain","generate_bridge"]',
-         '["three_line_max","different_angle_from_inmail"]'),
-    ]
-    for wid, name, wtype, ch, desc, steps, gates in workflows:
-        conn.execute("""INSERT INTO workflow_definitions
-            (id, name, workflow_type, channel, description, steps, safety_gates, version)
-            VALUES (?,?,?,?,?,?,?,1)""", (wid, name, wtype, ch, desc, steps, gates))
-
-    # --- SEED SAMPLE WORKFLOW RUNS (for demo) ---
-    for i, (wid, name, wtype, ch, desc, steps, gates) in enumerate(workflows[:3]):
-        rid = f"wr_{uuid.uuid4().hex[:12]}"
-        status = "succeeded" if i < 2 else "running"
-        conn.execute("""INSERT INTO workflow_runs
-            (id, workflow_id, workflow_type, channel, status, dry_run, total_steps, completed_steps, started_at, completed_at, duration_ms, created_at)
-            VALUES (?,?,?,?,?,1,?,?,?,?,?,?)""",
-            (rid, wid, wtype, ch, status, 5, 5 if i < 2 else 3,
-             (now - timedelta(hours=random.randint(1,48))).isoformat(),
-             (now - timedelta(hours=random.randint(0,1))).isoformat() if i < 2 else None,
-             random.randint(2000, 15000), now.isoformat()))
-        # Add steps for each run
-        step_names_list = json.loads(steps)
-        for j, sname in enumerate(step_names_list):
-            sid = f"ws_{uuid.uuid4().hex[:12]}"
-            s_status = "succeeded" if j < (5 if i < 2 else 3) else "pending"
-            conn.execute("""INSERT INTO workflow_run_steps
-                (id, run_id, step_name, step_type, status, started_at, completed_at, duration_ms)
-                VALUES (?,?,?,?,?,?,?,?)""",
-                (sid, rid, sname, "agent", s_status,
-                 (now - timedelta(minutes=random.randint(1,30))).isoformat(),
-                 (now - timedelta(minutes=random.randint(0,1))).isoformat() if s_status == "succeeded" else None,
-                 random.randint(500, 5000) if s_status == "succeeded" else 0))
-
-    conn.commit()
-    conn.close()
+    # Demo/seed data disabled. Only real data from imports/API.
+    return
 
 # ---------------------------------------------------------------------------
 # INITIALIZE DB ON COLD START
@@ -1744,25 +1384,62 @@ def edit_draft(draft_id: str, data: dict):
     conn.close()
     return dict(row) if row else {"version": new_version}
 
-def validate_draft_content(subject: str = None, body: str = None):
+def validate_draft_content(subject: str = None, body: str = None, touch_type: str = None, channel: str = None):
     """Validate draft content meets minimum completeness requirements."""
     errors = []
+
+    # Subject validation
     if subject is not None and len(subject.strip()) < 8:
         errors.append("Subject must be at least 8 characters")
+
     if body is not None:
         body_stripped = body.strip()
+        body_char_count = len(body_stripped)
         word_count = len(body_stripped.split())
+
+        # Determine minimum character count based on touch_type and channel
+        min_chars = 150  # default for follow-ups (touch 3)
+        if touch_type == 'break_up' or touch_type == 'touch_6':
+            min_chars = 100
+        elif touch_type == 'connect_note':
+            min_chars = 200
+        elif touch_type == 'inmail' or channel == 'linkedin' or touch_type in ('touch_1', 'touch_5'):
+            min_chars = 350
+
+        # Check character count
+        if body_char_count < min_chars:
+            errors.append(f"Body must be at least {min_chars} characters (currently {body_char_count})")
+
+        # Word count check (general)
         if word_count < 30:
             errors.append(f"Body must be at least 30 words (currently {word_count})")
+
+        # Check for incomplete indicators
         if body_stripped.endswith("..."):
             errors.append("Body appears incomplete (ends with '...')")
+
+        # Paragraph break check (general requirement)
         paragraphs = [p.strip() for p in body_stripped.split("\n\n") if p.strip()]
-        if len(paragraphs) < 2:
-            errors.append("Body must contain at least 2 paragraphs")
-        placeholders = [t for t in ["{first_name}", "{company}", "{title}"] if t in body_stripped]
+        if len(paragraphs) < 1:
+            errors.append("Body must contain at least 1 paragraph break (\\n\\n)")
+
+        # Check for unresolved placeholders
+        placeholders = [t for t in ["{first_name}", "{company}", "{title}", "[PLACEHOLDER]", "[TODO]"] if t in body_stripped]
         if placeholders:
             errors.append(f"Body contains unresolved placeholders: {', '.join(placeholders)}")
+
     return errors
+
+@app.post("/api/drafts/validate")
+def validate_draft_endpoint(data: dict = Body(...)):
+    """Validate a draft without saving it. Returns validation errors."""
+    errors = validate_draft_content(
+        subject=data.get("subject"),
+        body=data.get("body"),
+        touch_type=data.get("touch_type"),
+        channel=data.get("channel"),
+    )
+    return {"valid": len(errors) == 0, "errors": errors}
 
 @app.patch("/api/drafts/{draft_id}")
 def patch_draft(draft_id: str, data: dict):
@@ -6370,6 +6047,64 @@ def update_quota(data: dict):
     finally:
         conn.close()
 
+# ─── LINKEDIN SAFER SEND ───────────────────────────────────────────────────────
+
+@app.post("/api/linkedin/mark-sent")
+def linkedin_mark_sent(data: dict = Body(...)):
+    """Safer LinkedIn send: logs the copy+paste action with message hash and confirmation."""
+    conn = get_db()
+    try:
+        draft_id = data.get("draft_id")
+        if not draft_id:
+            raise HTTPException(400, "draft_id required")
+
+        draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+        if not draft:
+            raise HTTPException(404, "Draft not found")
+
+        import hashlib
+        body_hash = hashlib.sha256((draft["body"] or "").encode()).hexdigest()[:16]
+
+        # Create touch record
+        touch_id = gen_id("touch")
+        conn.execute("""INSERT INTO outreach_touches
+            (id, contact_id, draft_id, channel, touch_number, touch_type, sent_at, sent_method, message_hash,
+             proof_point_used, pain_hook, personalization_score, ab_group, batch_id)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (touch_id, draft["contact_id"], draft_id, draft["channel"] or "linkedin",
+             draft["touch_number"], draft["touch_type"], datetime.utcnow().isoformat(),
+             "manual_copy_paste", body_hash, draft["proof_point_used"], draft["pain_hook"],
+             draft["personalization_score"], draft["ab_group"], draft["batch_id"]))
+
+        # Update draft status
+        conn.execute("UPDATE message_drafts SET status='sent', sent_at=? WHERE id=?",
+                     (datetime.utcnow().isoformat(), draft_id))
+
+        # Log to activity timeline
+        conn.execute("""INSERT INTO activity_timeline (id, event_type, channel, contact_id, summary, metadata, created_at)
+            VALUES (?,?,?,?,?,?,?)""",
+            (gen_id("evt"), "draft_sent", draft["channel"] or "linkedin", draft["contact_id"],
+             f"Draft sent via copy/paste (hash: {body_hash})",
+             json.dumps({"draft_id": draft_id, "touch_id": touch_id, "message_hash": body_hash}),
+             datetime.utcnow().isoformat()))
+
+        # Update contact stage
+        touch_num = draft["touch_number"] or 1
+        stage_map = {1: "touch_1_sent", 3: "touch_3_sent", 5: "touch_5_sent", 6: "touch_6_sent"}
+        new_stage = stage_map.get(touch_num, f"touch_{touch_num}_sent")
+        conn.execute("UPDATE contacts SET stage=?, updated_at=? WHERE id=?",
+                     (new_stage, datetime.utcnow().isoformat(), draft["contact_id"]))
+
+        # Set first_touch_date if this is touch 1
+        if touch_num == 1:
+            conn.execute("UPDATE contacts SET first_touch_date=? WHERE id=? AND first_touch_date IS NULL",
+                         (datetime.utcnow().isoformat(), draft["contact_id"]))
+
+        conn.commit()
+        return {"status": "sent", "touch_id": touch_id, "message_hash": body_hash}
+    finally:
+        conn.close()
+
 # ─── RESEARCH EVIDENCE ────────────────────────────────────────────────────────
 
 @app.get("/api/contacts/{contact_id}/research-evidence")
@@ -6510,6 +6245,120 @@ def get_draft_research(draft_id: str):
     finally:
         conn.close()
 
+# --- Outreach Touches ---
+@app.post("/api/touches")
+def create_touch(data: dict = Body(...)):
+    conn = get_db()
+    try:
+        tid = gen_id("touch")
+        conn.execute("""INSERT INTO outreach_touches
+            (id, contact_id, draft_id, channel, touch_number, touch_type, sent_at, sent_method,
+             message_hash, proof_point_used, pain_hook, opener_style, personalization_score, ab_group, batch_id)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (tid, data.get("contact_id"), data.get("draft_id"), data.get("channel","linkedin"),
+             data.get("touch_number"), data.get("touch_type"), data.get("sent_at", datetime.utcnow().isoformat()),
+             data.get("sent_method","manual_copy_paste"), data.get("message_hash"), data.get("proof_point_used"),
+             data.get("pain_hook"), data.get("opener_style"), data.get("personalization_score"),
+             data.get("ab_group"), data.get("batch_id")))
+        conn.commit()
+        return {"id": tid, "status": "created"}
+    finally:
+        conn.close()
+
+@app.get("/api/touches")
+def list_touches(contact_id: str = None, channel: str = None, limit: int = 50):
+    conn = get_db()
+    try:
+        q = "SELECT * FROM outreach_touches WHERE 1=1"
+        params = []
+        if contact_id:
+            q += " AND contact_id=?"
+            params.append(contact_id)
+        if channel:
+            q += " AND channel=?"
+            params.append(channel)
+        q += " ORDER BY sent_at DESC LIMIT ?"
+        params.append(limit)
+        rows = conn.execute(q, params).fetchall()
+        return [dict(r) for r in rows]
+    finally:
+        conn.close()
+
+# --- Outreach Responses ---
+@app.post("/api/responses")
+def create_response(data: dict = Body(...)):
+    conn = get_db()
+    try:
+        rid = gen_id("resp")
+        conn.execute("""INSERT INTO outreach_responses
+            (id, touch_id, contact_id, response_type, response_text, sentiment, interest_level,
+             what_resonated, objection_encountered, referral_name, referral_title, reply_time_hours,
+             received_at, tags, notes)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (rid, data.get("touch_id"), data.get("contact_id"), data.get("response_type","reply"),
+             data.get("response_text"), data.get("sentiment"), data.get("interest_level"),
+             data.get("what_resonated"), data.get("objection_encountered"), data.get("referral_name"),
+             data.get("referral_title"), data.get("reply_time_hours"),
+             data.get("received_at", datetime.utcnow().isoformat()),
+             json.dumps(data.get("tags", [])), data.get("notes")))
+        conn.commit()
+        return {"id": rid, "status": "created"}
+    finally:
+        conn.close()
+
+@app.get("/api/responses")
+def list_responses(contact_id: str = None, touch_id: str = None, limit: int = 50):
+    conn = get_db()
+    try:
+        q = "SELECT * FROM outreach_responses WHERE 1=1"
+        params = []
+        if contact_id:
+            q += " AND contact_id=?"
+            params.append(contact_id)
+        if touch_id:
+            q += " AND touch_id=?"
+            params.append(touch_id)
+        q += " ORDER BY received_at DESC LIMIT ?"
+        params.append(limit)
+        rows = conn.execute(q, params).fetchall()
+        return [dict(r) for r in rows]
+    finally:
+        conn.close()
+
+# --- Outreach Outcomes ---
+@app.post("/api/outcomes")
+def create_outcome(data: dict = Body(...)):
+    conn = get_db()
+    try:
+        oid = gen_id("outcome")
+        conn.execute("""INSERT INTO outreach_outcomes
+            (id, contact_id, outcome_type, meeting_date, meeting_notes, opportunity_created,
+             opportunity_value, learnings, what_worked, what_didnt)
+            VALUES (?,?,?,?,?,?,?,?,?,?)""",
+            (oid, data.get("contact_id"), data.get("outcome_type","meeting"),
+             data.get("meeting_date"), data.get("meeting_notes"),
+             data.get("opportunity_created", 0), data.get("opportunity_value"),
+             data.get("learnings"), data.get("what_worked"), data.get("what_didnt")))
+        conn.commit()
+        return {"id": oid, "status": "created"}
+    finally:
+        conn.close()
+
+@app.get("/api/outcomes")
+def list_outcomes(contact_id: str = None, limit: int = 50):
+    conn = get_db()
+    try:
+        q = "SELECT * FROM outreach_outcomes WHERE 1=1"
+        params = []
+        if contact_id:
+            q += " AND contact_id=?"
+            params.append(contact_id)
+        q += " ORDER BY created_at DESC LIMIT ?"
+        params.append(limit)
+        rows = conn.execute(q, params).fetchall()
+        return [dict(r) for r in rows]
+    finally:
+        conn.close()
 
 @app.get("/api/analytics/conversion-funnel")
 def get_conversion_funnel():
@@ -6556,5 +6405,196 @@ def get_reply_timing():
             ORDER BY c.personalization_score, t.touch_number
         """).fetchall()]
         return {"timing": rows}
+    finally:
+        conn.close()
+
+
+# ---------------------------------------------------------------------------
+# DRAFT ENHANCEMENT
+# ---------------------------------------------------------------------------
+
+@app.post("/api/drafts/{draft_id}/enhance")
+def enhance_draft(draft_id: str):
+    """Analyze a draft against its research data and return enhancement suggestions.
+    This is a rule-based enhancer that checks for missing elements from the SOP."""
+    conn = get_db()
+    try:
+        draft = conn.execute("""
+            SELECT md.*, c.first_name, c.last_name, c.title, c.persona_type,
+                   c.predicted_objection, c.personalization_score,
+                   a.name as company_name, a.industry, a.employee_count, a.known_tools
+            FROM message_drafts md
+            LEFT JOIN contacts c ON md.contact_id = c.id
+            LEFT JOIN accounts a ON c.account_id = a.id
+            WHERE md.id=?
+        """, (draft_id,)).fetchone()
+        if not draft:
+            raise HTTPException(404, "Draft not found")
+        draft = dict(draft)
+
+        # Get research data
+        research_link = conn.execute(
+            "SELECT * FROM draft_research_link WHERE draft_id=?", (draft_id,)
+        ).fetchone()
+        research = dict(research_link) if research_link else {}
+
+        research_snapshot = None
+        if draft.get("contact_id"):
+            rs = conn.execute(
+                "SELECT * FROM research_snapshots WHERE contact_id=? ORDER BY created_at DESC LIMIT 1",
+                (draft["contact_id"],)
+            ).fetchone()
+            if rs:
+                research_snapshot = dict(rs)
+
+        body = draft.get("body", "")
+        subject = draft.get("subject_line", "")
+        touch_num = draft.get("touch_number", 1)
+        suggestions = []
+        score = 0
+        max_score = 10
+
+        # 1. Check personalized opener (reference to person, not just company)
+        first_name = draft.get("first_name", "")
+        if first_name and first_name.lower() in body.lower():
+            score += 1
+        else:
+            suggestions.append({
+                "type": "personalization",
+                "severity": "high",
+                "message": f"Missing personal reference. Add the prospect's name or reference their specific role/experience.",
+                "example": f"Your work leading {draft.get('title', 'QA')} at {draft.get('company_name', 'the company')} caught my attention..."
+            })
+
+        # 2. Check company-specific reference
+        company_name = draft.get("company_name", "")
+        if company_name and company_name.lower() in body.lower():
+            score += 1
+        else:
+            suggestions.append({
+                "type": "company_reference",
+                "severity": "high",
+                "message": "Missing company-specific reference. Mention something concrete about their company.",
+            })
+
+        # 3. Check for pain hypothesis
+        pain_keywords = ["testing", "regression", "flaky", "brittle", "maintenance", "coverage",
+                         "automation", "manual", "release", "velocity", "QA", "quality"]
+        has_pain = any(kw.lower() in body.lower() for kw in pain_keywords)
+        if has_pain:
+            score += 1
+        else:
+            suggestions.append({
+                "type": "pain_hook",
+                "severity": "high",
+                "message": "Missing pain hypothesis. Tie their role/company to a specific testing challenge.",
+            })
+
+        # 4. Check for proof point (customer story with numbers)
+        proof_keywords = ["hansard", "medibuddy", "cred", "sanofi", "spendflo", "nagra",
+                          "fortune 100", "50%", "90%", "70%", "3x", "5x", "4x",
+                          "8 weeks", "5 weeks", "80 minutes", "2,500", "2500"]
+        has_proof = any(kw.lower() in body.lower() for kw in proof_keywords)
+        if has_proof:
+            score += 1
+        else:
+            suggestions.append({
+                "type": "proof_point",
+                "severity": "medium",
+                "message": "Missing proof point. Add a customer story with specific numbers.",
+                "example": "We helped Sanofi cut regression from 3 days to 80 minutes."
+            })
+
+        # 5. Check for soft ask
+        ask_keywords = ["15 minutes", "quick chat", "worth a conversation", "happy to share",
+                        "no worries", "get out of your hair", "if not relevant",
+                        "timing isn't right", "make sense", "if it's not"]
+        has_ask = any(kw.lower() in body.lower() for kw in ask_keywords)
+        if has_ask:
+            score += 1
+        else:
+            suggestions.append({
+                "type": "call_to_action",
+                "severity": "medium",
+                "message": "Missing soft ask with easy out. End with a low-pressure meeting request.",
+                "example": "Would 15 minutes make sense to explore? If not relevant, no worries at all."
+            })
+
+        # 6. Check word count (70-120 for Touch 1)
+        word_count = len(body.split())
+        if touch_num == 1:
+            if 70 <= word_count <= 120:
+                score += 1
+            elif word_count < 70:
+                suggestions.append({"type": "length", "severity": "low",
+                    "message": f"Touch 1 should be 70-120 words. Currently {word_count} words - too short."})
+            else:
+                suggestions.append({"type": "length", "severity": "low",
+                    "message": f"Touch 1 should be 70-120 words. Currently {word_count} words - consider trimming."})
+        elif touch_num == 3:
+            if 40 <= word_count <= 70:
+                score += 1
+            else:
+                suggestions.append({"type": "length", "severity": "low",
+                    "message": f"Touch 3 follow-up should be 40-70 words. Currently {word_count} words."})
+        elif touch_num == 6:
+            if 30 <= word_count <= 50:
+                score += 1
+            else:
+                suggestions.append({"type": "length", "severity": "low",
+                    "message": f"Touch 6 break-up should be 30-50 words. Currently {word_count} words."})
+        else:
+            score += 1
+
+        # 7. Check paragraph spacing (mobile-friendly)
+        paragraphs = [p.strip() for p in body.split("\n\n") if p.strip()]
+        if len(paragraphs) >= 2:
+            score += 1
+        else:
+            suggestions.append({"type": "formatting", "severity": "medium",
+                "message": "Add paragraph breaks for mobile readability. No wall of text."})
+
+        # 8. Check for em dashes (not allowed per SOP)
+        if "\u2014" in body or "—" in body:
+            suggestions.append({"type": "style", "severity": "low",
+                "message": "Contains em dashes. Replace with commas or short hyphens per style rules."})
+        else:
+            score += 1
+
+        # 9. Check opener variety (should not start with "I noticed" or "I saw")
+        if body.strip().lower().startswith("i noticed") or body.strip().lower().startswith("i saw"):
+            suggestions.append({"type": "style", "severity": "low",
+                "message": "Opener starts with 'I noticed/I saw'. Vary your openers."})
+        else:
+            score += 1
+
+        # 10. Check research utilization
+        if research_snapshot:
+            pain_indicators = research_snapshot.get("pain_indicators", "[]")
+            try:
+                pains = json.loads(pain_indicators) if isinstance(pain_indicators, str) else pain_indicators
+            except:
+                pains = []
+            if pains and not any(p.lower() in body.lower() for p in pains[:3] if isinstance(p, str)):
+                suggestions.append({"type": "research_utilization", "severity": "medium",
+                    "message": "Research identified pain indicators not reflected in the message. Consider incorporating: " + ", ".join(pains[:3])})
+            else:
+                score += 1
+        else:
+            suggestions.append({"type": "research_utilization", "severity": "high",
+                "message": "No research snapshot linked. Research the prospect before drafting."})
+
+        quality_rating = "excellent" if score >= 8 else "good" if score >= 6 else "needs_work" if score >= 4 else "poor"
+
+        return {
+            "draft_id": draft_id,
+            "score": score,
+            "max_score": max_score,
+            "quality_rating": quality_rating,
+            "suggestions": suggestions,
+            "research_available": research_snapshot is not None,
+            "word_count": word_count,
+            "touch_number": touch_num,
+        }
     finally:
         conn.close()

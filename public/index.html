@@ -751,6 +751,54 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
     flex-wrap: wrap;
 }
 
+/* Quick Actions Grid */
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.quick-action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition);
+    text-align: left;
+    min-height: 80px;
+    overflow: hidden;
+}
+
+.quick-action-btn:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent);
+}
+
+.quick-action-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.quick-action-desc {
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
 /* Forms */
 .inp, .sel {
     background: var(--bg-elevated);
@@ -1450,6 +1498,9 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
         justify-content: center;
         padding: 10px;
     }
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 768px) {
@@ -1496,6 +1547,20 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
     }
     .tbl tbody td {
         padding: 10px 8px;
+    }
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .quick-action-btn {
+        padding: 14px;
+        min-height: 70px;
     }
 }
 
@@ -2124,30 +2189,30 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
     <!-- Quick Actions -->
     <div class="card" style="margin-bottom:16px;">
         <h3 style="margin-bottom:14px;">Quick Actions</h3>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
-            <button class="btn btn-primary" onclick="showWorkflowModal('account_research')" style="padding:14px;text-align:left;">
-                <strong style="display:block;margin-bottom:4px;">🔍 Account Research</strong>
-                <span style="font-size:11px;color:rgba(255,255,255,0.7);">Research a target company, ICP fit, pain points</span>
+        <div class="quick-actions-grid">
+            <button class="quick-action-btn" onclick="showWorkflowModal('account_research')">
+                <div class="quick-action-title">🔍 Account Research</div>
+                <div class="quick-action-desc">Research a target company, ICP fit, pain points</div>
             </button>
-            <button class="btn btn-primary" onclick="showWorkflowModal('prospect_shortlist')" style="padding:14px;text-align:left;">
-                <strong style="display:block;margin-bottom:4px;">📋 Prospect Shortlist</strong>
-                <span style="font-size:11px;color:rgba(255,255,255,0.7);">Score and rank prospects against ICP</span>
+            <button class="quick-action-btn" onclick="showWorkflowModal('prospect_shortlist')">
+                <div class="quick-action-title">📋 Prospect Shortlist</div>
+                <div class="quick-action-desc">Score and rank prospects against ICP</div>
             </button>
-            <button class="btn btn-primary" onclick="showWorkflowModal('linkedin_message_draft')" style="padding:14px;text-align:left;">
-                <strong style="display:block;margin-bottom:4px;">✉️ Draft Messages</strong>
-                <span style="font-size:11px;color:rgba(255,255,255,0.7);">Generate personalized InMail drafts</span>
+            <button class="quick-action-btn" onclick="showWorkflowModal('linkedin_message_draft')">
+                <div class="quick-action-title">✉️ Draft Messages</div>
+                <div class="quick-action-desc">Generate personalized InMail drafts</div>
             </button>
-            <button class="btn btn-primary" onclick="showWorkflowModal('followup_sequence')" style="padding:14px;text-align:left;">
-                <strong style="display:block;margin-bottom:4px;">🔄 Follow-Up Sequence</strong>
-                <span style="font-size:11px;color:rgba(255,255,255,0.7);">Create follow-ups and break-up messages</span>
+            <button class="quick-action-btn" onclick="showWorkflowModal('followup_sequence')">
+                <div class="quick-action-title">🔄 Follow-Up Sequence</div>
+                <div class="quick-action-desc">Create follow-ups and break-up messages</div>
             </button>
-            <button class="btn btn-primary" onclick="showWorkflowModal('daily_plan')" style="padding:14px;text-align:left;">
-                <strong style="display:block;margin-bottom:4px;">📅 Daily Plan</strong>
-                <span style="font-size:11px;color:rgba(255,255,255,0.7);">Generate today's action checklist</span>
+            <button class="quick-action-btn" onclick="showWorkflowModal('daily_plan')">
+                <div class="quick-action-title">📅 Daily Plan</div>
+                <div class="quick-action-desc">Generate today's action checklist</div>
             </button>
-            <button class="btn btn-primary" onclick="showWorkflowModal('call_prep')" style="padding:14px;text-align:left;">
-                <strong style="display:block;margin-bottom:4px;">📞 Call Prep</strong>
-                <span style="font-size:11px;color:rgba(255,255,255,0.7);">3-line call script for cold calls</span>
+            <button class="quick-action-btn" onclick="showWorkflowModal('call_prep')">
+                <div class="quick-action-title">📞 Call Prep</div>
+                <div class="quick-action-desc">3-line call script for cold calls</div>
             </button>
         </div>
     </div>
@@ -2301,6 +2366,94 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
             <button class="btn btn-sm" onclick="document.getElementById('workflow-detail-modal').style.display='none'">✕</button>
         </div>
         <div id="wf-detail-content"></div>
+    </div>
+</div>
+
+<!-- Log Response Modal -->
+<div id="log-response-modal" class="modal">
+    <div class="modal-content" style="width:600px;max-height:85vh;overflow-y:auto;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h3>Log Response</h3>
+            <button class="btn btn-sm" onclick="document.getElementById('log-response-modal').style.display='none'">✕</button>
+        </div>
+        <div style="display:grid;gap:12px;">
+            <div class="form-row">
+                <label>Response Type</label>
+                <select class="sel" id="resp-type" style="width:100%;">
+                    <option value="positive_reply">Positive Reply</option>
+                    <option value="question">Question / More Info</option>
+                    <option value="referral">Referral to Someone Else</option>
+                    <option value="not_interested">Not Interested</option>
+                    <option value="out_of_office">Out of Office</option>
+                    <option value="bounced">Bounced / Undeliverable</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Their Response (paste actual text)</label>
+                <textarea class="inp" id="resp-text" style="width:100%;height:100px;resize:vertical;" placeholder="Paste the reply text here..."></textarea>
+            </div>
+            <div class="form-row">
+                <label>Sentiment</label>
+                <select class="sel" id="resp-sentiment" style="width:100%;">
+                    <option value="very_positive">Very Positive - Ready to meet</option>
+                    <option value="positive">Positive - Interested</option>
+                    <option value="neutral">Neutral - Asking questions</option>
+                    <option value="negative">Negative - Not interested</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>What Resonated? (what triggered the reply)</label>
+                <select class="sel" id="resp-resonated" style="width:100%;">
+                    <option value="">Unknown</option>
+                    <option value="opener">Personalized Opener</option>
+                    <option value="pain_hook">Pain Hook</option>
+                    <option value="proof_point">Proof Point / Customer Story</option>
+                    <option value="timing">Good Timing</option>
+                    <option value="referral">Forwarded / Referral</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Interest Level</label>
+                <select class="sel" id="resp-interest" style="width:100%;">
+                    <option value="high">High - Wants meeting</option>
+                    <option value="medium">Medium - Open but not urgent</option>
+                    <option value="low">Low - Polite decline</option>
+                    <option value="none">None - Hard no</option>
+                </select>
+            </div>
+            <div class="form-row" id="resp-referral-fields" style="display:none;">
+                <label>Referral Name</label>
+                <input class="inp" id="resp-referral-name" style="width:100%;" placeholder="Name of person they referred to" />
+                <label style="margin-top:8px;">Referral Title</label>
+                <input class="inp" id="resp-referral-title" style="width:100%;" placeholder="Their title/role" />
+            </div>
+            <div class="form-row">
+                <label>Objection Encountered</label>
+                <input class="inp" id="resp-objection" style="width:100%;" placeholder="e.g. 'We already use Selenium'" />
+            </div>
+            <div class="form-row">
+                <label>Notes / Learnings</label>
+                <textarea class="inp" id="resp-notes" style="width:100%;height:60px;resize:vertical;" placeholder="Any additional notes or learnings..."></textarea>
+            </div>
+            <input type="hidden" id="resp-contact-id" />
+            <input type="hidden" id="resp-touch-id" />
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px;padding-top:12px;border-top:1px solid var(--border);">
+            <button class="btn btn-sm" onclick="document.getElementById('log-response-modal').style.display='none'">Cancel</button>
+            <button class="btn btn-sm btn-primary" onclick="submitResponse()">Save Response</button>
+        </div>
+    </div>
+</div>
+
+<!-- Draft Enhancement Modal -->
+<div id="enhance-modal" class="modal">
+    <div class="modal-content" style="width:640px;max-height:85vh;overflow-y:auto;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h3>Draft Quality Analysis</h3>
+            <button class="btn btn-sm" onclick="document.getElementById('enhance-modal').style.display='none'">✕</button>
+        </div>
+        <div id="enhance-loading" style="text-align:center;padding:20px;color:var(--text-secondary);">Analyzing draft...</div>
+        <div id="enhance-content" style="display:none;"></div>
     </div>
 </div>
 
@@ -5256,7 +5409,9 @@ function renderDraftCard(d, touchLabels) {
                     ${d.subject_line ? `<button class="btn btn-sm" onclick="copyToClip(\`${escJs(d.subject_line)}\`)" style="font-size:11px;padding:6px 10px">Copy Subject</button>` : ''}
                     <button class="btn btn-sm" onclick="copyToClip(\`${escJs(d.body)}\`)" style="font-size:11px;padding:6px 10px">${isCall ? 'Copy Script' : 'Copy Message'}</button>
                     ${hasLinkedin ? `<a href="${linkedinUrl}" target="_blank" rel="noopener" class="btn btn-sm" style="font-size:11px;padding:6px 10px;background:#0a66c2;color:#fff;text-decoration:none">Open LinkedIn</a>` : ''}
-                    <button class="btn btn-sm" onclick="markAsSent('${contactId}', '${draftId}')" style="font-size:11px;padding:6px 10px;background:var(--success-bg);color:var(--success)">Mark as Sent</button>
+                    <button class="btn btn-sm btn-success" onclick="markDraftSent('${draftId}')" ${draftStatus === 'sent' ? 'disabled' : ''} style="font-size:11px;padding:6px 10px">${draftStatus === 'sent' ? '✓ Sent' : 'Mark Sent'}</button>
+                    <button class="btn btn-sm" onclick="showLogResponseModal('${contactId}', '')" style="font-size:11px;padding:6px 10px">Log Response</button>
+                    <button class="btn btn-sm" onclick="enhanceDraft('${draftId}')" style="font-size:11px;padding:6px 10px;background:var(--warning-bg);color:var(--warning)">Enhance</button>
                 </div>
                 ${d.ab_group ? `<div style="font-size:11px;color:var(--text-muted)">A/B Group: <strong>${esc(d.ab_group)}</strong></div>` : ''}
             </div>
@@ -5517,6 +5672,122 @@ async function markAsSent(contactId, draftId) {
         console.error('markAsSent error:', e);
         alert('Error marking as sent: ' + e.message);
     }
+}
+
+// --- Log Response System ---
+function showLogResponseModal(contactId, touchId) {
+    document.getElementById('resp-contact-id').value = contactId || '';
+    document.getElementById('resp-touch-id').value = touchId || '';
+    document.getElementById('resp-text').value = '';
+    document.getElementById('resp-notes').value = '';
+    document.getElementById('resp-objection').value = '';
+    document.getElementById('resp-referral-name').value = '';
+    document.getElementById('resp-referral-title').value = '';
+    document.getElementById('log-response-modal').style.display = 'flex';
+}
+
+document.getElementById('resp-type')?.addEventListener('change', function() {
+    document.getElementById('resp-referral-fields').style.display =
+        this.value === 'referral' ? 'block' : 'none';
+});
+
+async function submitResponse() {
+    const data = {
+        contact_id: document.getElementById('resp-contact-id').value,
+        touch_id: document.getElementById('resp-touch-id').value || null,
+        response_type: document.getElementById('resp-type').value,
+        response_text: document.getElementById('resp-text').value,
+        sentiment: document.getElementById('resp-sentiment').value,
+        interest_level: document.getElementById('resp-interest').value,
+        what_resonated: document.getElementById('resp-resonated').value || null,
+        objection_encountered: document.getElementById('resp-objection').value || null,
+        referral_name: document.getElementById('resp-referral-name').value || null,
+        referral_title: document.getElementById('resp-referral-title').value || null,
+        notes: document.getElementById('resp-notes').value || null,
+    };
+
+    if (!data.contact_id) { showToast('Contact ID required', 'warning'); return; }
+
+    const result = await apiPost('/api/responses', data);
+    if (result && !result._error) {
+        showToast('Response logged successfully', 'success');
+        document.getElementById('log-response-modal').style.display = 'none';
+        // Refresh the current page
+        const activePage = document.querySelector('.page.active');
+        if (activePage) {
+            const pageId = activePage.id.replace('page-', '');
+            showPage(pageId);
+        }
+    } else {
+        showToast('Failed to log response: ' + (result?.message || 'Unknown error'), 'error');
+    }
+}
+
+async function markDraftSent(draftId) {
+    if (!confirm('Confirm: You have copied and pasted this message into LinkedIn?')) return;
+    const result = await apiPost('/api/linkedin/mark-sent', { draft_id: draftId });
+    if (result && !result._error) {
+        showToast(`Marked as sent (hash: ${result.message_hash})`, 'success');
+        // Refresh
+        const activePage = document.querySelector('.page.active');
+        if (activePage) {
+            const pageId = activePage.id.replace('page-', '');
+            showPage(pageId);
+        }
+    } else {
+        showToast('Failed: ' + (result?.message || 'Unknown error'), 'error');
+    }
+}
+
+// =====================================================
+// DRAFT ENHANCEMENT
+// =====================================================
+async function enhanceDraft(draftId) {
+    document.getElementById('enhance-modal').style.display = 'flex';
+    document.getElementById('enhance-loading').style.display = '';
+    document.getElementById('enhance-content').style.display = 'none';
+
+    const result = await apiPost(`/api/drafts/${draftId}/enhance`, {});
+    document.getElementById('enhance-loading').style.display = 'none';
+    const content = document.getElementById('enhance-content');
+    content.style.display = '';
+
+    if (!result || result._error) {
+        content.innerHTML = `<div style="color:var(--error);">Failed to analyze draft.</div>`;
+        return;
+    }
+
+    const scoreColor = result.score >= 8 ? 'var(--success)' : result.score >= 6 ? 'var(--accent)' : result.score >= 4 ? 'var(--warning)' : 'var(--error)';
+    const ratingLabel = {excellent: 'Excellent', good: 'Good', needs_work: 'Needs Work', poor: 'Poor'}[result.quality_rating] || result.quality_rating;
+
+    let html = `
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;padding:16px;background:var(--bg-elevated);border-radius:var(--radius-md);">
+            <div style="text-align:center;">
+                <div style="font-size:32px;font-weight:bold;color:${scoreColor}">${result.score}</div>
+                <div style="font-size:11px;color:var(--text-muted);">/ ${result.max_score}</div>
+            </div>
+            <div>
+                <div style="font-size:16px;font-weight:600;color:${scoreColor}">${ratingLabel}</div>
+                <div style="font-size:12px;color:var(--text-secondary);">Touch ${result.touch_number} - ${result.word_count} words${result.research_available ? '' : ' - No research linked'}</div>
+            </div>
+        </div>`;
+
+    if (result.suggestions.length === 0) {
+        html += `<div style="padding:16px;background:var(--success-bg);border:1px solid var(--success);border-radius:var(--radius-md);color:var(--success);font-size:13px;">All quality checks passed. This draft is ready to send.</div>`;
+    } else {
+        html += `<div style="font-size:13px;font-weight:600;margin-bottom:12px;">Suggestions (${result.suggestions.length})</div>`;
+        result.suggestions.forEach(s => {
+            const sevColor = s.severity === 'high' ? 'var(--error)' : s.severity === 'medium' ? 'var(--warning)' : 'var(--text-secondary)';
+            const sevBg = s.severity === 'high' ? 'var(--error-bg)' : s.severity === 'medium' ? 'var(--warning-bg)' : 'var(--bg-elevated)';
+            html += `<div style="margin-bottom:10px;padding:12px;background:${sevBg};border-radius:var(--radius-sm);border-left:3px solid ${sevColor};">
+                <div style="font-size:11px;font-weight:bold;color:${sevColor};text-transform:uppercase;margin-bottom:4px;">${s.severity} - ${s.type.replace(/_/g, ' ')}</div>
+                <div style="font-size:12px;color:var(--text-primary);">${esc(s.message)}</div>
+                ${s.example ? `<div style="margin-top:6px;font-size:11px;color:var(--text-secondary);font-style:italic;">"${esc(s.example)}"</div>` : ''}
+            </div>`;
+        });
+    }
+
+    content.innerHTML = html;
 }
 
 // =====================================================
