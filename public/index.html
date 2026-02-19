@@ -2172,94 +2172,165 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
 <div class="page" id="page-linkedin">
     <div class="page-hdr" style="margin-bottom:0">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-            <h2>LinkedIn</h2>
-            <div style="display:flex;gap:8px">
-                <button class="btn btn-sm btn-primary" onclick="showPage('flow-linkedin-draft')">Run Draft Flow</button>
+            <h2>LinkedIn Channel</h2>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <div id="li-quota-badge" style="font-size:11px;padding:4px 10px;border-radius:12px;background:var(--bg-elevated);border:1px solid var(--border);"></div>
+                <span id="linkedin-dry-run-badge" class="tag tag-warn">DRY RUN ON</span>
             </div>
         </div>
         <div class="channel-tabs" id="linkedin-tabs">
-            <button class="channel-tab-btn active" onclick="switchChannelTab('linkedin','prospects')">Prospects</button>
-            <button class="channel-tab-btn" onclick="switchChannelTab('linkedin','drafts')">Drafts</button>
-            <button class="channel-tab-btn" onclick="switchChannelTab('linkedin','analytics')">Analytics</button>
+            <button class="channel-tab-btn active" onclick="switchLITab('overview')">Overview</button>
+            <button class="channel-tab-btn" onclick="switchLITab('drafts')">Drafts</button>
+            <button class="channel-tab-btn" onclick="switchLITab('queue')">Queue</button>
+            <button class="channel-tab-btn" onclick="switchLITab('analytics')">Analytics</button>
         </div>
     </div>
 
-    <div class="kpi-row" id="linkedin-kpis"></div>
+    <!-- OVERVIEW TAB -->
+    <div class="li-tab-content" id="li-tab-overview">
+        <div class="kpi-row" id="linkedin-kpis"></div>
 
-    <!-- Quick Actions -->
-    <div class="card" style="margin-bottom:16px;">
-        <h3 style="margin-bottom:14px;">Quick Actions</h3>
-        <div class="quick-actions-grid">
-            <button class="quick-action-btn" onclick="showWorkflowModal('account_research')">
-                <div class="quick-action-title">🔍 Account Research</div>
-                <div class="quick-action-desc">Research a target company, ICP fit, pain points</div>
-            </button>
-            <button class="quick-action-btn" onclick="showWorkflowModal('prospect_shortlist')">
-                <div class="quick-action-title">📋 Prospect Shortlist</div>
-                <div class="quick-action-desc">Score and rank prospects against ICP</div>
-            </button>
-            <button class="quick-action-btn" onclick="showWorkflowModal('linkedin_message_draft')">
-                <div class="quick-action-title">✉️ Draft Messages</div>
-                <div class="quick-action-desc">Generate personalized InMail drafts</div>
-            </button>
-            <button class="quick-action-btn" onclick="showWorkflowModal('followup_sequence')">
-                <div class="quick-action-title">🔄 Follow-Up Sequence</div>
-                <div class="quick-action-desc">Create follow-ups and break-up messages</div>
-            </button>
-            <button class="quick-action-btn" onclick="showWorkflowModal('daily_plan')">
-                <div class="quick-action-title">📅 Daily Plan</div>
-                <div class="quick-action-desc">Generate today's action checklist</div>
-            </button>
-            <button class="quick-action-btn" onclick="showWorkflowModal('call_prep')">
-                <div class="quick-action-title">📞 Call Prep</div>
-                <div class="quick-action-desc">3-line call script for cold calls</div>
-            </button>
-        </div>
-    </div>
-
-    <!-- Data Import -->
-    <div class="card" style="margin-bottom:16px;">
-        <h3 style="margin-bottom:14px;">Import LinkedIn Data</h3>
-        <div class="tab-bar" style="margin-bottom:12px;">
-            <button class="btn btn-sm active" onclick="showLinkedInImportTab('csv', this)">CSV Import</button>
-            <button class="btn btn-sm" onclick="showLinkedInImportTab('paste', this)">Paste Profile</button>
-        </div>
-        <div id="li-import-csv" class="email-tab">
-            <p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;">Upload a Sales Navigator export CSV or paste CSV data below.</p>
-            <textarea class="inp" id="li-csv-data" style="width:100%;height:120px;resize:vertical;font-family:monospace;font-size:11px;" placeholder="first_name,last_name,title,company,linkedin_url,email,industry,location&#10;John,Doe,Director of QA,Acme Corp,https://linkedin.com/in/johndoe,john@acme.com,SaaS,San Francisco"></textarea>
-            <div style="margin-top:10px;display:flex;gap:8px;">
-                <button class="btn btn-primary btn-sm" onclick="importLinkedInCSV()">Import CSV</button>
-                <span id="li-csv-result" style="font-size:12px;color:var(--text-secondary);"></span>
+        <!-- Quick Actions -->
+        <div class="card" style="margin-bottom:16px;">
+            <h3 style="margin-bottom:14px;">Quick Actions</h3>
+            <div class="quick-actions-grid">
+                <button class="quick-action-btn" onclick="showWorkflowModal('account_research')">
+                    <div class="quick-action-title">🔍 Account Research</div>
+                    <div class="quick-action-desc">Research target companies and ICP fit</div>
+                </button>
+                <button class="quick-action-btn" onclick="showWorkflowModal('linkedin_message_draft')">
+                    <div class="quick-action-title">✉️ Draft Messages</div>
+                    <div class="quick-action-desc">Generate personalized InMail drafts</div>
+                </button>
+                <button class="quick-action-btn" onclick="enhanceBatchDrafts()">
+                    <div class="quick-action-title">✨ Enhance Batch</div>
+                    <div class="quick-action-desc">Second-pass enhancement on current drafts</div>
+                </button>
+                <button class="quick-action-btn" onclick="switchLITab('queue')">
+                    <div class="quick-action-title">📤 Review Queue</div>
+                    <div class="quick-action-desc">Approved messages ready for sending</div>
+                </button>
+                <button class="quick-action-btn" onclick="showWorkflowModal('call_prep')">
+                    <div class="quick-action-title">📞 Call Prep</div>
+                    <div class="quick-action-desc">3-line call scripts for cold calls</div>
+                </button>
+                <button class="quick-action-btn" onclick="switchLITab('analytics')">
+                    <div class="quick-action-title">📊 View Analytics</div>
+                    <div class="quick-action-desc">Reply rates, conversion funnel, patterns</div>
+                </button>
             </div>
         </div>
-        <div id="li-import-paste" class="email-tab" style="display:none;">
-            <p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;">Paste LinkedIn profile text (copied from a profile page). We'll parse it automatically.</p>
-            <textarea class="inp" id="li-paste-data" style="width:100%;height:120px;resize:vertical;font-size:12px;" placeholder="Paste profile text here..."></textarea>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
-                <input class="inp" id="li-paste-url" placeholder="LinkedIn URL" />
-                <input class="inp" id="li-paste-company" placeholder="Company name" />
+
+        <!-- Workflow Explainer -->
+        <details class="card" style="margin-bottom:16px;">
+            <summary style="cursor:pointer;font-weight:600;font-size:14px;">💡 How the LinkedIn workflow works</summary>
+            <div style="margin-top:12px;font-size:12px;color:var(--text-secondary);line-height:1.7;">
+                <strong>1. Import prospects</strong> - Upload from Sales Navigator CSV or paste profiles.<br>
+                <strong>2. Research enrichment</strong> - Company details, pain indicators, proof points matched to vertical.<br>
+                <strong>3. Draft generation</strong> - 5-touch sequences: InMail, Call Script, Follow-up, Call 2, Break-up.<br>
+                <strong>4. Enhancement pass</strong> - AI-scored quality check + improvement suggestions per draft.<br>
+                <strong>5. Review &amp; approve</strong> - Read each draft, edit if needed, then approve.<br>
+                <strong>6. Queue for sending</strong> - Approved drafts move to the Queue tab for manual copy-paste.<br>
+                <strong>7. Track &amp; learn</strong> - Log responses, tag what worked, feed insights back into next batch.
             </div>
-            <div style="margin-top:10px;">
-                <button class="btn btn-primary btn-sm" onclick="importLinkedInPaste()">Import Profile</button>
+        </details>
+
+        <!-- Recent Workflow Runs -->
+        <div class="card" style="margin-bottom:16px;">
+            <h3 style="margin-bottom:14px;">Recent Workflow Runs</h3>
+            <div style="overflow-x:auto;">
+                <table class="tbl">
+                    <thead><tr><th>Workflow</th><th>Status</th><th>Steps</th><th>Duration</th><th>Started</th><th>Actions</th></tr></thead>
+                    <tbody id="linkedin-runs-body"></tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <!-- Recent Workflow Runs -->
-    <div class="card" style="margin-bottom:16px;">
-        <h3 style="margin-bottom:14px;">Recent Workflow Runs</h3>
-        <div style="overflow-x:auto;">
-            <table class="tbl">
-                <thead><tr><th>Workflow</th><th>Status</th><th>Steps</th><th>Duration</th><th>Started</th><th>Actions</th></tr></thead>
-                <tbody id="linkedin-runs-body"></tbody>
-            </table>
+    <!-- DRAFTS TAB -->
+    <div class="li-tab-content" id="li-tab-drafts" style="display:none">
+        <div class="kpi-row" id="li-drafts-kpis"></div>
+
+        <!-- Filters -->
+        <div class="card" style="margin-bottom:16px;padding:12px;">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                <select class="inp" id="li-draft-filter-touch" onchange="loadLIDrafts()" style="width:auto;min-width:140px;">
+                    <option value="">All Touches</option>
+                    <option value="inmail">Touch 1 - InMail</option>
+                    <option value="call">Call Scripts</option>
+                    <option value="inmail_followup">Touch 3 - Follow-up</option>
+                    <option value="breakup">Touch 6 - Break-up</option>
+                </select>
+                <select class="inp" id="li-draft-filter-status" onchange="loadLIDrafts()" style="width:auto;min-width:140px;">
+                    <option value="">All Statuses</option>
+                    <option value="draft">Draft</option>
+                    <option value="enhanced">Enhanced</option>
+                    <option value="approved">Approved</option>
+                    <option value="queued">Queued</option>
+                </select>
+                <input class="inp" id="li-draft-search" placeholder="Search by name or company..." oninput="filterLIDraftsLocal()" style="flex:1;min-width:200px;" />
+                <button class="btn btn-sm btn-primary" onclick="approveAllVisible()">Approve All Visible</button>
+            </div>
         </div>
+
+        <!-- Draft List -->
+        <div id="li-drafts-list"><div class="empty">Loading drafts...</div></div>
+        <div id="li-drafts-pagination" style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;"></div>
     </div>
 
-    <!-- Recent Drafts from LinkedIn -->
-    <div class="card">
-        <h3 style="margin-bottom:14px;">LinkedIn Drafts</h3>
-        <div id="linkedin-drafts-list"><div class="empty">Loading...</div></div>
+    <!-- QUEUE TAB -->
+    <div class="li-tab-content" id="li-tab-queue" style="display:none">
+        <div class="kpi-row" id="li-queue-kpis"></div>
+
+        <!-- Quota Widget -->
+        <div class="card" style="margin-bottom:16px;" id="li-quota-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <h3>InMail Quota &amp; Pacing</h3>
+                <button class="btn btn-sm" onclick="showQuotaSettings()">⚙️ Settings</button>
+            </div>
+            <div id="li-quota-display" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;"></div>
+            <div id="li-pacing-guidance" style="margin-top:12px;padding:10px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:12px;color:var(--text-secondary);"></div>
+        </div>
+
+        <!-- Queue List -->
+        <div id="li-queue-list"><div class="empty">No messages in queue yet. Approve drafts first.</div></div>
+    </div>
+
+    <!-- ANALYTICS TAB -->
+    <div class="li-tab-content" id="li-tab-analytics" style="display:none">
+        <div class="kpi-row" id="li-analytics-kpis"></div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <!-- Status Funnel -->
+            <div class="card">
+                <h3 style="margin-bottom:14px;">Draft Status Funnel</h3>
+                <div id="li-status-funnel"></div>
+            </div>
+
+            <!-- Touch Type Breakdown -->
+            <div class="card">
+                <h3 style="margin-bottom:14px;">Drafts by Touch Type</h3>
+                <div id="li-touch-breakdown"></div>
+            </div>
+
+            <!-- Messaging Patterns -->
+            <div class="card">
+                <h3 style="margin-bottom:14px;">Proof Points Used</h3>
+                <div id="li-proof-points"></div>
+            </div>
+
+            <!-- Personalization Scores -->
+            <div class="card">
+                <h3 style="margin-bottom:14px;">Quality Metrics</h3>
+                <div id="li-quality-metrics"></div>
+            </div>
+        </div>
+
+        <!-- Activity Log -->
+        <div class="card" style="margin-top:16px;">
+            <h3 style="margin-bottom:14px;">Activity Log</h3>
+            <div id="li-activity-log" style="max-height:300px;overflow-y:auto;"></div>
+        </div>
     </div>
 </div>
 
@@ -4464,76 +4535,506 @@ function saveGeneralSettings() { showToast('Settings saved', 'success'); }
 function confirmBulk(action) { showConfirm(`${action.charAt(0).toUpperCase() + action.slice(1)} all?`, `Confirm bulk ${action}?`, () => showToast(`All ${action}d`, 'success')); }
 
 // LINKEDIN CHANNEL PAGE
+// ─── LINKEDIN TAB MANAGEMENT ─────────────────────────────────────
+let liDraftsCache = [];
+let liDraftsPage = 0;
+const LI_DRAFTS_PER_PAGE = 20;
+
+function switchLITab(tab) {
+    document.querySelectorAll('.li-tab-content').forEach(el => el.style.display = 'none');
+    const target = document.getElementById('li-tab-' + tab);
+    if (target) target.style.display = '';
+    document.querySelectorAll('#linkedin-tabs .channel-tab-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+
+    if (tab === 'overview') loadLIOverview();
+    else if (tab === 'drafts') loadLIDrafts();
+    else if (tab === 'queue') loadLIQueue();
+    else if (tab === 'analytics') loadLIAnalytics();
+}
+
 async function loadLinkedInPage() {
-    // KPIs
-    const stats = await api('/api/linkedin/stats');
-    const kpiEl = document.getElementById('linkedin-kpis');
-    if (stats && kpiEl) {
-        kpiEl.innerHTML = [
-            kpi('Profiles', stats.profiles || 0),
-            kpi('LI Drafts', stats.drafts || 0),
-            kpi('Sent', stats.sent || 0),
-            kpi('Workflow Runs', stats.total_runs || 0),
-            kpi('Active Runs', stats.active_runs || 0),
-        ].join('');
-        const badge = document.getElementById('linkedin-dry-run-badge');
-        if (badge) {
-            badge.textContent = stats.dry_run ? 'DRY RUN ON' : 'LIVE MODE';
-            badge.className = stats.dry_run ? 'tag tag-warn' : 'tag tag-hot';
+    loadLIOverview();
+    loadLIQuotaBadge();
+}
+
+async function loadLIQuotaBadge() {
+    try {
+        const q = await api('/api/linkedin/quota');
+        const badge = document.getElementById('li-quota-badge');
+        if (badge && q) {
+            const remaining = q.daily?.remaining ?? '-';
+            badge.innerHTML = `📨 ${remaining} InMails left today`;
+            if (q.daily && q.daily.remaining <= 2) {
+                badge.style.borderColor = 'var(--error)';
+                badge.style.color = 'var(--error)';
+            }
         }
+    } catch(e) { /* quota not configured yet */ }
+}
+
+async function loadLIOverview() {
+    // KPIs
+    try {
+        const stats = await api('/api/linkedin/stats');
+        const kpiEl = document.getElementById('linkedin-kpis');
+        if (stats && kpiEl) {
+            kpiEl.innerHTML = [
+                kpi('Total Drafts', stats.drafts || 0),
+                kpi('Approved', stats.approved_count || 0),
+                kpi('Queued', stats.queued_count || 0),
+                kpi('Sent', stats.sent_actual || stats.sent || 0),
+                kpi('Profiles', stats.profiles || 0),
+            ].join('');
+        }
+    } catch(e) { console.error('LI stats:', e); }
+
+    // Recent workflow runs
+    try {
+        const runs = await api('/api/workflow-runs?channel=linkedin&limit=10');
+        const runsBody = document.getElementById('linkedin-runs-body');
+        if (runsBody) {
+            const runList = Array.isArray(runs) ? runs : (runs?.runs || []);
+            if (!runList.length) {
+                runsBody.innerHTML = '<tr><td colspan="6"><div class="empty">No workflow runs yet. Click a Quick Action to get started.</div></td></tr>';
+            } else {
+                runsBody.innerHTML = runList.map(r => {
+                    const statusClass = r.status === 'succeeded' ? 'badge-gn' : r.status === 'failed' ? 'badge-rd' : r.status === 'running' ? 'badge-bl' : 'badge-yw';
+                    const dur = r.duration_ms ? (r.duration_ms / 1000).toFixed(1) + 's' : '-';
+                    return `<tr>
+                        <td><strong>${r.workflow_name || r.workflow_type || 'Workflow'}</strong></td>
+                        <td><span class="${statusClass}">${r.status}</span></td>
+                        <td>${r.completed_steps || 0}/${r.total_steps || 0}</td>
+                        <td>${dur}</td>
+                        <td>${timeAgo(r.started_at)}</td>
+                        <td><button class="btn btn-sm" onclick="viewWorkflowRun('${r.id}')">View</button></td>
+                    </tr>`;
+                }).join('');
+            }
+        }
+    } catch(e) { console.error('LI runs:', e); }
+}
+
+async function loadLIDrafts() {
+    const touchFilter = document.getElementById('li-draft-filter-touch')?.value || '';
+    const statusFilter = document.getElementById('li-draft-filter-status')?.value || '';
+
+    let url = `/api/drafts?channel=linkedin&limit=${LI_DRAFTS_PER_PAGE}&offset=${liDraftsPage * LI_DRAFTS_PER_PAGE}`;
+    if (touchFilter) url += `&touch_type=${touchFilter}`;
+    if (statusFilter) url += `&approval_status=${statusFilter}`;
+
+    try {
+        const data = await api(url);
+        const drafts = data?.drafts || [];
+        const total = data?.total || 0;
+        liDraftsCache = drafts;
+
+        // KPIs for drafts tab
+        const kpiEl = document.getElementById('li-drafts-kpis');
+        if (kpiEl) {
+            const allData = await api('/api/linkedin/stats');
+            const byStatus = allData?.by_approval_status || {};
+            kpiEl.innerHTML = [
+                kpi('Total', total),
+                kpi('Draft', byStatus.draft || 0),
+                kpi('Enhanced', byStatus.enhanced || 0),
+                kpi('Approved', byStatus.approved || 0),
+                kpi('Queued', byStatus.queued || 0),
+            ].join('');
+        }
+
+        renderLIDraftsList(drafts);
+
+        // Pagination
+        const pagEl = document.getElementById('li-drafts-pagination');
+        if (pagEl) {
+            const totalPages = Math.ceil(total / LI_DRAFTS_PER_PAGE);
+            pagEl.innerHTML = `
+                <span style="font-size:12px;color:var(--text-muted);">Showing ${drafts.length} of ${total} drafts</span>
+                <div style="display:flex;gap:6px;">
+                    <button class="btn btn-sm" ${liDraftsPage === 0 ? 'disabled' : ''} onclick="liDraftsPage--;loadLIDrafts()">← Prev</button>
+                    <span style="font-size:12px;padding:4px 8px;">Page ${liDraftsPage + 1} of ${totalPages || 1}</span>
+                    <button class="btn btn-sm" ${liDraftsPage >= totalPages - 1 ? 'disabled' : ''} onclick="liDraftsPage++;loadLIDrafts()">Next →</button>
+                </div>
+            `;
+        }
+    } catch(e) {
+        console.error('loadLIDrafts:', e);
+        document.getElementById('li-drafts-list').innerHTML = '<div class="empty">Error loading drafts.</div>';
+    }
+}
+
+function renderLIDraftsList(drafts) {
+    const el = document.getElementById('li-drafts-list');
+    if (!drafts.length) {
+        el.innerHTML = '<div class="empty"><div class="empty-icon">✉️</div><strong>No drafts match your filters</strong></div>';
+        return;
     }
 
-    // Recent runs
-    const runs = await api('/api/workflow-runs?channel=linkedin&limit=20');
-    const runsBody = document.getElementById('linkedin-runs-body');
-    if (runsBody) {
-        if (!runs || !runs.length) {
-            runsBody.innerHTML = '<tr><td colspan="6"><div class="empty">No workflow runs yet. Click a Quick Action above to get started.</div></td></tr>';
-        } else {
-            runsBody.innerHTML = runs.map(r => {
-                const statusClass = r.status === 'succeeded' ? 'badge-gn' : r.status === 'failed' ? 'badge-rd' : r.status === 'running' ? 'badge-bl' : 'badge-yw';
-                const dur = r.duration_ms ? (r.duration_ms / 1000).toFixed(1) + 's' : '-';
-                return `<tr>
-                    <td><strong>${r.workflow_name || r.workflow_type}</strong></td>
-                    <td><span class="${statusClass}">${r.status}</span></td>
-                    <td>${r.completed_steps || 0}/${r.total_steps || 0}</td>
-                    <td>${dur}</td>
-                    <td>${timeAgo(r.started_at)}</td>
-                    <td><button class="btn btn-sm" onclick="viewWorkflowRun('${r.id}')">View</button></td>
-                </tr>`;
+    el.innerHTML = drafts.map(d => {
+        const name = d.contact_name || `${d.first_name || ''} ${d.last_name || ''}`.trim() || 'Unknown';
+        const company = d.company_name || '';
+        const statusColor = d.approval_status === 'approved' ? 'var(--success)' :
+                           d.approval_status === 'queued' ? 'var(--info, #4da6ff)' :
+                           d.approval_status === 'enhanced' ? 'var(--warning)' : 'var(--text-muted)';
+        const touchLabel = d.touch_type === 'inmail' ? 'InMail' :
+                          d.touch_type === 'call' ? 'Call Script' :
+                          d.touch_type === 'inmail_followup' ? 'Follow-up' :
+                          d.touch_type === 'breakup' ? 'Break-up' : d.touch_type || '';
+        const priority = d.priority_score || 0;
+        const priorityBadge = priority >= 5 ? '<span style="color:var(--error);">★</span>' :
+                             priority >= 4 ? '<span style="color:var(--warning);">★</span>' : '';
+
+        return `<div class="card li-draft-card" style="margin-bottom:10px;padding:14px;" data-draft-id="${d.id}" data-name="${name.toLowerCase()}" data-company="${company.toLowerCase()}">
+            <div style="display:flex;justify-content:space-between;align-items:start;">
+                <div style="flex:1;">
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        ${priorityBadge}
+                        <strong style="font-size:14px;">${name}</strong>
+                        <span style="font-size:11px;color:var(--text-muted);">${company}</span>
+                        <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:${statusColor}20;color:${statusColor};border:1px solid ${statusColor}40;">${d.approval_status || 'draft'}</span>
+                    </div>
+                    <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">
+                        ${touchLabel} (Touch ${d.touch_number || '?'}) ${d.subject_line ? ' — <em>' + d.subject_line + '</em>' : ''}
+                    </div>
+                </div>
+                <div style="display:flex;gap:4px;flex-shrink:0;">
+                    <button class="btn btn-sm" onclick="toggleDraftExpand('${d.id}')">Expand</button>
+                    <button class="btn btn-sm" onclick="copyToClip(\`${escJs(d.body || '')}\`);showToast('Copied!')">Copy</button>
+                    ${d.approval_status === 'draft' || d.approval_status === 'enhanced' ?
+                        `<button class="btn btn-sm btn-primary" onclick="approveDraft('${d.id}')">Approve</button>` : ''}
+                    ${d.approval_status === 'approved' ?
+                        `<button class="btn btn-sm" style="background:var(--info,#4da6ff);color:#fff;" onclick="queueDraft('${d.id}')">→ Queue</button>` : ''}
+                    <button class="btn btn-sm" style="background:var(--warning-bg);color:var(--warning);" onclick="enhanceDraft('${d.id}')">Enhance</button>
+                </div>
+            </div>
+            <div id="draft-expand-${d.id}" style="display:none;margin-top:12px;">
+                <div style="padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:12px;white-space:pre-wrap;line-height:1.6;max-height:400px;overflow-y:auto;">${d.body || '(empty)'}</div>
+                <div style="margin-top:8px;display:flex;gap:12px;font-size:11px;color:var(--text-muted);flex-wrap:wrap;">
+                    <span>Words: ${d.word_count || '-'}</span>
+                    <span>Chars: ${(d.body || '').length}</span>
+                    <span>Proof: ${d.proof_point_used || '-'}</span>
+                    <span>P-Score: ${d.personalization_score || '-'}</span>
+                    <span>QC: ${d.qc_passed ? '✅' : '⚠️'}</span>
+                    ${d.linkedin_url ? `<a href="${d.linkedin_url}" target="_blank" style="color:var(--accent);">View LinkedIn ↗</a>` : ''}
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function toggleDraftExpand(draftId) {
+    const el = document.getElementById('draft-expand-' + draftId);
+    if (el) el.style.display = el.style.display === 'none' ? '' : 'none';
+}
+
+function filterLIDraftsLocal() {
+    const q = (document.getElementById('li-draft-search')?.value || '').toLowerCase();
+    document.querySelectorAll('.li-draft-card').forEach(card => {
+        const name = card.dataset.name || '';
+        const company = card.dataset.company || '';
+        card.style.display = (!q || name.includes(q) || company.includes(q)) ? '' : 'none';
+    });
+}
+
+async function approveDraft(draftId) {
+    try {
+        await apiPost('/api/drafts/' + draftId + '/approve', {});
+        showToast('Draft approved!');
+        loadLIDrafts();
+    } catch(e) {
+        showToast('Cannot approve: ' + (e.message || 'validation failed'), 'error');
+    }
+}
+
+async function approveAllVisible() {
+    const cards = document.querySelectorAll('.li-draft-card');
+    const ids = [];
+    cards.forEach(c => {
+        if (c.style.display !== 'none') ids.push(c.dataset.draftId);
+    });
+    if (!ids.length) return showToast('No visible drafts to approve');
+    if (!confirm(`Approve ${ids.length} visible drafts?`)) return;
+    try {
+        const result = await apiPost('/api/drafts/approve-batch', { draft_ids: ids });
+        showToast(`Approved ${result.approved} drafts${result.errors?.length ? ', ' + result.errors.length + ' errors' : ''}`);
+        loadLIDrafts();
+    } catch(e) { showToast('Batch approve failed', 'error'); }
+}
+
+async function queueDraft(draftId) {
+    try {
+        await apiPost('/api/drafts/' + draftId + '/queue', {});
+        showToast('Draft moved to queue!');
+        loadLIDrafts();
+    } catch(e) { showToast('Cannot queue: ' + (e.message || ''), 'error'); }
+}
+
+async function enhanceBatchDrafts() {
+    showToast('Enhancement pass runs on individual drafts. Click Enhance on any draft card.');
+}
+
+// ─── QUEUE TAB ───────────────────────────────────────────────────
+async function loadLIQueue() {
+    // KPIs
+    try {
+        const stats = await api('/api/linkedin/stats');
+        const kpiEl = document.getElementById('li-queue-kpis');
+        if (kpiEl) {
+            kpiEl.innerHTML = [
+                kpi('Queued', stats.queued_count || 0),
+                kpi('Sent', stats.sent_actual || 0),
+                kpi('Approved (Ready)', stats.approved_count || 0),
+            ].join('');
+        }
+    } catch(e) {}
+
+    // Quota display
+    try {
+        const q = await api('/api/linkedin/quota');
+        const quotaEl = document.getElementById('li-quota-display');
+        if (quotaEl && q) {
+            quotaEl.innerHTML = ['daily', 'weekly', 'monthly'].map(period => {
+                const p = q[period] || {};
+                const pct = p.limit ? Math.round((p.sent / p.limit) * 100) : 0;
+                const color = pct > 80 ? 'var(--error)' : pct > 50 ? 'var(--warning)' : 'var(--success)';
+                return `<div style="text-align:center;padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);">
+                    <div style="font-size:24px;font-weight:700;color:${color};">${p.remaining ?? '-'}</div>
+                    <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">${period} remaining</div>
+                    <div style="font-size:10px;color:var(--text-muted);">${p.sent || 0} / ${p.limit || '-'} used</div>
+                    <div style="margin-top:6px;height:4px;background:var(--bg-elevated);border-radius:2px;overflow:hidden;">
+                        <div style="width:${pct}%;height:100%;background:${color};border-radius:2px;"></div>
+                    </div>
+                </div>`;
             }).join('');
         }
-    }
+        const pacingEl = document.getElementById('li-pacing-guidance');
+        if (pacingEl && q) {
+            const dailyLeft = q.daily?.remaining || 0;
+            if (dailyLeft <= 0) {
+                pacingEl.innerHTML = '⛔ <strong>Daily limit reached.</strong> Wait until tomorrow to send more InMails.';
+                pacingEl.style.borderLeft = '3px solid var(--error)';
+            } else if (dailyLeft <= 3) {
+                pacingEl.innerHTML = `⚠️ Only <strong>${dailyLeft}</strong> InMails left today. Consider saving some for follow-ups.`;
+                pacingEl.style.borderLeft = '3px solid var(--warning)';
+            } else {
+                pacingEl.innerHTML = `✅ You can send up to <strong>${dailyLeft}</strong> more InMails today. Pace yourself - spread sends across the day for best deliverability.`;
+                pacingEl.style.borderLeft = '3px solid var(--success)';
+            }
+        }
+    } catch(e) {}
 
-    // Recent LinkedIn drafts
-    const drafts = await api('/api/drafts?channel=linkedin&limit=10');
-    const draftsEl = document.getElementById('linkedin-drafts-list');
-    if (draftsEl) {
-        const draftList = Array.isArray(drafts) ? drafts : [];
-        if (!draftList.length) {
-            draftsEl.innerHTML = '<div class="empty"><div class="empty-icon">✉️</div><strong>No LinkedIn drafts yet</strong><br>Run a workflow to generate personalized messages.</div>';
-        } else {
-            draftsEl.innerHTML = draftList.map(d => `
-                <div class="card" style="margin-bottom:10px;padding:14px;">
-                    <div style="display:flex;justify-content:space-between;align-items:start;">
-                        <div style="flex:1;">
-                            <strong>${d.subject || d.subject_line || '(no subject)'}</strong>
-                            <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">${d.contact_name || ''} - Touch ${d.touch_number || '?'} (${d.touch_type || d.channel})</div>
-                        </div>
-                        <div style="display:flex;gap:6px;">
-                            <button class="btn btn-sm" onclick="copyDraftBody('${d.id}')">Copy</button>
-                        </div>
+    // Load queued drafts
+    try {
+        const data = await api('/api/drafts?channel=linkedin&approval_status=queued&limit=100');
+        const drafts = data?.drafts || [];
+        const el = document.getElementById('li-queue-list');
+        if (!drafts.length) {
+            el.innerHTML = '<div class="empty"><div class="empty-icon">📤</div><strong>Queue is empty</strong><br>Approve drafts from the Drafts tab to add them here.</div>';
+            return;
+        }
+        el.innerHTML = drafts.map(d => {
+            const name = d.contact_name || `${d.first_name || ''} ${d.last_name || ''}`.trim();
+            const touchLabel = d.touch_type === 'inmail' ? 'InMail' : d.touch_type === 'inmail_followup' ? 'Follow-up' : d.touch_type === 'breakup' ? 'Break-up' : d.touch_type || '';
+            return `<div class="card" style="margin-bottom:10px;padding:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:start;">
+                    <div>
+                        <strong style="font-size:14px;">${name}</strong>
+                        <span style="font-size:12px;color:var(--text-muted);margin-left:8px;">${d.company_name || ''}</span>
+                        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">${touchLabel} (Touch ${d.touch_number || '?'})</div>
                     </div>
-                    <div style="margin-top:10px;padding:10px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:12px;white-space:pre-wrap;max-height:120px;overflow:hidden;">${(d.body || '').substring(0, 300)}${(d.body || '').length > 300 ? '...' : ''}</div>
-                    <div style="margin-top:6px;display:flex;gap:8px;font-size:11px;color:var(--text-muted);">
-                        <span>Words: ${d.word_count || '-'}</span>
-                        <span>Proof: ${d.proof_point_used || d.proof_point || '-'}</span>
-                        <span>P-Score: ${d.personalization_score || '-'}</span>
+                    <div style="display:flex;gap:6px;">
+                        ${d.subject_line ? `<button class="btn btn-sm" onclick="copyToClip(\`${escJs(d.subject_line || '')}\`);showToast('Subject copied!')">Copy Subject</button>` : ''}
+                        <button class="btn btn-sm btn-primary" onclick="copyToClip(\`${escJs(d.body || '')}\`);showToast('Message copied!')">Copy Message</button>
+                        ${d.linkedin_url ? `<button class="btn btn-sm" onclick="window.open('${d.linkedin_url}','_blank')">Open LinkedIn ↗</button>` : ''}
+                        <button class="btn btn-sm btn-success" onclick="markDraftSent('${d.id}')">✓ Mark Sent</button>
+                    </div>
+                </div>
+                <div style="margin-top:10px;padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:12px;white-space:pre-wrap;line-height:1.6;max-height:200px;overflow-y:auto;">${d.body || ''}</div>
+            </div>`;
+        }).join('');
+    } catch(e) { console.error('loadLIQueue:', e); }
+}
+
+function showQuotaSettings() {
+    const html = `
+        <h3>InMail Quota Settings</h3>
+        <p style="font-size:12px;color:var(--text-secondary);margin:10px 0;">Set your Sales Navigator InMail limits. These are tracked manually - update them when your quota resets.</p>
+        <div style="display:grid;gap:10px;margin-top:14px;">
+            <label style="font-size:12px;">Daily limit: <input class="inp" id="quota-daily" type="number" value="10" style="width:80px;margin-left:8px;" /></label>
+            <label style="font-size:12px;">Weekly limit: <input class="inp" id="quota-weekly" type="number" value="25" style="width:80px;margin-left:8px;" /></label>
+            <label style="font-size:12px;">Monthly limit: <input class="inp" id="quota-monthly" type="number" value="50" style="width:80px;margin-left:8px;" /></label>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:8px;">
+            <button class="btn btn-primary" onclick="saveQuotaSettings()">Save</button>
+            <button class="btn" onclick="closeModal()">Cancel</button>
+        </div>
+    `;
+    openGenericModal(html);
+}
+
+async function saveQuotaSettings() {
+    const daily = parseInt(document.getElementById('quota-daily')?.value) || 10;
+    const weekly = parseInt(document.getElementById('quota-weekly')?.value) || 25;
+    const monthly = parseInt(document.getElementById('quota-monthly')?.value) || 50;
+    await apiPost('/api/linkedin/quota/settings', {
+        linkedin_inmail_daily: daily,
+        linkedin_inmail_weekly: weekly,
+        linkedin_inmail_monthly: monthly
+    });
+    showToast('Quota settings saved');
+    closeModal();
+    loadLIQuotaBadge();
+}
+
+function openGenericModal(html) {
+    let modal = document.getElementById('generic-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'generic-modal';
+        modal.className = 'modal';
+        modal.innerHTML = '<div class="modal-content" style="width:480px;max-height:80vh;overflow-y:auto;"></div>';
+        modal.onclick = e => { if (e.target === modal) closeModal(); };
+        document.body.appendChild(modal);
+    }
+    modal.querySelector('.modal-content').innerHTML = html;
+    modal.style.display = 'flex';
+}
+
+function closeModal() {
+    const m = document.getElementById('generic-modal');
+    if (m) m.style.display = 'none';
+    // Also close other modals
+    document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+}
+
+// ─── ANALYTICS TAB ───────────────────────────────────────────────
+async function loadLIAnalytics() {
+    try {
+        const stats = await api('/api/linkedin/stats');
+        const kpiEl = document.getElementById('li-analytics-kpis');
+        if (kpiEl && stats) {
+            const replyRate = stats.sent_actual ? ((stats.replies || 0) / stats.sent_actual * 100).toFixed(1) : '0.0';
+            kpiEl.innerHTML = [
+                kpi('Total Drafts', stats.drafts || 0),
+                kpi('Sent', stats.sent_actual || 0),
+                kpi('Replies', stats.replies || 0),
+                kpi('Reply Rate', replyRate + '%'),
+                kpi('Meetings', stats.meetings || 0),
+            ].join('');
+        }
+
+        // Status funnel
+        const funnelEl = document.getElementById('li-status-funnel');
+        if (funnelEl && stats.by_approval_status) {
+            const stages = [
+                { label: 'Draft', count: stats.by_approval_status.draft || 0, color: '#6b7280' },
+                { label: 'Enhanced', count: stats.by_approval_status.enhanced || 0, color: '#f59e0b' },
+                { label: 'Approved', count: stats.by_approval_status.approved || 0, color: '#10b981' },
+                { label: 'Queued', count: stats.by_approval_status.queued || 0, color: '#3b82f6' },
+                { label: 'Sent', count: stats.sent_actual || 0, color: '#8b5cf6' },
+            ];
+            const maxCount = Math.max(...stages.map(s => s.count), 1);
+            funnelEl.innerHTML = stages.map(s => `
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                    <span style="width:70px;font-size:12px;text-align:right;">${s.label}</span>
+                    <div style="flex:1;height:24px;background:var(--bg-primary);border-radius:4px;overflow:hidden;">
+                        <div style="width:${(s.count / maxCount) * 100}%;height:100%;background:${s.color};border-radius:4px;display:flex;align-items:center;padding-left:8px;">
+                            <span style="font-size:11px;color:#fff;font-weight:600;">${s.count}</span>
+                        </div>
                     </div>
                 </div>
             `).join('');
         }
-    }
+
+        // Touch type breakdown
+        const touchEl = document.getElementById('li-touch-breakdown');
+        if (touchEl) {
+            const allDrafts = await api('/api/drafts?channel=linkedin&limit=500');
+            const drafts = allDrafts?.drafts || [];
+            const touchCounts = {};
+            drafts.forEach(d => {
+                const t = d.touch_type || 'unknown';
+                touchCounts[t] = (touchCounts[t] || 0) + 1;
+            });
+            const touchLabels = { inmail: 'InMail (Touch 1)', call: 'Call Script', inmail_followup: 'Follow-up (Touch 3)', breakup: 'Break-up (Touch 6)' };
+            touchEl.innerHTML = Object.entries(touchCounts).map(([type, count]) => `
+                <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;">
+                    <span>${touchLabels[type] || type}</span>
+                    <strong>${count}</strong>
+                </div>
+            `).join('');
+        }
+
+        // Proof points used
+        const proofEl = document.getElementById('li-proof-points');
+        if (proofEl) {
+            const allDrafts = await api('/api/drafts?channel=linkedin&limit=500');
+            const drafts = allDrafts?.drafts || [];
+            const proofCounts = {};
+            drafts.forEach(d => {
+                const p = d.proof_point_used || 'none';
+                proofCounts[p] = (proofCounts[p] || 0) + 1;
+            });
+            proofEl.innerHTML = Object.entries(proofCounts).sort((a,b) => b[1] - a[1]).map(([point, count]) => `
+                <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;">
+                    <span>${point}</span>
+                    <strong>${count}</strong>
+                </div>
+            `).join('');
+        }
+
+        // Quality metrics
+        const qualityEl = document.getElementById('li-quality-metrics');
+        if (qualityEl) {
+            const allDrafts = await api('/api/drafts?channel=linkedin&limit=500');
+            const drafts = allDrafts?.drafts || [];
+            const qcPassed = drafts.filter(d => d.qc_passed).length;
+            const avgWords = drafts.length ? Math.round(drafts.reduce((s,d) => s + (d.word_count || 0), 0) / drafts.length) : 0;
+            const avgPScore = drafts.length ? (drafts.reduce((s,d) => s + (d.personalization_score || 0), 0) / drafts.length).toFixed(1) : '0';
+            qualityEl.innerHTML = `
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div style="text-align:center;padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);">
+                        <div style="font-size:20px;font-weight:700;">${qcPassed}/${drafts.length}</div>
+                        <div style="font-size:11px;color:var(--text-muted);">QC Passed</div>
+                    </div>
+                    <div style="text-align:center;padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);">
+                        <div style="font-size:20px;font-weight:700;">${avgWords}</div>
+                        <div style="font-size:11px;color:var(--text-muted);">Avg Words</div>
+                    </div>
+                    <div style="text-align:center;padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);">
+                        <div style="font-size:20px;font-weight:700;">${avgPScore}</div>
+                        <div style="font-size:11px;color:var(--text-muted);">Avg P-Score</div>
+                    </div>
+                    <div style="text-align:center;padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);">
+                        <div style="font-size:20px;font-weight:700;">${((qcPassed / Math.max(drafts.length,1)) * 100).toFixed(0)}%</div>
+                        <div style="font-size:11px;color:var(--text-muted);">QC Pass Rate</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Activity log
+        const logEl = document.getElementById('li-activity-log');
+        if (logEl) {
+            try {
+                const activities = await api('/api/audit/recent?limit=20');
+                const actList = Array.isArray(activities) ? activities : (activities?.activities || []);
+                if (actList.length) {
+                    logEl.innerHTML = actList.map(a => `
+                        <div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;display:flex;justify-content:space-between;">
+                            <span>${a.description || a.activity_type || 'Activity'}</span>
+                            <span style="color:var(--text-muted);">${timeAgo(a.created_at)}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    logEl.innerHTML = '<div style="font-size:12px;color:var(--text-muted);padding:12px;">No recent activity.</div>';
+                }
+            } catch(e) {
+                logEl.innerHTML = '<div style="font-size:12px;color:var(--text-muted);padding:12px;">Activity log unavailable.</div>';
+            }
+        }
+    } catch(e) { console.error('loadLIAnalytics:', e); }
 }
 
 function showLinkedInImportTab(tab, btn) {

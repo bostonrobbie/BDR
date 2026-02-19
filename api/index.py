@@ -569,6 +569,13 @@ CREATE INDEX IF NOT EXISTS idx_touches_channel ON outreach_touches(channel);
 CREATE INDEX IF NOT EXISTS idx_responses_touch ON outreach_responses(touch_id);
 CREATE INDEX IF NOT EXISTS idx_responses_contact ON outreach_responses(contact_id);
 CREATE INDEX IF NOT EXISTS idx_outcomes_contact ON outreach_outcomes(contact_id);
+
+CREATE TABLE IF NOT EXISTS settings (
+    key TEXT PRIMARY KEY,
+    value TEXT,
+    created_at TEXT DEFAULT (datetime('now')),
+    updated_at TEXT DEFAULT (datetime('now'))
+);
 """
 
 # ---------------------------------------------------------------------------
@@ -895,6 +902,7 @@ def init_and_seed():
         ("contacts", "already_messaged_li", "INTEGER DEFAULT 0"),
         ("contacts", "messaging_status", "TEXT DEFAULT 'unknown'"),
         ("contacts", "batch_1_eligible", "INTEGER DEFAULT 0"),
+        ("message_drafts", "updated_at", "TEXT"),
     ]
     for table, col, coltype in migration_cols:
         try:
@@ -1572,26 +1580,55 @@ def list_activity(channel: str = None, contact_id: str = None,
 
 @app.get("/api/drafts")
 def list_drafts(channel: str = None, status: str = None,
-                contact_id: str = None, flow_run_id: str = None,
+                contact_id: str = None, batch_id: str = None,
+                touch_type: str = None, approval_status: str = None,
                 limit: int = 100, offset: int = 0):
     conn = get_db()
-    q = "SELECT * FROM draft_versions WHERE 1=1"
+    q = """SELECT md.*, c.first_name, c.last_name, c.title as contact_title,
+           c.linkedin_url, c.persona_type, c.priority_score,
+           a.name as company_name, a.industry as vertical
+           FROM message_drafts md
+           LEFT JOIN contacts c ON md.contact_id = c.id
+           LEFT JOIN accounts a ON c.account_id = a.id
+           WHERE 1=1"""
     params = []
     if channel:
-        q += " AND channel=?"; params.append(channel)
+        q += " AND md.channel=?"; params.append(channel)
     if status:
-        q += " AND status=?"; params.append(status)
+        q += " AND md.approval_status=?"; params.append(status)
     if contact_id:
-        q += " AND contact_id=?"; params.append(contact_id)
-    if flow_run_id:
-        q += " AND flow_run_id=?"; params.append(flow_run_id)
-    q += " ORDER BY created_at DESC LIMIT ? OFFSET ?"
+        q += " AND md.contact_id=?"; params.append(contact_id)
+    if batch_id:
+        q += " AND md.batch_id=?"; params.append(batch_id)
+    if touch_type:
+        q += " AND md.touch_type=?"; params.append(touch_type)
+    if approval_status:
+        q += " AND md.approval_status=?"; params.append(approval_status)
+    q += " ORDER BY c.priority_score DESC, md.touch_number ASC LIMIT ? OFFSET ?"
     params.extend([limit, offset])
     rows = rows_to_dicts(conn.execute(q, params).fetchall())
-    total = conn.execute("SELECT COUNT(*) FROM draft_versions").fetchone()[0]
+
+    # Get total count with same filters
+    count_q = "SELECT COUNT(*) FROM message_drafts md WHERE 1=1"
+    count_params = []
+    if channel:
+        count_q += " AND md.channel=?"; count_params.append(channel)
+    if status:
+        count_q += " AND md.approval_status=?"; count_params.append(status)
+    if contact_id:
+        count_q += " AND md.contact_id=?"; count_params.append(contact_id)
+    if batch_id:
+        count_q += " AND md.batch_id=?"; count_params.append(batch_id)
+    if touch_type:
+        count_q += " AND md.touch_type=?"; count_params.append(touch_type)
+    if approval_status:
+        count_q += " AND md.approval_status=?"; count_params.append(approval_status)
+    total = conn.execute(count_q, count_params).fetchone()[0]
     conn.close()
+
     for r in rows:
         parse_json_fields(r, ["qc_flags"])
+        r["contact_name"] = f"{r.get('first_name','')} {r.get('last_name','')}".strip()
     return {"drafts": rows, "total": total}
 
 @app.get("/api/drafts/{draft_id}")
@@ -5316,8 +5353,68 @@ def linkedin_stats():
     sent = conn.execute("SELECT COUNT(*) as cnt FROM touchpoints WHERE channel='linkedin'").fetchone()["cnt"]
     runs = conn.execute("SELECT COUNT(*) as cnt FROM workflow_runs WHERE channel='linkedin'").fetchone()["cnt"]
     active_runs = conn.execute("SELECT COUNT(*) as cnt FROM workflow_runs WHERE channel='linkedin' AND status IN ('queued','running')").fetchone()["cnt"]
+
+    # Get counts by approval status
+    by_status = {}
+    for row in conn.execute("SELECT approval_status, COUNT(*) as cnt FROM message_drafts WHERE channel='linkedin' GROUP BY approval_status"):
+        by_status[row["approval_status"] or "draft"] = row["cnt"]
+
+    # Get actual sent count from outreach_touches
+    sent_actual = conn.execute("SELECT COUNT(*) FROM outreach_touches WHERE channel='linkedin'").fetchone()[0]
+
     conn.close()
-    return {"profiles": profiles, "drafts": drafts, "sent": sent, "total_runs": runs, "active_runs": active_runs, "dry_run": DRY_RUN}
+    return {
+        "profiles": profiles,
+        "drafts": drafts,
+        "sent": sent,
+        "sent_actual": sent_actual,
+        "total_runs": runs,
+        "active_runs": active_runs,
+        "by_approval_status": by_status,
+        "approved_count": by_status.get("approved", 0),
+        "queued_count": by_status.get("queued", 0),
+        "dry_run": DRY_RUN
+    }
+
+@app.get("/api/linkedin/quota")
+def get_linkedin_quota():
+    conn = get_db()
+    # Get settings
+    settings = {}
+    for row in conn.execute("SELECT key, value FROM settings WHERE key LIKE 'linkedin_%'"):
+        settings[row["key"]] = row["value"]
+
+    monthly_limit = int(settings.get("linkedin_inmail_monthly", "50"))
+    weekly_limit = int(settings.get("linkedin_inmail_weekly", "25"))
+    daily_limit = int(settings.get("linkedin_inmail_daily", "10"))
+
+    # Count sent this period
+    now = datetime.utcnow()
+    today_start = now.strftime("%Y-%m-%d") + "T00:00:00"
+    week_start = (now - timedelta(days=now.weekday())).strftime("%Y-%m-%d") + "T00:00:00"
+    month_start = now.strftime("%Y-%m-01") + "T00:00:00"
+
+    sent_today = conn.execute("SELECT COUNT(*) FROM outreach_touches WHERE channel='linkedin' AND sent_at >= ?", (today_start,)).fetchone()[0]
+    sent_week = conn.execute("SELECT COUNT(*) FROM outreach_touches WHERE channel='linkedin' AND sent_at >= ?", (week_start,)).fetchone()[0]
+    sent_month = conn.execute("SELECT COUNT(*) FROM outreach_touches WHERE channel='linkedin' AND sent_at >= ?", (month_start,)).fetchone()[0]
+
+    conn.close()
+    return {
+        "daily": {"limit": daily_limit, "sent": sent_today, "remaining": max(0, daily_limit - sent_today)},
+        "weekly": {"limit": weekly_limit, "sent": sent_week, "remaining": max(0, weekly_limit - sent_week)},
+        "monthly": {"limit": monthly_limit, "sent": sent_month, "remaining": max(0, monthly_limit - sent_month)},
+        "warnings": []
+    }
+
+@app.post("/api/linkedin/quota/settings")
+def update_linkedin_quota(data: dict):
+    conn = get_db()
+    for key in ["linkedin_inmail_monthly", "linkedin_inmail_weekly", "linkedin_inmail_daily"]:
+        if key in data:
+            conn.execute("INSERT OR REPLACE INTO settings (key, value) VALUES (?,?)", (key, str(data[key])))
+    conn.commit()
+    conn.close()
+    return {"status": "updated"}
 
 # ---------------------------------------------------------------------------
 # WORKFLOW EXECUTION ENGINE
@@ -6871,3 +6968,73 @@ def enhance_draft(draft_id: str):
         }
     finally:
         conn.close()
+
+@app.post("/api/drafts/{draft_id}/approve")
+def approve_draft(draft_id: str):
+    conn = get_db()
+    draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+    if not draft:
+        conn.close()
+        raise HTTPException(404, "Draft not found")
+    d = dict(draft)
+    # Validate before approving
+    body = d.get("body", "")
+    if not body or len(body) < 100:
+        conn.close()
+        raise HTTPException(400, "Draft body too short to approve (min 100 chars)")
+    if "{first_name}" in body or "{company}" in body or "[PLACEHOLDER]" in body or "[TODO]" in body:
+        conn.close()
+        raise HTTPException(400, "Draft contains unresolved placeholders")
+
+    now = datetime.utcnow().isoformat()
+    conn.execute("UPDATE message_drafts SET approval_status='approved', updated_at=? WHERE id=?", (now, draft_id))
+    conn.execute("""INSERT INTO activity_timeline (id, contact_id, channel, activity_type, description, metadata, created_at)
+        VALUES (?,?,?,?,?,?,?)""",
+        (gen_id("evt"), d.get("contact_id"), "linkedin", "draft_approved",
+         f"Draft approved for touch {d.get('touch_number','')}",
+         json.dumps({"draft_id": draft_id}), now))
+    conn.commit()
+    conn.close()
+    return {"status": "approved", "draft_id": draft_id}
+
+@app.post("/api/drafts/approve-batch")
+def approve_drafts_batch(data: dict):
+    draft_ids = data.get("draft_ids", [])
+    if not draft_ids:
+        raise HTTPException(400, "No draft IDs provided")
+    conn = get_db()
+    now = datetime.utcnow().isoformat()
+    approved = 0
+    errors = []
+    for did in draft_ids:
+        draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (did,)).fetchone()
+        if not draft:
+            errors.append(f"{did}: not found")
+            continue
+        d = dict(draft)
+        body_text = d.get("body", "")
+        if not body_text or len(body_text) < 100:
+            errors.append(f"{did}: body too short")
+            continue
+        conn.execute("UPDATE message_drafts SET approval_status='approved', updated_at=? WHERE id=?", (now, did))
+        approved += 1
+    conn.commit()
+    conn.close()
+    return {"approved": approved, "errors": errors}
+
+@app.post("/api/drafts/{draft_id}/queue")
+def queue_draft(draft_id: str):
+    conn = get_db()
+    draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+    if not draft:
+        conn.close()
+        raise HTTPException(404, "Draft not found")
+    d = dict(draft)
+    if d.get("approval_status") != "approved":
+        conn.close()
+        raise HTTPException(400, "Draft must be approved before queuing")
+    now = datetime.utcnow().isoformat()
+    conn.execute("UPDATE message_drafts SET approval_status='queued', updated_at=? WHERE id=?", (now, draft_id))
+    conn.commit()
+    conn.close()
+    return {"status": "queued", "draft_id": draft_id}
