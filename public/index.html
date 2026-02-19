@@ -3608,8 +3608,8 @@ async function loadStats() {
 
     let realMetricsHtml = [
         kpi('Total Prospects', stats.total_contacts || 0),
-        kpi('LinkedIn Drafts', liStats?.total_drafts || 0),
-        kpi('Email Drafts', emailStats?.total_drafts || 0),
+        kpi('LinkedIn Drafts', liStats?.drafts || liStats?.total_drafts || 0),
+        kpi('Email Drafts', emailStats?.drafts || emailStats?.total_drafts || 0),
         kpi('Enhanced', byStatus.enhanced || 0),
         kpi('Approved', byStatus.approved || 0),
         kpi('Queued', byStatus.queued || 0),
@@ -7900,22 +7900,33 @@ async function saveQuotaSettings() {
 
 async function updateQuotaWidget() {
     try {
-        const data = await api('/api/quota');
-        const remaining = (data.total_credits || 100) - (data.used_credits || 0);
+        const data = await api('/api/quota/current');
         const remainingEl = document.getElementById('quota-remaining');
         const infoEl = document.getElementById('quota-info');
         const widget = document.getElementById('quota-widget');
 
-        if (remainingEl) remainingEl.textContent = remaining;
-        if (infoEl) infoEl.textContent = `of ${data.total_credits || 100} | Today: ${data.sends_today || 0}`;
-
-        if (widget && remaining <= 10) {
-            widget.style.borderLeft = '3px solid var(--error)';
-        } else if (widget && remaining <= 25) {
-            widget.style.borderLeft = '3px solid var(--warning)';
+        if (data.status === 'verified') {
+            const remaining = data.inmails_remaining || 0;
+            const total = data.inmails_total || 0;
+            if (remainingEl) remainingEl.textContent = remaining;
+            if (infoEl) infoEl.textContent = `of ${total} InMails | Verified`;
+            if (widget && remaining <= 10) {
+                widget.style.borderLeft = '3px solid var(--error)';
+            } else if (widget && remaining <= 25) {
+                widget.style.borderLeft = '3px solid var(--warning)';
+            } else if (widget) {
+                widget.style.borderLeft = '3px solid var(--success)';
+            }
+        } else {
+            if (remainingEl) remainingEl.textContent = '?';
+            if (infoEl) infoEl.textContent = 'Not verified - click to update';
+            if (widget) widget.style.borderLeft = '3px solid var(--warning)';
         }
     } catch(e) {
-        console.error('updateQuotaWidget error:', e);
+        const remainingEl = document.getElementById('quota-remaining');
+        const infoEl = document.getElementById('quota-info');
+        if (remainingEl) remainingEl.textContent = '?';
+        if (infoEl) infoEl.textContent = 'Not verified - click to update';
     }
 }
 
