@@ -640,6 +640,8 @@ def _auto_import_run_bundle(conn):
         return  # No bundle file found
 
     print(f"Auto-import: Loading bundle from {bundle_path}")
+    # Disable FK checks during bulk import for speed and to avoid ordering issues
+    conn.execute("PRAGMA foreign_keys=OFF")
     with open(bundle_path) as f:
         bundle = json.load(f)
 
@@ -734,7 +736,7 @@ def _auto_import_run_bundle(conn):
         # Create account
         acc = conn.execute("SELECT id FROM accounts WHERE name=?", (company,)).fetchone()
         if acc:
-            account_id = acc["id"]
+            account_id = acc[0]
         else:
             account_id = gen_id("acc")
             emp_count = p.get("employee_count")
@@ -850,13 +852,15 @@ def _auto_import_run_bundle(conn):
          4, 4, now, now))
 
     # Log to activity timeline
-    conn.execute("""INSERT INTO activity_timeline (id, event_type, channel, summary, metadata, created_at)
+    conn.execute("""INSERT INTO activity_timeline (id, activity_type, channel, description, metadata, created_at)
         VALUES (?,?,?,?,?,?)""",
         (gen_id("evt"), "batch_auto_import", "linkedin",
          f"Auto-imported Batch 1: {imported_contacts} contacts, {imported_drafts} drafts",
          json.dumps({"batch_id": batch_id, "workflow_run_id": wf_id}), now))
 
+    conn.execute("PRAGMA foreign_keys=ON")
     conn.commit()
+    print(f"Auto-import: Done. {imported_contacts} contacts, {imported_drafts} drafts")
 
 
 def init_and_seed():
