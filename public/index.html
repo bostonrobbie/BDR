@@ -386,6 +386,188 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
     background: var(--bg-primary);
 }
 
+/* Draft Tabs */
+.draft-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-elevated);
+}
+.draft-tab-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+.draft-tab-btn:hover {
+    color: var(--text-primary);
+    background: var(--bg-hover);
+}
+.draft-tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+.draft-tab-content {
+    display: none;
+    padding: 16px;
+}
+.draft-tab-content.active {
+    display: block;
+}
+.draft-message-body {
+    background: var(--bg-primary);
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.6;
+    max-height: 500px;
+    overflow-y: auto;
+    min-height: 80px;
+}
+.draft-message-body.call-script {
+    font-family: monospace;
+    font-size: 12px;
+}
+.draft-edit-textarea {
+    width: 100%;
+    min-height: 200px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 13px;
+    font-family: inherit;
+    line-height: 1.6;
+    resize: vertical;
+}
+.draft-subject-input {
+    width: 100%;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: inherit;
+}
+.research-section {
+    margin-bottom: 16px;
+}
+.research-section-title {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+.research-bullet {
+    padding: 6px 10px;
+    margin-bottom: 4px;
+    background: var(--bg-elevated);
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-left: 3px solid var(--accent);
+}
+.confidence-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+.confidence-badge.high {
+    background: var(--success-bg);
+    color: var(--success);
+}
+.confidence-badge.medium {
+    background: var(--warning-bg);
+    color: var(--warning);
+}
+.confidence-badge.low {
+    background: var(--error-bg);
+    color: var(--error);
+}
+.research-completeness {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+.research-completeness.complete {
+    background: var(--success-bg);
+    color: var(--success);
+}
+.research-completeness.partial {
+    background: var(--warning-bg);
+    color: var(--warning);
+}
+.research-completeness.missing {
+    background: var(--error-bg);
+    color: var(--error);
+}
+
+/* Flow Steps */
+.flow-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 12px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition);
+}
+.flow-step:hover {
+    border-color: var(--accent);
+    color: var(--text-primary);
+}
+.flow-step.active {
+    background: var(--accent-bg);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+.flow-step.completed {
+    background: var(--success-bg);
+    border-color: var(--success);
+    color: var(--success);
+}
+.flow-step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--bg-elevated);
+    font-weight: bold;
+    font-size: 11px;
+}
+.flow-step.active .flow-step-num {
+    background: var(--accent);
+    color: #fff;
+}
+.flow-step.completed .flow-step-num {
+    background: var(--success);
+    color: #fff;
+}
+
 /* Grids */
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
@@ -1320,28 +1502,53 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
         </div>
 
         <div class="nav-section">WORK</div>
-        <div class="nav-item" onclick="showPage('prospects')">
-            <span class="nav-icon">👥</span> <span>Prospects</span>
-            <span class="badge" id="badge-prospects" style="display:none">0</span>
+        <div class="nav-item" onclick="showPage('accounts')">
+            <span class="nav-icon">🏢</span> <span>Accounts</span>
+        </div>
+        <div class="nav-item" onclick="showPage('linkedin')">
+            <span class="nav-icon">🔗</span> <span>LinkedIn Prospects</span>
+            <span class="badge" id="badge-linkedin" style="display:none">0</span>
+        </div>
+        <div class="nav-item" onclick="showPage('email')">
+            <span class="nav-icon">✉️</span> <span>Email Prospects</span>
+            <span class="badge" id="badge-email" style="display:none">0</span>
         </div>
         <div class="nav-item" onclick="showPage('runs')">
-            <span class="nav-icon">🚀</span> <span>Research Runs</span>
+            <span class="nav-icon">🔍</span> <span>Research Runs</span>
             <span class="badge" id="badge-runs" style="display:none">0</span>
         </div>
         <div class="nav-item" onclick="showPage('drafts')">
-            <span class="nav-icon">📝</span> <span>Drafts</span>
+            <span class="nav-icon">📝</span> <span>All Drafts</span>
             <span class="badge" id="badge-drafts" style="display:none">0</span>
         </div>
-        <div class="nav-item" onclick="showPage('quota')">
-            <span class="nav-icon">💰</span> <span>Quota</span>
+        <div class="nav-item" onclick="showPage('prospects')">
+            <span class="nav-icon">👥</span> <span>All Prospects</span>
+            <span class="badge" id="badge-prospects" style="display:none">0</span>
+        </div>
+
+        <div class="nav-section">FLOWS</div>
+        <div class="nav-item" onclick="showPage('flow-account-research')">
+            <span class="nav-icon">🔬</span> <span>Account Research</span>
+        </div>
+        <div class="nav-item" onclick="showPage('flow-linkedin-draft')">
+            <span class="nav-icon">📋</span> <span>LinkedIn Draft Flow</span>
+        </div>
+        <div class="nav-item" onclick="showPage('flow-email-draft')">
+            <span class="nav-icon">📨</span> <span>Email Draft Flow</span>
         </div>
 
         <div class="nav-section">INSIGHTS</div>
         <div class="nav-item" onclick="showPage('analytics')">
             <span class="nav-icon">📊</span> <span>Analytics</span>
         </div>
+        <div class="nav-item" onclick="showPage('experiments')">
+            <span class="nav-icon">🧪</span> <span>Experiments</span>
+        </div>
 
         <div class="nav-section">OPERATIONS</div>
+        <div class="nav-item" onclick="showPage('quota')">
+            <span class="nav-icon">💰</span> <span>Quota</span>
+        </div>
         <div class="nav-item" onclick="showPage('system')">
             <span class="nav-icon">⚙️</span> <span>System</span>
         </div>
@@ -2503,6 +2710,192 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
     </div>
 </div>
 
+<!-- FLOW: Account Research -->
+<div class="page" id="page-flow-account-research">
+    <div class="page-hdr">
+        <h2>Account Research Flow</h2>
+        <p style="color:var(--text-secondary);font-size:12px;margin-top:4px">Guided workflow: Select accounts, generate research, tag and export</p>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:24px" id="flow-ar-steps">
+        <div class="flow-step active" id="flow-ar-step-1" onclick="showFlowStep('ar',1)">
+            <span class="flow-step-num">1</span> Select Accounts
+        </div>
+        <div class="flow-step" id="flow-ar-step-2" onclick="showFlowStep('ar',2)">
+            <span class="flow-step-num">2</span> Generate Research
+        </div>
+        <div class="flow-step" id="flow-ar-step-3" onclick="showFlowStep('ar',3)">
+            <span class="flow-step-num">3</span> Tag & Export
+        </div>
+    </div>
+    <div id="flow-ar-content-1">
+        <div class="card" style="padding:20px">
+            <h3 style="margin-bottom:12px">Select Accounts to Research</h3>
+            <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+                <select id="flow-ar-filter-vertical" style="background:var(--bg-elevated);color:var(--text-primary);border:1px solid var(--border);padding:6px 10px;border-radius:4px;font-size:12px">
+                    <option value="">All Verticals</option>
+                    <option value="SaaS">SaaS/Tech</option>
+                    <option value="FinTech">FinTech</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Retail">Retail</option>
+                    <option value="Telecom">Telecom</option>
+                </select>
+                <button class="btn btn-sm btn-primary" onclick="loadFlowAccounts()">Load Accounts</button>
+            </div>
+            <div id="flow-ar-accounts-list" style="color:var(--text-secondary);font-size:12px">Click "Load Accounts" to see available accounts.</div>
+        </div>
+    </div>
+    <div id="flow-ar-content-2" style="display:none">
+        <div class="card" style="padding:20px">
+            <h3 style="margin-bottom:12px">Generate Research</h3>
+            <p style="color:var(--text-secondary);font-size:12px;margin-bottom:16px">Selected accounts will have company research generated including products, metrics, news, hiring signals, and tech stack.</p>
+            <div id="flow-ar-selected-summary" style="margin-bottom:16px"></div>
+            <button class="btn btn-primary" onclick="runFlowAccountResearch()" id="flow-ar-generate-btn">Generate Research for Selected Accounts</button>
+            <div id="flow-ar-progress" style="margin-top:16px"></div>
+        </div>
+    </div>
+    <div id="flow-ar-content-3" style="display:none">
+        <div class="card" style="padding:20px">
+            <h3 style="margin-bottom:12px">Tag & Export</h3>
+            <p style="color:var(--text-secondary);font-size:12px;margin-bottom:16px">Tag accounts with initiative labels and export to prospect lists.</p>
+            <div id="flow-ar-results" style="margin-bottom:16px"></div>
+            <div style="display:flex;gap:8px">
+                <button class="btn btn-primary" onclick="exportFlowAccountResults()">Export Results</button>
+                <button class="btn btn-sm" onclick="showPage('accounts')">View in Accounts</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FLOW: LinkedIn Draft -->
+<div class="page" id="page-flow-linkedin-draft">
+    <div class="page-hdr">
+        <h2>LinkedIn Draft Flow</h2>
+        <p style="color:var(--text-secondary);font-size:12px;margin-top:4px">Guided workflow: Select prospects, verify research, generate drafts, review</p>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:24px" id="flow-li-steps">
+        <div class="flow-step active" id="flow-li-step-1" onclick="showFlowStep('li',1)">
+            <span class="flow-step-num">1</span> Select Prospects
+        </div>
+        <div class="flow-step" id="flow-li-step-2" onclick="showFlowStep('li',2)">
+            <span class="flow-step-num">2</span> Verify Research
+        </div>
+        <div class="flow-step" id="flow-li-step-3" onclick="showFlowStep('li',3)">
+            <span class="flow-step-num">3</span> Generate Drafts
+        </div>
+        <div class="flow-step" id="flow-li-step-4" onclick="showFlowStep('li',4)">
+            <span class="flow-step-num">4</span> Review
+        </div>
+    </div>
+    <div id="flow-li-content-1">
+        <div class="card" style="padding:20px">
+            <h3 style="margin-bottom:12px">Select LinkedIn Prospects</h3>
+            <p style="color:var(--text-secondary);font-size:12px;margin-bottom:16px">Filter by priority and research completeness to select prospects for LinkedIn outreach.</p>
+            <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+                <select id="flow-li-filter-priority" style="background:var(--bg-elevated);color:var(--text-primary);border:1px solid var(--border);padding:6px 10px;border-radius:4px;font-size:12px">
+                    <option value="">All Priorities</option>
+                    <option value="5">Hot (5)</option>
+                    <option value="4">Warm (4)</option>
+                    <option value="3">Standard (3)</option>
+                </select>
+                <button class="btn btn-sm btn-primary" onclick="loadFlowLinkedInProspects()">Load Prospects</button>
+            </div>
+            <div id="flow-li-prospects-list" style="color:var(--text-secondary);font-size:12px">Click "Load Prospects" to see available LinkedIn prospects.</div>
+        </div>
+    </div>
+    <div id="flow-li-content-2" style="display:none">
+        <div class="card" style="padding:20px">
+            <h3 style="margin-bottom:12px">Verify Research</h3>
+            <p style="color:var(--text-secondary);font-size:12px;margin-bottom:16px">Review research completeness for each selected prospect. Flag any with incomplete research.</p>
+            <div id="flow-li-research-checklist"></div>
+        </div>
+    </div>
+    <div id="flow-li-content-3" style="display:none">
+        <div class="card" style="padding:20px">
+            <h3 style="margin-bottom:12px">Generate LinkedIn Drafts</h3>
+            <p style="color:var(--text-secondary);font-size:12px;margin-bottom:16px">Generate InMail, follow-up, and break-up drafts for selected prospects.</p>
+            <div id="flow-li-generate-summary" style="margin-bottom:16px"></div>
+            <button class="btn btn-primary" onclick="runFlowLinkedInDrafts()" id="flow-li-generate-btn">Generate Drafts</button>
+            <div id="flow-li-progress" style="margin-top:16px"></div>
+        </div>
+    </div>
+    <div id="flow-li-content-4" style="display:none">
+        <div class="card" style="padding:20px">
+            <h3 style="margin-bottom:12px">Review Generated Drafts</h3>
+            <p style="color:var(--text-secondary);font-size:12px;margin-bottom:16px">Review and edit the generated drafts before sending.</p>
+            <div id="flow-li-review-drafts"></div>
+            <div style="display:flex;gap:8px;margin-top:16px">
+                <button class="btn btn-primary" onclick="showPage('drafts')">View All Drafts</button>
+                <button class="btn btn-sm" onclick="showPage('linkedin')">View LinkedIn Page</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FLOW: Email Draft -->
+<div class="page" id="page-flow-email-draft">
+    <div class="page-hdr">
+        <h2>Email Draft Flow</h2>
+        <p style="color:var(--text-secondary);font-size:12px;margin-top:4px">Guided workflow: Select prospects, verify research, generate email drafts, review</p>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:24px" id="flow-em-steps">
+        <div class="flow-step active" id="flow-em-step-1" onclick="showFlowStep('em',1)">
+            <span class="flow-step-num">1</span> Select Prospects
+        </div>
+        <div class="flow-step" id="flow-em-step-2" onclick="showFlowStep('em',2)">
+            <span class="flow-step-num">2</span> Verify Research
+        </div>
+        <div class="flow-step" id="flow-em-step-3" onclick="showFlowStep('em',3)">
+            <span class="flow-step-num">3</span> Generate Drafts
+        </div>
+        <div class="flow-step" id="flow-em-step-4" onclick="showFlowStep('em',4)">
+            <span class="flow-step-num">4</span> Review
+        </div>
+    </div>
+    <div id="flow-em-content-1">
+        <div class="card" style="padding:20px">
+            <h3 style="margin-bottom:12px">Select Email Prospects</h3>
+            <p style="color:var(--text-secondary);font-size:12px;margin-bottom:16px">Filter by priority and email verification status.</p>
+            <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+                <select id="flow-em-filter-priority" style="background:var(--bg-elevated);color:var(--text-primary);border:1px solid var(--border);padding:6px 10px;border-radius:4px;font-size:12px">
+                    <option value="">All Priorities</option>
+                    <option value="5">Hot (5)</option>
+                    <option value="4">Warm (4)</option>
+                    <option value="3">Standard (3)</option>
+                </select>
+                <button class="btn btn-sm btn-primary" onclick="loadFlowEmailProspects()">Load Prospects</button>
+            </div>
+            <div id="flow-em-prospects-list" style="color:var(--text-secondary);font-size:12px">Click "Load Prospects" to see available email prospects.</div>
+        </div>
+    </div>
+    <div id="flow-em-content-2" style="display:none">
+        <div class="card" style="padding:20px">
+            <h3 style="margin-bottom:12px">Verify Research</h3>
+            <p style="color:var(--text-secondary);font-size:12px;margin-bottom:16px">Verify research completeness and email availability for each prospect.</p>
+            <div id="flow-em-research-checklist"></div>
+        </div>
+    </div>
+    <div id="flow-em-content-3" style="display:none">
+        <div class="card" style="padding:20px">
+            <h3 style="margin-bottom:12px">Generate Email Drafts</h3>
+            <p style="color:var(--text-secondary);font-size:12px;margin-bottom:16px">Generate email subject + body for touches 1, 3, 5.</p>
+            <div id="flow-em-generate-summary" style="margin-bottom:16px"></div>
+            <button class="btn btn-primary" onclick="runFlowEmailDrafts()" id="flow-em-generate-btn">Generate Drafts</button>
+            <div id="flow-em-progress" style="margin-top:16px"></div>
+        </div>
+    </div>
+    <div id="flow-em-content-4" style="display:none">
+        <div class="card" style="padding:20px">
+            <h3 style="margin-bottom:12px">Review Generated Drafts</h3>
+            <p style="color:var(--text-secondary);font-size:12px;margin-bottom:16px">Review and edit email drafts before sending.</p>
+            <div id="flow-em-review-drafts"></div>
+            <div style="display:flex;gap:8px;margin-top:16px">
+                <button class="btn btn-primary" onclick="showPage('drafts')">View All Drafts</button>
+                <button class="btn btn-sm" onclick="showPage('email')">View Email Page</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </div><!-- /main -->
 </div><!-- /shell -->
 
@@ -2723,6 +3116,9 @@ function showPage(id) {
     if (id === 'quota') loadQuota();
     if (id === 'import') {};
     if (id === 'settings') loadSettings();
+    if (id === 'flow-account-research') loadFlowAccountResearchPage();
+    if (id === 'flow-linkedin-draft') loadFlowLinkedInDraftPage();
+    if (id === 'flow-email-draft') loadFlowEmailDraftPage();
 }
 
 function kpi(label, val, sub = '') {
@@ -4755,44 +5151,7 @@ async function loadDraftsFull() {
         // Sort by prospect priority desc, then touch number
         allDrafts.sort((a,b) => (b.priority - a.priority) || (a.touch_number - b.touch_number));
 
-        if (listEl) listEl.innerHTML = allDrafts.map(d => {
-            const isCall = d.touch_number === 2 || d.touch_number === 4;
-            const touchLabel = touchLabels[d.touch_number] || `Touch ${d.touch_number}`;
-            const hasLinkedin = d.linkedin_url && d.linkedin_url.includes('linkedin.com');
-            const linkedinUrl = hasLinkedin ? (d.linkedin_url.startsWith('http') ? d.linkedin_url : 'https://' + d.linkedin_url) : '';
-            const draftId = d.id || '';
-            const contactId = d.contact_id || '';
-            const wordCount = d.word_count || 0;
-            const draftStatus = d.status || 'drafted';
-
-            return `<div class="draft-card" data-draft-id="${draftId}">
-                <div class="draft-header">
-                    <div class="draft-header-left">
-                        <div class="draft-title">
-                            <strong>${esc(d.prospect_name)}</strong>
-                            <span class="draft-company">${esc(d.company)}</span>
-                        </div>
-                        <div class="draft-meta">
-                            <span class="draft-touch">${touchLabel}</span>
-                            <span class="draft-wordcount">${wordCount} words</span>
-                            <span class="draft-status" style="background:${draftStatus === 'sent' ? 'var(--success-bg)' : draftStatus === 'ready' ? 'var(--accent-bg)' : 'var(--warning-bg)'};color:${draftStatus === 'sent' ? 'var(--success)' : draftStatus === 'ready' ? 'var(--accent)' : 'var(--warning)'};padding:2px 6px;border-radius:4px;font-size:11px;font-weight:bold">${draftStatus}</span>
-                        </div>
-                    </div>
-                    <div class="draft-toggle">▼</div>
-                </div>
-                <div class="draft-body" style="display:none;padding:16px;border-top:1px solid var(--border)">
-                    ${d.subject_line ? `<div style="margin-bottom:12px"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:bold;margin-bottom:4px">Subject</div><div style="background:var(--bg-primary);padding:8px 12px;border-radius:4px;border-left:3px solid var(--accent);font-size:13px;word-break:break-word">${esc(d.subject_line)}</div></div>` : ''}
-                    <div style="margin-bottom:12px"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:bold;margin-bottom:4px">Message</div><div style="background:var(--bg-primary);padding:12px;border-radius:4px;font-size:13px;white-space:pre-line;line-height:1.6;${isCall ? 'font-family:monospace;font-size:12px' : ''};min-height:80px">${esc(d.body)}</div></div>
-                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
-                        ${d.subject_line ? `<button class="btn btn-sm" onclick="copyToClip(\`${escJs(d.subject_line)}\`)" style="font-size:11px;padding:6px 10px">Copy Subject</button>` : ''}
-                        <button class="btn btn-sm" onclick="copyToClip(\`${escJs(d.body)}\`)" style="font-size:11px;padding:6px 10px">${isCall ? 'Copy Script' : 'Copy Message'}</button>
-                        ${hasLinkedin ? `<a href="${linkedinUrl}" target="_blank" rel="noopener" class="btn btn-sm" style="font-size:11px;padding:6px 10px;background:#0a66c2;color:#fff;text-decoration:none">Open LinkedIn</a>` : ''}
-                        <button class="btn btn-sm" onclick="markAsSent('${contactId}', '${draftId}')" style="font-size:11px;padding:6px 10px;background:var(--success-bg);color:var(--success)">Mark as Sent</button>
-                    </div>
-                    ${d.ab_group ? `<div style="font-size:11px;color:var(--text-muted)">A/B Group: <strong>${esc(d.ab_group)}</strong></div>` : ''}
-                </div>
-            </div>`;
-        }).join('');
+        if (listEl) listEl.innerHTML = allDrafts.map(d => renderDraftCard(d, touchLabels)).join('');
 
         // Attach event listeners after rendering
         document.querySelectorAll('.draft-header').forEach(el => {
@@ -4807,6 +5166,286 @@ async function loadDraftsFull() {
         console.error('loadDraftsFull:', e);
         const listEl = document.getElementById('drafts-list');
         if (listEl) listEl.innerHTML = `<div style="color:#ef4444;padding:20px">Error loading drafts: ${e.message}</div>`;
+    }
+}
+
+function renderDraftCard(d, touchLabels) {
+    const isCall = d.touch_number === 2 || d.touch_number === 4;
+    const touchLabel = touchLabels[d.touch_number] || `Touch ${d.touch_number}`;
+    const hasLinkedin = d.linkedin_url && d.linkedin_url.includes('linkedin.com');
+    const linkedinUrl = hasLinkedin ? (d.linkedin_url.startsWith('http') ? d.linkedin_url : 'https://' + d.linkedin_url) : '';
+    const draftId = d.id || '';
+    const contactId = d.contact_id || '';
+    const wordCount = d.word_count || 0;
+    const charCount = (d.body || '').length;
+    const draftStatus = d.status || 'drafted';
+
+    return `<div class="draft-card" data-draft-id="${draftId}" data-contact-id="${contactId}">
+        <div class="draft-header">
+            <div class="draft-header-left">
+                <div class="draft-title">
+                    <strong>${esc(d.prospect_name)}</strong>
+                    <span class="draft-company">${esc(d.company)}</span>
+                </div>
+                <div class="draft-meta">
+                    <span class="draft-touch">${touchLabel}</span>
+                    <span class="draft-wordcount">${wordCount} words / ${charCount} chars</span>
+                    <span class="draft-status" style="background:${draftStatus === 'sent' ? 'var(--success-bg)' : draftStatus === 'ready' ? 'var(--accent-bg)' : 'var(--warning-bg)'};color:${draftStatus === 'sent' ? 'var(--success)' : draftStatus === 'ready' ? 'var(--accent)' : 'var(--warning)'};padding:2px 6px;border-radius:4px;font-size:11px;font-weight:bold">${draftStatus}</span>
+                </div>
+            </div>
+            <div class="draft-toggle">▼</div>
+        </div>
+        <div class="draft-body" style="display:none;border-top:1px solid var(--border)">
+            <div class="draft-tabs">
+                <button class="draft-tab-btn active" onclick="switchDraftTab(event,'${draftId}','message')">Message</button>
+                <button class="draft-tab-btn" onclick="switchDraftTab(event,'${draftId}','research')">Research & Rationale</button>
+            </div>
+            <div class="draft-tab-content active" id="draft-tab-message-${draftId}">
+                ${d.subject_line ? `<div style="margin-bottom:12px">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+                        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:bold">Subject</div>
+                        <button class="btn btn-sm" onclick="toggleEditSubject('${draftId}')" style="font-size:10px;padding:3px 8px" id="edit-subject-btn-${draftId}">Edit</button>
+                    </div>
+                    <div id="subject-display-${draftId}" style="background:var(--bg-primary);padding:8px 12px;border-radius:4px;border-left:3px solid var(--accent);font-size:13px;word-break:break-word">${esc(d.subject_line)}</div>
+                    <div id="subject-edit-${draftId}" style="display:none">
+                        <input type="text" class="draft-subject-input" id="subject-input-${draftId}" value="${esc(d.subject_line)}">
+                        <div style="display:flex;gap:6px;margin-top:6px">
+                            <button class="btn btn-sm" onclick="saveSubjectEdit('${draftId}')" style="font-size:10px;padding:3px 8px;background:var(--success-bg);color:var(--success)">Save</button>
+                            <button class="btn btn-sm" onclick="cancelSubjectEdit('${draftId}')" style="font-size:10px;padding:3px 8px">Cancel</button>
+                        </div>
+                    </div>
+                </div>` : ''}
+                <div style="margin-bottom:12px">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+                        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:bold">Message</div>
+                        <button class="btn btn-sm" onclick="toggleEditBody('${draftId}')" style="font-size:10px;padding:3px 8px" id="edit-body-btn-${draftId}">Edit</button>
+                    </div>
+                    <div class="draft-message-body ${isCall ? 'call-script' : ''}" id="body-display-${draftId}">${esc(d.body)}</div>
+                    <div id="body-edit-${draftId}" style="display:none">
+                        <textarea class="draft-edit-textarea" id="body-input-${draftId}" oninput="autoResizeTextarea(this)">${esc(d.body)}</textarea>
+                        <div style="display:flex;gap:6px;margin-top:6px;align-items:center">
+                            <button class="btn btn-sm" onclick="saveBodyEdit('${draftId}')" style="font-size:10px;padding:3px 8px;background:var(--success-bg);color:var(--success)">Save</button>
+                            <button class="btn btn-sm" onclick="cancelBodyEdit('${draftId}')" style="font-size:10px;padding:3px 8px">Cancel</button>
+                            <span style="font-size:10px;color:var(--text-muted);margin-left:auto" id="edit-charcount-${draftId}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+                    ${d.subject_line ? `<button class="btn btn-sm" onclick="copyToClip(\`${escJs(d.subject_line)}\`)" style="font-size:11px;padding:6px 10px">Copy Subject</button>` : ''}
+                    <button class="btn btn-sm" onclick="copyToClip(\`${escJs(d.body)}\`)" style="font-size:11px;padding:6px 10px">${isCall ? 'Copy Script' : 'Copy Message'}</button>
+                    ${hasLinkedin ? `<a href="${linkedinUrl}" target="_blank" rel="noopener" class="btn btn-sm" style="font-size:11px;padding:6px 10px;background:#0a66c2;color:#fff;text-decoration:none">Open LinkedIn</a>` : ''}
+                    <button class="btn btn-sm" onclick="markAsSent('${contactId}', '${draftId}')" style="font-size:11px;padding:6px 10px;background:var(--success-bg);color:var(--success)">Mark as Sent</button>
+                </div>
+                ${d.ab_group ? `<div style="font-size:11px;color:var(--text-muted)">A/B Group: <strong>${esc(d.ab_group)}</strong></div>` : ''}
+            </div>
+            <div class="draft-tab-content" id="draft-tab-research-${draftId}">
+                <div id="research-content-${draftId}" style="text-align:center;padding:20px;color:var(--text-secondary)">
+                    <div style="font-size:12px">Loading research data...</div>
+                </div>
+            </div>
+        </div>
+    </div>`;
+}
+
+function switchDraftTab(event, draftId, tabName) {
+    event.stopPropagation();
+    const card = document.querySelector(`[data-draft-id="${draftId}"]`);
+    if (!card) return;
+    card.querySelectorAll('.draft-tab-btn').forEach(b => b.classList.remove('active'));
+    card.querySelectorAll('.draft-tab-content').forEach(c => c.classList.remove('active'));
+    event.target.classList.add('active');
+    const tabEl = document.getElementById(`draft-tab-${tabName}-${draftId}`);
+    if (tabEl) tabEl.classList.add('active');
+    if (tabName === 'research') loadResearchTab(draftId);
+}
+
+async function loadResearchTab(draftId) {
+    const container = document.getElementById(`research-content-${draftId}`);
+    if (!container || container.dataset.loaded === 'true') return;
+    container.dataset.loaded = 'true';
+    try {
+        const data = await api(`/api/drafts/${draftId}/research`);
+        if (!data || data.error) {
+            container.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-muted)">
+                <div style="font-size:12px">No research data linked to this draft yet.</div>
+                <div style="font-size:11px;margin-top:6px">Research data will be populated when prospects are imported via RunBundle.</div>
+            </div>`;
+            return;
+        }
+        const link = data.research_link || {};
+        const snapshot = data.research_snapshot || {};
+        const evidence = data.research_evidence || {};
+        const contact = data.contact || {};
+        const account = data.account || {};
+
+        let profileBullets = [];
+        try { profileBullets = typeof link.profile_bullets === 'string' ? JSON.parse(link.profile_bullets || '[]') : (link.profile_bullets || []); } catch(e) { profileBullets = []; }
+        let companyBullets = [];
+        try { companyBullets = typeof link.company_bullets === 'string' ? JSON.parse(link.company_bullets || '[]') : (link.company_bullets || []); } catch(e) { companyBullets = []; }
+        let confidenceReasons = [];
+        try { confidenceReasons = typeof link.confidence_reasons === 'string' ? JSON.parse(link.confidence_reasons || '[]') : (link.confidence_reasons || []); } catch(e) { confidenceReasons = []; }
+
+        const hasProfile = profileBullets.length > 0;
+        const hasCompany = companyBullets.length > 0;
+        const completeness = hasProfile && hasCompany ? 'complete' : (hasProfile || hasCompany ? 'partial' : 'missing');
+        const completenessLabel = completeness === 'complete' ? 'Complete' : completeness === 'partial' ? 'Partial' : 'Missing';
+
+        const confScore = link.confidence_score || 0;
+        const confLevel = confScore >= 70 ? 'high' : confScore >= 40 ? 'medium' : 'low';
+
+        let html = `<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+            <span class="research-completeness ${completeness}">Research: ${completenessLabel}</span>
+            ${confScore > 0 ? `<span class="confidence-badge ${confLevel}">Confidence: ${confScore}%</span>` : ''}
+            ${link.template_name ? `<span style="background:var(--bg-elevated);padding:3px 8px;border-radius:12px;font-size:11px;color:var(--text-secondary)">Template: ${esc(link.template_name)}${link.template_version ? ' v' + esc(link.template_version) : ''}</span>` : ''}
+            ${link.ab_group_explanation ? `<span style="background:var(--accent-bg);padding:3px 8px;border-radius:12px;font-size:11px;color:var(--accent)">A/B: ${esc(link.ab_group_explanation)}</span>` : ''}
+        </div>`;
+
+        if (profileBullets.length > 0) {
+            html += `<div class="research-section">
+                <div class="research-section-title">Profile Research</div>
+                ${profileBullets.map(b => `<div class="research-bullet">${esc(typeof b === 'string' ? b : b.text || JSON.stringify(b))}</div>`).join('')}
+            </div>`;
+        }
+
+        if (companyBullets.length > 0) {
+            html += `<div class="research-section">
+                <div class="research-section-title">Company Research</div>
+                ${companyBullets.map(b => `<div class="research-bullet">${esc(typeof b === 'string' ? b : b.text || JSON.stringify(b))}</div>`).join('')}
+            </div>`;
+        }
+
+        if (link.pain_hypothesis) {
+            html += `<div class="research-section">
+                <div class="research-section-title">Pain Hypothesis</div>
+                <div style="padding:8px 12px;background:var(--bg-elevated);border-radius:4px;font-size:12px;line-height:1.5;border-left:3px solid var(--warning)">${esc(link.pain_hypothesis)}</div>
+            </div>`;
+        }
+
+        if (link.why_testsigma) {
+            html += `<div class="research-section">
+                <div class="research-section-title">Why Testsigma</div>
+                <div style="padding:8px 12px;background:var(--bg-elevated);border-radius:4px;font-size:12px;line-height:1.5;border-left:3px solid var(--success)">${esc(link.why_testsigma)}</div>
+            </div>`;
+        }
+
+        if (confidenceReasons.length > 0) {
+            html += `<div class="research-section">
+                <div class="research-section-title">Confidence Reasons</div>
+                ${confidenceReasons.map(r => `<div style="padding:4px 10px;margin-bottom:3px;font-size:11px;color:var(--text-secondary)">&bull; ${esc(typeof r === 'string' ? r : r.reason || JSON.stringify(r))}</div>`).join('')}
+            </div>`;
+        }
+
+        // Links row
+        const linkedinUrl = link.linkedin_url || contact.linkedin_url || '';
+        const companyUrl = link.company_url || '';
+        if (linkedinUrl || companyUrl) {
+            html += `<div style="display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+                ${linkedinUrl ? `<a href="${linkedinUrl.startsWith('http') ? linkedinUrl : 'https://' + linkedinUrl}" target="_blank" rel="noopener" class="btn btn-sm" style="font-size:11px;padding:5px 10px;background:#0a66c2;color:#fff;text-decoration:none">LinkedIn Profile</a>` : ''}
+                ${companyUrl ? `<a href="${companyUrl.startsWith('http') ? companyUrl : 'https://' + companyUrl}" target="_blank" rel="noopener" class="btn btn-sm" style="font-size:11px;padding:5px 10px">Company Website</a>` : ''}
+            </div>`;
+        }
+
+        container.innerHTML = html;
+    } catch(e) {
+        console.error('loadResearchTab:', e);
+        container.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-muted)">
+            <div style="font-size:12px">No research data available for this draft.</div>
+        </div>`;
+    }
+}
+
+function toggleEditSubject(draftId) {
+    const display = document.getElementById(`subject-display-${draftId}`);
+    const edit = document.getElementById(`subject-edit-${draftId}`);
+    const btn = document.getElementById(`edit-subject-btn-${draftId}`);
+    if (!display || !edit) return;
+    if (edit.style.display === 'none') {
+        edit.style.display = 'block';
+        display.style.display = 'none';
+        btn.style.display = 'none';
+        document.getElementById(`subject-input-${draftId}`).focus();
+    }
+}
+
+function cancelSubjectEdit(draftId) {
+    const display = document.getElementById(`subject-display-${draftId}`);
+    const edit = document.getElementById(`subject-edit-${draftId}`);
+    const btn = document.getElementById(`edit-subject-btn-${draftId}`);
+    if (!display || !edit) return;
+    edit.style.display = 'none';
+    display.style.display = 'block';
+    btn.style.display = '';
+}
+
+async function saveSubjectEdit(draftId) {
+    const input = document.getElementById(`subject-input-${draftId}`);
+    if (!input) return;
+    try {
+        await apiPost(`/api/drafts/${draftId}`, { subject_line: input.value }, 'PATCH');
+        const display = document.getElementById(`subject-display-${draftId}`);
+        if (display) display.textContent = input.value;
+        cancelSubjectEdit(draftId);
+        showToast('Subject updated', 'success');
+    } catch(e) {
+        showToast('Failed to save: ' + e.message, 'error');
+    }
+}
+
+function toggleEditBody(draftId) {
+    const display = document.getElementById(`body-display-${draftId}`);
+    const edit = document.getElementById(`body-edit-${draftId}`);
+    const btn = document.getElementById(`edit-body-btn-${draftId}`);
+    if (!display || !edit) return;
+    if (edit.style.display === 'none') {
+        edit.style.display = 'block';
+        display.style.display = 'none';
+        btn.style.display = 'none';
+        const textarea = document.getElementById(`body-input-${draftId}`);
+        if (textarea) {
+            textarea.focus();
+            autoResizeTextarea(textarea);
+            updateEditCharCount(draftId);
+        }
+    }
+}
+
+function cancelBodyEdit(draftId) {
+    const display = document.getElementById(`body-display-${draftId}`);
+    const edit = document.getElementById(`body-edit-${draftId}`);
+    const btn = document.getElementById(`edit-body-btn-${draftId}`);
+    if (!display || !edit) return;
+    edit.style.display = 'none';
+    display.style.display = 'block';
+    btn.style.display = '';
+}
+
+async function saveBodyEdit(draftId) {
+    const textarea = document.getElementById(`body-input-${draftId}`);
+    if (!textarea) return;
+    try {
+        await apiPost(`/api/drafts/${draftId}`, { body: textarea.value }, 'PATCH');
+        const display = document.getElementById(`body-display-${draftId}`);
+        if (display) display.textContent = textarea.value;
+        cancelBodyEdit(draftId);
+        showToast('Message updated', 'success');
+    } catch(e) {
+        showToast('Failed to save: ' + e.message, 'error');
+    }
+}
+
+function autoResizeTextarea(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 500) + 'px';
+    const draftId = el.id.replace('body-input-', '');
+    updateEditCharCount(draftId);
+}
+
+function updateEditCharCount(draftId) {
+    const textarea = document.getElementById(`body-input-${draftId}`);
+    const counter = document.getElementById(`edit-charcount-${draftId}`);
+    if (textarea && counter) {
+        const words = textarea.value.trim().split(/\s+/).filter(Boolean).length;
+        counter.textContent = `${words} words / ${textarea.value.length} chars`;
     }
 }
 
@@ -5573,6 +6212,171 @@ async function executeCleanup() {
             document.getElementById('cleanup-success-message').style.display = 'none';
         }, 3000);
     } catch(e) { showToast('Cleanup failed: ' + e.message, 'error'); }
+}
+
+// ─── FLOW FUNCTIONS ─────────────────────────────────────────────
+
+function showFlowStep(flowPrefix, stepNum) {
+    // Hide all content divs for this flow
+    for (let i = 1; i <= 4; i++) {
+        const content = document.getElementById(`flow-${flowPrefix}-content-${i}`);
+        if (content) content.style.display = i === stepNum ? 'block' : 'none';
+        const step = document.getElementById(`flow-${flowPrefix}-step-${i}`);
+        if (step) {
+            step.classList.remove('active');
+            if (i < stepNum) step.classList.add('completed');
+            if (i === stepNum) step.classList.add('active');
+        }
+    }
+}
+
+function loadFlowAccountResearchPage() {
+    // Reset to step 1
+    showFlowStep('ar', 1);
+}
+
+async function loadFlowAccounts() {
+    const container = document.getElementById('flow-ar-accounts-list');
+    if (!container) return;
+    container.innerHTML = '<div style="color:var(--text-muted);font-size:12px">Loading accounts...</div>';
+    try {
+        const data = await api('/api/accounts');
+        const accounts = data.accounts || [];
+        const vertical = document.getElementById('flow-ar-filter-vertical')?.value || '';
+        const filtered = vertical ? accounts.filter(a => (a.vertical || '').toLowerCase().includes(vertical.toLowerCase())) : accounts;
+        if (!filtered.length) {
+            container.innerHTML = '<div style="color:var(--text-muted);font-size:12px">No accounts found matching filter.</div>';
+            return;
+        }
+        container.innerHTML = `<div style="margin-bottom:8px;font-size:11px;color:var(--text-muted)">${filtered.length} accounts found. Select accounts to research:</div>
+            <div style="max-height:400px;overflow-y:auto">
+            ${filtered.map(a => `<label style="display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--border);border-radius:4px;margin-bottom:4px;cursor:pointer;font-size:12px">
+                <input type="checkbox" class="flow-ar-checkbox" value="${a.id}">
+                <strong>${esc(a.name || 'Unknown')}</strong>
+                <span style="color:var(--text-secondary)">${esc(a.vertical || '')}</span>
+                <span style="color:var(--text-muted);margin-left:auto">${a.contact_count || 0} contacts</span>
+            </label>`).join('')}
+            </div>
+            <button class="btn btn-primary" onclick="flowArNextStep()" style="margin-top:12px">Next: Generate Research</button>`;
+    } catch(e) {
+        container.innerHTML = `<div style="color:var(--error);font-size:12px">Error loading accounts: ${e.message}</div>`;
+    }
+}
+
+function flowArNextStep() {
+    const checked = document.querySelectorAll('.flow-ar-checkbox:checked');
+    if (!checked.length) { showToast('Select at least one account', 'warning'); return; }
+    const summary = document.getElementById('flow-ar-selected-summary');
+    if (summary) summary.innerHTML = `<div style="font-size:12px;color:var(--text-secondary)">${checked.length} account(s) selected for research generation.</div>`;
+    showFlowStep('ar', 2);
+}
+
+async function runFlowAccountResearch() {
+    const progress = document.getElementById('flow-ar-progress');
+    if (progress) progress.innerHTML = '<div style="color:var(--accent);font-size:12px">Research generation initiated. This would trigger batch research via the API...</div>';
+    showToast('Account research flow completed (placeholder)', 'success');
+    setTimeout(() => showFlowStep('ar', 3), 1000);
+}
+
+function exportFlowAccountResults() {
+    showToast('Export feature coming soon', 'info');
+}
+
+function loadFlowLinkedInDraftPage() {
+    showFlowStep('li', 1);
+}
+
+async function loadFlowLinkedInProspects() {
+    const container = document.getElementById('flow-li-prospects-list');
+    if (!container) return;
+    container.innerHTML = '<div style="color:var(--text-muted);font-size:12px">Loading prospects...</div>';
+    try {
+        const data = await api('/api/prospects/full');
+        const prospects = data.prospects || [];
+        const priority = document.getElementById('flow-li-filter-priority')?.value || '';
+        const filtered = prospects.filter(p => {
+            if (priority && (p.priority_score || 0) != parseInt(priority)) return false;
+            return p.linkedin_url && p.linkedin_url.includes('linkedin.com');
+        });
+        if (!filtered.length) {
+            container.innerHTML = '<div style="color:var(--text-muted);font-size:12px">No LinkedIn prospects found matching filter.</div>';
+            return;
+        }
+        container.innerHTML = `<div style="margin-bottom:8px;font-size:11px;color:var(--text-muted)">${filtered.length} LinkedIn prospects found:</div>
+            <div style="max-height:400px;overflow-y:auto">
+            ${filtered.map(p => `<label style="display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--border);border-radius:4px;margin-bottom:4px;cursor:pointer;font-size:12px">
+                <input type="checkbox" class="flow-li-checkbox" value="${p.id}">
+                <strong>${esc((p.first_name||'')+' '+(p.last_name||''))}</strong>
+                <span style="color:var(--text-secondary)">${esc(p.company_name || '')}</span>
+                <span style="color:var(--text-muted);margin-left:auto">Priority: ${p.priority_score || 0}</span>
+                <span style="color:var(--text-muted)">${(p.drafts||[]).length} drafts</span>
+            </label>`).join('')}
+            </div>
+            <button class="btn btn-primary" onclick="flowLiNextStep(2)" style="margin-top:12px">Next: Verify Research</button>`;
+    } catch(e) {
+        container.innerHTML = `<div style="color:var(--error);font-size:12px">Error: ${e.message}</div>`;
+    }
+}
+
+function flowLiNextStep(step) {
+    const checked = document.querySelectorAll('.flow-li-checkbox:checked');
+    if (step === 2 && !checked.length) { showToast('Select at least one prospect', 'warning'); return; }
+    showFlowStep('li', step);
+}
+
+async function runFlowLinkedInDrafts() {
+    const progress = document.getElementById('flow-li-progress');
+    if (progress) progress.innerHTML = '<div style="color:var(--accent);font-size:12px">Draft generation initiated. This would create InMail + follow-up + break-up drafts...</div>';
+    showToast('LinkedIn draft flow completed (placeholder)', 'success');
+    setTimeout(() => showFlowStep('li', 4), 1000);
+}
+
+function loadFlowEmailDraftPage() {
+    showFlowStep('em', 1);
+}
+
+async function loadFlowEmailProspects() {
+    const container = document.getElementById('flow-em-prospects-list');
+    if (!container) return;
+    container.innerHTML = '<div style="color:var(--text-muted);font-size:12px">Loading prospects...</div>';
+    try {
+        const data = await api('/api/prospects/full');
+        const prospects = data.prospects || [];
+        const priority = document.getElementById('flow-em-filter-priority')?.value || '';
+        const filtered = prospects.filter(p => {
+            if (priority && (p.priority_score || 0) != parseInt(priority)) return false;
+            return p.email && p.email.includes('@');
+        });
+        if (!filtered.length) {
+            container.innerHTML = '<div style="color:var(--text-muted);font-size:12px">No email prospects found matching filter.</div>';
+            return;
+        }
+        container.innerHTML = `<div style="margin-bottom:8px;font-size:11px;color:var(--text-muted)">${filtered.length} email prospects found:</div>
+            <div style="max-height:400px;overflow-y:auto">
+            ${filtered.map(p => `<label style="display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--border);border-radius:4px;margin-bottom:4px;cursor:pointer;font-size:12px">
+                <input type="checkbox" class="flow-em-checkbox" value="${p.id}">
+                <strong>${esc((p.first_name||'')+' '+(p.last_name||''))}</strong>
+                <span style="color:var(--text-secondary)">${esc(p.company_name || '')}</span>
+                <span style="color:var(--text-muted);margin-left:auto">${esc(p.email || 'no email')}</span>
+            </label>`).join('')}
+            </div>
+            <button class="btn btn-primary" onclick="flowEmNextStep(2)" style="margin-top:12px">Next: Verify Research</button>`;
+    } catch(e) {
+        container.innerHTML = `<div style="color:var(--error);font-size:12px">Error: ${e.message}</div>`;
+    }
+}
+
+function flowEmNextStep(step) {
+    const checked = document.querySelectorAll('.flow-em-checkbox:checked');
+    if (step === 2 && !checked.length) { showToast('Select at least one prospect', 'warning'); return; }
+    showFlowStep('em', step);
+}
+
+async function runFlowEmailDrafts() {
+    const progress = document.getElementById('flow-em-progress');
+    if (progress) progress.innerHTML = '<div style="color:var(--accent);font-size:12px">Email draft generation initiated...</div>';
+    showToast('Email draft flow completed (placeholder)', 'success');
+    setTimeout(() => showFlowStep('em', 4), 1000);
 }
 
 </script>

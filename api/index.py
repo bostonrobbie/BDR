@@ -480,6 +480,27 @@ CREATE TABLE IF NOT EXISTS quota_tracker (
     updated_at TEXT DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS draft_research_link (
+    id TEXT PRIMARY KEY,
+    draft_id TEXT REFERENCES message_drafts(id),
+    contact_id TEXT REFERENCES contacts(id),
+    account_id TEXT REFERENCES accounts(id),
+    profile_bullets TEXT DEFAULT '[]',
+    company_bullets TEXT DEFAULT '[]',
+    pain_hypothesis TEXT,
+    why_testsigma TEXT,
+    template_name TEXT,
+    template_version TEXT,
+    ab_group_explanation TEXT,
+    confidence_score INTEGER DEFAULT 0,
+    confidence_reasons TEXT DEFAULT '[]',
+    linkedin_url TEXT,
+    company_url TEXT,
+    created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_draft_research_draft ON draft_research_link(draft_id);
+CREATE INDEX IF NOT EXISTS idx_draft_research_contact ON draft_research_link(contact_id);
+
 CREATE TABLE IF NOT EXISTS research_evidence (
     id TEXT PRIMARY KEY,
     contact_id TEXT REFERENCES contacts(id),
@@ -924,6 +945,25 @@ def init_and_seed():
     db_path = os.environ.get("OCC_DB_PATH", "/tmp/outreach.db")
     conn = sqlite3.connect(db_path)
     conn.executescript(SCHEMA_SQL)
+    # Add tracking columns (safe to re-run, ignore errors for existing columns)
+    migration_cols = [
+        ("contacts", "intent_signal_type", "TEXT"),
+        ("contacts", "intent_date", "TEXT"),
+        ("contacts", "first_touch_date", "TEXT"),
+        ("contacts", "first_reply_date", "TEXT"),
+        ("contacts", "reply_time_hours", "INTEGER"),
+        ("contacts", "which_touch_replied", "INTEGER"),
+        ("contacts", "reply_quality", "TEXT"),
+        ("contacts", "meeting_scheduled_date", "TEXT"),
+        ("contacts", "objection_hit", "INTEGER DEFAULT 0"),
+        ("contacts", "referral_target", "TEXT"),
+    ]
+    for table, col, coltype in migration_cols:
+        try:
+            conn.execute(f"ALTER TABLE {table} ADD COLUMN {col} {coltype}")
+        except Exception:
+            pass  # Column already exists
+    conn.commit()
     conn.commit()
     conn.close()
     seed_database()
@@ -1669,6 +1709,38 @@ def edit_draft(draft_id: str, data: dict):
     row = conn.execute("SELECT * FROM draft_versions WHERE id=?", (new_id,)).fetchone()
     conn.close()
     return dict(row) if row else {"version": new_version}
+
+@app.patch("/api/drafts/{draft_id}")
+def patch_draft(draft_id: str, data: dict):
+    """Quick-edit a draft's subject_line or body directly on message_drafts."""
+    conn = get_db()
+    existing = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+    if not existing:
+        conn.close()
+        raise HTTPException(404, "Draft not found")
+    updates = []
+    params = []
+    if "subject_line" in data:
+        updates.append("subject_line=?")
+        params.append(data["subject_line"])
+    if "body" in data:
+        updates.append("body=?")
+        params.append(data["body"])
+        updates.append("word_count=?")
+        params.append(len(data["body"].split()))
+    if "status" in data:
+        updates.append("status=?")
+        params.append(data["status"])
+    if not updates:
+        conn.close()
+        return {"ok": True}
+    updates.append("updated_at=datetime('now')")
+    params.append(draft_id)
+    conn.execute(f"UPDATE message_drafts SET {','.join(updates)} WHERE id=?", params)
+    conn.commit()
+    row = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+    conn.close()
+    return dict(row) if row else {"ok": True}
 
 # ─── SENDER HEALTH (new) ───────────────────────────────────────
 
@@ -4182,6 +4254,25 @@ def import_run_bundle(data: dict):
                  "draft", p.get("ab_group", ""),
                  run_meta.get("ab_variable", "pain_hook"),
                  "run_bundle", now))
+            
+            # Create research link for this draft
+            conn.execute("""INSERT INTO draft_research_link 
+                (id, draft_id, contact_id, account_id, profile_bullets, company_bullets,
+                 pain_hypothesis, why_testsigma, template_name, template_version,
+                 ab_group_explanation, confidence_score, linkedin_url, company_url)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                (gen_id("drl"), draft_id, contact_id, account_id,
+                 json.dumps(p.get("profile_research_bullets", p.get("profile_research", "").split("; ") if p.get("profile_research") else [])),
+                 json.dumps(p.get("company_research_bullets", p.get("company_research", "").split("; ") if p.get("company_research") else [])),
+                 p.get("pain_hypothesis", p.get("outreach_angle", "")),
+                 p.get("why_testsigma", ""),
+                 f"LI {touch_type} v1.0",
+                 "1.0",
+                 p.get("ab_group_explanation", f"A/B group: {p.get('ab_group', 'A')}"),
+                 p.get("confidence_score", 3),
+                 p.get("linkedin_url", ""),
+                 p.get("company_url", p.get("company_website", ""))))
+            
             imported_drafts += 1
 
         imported_contacts.append({
@@ -6113,5 +6204,154 @@ def update_research_evidence(contact_id: str, data: dict):
 
         conn.commit()
         return {"status": "updated"}
+    finally:
+        conn.close()
+
+# ─── DRAFT RESEARCH LINKING ───────────────────────────────────────────────────
+
+@app.get("/api/drafts/{draft_id}/research")
+def get_draft_research(draft_id: str):
+    """Get research data linked to a specific draft for the Research tab."""
+    conn = get_db()
+    try:
+        # Get the draft itself
+        draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+        if not draft:
+            return {"error": "Draft not found"}
+        draft = dict(draft)
+        
+        # Get the research link
+        link = conn.execute("SELECT * FROM draft_research_link WHERE draft_id=?", (draft_id,)).fetchone()
+        link = dict(link) if link else None
+        if link:
+            for f in ['profile_bullets', 'company_bullets', 'confidence_reasons']:
+                if f in link and isinstance(link[f], str):
+                    try: link[f] = json.loads(link[f])
+                    except: link[f] = []
+        
+        # Get the contact
+        contact = conn.execute("SELECT * FROM contacts WHERE id=?", (draft['contact_id'],)).fetchone()
+        contact = dict(contact) if contact else None
+        
+        # Get research evidence
+        evidence = []
+        if draft['contact_id']:
+            evidence = [dict(r) for r in conn.execute(
+                "SELECT * FROM research_evidence WHERE contact_id=? ORDER BY evidence_type",
+                (draft['contact_id'],)).fetchall()]
+            for e in evidence:
+                if 'bullets' in e and isinstance(e['bullets'], str):
+                    try: e['bullets'] = json.loads(e['bullets'])
+                    except: e['bullets'] = []
+        
+        # Get research snapshot
+        snapshot = None
+        if draft['contact_id']:
+            snapshot = conn.execute(
+                "SELECT * FROM research_snapshots WHERE contact_id=? ORDER BY created_at DESC LIMIT 1",
+                (draft['contact_id'],)).fetchone()
+            if snapshot:
+                snapshot = dict(snapshot)
+                for f in ['career_history', 'tech_stack_signals', 'pain_indicators', 'sources',
+                          'company_products', 'company_metrics']:
+                    if f in snapshot and isinstance(snapshot[f], str):
+                        try: snapshot[f] = json.loads(snapshot[f])
+                        except: pass
+        
+        # Get account
+        account = None
+        if contact and contact.get('account_id'):
+            account = conn.execute("SELECT * FROM accounts WHERE id=?", (contact['account_id'],)).fetchone()
+            if account: account = dict(account)
+        
+        return {
+            "draft": {
+                "id": draft['id'],
+                "subject_line": draft.get('subject_line', ''),
+                "body": draft.get('body', ''),
+                "channel": draft.get('channel', ''),
+                "touch_number": draft.get('touch_number'),
+                "touch_type": draft.get('touch_type', ''),
+                "personalization_score": draft.get('personalization_score'),
+                "proof_point_used": draft.get('proof_point_used', ''),
+                "pain_hook": draft.get('pain_hook', ''),
+                "opener_style": draft.get('opener_style', ''),
+                "ask_style": draft.get('ask_style', ''),
+                "ab_group": draft.get('ab_group', ''),
+                "ab_variable": draft.get('ab_variable', ''),
+                "word_count": draft.get('word_count', 0),
+                "version": draft.get('version', 1),
+                "created_at": draft.get('created_at', ''),
+                "updated_at": draft.get('updated_at', '')
+            },
+            "research_link": link,
+            "evidence": evidence,
+            "snapshot": snapshot,
+            "contact": {
+                "id": contact['id'],
+                "name": f"{contact.get('first_name', '')} {contact.get('last_name', '')}".strip(),
+                "title": contact.get('title', ''),
+                "linkedin_url": contact.get('linkedin_url', ''),
+                "predicted_objection": contact.get('predicted_objection', ''),
+                "objection_response": contact.get('objection_response', '')
+            } if contact else None,
+            "account": {
+                "id": account['id'],
+                "name": account.get('name', ''),
+                "domain": account.get('domain', ''),
+                "industry": account.get('industry', ''),
+                "website_url": account.get('website_url', ''),
+                "known_tools": account.get('known_tools', '[]')
+            } if account else None
+        }
+    finally:
+        conn.close()
+
+
+@app.get("/api/analytics/conversion-funnel")
+def get_conversion_funnel():
+    """Get touch-to-reply-to-meeting conversion funnel by persona, vertical, etc."""
+    conn = get_db()
+    try:
+        total = conn.execute("SELECT COUNT(*) FROM contacts WHERE source != 'seed'").fetchone()[0]
+        touched = conn.execute("SELECT COUNT(DISTINCT contact_id) FROM touchpoints").fetchone()[0]
+        replied = conn.execute("SELECT COUNT(DISTINCT contact_id) FROM replies").fetchone()[0]
+        meetings = conn.execute("SELECT COUNT(*) FROM opportunities WHERE meeting_held=1").fetchone()[0]
+        
+        # By persona
+        by_persona = [dict(r) for r in conn.execute("""
+            SELECT c.persona_type, COUNT(DISTINCT c.id) as total,
+                   COUNT(DISTINCT t.contact_id) as touched,
+                   COUNT(DISTINCT r.contact_id) as replied
+            FROM contacts c
+            LEFT JOIN touchpoints t ON c.id = t.contact_id
+            LEFT JOIN replies r ON c.id = r.contact_id
+            WHERE c.source != 'seed'
+            GROUP BY c.persona_type
+        """).fetchall()]
+        
+        return {
+            "funnel": {"total": total, "touched": touched, "replied": replied, "meetings": meetings},
+            "by_persona": by_persona
+        }
+    finally:
+        conn.close()
+
+
+@app.get("/api/analytics/reply-timing")
+def get_reply_timing():
+    """Get average reply time by personalization score and touch number."""
+    conn = get_db()
+    try:
+        rows = [dict(r) for r in conn.execute("""
+            SELECT c.personalization_score, t.touch_number,
+                   COUNT(*) as reply_count
+            FROM replies r
+            JOIN contacts c ON r.contact_id = c.id
+            JOIN touchpoints t ON r.touchpoint_id = t.id
+            GROUP BY c.personalization_score, t.touch_number
+            ORDER BY c.personalization_score, t.touch_number
+        """).fetchall()]
+        return {"timing": rows}
     finally:
         conn.close()
