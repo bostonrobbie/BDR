@@ -615,9 +615,251 @@ def seed_database():
 # INITIALIZE DB ON COLD START
 # ---------------------------------------------------------------------------
 
+def _auto_import_run_bundle(conn):
+    """Auto-import the run bundle JSON on cold start when DB is empty."""
+    # Only import if DB has no contacts
+    count = conn.execute("SELECT COUNT(*) as cnt FROM contacts").fetchone()[0]
+    if count > 0:
+        return  # Already have data
+
+    # Find the run bundle file (works on Vercel and locally)
+    bundle_paths = [
+        os.path.join(os.path.dirname(__file__), "..", "public", "data", "run-bundle-batch1.json"),
+        os.path.join(os.path.dirname(__file__), "public", "data", "run-bundle-batch1.json"),
+        "/var/task/public/data/run-bundle-batch1.json",
+    ]
+    bundle_path = None
+    for p in bundle_paths:
+        if os.path.exists(p):
+            bundle_path = p
+            break
+
+    if not bundle_path:
+        return  # No bundle file found
+
+    with open(bundle_path) as f:
+        bundle = json.load(f)
+
+    prospects = bundle.get("prospects", [])
+    if not prospects:
+        return
+
+    now = datetime.utcnow().isoformat()
+
+    # Create batch record
+    batch_id = gen_id("batch")
+    conn.execute("""INSERT INTO batches (id, batch_number, created_date, prospect_count,
+        ab_variable, status, source, created_at)
+        VALUES (?,?,?,?,?,?,?,?)""",
+        (batch_id, 1, now[:10], len(prospects), "pain_hook", "imported", "run_bundle", now))
+
+    # Create research run record
+    run_id = gen_id("rr")
+    conn.execute("""INSERT INTO research_runs (id, name, import_type, prospect_count, status,
+        sop_checklist, progress_pct, logs, ab_variable, config, created_at, completed_at)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""",
+        (run_id, f"Batch 1 Auto-Import - {now[:10]}", "run_bundle", len(prospects), "completed",
+         json.dumps([{"step": "import", "status": "completed", "label": "Auto-Import on Cold Start"}]),
+         100, json.dumps([f"Auto-imported on cold start at {now}"]),
+         "pain_hook", "{}", now, now))
+
+    touch_map = [
+        (1, "inmail", "touch_1_subject", "touch_1_body"),
+        (2, "call", None, "call_snippet_1"),
+        (3, "inmail_followup", None, "touch_3"),
+        (4, "call", None, "call_snippet_2"),
+        (6, "breakup", None, "touch_6"),
+    ]
+
+    # Proof point mapping by vertical
+    proof_map = {
+        "FinTech": ("cred", "CRED achieved 90% regression automation with 5x faster execution"),
+        "Healthcare": ("medibuddy", "Medibuddy automated 2,500 tests and cut maintenance 50%"),
+        "Pharma": ("sanofi", "Sanofi cut regression from 3 days to 80 minutes"),
+        "SaaS": ("spendflo", "Spendflo cut manual testing 50% and saw ROI in the first quarter"),
+        "Media": ("nagra", "Nagra DTV automated 2,500 tests in 8 months, 4X faster"),
+        "IoT/Security": ("fortune100", "A Fortune 100 company achieved 3X productivity increase"),
+    }
+
+    imported_contacts = 0
+    imported_drafts = 0
+
+    for idx, p in enumerate(prospects):
+        name = p.get("name", "")
+        if not name:
+            continue
+        if "Removed" in p.get("status", ""):
+            continue
+
+        parts = name.strip().split(" ", 1)
+        first_name = parts[0]
+        last_name = parts[1] if len(parts) > 1 else ""
+
+        linkedin_url = p.get("linkedin", p.get("linkedin_url", ""))
+        company = p.get("company", "")
+        title = p.get("title", "")
+        vertical = p.get("vertical", "")
+
+        # Detect persona and seniority
+        title_lower = title.lower()
+        if any(kw in title_lower for kw in ["qa", "quality", "test", "sdet"]):
+            persona_type = "qa_leader"
+        elif any(kw in title_lower for kw in ["vp eng", "vp software", "cto", "svp"]):
+            persona_type = "vp_eng"
+        else:
+            persona_type = "eng_leader"
+
+        if any(kw in title_lower for kw in ["vp", "svp", "head of", "chief"]):
+            seniority = "vp"
+        elif any(kw in title_lower for kw in ["sr director", "senior director"]):
+            seniority = "sr_director"
+        elif "director" in title_lower:
+            seniority = "director"
+        elif "manager" in title_lower:
+            seniority = "manager"
+        else:
+            seniority = "ic_senior"
+
+        # Priority scoring
+        priority = 3
+        if persona_type == "qa_leader":
+            priority += 1
+        if vertical in ("FinTech", "SaaS", "Healthcare"):
+            priority += 1
+        priority = min(priority, 5)
+
+        # Create account
+        acc = conn.execute("SELECT id FROM accounts WHERE name=?", (company,)).fetchone()
+        if acc:
+            account_id = acc["id"]
+        else:
+            account_id = gen_id("acc")
+            emp_count = p.get("employee_count")
+            emp_band = "enterprise" if emp_count and emp_count > 5000 else "mid_market" if emp_count and emp_count > 200 else "smb"
+            conn.execute("""INSERT INTO accounts (id, name, industry, employee_count, employee_band,
+                source, created_at) VALUES (?,?,?,?,?,?,?)""",
+                (account_id, company, vertical, emp_count, emp_band, "run_bundle", now))
+
+        # Create contact
+        contact_id = gen_id("con")
+        conn.execute("""INSERT INTO contacts (id, account_id, first_name, last_name, title,
+            persona_type, seniority_level, linkedin_url, stage, priority_score,
+            personalization_score, predicted_objection, objection_response,
+            source, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (contact_id, account_id, first_name, last_name, title,
+             persona_type, seniority, linkedin_url, "new", priority,
+             p.get("personalization_score", 3),
+             p.get("predicted_objection", ""), p.get("objection_response", ""),
+             "run_bundle", now))
+        imported_contacts += 1
+
+        # Create research snapshot
+        key_detail = p.get("key_detail", "")
+        company_detail = p.get("company_detail", "")
+        proof_key, proof_text = proof_map.get(vertical, ("spendflo", "Spendflo cut manual testing 50%"))
+
+        pain_indicators = []
+        if "fintech" in vertical.lower() or "finance" in vertical.lower():
+            pain_indicators = ["Regression testing across payment/transaction flows", "Compliance validation after each release", "API test coverage for financial integrations"]
+        elif "health" in vertical.lower() or "pharma" in vertical.lower():
+            pain_indicators = ["Regulatory compliance testing cycles", "Patient data flow validation", "Cross-platform testing for clinical workflows"]
+        elif "saas" in vertical.lower():
+            pain_indicators = ["Regression testing slowing release velocity", "Flaky tests eroding team confidence", "Manual testing bottleneck as features scale"]
+        else:
+            pain_indicators = ["Test automation coverage gaps", "Regression cycle duration", "Manual testing overhead"]
+
+        snap_id = gen_id("rs")
+        conn.execute("""INSERT INTO research_snapshots (id, contact_id, account_id, entity_type,
+            headline, summary, pain_indicators, company_products, company_metrics,
+            sources, confidence_score, agent_run_id, created_at)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (snap_id, contact_id, account_id, "prospect",
+             key_detail or f"{title} at {company}",
+             company_detail or f"{company} - {vertical} company",
+             json.dumps(pain_indicators),
+             company_detail or "",
+             json.dumps({"employee_count": p.get("employee_count"), "industry": vertical}),
+             json.dumps(["run_bundle_import"]), 3, run_id, now))
+
+        # Create draft_research_link for Touch 1
+        # (will be linked after draft creation)
+
+        # Create batch_prospect link
+        conn.execute("""INSERT INTO batch_prospects (id, batch_id, contact_id, ab_group,
+            sequence_status, position_in_batch) VALUES (?,?,?,?,?,?)""",
+            (gen_id("bp"), batch_id, contact_id, p.get("ab_group", ""), "not_started", idx+1))
+
+        # Create message drafts
+        for touch_num, touch_type, subj_field, body_field in touch_map:
+            body_text = p.get(body_field, "")
+            if not body_text:
+                continue
+            subj_text = p.get(subj_field, "") if subj_field else ""
+            draft_id = gen_id("md")
+            wc = len(body_text.split())
+
+            # Quality gate checks
+            qc_passed = 1
+            qc_flags = []
+            if len(body_text) < 100 and touch_num not in (2, 4, 6):
+                qc_passed = 0
+                qc_flags.append("body_too_short")
+            if "\u2014" in body_text or "\u2013" in body_text:
+                qc_passed = 0
+                qc_flags.append("em_dash_found")
+            if company and company.lower() not in body_text.lower():
+                if touch_num in (1,):
+                    qc_flags.append("missing_company_name")
+
+            conn.execute("""INSERT INTO message_drafts (id, contact_id, batch_id, channel,
+                touch_number, touch_type, subject_line, body, version, personalization_score,
+                proof_point_used, pain_hook, opener_style, word_count, qc_passed, qc_flags,
+                approval_status, ab_group, ab_variable, source, created_at)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                (draft_id, contact_id, batch_id, "linkedin",
+                 touch_num, touch_type, subj_text, body_text, 1,
+                 p.get("personalization_score", 3),
+                 proof_key, "", "", wc, qc_passed, json.dumps(qc_flags),
+                 "draft", p.get("ab_group", ""),
+                 "pain_hook", "run_bundle", now))
+            imported_drafts += 1
+
+            # Link research to Touch 1 draft
+            if touch_num == 1:
+                conn.execute("""INSERT INTO draft_research_link (id, draft_id, contact_id,
+                    profile_bullets, company_bullets, pain_hypothesis, why_testsigma,
+                    confidence_score, template_name, created_at)
+                    VALUES (?,?,?,?,?,?,?,?,?,?)""",
+                    (gen_id("drl"), draft_id, contact_id,
+                     json.dumps([key_detail]) if key_detail else "[]",
+                     json.dumps([company_detail]) if company_detail else "[]",
+                     json.dumps(pain_indicators[:1]),
+                     proof_text, 3, "touch_1_inmail", now))
+
+    # Create workflow run record
+    wf_id = gen_id("wfrun")
+    conn.execute("""INSERT INTO workflow_runs (id, workflow_id, workflow_type, channel, status,
+        input_data, output_data, total_steps, completed_steps, started_at, completed_at)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+        (wf_id, "", "linkedin_batch_1_auto", "linkedin", "succeeded",
+         json.dumps({"source": "auto_import_cold_start", "bundle_prospects": len(prospects)}),
+         json.dumps({"imported_contacts": imported_contacts, "imported_drafts": imported_drafts}),
+         4, 4, now, now))
+
+    # Log to activity timeline
+    conn.execute("""INSERT INTO activity_timeline (id, event_type, channel, summary, metadata, created_at)
+        VALUES (?,?,?,?,?,?)""",
+        (gen_id("evt"), "batch_auto_import", "linkedin",
+         f"Auto-imported Batch 1: {imported_contacts} contacts, {imported_drafts} drafts",
+         json.dumps({"batch_id": batch_id, "workflow_run_id": wf_id}), now))
+
+    conn.commit()
+
+
 def init_and_seed():
     db_path = os.environ.get("OCC_DB_PATH", "/tmp/outreach.db")
     conn = sqlite3.connect(db_path)
+    conn.execute("PRAGMA foreign_keys=ON")
     conn.executescript(SCHEMA_SQL)
     # Add tracking columns (safe to re-run, ignore errors for existing columns)
     migration_cols = [
@@ -631,6 +873,10 @@ def init_and_seed():
         ("contacts", "meeting_scheduled_date", "TEXT"),
         ("contacts", "objection_hit", "INTEGER DEFAULT 0"),
         ("contacts", "referral_target", "TEXT"),
+        ("contacts", "already_messaged_sn", "INTEGER DEFAULT 0"),
+        ("contacts", "already_messaged_li", "INTEGER DEFAULT 0"),
+        ("contacts", "messaging_status", "TEXT DEFAULT 'unknown'"),
+        ("contacts", "batch_1_eligible", "INTEGER DEFAULT 0"),
     ]
     for table, col, coltype in migration_cols:
         try:
@@ -638,9 +884,14 @@ def init_and_seed():
         except Exception:
             pass  # Column already exists
     conn.commit()
-    conn.commit()
+
+    # Auto-import run bundle if DB is empty
+    try:
+        _auto_import_run_bundle(conn)
+    except Exception as e:
+        print(f"Auto-import warning: {e}")
+
     conn.close()
-    seed_database()
 
 init_and_seed()
 
