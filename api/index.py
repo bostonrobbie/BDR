@@ -570,6 +570,20 @@ CREATE INDEX IF NOT EXISTS idx_responses_touch ON outreach_responses(touch_id);
 CREATE INDEX IF NOT EXISTS idx_responses_contact ON outreach_responses(contact_id);
 CREATE INDEX IF NOT EXISTS idx_outcomes_contact ON outreach_outcomes(contact_id);
 
+CREATE TABLE IF NOT EXISTS outreach_memory (
+    id TEXT PRIMARY KEY,
+    category TEXT NOT NULL,
+    pattern TEXT NOT NULL,
+    evidence TEXT DEFAULT '[]',
+    score REAL DEFAULT 0,
+    times_used INTEGER DEFAULT 0,
+    times_replied INTEGER DEFAULT 0,
+    reply_rate REAL DEFAULT 0,
+    last_updated TEXT DEFAULT (datetime('now')),
+    created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_memory_category ON outreach_memory(category);
+
 CREATE TABLE IF NOT EXISTS settings (
     key TEXT PRIMARY KEY,
     value TEXT,
@@ -7038,3 +7052,911 @@ def queue_draft(draft_id: str):
     conn.commit()
     conn.close()
     return {"status": "queued", "draft_id": draft_id}
+
+# ─── FEATURE 1: DRAFT REVIEW MODE ─────────────────────────────────────────────
+
+@app.get("/api/drafts/review-queue")
+def get_review_queue(
+    touch_type: Optional[str] = None,
+    batch_id: Optional[str] = None,
+    offset: int = Query(0, ge=0)
+):
+    """Get drafts in priority order for sequential review. Returns one draft at a time."""
+    try:
+        conn = get_db()
+
+        # Build query to get totals and filtered drafts
+        base_query = "FROM message_drafts WHERE approval_status='draft'"
+        params = []
+
+        if touch_type:
+            base_query += " AND touch_type=?"
+            params.append(touch_type)
+        if batch_id:
+            base_query += " AND batch_id=?"
+            params.append(batch_id)
+
+        # Get total count
+        total = conn.execute(f"SELECT COUNT(*) as cnt {base_query}", params).fetchone()["cnt"]
+
+        # Get one draft at offset, ordered by priority and touch number
+        query = f"""
+            SELECT md.*,
+                   c.priority_score, c.persona_type, c.first_name, c.last_name, c.company_id as contact_company_id,
+                   a.name as company_name
+            {base_query}
+            ORDER BY c.priority_score DESC, md.touch_number ASC
+            LIMIT 1 OFFSET ?
+        """
+        params.append(offset)
+
+        draft_row = conn.execute(
+            f"""SELECT md.*, c.priority_score, c.persona_type, c.first_name, c.last_name,
+                   a.name as company_name
+                {base_query}
+                ORDER BY c.priority_score DESC, md.touch_number ASC
+                LIMIT 1 OFFSET ?""",
+            params
+        ).fetchone()
+
+        conn.close()
+
+        if not draft_row:
+            return {"position": offset + 1, "total": total, "draft": None, "has_more": False}
+
+        d = dict(draft_row)
+        return {
+            "position": offset + 1,
+            "total": total,
+            "has_more": (offset + 1) < total,
+            "draft": d
+        }
+    except Exception as e:
+        raise HTTPException(500, f"Error fetching review queue: {str(e)}")
+
+@app.post("/api/drafts/{draft_id}/reject")
+def reject_draft(draft_id: str, data: dict = Body({})):
+    """Mark a draft as rejected during review."""
+    try:
+        conn = get_db()
+        draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+        if not draft:
+            conn.close()
+            raise HTTPException(404, "Draft not found")
+
+        d = dict(draft)
+        now = datetime.utcnow().isoformat()
+        reason = data.get("reason", "")
+
+        conn.execute("UPDATE message_drafts SET approval_status='rejected', updated_at=? WHERE id=?",
+                    (now, draft_id))
+        conn.execute("""INSERT INTO activity_timeline (id, contact_id, channel, activity_type, description, metadata, created_at)
+            VALUES (?,?,?,?,?,?,?)""",
+            (gen_id("evt"), d.get("contact_id"), "linkedin", "draft_rejected",
+             f"Draft rejected: {reason}",
+             json.dumps({"draft_id": draft_id, "reason": reason}), now))
+        conn.commit()
+        conn.close()
+
+        return {"status": "rejected", "draft_id": draft_id, "reason": reason}
+    except Exception as e:
+        raise HTTPException(500, f"Error rejecting draft: {str(e)}")
+
+@app.post("/api/drafts/review-stats")
+def get_review_stats():
+    """Get counts of drafts in review pipeline for current session."""
+    try:
+        conn = get_db()
+
+        stats = {
+            "total_to_review": conn.execute("SELECT COUNT(*) as cnt FROM message_drafts WHERE approval_status='draft'").fetchone()["cnt"],
+            "approved": conn.execute("SELECT COUNT(*) as cnt FROM message_drafts WHERE approval_status='approved'").fetchone()["cnt"],
+            "rejected": conn.execute("SELECT COUNT(*) as cnt FROM message_drafts WHERE approval_status='rejected'").fetchone()["cnt"],
+            "skipped": conn.execute("SELECT COUNT(*) as cnt FROM message_drafts WHERE approval_status='skipped'").fetchone()["cnt"],
+        }
+
+        conn.close()
+        return stats
+    except Exception as e:
+        raise HTTPException(500, f"Error fetching review stats: {str(e)}")
+
+# ─── FEATURE 2: REPLY TRACKING + FEEDBACK LOOP ─────────────────────────────────
+
+@app.post("/api/replies")
+def log_reply(data: dict = Body(...)):
+    """Log a reply with contact info, reply tag, intent, and optional referral."""
+    try:
+        conn = get_db()
+
+        contact_id = data.get("contact_id")
+        draft_id = data.get("draft_id")
+        channel = data.get("channel", "linkedin")
+        reply_tag = data.get("reply_tag")  # opener, pain_hook, proof_point, timing, referral, not_interested, unknown
+        intent = data.get("intent")  # positive, negative, neutral
+        summary = data.get("summary", "")
+        referral_name = data.get("referral_name")
+        referral_title = data.get("referral_title")
+
+        if not contact_id:
+            conn.close()
+            raise HTTPException(400, "contact_id required")
+
+        now = datetime.utcnow().isoformat()
+        reply_id = gen_id("rpl")
+
+        # Create reply record
+        conn.execute("""INSERT INTO replies
+            (id, contact_id, channel, reply_tag, intent, summary, referral_name, referral_title, replied_at, created_at)
+            VALUES (?,?,?,?,?,?,?,?,?,?)""",
+            (reply_id, contact_id, channel, reply_tag, intent, summary, referral_name, referral_title, now, now))
+
+        # Update contact stage based on intent
+        if intent == "positive":
+            conn.execute("UPDATE contacts SET stage='replied_positive' WHERE id=?", (contact_id,))
+        elif intent == "negative":
+            conn.execute("UPDATE contacts SET stage='replied_negative' WHERE id=?", (contact_id,))
+        elif intent == "neutral":
+            conn.execute("UPDATE contacts SET stage='replied_neutral' WHERE id=?", (contact_id,))
+
+        # Log to activity timeline
+        conn.execute("""INSERT INTO activity_timeline (id, contact_id, channel, activity_type, description, metadata, created_at)
+            VALUES (?,?,?,?,?,?,?)""",
+            (gen_id("evt"), contact_id, channel, "reply_logged",
+             f"Reply logged: {reply_tag} ({intent})",
+             json.dumps({"reply_id": reply_id, "reply_tag": reply_tag, "intent": intent}), now))
+
+        conn.commit()
+        conn.close()
+
+        return {"reply_id": reply_id, "status": "logged", "contact_id": contact_id}
+    except Exception as e:
+        raise HTTPException(500, f"Error logging reply: {str(e)}")
+
+@app.get("/api/replies")
+def list_replies(
+    reply_tag: Optional[str] = None,
+    intent: Optional[str] = None,
+    channel: Optional[str] = None,
+    limit: int = Query(100, ge=1, le=1000)
+):
+    """List all replies with optional filters."""
+    try:
+        conn = get_db()
+
+        query = """SELECT r.*, c.first_name, c.last_name, c.email, c.persona_type,
+                         a.name as company_name
+                  FROM replies r
+                  LEFT JOIN contacts c ON r.contact_id = c.id
+                  LEFT JOIN accounts a ON c.account_id = a.id
+                  WHERE 1=1"""
+        params = []
+
+        if reply_tag:
+            query += " AND r.reply_tag=?"
+            params.append(reply_tag)
+        if intent:
+            query += " AND r.intent=?"
+            params.append(intent)
+        if channel:
+            query += " AND r.channel=?"
+            params.append(channel)
+
+        query += " ORDER BY r.replied_at DESC LIMIT ?"
+        params.append(limit)
+
+        replies = [dict(row) for row in conn.execute(query, params).fetchall()]
+        conn.close()
+
+        return {"count": len(replies), "replies": replies}
+    except Exception as e:
+        raise HTTPException(500, f"Error fetching replies: {str(e)}")
+
+@app.get("/api/replies/analytics")
+def get_reply_analytics():
+    """Get aggregated reply data for feedback loop insights."""
+    try:
+        conn = get_db()
+
+        analytics = {
+            "by_reply_tag": {},
+            "by_intent": {},
+            "by_persona_type": {},
+            "by_vertical": {},
+            "by_proof_point": {},
+            "by_personalization_score": {},
+        }
+
+        # Count by reply_tag
+        for row in conn.execute("""SELECT reply_tag, COUNT(*) as cnt FROM replies
+                                   WHERE reply_tag IS NOT NULL GROUP BY reply_tag""").fetchall():
+            analytics["by_reply_tag"][row["reply_tag"]] = row["cnt"]
+
+        # Count by intent
+        for row in conn.execute("""SELECT intent, COUNT(*) as cnt FROM replies
+                                   WHERE intent IS NOT NULL GROUP BY intent""").fetchall():
+            analytics["by_intent"][row["intent"]] = row["cnt"]
+
+        # Count by persona type (join contacts)
+        for row in conn.execute("""SELECT c.persona_type, COUNT(*) as cnt FROM replies r
+                                   LEFT JOIN contacts c ON r.contact_id = c.id
+                                   WHERE c.persona_type IS NOT NULL
+                                   GROUP BY c.persona_type""").fetchall():
+            analytics["by_persona_type"][row["persona_type"]] = row["cnt"]
+
+        # Count by vertical (join accounts)
+        for row in conn.execute("""SELECT a.industry, COUNT(*) as cnt FROM replies r
+                                   LEFT JOIN contacts c ON r.contact_id = c.id
+                                   LEFT JOIN accounts a ON c.account_id = a.id
+                                   WHERE a.industry IS NOT NULL
+                                   GROUP BY a.industry""").fetchall():
+            analytics["by_vertical"][row["industry"]] = row["cnt"]
+
+        # Count by proof point (join message_drafts)
+        for row in conn.execute("""SELECT md.proof_point_used, COUNT(*) as cnt FROM replies r
+                                   LEFT JOIN message_drafts md ON r.contact_id = md.contact_id
+                                   WHERE md.proof_point_used IS NOT NULL
+                                   GROUP BY md.proof_point_used""").fetchall():
+            if row["proof_point_used"]:
+                analytics["by_proof_point"][row["proof_point_used"]] = row["cnt"]
+
+        # Count by personalization score
+        for row in conn.execute("""SELECT md.personalization_score, COUNT(*) as cnt FROM replies r
+                                   LEFT JOIN message_drafts md ON r.contact_id = md.contact_id
+                                   WHERE md.personalization_score IS NOT NULL
+                                   GROUP BY md.personalization_score""").fetchall():
+            if row["personalization_score"] is not None:
+                analytics["by_personalization_score"][str(row["personalization_score"])] = row["cnt"]
+
+        conn.close()
+        return analytics
+    except Exception as e:
+        raise HTTPException(500, f"Error fetching reply analytics: {str(e)}")
+
+@app.post("/api/replies/{reply_id}/action")
+def log_reply_action(reply_id: str, data: dict = Body(...)):
+    """Log what action was taken on a reply (e.g., booked_meeting, sent_followup)."""
+    try:
+        conn = get_db()
+
+        reply = conn.execute("SELECT * FROM replies WHERE id=?", (reply_id,)).fetchone()
+        if not reply:
+            conn.close()
+            raise HTTPException(404, "Reply not found")
+
+        action = data.get("action")  # booked_meeting, sent_followup, referred_to_new_contact, etc
+        if not action:
+            conn.close()
+            raise HTTPException(400, "action required")
+
+        now = datetime.utcnow().isoformat()
+        conn.execute("UPDATE replies SET next_step_taken=?, handled_at=? WHERE id=?",
+                    (action, now, reply_id))
+        conn.commit()
+        conn.close()
+
+        return {"reply_id": reply_id, "action": action, "status": "logged"}
+    except Exception as e:
+        raise HTTPException(500, f"Error logging reply action: {str(e)}")
+
+# ─── FEATURE 3: DRAFT ENHANCEMENT WITH REVISIONS ──────────────────────────────
+
+@app.post("/api/drafts/{draft_id}/enhance-with-revision")
+def enhance_draft_with_revision(draft_id: str):
+    """Create a new draft version with enhancements."""
+    try:
+        conn = get_db()
+
+        draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+        if not draft:
+            conn.close()
+            raise HTTPException(404, "Draft not found")
+
+        d = dict(draft)
+        now = datetime.utcnow().isoformat()
+
+        # Get current version number from draft_versions or default to 1
+        current_version = 1
+        last_version = conn.execute(
+            "SELECT MAX(version) as max_v FROM draft_versions WHERE draft_id=?",
+            (draft_id,)
+        ).fetchone()
+        if last_version and last_version["max_v"]:
+            current_version = last_version["max_v"]
+
+        # Create new version record (preserving original)
+        new_version_num = current_version + 1
+        new_version_id = gen_id("dv")
+
+        conn.execute("""INSERT INTO draft_versions
+            (id, draft_id, contact_id, channel, touch_number, subject, body, version, status, personalization_score, proof_point, pain_hook, opener_style, word_count, qc_passed, confidence_score, edited_by, created_at)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (new_version_id, draft_id, d.get("contact_id"), d.get("channel"), d.get("touch_number"),
+             d.get("subject_line"), d.get("body"), new_version_num, "enhanced",
+             d.get("personalization_score"), d.get("proof_point_used"), d.get("pain_hook"),
+             d.get("opener_style"), d.get("word_count"), d.get("qc_passed"),
+             0.0, "enhancement_agent", now))
+
+        # Update main draft status
+        conn.execute("UPDATE message_drafts SET approval_status='enhanced', updated_at=? WHERE id=?",
+                    (now, draft_id))
+
+        # Log to activity
+        conn.execute("""INSERT INTO activity_timeline (id, contact_id, channel, activity_type, description, metadata, created_at)
+            VALUES (?,?,?,?,?,?,?)""",
+            (gen_id("evt"), d.get("contact_id"), d.get("channel"), "draft_enhanced",
+             f"Draft enhanced - version {new_version_num} created",
+             json.dumps({"draft_id": draft_id, "new_version": new_version_num}), now))
+
+        conn.commit()
+        conn.close()
+
+        return {
+            "draft_id": draft_id,
+            "original_version": current_version,
+            "new_version": new_version_num,
+            "status": "enhanced",
+            "new_version_id": new_version_id
+        }
+    except Exception as e:
+        raise HTTPException(500, f"Error enhancing draft: {str(e)}")
+
+@app.get("/api/drafts/{draft_id}/versions")
+def get_draft_versions(draft_id: str):
+    """Get all versions of a draft including current."""
+    try:
+        conn = get_db()
+
+        # Get all versions from draft_versions table
+        versions = [dict(row) for row in conn.execute(
+            "SELECT * FROM draft_versions WHERE draft_id=? ORDER BY version ASC",
+            (draft_id,)
+        ).fetchall()]
+
+        # Get current draft
+        current = dict(conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone())
+
+        conn.close()
+
+        return {
+            "draft_id": draft_id,
+            "current": current,
+            "versions": versions,
+            "total_versions": len(versions)
+        }
+    except Exception as e:
+        raise HTTPException(500, f"Error fetching draft versions: {str(e)}")
+
+# ─── FEATURE 4: MEETING BOOKED PREP CARDS ─────────────────────────────────────
+
+@app.post("/api/contacts/{contact_id}/book-meeting")
+def book_meeting(contact_id: str, data: dict = Body(...)):
+    """Create opportunity and prep card when meeting is booked."""
+    try:
+        conn = get_db()
+
+        contact = conn.execute("SELECT * FROM contacts WHERE id=?", (contact_id,)).fetchone()
+        if not contact:
+            conn.close()
+            raise HTTPException(404, "Contact not found")
+
+        c = dict(contact)
+        now = datetime.utcnow().isoformat()
+        meeting_date = data.get("meeting_date")
+        notes = data.get("notes", "")
+
+        # Create opportunity record
+        opp_id = gen_id("opp")
+        conn.execute("""INSERT INTO opportunities
+            (id, contact_id, account_id, meeting_date, meeting_held, status, notes, created_at)
+            VALUES (?,?,?,?,?,?,?,?)""",
+            (opp_id, contact_id, c.get("account_id"), meeting_date, 0, "meeting_booked", notes, now))
+
+        # Update contact stage
+        conn.execute("UPDATE contacts SET stage='meeting_booked', meeting_scheduled_date=? WHERE id=?",
+                    (now, contact_id))
+
+        # Log to activity
+        conn.execute("""INSERT INTO activity_timeline (id, contact_id, channel, activity_type, description, metadata, created_at)
+            VALUES (?,?,?,?,?,?,?)""",
+            (gen_id("evt"), contact_id, "linkedin", "meeting_booked",
+             f"Meeting booked for {meeting_date}",
+             json.dumps({"opp_id": opp_id, "meeting_date": meeting_date}), now))
+
+        conn.commit()
+        conn.close()
+
+        return {"opp_id": opp_id, "contact_id": contact_id, "status": "meeting_booked"}
+    except Exception as e:
+        raise HTTPException(500, f"Error booking meeting: {str(e)}")
+
+@app.get("/api/contacts/{contact_id}/prep-card")
+def get_prep_card(contact_id: str):
+    """Generate prep card from existing data for a contact."""
+    try:
+        conn = get_db()
+
+        # Fetch contact and account
+        contact = conn.execute("SELECT * FROM contacts WHERE id=?", (contact_id,)).fetchone()
+        if not contact:
+            conn.close()
+            raise HTTPException(404, "Contact not found")
+
+        c = dict(contact)
+        account = conn.execute("SELECT * FROM accounts WHERE id=?", (c.get("account_id"),)).fetchone()
+        a = dict(account) if account else {}
+
+        # Fetch research snapshot
+        research = conn.execute(
+            "SELECT * FROM research_snapshots WHERE contact_id=? ORDER BY created_at DESC LIMIT 1",
+            (contact_id,)
+        ).fetchone()
+        r = dict(research) if research else {}
+
+        # Fetch recent messages (what was sent)
+        messages = [dict(row) for row in conn.execute(
+            "SELECT * FROM message_drafts WHERE contact_id=? ORDER BY created_at DESC LIMIT 3",
+            (contact_id,)
+        ).fetchall()]
+
+        # Fetch replies (what resonated)
+        replies = [dict(row) for row in conn.execute(
+            "SELECT * FROM replies WHERE contact_id=? ORDER BY replied_at DESC LIMIT 5",
+            (contact_id,)
+        ).fetchall()]
+
+        # Get tech stack from research
+        tech_stack = []
+        try:
+            tech_signals = json.loads(r.get("tech_stack_signals", "[]")) if isinstance(r.get("tech_stack_signals"), str) else r.get("tech_stack_signals", [])
+            tech_stack = tech_signals[:5]
+        except:
+            pass
+
+        # Get pain indicators
+        pain_indicators = []
+        try:
+            pains = json.loads(r.get("pain_indicators", "[]")) if isinstance(r.get("pain_indicators"), str) else r.get("pain_indicators", [])
+            pain_indicators = pains[:3]
+        except:
+            pass
+
+        # Generate discovery questions based on vertical and pain
+        vertical = a.get("industry", "SaaS")
+        discovery_questions = _generate_discovery_questions(vertical, pain_indicators, c.get("persona_type"))
+
+        # Get relevant proof points (match to vertical)
+        relevant_proof_points = _get_relevant_proof_points(vertical)
+
+        # Get predicted objection and response
+        predicted_objection = c.get("predicted_objection", "")
+        objection_response = c.get("objection_response", "")
+
+        conn.close()
+
+        prep_card = {
+            "contact_id": contact_id,
+            "company_snapshot": {
+                "name": a.get("name", ""),
+                "industry": a.get("industry", ""),
+                "employees": a.get("employee_count", ""),
+                "products": a.get("company_products", ""),
+                "news": a.get("company_news", ""),
+            },
+            "prospect_snapshot": {
+                "name": f"{c.get('first_name')} {c.get('last_name')}",
+                "title": c.get("title", ""),
+                "tenure_months": c.get("tenure_months", ""),
+                "recently_hired": c.get("recently_hired", 0),
+                "previous_company": c.get("previous_company", ""),
+            },
+            "tech_stack": tech_stack,
+            "pain_hypothesis": pain_indicators,
+            "what_triggered_reply": replies[0].get("reply_tag", "") if replies else "",
+            "discovery_questions": discovery_questions,
+            "relevant_proof_points": relevant_proof_points,
+            "predicted_objections": {
+                "objection": predicted_objection,
+                "response": objection_response,
+            }
+        }
+
+        return prep_card
+    except Exception as e:
+        raise HTTPException(500, f"Error generating prep card: {str(e)}")
+
+def _generate_discovery_questions(vertical: str, pain_indicators: list, persona_type: str) -> list:
+    """Generate 5 discovery questions tailored to vertical and pain."""
+    questions = []
+
+    # Base questions (always relevant)
+    questions.append(f"Walk me through how your team currently handles testing for your key products.")
+    questions.append("What's your current automation stack? What tools are you using?")
+
+    # Vertical-specific questions
+    if vertical == "FinTech":
+        questions.append("How do you ensure comprehensive regression testing across your payment flows?")
+        questions.append("What's your timeline for testing new compliance/fraud rule changes?")
+    elif vertical == "Healthcare":
+        questions.append("How does your QA process handle compliance requirements like HIPAA?")
+        questions.append("What's the biggest bottleneck in your testing cycle?")
+    elif vertical == "SaaS":
+        questions.append("How many manual tests are still in your pipeline?")
+        questions.append("What's your release cadence and how does QA keep pace?")
+    elif vertical == "E-Commerce":
+        questions.append("How do you test across devices and browsers at scale?")
+        questions.append("What's your testing strategy for peak shopping seasons?")
+    else:
+        questions.append("Where are regression cycles hitting hardest right now?")
+        questions.append("Is there a leadership mandate driving QA improvements?")
+
+    return questions[:5]
+
+def _get_relevant_proof_points(vertical: str) -> list:
+    """Return proof points matched to vertical."""
+    proof_map = {
+        "FinTech": [
+            {"customer": "Sanofi", "metric": "regression 3 days -> 80 minutes", "outcome": "compliance-heavy pharma"},
+            {"customer": "CRED", "metric": "90% regression automation, 5x faster", "outcome": "high-velocity fintech"}
+        ],
+        "Healthcare": [
+            {"customer": "Medibuddy", "metric": "2,500 tests automated, 50% maintenance cut", "outcome": "healthcare platform"},
+            {"customer": "Oscar Health", "metric": "70% maintenance reduction", "outcome": "digital health"}
+        ],
+        "SaaS": [
+            {"customer": "Hansard", "metric": "regression 8 weeks -> 5 weeks", "outcome": "insurance SaaS"},
+            {"customer": "Spendflo", "metric": "50% manual testing cut", "outcome": "expense management"}
+        ],
+        "Pharma": [
+            {"customer": "Sanofi", "metric": "regression 3 days -> 80 minutes", "outcome": "pharma compliance"}
+        ],
+    }
+    return proof_map.get(vertical, [
+        {"customer": "Fortune 100", "metric": "3x productivity increase", "outcome": "enterprise"},
+        {"customer": "Nagra DTV", "metric": "2,500 tests in 8 months", "outcome": "streaming platform"}
+    ])
+
+# ─── FEATURE 5: OUTREACH MEMORY / LEARNING TABLE ──────────────────────────────
+
+@app.post("/api/memory")
+def add_memory_pattern(data: dict = Body(...)):
+    """Add a memory pattern manually."""
+    try:
+        conn = get_db()
+
+        category = data.get("category")  # proof_point, opener_style, pain_hook, ask_style, persona_pattern, vertical_pattern
+        pattern = data.get("pattern")
+
+        if not category or not pattern:
+            conn.close()
+            raise HTTPException(400, "category and pattern required")
+
+        now = datetime.utcnow().isoformat()
+        memory_id = gen_id("mem")
+
+        conn.execute("""INSERT INTO outreach_memory
+            (id, category, pattern, evidence, score, times_used, times_replied, reply_rate, created_at, last_updated)
+            VALUES (?,?,?,?,?,?,?,?,?,?)""",
+            (memory_id, category, pattern, "[]", 0.0, 0, 0, 0.0, now, now))
+
+        conn.commit()
+        conn.close()
+
+        return {"memory_id": memory_id, "status": "added"}
+    except Exception as e:
+        raise HTTPException(500, f"Error adding memory pattern: {str(e)}")
+
+@app.get("/api/memory")
+def list_memory_patterns(category: Optional[str] = None):
+    """List all memory patterns, optionally filtered by category."""
+    try:
+        conn = get_db()
+
+        if category:
+            patterns = [dict(row) for row in conn.execute(
+                "SELECT * FROM outreach_memory WHERE category=? ORDER BY reply_rate DESC",
+                (category,)
+            ).fetchall()]
+        else:
+            patterns = [dict(row) for row in conn.execute(
+                "SELECT * FROM outreach_memory ORDER BY category, reply_rate DESC"
+            ).fetchall()]
+
+        conn.close()
+        return {"count": len(patterns), "patterns": patterns}
+    except Exception as e:
+        raise HTTPException(500, f"Error fetching memory patterns: {str(e)}")
+
+@app.post("/api/memory/refresh")
+def refresh_memory_from_replies():
+    """Recalculate all memory patterns from actual reply data."""
+    try:
+        conn = get_db()
+        now = datetime.utcnow().isoformat()
+
+        # Clear existing patterns
+        conn.execute("DELETE FROM outreach_memory")
+
+        # Analyze proof points
+        proof_data = conn.execute("""
+            SELECT md.proof_point_used, COUNT(DISTINCT md.id) as times_used,
+                   SUM(CASE WHEN r.intent='positive' THEN 1 ELSE 0 END) as positive_replies
+            FROM message_drafts md
+            LEFT JOIN replies r ON md.contact_id = r.contact_id
+            WHERE md.proof_point_used IS NOT NULL
+            GROUP BY md.proof_point_used
+        """).fetchall()
+
+        for row in proof_data:
+            times_used = row["times_used"] or 0
+            positive = row["positive_replies"] or 0
+            reply_rate = (positive / times_used * 100) if times_used > 0 else 0
+
+            conn.execute("""INSERT INTO outreach_memory
+                (id, category, pattern, score, times_used, times_replied, reply_rate, created_at, last_updated)
+                VALUES (?,?,?,?,?,?,?,?,?)""",
+                (gen_id("mem"), "proof_point", row["proof_point_used"], reply_rate, times_used, positive, reply_rate, now, now))
+
+        # Analyze opener styles
+        opener_data = conn.execute("""
+            SELECT md.opener_style, COUNT(DISTINCT md.id) as times_used,
+                   SUM(CASE WHEN r.intent='positive' THEN 1 ELSE 0 END) as positive_replies
+            FROM message_drafts md
+            LEFT JOIN replies r ON md.contact_id = r.contact_id
+            WHERE md.opener_style IS NOT NULL
+            GROUP BY md.opener_style
+        """).fetchall()
+
+        for row in opener_data:
+            times_used = row["times_used"] or 0
+            positive = row["positive_replies"] or 0
+            reply_rate = (positive / times_used * 100) if times_used > 0 else 0
+
+            conn.execute("""INSERT INTO outreach_memory
+                (id, category, pattern, score, times_used, times_replied, reply_rate, created_at, last_updated)
+                VALUES (?,?,?,?,?,?,?,?,?)""",
+                (gen_id("mem"), "opener_style", row["opener_style"], reply_rate, times_used, positive, reply_rate, now, now))
+
+        # Analyze pain hooks
+        pain_data = conn.execute("""
+            SELECT md.pain_hook, COUNT(DISTINCT md.id) as times_used,
+                   SUM(CASE WHEN r.intent='positive' THEN 1 ELSE 0 END) as positive_replies
+            FROM message_drafts md
+            LEFT JOIN replies r ON md.contact_id = r.contact_id
+            WHERE md.pain_hook IS NOT NULL
+            GROUP BY md.pain_hook
+        """).fetchall()
+
+        for row in pain_data:
+            times_used = row["times_used"] or 0
+            positive = row["positive_replies"] or 0
+            reply_rate = (positive / times_used * 100) if times_used > 0 else 0
+
+            conn.execute("""INSERT INTO outreach_memory
+                (id, category, pattern, score, times_used, times_replied, reply_rate, created_at, last_updated)
+                VALUES (?,?,?,?,?,?,?,?,?)""",
+                (gen_id("mem"), "pain_hook", row["pain_hook"], reply_rate, times_used, positive, reply_rate, now, now))
+
+        # Analyze persona patterns
+        persona_data = conn.execute("""
+            SELECT c.persona_type, COUNT(DISTINCT c.id) as contacts,
+                   SUM(CASE WHEN r.intent='positive' THEN 1 ELSE 0 END) as positive_replies,
+                   COUNT(DISTINCT r.id) as total_replies
+            FROM contacts c
+            LEFT JOIN replies r ON c.id = r.contact_id
+            WHERE c.persona_type IS NOT NULL
+            GROUP BY c.persona_type
+        """).fetchall()
+
+        for row in persona_data:
+            total_replies = row["total_replies"] or 0
+            positive = row["positive_replies"] or 0
+            reply_rate = (positive / total_replies * 100) if total_replies > 0 else 0
+
+            conn.execute("""INSERT INTO outreach_memory
+                (id, category, pattern, score, times_used, times_replied, reply_rate, created_at, last_updated)
+                VALUES (?,?,?,?,?,?,?,?,?)""",
+                (gen_id("mem"), "persona_pattern", row["persona_type"], reply_rate, row["contacts"], positive, reply_rate, now, now))
+
+        # Analyze vertical patterns
+        vertical_data = conn.execute("""
+            SELECT a.industry, COUNT(DISTINCT c.id) as contacts,
+                   SUM(CASE WHEN r.intent='positive' THEN 1 ELSE 0 END) as positive_replies,
+                   COUNT(DISTINCT r.id) as total_replies
+            FROM contacts c
+            LEFT JOIN accounts a ON c.account_id = a.id
+            LEFT JOIN replies r ON c.id = r.contact_id
+            WHERE a.industry IS NOT NULL
+            GROUP BY a.industry
+        """).fetchall()
+
+        for row in vertical_data:
+            total_replies = row["total_replies"] or 0
+            positive = row["positive_replies"] or 0
+            reply_rate = (positive / total_replies * 100) if total_replies > 0 else 0
+
+            conn.execute("""INSERT INTO outreach_memory
+                (id, category, pattern, score, times_used, times_replied, reply_rate, created_at, last_updated)
+                VALUES (?,?,?,?,?,?,?,?,?)""",
+                (gen_id("mem"), "vertical_pattern", row["industry"], reply_rate, row["contacts"], positive, reply_rate, now, now))
+
+        conn.commit()
+        conn.close()
+
+        return {"status": "memory_refreshed", "timestamp": now}
+    except Exception as e:
+        raise HTTPException(500, f"Error refreshing memory: {str(e)}")
+
+@app.get("/api/memory/insights")
+def get_memory_insights():
+    """Return top 5 insights for Pre-Brief."""
+    try:
+        conn = get_db()
+
+        insights = {
+            "best_persona": None,
+            "best_proof_point": None,
+            "best_vertical": None,
+            "best_pattern": None,
+            "stop_doing": None,
+        }
+
+        # Best persona
+        persona = conn.execute("""
+            SELECT pattern, reply_rate FROM outreach_memory
+            WHERE category='persona_pattern'
+            ORDER BY reply_rate DESC LIMIT 1
+        """).fetchone()
+        if persona:
+            insights["best_persona"] = f"{dict(persona)['pattern']} replying at {dict(persona)['reply_rate']:.1f}% rate"
+
+        # Best proof point
+        proof = conn.execute("""
+            SELECT pattern, reply_rate FROM outreach_memory
+            WHERE category='proof_point'
+            ORDER BY reply_rate DESC LIMIT 1
+        """).fetchone()
+        if proof:
+            insights["best_proof_point"] = f"{dict(proof)['pattern']} ({dict(proof)['reply_rate']:.1f}% effective)"
+
+        # Best vertical
+        vertical = conn.execute("""
+            SELECT pattern, reply_rate FROM outreach_memory
+            WHERE category='vertical_pattern'
+            ORDER BY reply_rate DESC LIMIT 1
+        """).fetchone()
+        if vertical:
+            insights["best_vertical"] = f"{dict(vertical)['pattern']} at {dict(vertical)['reply_rate']:.1f}% reply rate"
+
+        # Best pattern
+        pattern = conn.execute("""
+            SELECT category, pattern, reply_rate FROM outreach_memory
+            WHERE category NOT IN ('persona_pattern', 'vertical_pattern', 'proof_point')
+            ORDER BY reply_rate DESC LIMIT 1
+        """).fetchone()
+        if pattern:
+            p = dict(pattern)
+            insights["best_pattern"] = f"{p['category']}: {p['pattern']} works"
+
+        # Stop doing (lowest reply rate)
+        worst = conn.execute("""
+            SELECT category, pattern, reply_rate FROM outreach_memory
+            ORDER BY reply_rate ASC, times_used DESC LIMIT 1
+        """).fetchone()
+        if worst:
+            w = dict(worst)
+            if w["times_used"] > 5:  # Only flag if used multiple times
+                insights["stop_doing"] = f"Stop: {w['category']} '{w['pattern']}' ({w['reply_rate']:.1f}% rate)"
+
+        conn.close()
+        return insights
+    except Exception as e:
+        raise HTTPException(500, f"Error getting insights: {str(e)}")
+
+# ─── FEATURE 6: BATCH COMPARISON DASHBOARD DATA ────────────────────────────────
+
+@app.get("/api/analytics/batch-comparison")
+def get_batch_comparison_data():
+    """Return cross-batch analytics for dashboard charts."""
+    try:
+        conn = get_db()
+
+        # Get all batches
+        batches = [dict(row) for row in conn.execute(
+            "SELECT * FROM batches ORDER BY batch_number"
+        ).fetchall()]
+
+        batch_data = []
+
+        for batch in batches:
+            batch_id = batch["id"]
+
+            # Get prospects in this batch
+            batch_prospects = [dict(row) for row in conn.execute(
+                "SELECT * FROM batch_prospects WHERE batch_id=?", (batch_id,)
+            ).fetchall()]
+
+            # Reply rate by persona
+            persona_replies = conn.execute("""
+                SELECT c.persona_type, COUNT(DISTINCT r.id) as replies,
+                       COUNT(DISTINCT bp.contact_id) as sent
+                FROM batch_prospects bp
+                LEFT JOIN contacts c ON bp.contact_id = c.id
+                LEFT JOIN replies r ON c.id = r.contact_id
+                WHERE bp.batch_id=?
+                GROUP BY c.persona_type
+            """, (batch_id,)).fetchall()
+
+            # Reply rate by vertical
+            vertical_replies = conn.execute("""
+                SELECT a.industry, COUNT(DISTINCT r.id) as replies,
+                       COUNT(DISTINCT bp.contact_id) as sent
+                FROM batch_prospects bp
+                LEFT JOIN contacts c ON bp.contact_id = c.id
+                LEFT JOIN accounts a ON c.account_id = a.id
+                LEFT JOIN replies r ON c.id = r.contact_id
+                WHERE bp.batch_id=?
+                GROUP BY a.industry
+            """, (batch_id,)).fetchall()
+
+            # Reply rate by proof point
+            proof_replies = conn.execute("""
+                SELECT md.proof_point_used, COUNT(DISTINCT r.id) as replies,
+                       COUNT(DISTINCT md.id) as sent
+                FROM batch_prospects bp
+                LEFT JOIN message_drafts md ON bp.contact_id = md.contact_id
+                LEFT JOIN replies r ON md.contact_id = r.contact_id
+                WHERE bp.batch_id=? AND md.proof_point_used IS NOT NULL
+                GROUP BY md.proof_point_used
+            """, (batch_id,)).fetchall()
+
+            # Reply rate by personalization score
+            perso_replies = conn.execute("""
+                SELECT md.personalization_score, COUNT(DISTINCT r.id) as replies,
+                       COUNT(DISTINCT md.id) as sent
+                FROM batch_prospects bp
+                LEFT JOIN message_drafts md ON bp.contact_id = md.contact_id
+                LEFT JOIN replies r ON md.contact_id = r.contact_id
+                WHERE bp.batch_id=?
+                GROUP BY md.personalization_score
+            """, (batch_id,)).fetchall()
+
+            batch_data.append({
+                "batch_id": batch_id,
+                "batch_number": batch.get("batch_number"),
+                "created_date": batch.get("created_date"),
+                "prospect_count": batch.get("prospect_count"),
+                "ab_variable": batch.get("ab_variable"),
+                "by_persona": [
+                    {"persona": dict(row).get("persona_type", "Unknown"),
+                     "replies": dict(row).get("replies", 0),
+                     "sent": dict(row).get("sent", 0),
+                     "reply_rate": (dict(row).get("replies", 0) / dict(row).get("sent", 1) * 100) if dict(row).get("sent", 0) > 0 else 0}
+                    for row in persona_replies
+                ],
+                "by_vertical": [
+                    {"vertical": dict(row).get("industry", "Unknown"),
+                     "replies": dict(row).get("replies", 0),
+                     "sent": dict(row).get("sent", 0),
+                     "reply_rate": (dict(row).get("replies", 0) / dict(row).get("sent", 1) * 100) if dict(row).get("sent", 0) > 0 else 0}
+                    for row in vertical_replies
+                ],
+                "by_proof_point": [
+                    {"proof_point": dict(row).get("proof_point_used", "Unknown"),
+                     "replies": dict(row).get("replies", 0),
+                     "sent": dict(row).get("sent", 0),
+                     "reply_rate": (dict(row).get("replies", 0) / dict(row).get("sent", 1) * 100) if dict(row).get("sent", 0) > 0 else 0}
+                    for row in proof_replies
+                ],
+                "by_personalization": [
+                    {"score": dict(row).get("personalization_score"),
+                     "replies": dict(row).get("replies", 0),
+                     "sent": dict(row).get("sent", 0),
+                     "reply_rate": (dict(row).get("replies", 0) / dict(row).get("sent", 1) * 100) if dict(row).get("sent", 0) > 0 else 0}
+                    for row in perso_replies
+                ]
+            })
+
+        conn.close()
+        return {"batches": batch_data, "total_batches": len(batches)}
+    except Exception as e:
+        raise HTTPException(500, f"Error fetching batch comparison data: {str(e)}")

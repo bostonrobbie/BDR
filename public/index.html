@@ -2183,6 +2183,9 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
             <button class="channel-tab-btn" onclick="switchLITab('drafts')">Drafts</button>
             <button class="channel-tab-btn" onclick="switchLITab('queue')">Queue</button>
             <button class="channel-tab-btn" onclick="switchLITab('analytics')">Analytics</button>
+            <button class="channel-tab-btn" onclick="switchLITab('review')">Review</button>
+            <button class="channel-tab-btn" onclick="switchLITab('replies')">Replies</button>
+            <button class="channel-tab-btn" onclick="switchLITab('memory')">Memory</button>
         </div>
     </div>
 
@@ -2330,6 +2333,127 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
         <div class="card" style="margin-top:16px;">
             <h3 style="margin-bottom:14px;">Activity Log</h3>
             <div id="li-activity-log" style="max-height:300px;overflow-y:auto;"></div>
+        </div>
+    </div>
+
+    <!-- REVIEW TAB - Swipe-through draft review -->
+    <div class="li-tab-content" id="li-tab-review" style="display:none">
+        <div class="card" style="margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <h3>Draft Review Mode</h3>
+                <div id="review-progress" style="font-size:13px;color:var(--text-muted);"></div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:12px;">
+                <select class="inp" id="review-filter-touch" style="width:auto;min-width:140px;">
+                    <option value="">All Touches</option>
+                    <option value="inmail">InMail (Touch 1)</option>
+                    <option value="call_script">Call Script</option>
+                    <option value="follow_up">Follow-up (Touch 3)</option>
+                    <option value="break_up">Break-up (Touch 6)</option>
+                </select>
+                <button class="btn btn-sm btn-primary" onclick="startReview()">Start Review</button>
+            </div>
+        </div>
+
+        <!-- Review Stats -->
+        <div class="kpi-row" id="review-stats-kpis" style="margin-bottom:16px;"></div>
+
+        <!-- Current Draft Card -->
+        <div id="review-card-container"></div>
+
+        <!-- Keyboard shortcuts help -->
+        <div class="card" style="margin-top:16px;padding:12px;">
+            <div style="font-size:11px;color:var(--text-muted);display:flex;gap:16px;flex-wrap:wrap;">
+                <span><kbd style="background:var(--bg-primary);padding:2px 6px;border-radius:3px;border:1px solid var(--border);">A</kbd> Approve</span>
+                <span><kbd style="background:var(--bg-primary);padding:2px 6px;border-radius:3px;border:1px solid var(--border);">R</kbd> Reject</span>
+                <span><kbd style="background:var(--bg-primary);padding:2px 6px;border-radius:3px;border:1px solid var(--border);">S</kbd> Skip</span>
+                <span><kbd style="background:var(--bg-primary);padding:2px 6px;border-radius:3px;border:1px solid var(--border);">E</kbd> Edit</span>
+                <span><kbd style="background:var(--bg-primary);padding:2px 6px;border-radius:3px;border:1px solid var(--border);">Q</kbd> Queue (if approved)</span>
+                <span><kbd style="background:var(--bg-primary);padding:2px 6px;border-radius:3px;border:1px solid var(--border);">C</kbd> Copy</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- REPLIES TAB - Reply tracking and feedback loop -->
+    <div class="li-tab-content" id="li-tab-replies" style="display:none">
+        <div class="kpi-row" id="replies-kpis"></div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+            <!-- Reply Tag Breakdown -->
+            <div class="card">
+                <h3 style="margin-bottom:14px;">What Triggered Replies</h3>
+                <div id="reply-tag-breakdown"></div>
+            </div>
+            <!-- Reply Intent -->
+            <div class="card">
+                <h3 style="margin-bottom:14px;">Reply Sentiment</h3>
+                <div id="reply-intent-breakdown"></div>
+            </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+            <!-- By Persona -->
+            <div class="card">
+                <h3 style="margin-bottom:14px;">Replies by Persona</h3>
+                <div id="reply-persona-breakdown"></div>
+            </div>
+            <!-- By Vertical -->
+            <div class="card">
+                <h3 style="margin-bottom:14px;">Replies by Vertical</h3>
+                <div id="reply-vertical-breakdown"></div>
+            </div>
+        </div>
+
+        <!-- Reply List -->
+        <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                <h3>Reply Log</h3>
+                <button class="btn btn-sm btn-primary" onclick="showLogReplyModal()">+ Log Reply</button>
+            </div>
+            <div id="replies-list"></div>
+        </div>
+    </div>
+
+    <!-- MEMORY TAB - Outreach learning and patterns -->
+    <div class="li-tab-content" id="li-tab-memory" style="display:none">
+        <!-- Pre-Brief / Insights -->
+        <div class="card" style="margin-bottom:16px;border-left:3px solid var(--accent);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                <h3>What's Working (Pre-Brief)</h3>
+                <button class="btn btn-sm" onclick="refreshMemory()">Refresh from Data</button>
+            </div>
+            <div id="memory-insights" style="font-size:13px;line-height:1.8;"></div>
+        </div>
+
+        <!-- Memory Patterns by Category -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+            <div class="card">
+                <h3 style="margin-bottom:14px;">Proof Points</h3>
+                <div id="memory-proof-points"></div>
+            </div>
+            <div class="card">
+                <h3 style="margin-bottom:14px;">Opener Styles</h3>
+                <div id="memory-openers"></div>
+            </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+            <div class="card">
+                <h3 style="margin-bottom:14px;">Pain Hooks</h3>
+                <div id="memory-pain-hooks"></div>
+            </div>
+            <div class="card">
+                <h3 style="margin-bottom:14px;">Persona Patterns</h3>
+                <div id="memory-personas"></div>
+            </div>
+        </div>
+
+        <!-- Add Pattern -->
+        <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                <h3>Manual Observations</h3>
+                <button class="btn btn-sm btn-primary" onclick="showAddMemoryModal()">+ Add Pattern</button>
+            </div>
+            <div id="memory-manual-list"></div>
         </div>
     </div>
 </div>
@@ -4551,6 +4675,9 @@ function switchLITab(tab) {
     else if (tab === 'drafts') loadLIDrafts();
     else if (tab === 'queue') loadLIQueue();
     else if (tab === 'analytics') loadLIAnalytics();
+    else if (tab === 'review') loadReviewMode();
+    else if (tab === 'replies') loadRepliesTab();
+    else if (tab === 'memory') loadMemoryTab();
 }
 
 async function loadLinkedInPage() {
@@ -5035,6 +5162,672 @@ async function loadLIAnalytics() {
             }
         }
     } catch(e) { console.error('loadLIAnalytics:', e); }
+}
+
+// =========================================================================
+// DRAFT REVIEW MODE
+// =========================================================================
+let reviewOffset = 0;
+let reviewTotal = 0;
+let reviewCurrent = null;
+let reviewKeyListenerActive = false;
+
+async function loadReviewMode() {
+    await loadReviewStats();
+    if (!reviewCurrent) startReview();
+}
+
+async function loadReviewStats() {
+    try {
+        const stats = await apiPost('/api/drafts/review-stats', {});
+        if (stats._error) return;
+        const el = document.getElementById('review-stats-kpis');
+        if (el) el.innerHTML = `
+            <div class="kpi-card"><div class="kpi-label">TO REVIEW</div><div class="kpi-value">${stats.total_to_review || 0}</div></div>
+            <div class="kpi-card"><div class="kpi-label">APPROVED</div><div class="kpi-value" style="color:var(--success);">${stats.approved || 0}</div></div>
+            <div class="kpi-card"><div class="kpi-label">REJECTED</div><div class="kpi-value" style="color:var(--danger,#ef4444);">${stats.rejected || 0}</div></div>
+            <div class="kpi-card"><div class="kpi-label">QUEUED</div><div class="kpi-value" style="color:var(--info,#4da6ff);">${stats.queued || 0}</div></div>
+        `;
+    } catch(e) { console.error('loadReviewStats:', e); }
+}
+
+async function startReview() {
+    reviewOffset = 0;
+    await loadReviewDraft();
+    enableReviewKeyboard();
+}
+
+async function loadReviewDraft() {
+    const touchFilter = document.getElementById('review-filter-touch')?.value || '';
+    const url = `/api/drafts/review-queue?offset=${reviewOffset}${touchFilter ? '&touch_type=' + touchFilter : ''}`;
+    try {
+        const r = await fetch(API + url);
+        const data = await r.json();
+        if (!r.ok || !data.draft) {
+            document.getElementById('review-card-container').innerHTML = `
+                <div class="card" style="text-align:center;padding:40px;">
+                    <div style="font-size:48px;margin-bottom:12px;">✅</div>
+                    <h3>All done!</h3>
+                    <p style="color:var(--text-muted);margin-top:8px;">No more drafts to review. Switch to the Queue tab to manage approved messages.</p>
+                </div>`;
+            document.getElementById('review-progress').textContent = '';
+            reviewCurrent = null;
+            return;
+        }
+        reviewCurrent = data.draft;
+        reviewTotal = data.total;
+        document.getElementById('review-progress').textContent = `${data.position + 1} of ${data.total}`;
+        renderReviewCard(data.draft);
+    } catch(e) {
+        console.error('loadReviewDraft:', e);
+        document.getElementById('review-card-container').innerHTML = `<div class="card" style="color:var(--danger,#ef4444);padding:20px;">Error loading draft: ${e.message}</div>`;
+    }
+}
+
+function renderReviewCard(d) {
+    const touchLabels = {1:'InMail (Touch 1)', 2:'Call Script (Touch 2)', 3:'Follow-up (Touch 3)', 4:'Call Script (Touch 4)', 5:'Email (Touch 5)', 6:'Break-up (Touch 6)'};
+    const touchLabel = touchLabels[d.touch_number] || `Touch ${d.touch_number}`;
+    const container = document.getElementById('review-card-container');
+    container.innerHTML = `
+        <div class="card" style="border-left:3px solid var(--accent);">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+                <div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <span style="font-size:10px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:10px;">Priority ${d.priority_score || '?'}</span>
+                        <span style="font-size:10px;background:var(--bg-primary);padding:2px 8px;border-radius:10px;border:1px solid var(--border);">${d.persona_type || 'unknown'}</span>
+                    </div>
+                    <h3 style="margin:4px 0;">${esc(d.contact_name || '')}</h3>
+                    <div style="color:var(--text-muted);font-size:13px;">${esc(d.contact_title || '')} at ${esc(d.company_name || '')}</div>
+                    <div style="color:var(--text-muted);font-size:11px;margin-top:4px;">${touchLabel} | ${esc(d.vertical || '')} | P-Score: ${d.personalization_score || '-'}</div>
+                </div>
+                <div style="display:flex;gap:4px;">
+                    ${d.linkedin_url ? `<a href="${d.linkedin_url.startsWith('http') ? d.linkedin_url : 'https://' + d.linkedin_url}" target="_blank" class="btn btn-sm">View LinkedIn ↗</a>` : ''}
+                </div>
+            </div>
+
+            ${d.subject_line ? `<div style="margin-bottom:12px;padding:8px 12px;background:var(--bg-primary);border-radius:var(--radius-sm);border-left:3px solid var(--accent);">
+                <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;margin-bottom:2px;">Subject</div>
+                <div style="font-size:13px;">${esc(d.subject_line)}</div>
+            </div>` : ''}
+
+            <div id="review-body-display" style="padding:16px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:13px;white-space:pre-wrap;line-height:1.7;max-height:400px;overflow-y:auto;margin-bottom:16px;">${esc(d.body || '(empty)')}</div>
+
+            <textarea id="review-body-edit" style="display:none;width:100%;min-height:200px;padding:12px;background:var(--bg-primary);border:1px solid var(--accent);border-radius:var(--radius-sm);color:var(--text);font-size:13px;line-height:1.7;resize:vertical;margin-bottom:16px;">${d.body || ''}</textarea>
+
+            <div style="display:flex;gap:8px;margin-bottom:12px;">
+                <div style="font-size:11px;color:var(--text-muted);">
+                    Words: ${d.word_count || '-'} | Chars: ${(d.body || '').length} | Proof: ${d.proof_point_used || '-'} | QC: ${d.qc_passed ? '✅' : '⚠️'}
+                </div>
+            </div>
+
+            <div style="display:flex;gap:8px;justify-content:space-between;">
+                <div style="display:flex;gap:8px;">
+                    <button class="btn btn-sm" onclick="reviewPrev()" ${reviewOffset === 0 ? 'disabled' : ''}>← Prev</button>
+                    <button class="btn btn-sm" onclick="reviewSkip()">Skip →</button>
+                </div>
+                <div style="display:flex;gap:8px;">
+                    <button class="btn btn-sm" onclick="copyToClip(\`${escJs(d.body || '')}\`);showToast('Copied!')">📋 Copy</button>
+                    <button class="btn btn-sm" id="review-edit-btn" onclick="toggleReviewEdit()">✏️ Edit</button>
+                    <button class="btn btn-sm" style="background:#ef444420;color:#ef4444;border:1px solid #ef444440;" onclick="reviewReject()">✕ Reject</button>
+                    <button class="btn btn-sm btn-primary" onclick="reviewApprove()">✓ Approve</button>
+                </div>
+            </div>
+        </div>`;
+}
+
+async function reviewApprove() {
+    if (!reviewCurrent) return;
+    // If editing, save first
+    const editArea = document.getElementById('review-body-edit');
+    if (editArea && editArea.style.display !== 'none') {
+        await apiPost(`/api/drafts/${reviewCurrent.id}`, {body: editArea.value}, 'PATCH');
+    }
+    const res = await apiPost(`/api/drafts/${reviewCurrent.id}/approve`, {});
+    if (res._error) { showToast(res.message, 'error'); return; }
+    showToast('Draft approved!');
+    await loadReviewStats();
+    await loadReviewDraft();
+}
+
+async function reviewReject() {
+    if (!reviewCurrent) return;
+    const reason = prompt('Rejection reason (optional):');
+    const res = await apiPost(`/api/drafts/${reviewCurrent.id}/reject`, {reason: reason || ''});
+    if (res._error) { showToast(res.message, 'error'); return; }
+    showToast('Draft rejected');
+    await loadReviewStats();
+    await loadReviewDraft();
+}
+
+function reviewSkip() {
+    reviewOffset++;
+    loadReviewDraft();
+}
+
+function reviewPrev() {
+    if (reviewOffset > 0) { reviewOffset--; loadReviewDraft(); }
+}
+
+function toggleReviewEdit() {
+    const display = document.getElementById('review-body-display');
+    const edit = document.getElementById('review-body-edit');
+    const btn = document.getElementById('review-edit-btn');
+    if (!display || !edit) return;
+    if (edit.style.display === 'none') {
+        edit.style.display = '';
+        display.style.display = 'none';
+        btn.textContent = '💾 Save';
+    } else {
+        // Save the edit
+        if (reviewCurrent) {
+            apiPost(`/api/drafts/${reviewCurrent.id}`, {body: edit.value}, 'PATCH');
+            display.textContent = edit.value;
+            reviewCurrent.body = edit.value;
+        }
+        edit.style.display = 'none';
+        display.style.display = '';
+        btn.textContent = '✏️ Edit';
+        showToast('Draft updated');
+    }
+}
+
+function enableReviewKeyboard() {
+    if (reviewKeyListenerActive) return;
+    reviewKeyListenerActive = true;
+    document.addEventListener('keydown', handleReviewKey);
+}
+
+function handleReviewKey(e) {
+    // Don't trigger if typing in input/textarea
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+    // Only when review tab is visible
+    const reviewTab = document.getElementById('li-tab-review');
+    if (!reviewTab || reviewTab.style.display === 'none') return;
+
+    switch(e.key.toLowerCase()) {
+        case 'a': reviewApprove(); break;
+        case 'r': reviewReject(); break;
+        case 's': reviewSkip(); break;
+        case 'e': toggleReviewEdit(); break;
+        case 'q': if (reviewCurrent) queueDraft(reviewCurrent.id).then(() => { loadReviewStats(); loadReviewDraft(); }); break;
+        case 'c': if (reviewCurrent) { copyToClip(reviewCurrent.body || ''); showToast('Copied!'); } break;
+    }
+}
+
+// =========================================================================
+// REPLY TRACKING
+// =========================================================================
+async function loadRepliesTab() {
+    loadRepliesAnalytics();
+    loadRepliesList();
+}
+
+async function loadRepliesAnalytics() {
+    try {
+        const r = await fetch(API + '/api/replies/analytics');
+        const data = await r.json();
+        if (!r.ok) return;
+
+        // KPIs
+        const total = Object.values(data.by_intent || {}).reduce((s,v) => s + v, 0);
+        const positive = data.by_intent?.positive || 0;
+        const meetings = data.by_intent?.meeting_booked || 0;
+        const kpis = document.getElementById('replies-kpis');
+        if (kpis) kpis.innerHTML = `
+            <div class="kpi-card"><div class="kpi-label">TOTAL REPLIES</div><div class="kpi-value">${total}</div></div>
+            <div class="kpi-card"><div class="kpi-label">POSITIVE</div><div class="kpi-value" style="color:var(--success);">${positive}</div></div>
+            <div class="kpi-card"><div class="kpi-label">MEETINGS</div><div class="kpi-value" style="color:var(--accent);">${meetings}</div></div>
+            <div class="kpi-card"><div class="kpi-label">REPLY RATE</div><div class="kpi-value">${total > 0 ? ((positive / Math.max(total, 1)) * 100).toFixed(1) : '0.0'}%</div></div>
+        `;
+
+        // Reply tag breakdown
+        renderBreakdownBars('reply-tag-breakdown', data.by_reply_tag || {}, {
+            opener: '#4da6ff', pain_hook: '#f59e0b', proof_point: '#10b981',
+            timing: '#8b5cf6', referral: '#ec4899', not_interested: '#ef4444', unknown: '#6b7280'
+        });
+
+        // Intent breakdown
+        renderBreakdownBars('reply-intent-breakdown', data.by_intent || {}, {
+            positive: '#10b981', negative: '#ef4444', neutral: '#f59e0b'
+        });
+
+        // Persona breakdown
+        renderBreakdownBars('reply-persona-breakdown', data.by_persona_type || {}, {});
+
+        // Vertical breakdown
+        renderBreakdownBars('reply-vertical-breakdown', data.by_vertical || {}, {});
+
+    } catch(e) { console.error('loadRepliesAnalytics:', e); }
+}
+
+function renderBreakdownBars(containerId, data, colorMap) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    const entries = Object.entries(data).sort((a,b) => b[1] - a[1]);
+    const max = entries.length > 0 ? entries[0][1] : 1;
+    if (entries.length === 0) {
+        el.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:8px;">No data yet</div>';
+        return;
+    }
+    el.innerHTML = entries.map(([key, val]) => {
+        const pct = (val / max * 100).toFixed(0);
+        const color = colorMap[key] || 'var(--accent)';
+        return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;">
+            <div style="width:100px;text-transform:capitalize;color:var(--text-muted);flex-shrink:0;">${esc(key.replace(/_/g, ' '))}</div>
+            <div style="flex:1;background:var(--bg-primary);border-radius:4px;height:20px;overflow:hidden;">
+                <div style="height:100%;width:${pct}%;background:${color}30;border-left:3px solid ${color};display:flex;align-items:center;padding-left:6px;font-size:10px;color:${color};">${val}</div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+async function loadRepliesList() {
+    try {
+        const r = await fetch(API + '/api/replies');
+        const data = await r.json();
+        const list = document.getElementById('replies-list');
+        if (!list) return;
+        const replies = data.replies || data || [];
+        if (!Array.isArray(replies) || replies.length === 0) {
+            list.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text-muted);font-size:13px;">No replies logged yet. When prospects reply, click "Log Reply" to track what triggered the response.</div>';
+            return;
+        }
+        list.innerHTML = replies.map(r => `
+            <div style="padding:12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;">
+                <div>
+                    <div style="font-weight:600;font-size:13px;">${esc(r.contact_name || r.first_name + ' ' + r.last_name || 'Unknown')}</div>
+                    <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">${esc(r.company_name || '')} | ${esc(r.channel || 'linkedin')}</div>
+                    <div style="font-size:12px;margin-top:6px;">${esc(r.summary || '')}</div>
+                    ${r.referral_name ? `<div style="font-size:11px;color:var(--accent);margin-top:4px;">Referred to: ${esc(r.referral_name)} ${r.referral_title ? '(' + esc(r.referral_title) + ')' : ''}</div>` : ''}
+                </div>
+                <div style="display:flex;gap:6px;flex-shrink:0;">
+                    <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:${r.intent === 'positive' ? '#10b98120' : r.intent === 'negative' ? '#ef444420' : '#f59e0b20'};color:${r.intent === 'positive' ? '#10b981' : r.intent === 'negative' ? '#ef4444' : '#f59e0b'};border:1px solid ${r.intent === 'positive' ? '#10b98140' : r.intent === 'negative' ? '#ef444440' : '#f59e0b40'};">${r.intent || '?'}</span>
+                    <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:var(--bg-primary);border:1px solid var(--border);">${(r.reply_tag || '').replace(/_/g, ' ')}</span>
+                </div>
+            </div>
+        `).join('');
+    } catch(e) { console.error('loadRepliesList:', e); }
+}
+
+function showLogReplyModal() {
+    openGenericModal(`
+        <h3 style="margin-bottom:16px;">Log a Reply</h3>
+        <div style="display:grid;gap:12px;">
+            <div>
+                <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px;">Contact</label>
+                <select class="inp" id="reply-contact-select" onchange="loadContactDrafts(this.value)">
+                    <option value="">Select prospect...</option>
+                </select>
+            </div>
+            <div>
+                <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px;">Which message triggered this reply?</label>
+                <select class="inp" id="reply-draft-select">
+                    <option value="">Select draft...</option>
+                </select>
+            </div>
+            <div>
+                <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px;">What triggered the reply?</label>
+                <select class="inp" id="reply-tag-select">
+                    <option value="opener">Opener - They reacted to the personalized hook</option>
+                    <option value="pain_hook">Pain Hook - They engaged with the problem</option>
+                    <option value="proof_point">Proof Point - They asked about the customer story</option>
+                    <option value="timing">Timing - They said "good timing" or "evaluating"</option>
+                    <option value="referral">Referral - They forwarded or said "talk to..."</option>
+                    <option value="not_interested">Not Interested - Declined</option>
+                    <option value="unknown">Unknown - Can't tell what triggered it</option>
+                </select>
+            </div>
+            <div>
+                <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px;">Sentiment</label>
+                <select class="inp" id="reply-intent-select">
+                    <option value="positive">Positive</option>
+                    <option value="neutral">Neutral</option>
+                    <option value="negative">Negative</option>
+                </select>
+            </div>
+            <div>
+                <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px;">Reply summary / notes</label>
+                <textarea class="inp" id="reply-summary" rows="3" placeholder="What did they say?"></textarea>
+            </div>
+            <div id="reply-referral-fields" style="display:none;">
+                <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px;">Referral to:</label>
+                <div style="display:flex;gap:8px;">
+                    <input class="inp" id="reply-referral-name" placeholder="Name" style="flex:1;">
+                    <input class="inp" id="reply-referral-title" placeholder="Title" style="flex:1;">
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="submitReply()" style="margin-top:8px;">Log Reply</button>
+        </div>
+    `);
+    // Load contacts into select
+    fetch(API + '/api/contacts?limit=200').then(r => r.json()).then(data => {
+        const sel = document.getElementById('reply-contact-select');
+        const contacts = data.contacts || data || [];
+        if (Array.isArray(contacts)) {
+            contacts.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c.id;
+                opt.textContent = `${c.first_name} ${c.last_name} - ${c.title || ''} (${c.company_name || c.account_name || ''})`;
+                sel.appendChild(opt);
+            });
+        }
+    });
+    // Show referral fields when referral selected
+    document.getElementById('reply-tag-select').addEventListener('change', function() {
+        document.getElementById('reply-referral-fields').style.display = this.value === 'referral' ? '' : 'none';
+    });
+}
+
+async function loadContactDrafts(contactId) {
+    if (!contactId) return;
+    const sel = document.getElementById('reply-draft-select');
+    sel.innerHTML = '<option value="">Loading...</option>';
+    try {
+        const r = await fetch(API + `/api/drafts?contact_id=${contactId}&channel=linkedin`);
+        const data = await r.json();
+        const drafts = data.drafts || [];
+        sel.innerHTML = '<option value="">Select draft...</option>';
+        drafts.forEach(d => {
+            const opt = document.createElement('option');
+            opt.value = d.id;
+            opt.textContent = `Touch ${d.touch_number} - ${d.touch_type} - ${(d.subject_line || '').substring(0, 50)}`;
+            sel.appendChild(opt);
+        });
+    } catch(e) { sel.innerHTML = '<option value="">Error loading drafts</option>'; }
+}
+
+async function submitReply() {
+    const contactId = document.getElementById('reply-contact-select')?.value;
+    const draftId = document.getElementById('reply-draft-select')?.value;
+    const replyTag = document.getElementById('reply-tag-select')?.value;
+    const intent = document.getElementById('reply-intent-select')?.value;
+    const summary = document.getElementById('reply-summary')?.value;
+    const referralName = document.getElementById('reply-referral-name')?.value;
+    const referralTitle = document.getElementById('reply-referral-title')?.value;
+
+    if (!contactId) { showToast('Select a contact', 'error'); return; }
+    if (!summary) { showToast('Add a summary', 'error'); return; }
+
+    const res = await apiPost('/api/replies', {
+        contact_id: contactId,
+        draft_id: draftId || null,
+        channel: 'linkedin',
+        reply_tag: replyTag,
+        intent: intent,
+        summary: summary,
+        referral_name: referralName || null,
+        referral_title: referralTitle || null
+    });
+
+    if (res._error) { showToast(res.message, 'error'); return; }
+    showToast('Reply logged!');
+    closeModal();
+    loadRepliesTab();
+}
+
+// =========================================================================
+// DRAFT VERSIONS (Enhancement with Revision History)
+// =========================================================================
+async function showDraftVersions(draftId) {
+    try {
+        const r = await fetch(API + `/api/drafts/${draftId}/versions`);
+        const data = await r.json();
+        if (!r.ok) { showToast('Error loading versions', 'error'); return; }
+        const versions = data.versions || [];
+        const current = data.current || {};
+
+        let html = `<h3 style="margin-bottom:16px;">Draft Versions</h3>`;
+        html += `<div style="margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <strong>Current (v${current.version || 1})</strong>
+                <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:var(--accent)20;color:var(--accent);">Active</span>
+            </div>
+            <div style="padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:12px;white-space:pre-wrap;line-height:1.6;max-height:200px;overflow-y:auto;">${esc(current.body || '')}</div>
+        </div>`;
+
+        versions.forEach(v => {
+            html += `<div style="margin-bottom:12px;opacity:0.7;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                    <strong>v${v.version_number || v.version}</strong>
+                    <span style="font-size:10px;color:var(--text-muted);">${v.created_at || ''}</span>
+                </div>
+                <div style="padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:12px;white-space:pre-wrap;line-height:1.6;max-height:150px;overflow-y:auto;">${esc(v.body || '')}</div>
+                <button class="btn btn-sm" style="margin-top:6px;" onclick="revertToVersion('${draftId}', \`${escJs(v.body || '')}\`)">Revert to this version</button>
+            </div>`;
+        });
+
+        openGenericModal(html);
+    } catch(e) { showToast('Error: ' + e.message, 'error'); }
+}
+
+async function revertToVersion(draftId, body) {
+    await apiPost(`/api/drafts/${draftId}`, {body: body}, 'PATCH');
+    showToast('Reverted!');
+    closeModal();
+    loadLIDrafts();
+}
+
+async function enhanceDraftWithRevision(draftId) {
+    const res = await apiPost(`/api/drafts/${draftId}/enhance-with-revision`, {});
+    if (res._error) { showToast(res.message, 'error'); return; }
+    showToast('Draft enhanced! Original preserved as revision.');
+    loadLIDrafts();
+}
+
+// =========================================================================
+// MEETING BOOKED PREP CARDS
+// =========================================================================
+function showBookMeetingModal(contactId, contactName) {
+    openGenericModal(`
+        <h3 style="margin-bottom:16px;">Book Meeting: ${esc(contactName)}</h3>
+        <div style="display:grid;gap:12px;">
+            <div>
+                <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px;">Meeting Date & Time</label>
+                <input type="datetime-local" class="inp" id="meeting-date-input">
+            </div>
+            <div>
+                <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px;">Notes</label>
+                <textarea class="inp" id="meeting-notes" rows="3" placeholder="How it was booked, what they said..."></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="bookMeeting('${contactId}')">Book Meeting</button>
+        </div>
+    `);
+}
+
+async function bookMeeting(contactId) {
+    const meetingDate = document.getElementById('meeting-date-input')?.value;
+    const notes = document.getElementById('meeting-notes')?.value;
+    if (!meetingDate) { showToast('Set a meeting date', 'error'); return; }
+    const res = await apiPost(`/api/contacts/${contactId}/book-meeting`, {meeting_date: meetingDate, notes: notes || ''});
+    if (res._error) { showToast(res.message, 'error'); return; }
+    showToast('Meeting booked!');
+    closeModal();
+    showPrepCard(contactId);
+}
+
+async function showPrepCard(contactId) {
+    try {
+        const r = await fetch(API + `/api/contacts/${contactId}/prep-card`);
+        const data = await r.json();
+        if (!r.ok) { showToast('Error loading prep card', 'error'); return; }
+        const p = data;
+
+        let html = `<div style="max-height:70vh;overflow-y:auto;">
+            <h3 style="margin-bottom:16px;">Meeting Prep Card</h3>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+                <div style="padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);">
+                    <div style="font-size:10px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;">Company Snapshot</div>
+                    <div style="font-size:12px;line-height:1.6;">${esc(p.company_snapshot || 'No data')}</div>
+                </div>
+                <div style="padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);">
+                    <div style="font-size:10px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;">Prospect Snapshot</div>
+                    <div style="font-size:12px;line-height:1.6;">${esc(p.prospect_snapshot || 'No data')}</div>
+                </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+                <div style="padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);">
+                    <div style="font-size:10px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;">Tech Stack</div>
+                    <div style="font-size:12px;">${(p.tech_stack || []).map(t => `<span style="display:inline-block;padding:2px 8px;margin:2px;background:var(--accent)15;border-radius:10px;font-size:11px;border:1px solid var(--accent)30;">${esc(t)}</span>`).join('') || 'Unknown'}</div>
+                </div>
+                <div style="padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);border-left:3px solid var(--warning,#f59e0b);">
+                    <div style="font-size:10px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;">Pain Hypothesis</div>
+                    <div style="font-size:12px;line-height:1.6;">${esc(p.pain_hypothesis || 'No data')}</div>
+                </div>
+            </div>
+
+            ${p.what_triggered_reply ? `<div style="padding:12px;background:#10b98110;border-radius:var(--radius-sm);border-left:3px solid #10b981;margin-bottom:16px;">
+                <div style="font-size:10px;text-transform:uppercase;color:#10b981;margin-bottom:6px;">What Triggered the Reply</div>
+                <div style="font-size:12px;">${esc(p.what_triggered_reply)}</div>
+            </div>` : ''}
+
+            <div style="padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);margin-bottom:16px;">
+                <div style="font-size:10px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;">Discovery Questions</div>
+                ${(p.discovery_questions || []).map((q, i) => `<div style="font-size:12px;margin-bottom:6px;padding-left:16px;text-indent:-16px;">${i + 1}. ${esc(q)}</div>`).join('')}
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+                <div style="padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);">
+                    <div style="font-size:10px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;">Relevant Proof Points</div>
+                    ${(p.relevant_proof_points || []).map(pp => `<div style="font-size:11px;margin-bottom:4px;padding:4px 0;border-bottom:1px solid var(--border);">${esc(pp)}</div>`).join('') || 'None matched'}
+                </div>
+                <div style="padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);border-left:3px solid #ef4444;">
+                    <div style="font-size:10px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;">Predicted Objection</div>
+                    <div style="font-size:12px;font-weight:600;margin-bottom:4px;">${esc(p.predicted_objections?.objection || 'None predicted')}</div>
+                    <div style="font-size:11px;color:var(--text-muted);">${esc(p.predicted_objections?.response || '')}</div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" style="width:100%;" onclick="copyPrepCard()">📋 Copy Prep Card</button>
+        </div>`;
+
+        // Store for copy
+        window._lastPrepCard = p;
+        openGenericModal(html);
+    } catch(e) { showToast('Error: ' + e.message, 'error'); }
+}
+
+function copyPrepCard() {
+    const p = window._lastPrepCard;
+    if (!p) return;
+    const text = `MEETING PREP CARD
+==================
+Company: ${p.company_snapshot || ''}
+Prospect: ${p.prospect_snapshot || ''}
+Tech Stack: ${(p.tech_stack || []).join(', ')}
+Pain Hypothesis: ${p.pain_hypothesis || ''}
+What Triggered Reply: ${p.what_triggered_reply || ''}
+
+DISCOVERY QUESTIONS:
+${(p.discovery_questions || []).map((q, i) => `${i + 1}. ${q}`).join('\n')}
+
+PROOF POINTS:
+${(p.relevant_proof_points || []).join('\n')}
+
+PREDICTED OBJECTION: ${p.predicted_objections?.objection || ''}
+RESPONSE: ${p.predicted_objections?.response || ''}`;
+    copyToClip(text);
+    showToast('Prep card copied!');
+}
+
+// =========================================================================
+// OUTREACH MEMORY / LEARNING
+// =========================================================================
+async function loadMemoryTab() {
+    loadMemoryInsights();
+    loadMemoryPatterns();
+}
+
+async function loadMemoryInsights() {
+    try {
+        const r = await fetch(API + '/api/memory/insights');
+        const data = await r.json();
+        const el = document.getElementById('memory-insights');
+        if (!el) return;
+        if (!r.ok || !data.insights) {
+            el.innerHTML = '<div style="color:var(--text-muted);">No insights yet. Send messages and log replies to build your outreach memory. Click "Refresh from Data" after logging replies.</div>';
+            return;
+        }
+        const ins = data.insights;
+        el.innerHTML = `
+            <div style="margin-bottom:6px;"><strong style="color:var(--accent);">1. Best persona:</strong> ${esc(ins.best_persona || 'Not enough data')}</div>
+            <div style="margin-bottom:6px;"><strong style="color:var(--accent);">2. Best proof point:</strong> ${esc(ins.best_proof_point || 'Not enough data')}</div>
+            <div style="margin-bottom:6px;"><strong style="color:var(--accent);">3. Best vertical:</strong> ${esc(ins.best_vertical || 'Not enough data')}</div>
+            <div style="margin-bottom:6px;"><strong style="color:var(--accent);">4. Best pattern:</strong> ${esc(ins.best_pattern || 'Not enough data')}</div>
+            <div><strong style="color:#ef4444;">5. Stop doing:</strong> ${esc(ins.stop_doing || 'Not enough data')}</div>
+        `;
+    } catch(e) { console.error('loadMemoryInsights:', e); }
+}
+
+async function loadMemoryPatterns() {
+    const categories = ['proof_point', 'opener_style', 'pain_hook', 'persona_pattern'];
+    const containerIds = ['memory-proof-points', 'memory-openers', 'memory-pain-hooks', 'memory-personas'];
+
+    for (let i = 0; i < categories.length; i++) {
+        try {
+            const r = await fetch(API + `/api/memory?category=${categories[i]}`);
+            const data = await r.json();
+            const el = document.getElementById(containerIds[i]);
+            if (!el) continue;
+            const patterns = data.patterns || data || [];
+            if (!Array.isArray(patterns) || patterns.length === 0) {
+                el.innerHTML = '<div style="color:var(--text-muted);font-size:12px;padding:8px;">No patterns learned yet</div>';
+                continue;
+            }
+            el.innerHTML = patterns.map(p => `
+                <div style="padding:8px;border-bottom:1px solid var(--border);font-size:12px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <span>${esc(p.pattern)}</span>
+                        <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:${p.reply_rate > 0.02 ? '#10b98120' : p.reply_rate > 0 ? '#f59e0b20' : 'var(--bg-primary)'};color:${p.reply_rate > 0.02 ? '#10b981' : p.reply_rate > 0 ? '#f59e0b' : 'var(--text-muted)'};">${(p.reply_rate * 100).toFixed(1)}%</span>
+                    </div>
+                    <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">Used: ${p.times_used || 0} | Replied: ${p.times_replied || 0}</div>
+                </div>
+            `).join('');
+        } catch(e) { console.error('loadMemoryPatterns:', e); }
+    }
+}
+
+async function refreshMemory() {
+    showToast('Refreshing patterns from data...');
+    const res = await apiPost('/api/memory/refresh', {});
+    if (res._error) { showToast(res.message, 'error'); return; }
+    showToast(`Memory refreshed! ${res.patterns_updated || 0} patterns updated.`);
+    loadMemoryTab();
+}
+
+function showAddMemoryModal() {
+    openGenericModal(`
+        <h3 style="margin-bottom:16px;">Add Observation</h3>
+        <div style="display:grid;gap:12px;">
+            <div>
+                <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px;">Category</label>
+                <select class="inp" id="memory-add-category">
+                    <option value="proof_point">Proof Point</option>
+                    <option value="opener_style">Opener Style</option>
+                    <option value="pain_hook">Pain Hook</option>
+                    <option value="persona_pattern">Persona Pattern</option>
+                    <option value="vertical_pattern">Vertical Pattern</option>
+                </select>
+            </div>
+            <div>
+                <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px;">What did you observe?</label>
+                <textarea class="inp" id="memory-add-pattern" rows="3" placeholder="e.g., Career-reference openers work better than company-metric openers for Directors of QA"></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="addMemoryPattern()">Save Observation</button>
+        </div>
+    `);
+}
+
+async function addMemoryPattern() {
+    const category = document.getElementById('memory-add-category')?.value;
+    const pattern = document.getElementById('memory-add-pattern')?.value;
+    if (!pattern) { showToast('Add a pattern description', 'error'); return; }
+    const res = await apiPost('/api/memory', {category, pattern});
+    if (res._error) { showToast(res.message, 'error'); return; }
+    showToast('Pattern saved!');
+    closeModal();
+    loadMemoryPatterns();
 }
 
 function showLinkedInImportTab(tab, btn) {
