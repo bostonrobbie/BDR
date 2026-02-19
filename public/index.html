@@ -4459,7 +4459,7 @@ async function loadEmailOverview() {
         const kpiEl = document.getElementById('email-overview-kpis');
         if (kpiEl && stats) {
             kpiEl.innerHTML = [
-                kpi('Total Drafts', stats.total_drafts || 0, '', "switchEmailTab('drafts')"),
+                kpi('Total Drafts', stats.drafts || stats.total_drafts || 0, '', "switchEmailTab('drafts')"),
                 kpi('Approved', stats.by_status?.approved || 0, '', "switchEmailTab('drafts')"),
                 kpi('Queued', stats.by_status?.queued || 0, '', "switchEmailTab('queue')"),
                 kpi('Sent', stats.total_sent || 0),
@@ -4484,7 +4484,7 @@ async function loadEmailDrafts() {
         if (kpiEl && stats) {
             const bs = stats.by_status || {};
             kpiEl.innerHTML = [
-                kpi('Total', stats.total_drafts || 0),
+                kpi('Total', stats.drafts || stats.total_drafts || 0),
                 kpi('Needs Review', bs.needs_review || 0),
                 kpi('Enhanced', bs.enhanced || 0),
                 kpi('Approved', bs.approved || 0),
@@ -5386,7 +5386,7 @@ async function refreshDraftKPIs() {
         const kpiEl = document.getElementById('li-drafts-kpis');
         if (kpiEl) {
             kpiEl.innerHTML = [
-                kpi('Total', allData?.total_drafts || 0, '', "document.getElementById('li-draft-filter-status').value='';loadLIDrafts()"),
+                kpi('Total', allData?.drafts || allData?.total_drafts || 0, '', "document.getElementById('li-draft-filter-status').value='';loadLIDrafts()"),
                 kpi('Draft', byStatus.draft || 0, '', "document.getElementById('li-draft-filter-status').value='draft';loadLIDrafts()"),
                 kpi('Enhanced', byStatus.enhanced || 0, '', "document.getElementById('li-draft-filter-status').value='enhanced';loadLIDrafts()"),
                 kpi('Approved', byStatus.approved || 0, '', "document.getElementById('li-draft-filter-status').value='approved';loadLIDrafts()"),
