@@ -624,9 +624,10 @@ def _auto_import_run_bundle(conn):
 
     # Find the run bundle file (works on Vercel and locally)
     bundle_paths = [
-        os.path.join(os.path.dirname(__file__), "..", "public", "data", "run-bundle-batch1.json"),
-        os.path.join(os.path.dirname(__file__), "public", "data", "run-bundle-batch1.json"),
-        "/var/task/public/data/run-bundle-batch1.json",
+        os.path.join(os.path.dirname(__file__), "data", "run-bundle-batch1.json"),  # api/data/ (Vercel serverless)
+        os.path.join(os.path.dirname(__file__), "..", "public", "data", "run-bundle-batch1.json"),  # local dev
+        "/var/task/api/data/run-bundle-batch1.json",  # Vercel absolute path
+        "/var/task/public/data/run-bundle-batch1.json",  # Vercel fallback
     ]
     bundle_path = None
     for p in bundle_paths:
@@ -635,8 +636,10 @@ def _auto_import_run_bundle(conn):
             break
 
     if not bundle_path:
+        print(f"Auto-import: No bundle file found. Tried: {bundle_paths}")
         return  # No bundle file found
 
+    print(f"Auto-import: Loading bundle from {bundle_path}")
     with open(bundle_path) as f:
         bundle = json.load(f)
 
