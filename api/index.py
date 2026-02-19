@@ -1799,6 +1799,16 @@ def patch_draft(draft_id: str, data: dict):
     updates.append("updated_at=datetime('now')")
     params.append(draft_id)
     conn.execute(f"UPDATE message_drafts SET {','.join(updates)} WHERE id=?", params)
+    # Audit log
+    changes = {}
+    if "subject_line" in data: changes["subject_line"] = "updated"
+    if "body" in data: changes["body"] = f"updated ({len(data['body'].split())} words)"
+    if "status" in data: changes["status"] = data["status"]
+    conn.execute("""INSERT INTO activity_timeline (id, channel, activity_type, description, metadata, created_at)
+        VALUES (?,?,?,?,?,datetime('now'))""",
+        (gen_id("act"), "system", "draft_edited",
+         f"Draft {draft_id} edited: {', '.join(f'{k}={v}' for k,v in changes.items())}",
+         json.dumps({"draft_id": draft_id, "changes": changes})))
     conn.commit()
     row = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
     conn.close()
@@ -1823,6 +1833,12 @@ def cleanup_incomplete_drafts():
             WHERE (length(body) < 200 OR body LIKE '%...' OR body IS NULL)
             AND status != 'invalid_incomplete'
         """)
+        # Audit log
+        conn.execute("""INSERT INTO activity_timeline (id, channel, activity_type, description, metadata, created_at)
+            VALUES (?,?,?,?,?,datetime('now'))""",
+            (gen_id("act"), "system", "drafts_cleanup",
+             f"Flagged {count} incomplete drafts as invalid_incomplete",
+             json.dumps({"flagged_count": count, "sample_ids": [r["id"] for r in incomplete[:5]]})))
         conn.commit()
     conn.close()
     return {"flagged": count, "details": [{"id": r["id"], "body_length": len(r["body"] or "")} for r in incomplete[:20]]}
@@ -1838,6 +1854,56 @@ def get_incomplete_count():
     valid = total - incomplete
     conn.close()
     return {"total": total, "incomplete": incomplete, "flagged": flagged, "valid": valid}
+
+# ─── AUDIT LOGGING & RUN DETAILS ───────────────────────────────────────
+
+@app.get("/api/audit/recent")
+def get_recent_audit(limit: int = 50):
+    """Get recent audit trail entries."""
+    conn = get_db()
+    rows = conn.execute("""
+        SELECT * FROM activity_timeline
+        ORDER BY created_at DESC
+        LIMIT ?
+    """, (limit,)).fetchall()
+    conn.close()
+    return {"entries": [dict(r) for r in rows]}
+
+@app.get("/api/audit/draft/{draft_id}")
+def get_draft_audit(draft_id: str):
+    """Get full audit trail for a specific draft."""
+    conn = get_db()
+    # Get draft details
+    draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+    if not draft:
+        conn.close()
+        raise HTTPException(404, "Draft not found")
+    draft_dict = dict(draft)
+
+    # Get research link
+    research = conn.execute("SELECT * FROM draft_research_link WHERE draft_id=?", (draft_id,)).fetchone()
+
+    # Get send log
+    sends = conn.execute("SELECT * FROM send_log WHERE draft_id=?", (draft_id,)).fetchall()
+
+    # Get versions
+    versions = conn.execute("SELECT * FROM draft_versions WHERE draft_id=? ORDER BY version", (draft_id,)).fetchall()
+
+    # Get activity entries mentioning this draft
+    activities = conn.execute("""
+        SELECT * FROM activity_timeline
+        WHERE metadata LIKE ?
+        ORDER BY created_at DESC
+    """, (f'%{draft_id}%',)).fetchall()
+
+    conn.close()
+    return {
+        "draft": draft_dict,
+        "research_link": dict(research) if research else None,
+        "send_log": [dict(s) for s in sends],
+        "versions": [dict(v) for v in versions],
+        "activities": [dict(a) for a in activities]
+    }
 
 # ─── SENDER HEALTH (new) ───────────────────────────────────────
 
@@ -6238,6 +6304,13 @@ def mark_as_sent(data: dict):
             conn.execute("""INSERT INTO quota_tracker (id, month, sends_today, sends_this_week, sends_this_month,
                 inmail_credits_used, last_send_date) VALUES (?,?,1,1,1,?,?)""",
                 (gen_id("qt"), month, 1 if channel == "linkedin" else 0, today))
+
+        # Audit log
+        conn.execute("""INSERT INTO activity_timeline (id, channel, activity_type, description, metadata, created_at)
+            VALUES (?,?,?,?,?,datetime('now'))""",
+            (gen_id("act"), channel, "draft_sent",
+             f"Draft {draft_id} sent to contact {contact_id}",
+             json.dumps({"draft_id": draft_id, "contact_id": contact_id, "channel": channel})))
 
         conn.commit()
         return {"status": "logged", "send_log_id": log_id}
