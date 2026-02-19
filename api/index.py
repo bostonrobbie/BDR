@@ -980,10 +980,14 @@ def dashboard_stats():
     replies = conn.execute("SELECT COUNT(*) FROM replies").fetchone()[0]
     meetings = conn.execute("SELECT COUNT(*) FROM opportunities").fetchone()[0]
     sent = conn.execute("SELECT COUNT(*) FROM touchpoints").fetchone()[0]
+    with_drafts = conn.execute("SELECT COUNT(DISTINCT contact_id) FROM message_drafts").fetchone()[0]
+    total_drafts = conn.execute("SELECT COUNT(*) FROM message_drafts").fetchone()[0]
     conn.close()
     return {
         "total_contacts": total,
         "by_stage": by_stage,
+        "with_drafts": with_drafts,
+        "total_drafts": total_drafts,
         "total_replies": replies,
         "total_meetings": meetings,
         "total_sent": sent,
