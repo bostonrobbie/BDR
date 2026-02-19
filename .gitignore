@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.db
+!api/data/outreach_seed.db
 .env
 *.sqlite3
 .DS_Store

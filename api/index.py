@@ -865,6 +865,17 @@ def _auto_import_run_bundle(conn):
 
 def init_and_seed():
     db_path = os.environ.get("OCC_DB_PATH", "/tmp/outreach.db")
+
+    # FAST PATH: If a pre-built seed DB exists, just copy it (< 1 second)
+    if not os.path.exists(db_path):
+        import shutil
+        seed_db = os.path.join(os.path.dirname(__file__), "data", "outreach_seed.db")
+        if os.path.exists(seed_db):
+            shutil.copy2(seed_db, db_path)
+            print(f"Cold start: Copied pre-built DB ({os.path.getsize(db_path)} bytes)")
+            return
+
+    # SLOW PATH: Build from scratch (used for tests and local dev)
     conn = sqlite3.connect(db_path)
     conn.execute("PRAGMA foreign_keys=ON")
     conn.executescript(SCHEMA_SQL)
