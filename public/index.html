@@ -2223,6 +2223,10 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
                     <div class="quick-action-title">📊 View Analytics</div>
                     <div class="quick-action-desc">Reply rates, conversion funnel, patterns</div>
                 </button>
+                <button class="quick-action-btn" onclick="createTestProspect()" style="border-color:var(--warning);background:var(--warning-bg);">
+                    <div class="quick-action-title">🧪 Dry Run Test</div>
+                    <div class="quick-action-desc">Create a test prospect (yourself) to validate the full pipeline</div>
+                </button>
             </div>
         </div>
 
@@ -4893,22 +4897,32 @@ async function loadLIQuotaBadge() {
         const q = await api('/api/linkedin/quota');
         const badge = document.getElementById('li-quota-badge');
         if (badge && q) {
-            const remaining = q.daily?.remaining ?? '-';
-            const verified = q.source && q.source !== 'estimated' && q.last_verified_at;
-            const icon = verified ? '✅' : '⚠️';
-            const label = verified ? 'verified' : 'unverified';
-            badge.innerHTML = `📨 ${remaining} InMails left today <span style="font-size:9px;opacity:0.7">(${label})</span>`;
-            badge.style.cursor = 'pointer';
-            badge.onclick = () => showQuotaUpdateModal();
-            if (!verified) {
+            const remaining = q.daily?.remaining ?? '?';
+            const verified = q.source && q.source !== 'estimated';
+            const verifiedAt = q.last_verified_at;
+
+            if (verified && verifiedAt) {
+                badge.innerHTML = '📨 ' + remaining + ' InMails left today <span style="font-size:9px;opacity:0.7">(verified)</span>';
+                badge.style.borderColor = remaining <= 2 ? 'var(--error)' : 'var(--success)';
+                badge.style.color = remaining <= 2 ? 'var(--error)' : 'var(--success)';
+            } else {
+                badge.innerHTML = '⚠️ InMail quota not set <span style="font-size:9px;">(click to update)</span>';
                 badge.style.borderColor = 'var(--warning)';
                 badge.style.color = 'var(--warning)';
-            } else if (q.daily && q.daily.remaining <= 2) {
-                badge.style.borderColor = 'var(--error)';
-                badge.style.color = 'var(--error)';
             }
+            badge.style.cursor = 'pointer';
+            badge.onclick = () => showQuotaUpdateModal();
         }
-    } catch(e) { /* quota not configured yet */ }
+    } catch(e) {
+        const badge = document.getElementById('li-quota-badge');
+        if (badge) {
+            badge.innerHTML = '⚠️ Quota: click to set';
+            badge.style.cursor = 'pointer';
+            badge.style.borderColor = 'var(--warning)';
+            badge.style.color = 'var(--warning)';
+            badge.onclick = () => showQuotaUpdateModal();
+        }
+    }
 }
 
 // ─── QUOTA MANAGEMENT ───────────────────────────────────────────────────
@@ -4963,6 +4977,20 @@ function showQuotaUpdateModal() {
                         💡 <strong>Where to find these:</strong> In Sales Navigator, go to your account settings or check the InMail credit section in the top nav. Monthly credits reset on your billing date.
                     </div>
                 </div>
+                <details style="margin-top:12px;">
+                    <summary style="cursor:pointer;font-size:12px;color:var(--accent);">📖 How to find your InMail quota</summary>
+                    <div style="margin-top:8px;font-size:11px;color:var(--text-secondary);line-height:1.7;">
+                        <strong>Method 1: Sales Navigator Settings</strong><br>
+                        1. Open <a href="https://www.linkedin.com/sales/settings" target="_blank">Sales Nav Settings</a><br>
+                        2. Look for "InMail messages" or "Subscription" section<br>
+                        3. It shows monthly allocation, used, and remaining<br><br>
+                        <strong>Method 2: LinkedIn Premium Page</strong><br>
+                        1. Go to <a href="https://www.linkedin.com/premium/products" target="_blank">Premium Products</a><br>
+                        2. Find your subscription type<br>
+                        3. InMail credits section shows total and renewal date<br><br>
+                        <em>Note: Sales Nav Core = ~20/month, Advanced = ~30-50/month. Credits roll over up to 3 months.</em>
+                    </div>
+                </details>
                 <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px;">
                     <button class="btn" onclick="this.closest('.modal').remove()">Cancel</button>
                     <button class="btn btn-primary" onclick="saveQuotaSettings()">Save &amp; Verify</button>
@@ -5098,55 +5126,85 @@ function renderLIDraftsList(drafts) {
         return;
     }
 
-    el.innerHTML = drafts.map(d => {
-        const name = d.contact_name || `${d.first_name || ''} ${d.last_name || ''}`.trim() || 'Unknown';
+    el.innerHTML = `
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
+            <input type="checkbox" id="select-all-drafts" onchange="toggleAllDraftSelection(this.checked)">
+            <label for="select-all-drafts" style="font-size:12px;color:var(--text-muted);cursor:pointer;">Select all</label>
+            <button class="btn btn-sm" onclick="enhanceSelectedDrafts()" style="margin-left:8px;background:var(--warning-bg);color:var(--warning);">✨ Enhance Selected</button>
+            <span id="selected-count" style="font-size:11px;color:var(--text-muted);"></span>
+        </div>
+    ` + drafts.map(d => {
+        const name = d.contact_name || ((d.first_name || '') + ' ' + (d.last_name || '')).trim() || 'Unknown';
         const company = d.company_name || '';
         const statusColor = d.approval_status === 'approved' ? 'var(--success)' :
-                           d.approval_status === 'queued' ? 'var(--info, #4da6ff)' :
-                           d.approval_status === 'enhanced' ? 'var(--warning)' : 'var(--text-muted)';
+                           d.approval_status === 'queued' ? 'var(--info)' :
+                           d.approval_status === 'enhanced' ? 'var(--warning)' :
+                           d.approval_status === 'staged' ? '#4da6ff' :
+                           d.approval_status === 'sent' ? 'var(--success)' : 'var(--text-muted)';
         const touchLabel = d.touch_type === 'inmail' ? 'InMail' :
-                          d.touch_type === 'call' ? 'Call Script' :
-                          d.touch_type === 'inmail_followup' ? 'Follow-up' :
-                          d.touch_type === 'breakup' ? 'Break-up' : d.touch_type || '';
+                          d.touch_type === 'call' || d.touch_type === 'call_script' ? 'Call Script' :
+                          d.touch_type === 'inmail_followup' || d.touch_type === 'followup_1' ? 'Follow-up' :
+                          d.touch_type === 'breakup' ? 'Break-up' :
+                          d.touch_type === 'cold_email' ? 'Email' : (d.touch_type || 'Draft');
         const priority = d.priority_score || 0;
-        const priorityBadge = priority >= 5 ? '<span style="color:var(--error);">★</span>' :
-                             priority >= 4 ? '<span style="color:var(--warning);">★</span>' : '';
+        const priorityBadge = priority >= 5 ? '<span style="color:var(--error);">★ Hot</span>' :
+                             priority >= 4 ? '<span style="color:var(--warning);">★ Warm</span>' : '';
+        const linkedinUrl = d.linkedin_url || '';
+        const bodyEscaped = (d.body || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        const subjectEscaped = (d.subject_line || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-        return `<div class="card li-draft-card" style="margin-bottom:10px;padding:14px;" data-draft-id="${d.id}" data-name="${name.toLowerCase()}" data-company="${company.toLowerCase()}">
-            <div style="display:flex;justify-content:space-between;align-items:start;">
-                <div style="flex:1;">
-                    <div style="display:flex;gap:8px;align-items:center;">
-                        ${priorityBadge}
-                        <strong style="font-size:14px;">${name}</strong>
-                        <span style="font-size:11px;color:var(--text-muted);">${company}</span>
-                        <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:${statusColor}20;color:${statusColor};border:1px solid ${statusColor}40;">${d.approval_status || 'draft'}</span>
-                    </div>
-                    <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">
-                        ${touchLabel} (Touch ${d.touch_number || '?'}) ${d.subject_line ? ' — <em>' + d.subject_line + '</em>' : ''}
-                    </div>
+        return `<div class="card li-draft-card" style="margin-bottom:12px;padding:16px;" data-draft-id="${d.id}" data-name="${name.toLowerCase()}" data-company="${company.toLowerCase()}">
+            <!-- Header row -->
+            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;">
+                <div style="display:flex;gap:8px;align-items:center;flex:1;">
+                    <input type="checkbox" class="draft-checkbox" data-id="${d.id}" onchange="updateSelectedCount()">
+                    ${priorityBadge ? `<span style="font-size:10px;">${priorityBadge}</span>` : ''}
+                    <strong style="font-size:14px;">${esc(name)}</strong>
+                    <span style="font-size:12px;color:var(--text-muted);">${esc(company)}</span>
+                    <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:${statusColor}20;color:${statusColor};border:1px solid ${statusColor}40;">${d.approval_status || 'draft'}</span>
+                    <span style="font-size:10px;color:var(--text-muted);">${touchLabel} (Touch ${d.touch_number || '?'})</span>
                 </div>
                 <div style="display:flex;gap:4px;flex-shrink:0;">
-                    <button class="btn btn-sm" onclick="toggleDraftExpand('${d.id}')">Expand</button>
-                    <button class="btn btn-sm" onclick="copyToClip(\`${escJs(d.body || '')}\`);showToast('Copied!')">Copy</button>
-                    ${d.approval_status === 'draft' || d.approval_status === 'enhanced' ?
-                        `<button class="btn btn-sm btn-primary" onclick="approveDraft('${d.id}')">Approve</button>` : ''}
-                    ${d.approval_status === 'approved' ?
-                        `<button class="btn btn-sm" style="background:var(--info-bg);border-color:var(--info);" onclick="moveDraftToStaging('${d.id}')">📤 Move to Staging</button>` : ''}
-                    ${d.approval_status === 'approved' ?
-                        `<button class="btn btn-sm" style="background:var(--info,#4da6ff);color:#fff;" onclick="queueDraft('${d.id}')">→ Queue</button>` : ''}
-                    <button class="btn btn-sm" style="background:var(--warning-bg);color:var(--warning);" onclick="enhanceDraft('${d.id}')">Enhance</button>
+                    ${linkedinUrl ? `<a href="${linkedinUrl}" target="_blank" class="btn btn-sm" style="text-decoration:none;background:var(--accent-bg);border-color:var(--accent);">🔗 Profile</a>` : ''}
                 </div>
             </div>
-            <div id="draft-expand-${d.id}" style="display:none;margin-top:12px;">
-                <div style="padding:12px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:12px;white-space:pre-wrap;line-height:1.6;max-height:400px;overflow-y:auto;">${d.body || '(empty)'}</div>
-                <div style="margin-top:8px;display:flex;gap:12px;font-size:11px;color:var(--text-muted);flex-wrap:wrap;">
-                    <span>Words: ${d.word_count || '-'}</span>
-                    <span>Chars: ${(d.body || '').length}</span>
-                    <span>Proof: ${d.proof_point_used || '-'}</span>
-                    <span>P-Score: ${d.personalization_score || '-'}</span>
-                    <span>QC: ${d.qc_passed ? '✅' : '⚠️'}</span>
-                    ${d.linkedin_url ? `<a href="${d.linkedin_url}" target="_blank" style="color:var(--accent);">View LinkedIn ↗</a>` : ''}
+
+            <!-- Subject line -->
+            ${d.subject_line ? `<div style="font-size:12px;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+                <strong>Subject:</strong> <span style="color:var(--text-secondary);">${subjectEscaped}</span>
+                <button class="btn btn-sm" style="font-size:10px;padding:1px 6px;" onclick="copyToClip('${escJs(d.subject_line || '')}');showToast('Subject copied!')">Copy</button>
+            </div>` : ''}
+
+            <!-- Full message body -->
+            <div style="background:var(--bg-primary);padding:12px;border-radius:var(--radius-sm);font-size:12px;white-space:pre-wrap;line-height:1.7;max-height:300px;overflow-y:auto;margin-bottom:10px;" id="draft-body-${d.id}">${bodyEscaped || '(empty draft)'}</div>
+
+            <!-- Action buttons -->
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+                <button class="btn btn-sm" onclick="copyToClip(document.getElementById('draft-body-${d.id}').innerText);showToast('Message copied!')">📋 Copy Message</button>
+                <button class="btn btn-sm" style="background:var(--warning-bg);color:var(--warning);" onclick="enhanceDraftReal('${d.id}')">✨ Enhance</button>
+                ${d.approval_status === 'draft' || d.approval_status === 'enhanced' ?
+                    `<button class="btn btn-sm btn-primary" onclick="approveDraft('${d.id}')">✅ Approve</button>` : ''}
+                ${d.approval_status === 'approved' ?
+                    `<button class="btn btn-sm" style="background:var(--info-bg);border-color:var(--info);" onclick="moveDraftToStaging('${d.id}')">📤 Stage</button>` : ''}
+                <button class="btn btn-sm" onclick="toggleResearch('${d.id}')">🔍 Research</button>
+                <button class="btn btn-sm" onclick="showDraftVersions('${d.id}')">📝 Versions</button>
+            </div>
+
+            <!-- Metadata row -->
+            <div style="display:flex;gap:12px;font-size:10px;color:var(--text-muted);flex-wrap:wrap;">
+                <span>Words: ${d.word_count || '-'}</span>
+                <span>Version: ${d.version || 1}</span>
+                <span>Proof: ${d.proof_point_used || '-'}</span>
+                <span>P-Score: ${d.personalization_score || '-'}</span>
+            </div>
+
+            <!-- Research accordion (hidden by default) -->
+            <div id="research-panel-${d.id}" style="display:none;margin-top:12px;border-top:1px solid var(--border);padding-top:12px;">
+                <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+                    <strong style="font-size:12px;">Research</strong>
+                    <span id="research-loading-${d.id}" style="font-size:10px;color:var(--text-muted);">Loading...</span>
                 </div>
+                <div id="research-content-${d.id}"></div>
             </div>
         </div>`;
     }).join('');
@@ -5165,6 +5223,137 @@ function filterLIDraftsLocal() {
         card.style.display = (!q || name.includes(q) || company.includes(q)) ? '' : 'none';
     });
 }
+
+// Toggle research panel
+async function toggleResearch(draftId) {
+    const panel = document.getElementById('research-panel-' + draftId);
+    if (!panel) return;
+
+    if (panel.style.display === 'none') {
+        panel.style.display = '';
+        const content = document.getElementById('research-content-' + draftId);
+        const loading = document.getElementById('research-loading-' + draftId);
+
+        try {
+            const data = await api('/api/drafts/' + draftId + '/research');
+            loading.style.display = 'none';
+
+            const p = data.person || {};
+            const c = data.company || {};
+            const rl = data.research_link || {};
+            const snaps = data.snapshots || [];
+            const sigs = data.signals || [];
+
+            content.innerHTML = `
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <!-- Person Research -->
+                    <div style="background:var(--bg-primary);padding:10px;border-radius:var(--radius-sm);">
+                        <div style="font-size:11px;font-weight:600;color:var(--accent);margin-bottom:6px;">👤 Person Research</div>
+                        <div style="font-size:11px;line-height:1.6;">
+                            <div><strong>Name:</strong> ${esc(p.name || '-')}</div>
+                            <div><strong>Title:</strong> ${esc(p.title || '-')}</div>
+                            <div><strong>Persona:</strong> ${esc(p.persona_type || '-')}</div>
+                            <div><strong>Location:</strong> ${esc(p.location || '-')}</div>
+                            <div><strong>Tenure:</strong> ${p.tenure_months ? p.tenure_months + ' months' : '-'}</div>
+                            ${p.recently_hired ? '<div style="color:var(--warning);">🆕 Recently hired</div>' : ''}
+                            ${p.predicted_objection ? `<div><strong>Likely objection:</strong> ${esc(p.predicted_objection)}</div>` : ''}
+                            ${rl.profile_bullets && rl.profile_bullets.length ? `<div style="margin-top:6px;"><strong>Profile notes:</strong><ul style="margin:4px 0 0 16px;padding:0;">${rl.profile_bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul></div>` : ''}
+                            ${rl.pain_hypothesis ? `<div><strong>Pain hypothesis:</strong> ${esc(rl.pain_hypothesis)}</div>` : ''}
+                        </div>
+                    </div>
+
+                    <!-- Company Research -->
+                    <div style="background:var(--bg-primary);padding:10px;border-radius:var(--radius-sm);">
+                        <div style="font-size:11px;font-weight:600;color:var(--accent);margin-bottom:6px;">🏢 Company Research</div>
+                        <div style="font-size:11px;line-height:1.6;">
+                            <div><strong>Company:</strong> ${esc(c.name || '-')}</div>
+                            <div><strong>Industry:</strong> ${esc(c.industry || '-')} ${c.sub_industry ? '/ ' + esc(c.sub_industry) : ''}</div>
+                            <div><strong>Size:</strong> ${c.employee_count || '-'} employees (${esc(c.employee_band || '-')})</div>
+                            <div><strong>Tier:</strong> ${esc(c.tier || '-')}</div>
+                            ${c.known_tools && c.known_tools.length ? `<div><strong>Known tools:</strong> ${c.known_tools.map(t => esc(t)).join(', ')}</div>` : ''}
+                            ${c.buyer_intent ? '<div style="color:var(--success);">🎯 Buyer intent detected</div>' : ''}
+                            ${c.website_url ? `<div><a href="${c.website_url}" target="_blank">🌐 Website</a></div>` : ''}
+                            ${c.linkedin_url ? `<div><a href="${c.linkedin_url}" target="_blank">🔗 Company LinkedIn</a></div>` : ''}
+                            ${rl.company_bullets && rl.company_bullets.length ? `<div style="margin-top:6px;"><strong>Research notes:</strong><ul style="margin:4px 0 0 16px;padding:0;">${rl.company_bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul></div>` : ''}
+                            ${rl.why_testsigma ? `<div><strong>Why Testsigma:</strong> ${esc(rl.why_testsigma)}</div>` : ''}
+                        </div>
+                    </div>
+                </div>
+
+                ${snaps.length ? `<div style="margin-top:8px;font-size:10px;color:var(--text-muted);">
+                    Research snapshots: ${snaps.length} | Last updated: ${snaps[0].created_at || '-'}
+                    ${snaps[0].headline ? ' | ' + esc(snaps[0].headline) : ''}
+                </div>` : '<div style="margin-top:8px;font-size:10px;color:var(--warning);">⚠️ No research snapshots found. Enhancement will use basic profile data only.</div>'}
+
+                ${sigs.length ? `<div style="margin-top:6px;font-size:10px;color:var(--text-muted);">
+                    Signals: ${sigs.map(s => esc(s.signal_type + ': ' + (s.description || '').substring(0, 50))).join(' | ')}
+                </div>` : ''}
+            `;
+        } catch(e) {
+            loading.textContent = 'Failed to load research';
+            console.error('Research load error:', e);
+        }
+    } else {
+        panel.style.display = 'none';
+    }
+}
+
+// Real enhance that rewrites the draft
+async function enhanceDraftReal(draftId) {
+    showToast('Enhancing draft...', 'info');
+    try {
+        const result = await apiPost('/api/drafts/' + draftId + '/enhance', {});
+        if (result && result.status === 'enhanced') {
+            showToast('Draft enhanced! Version ' + result.version + ' created. Research used: ' + (result.research_used || []).join(', '));
+            loadLIDrafts();
+        } else {
+            showToast('Enhancement returned unexpected result', 'error');
+        }
+    } catch(e) {
+        showToast('Enhance failed: ' + (e.message || ''), 'error');
+    }
+}
+
+// Bulk selection
+function toggleAllDraftSelection(checked) {
+    document.querySelectorAll('.draft-checkbox').forEach(cb => cb.checked = checked);
+    updateSelectedCount();
+}
+
+function updateSelectedCount() {
+    const checked = document.querySelectorAll('.draft-checkbox:checked').length;
+    const countEl = document.getElementById('selected-count');
+    if (countEl) countEl.textContent = checked ? checked + ' selected' : '';
+}
+
+function getSelectedDraftIds() {
+    return Array.from(document.querySelectorAll('.draft-checkbox:checked')).map(cb => cb.dataset.id);
+}
+
+// Bulk enhance
+async function enhanceSelectedDrafts() {
+    const ids = getSelectedDraftIds();
+    if (!ids.length) return showToast('No drafts selected');
+    if (!confirm('Enhance ' + ids.length + ' selected drafts? This will rewrite each message using stored research.')) return;
+
+    showToast('Starting bulk enhancement of ' + ids.length + ' drafts...', 'info');
+
+    let enhanced = 0, failed = 0;
+    for (const id of ids) {
+        try {
+            await apiPost('/api/drafts/' + id + '/enhance', {});
+            enhanced++;
+            // Update progress
+            showToast('Enhanced ' + enhanced + '/' + ids.length + '...', 'info');
+        } catch(e) {
+            failed++;
+        }
+    }
+
+    showToast('Bulk enhance complete: ' + enhanced + ' enhanced, ' + failed + ' failed');
+    loadLIDrafts();
+}
+
 
 async function approveDraft(draftId) {
     try {
@@ -5213,6 +5402,21 @@ async function enhanceBatchDrafts() {
         loadLIDrafts();
     } catch(e) {
         showToast('Bulk enhance failed: ' + (e.message || ''), 'error');
+    }
+}
+
+async function createTestProspect() {
+    if (!confirm('This will create a test prospect record for you (Rob Gorham) to test the draft -> enhance -> approve -> stage -> mark sent pipeline. Continue?')) return;
+    try {
+        const result = await apiPost('/api/test/create-owner-prospect', {});
+        if (result.status === 'exists') {
+            showToast('Test prospect already exists. Check your drafts.', 'info');
+        } else {
+            showToast('Test prospect created! Go to Drafts tab to see your test message.');
+        }
+        switchLITab('drafts');
+    } catch(e) {
+        showToast('Failed to create test prospect', 'error');
     }
 }
 

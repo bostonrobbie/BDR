@@ -6934,14 +6934,14 @@ def get_reply_timing():
 
 @app.post("/api/drafts/{draft_id}/enhance")
 def enhance_draft(draft_id: str):
-    """Analyze a draft against its research data and return enhancement suggestions.
-    This is a rule-based enhancer that checks for missing elements from the SOP."""
+    """Actually rewrite a draft using stored research, not just suggest improvements."""
     conn = get_db()
     try:
         draft = conn.execute("""
             SELECT md.*, c.first_name, c.last_name, c.title, c.persona_type,
-                   c.predicted_objection, c.personalization_score,
-                   a.name as company_name, a.industry, a.employee_count, a.known_tools
+                   c.predicted_objection, c.personalization_score as c_pscore, c.linkedin_url,
+                   a.name as company_name, a.industry, a.employee_count, a.known_tools,
+                   a.domain as company_domain
             FROM message_drafts md
             LEFT JOIN contacts c ON md.contact_id = c.id
             LEFT JOIN accounts a ON c.account_id = a.id
@@ -6951,169 +6951,275 @@ def enhance_draft(draft_id: str):
             raise HTTPException(404, "Draft not found")
         draft = dict(draft)
 
-        # Get research data
-        research_link = conn.execute(
-            "SELECT * FROM draft_research_link WHERE draft_id=?", (draft_id,)
-        ).fetchone()
-        research = dict(research_link) if research_link else {}
+        # Load research
+        research_link = conn.execute("SELECT * FROM draft_research_link WHERE draft_id=?", (draft_id,)).fetchone()
+        rl = dict(research_link) if research_link else {}
 
-        research_snapshot = None
+        snapshot = None
         if draft.get("contact_id"):
-            rs = conn.execute(
-                "SELECT * FROM research_snapshots WHERE contact_id=? ORDER BY created_at DESC LIMIT 1",
-                (draft["contact_id"],)
-            ).fetchone()
+            rs = conn.execute("SELECT * FROM research_snapshots WHERE contact_id=? ORDER BY created_at DESC LIMIT 1",
+                (draft["contact_id"],)).fetchone()
             if rs:
-                research_snapshot = dict(rs)
+                snapshot = dict(rs)
+        if not snapshot and draft.get("contact_id"):
+            acct = conn.execute("SELECT account_id FROM contacts WHERE id=?", (draft["contact_id"],)).fetchone()
+            if acct:
+                rs = conn.execute("SELECT * FROM research_snapshots WHERE account_id=? ORDER BY created_at DESC LIMIT 1",
+                    (acct["account_id"],)).fetchone()
+                if rs:
+                    snapshot = dict(rs)
 
-        body = draft.get("body", "")
-        subject = draft.get("subject_line", "")
+        first = draft.get("first_name", "there")
+        last = draft.get("last_name", "")
+        title = draft.get("title", "")
+        company = draft.get("company_name", "your company")
+        industry = draft.get("industry", "")
         touch_num = draft.get("touch_number", 1)
-        suggestions = []
-        score = 0
-        max_score = 10
+        old_body = draft.get("body", "")
 
-        # 1. Check personalized opener (reference to person, not just company)
-        first_name = draft.get("first_name", "")
-        if first_name and first_name.lower() in body.lower():
-            score += 1
-        else:
-            suggestions.append({
-                "type": "personalization",
-                "severity": "high",
-                "message": f"Missing personal reference. Add the prospect's name or reference their specific role/experience.",
-                "example": f"Your work leading {draft.get('title', 'QA')} at {draft.get('company_name', 'the company')} caught my attention..."
-            })
-
-        # 2. Check company-specific reference
-        company_name = draft.get("company_name", "")
-        if company_name and company_name.lower() in body.lower():
-            score += 1
-        else:
-            suggestions.append({
-                "type": "company_reference",
-                "severity": "high",
-                "message": "Missing company-specific reference. Mention something concrete about their company.",
-            })
-
-        # 3. Check for pain hypothesis
-        pain_keywords = ["testing", "regression", "flaky", "brittle", "maintenance", "coverage",
-                         "automation", "manual", "release", "velocity", "QA", "quality"]
-        has_pain = any(kw.lower() in body.lower() for kw in pain_keywords)
-        if has_pain:
-            score += 1
-        else:
-            suggestions.append({
-                "type": "pain_hook",
-                "severity": "high",
-                "message": "Missing pain hypothesis. Tie their role/company to a specific testing challenge.",
-            })
-
-        # 4. Check for proof point (customer story with numbers)
-        proof_keywords = ["hansard", "medibuddy", "cred", "sanofi", "spendflo", "nagra",
-                          "fortune 100", "50%", "90%", "70%", "3x", "5x", "4x",
-                          "8 weeks", "5 weeks", "80 minutes", "2,500", "2500"]
-        has_proof = any(kw.lower() in body.lower() for kw in proof_keywords)
-        if has_proof:
-            score += 1
-        else:
-            suggestions.append({
-                "type": "proof_point",
-                "severity": "medium",
-                "message": "Missing proof point. Add a customer story with specific numbers.",
-                "example": "We helped Sanofi cut regression from 3 days to 80 minutes."
-            })
-
-        # 5. Check for soft ask
-        ask_keywords = ["15 minutes", "quick chat", "worth a conversation", "happy to share",
-                        "no worries", "get out of your hair", "if not relevant",
-                        "timing isn't right", "make sense", "if it's not"]
-        has_ask = any(kw.lower() in body.lower() for kw in ask_keywords)
-        if has_ask:
-            score += 1
-        else:
-            suggestions.append({
-                "type": "call_to_action",
-                "severity": "medium",
-                "message": "Missing soft ask with easy out. End with a low-pressure meeting request.",
-                "example": "Would 15 minutes make sense to explore? If not relevant, no worries at all."
-            })
-
-        # 6. Check word count (70-120 for Touch 1)
-        word_count = len(body.split())
-        if touch_num == 1:
-            if 70 <= word_count <= 120:
-                score += 1
-            elif word_count < 70:
-                suggestions.append({"type": "length", "severity": "low",
-                    "message": f"Touch 1 should be 70-120 words. Currently {word_count} words - too short."})
+        # Build personalized opener
+        opener = ""
+        research_used = []
+        if snapshot:
+            if snapshot.get("headline"):
+                opener = f"Your background in {snapshot['headline'].split(' at ')[0] if ' at ' in (snapshot.get('headline') or '') else snapshot.get('headline', title)} stood out"
+                research_used.append("headline")
+            elif snapshot.get("responsibilities"):
+                opener = f"Given your work {snapshot['responsibilities'][:60]}"
+                research_used.append("responsibilities")
+            elif snapshot.get("summary"):
+                opener = f"Your experience {snapshot['summary'][:60]}"
+                research_used.append("summary")
             else:
-                suggestions.append({"type": "length", "severity": "low",
-                    "message": f"Touch 1 should be 70-120 words. Currently {word_count} words - consider trimming."})
+                opener = f"Your role as {title} at {company} caught my eye"
+        elif rl.get("profile_bullets"):
+            bullets = json.loads(rl["profile_bullets"]) if isinstance(rl.get("profile_bullets"), str) else rl.get("profile_bullets", [])
+            if bullets:
+                opener = f"Noticed {bullets[0][:60]}" if bullets[0] else f"Your role leading {title} at {company} caught my eye"
+                research_used.append("profile_bullets")
+            else:
+                opener = f"Your role as {title} at {company} caught my eye"
+        else:
+            opener = f"Your role as {title} at {company} caught my eye"
+
+        # Company reference
+        company_ref = ""
+        if snapshot and snapshot.get("company_products"):
+            company_ref = f"With {company} {snapshot['company_products'][:80]}"
+            research_used.append("company_products")
+        elif snapshot and snapshot.get("company_news"):
+            company_ref = f"I saw {company} {snapshot['company_news'][:80]}"
+            research_used.append("company_news")
+        elif rl.get("company_bullets"):
+            cbullets = json.loads(rl["company_bullets"]) if isinstance(rl.get("company_bullets"), str) else rl.get("company_bullets", [])
+            if cbullets:
+                company_ref = cbullets[0][:80]
+                research_used.append("company_bullets")
+        if not company_ref:
+            if industry:
+                company_ref = f"Companies in {industry} often tell us"
+            else:
+                company_ref = f"Teams like yours at {company} often tell us"
+
+        # Pain hypothesis
+        pain = ""
+        if snapshot and snapshot.get("pain_indicators"):
+            pains = json.loads(snapshot["pain_indicators"]) if isinstance(snapshot.get("pain_indicators"), str) else snapshot.get("pain_indicators", [])
+            if pains:
+                pain = pains[0] if isinstance(pains[0], str) else str(pains[0])
+                research_used.append("pain_indicators")
+        if not pain:
+            if rl.get("pain_hypothesis"):
+                pain = rl["pain_hypothesis"]
+                research_used.append("pain_hypothesis")
+        if not pain:
+            persona = draft.get("persona_type", "")
+            if "qa" in persona.lower() or "quality" in title.lower():
+                pain = "keeping regression tests from blocking releases while the codebase grows"
+            elif "engineering" in title.lower() or "vp" in title.lower():
+                pain = "scaling test coverage without growing the QA team linearly"
+            else:
+                pain = "test maintenance eating up sprint velocity"
+
+        # Select proof point matching industry/vertical
+        best_proof = None
+        for key, pp in PROOF_POINTS_LIBRARY.items():
+            if industry and any(v in industry.lower() for v in pp.get("best_for", [])):
+                best_proof = pp
+                break
+        if not best_proof:
+            for key, pp in PROOF_POINTS_LIBRARY.items():
+                if pp.get("best_for") and draft.get("persona_type") and draft["persona_type"].lower() in " ".join(pp["best_for"]).lower():
+                    best_proof = pp
+                    break
+        if not best_proof:
+            best_proof = PROOF_POINTS_LIBRARY.get("spendflo_roi", {"text": "Spendflo cut 50% of manual testing with ROI in first quarter", "short": "50% manual testing cut, ROI in Q1"})
+
+        # Build the rewritten message based on touch number
+        if touch_num == 1 or touch_num is None:
+            new_body = f"Hi {first},\n\n{opener}. {company_ref} {pain} is probably a constant conversation.\n\nWe helped {best_proof.get('text', best_proof.get('short', 'a team achieve great results'))}. Their setup looked a lot like what you're building.\n\nWould a quick 15-minute conversation make sense to see if there's a fit? If not relevant, no worries at all."
         elif touch_num == 3:
-            if 40 <= word_count <= 70:
-                score += 1
-            else:
-                suggestions.append({"type": "length", "severity": "low",
-                    "message": f"Touch 3 follow-up should be 40-70 words. Currently {word_count} words."})
+            new_body = f"Hi {first},\n\nCircling back quick. {best_proof.get('text', best_proof.get('short', 'we have a great case study'))}, and their setup looked a lot like {company}'s.\n\nWorth a conversation? Happy to share more if helpful."
+        elif touch_num == 5:
+            new_body = f"Hi {first},\n\nOne more thought. {company_ref} {pain} keeps coming up with teams in {industry or 'your space'}.\n\nIf that resonates, I'd love 15 minutes to show you how we fix it. If not, I'll get out of your hair."
         elif touch_num == 6:
-            if 30 <= word_count <= 50:
-                score += 1
-            else:
-                suggestions.append({"type": "length", "severity": "low",
-                    "message": f"Touch 6 break-up should be 30-50 words. Currently {word_count} words."})
+            new_body = f"Hi {first},\n\nTotally understand if the timing isn't right. Just wanted to close the loop so I'm not cluttering your inbox. If things change down the road, door's always open."
         else:
-            score += 1
+            new_body = f"Hi {first},\n\n{opener}. {company_ref} {pain} is probably top of mind.\n\nWe helped {best_proof.get('text', best_proof.get('short', 'a team achieve great results'))}. Worth a quick chat? If not relevant, no worries."
 
-        # 7. Check paragraph spacing (mobile-friendly)
-        paragraphs = [p.strip() for p in body.split("\n\n") if p.strip()]
-        if len(paragraphs) >= 2:
-            score += 1
-        else:
-            suggestions.append({"type": "formatting", "severity": "medium",
-                "message": "Add paragraph breaks for mobile readability. No wall of text."})
+        # Clean em dashes
+        new_body = new_body.replace("\u2014", ", ").replace("\u2013", "-").replace("  ", " ")
 
-        # 8. Check for em dashes (not allowed per SOP)
-        if "\u2014" in body or "—" in body:
-            suggestions.append({"type": "style", "severity": "low",
-                "message": "Contains em dashes. Replace with commas or short hyphens per style rules."})
-        else:
-            score += 1
+        # Subject line
+        new_subject = draft.get("subject_line", "")
+        if not new_subject or new_subject == "None":
+            new_subject = f"Quick question about QA at {company}"
 
-        # 9. Check opener variety (should not start with "I noticed" or "I saw")
-        if body.strip().lower().startswith("i noticed") or body.strip().lower().startswith("i saw"):
-            suggestions.append({"type": "style", "severity": "low",
-                "message": "Opener starts with 'I noticed/I saw'. Vary your openers."})
-        else:
-            score += 1
+        # Preserve original as a version
+        conn.execute("""INSERT INTO draft_versions (id, draft_id, contact_id, channel, touch_number,
+            subject, body, version, status, personalization_score, proof_point, pain_hook,
+            word_count, edited_by, created_at)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (gen_id("dv"), draft_id, draft.get("contact_id"), draft.get("channel", "linkedin"),
+             touch_num, draft.get("subject_line"), old_body, draft.get("version", 1),
+             draft.get("approval_status", "draft"), draft.get("personalization_score"),
+             draft.get("proof_point_used"), draft.get("pain_hook"),
+             len(old_body.split()), "original", datetime.utcnow().isoformat()))
 
-        # 10. Check research utilization
-        if research_snapshot:
-            pain_indicators = research_snapshot.get("pain_indicators", "[]")
+        # Update the draft with enhanced content
+        new_version = (draft.get("version") or 1) + 1
+        new_word_count = len(new_body.split())
+        conn.execute("""UPDATE message_drafts SET body=?, subject_line=?, version=?, word_count=?,
+            approval_status='enhanced', proof_point_used=?, pain_hook=?,
+            updated_at=? WHERE id=?""",
+            (new_body, new_subject, new_version, new_word_count,
+             best_proof.get("short", "Case study"), pain, datetime.utcnow().isoformat(), draft_id))
+
+        conn.commit()
+        return {
+            "status": "enhanced",
+            "draft_id": draft_id,
+            "old_body": old_body,
+            "new_body": new_body,
+            "new_subject": new_subject,
+            "version": new_version,
+            "word_count": new_word_count,
+            "proof_point": best_proof.get("short", "Case study"),
+            "research_used": research_used,
+            "research_available": bool(snapshot)
+        }
+    finally:
+        conn.close()
+
+@app.get("/api/drafts/{draft_id}/research")
+def get_draft_research(draft_id: str):
+    """Get all research data associated with a draft's prospect and account."""
+    conn = get_db()
+    try:
+        draft = conn.execute("""
+            SELECT md.*, c.first_name, c.last_name, c.title, c.persona_type,
+                   c.linkedin_url, c.email, c.location, c.tenure_months, c.recently_hired,
+                   c.predicted_objection, c.objection_response, c.personalization_score,
+                   a.id as account_id, a.name as company_name, a.domain, a.industry,
+                   a.sub_industry, a.employee_count, a.employee_band, a.tier,
+                   a.known_tools, a.linkedin_company_url, a.website_url,
+                   a.buyer_intent, a.annual_revenue, a.hq_location, a.notes as account_notes
+            FROM message_drafts md
+            LEFT JOIN contacts c ON md.contact_id = c.id
+            LEFT JOIN accounts a ON c.account_id = a.id
+            WHERE md.id=?
+        """, (draft_id,)).fetchone()
+        if not draft:
+            raise HTTPException(404, "Draft not found")
+        d = dict(draft)
+
+        # Get research link
+        rl = conn.execute("SELECT * FROM draft_research_link WHERE draft_id=?", (draft_id,)).fetchone()
+        research_link = dict(rl) if rl else {}
+
+        # Get research snapshots
+        snapshots = []
+        if d.get("contact_id"):
+            rows = conn.execute("""SELECT * FROM research_snapshots
+                WHERE contact_id=? OR account_id=?
+                ORDER BY created_at DESC LIMIT 5""",
+                (d["contact_id"], d.get("account_id"))).fetchall()
+            snapshots = [dict(r) for r in rows]
+
+        # Get signals
+        signals = []
+        if d.get("account_id"):
+            rows = conn.execute("SELECT * FROM signals WHERE account_id=? OR contact_id=? ORDER BY detected_at DESC LIMIT 10",
+                (d.get("account_id"), d.get("contact_id"))).fetchall()
+            signals = [dict(s) for s in rows]
+
+        # Parse JSON fields in snapshots
+        for snap in snapshots:
+            for field in ["pain_indicators", "tech_stack_signals", "career_history", "hiring_signals", "sources"]:
+                if field in snap and isinstance(snap[field], str):
+                    try:
+                        snap[field] = json.loads(snap[field])
+                    except:
+                        pass
+
+        # Parse JSON in research link
+        if research_link:
+            for field in ["profile_bullets", "company_bullets", "confidence_reasons"]:
+                if field in research_link and isinstance(research_link[field], str):
+                    try:
+                        research_link[field] = json.loads(research_link[field])
+                    except:
+                        pass
+
+        # Parse known_tools
+        known_tools = []
+        if d.get("known_tools"):
             try:
-                pains = json.loads(pain_indicators) if isinstance(pain_indicators, str) else pain_indicators
+                known_tools = json.loads(d["known_tools"]) if isinstance(d["known_tools"], str) else d["known_tools"]
             except:
-                pains = []
-            if pains and not any(p.lower() in body.lower() for p in pains[:3] if isinstance(p, str)):
-                suggestions.append({"type": "research_utilization", "severity": "medium",
-                    "message": "Research identified pain indicators not reflected in the message. Consider incorporating: " + ", ".join(pains[:3])})
-            else:
-                score += 1
-        else:
-            suggestions.append({"type": "research_utilization", "severity": "high",
-                "message": "No research snapshot linked. Research the prospect before drafting."})
+                known_tools = []
 
-        quality_rating = "excellent" if score >= 8 else "good" if score >= 6 else "needs_work" if score >= 4 else "poor"
+        conn.close()
 
         return {
-            "draft_id": draft_id,
-            "score": score,
-            "max_score": max_score,
-            "quality_rating": quality_rating,
-            "suggestions": suggestions,
-            "research_available": research_snapshot is not None,
-            "word_count": word_count,
-            "touch_number": touch_num,
+            "person": {
+                "name": f"{d.get('first_name', '')} {d.get('last_name', '')}".strip(),
+                "title": d.get("title"),
+                "persona_type": d.get("persona_type"),
+                "linkedin_url": d.get("linkedin_url"),
+                "email": d.get("email"),
+                "location": d.get("location"),
+                "tenure_months": d.get("tenure_months"),
+                "recently_hired": d.get("recently_hired"),
+                "predicted_objection": d.get("predicted_objection"),
+                "objection_response": d.get("objection_response"),
+                "personalization_score": d.get("personalization_score"),
+            },
+            "company": {
+                "name": d.get("company_name"),
+                "domain": d.get("domain"),
+                "industry": d.get("industry"),
+                "sub_industry": d.get("sub_industry"),
+                "employee_count": d.get("employee_count"),
+                "employee_band": d.get("employee_band"),
+                "tier": d.get("tier"),
+                "known_tools": known_tools,
+                "linkedin_url": d.get("linkedin_company_url"),
+                "website_url": d.get("website_url"),
+                "buyer_intent": d.get("buyer_intent"),
+                "annual_revenue": d.get("annual_revenue"),
+                "hq_location": d.get("hq_location"),
+                "notes": d.get("account_notes"),
+            },
+            "research_link": {
+                "profile_bullets": research_link.get("profile_bullets", []),
+                "company_bullets": research_link.get("company_bullets", []),
+                "pain_hypothesis": research_link.get("pain_hypothesis"),
+                "why_testsigma": research_link.get("why_testsigma"),
+                "confidence_score": research_link.get("confidence_score"),
+            } if research_link else {},
+            "snapshots": snapshots,
+            "signals": signals,
         }
     finally:
         conn.close()
@@ -8373,60 +8479,38 @@ def check_draft_quality(draft_id: str):
 
 @app.post("/api/drafts/bulk-enhance")
 def bulk_enhance_drafts(data: dict):
-    """Enhance multiple drafts with improved personalization."""
+    """Enhance multiple drafts using stored research."""
     conn = get_db()
-    now = datetime.utcnow().isoformat()
 
-    # Build filter
-    filters = data.get("filter", {})
+    filter_data = data.get("filter", {})
     limit = data.get("limit", 50)
+    status_filter = filter_data.get("status", "draft")
 
-    q = "SELECT id FROM message_drafts WHERE 1=1"
-    params = []
+    drafts = conn.execute("""SELECT md.id FROM message_drafts md
+        WHERE md.channel='linkedin' AND md.approval_status=?
+        ORDER BY md.created_at LIMIT ?""", (status_filter, limit)).fetchall()
 
-    if filters.get("status"):
-        q += " AND approval_status=?"
-        params.append(filters["status"])
-    if "min_quality_score" in filters:
-        q += " AND qc_passed >= ?"
-        params.append(filters["min_quality_score"])
-    if "max_quality_score" in filters:
-        q += " AND qc_passed <= ?"
-        params.append(filters["max_quality_score"])
-    if filters.get("touch_type"):
-        q += " AND touch_type=?"
-        params.append(filters["touch_type"])
+    enhanced = 0
+    errors = []
+    results = []
 
-    q += " LIMIT ?"
-    params.append(limit)
-
-    draft_ids = [row[0] for row in conn.execute(q, params).fetchall()]
-
-    enhanced_count = 0
-    for draft_id in draft_ids:
-        # Create draft_version (preserve original)
-        draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
-        if draft:
-            draft = dict(draft)
-            version_id = gen_id("draftv")
-            conn.execute("""INSERT INTO draft_versions
-                (id, draft_id, contact_id, channel, touch_number, subject, body, version,
-                 status, personalization_score, proof_point, pain_hook, opener_style, word_count, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-                (version_id, draft_id, draft["contact_id"], draft["channel"],
-                 draft["touch_number"], draft.get("subject_line"), draft["body"], 1,
-                 "archived", draft.get("personalization_score"), draft.get("proof_point_used"),
-                 draft.get("pain_hook"), draft.get("opener_style"),
-                 len(draft["body"].split()), now))
-
-            # Mark original as enhanced (simplified - in real use would call AI to rewrite)
-            conn.execute("UPDATE message_drafts SET personalization_score=?, updated_at=? WHERE id=?",
-                        (min((draft.get("personalization_score") or 1) + 1, 3), now, draft_id))
-            enhanced_count += 1
-
-    conn.commit()
     conn.close()
-    return {"enhanced_count": enhanced_count, "draft_ids": draft_ids}
+
+    for d in drafts:
+        try:
+            # Call the enhance_draft function for each draft
+            result = enhance_draft(d["id"])
+            enhanced += 1
+            results.append({"id": d["id"], "status": "enhanced"})
+        except Exception as e:
+            errors.append({"id": d["id"], "error": str(e)})
+
+    return {
+        "enhanced_count": enhanced,
+        "error_count": len(errors),
+        "errors": errors[:10],
+        "results": results[:10]
+    }
 
 @app.post("/api/drafts/{draft_id}/stage")
 def stage_draft(draft_id: str):
@@ -9076,4 +9160,92 @@ def email_analytics():
         "meeting_rate": round(meeting_rate, 2),
         "top_subjects": top_subjects,
         "best_angles": best_angles
+    }
+
+@app.post("/api/test/create-owner-prospect")
+def create_owner_test_prospect():
+    """Create a test prospect record for the owner to test the full pipeline."""
+    conn = get_db()
+    try:
+        # Check if already exists
+        existing = conn.execute("SELECT id FROM contacts WHERE email='rgorham369@gmail.com' AND source='test'").fetchone()
+        if existing:
+            conn.close()
+            return {"status": "exists", "contact_id": existing["id"]}
+
+        # Create test account
+        acct_id = gen_id("acct")
+        conn.execute("""INSERT INTO accounts (id, name, domain, industry, employee_count, tier, source)
+            VALUES (?, 'Testsigma (Test Account)', 'testsigma.com', 'SaaS/Tech', 196, 'test', 'test')""", (acct_id,))
+
+        # Create test contact
+        contact_id = gen_id("con")
+        conn.execute("""INSERT INTO contacts (id, account_id, first_name, last_name, title, persona_type,
+            seniority_level, email, linkedin_url, stage, priority_score, source)
+            VALUES (?, ?, 'Rob', 'Gorham', 'BDR', 'bdr', 'individual_contributor',
+            'rgorham369@gmail.com', 'https://www.linkedin.com/in/robgorham/', 'new', 5, 'test')""",
+            (contact_id, acct_id))
+
+        # Create research snapshot
+        snap_id = gen_id("rs")
+        conn.execute("""INSERT INTO research_snapshots (id, contact_id, account_id, entity_type,
+            headline, summary, responsibilities, company_products, company_news,
+            pain_indicators, confidence_score)
+            VALUES (?, ?, ?, 'contact',
+            'BDR at Testsigma - AI Test Automation',
+            'Rob is a BDR focused on outreach to QA leaders. This is a test prospect for pipeline validation.',
+            'Prospecting, outreach, pipeline generation for Testsigma agentic AI test platform',
+            'Agentic AI test automation platform - write tests in plain English, AI creates/runs/heals them',
+            'Launched Atto 2.0 with intent-based self-healing and coverage discovery',
+            '["Testing the outreach pipeline end to end", "Validating draft quality and formatting"]',
+            5)""", (snap_id, contact_id, acct_id))
+
+        # Generate a test draft
+        draft_id = gen_id("msg")
+        test_body = "Hi Rob,\n\nThis is a test message to validate the outreach pipeline. It should flow through: Draft -> Enhanced -> Approved -> Staged -> Sent.\n\nIf you're reading this in your Sales Navigator inbox, the pipeline works end to end.\n\nBest,\nRob (via OCC)"
+        conn.execute("""INSERT INTO message_drafts (id, contact_id, channel, touch_number, touch_type,
+            subject_line, body, word_count, approval_status, source)
+            VALUES (?, ?, 'linkedin', 1, 'inmail',
+            'Pipeline Test - OCC Validation', ?, ?, 'draft', 'test')""",
+            (draft_id, contact_id, test_body, len(test_body.split())))
+
+        conn.commit()
+        return {
+            "status": "created",
+            "contact_id": contact_id,
+            "account_id": acct_id,
+            "draft_id": draft_id,
+            "message": "Test prospect created. Go to LinkedIn Drafts to see the test draft."
+        }
+    finally:
+        conn.close()
+
+@app.get("/api/linkedin/quota-help")
+def linkedin_quota_help():
+    """Return instructions for finding LinkedIn InMail quota."""
+    return {
+        "instructions": [
+            {
+                "method": "Sales Navigator Settings",
+                "steps": [
+                    "1. Open Sales Navigator (linkedin.com/sales)",
+                    "2. Click your profile picture (top right)",
+                    "3. Select 'Settings'",
+                    "4. Look for 'InMail messages' or 'Subscription' section",
+                    "5. It shows: monthly allocation, used this month, remaining"
+                ],
+                "url": "https://www.linkedin.com/sales/settings"
+            },
+            {
+                "method": "LinkedIn Premium Page",
+                "steps": [
+                    "1. Go to linkedin.com/premium/products",
+                    "2. Find your subscription type",
+                    "3. Look for InMail credits section",
+                    "4. Shows total monthly credits and renewal date"
+                ],
+                "url": "https://www.linkedin.com/premium/products"
+            }
+        ],
+        "notes": "Sales Navigator Core typically includes 20 InMail credits/month. Sales Navigator Advanced includes 30-50 depending on plan. Credits roll over for up to 3 months."
     }
