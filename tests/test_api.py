@@ -15,7 +15,7 @@ test_db_fd, test_db_path = tempfile.mkstemp(suffix=".db")
 os.environ["OCC_DB_PATH"] = test_db_path
 
 # Import the FastAPI app (which auto-initializes the DB on import)
-from api.index import app, get_db, gen_id
+from api.index import app, get_db, gen_id, SCHEMA_SQL, seed_database
 
 from starlette.testclient import TestClient
 
@@ -29,7 +29,19 @@ def client():
 @pytest.fixture(scope="function", autouse=True)
 def reset_db():
     """Reset database before each test to ensure isolation."""
-    # The app auto-initializes on import, so tests should work with seed data
+    conn = sqlite3.connect(test_db_path)
+    conn.execute("PRAGMA foreign_keys=OFF")
+    # Delete all data from all tables and re-seed
+    tables = [r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'").fetchall()]
+    for t in tables:
+        try:
+            conn.execute(f"DELETE FROM [{t}]")
+        except Exception:
+            pass
+    conn.commit()
+    conn.execute("PRAGMA foreign_keys=ON")
+    conn.close()
+    seed_database()
     yield
 
 
@@ -1663,8 +1675,8 @@ class TestAdminDataManagement:
         assert r.status_code == 200
         data = r.json()
         assert "tables" in data
-        assert "total_records" in data
-        assert data["total_records"] > 0
+        assert "seed_records" in data
+        assert data["seed_records"] > 0
 
     def test_cleanup_requires_confirmation(self, client):
         r = client.post("/api/admin/cleanup/execute", json={})
@@ -1755,7 +1767,7 @@ class TestRunBundleImport:
                     "title": "Director of QA",
                     "company": "TestCorp",
                     "vertical": "FinTech",
-                    "linkedin": "linkedin.com/in/janesmith",
+                    "linkedin": "linkedin.com/in/janesmith-test-unique-99",
                     "persona": "QA",
                     "priority_score": 5,
                     "personalization_score": 3,
@@ -1779,7 +1791,7 @@ class TestRunBundleImport:
                     "title": "VP Engineering",
                     "company": "HealthApp Inc",
                     "vertical": "Healthcare",
-                    "linkedin": "linkedin.com/in/bobjohnson",
+                    "linkedin": "linkedin.com/in/bobjohnson-test-unique-99",
                     "persona": "VP-Eng",
                     "priority_score": 4,
                     "personalization_score": 3,
@@ -1835,7 +1847,7 @@ class TestRunBundleImport:
         bundle = self._make_bundle()
         client.post("/api/import/run-bundle", json=bundle)
         conn = get_db()
-        jane = conn.execute("SELECT * FROM contacts WHERE linkedin_url='linkedin.com/in/janesmith'").fetchone()
+        jane = conn.execute("SELECT * FROM contacts WHERE linkedin_url='linkedin.com/in/janesmith-test-unique-99'").fetchone()
         assert jane is not None
         assert jane["first_name"] == "Jane"
         assert jane["last_name"] == "Smith"
@@ -1848,7 +1860,7 @@ class TestRunBundleImport:
         bundle = self._make_bundle()
         data = client.post("/api/import/run-bundle", json=bundle).json()
         conn = get_db()
-        jane = conn.execute("SELECT id FROM contacts WHERE linkedin_url='linkedin.com/in/janesmith'").fetchone()
+        jane = conn.execute("SELECT id FROM contacts WHERE linkedin_url='linkedin.com/in/janesmith-test-unique-99'").fetchone()
         drafts = conn.execute("SELECT * FROM message_drafts WHERE contact_id=? ORDER BY touch_number", (jane["id"],)).fetchall()
         assert len(drafts) == 5
         assert drafts[0]["touch_number"] == 1
@@ -1862,7 +1874,7 @@ class TestRunBundleImport:
         bundle = self._make_bundle()
         client.post("/api/import/run-bundle", json=bundle)
         conn = get_db()
-        jane = conn.execute("SELECT id FROM contacts WHERE linkedin_url='linkedin.com/in/janesmith'").fetchone()
+        jane = conn.execute("SELECT id FROM contacts WHERE linkedin_url='linkedin.com/in/janesmith-test-unique-99'").fetchone()
         snap = conn.execute("SELECT * FROM research_snapshots WHERE contact_id=?", (jane["id"],)).fetchone()
         assert snap is not None
         assert "15 years" in snap["headline"]
@@ -1895,10 +1907,10 @@ class TestRunBundleImport:
         # Use unique linkedin URLs to avoid collision with seed data
         prospects = [
             {"name": "Dedup Test One", "title": "QA Lead", "company": "DedupCo",
-             "linkedin": "linkedin.com/in/dedup-test-unique-1",
+             "linkedin": "linkedin.com/in/dedup-test-xyzabc-1",
              "touch_1_body": "Test message body for dedup testing one", "status": "Not Started"},
             {"name": "Dedup Test Two", "title": "VP Eng", "company": "DedupCo2",
-             "linkedin": "linkedin.com/in/dedup-test-unique-2",
+             "linkedin": "linkedin.com/in/dedup-test-xyzabc-2",
              "touch_1_body": "Test message body for dedup testing two", "status": "Not Started"}
         ]
         bundle = {"run": {"batch_number": 88}, "prospects": prospects}

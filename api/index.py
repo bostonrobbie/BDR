@@ -11,14 +11,15 @@ import uuid
 from datetime import datetime, timedelta
 import random
 
-# Set DB path to /tmp for Vercel serverless
-os.environ["OCC_DB_PATH"] = "/tmp/outreach.db"
+# Set DB path to /tmp for Vercel serverless (only if not already set, e.g. by tests)
+if "OCC_DB_PATH" not in os.environ:
+    os.environ["OCC_DB_PATH"] = "/tmp/outreach.db"
 
 # Add project root to path
 project_root = os.path.join(os.path.dirname(__file__), "..")
 sys.path.insert(0, project_root)
 
-from fastapi import FastAPI, HTTPException, Query, Header, Depends
+from fastapi import FastAPI, HTTPException, Query, Header, Depends, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -444,6 +445,51 @@ CREATE INDEX IF NOT EXISTS idx_workflow_runs_channel ON workflow_runs(channel);
 CREATE INDEX IF NOT EXISTS idx_workflow_steps_run ON workflow_run_steps(run_id);
 CREATE INDEX IF NOT EXISTS idx_safety_events_run ON safety_events(run_id);
 CREATE INDEX IF NOT EXISTS idx_linkedin_profiles_contact ON linkedin_profiles(contact_id);
+
+CREATE TABLE IF NOT EXISTS draft_edit_history (
+    id TEXT PRIMARY KEY,
+    draft_id TEXT NOT NULL,
+    field TEXT NOT NULL,
+    old_value TEXT,
+    new_value TEXT,
+    edited_by TEXT DEFAULT 'user',
+    edited_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS send_log (
+    id TEXT PRIMARY KEY,
+    contact_id TEXT REFERENCES contacts(id),
+    draft_id TEXT REFERENCES message_drafts(id),
+    channel TEXT DEFAULT 'linkedin',
+    status TEXT DEFAULT 'sent',
+    sent_at TEXT DEFAULT (datetime('now')),
+    confirmed_by TEXT DEFAULT 'user',
+    notes TEXT
+);
+
+CREATE TABLE IF NOT EXISTS quota_tracker (
+    id TEXT PRIMARY KEY,
+    month TEXT NOT NULL,
+    inmail_credits_total INTEGER DEFAULT 50,
+    inmail_credits_used INTEGER DEFAULT 0,
+    daily_send_target INTEGER DEFAULT 25,
+    sends_today INTEGER DEFAULT 0,
+    sends_this_week INTEGER DEFAULT 0,
+    sends_this_month INTEGER DEFAULT 0,
+    last_send_date TEXT,
+    updated_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS research_evidence (
+    id TEXT PRIMARY KEY,
+    contact_id TEXT REFERENCES contacts(id),
+    evidence_type TEXT NOT NULL,
+    bullets TEXT DEFAULT '[]',
+    snippet TEXT,
+    verified_at TEXT,
+    source_url TEXT,
+    created_at TEXT DEFAULT (datetime('now'))
+);
 """
 
 # ---------------------------------------------------------------------------
@@ -3859,23 +3905,25 @@ def admin_data_summary():
 
 @app.post("/api/admin/cleanup/preview")
 def admin_cleanup_preview():
-    """Preview what seed data would be deleted."""
+    """Preview what seed data would be deleted, grouped by source."""
     conn = get_db()
     tables = ['accounts', 'contacts', 'message_drafts', 'batches', 'opportunities', 'touchpoints', 'replies', 'signals']
     preview = {}
     for table in tables:
         try:
-            count = conn.execute(f"SELECT COUNT(*) FROM {table} WHERE source = 'seed'").fetchone()[0]
-            preview[table] = count
+            rows = conn.execute(f"SELECT source, COUNT(*) as cnt FROM {table} GROUP BY source").fetchall()
+            preview[table] = {r['source'] or 'unknown': r['cnt'] for r in rows}
+            total = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+            preview[table]['_total'] = total
         except Exception:
-            preview[table] = 0
+            preview[table] = {'_total': 0, '_error': 'source column missing'}
     conn.close()
-    total = sum(preview.values())
-    return {"tables": preview, "total_records": total, "action": "Would delete all records with source='seed'"}
+    seed_total = sum(preview.get(t, {}).get('seed', 0) for t in tables)
+    return {"tables": preview, "seed_records": seed_total, "action": "Would delete all records with source='seed' only"}
 
 @app.post("/api/admin/cleanup/execute")
 def admin_cleanup_execute(data: dict = {}):
-    """Delete all seed data. Requires confirmation."""
+    """Delete all seed data (preserve run_bundle and manual). Requires confirmation."""
     confirm = data.get("confirm", False)
     if not confirm:
         raise HTTPException(400, "Must pass confirm=true to execute cleanup")
@@ -3887,11 +3935,7 @@ def admin_cleanup_execute(data: dict = {}):
             cursor = conn.execute(f"DELETE FROM {table} WHERE source = 'seed'")
             deleted[table] = cursor.rowcount
         except Exception:
-            try:
-                cursor = conn.execute(f"DELETE FROM {table}")
-                deleted[table] = cursor.rowcount
-            except Exception:
-                deleted[table] = 0
+            deleted[table] = 0
     for table in ['activity_timeline', 'agent_runs', 'flow_runs', 'flow_run_steps', 'flow_artifacts', 'draft_versions', 'followups', 'experiments', 'sender_health_snapshots', 'workflow_runs', 'workflow_run_steps', 'safety_events']:
         try:
             cursor = conn.execute(f"DELETE FROM {table}")
@@ -3900,7 +3944,7 @@ def admin_cleanup_execute(data: dict = {}):
             deleted[table] = 0
     conn.commit()
     conn.close()
-    return {"status": "cleaned", "deleted": deleted, "total": sum(deleted.values())}
+    return {"status": "cleaned", "deleted": deleted, "total": sum(deleted.values()), "note": "Only source='seed' records deleted. run_bundle and manual data preserved."}
 
 @app.get("/api/admin/export-all")
 def admin_export_all():
@@ -5863,3 +5907,211 @@ def execute_flow(flow_type: str, body: dict = Body(...)):
     except Exception as e:
         conn.close()
         raise HTTPException(400, str(e))
+
+# ─── DRAFT EDIT HISTORY & VERSION TRACKING ────────────────────────────────────
+
+@app.put("/api/drafts/{draft_id}/edit-full")
+def edit_draft_full(draft_id: str, data: dict):
+    """Edit a draft with version history tracking."""
+    conn = get_db()
+    try:
+        draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+        if not draft:
+            raise HTTPException(status_code=404, detail="Draft not found")
+
+        subject = data.get("subject_line", draft["subject_line"])
+        body = data.get("body", draft["body"])
+
+        # Validate no em dashes
+        for field_val in [subject, body]:
+            if field_val and ('\u2014' in field_val or '\u2013' in field_val):
+                raise HTTPException(status_code=400, detail="Em dashes not allowed")
+
+        # Check for placeholder tokens
+        import re
+        placeholders = re.findall(r'\{[A-Z_]+\}|TBD|TODO', body or '')
+        if placeholders:
+            # Warning only, not blocking
+            pass
+
+        # Save edit history for changed fields
+        if subject != draft["subject_line"]:
+            conn.execute("INSERT INTO draft_edit_history (id, draft_id, field, old_value, new_value) VALUES (?,?,?,?,?)",
+                (gen_id("deh"), draft_id, "subject_line", draft["subject_line"], subject))
+        if body != draft["body"]:
+            conn.execute("INSERT INTO draft_edit_history (id, draft_id, field, old_value, new_value) VALUES (?,?,?,?,?)",
+                (gen_id("deh"), draft_id, "body", draft["body"], body))
+
+        # Update the draft
+        word_count = len(body.split()) if body else 0
+        conn.execute("""UPDATE message_drafts SET subject_line=?, body=?, word_count=?,
+            version=version+1, updated_at=datetime('now') WHERE id=?""",
+            (subject, body, word_count, draft_id))
+
+        conn.commit()
+
+        # Get updated draft
+        updated = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+        history = conn.execute("SELECT * FROM draft_edit_history WHERE draft_id=? ORDER BY edited_at DESC LIMIT 10",
+            (draft_id,)).fetchall()
+
+        return {
+            "status": "updated",
+            "draft": dict(updated),
+            "version": updated["version"],
+            "placeholders_found": placeholders,
+            "edit_history": [dict(h) for h in history]
+        }
+    finally:
+        conn.close()
+
+@app.get("/api/drafts/{draft_id}/history")
+def get_draft_history(draft_id: str):
+    """Get edit history for a draft."""
+    conn = get_db()
+    try:
+        history = conn.execute("SELECT * FROM draft_edit_history WHERE draft_id=? ORDER BY edited_at DESC LIMIT 20",
+            (draft_id,)).fetchall()
+        return {"history": [dict(h) for h in history]}
+    finally:
+        conn.close()
+
+# ─── SEND LOG & TRACKING ──────────────────────────────────────────────────────
+
+@app.post("/api/send-log")
+def mark_as_sent(data: dict):
+    """Log that a message was manually sent."""
+    conn = get_db()
+    try:
+        contact_id = data.get("contact_id")
+        draft_id = data.get("draft_id")
+        channel = data.get("channel", "linkedin")
+        notes = data.get("notes", "")
+
+        if not contact_id or not draft_id:
+            raise HTTPException(status_code=400, detail="contact_id and draft_id required")
+
+        log_id = gen_id("sl")
+        conn.execute("""INSERT INTO send_log (id, contact_id, draft_id, channel, status, notes)
+            VALUES (?,?,?,?,?,?)""", (log_id, contact_id, draft_id, channel, "sent", notes))
+
+        # Update draft status
+        conn.execute("UPDATE message_drafts SET approval_status='sent', updated_at=datetime('now') WHERE id=?",
+            (draft_id,))
+
+        # Update contact stage
+        conn.execute("UPDATE contacts SET stage='touched', updated_at=datetime('now') WHERE id=? AND stage='new'",
+            (contact_id,))
+
+        # Update quota
+        today = datetime.utcnow().strftime("%Y-%m-%d")
+        month = datetime.utcnow().strftime("%Y-%m")
+        quota = conn.execute("SELECT * FROM quota_tracker WHERE month=?", (month,)).fetchone()
+        if quota:
+            conn.execute("""UPDATE quota_tracker SET sends_today = CASE WHEN last_send_date=? THEN sends_today+1 ELSE 1 END,
+                sends_this_week=sends_this_week+1, sends_this_month=sends_this_month+1,
+                inmail_credits_used = CASE WHEN ?='linkedin' THEN inmail_credits_used+1 ELSE inmail_credits_used END,
+                last_send_date=?, updated_at=datetime('now') WHERE month=?""",
+                (today, channel, today, month))
+        else:
+            conn.execute("""INSERT INTO quota_tracker (id, month, sends_today, sends_this_week, sends_this_month,
+                inmail_credits_used, last_send_date) VALUES (?,?,1,1,1,?,?)""",
+                (gen_id("qt"), month, 1 if channel == "linkedin" else 0, today))
+
+        conn.commit()
+        return {"status": "logged", "send_log_id": log_id}
+    finally:
+        conn.close()
+
+@app.get("/api/send-log")
+def get_send_log(limit: int = 50):
+    """Get send history."""
+    conn = get_db()
+    try:
+        rows = conn.execute("""SELECT sl.*, c.first_name, c.last_name, a.name as company_name,
+            md.touch_number, md.touch_type, md.subject_line
+            FROM send_log sl
+            LEFT JOIN contacts c ON sl.contact_id = c.id
+            LEFT JOIN accounts a ON c.account_id = a.id
+            LEFT JOIN message_drafts md ON sl.draft_id = md.id
+            ORDER BY sl.sent_at DESC LIMIT ?""", (limit,)).fetchall()
+        return {"send_log": [dict(r) for r in rows]}
+    finally:
+        conn.close()
+
+# ─── QUOTA TRACKING ───────────────────────────────────────────────────────────
+
+@app.get("/api/quota")
+def get_quota():
+    """Get current month quota status."""
+    conn = get_db()
+    try:
+        month = datetime.utcnow().strftime("%Y-%m")
+        quota = conn.execute("SELECT * FROM quota_tracker WHERE month=?", (month,)).fetchone()
+        if not quota:
+            return {"month": month, "inmail_credits_total": 50, "inmail_credits_used": 0,
+                    "daily_send_target": 25, "sends_today": 0, "sends_this_week": 0,
+                    "sends_this_month": 0}
+        return dict(quota)
+    finally:
+        conn.close()
+
+@app.put("/api/quota")
+def update_quota(data: dict):
+    """Update quota settings."""
+    conn = get_db()
+    try:
+        month = datetime.utcnow().strftime("%Y-%m")
+        quota = conn.execute("SELECT * FROM quota_tracker WHERE month=?", (month,)).fetchone()
+        if quota:
+            conn.execute("""UPDATE quota_tracker SET inmail_credits_total=?, daily_send_target=?,
+                updated_at=datetime('now') WHERE month=?""",
+                (data.get("inmail_credits_total", 50), data.get("daily_send_target", 25), month))
+        else:
+            conn.execute("""INSERT INTO quota_tracker (id, month, inmail_credits_total, daily_send_target)
+                VALUES (?,?,?,?)""",
+                (gen_id("qt"), month, data.get("inmail_credits_total", 50), data.get("daily_send_target", 25)))
+        conn.commit()
+        return {"status": "updated"}
+    finally:
+        conn.close()
+
+# ─── RESEARCH EVIDENCE ────────────────────────────────────────────────────────
+
+@app.get("/api/contacts/{contact_id}/research-evidence")
+def get_research_evidence(contact_id: str):
+    """Get research evidence for a contact."""
+    conn = get_db()
+    try:
+        evidence = conn.execute("SELECT * FROM research_evidence WHERE contact_id=? ORDER BY evidence_type",
+            (contact_id,)).fetchall()
+        return {"evidence": [dict(e) for e in evidence]}
+    finally:
+        conn.close()
+
+@app.put("/api/contacts/{contact_id}/research-evidence")
+def update_research_evidence(contact_id: str, data: dict):
+    """Update or create research evidence for a contact."""
+    conn = get_db()
+    try:
+        evidence_type = data.get("evidence_type")  # 'profile' or 'company'
+        bullets = json.dumps(data.get("bullets", []))
+        snippet = data.get("snippet", "")
+        source_url = data.get("source_url", "")
+
+        existing = conn.execute("SELECT * FROM research_evidence WHERE contact_id=? AND evidence_type=?",
+            (contact_id, evidence_type)).fetchone()
+
+        if existing:
+            conn.execute("""UPDATE research_evidence SET bullets=?, snippet=?, source_url=?,
+                verified_at=datetime('now') WHERE id=?""",
+                (bullets, snippet, source_url, existing["id"]))
+        else:
+            conn.execute("""INSERT INTO research_evidence (id, contact_id, evidence_type, bullets, snippet, source_url, verified_at)
+                VALUES (?,?,?,?,?,?,datetime('now'))""",
+                (gen_id("re"), contact_id, evidence_type, bullets, snippet, source_url))
+
+        conn.commit()
+        return {"status": "updated"}
+    finally:
+        conn.close()
