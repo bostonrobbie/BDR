@@ -568,6 +568,33 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
     color: #fff;
 }
 
+/* Channel Tabs */
+.channel-tabs {
+    display: flex;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 20px;
+}
+.channel-tab-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+.channel-tab-btn:hover {
+    color: var(--text-primary);
+    background: var(--bg-hover);
+}
+.channel-tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
 /* Grids */
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
@@ -1497,60 +1524,25 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
     <nav class="nav">
         <div class="nav-section">HOME</div>
         <div class="nav-item active" onclick="showPage('home')">
-            <span class="nav-icon">🏠</span> <span>Today's Plan</span>
+            <span class="nav-icon">🏠</span> <span>Command Center</span>
             <span class="badge" id="badge-actions" style="display:none">0</span>
         </div>
 
-        <div class="nav-section">WORK</div>
+        <div class="nav-section">CHANNELS</div>
         <div class="nav-item" onclick="showPage('accounts')">
-            <span class="nav-icon">🏢</span> <span>Accounts</span>
+            <span class="nav-icon">🏢</span> <span>Accounts & Research</span>
         </div>
         <div class="nav-item" onclick="showPage('linkedin')">
-            <span class="nav-icon">🔗</span> <span>LinkedIn Prospects</span>
+            <span class="nav-icon">🔗</span> <span>LinkedIn</span>
             <span class="badge" id="badge-linkedin" style="display:none">0</span>
         </div>
         <div class="nav-item" onclick="showPage('email')">
-            <span class="nav-icon">✉️</span> <span>Email Prospects</span>
+            <span class="nav-icon">✉️</span> <span>Email</span>
             <span class="badge" id="badge-email" style="display:none">0</span>
-        </div>
-        <div class="nav-item" onclick="showPage('runs')">
-            <span class="nav-icon">🔍</span> <span>Research Runs</span>
-            <span class="badge" id="badge-runs" style="display:none">0</span>
-        </div>
-        <div class="nav-item" onclick="showPage('drafts')">
-            <span class="nav-icon">📝</span> <span>All Drafts</span>
-            <span class="badge" id="badge-drafts" style="display:none">0</span>
         </div>
         <div class="nav-item" onclick="showPage('prospects')">
             <span class="nav-icon">👥</span> <span>All Prospects</span>
             <span class="badge" id="badge-prospects" style="display:none">0</span>
-        </div>
-
-        <div class="nav-section">FLOWS</div>
-        <div class="nav-item" onclick="showPage('flow-account-research')">
-            <span class="nav-icon">🔬</span> <span>Account Research</span>
-        </div>
-        <div class="nav-item" onclick="showPage('flow-linkedin-draft')">
-            <span class="nav-icon">📋</span> <span>LinkedIn Draft Flow</span>
-        </div>
-        <div class="nav-item" onclick="showPage('flow-email-draft')">
-            <span class="nav-icon">📨</span> <span>Email Draft Flow</span>
-        </div>
-
-        <div class="nav-section">INSIGHTS</div>
-        <div class="nav-item" onclick="showPage('analytics')">
-            <span class="nav-icon">📊</span> <span>Analytics</span>
-        </div>
-        <div class="nav-item" onclick="showPage('experiments')">
-            <span class="nav-icon">🧪</span> <span>Experiments</span>
-        </div>
-
-        <div class="nav-section">OPERATIONS</div>
-        <div class="nav-item" onclick="showPage('quota')">
-            <span class="nav-icon">💰</span> <span>Quota</span>
-        </div>
-        <div class="nav-item" onclick="showPage('system')">
-            <span class="nav-icon">⚙️</span> <span>System</span>
         </div>
 
         <div class="nav-section">ADMIN</div>
@@ -1822,13 +1814,23 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
 
 <!-- ACCOUNTS -->
 <div class="page" id="page-accounts">
-    <div class="page-hdr">
-        <h1>Accounts</h1>
-        <div class="btn-group">
-            <input class="inp" id="accounts-search" placeholder="Search..." oninput="loadAccounts()" style="width:200px;">
-            <button class="btn btn-sm btn-primary" onclick="showAddAccountModal()">+ Add Account</button>
-            <button class="btn btn-sm" onclick="loadAccounts()">Refresh</button>
+    <div class="page-hdr" style="margin-bottom:0">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <h2>Accounts & Research</h2>
+            <div style="display:flex;gap:8px">
+                <button class="btn btn-sm btn-primary" onclick="showPage('flow-account-research')">Run Research Flow</button>
+            </div>
         </div>
+        <div class="channel-tabs" id="accounts-tabs">
+            <button class="channel-tab-btn active" onclick="switchChannelTab('accounts','list')">Accounts</button>
+            <button class="channel-tab-btn" onclick="switchChannelTab('accounts','research')">Research Runs</button>
+        </div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-bottom:16px;">
+        <input class="inp" id="accounts-search" placeholder="Search..." oninput="loadAccounts()" style="width:200px;flex:0;">
+        <button class="btn btn-sm btn-primary" onclick="showAddAccountModal()">+ Add Account</button>
+        <button class="btn btn-sm" onclick="loadAccounts()">Refresh</button>
     </div>
 
     <div style="overflow-x:auto;">
@@ -2103,11 +2105,17 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
 
 <!-- LINKEDIN CHANNEL -->
 <div class="page" id="page-linkedin">
-    <div class="page-hdr">
-        <h1>LinkedIn Channel</h1>
-        <div style="display:flex;gap:10px;align-items:center;">
-            <span id="linkedin-dry-run-badge" class="tag tag-warn" style="font-size:11px;">DRY RUN ON</span>
-            <button class="btn btn-sm" onclick="loadLinkedInPage()">Refresh</button>
+    <div class="page-hdr" style="margin-bottom:0">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <h2>LinkedIn</h2>
+            <div style="display:flex;gap:8px">
+                <button class="btn btn-sm btn-primary" onclick="showPage('flow-linkedin-draft')">Run Draft Flow</button>
+            </div>
+        </div>
+        <div class="channel-tabs" id="linkedin-tabs">
+            <button class="channel-tab-btn active" onclick="switchChannelTab('linkedin','prospects')">Prospects</button>
+            <button class="channel-tab-btn" onclick="switchChannelTab('linkedin','drafts')">Drafts</button>
+            <button class="channel-tab-btn" onclick="switchChannelTab('linkedin','analytics')">Analytics</button>
         </div>
     </div>
 
@@ -2192,11 +2200,17 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
 
 <!-- EMAIL CHANNEL -->
 <div class="page" id="page-email">
-    <div class="page-hdr">
-        <h1>Email Channel</h1>
-        <div style="display:flex;gap:10px;">
-            <button class="btn btn-sm" onclick="loadEmailPage()">Refresh</button>
-            <button class="btn btn-sm btn-primary" onclick="showAddIdentity()">Add Sender</button>
+    <div class="page-hdr" style="margin-bottom:0">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <h2>Email</h2>
+            <div style="display:flex;gap:8px">
+                <button class="btn btn-sm btn-primary" onclick="showPage('flow-email-draft')">Run Draft Flow</button>
+            </div>
+        </div>
+        <div class="channel-tabs" id="email-tabs">
+            <button class="channel-tab-btn active" onclick="switchChannelTab('email','prospects')">Prospects</button>
+            <button class="channel-tab-btn" onclick="switchChannelTab('email','drafts')">Drafts</button>
+            <button class="channel-tab-btn" onclick="switchChannelTab('email','analytics')">Analytics</button>
         </div>
     </div>
 
@@ -5117,6 +5131,14 @@ async function loadDraftsFull() {
             }
         }
 
+        // Filter out incomplete/invalid drafts
+        allDrafts = allDrafts.filter(d => {
+            const body = d.body || '';
+            if (body.length < 100 || body.endsWith('...')) return false;
+            if (d.status === 'invalid_incomplete') return false;
+            return true;
+        });
+
         // Filter
         if (touchFilter) {
             allDrafts = allDrafts.filter(d => d.touch_number == parseInt(touchFilter));
@@ -6215,6 +6237,35 @@ async function executeCleanup() {
 }
 
 // ─── FLOW FUNCTIONS ─────────────────────────────────────────────
+
+function switchChannelTab(channel, tabName) {
+    // Update tab button states
+    const tabContainer = document.getElementById(`${channel}-tabs`);
+    if (tabContainer) {
+        tabContainer.querySelectorAll('.channel-tab-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+    // Channel-specific tab handling
+    if (channel === 'linkedin') {
+        if (tabName === 'drafts') {
+            // Show drafts filtered to LinkedIn within the LinkedIn page
+            showPage('drafts');
+        } else if (tabName === 'analytics') {
+            showPage('analytics');
+        }
+        // 'prospects' tab stays on linkedin page (default)
+    } else if (channel === 'email') {
+        if (tabName === 'drafts') {
+            showPage('drafts');
+        } else if (tabName === 'analytics') {
+            showPage('analytics');
+        }
+    } else if (channel === 'accounts') {
+        if (tabName === 'research') {
+            showPage('runs');
+        }
+    }
+}
 
 function showFlowStep(flowPrefix, stepNum) {
     // Hide all content divs for this flow

@@ -626,18 +626,52 @@ def seed_database():
             message_ids.append(mid)
             bid = batch_ids[i % len(batch_ids)]
             ch = "linkedin" if touch in [1,3,6] else "email"
+            company_name = COMPANIES[i%len(COMPANIES)][0]
+            first = FIRST_NAMES[i%25]
+            proof = random.choice(PROOF_POINTS)
+            pain = random.choice(PAIN_HOOKS)
+            opener = random.choice(["career_reference", "company_metric", "role_specific"])
+            # Generate realistic full messages per touch type
+            if touch == 1:
+                subject = f"Quick question re: {company_name}"
+                body = (f"Your role leading QA at {company_name} caught my attention - "
+                    f"the scope of what you're managing there is impressive.\n\n"
+                    f"Teams scaling test automation at companies like {company_name} "
+                    f"often hit a wall with {pain} as the product surface grows.\n\n"
+                    f"{proof}\n\n"
+                    f"Would love to share how that could apply to {company_name}. "
+                    f"If it's not relevant, no worries at all.")
+            elif touch == 3:
+                subject = f"Following up - {company_name}"
+                body = (f"Circling back quick, {first} - wanted to share one more angle.\n\n"
+                    f"{proof}\n\n"
+                    f"Thought it might resonate given what your team at {company_name} "
+                    f"is likely dealing with. Happy to share more if helpful.")
+            elif touch == 5:
+                subject = f"One more thought - {company_name} QA"
+                body = (f"Hi {first}, quick note from a different angle.\n\n"
+                    f"A lot of QA leaders at companies like {company_name} tell us their "
+                    f"biggest pain is {pain}.\n\n"
+                    f"{proof}\n\n"
+                    f"Worth a quick chat? If the timing is off, totally fine.")
+            else:  # touch 6 (breakup)
+                subject = f"Closing the loop - {company_name}"
+                body = (f"Hi {first}, I've reached out a few times and want to be "
+                    f"respectful of your time.\n\n"
+                    f"If test automation isn't a priority right now at {company_name}, "
+                    f"totally get it. Just wanted to close the loop so I'm not clogging "
+                    f"your inbox.\n\n"
+                    f"If things change down the road, happy to reconnect. Wishing you "
+                    f"and the team well.")
+            wc = len(body.split())
             conn.execute("""INSERT INTO message_drafts (id,contact_id,batch_id,channel,
                 touch_number,touch_type,subject_line,body,personalization_score,
                 proof_point_used,pain_hook,opener_style,word_count,
                 approval_status,ab_group,created_at,source) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                 (mid, cid, bid, ch, touch,
                  f"touch_{touch}_{'inmail' if ch=='linkedin' else 'email'}",
-                 f"Quick question about QA at {COMPANIES[i%len(COMPANIES)][0]}",
-                 f"Hey {FIRST_NAMES[i%25]}, saw your work leading QA at {COMPANIES[i%len(COMPANIES)][0]}...",
-                 random.randint(1,3), random.choice(PROOF_POINTS),
-                 random.choice(PAIN_HOOKS),
-                 random.choice(["career_reference", "company_metric", "role_specific"]),
-                 random.randint(70,120),
+                 subject, body,
+                 random.randint(1,3), proof, pain, opener, wc,
                  random.choice(["approved","draft","pending_review"]),
                  random.choice(["A","B"]), now.isoformat(), "seed"))
 
@@ -1710,6 +1744,26 @@ def edit_draft(draft_id: str, data: dict):
     conn.close()
     return dict(row) if row else {"version": new_version}
 
+def validate_draft_content(subject: str = None, body: str = None):
+    """Validate draft content meets minimum completeness requirements."""
+    errors = []
+    if subject is not None and len(subject.strip()) < 8:
+        errors.append("Subject must be at least 8 characters")
+    if body is not None:
+        body_stripped = body.strip()
+        word_count = len(body_stripped.split())
+        if word_count < 30:
+            errors.append(f"Body must be at least 30 words (currently {word_count})")
+        if body_stripped.endswith("..."):
+            errors.append("Body appears incomplete (ends with '...')")
+        paragraphs = [p.strip() for p in body_stripped.split("\n\n") if p.strip()]
+        if len(paragraphs) < 2:
+            errors.append("Body must contain at least 2 paragraphs")
+        placeholders = [t for t in ["{first_name}", "{company}", "{title}"] if t in body_stripped]
+        if placeholders:
+            errors.append(f"Body contains unresolved placeholders: {', '.join(placeholders)}")
+    return errors
+
 @app.patch("/api/drafts/{draft_id}")
 def patch_draft(draft_id: str, data: dict):
     """Quick-edit a draft's subject_line or body directly on message_drafts."""
@@ -1721,9 +1775,17 @@ def patch_draft(draft_id: str, data: dict):
     updates = []
     params = []
     if "subject_line" in data:
+        subj_errors = validate_draft_content(subject=data["subject_line"])
+        if subj_errors:
+            conn.close()
+            raise HTTPException(400, detail={"error": "Draft validation failed", "issues": subj_errors})
         updates.append("subject_line=?")
         params.append(data["subject_line"])
     if "body" in data:
+        body_errors = validate_draft_content(body=data["body"])
+        if body_errors:
+            conn.close()
+            raise HTTPException(400, detail={"error": "Draft validation failed", "issues": body_errors})
         updates.append("body=?")
         params.append(data["body"])
         updates.append("word_count=?")
@@ -1741,6 +1803,41 @@ def patch_draft(draft_id: str, data: dict):
     row = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
     conn.close()
     return dict(row) if row else {"ok": True}
+
+@app.post("/api/drafts/cleanup-incomplete")
+def cleanup_incomplete_drafts():
+    """Flag incomplete drafts as invalid_incomplete and return count."""
+    conn = get_db()
+    # Find drafts with body < 200 chars or ending with '...'
+    incomplete = conn.execute("""
+        SELECT id, contact_id, body, subject_line, status
+        FROM message_drafts
+        WHERE (length(body) < 200 OR body LIKE '%...' OR body IS NULL)
+        AND status != 'invalid_incomplete'
+    """).fetchall()
+    count = len(incomplete)
+    if count > 0:
+        conn.execute("""
+            UPDATE message_drafts
+            SET status = 'invalid_incomplete', updated_at = datetime('now')
+            WHERE (length(body) < 200 OR body LIKE '%...' OR body IS NULL)
+            AND status != 'invalid_incomplete'
+        """)
+        conn.commit()
+    conn.close()
+    return {"flagged": count, "details": [{"id": r["id"], "body_length": len(r["body"] or "")} for r in incomplete[:20]]}
+
+@app.get("/api/drafts/incomplete-count")
+def get_incomplete_count():
+    """Count drafts that are incomplete or flagged."""
+    conn = get_db()
+    total = conn.execute("SELECT COUNT(*) as c FROM message_drafts").fetchone()["c"]
+    incomplete = conn.execute("""SELECT COUNT(*) as c FROM message_drafts
+        WHERE length(body) < 200 OR body LIKE '%...' OR body IS NULL""").fetchone()["c"]
+    flagged = conn.execute("SELECT COUNT(*) as c FROM message_drafts WHERE status='invalid_incomplete'").fetchone()["c"]
+    valid = total - incomplete
+    conn.close()
+    return {"total": total, "incomplete": incomplete, "flagged": flagged, "valid": valid}
 
 # ─── SENDER HEALTH (new) ───────────────────────────────────────
 
@@ -4142,6 +4239,14 @@ def import_run_bundle(data: dict):
     skipped = []
     deduped = []
 
+    touch_map = [
+        (1, "inmail", "touch_1_subject", "touch_1_body"),
+        (2, "call", None, "call_snippet_1"),
+        (3, "inmail_followup", None, "touch_3"),
+        (4, "call", None, "call_snippet_2"),
+        (6, "breakup", None, "touch_6"),
+    ]
+
     for idx, p in enumerate(prospects):
         name = p.get("name", "")
         if not name:
@@ -4169,6 +4274,39 @@ def import_run_bundle(data: dict):
                 # Still link to batch
                 conn.execute("INSERT INTO batch_prospects (id, batch_id, contact_id, ab_group, sequence_status, position_in_batch) VALUES (?,?,?,?,?,?)",
                     (gen_id("bp"), batch_id, existing["id"], p.get("ab_group", ""), p.get("status", "not_started"), idx+1))
+                # Import drafts for existing contacts too - replace stubs with full messages
+                existing_contact_id = existing["id"]
+                # Find account for this contact
+                existing_account = conn.execute("SELECT account_id FROM contacts WHERE id=?", (existing_contact_id,)).fetchone()
+                existing_account_id = existing_account["account_id"] if existing_account else None
+                # Delete old stub drafts for this contact (body < 200 chars)
+                old_stubs = conn.execute("SELECT id FROM message_drafts WHERE contact_id=? AND length(body) < 200", (existing_contact_id,)).fetchall()
+                for stub in old_stubs:
+                    conn.execute("DELETE FROM draft_research_link WHERE draft_id=?", (stub["id"],))
+                    conn.execute("DELETE FROM send_log WHERE draft_id=?", (stub["id"],))
+                    conn.execute("DELETE FROM draft_versions WHERE draft_id=?", (stub["id"],))
+                conn.execute("DELETE FROM message_drafts WHERE contact_id=? AND length(body) < 200", (existing_contact_id,))
+                # Create new drafts from bundle data
+                for touch_num, touch_type, subj_field, body_field in touch_map:
+                    body_text = p.get(body_field, "")
+                    if not body_text or len(body_text) < 60:
+                        continue
+                    subj_text = p.get(subj_field, "") if subj_field else ""
+                    draft_id = gen_id("md")
+                    wc = len(body_text.split())
+                    conn.execute("""INSERT INTO message_drafts (id, contact_id, batch_id, channel,
+                        touch_number, touch_type, subject_line, body, version, personalization_score,
+                        proof_point_used, pain_hook, opener_style, word_count, qc_passed,
+                        approval_status, ab_group, ab_variable, source, created_at)
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                        (draft_id, existing_contact_id, batch_id, "linkedin",
+                         touch_num, touch_type, subj_text, body_text, 1,
+                         p.get("personalization_score"),
+                         "", "", "", wc, 1,
+                         "draft", p.get("ab_group", ""),
+                         run_meta.get("ab_variable", "pain_hook"),
+                         "run_bundle", now))
+                    imported_drafts += 1
                 continue
 
         # Find or create account
@@ -4227,14 +4365,6 @@ def import_run_bundle(data: dict):
             (gen_id("bp"), batch_id, contact_id, p.get("ab_group", ""), "not_started", idx+1))
 
         # Create message drafts (embedded format)
-        touch_map = [
-            (1, "inmail", "touch_1_subject", "touch_1_body"),
-            (2, "call", None, "call_snippet_1"),
-            (3, "inmail_followup", None, "touch_3"),
-            (4, "call", None, "call_snippet_2"),
-            (6, "breakup", None, "touch_6"),
-        ]
-
         for touch_num, touch_type, subj_field, body_field in touch_map:
             body_text = p.get(body_field, "")
             if not body_text:
