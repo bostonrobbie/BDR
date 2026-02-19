@@ -3941,6 +3941,441 @@ def admin_import_backup(data: dict):
     return {"status": "imported", "tables": imported}
 
 # ---------------------------------------------------------------------------
+# RUN BUNDLE IMPORT ENDPOINT (Standard Ingestion Pipeline)
+# ---------------------------------------------------------------------------
+
+@app.post("/api/import/run-bundle")
+def import_run_bundle(data: dict):
+    """
+    Import a RunBundle v1 JSON into the dashboard.
+    This is the standard pipeline for importing prospect batches from the SOP.
+
+    Expected format:
+    {
+      "run": { "batch_number", "batch_date", "source", "sop_version", "notes", "ab_variable", "ab_description", "pre_brief" },
+      "prospects": [ { "name", "title", "company", "vertical", "linkedin_url", "persona", "seniority",
+                       "priority_score", "personalization_score", "key_detail", "company_detail",
+                       "employee_count", "ab_group", "linkedin_status", "flag_notes", "status",
+                       "predicted_objection", "objection_response", "objection_trigger" } ],
+      "drafts": [ { "prospect_name" or "linkedin_url", "touch_number", "touch_type", "subject", "body",
+                     "proof_point", "pain_hook", "opener_style", "word_count", "ab_group" } ]
+    }
+
+    OR simplified format where drafts are embedded in prospects:
+    {
+      "run": { ... },
+      "prospects": [ { ..., "touch_1_subject", "touch_1_body", "touch_3", "touch_6",
+                        "call_snippet_1", "call_snippet_2" } ]
+    }
+    """
+    conn = get_db()
+    run_meta = data.get("run", {})
+    prospects = data.get("prospects", [])
+
+    if not prospects:
+        raise HTTPException(400, "No prospects provided")
+
+    # Em dash validation
+    em_dash_violations = []
+    for i, p in enumerate(prospects):
+        for field in ['touch_1_body', 'touch_1_subject', 'touch_3', 'touch_6', 'call_snippet_1', 'call_snippet_2']:
+            val = p.get(field, '')
+            if '\u2014' in str(val) or '\u2013' in str(val):
+                em_dash_violations.append(f"Prospect {i+1} ({p.get('name','unknown')}): {field}")
+
+    if em_dash_violations:
+        raise HTTPException(400, {"error": "Em dash violations found", "violations": em_dash_violations})
+
+    now = datetime.utcnow().isoformat()
+
+    # Create batch record
+    batch_id = gen_id("batch")
+    batch_number = run_meta.get("batch_number", 1)
+    conn.execute("""INSERT INTO batches (id, batch_number, created_date, prospect_count, ab_variable,
+        ab_description, pre_brief, status, source, created_at)
+        VALUES (?,?,?,?,?,?,?,?,?,?)""",
+        (batch_id, batch_number, run_meta.get("batch_date", now[:10]),
+         len([p for p in prospects if 'Removed' not in p.get('status', '')]),
+         run_meta.get("ab_variable", "pain_hook"),
+         run_meta.get("ab_description", ""),
+         run_meta.get("pre_brief", ""),
+         "imported", "run_bundle", now))
+
+    # Also create a research run record for the Runs page
+    run_id = gen_id("rr")
+    active_count = len([p for p in prospects if 'Removed' not in p.get('status', '')])
+    conn.execute("""INSERT INTO research_runs (id, name, import_type, prospect_count, status,
+        sop_checklist, progress_pct, logs, ab_variable, config, created_at, completed_at)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""",
+        (run_id, f"Batch {batch_number} - {run_meta.get('batch_date', now[:10])}",
+         "run_bundle", active_count, "completed",
+         json.dumps([
+             {"step": "import", "status": "completed", "label": "RunBundle Import"},
+             {"step": "validate", "status": "completed", "label": "Validation"},
+             {"step": "dedup", "status": "completed", "label": "Deduplication"},
+             {"step": "insert", "status": "completed", "label": "Database Insert"}
+         ]),
+         100,
+         json.dumps([f"Imported via RunBundle v1 at {now}"]),
+         run_meta.get("ab_variable", "pain_hook"),
+         json.dumps(run_meta),
+         now, now))
+
+    imported_contacts = []
+    imported_drafts = 0
+    skipped = []
+    deduped = []
+
+    for idx, p in enumerate(prospects):
+        name = p.get("name", "")
+        if not name:
+            skipped.append({"index": idx, "reason": "missing_name"})
+            continue
+
+        # Skip removed prospects
+        if 'Removed' in p.get('status', ''):
+            skipped.append({"index": idx, "name": name, "reason": "removed"})
+            continue
+
+        # Split name
+        parts = name.strip().split(" ", 1)
+        first_name = parts[0]
+        last_name = parts[1] if len(parts) > 1 else ""
+
+        linkedin_url = p.get("linkedin", p.get("linkedin_url", ""))
+        company = p.get("company", "")
+
+        # Dedup by linkedin_url
+        if linkedin_url:
+            existing = conn.execute("SELECT id FROM contacts WHERE linkedin_url=?", (linkedin_url,)).fetchone()
+            if existing:
+                deduped.append({"name": name, "linkedin_url": linkedin_url, "existing_id": existing["id"]})
+                # Still link to batch
+                conn.execute("INSERT INTO batch_prospects (id, batch_id, contact_id, ab_group, sequence_status, position_in_batch) VALUES (?,?,?,?,?,?)",
+                    (gen_id("bp"), batch_id, existing["id"], p.get("ab_group", ""), p.get("status", "not_started"), idx+1))
+                continue
+
+        # Find or create account
+        account_id = None
+        if company:
+            acc = conn.execute("SELECT id FROM accounts WHERE name=?", (company,)).fetchone()
+            if acc:
+                account_id = acc["id"]
+                # Update account info if we have more data
+                conn.execute("""UPDATE accounts SET industry=COALESCE(NULLIF(?,''),(industry)),
+                    employee_count=COALESCE(?,employee_count), updated_at=? WHERE id=?""",
+                    (p.get("vertical", ""), p.get("employee_count"), now, account_id))
+            else:
+                account_id = gen_id("acc")
+                conn.execute("""INSERT INTO accounts (id, name, domain, industry, employee_count,
+                    employee_band, source, created_at) VALUES (?,?,?,?,?,?,?,?)""",
+                    (account_id, company, p.get("company_domain", ""),
+                     p.get("vertical", ""), p.get("employee_count"),
+                     _employee_band(p.get("employee_count")),
+                     "run_bundle", now))
+
+        # Determine seniority and persona
+        title = p.get("title", "")
+        persona_raw = p.get("persona", "")
+        seniority = _detect_seniority(title)
+        persona_type = _detect_persona(title, persona_raw)
+
+        # Create contact
+        contact_id = gen_id("con")
+        conn.execute("""INSERT INTO contacts (id, account_id, first_name, last_name, title,
+            persona_type, seniority_level, linkedin_url, location, stage,
+            priority_score, personalization_score, predicted_objection, objection_response,
+            source, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (contact_id, account_id, first_name, last_name, title,
+             persona_type, seniority, linkedin_url, p.get("location", ""),
+             "new", p.get("priority_score", 3), p.get("personalization_score"),
+             p.get("objection", {}).get("objection", p.get("predicted_objection", "")),
+             p.get("objection", {}).get("response", p.get("objection_response", "")),
+             "run_bundle", now))
+
+        # Create research snapshot
+        snap_id = gen_id("rs")
+        conn.execute("""INSERT INTO research_snapshots (id, contact_id, account_id, entity_type,
+            headline, summary, pain_indicators, sources, confidence_score, agent_run_id, created_at)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+            (snap_id, contact_id, account_id, "prospect",
+             p.get("key_detail", ""),
+             p.get("company_detail", ""),
+             json.dumps([p.get("flag_notes", "")]) if p.get("flag_notes") else "[]",
+             json.dumps(["run_bundle_import"]),
+             p.get("overall_score", 3),
+             run_id, now))
+
+        # Link to batch
+        conn.execute("INSERT INTO batch_prospects (id, batch_id, contact_id, ab_group, sequence_status, position_in_batch) VALUES (?,?,?,?,?,?)",
+            (gen_id("bp"), batch_id, contact_id, p.get("ab_group", ""), "not_started", idx+1))
+
+        # Create message drafts (embedded format)
+        touch_map = [
+            (1, "inmail", "touch_1_subject", "touch_1_body"),
+            (2, "call", None, "call_snippet_1"),
+            (3, "inmail_followup", None, "touch_3"),
+            (4, "call", None, "call_snippet_2"),
+            (6, "breakup", None, "touch_6"),
+        ]
+
+        for touch_num, touch_type, subj_field, body_field in touch_map:
+            body_text = p.get(body_field, "")
+            if not body_text:
+                continue
+            subj_text = p.get(subj_field, "") if subj_field else ""
+            draft_id = gen_id("md")
+            wc = len(body_text.split())
+            conn.execute("""INSERT INTO message_drafts (id, contact_id, batch_id, channel,
+                touch_number, touch_type, subject_line, body, version, personalization_score,
+                proof_point_used, pain_hook, opener_style, word_count, qc_passed,
+                approval_status, ab_group, ab_variable, source, created_at)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                (draft_id, contact_id, batch_id, "linkedin",
+                 touch_num, touch_type, subj_text, body_text, 1,
+                 p.get("personalization_score"),
+                 "", "", "", wc, 1,
+                 "draft", p.get("ab_group", ""),
+                 run_meta.get("ab_variable", "pain_hook"),
+                 "run_bundle", now))
+            imported_drafts += 1
+
+        imported_contacts.append({
+            "contact_id": contact_id,
+            "account_id": account_id,
+            "name": name,
+            "company": company,
+            "linkedin_url": linkedin_url,
+            "priority_score": p.get("priority_score", 3)
+        })
+
+    # Log activity
+    conn.execute("""INSERT INTO activity_timeline (id, channel, activity_type, description, metadata, created_at)
+        VALUES (?,?,?,?,?,?)""",
+        (gen_id("act"), "system", "run_bundle_import",
+         f"Imported RunBundle: {len(imported_contacts)} contacts, {imported_drafts} drafts, {len(deduped)} deduped, {len(skipped)} skipped",
+         json.dumps({"batch_id": batch_id, "run_id": run_id}), now))
+
+    conn.commit()
+    conn.close()
+
+    return {
+        "status": "imported",
+        "batch_id": batch_id,
+        "run_id": run_id,
+        "imported_contacts": len(imported_contacts),
+        "imported_drafts": imported_drafts,
+        "deduped": len(deduped),
+        "skipped": len(skipped),
+        "contacts": imported_contacts[:10],
+        "dedup_details": deduped[:10],
+        "skip_details": skipped[:10]
+    }
+
+
+@app.get("/api/import/run-bundle/schema")
+def run_bundle_schema():
+    """Return the RunBundle v1 schema for documentation."""
+    return {
+        "version": "v1",
+        "description": "Standard format for importing prospect batches from the BDR SOP",
+        "schema": {
+            "run": {
+                "batch_number": "integer",
+                "batch_date": "YYYY-MM-DD",
+                "source": "string (e.g. 'cowork_session', 'sales_navigator')",
+                "sop_version": "string",
+                "notes": "string",
+                "ab_variable": "string",
+                "ab_description": "string",
+                "pre_brief": "string",
+                "quality_report": "object"
+            },
+            "prospects": [{
+                "name": "string (required)",
+                "title": "string",
+                "company": "string",
+                "vertical": "string",
+                "linkedin_url": "string (primary dedup key)",
+                "persona": "string",
+                "priority_score": "integer 1-5",
+                "personalization_score": "integer 1-3",
+                "key_detail": "string",
+                "company_detail": "string",
+                "employee_count": "integer",
+                "ab_group": "string",
+                "touch_1_subject": "string",
+                "touch_1_body": "string",
+                "touch_3": "string",
+                "touch_6": "string",
+                "call_snippet_1": "string",
+                "call_snippet_2": "string",
+                "objection": {"trigger": "string", "objection": "string", "response": "string"},
+                "linkedin_status": "string (verified/flagged/needs_manual_lookup)",
+                "flag_notes": "string",
+                "status": "string"
+            }]
+        }
+    }
+
+
+def _employee_band(count):
+    """Convert employee count to band."""
+    if not count:
+        return None
+    count = int(count)
+    if count < 50:
+        return "1-49"
+    elif count < 200:
+        return "50-199"
+    elif count < 500:
+        return "200-499"
+    elif count < 1000:
+        return "500-999"
+    elif count < 5000:
+        return "1000-4999"
+    elif count < 10000:
+        return "5000-9999"
+    else:
+        return "10000+"
+
+
+def _detect_seniority(title: str) -> str:
+    """Detect seniority level from job title."""
+    t = title.lower()
+    if any(x in t for x in ["cto", "cfo", "ceo", "coo", "cio", "chief"]):
+        return "c_level"
+    if any(x in t for x in ["svp", "senior vice president"]):
+        return "svp"
+    if any(x in t for x in ["vp", "vice president"]):
+        return "vp"
+    if any(x in t for x in ["senior director", "sr director", "sr. director"]):
+        return "senior_director"
+    if "director" in t or "head of" in t:
+        return "director"
+    if "manager" in t or "lead" in t:
+        return "manager"
+    return "individual"
+
+
+def _detect_persona(title: str, persona_hint: str = "") -> str:
+    """Detect persona type from title and hint."""
+    t = title.lower()
+    hint = persona_hint.lower() if persona_hint else ""
+    if any(x in t for x in ["qa", "quality", "test", "sdet", "qe"]) or "qa" in hint:
+        return "qa_leader"
+    if any(x in t for x in ["engineering", "software", "platform", "development"]) or "eng" in hint:
+        return "vp_eng"
+    return "other"
+
+
+@app.get("/api/prospects/full")
+def get_full_prospects(batch_id: str = None, priority_min: int = None,
+                       persona: str = None, limit: int = 200):
+    """Get prospects with company info and all message drafts in one call."""
+    conn = get_db()
+
+    # Build contacts query with company join
+    q = """SELECT c.*, a.name as company_name, a.industry as vertical, a.employee_count,
+           a.domain as company_domain, a.buyer_intent
+           FROM contacts c
+           LEFT JOIN accounts a ON c.account_id = a.id
+           WHERE 1=1"""
+    params = []
+
+    if batch_id:
+        q += " AND c.id IN (SELECT contact_id FROM batch_prospects WHERE batch_id=?)"
+        params.append(batch_id)
+
+    if priority_min:
+        q += " AND c.priority_score >= ?"
+        params.append(priority_min)
+
+    if persona:
+        q += " AND c.persona_type = ?"
+        params.append(persona)
+
+    q += " ORDER BY c.priority_score DESC, c.created_at DESC LIMIT ?"
+    params.append(limit)
+
+    contacts = [dict(r) for r in conn.execute(q, params).fetchall()]
+
+    # Get all drafts for these contacts
+    if contacts:
+        contact_ids = [c['id'] for c in contacts]
+        placeholders = ",".join(["?"] * len(contact_ids))
+        drafts = [dict(r) for r in conn.execute(
+            f"""SELECT * FROM message_drafts WHERE contact_id IN ({placeholders})
+                ORDER BY contact_id, touch_number""",
+            contact_ids
+        ).fetchall()]
+
+        # Get research snapshots
+        snapshots = [dict(r) for r in conn.execute(
+            f"""SELECT * FROM research_snapshots WHERE contact_id IN ({placeholders})
+                ORDER BY created_at DESC""",
+            contact_ids
+        ).fetchall()]
+
+        # Group by contact_id
+        drafts_by_contact = {}
+        for d in drafts:
+            cid = d['contact_id']
+            if cid not in drafts_by_contact:
+                drafts_by_contact[cid] = []
+            drafts_by_contact[cid].append(d)
+
+        snapshots_by_contact = {}
+        for s in snapshots:
+            cid = s['contact_id']
+            if cid not in snapshots_by_contact:
+                snapshots_by_contact[cid] = s  # latest only
+
+        for c in contacts:
+            c['drafts'] = drafts_by_contact.get(c['id'], [])
+            snap = snapshots_by_contact.get(c['id'])
+            if snap:
+                c['key_detail'] = snap.get('headline', '')
+                c['company_detail'] = snap.get('summary', '')
+    else:
+        for c in contacts:
+            c['drafts'] = []
+
+    conn.close()
+    return {"prospects": contacts, "total": len(contacts)}
+
+
+@app.get("/api/prospects/{contact_id}/drafts")
+def get_prospect_drafts(contact_id: str):
+    """Get all message drafts for a specific prospect."""
+    conn = get_db()
+    contact = conn.execute("""SELECT c.*, a.name as company_name, a.industry as vertical
+        FROM contacts c LEFT JOIN accounts a ON c.account_id = a.id WHERE c.id=?""",
+        (contact_id,)).fetchone()
+    if not contact:
+        conn.close()
+        raise HTTPException(404, "Contact not found")
+    contact = dict(contact)
+
+    drafts = [dict(r) for r in conn.execute(
+        "SELECT * FROM message_drafts WHERE contact_id=? ORDER BY touch_number",
+        (contact_id,)
+    ).fetchall()]
+
+    snapshot = conn.execute(
+        "SELECT * FROM research_snapshots WHERE contact_id=? ORDER BY created_at DESC LIMIT 1",
+        (contact_id,)
+    ).fetchone()
+
+    conn.close()
+    return {
+        "contact": contact,
+        "drafts": drafts,
+        "research": dict(snapshot) if snapshot else None
+    }
+
+
+# ---------------------------------------------------------------------------
 # RESEARCH RUN ENDPOINTS
 # ---------------------------------------------------------------------------
 

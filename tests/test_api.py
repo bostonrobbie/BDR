@@ -1740,5 +1740,275 @@ class TestSourceTagging:
         conn.close()
 
 
+# =============================================================================
+# RUNBUNDLE IMPORT TESTS
+# =============================================================================
+class TestRunBundleImport:
+    """Tests for the RunBundle v1 import pipeline."""
+
+    def _make_bundle(self, prospects=None):
+        """Helper to create a valid RunBundle."""
+        if prospects is None:
+            prospects = [
+                {
+                    "name": "Jane Smith",
+                    "title": "Director of QA",
+                    "company": "TestCorp",
+                    "vertical": "FinTech",
+                    "linkedin": "linkedin.com/in/janesmith",
+                    "persona": "QA",
+                    "priority_score": 5,
+                    "personalization_score": 3,
+                    "key_detail": "15 years QA experience, ex-Goldman",
+                    "company_detail": "Real-time payments platform",
+                    "employee_count": 500,
+                    "ab_group": "A - Maintenance angle",
+                    "touch_1_subject": "Quick question re: TestCorp QA",
+                    "touch_1_body": "Your work leading QA at TestCorp caught my attention. Real-time payments platforms need airtight regression coverage. CRED solved a similar problem, achieving 90% regression automation and 5x faster execution. Would 15 minutes to discuss make sense? If not relevant, no worries.",
+                    "touch_3": "Circling back quick. Different angle: Sanofi cut regression from 3 days to 80 minutes with similar automation. Might be more relevant to your compliance needs. Happy to share more if helpful.",
+                    "touch_6": "Hey Jane, wrapping up. If regression testing becomes the priority, happy to pick this back up. Wishing you and the team the best with the payments platform.",
+                    "call_snippet_1": "Hey Jane, this is Rob from Testsigma - noticed you lead QA at TestCorp.\nPayments platforms need bulletproof regression, but the cost is steep.\nWe helped CRED get 90% automation - worth 60 seconds?",
+                    "call_snippet_2": "Hey Jane, Rob from Testsigma again - wanted to try a different angle.\nSanofi cut regression from 3 days to 80 minutes.\nWorth a quick chat to see if it applies?",
+                    "objection": {"trigger": "compliance", "objection": "Compliance is strict", "response": "We work with Sanofi and banks. Happy to walk through compliance."},
+                    "linkedin_status": "verified",
+                    "flag_notes": "",
+                    "status": "Not Started"
+                },
+                {
+                    "name": "Bob Johnson",
+                    "title": "VP Engineering",
+                    "company": "HealthApp Inc",
+                    "vertical": "Healthcare",
+                    "linkedin": "linkedin.com/in/bobjohnson",
+                    "persona": "VP-Eng",
+                    "priority_score": 4,
+                    "personalization_score": 3,
+                    "key_detail": "10 years leading eng teams",
+                    "company_detail": "Telehealth platform",
+                    "employee_count": 200,
+                    "ab_group": "B - Velocity angle",
+                    "touch_1_subject": "Testing at HealthApp",
+                    "touch_1_body": "Building engineering at HealthApp in the telehealth space must be demanding. Compliance-driven testing cycles can slow down your release velocity significantly. Medibuddy automated 2,500 tests and cut maintenance by 50%. Curious if that resonates. If not, I will get out of your hair.",
+                    "touch_3": "Following up with a different proof point. Hansard cut regression from 8 weeks to 5 weeks. Healthcare and compliance-heavy teams see the biggest gains here. Worth a conversation?",
+                    "touch_6": "Hey Bob, last note from me. If QA testing ever becomes the bottleneck, reach out. Thanks for your time and good luck with the telehealth platform.",
+                    "call_snippet_1": "Hey Bob, this is Rob from Testsigma.\nHealthcare platforms need serious QA but compliance slows things down.\nWe helped Medibuddy solve this - worth 60 seconds?",
+                    "call_snippet_2": "Hey Bob, Rob from Testsigma - different angle today.\nHansard cut regression 8 weeks to 5.\nQuick chat to see if relevant?",
+                    "objection": {"trigger": "compliance", "objection": "Compliance requirements", "response": "We work with Sanofi and Oscar Health."},
+                    "status": "Not Started"
+                }
+            ]
+        return {
+            "run": {
+                "batch_number": 99,
+                "batch_date": "2026-02-19",
+                "source": "test",
+                "ab_variable": "pain_hook"
+            },
+            "prospects": prospects
+        }
+
+    def test_import_happy_path(self, client):
+        bundle = self._make_bundle()
+        r = client.post("/api/import/run-bundle", json=bundle)
+        assert r.status_code == 200
+        data = r.json()
+        assert data["status"] == "imported"
+        assert data["imported_contacts"] == 2
+        assert data["imported_drafts"] == 10  # 5 touches x 2 prospects
+        assert data["deduped"] == 0
+        assert data["skipped"] == 0
+        assert "batch_id" in data
+        assert "run_id" in data
+
+    def test_import_creates_accounts(self, client):
+        bundle = self._make_bundle()
+        client.post("/api/import/run-bundle", json=bundle)
+        conn = get_db()
+        tc = conn.execute("SELECT * FROM accounts WHERE name='TestCorp'").fetchone()
+        assert tc is not None
+        assert tc["industry"] == "FinTech"
+        ha = conn.execute("SELECT * FROM accounts WHERE name='HealthApp Inc'").fetchone()
+        assert ha is not None
+        conn.close()
+
+    def test_import_creates_contacts_with_linkedin(self, client):
+        bundle = self._make_bundle()
+        client.post("/api/import/run-bundle", json=bundle)
+        conn = get_db()
+        jane = conn.execute("SELECT * FROM contacts WHERE linkedin_url='linkedin.com/in/janesmith'").fetchone()
+        assert jane is not None
+        assert jane["first_name"] == "Jane"
+        assert jane["last_name"] == "Smith"
+        assert jane["persona_type"] == "qa_leader"
+        assert jane["priority_score"] == 5
+        assert jane["source"] == "run_bundle"
+        conn.close()
+
+    def test_import_creates_message_drafts(self, client):
+        bundle = self._make_bundle()
+        data = client.post("/api/import/run-bundle", json=bundle).json()
+        conn = get_db()
+        jane = conn.execute("SELECT id FROM contacts WHERE linkedin_url='linkedin.com/in/janesmith'").fetchone()
+        drafts = conn.execute("SELECT * FROM message_drafts WHERE contact_id=? ORDER BY touch_number", (jane["id"],)).fetchall()
+        assert len(drafts) == 5
+        assert drafts[0]["touch_number"] == 1
+        assert drafts[0]["subject_line"] == "Quick question re: TestCorp QA"
+        assert "CRED" in drafts[0]["body"]
+        assert drafts[0]["channel"] == "linkedin"
+        assert drafts[0]["source"] == "run_bundle"
+        conn.close()
+
+    def test_import_creates_research_snapshot(self, client):
+        bundle = self._make_bundle()
+        client.post("/api/import/run-bundle", json=bundle)
+        conn = get_db()
+        jane = conn.execute("SELECT id FROM contacts WHERE linkedin_url='linkedin.com/in/janesmith'").fetchone()
+        snap = conn.execute("SELECT * FROM research_snapshots WHERE contact_id=?", (jane["id"],)).fetchone()
+        assert snap is not None
+        assert "15 years" in snap["headline"]
+        assert "payments" in snap["summary"]
+        conn.close()
+
+    def test_import_creates_batch(self, client):
+        bundle = self._make_bundle()
+        data = client.post("/api/import/run-bundle", json=bundle).json()
+        conn = get_db()
+        batch = conn.execute("SELECT * FROM batches WHERE id=?", (data["batch_id"],)).fetchone()
+        assert batch is not None
+        assert batch["batch_number"] == 99
+        assert batch["prospect_count"] == 2
+        assert batch["source"] == "run_bundle"
+        conn.close()
+
+    def test_import_creates_research_run(self, client):
+        bundle = self._make_bundle()
+        data = client.post("/api/import/run-bundle", json=bundle).json()
+        conn = get_db()
+        run = conn.execute("SELECT * FROM research_runs WHERE id=?", (data["run_id"],)).fetchone()
+        assert run is not None
+        assert run["import_type"] == "run_bundle"
+        assert run["status"] == "completed"
+        assert run["prospect_count"] == 2
+        conn.close()
+
+    def test_import_dedup_by_linkedin_url(self, client):
+        # Use unique linkedin URLs to avoid collision with seed data
+        prospects = [
+            {"name": "Dedup Test One", "title": "QA Lead", "company": "DedupCo",
+             "linkedin": "linkedin.com/in/dedup-test-unique-1",
+             "touch_1_body": "Test message body for dedup testing one", "status": "Not Started"},
+            {"name": "Dedup Test Two", "title": "VP Eng", "company": "DedupCo2",
+             "linkedin": "linkedin.com/in/dedup-test-unique-2",
+             "touch_1_body": "Test message body for dedup testing two", "status": "Not Started"}
+        ]
+        bundle = {"run": {"batch_number": 88}, "prospects": prospects}
+
+        # Import once
+        data1 = client.post("/api/import/run-bundle", json=bundle).json()
+        assert data1["imported_contacts"] == 2
+
+        # Import again - should dedup
+        data2 = client.post("/api/import/run-bundle", json=bundle).json()
+        assert data2["imported_contacts"] == 0
+        assert data2["deduped"] == 2
+
+    def test_import_rejects_em_dashes(self, client):
+        prospects = [{
+            "name": "Bad Dash Person",
+            "title": "QA Lead",
+            "company": "DashCorp",
+            "touch_1_body": "This message has an em dash \u2014 which is not allowed",
+            "touch_1_subject": "Test"
+        }]
+        bundle = {"run": {"batch_number": 1}, "prospects": prospects}
+        r = client.post("/api/import/run-bundle", json=bundle)
+        assert r.status_code == 400
+
+    def test_import_skips_removed_prospects(self, client):
+        prospects = [
+            {"name": "Active Person", "title": "QA Lead", "company": "GoodCo",
+             "touch_1_body": "Test message body here", "status": "Not Started"},
+            {"name": "Removed Person", "title": "QA Lead", "company": "OldCo",
+             "touch_1_body": "Test message body here", "status": "Removed - duplicate company"}
+        ]
+        bundle = {"run": {"batch_number": 1}, "prospects": prospects}
+        data = client.post("/api/import/run-bundle", json=bundle).json()
+        assert data["imported_contacts"] == 1
+        assert data["skipped"] == 1
+
+    def test_import_empty_rejects(self, client):
+        r = client.post("/api/import/run-bundle", json={"run": {}, "prospects": []})
+        assert r.status_code == 400
+
+    def test_run_bundle_schema_endpoint(self, client):
+        r = client.get("/api/import/run-bundle/schema")
+        assert r.status_code == 200
+        data = r.json()
+        assert data["version"] == "v1"
+        assert "prospects" in data["schema"]
+
+
+# =============================================================================
+# PROSPECTS FULL ENDPOINT TESTS
+# =============================================================================
+class TestProspectsFull:
+    """Tests for the /api/prospects/full endpoint."""
+
+    def test_prospects_full_returns_empty(self, client):
+        # Clean first
+        client.post("/api/admin/cleanup/execute", json={"confirm": True})
+        r = client.get("/api/prospects/full")
+        assert r.status_code == 200
+        data = r.json()
+        assert "prospects" in data
+
+    def test_prospects_full_after_import(self, client):
+        # Import some data with unique URLs
+        bundle = TestRunBundleImport()._make_bundle()
+        # Ensure unique linkedin URLs to avoid dedup with previous tests
+        bundle["prospects"][0]["linkedin"] = "linkedin.com/in/jane-full-test-unique"
+        bundle["prospects"][1]["linkedin"] = "linkedin.com/in/bob-full-test-unique"
+        client.post("/api/import/run-bundle", json=bundle)
+
+        r = client.get("/api/prospects/full")
+        assert r.status_code == 200
+        data = r.json()
+        prospects = data["prospects"]
+        # Should include the imported prospects
+        imported = [p for p in prospects if p.get("source") == "run_bundle"]
+        assert len(imported) >= 2
+
+        # Check that drafts are included
+        jane = next((p for p in imported if p["first_name"] == "Jane"), None)
+        assert jane is not None
+        assert len(jane["drafts"]) == 5
+
+    def test_prospects_full_filter_by_persona(self, client):
+        bundle = TestRunBundleImport()._make_bundle()
+        client.post("/api/import/run-bundle", json=bundle)
+
+        r = client.get("/api/prospects/full?persona=qa_leader")
+        assert r.status_code == 200
+        data = r.json()
+        for p in data["prospects"]:
+            if p.get("source") == "run_bundle":
+                assert p["persona_type"] == "qa_leader"
+
+    def test_prospect_drafts_endpoint(self, client):
+        bundle = TestRunBundleImport()._make_bundle()
+        # Use unique URLs
+        bundle["prospects"][0]["linkedin"] = "linkedin.com/in/jane-drafts-test-unique"
+        bundle["prospects"][1]["linkedin"] = "linkedin.com/in/bob-drafts-test-unique"
+        imp = client.post("/api/import/run-bundle", json=bundle).json()
+        contact_id = imp["contacts"][0]["contact_id"]
+
+        r = client.get(f"/api/prospects/{contact_id}/drafts")
+        assert r.status_code == 200
+        data = r.json()
+        assert "contact" in data
+        assert "drafts" in data
+        assert len(data["drafts"]) == 5
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v", "--tb=short"])

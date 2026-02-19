@@ -1260,6 +1260,9 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
         </div>
 
         <div class="nav-section">ADMIN</div>
+        <div class="nav-item" onclick="showPage('import')">
+            <span class="nav-icon">📦</span> <span>Import</span>
+        </div>
         <div class="nav-item" onclick="showPage('data')">
             <span class="nav-icon">💾</span> <span>Data</span>
         </div>
@@ -1612,26 +1615,51 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
 <div class="page" id="page-drafts">
     <div class="page-hdr">
         <h1>Message Drafts</h1>
-        <div class="btn-group">
-            <select class="sel" id="drafts-channel" onchange="loadDrafts()" style="width:140px;">
-                <option value="">All Channels</option>
-                <option value="linkedin">LinkedIn</option>
-                <option value="email">Email</option>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <select class="inp" id="drafts-touch-filter" onchange="loadDraftsFull()" style="width:140px">
+                <option value="">All Touches</option>
+                <option value="1">Touch 1 - InMail</option>
+                <option value="2">Touch 2 - Call</option>
+                <option value="3">Touch 3 - Follow-up</option>
+                <option value="4">Touch 4 - Call #2</option>
+                <option value="6">Touch 6 - Break-up</option>
             </select>
-
-            <select class="sel" id="drafts-status" onchange="loadDrafts()" style="width:140px;">
-                <option value="">All Status</option>
-                <option value="draft">Draft</option>
-                <option value="approved">Approved</option>
-                <option value="sent">Sent</option>
-            </select>
-
-            <input class="inp" id="drafts-search" placeholder="Search..." oninput="loadDrafts()" style="width:180px;">
-            <button class="btn btn-sm" onclick="loadDrafts()">Refresh</button>
+            <input class="inp" id="drafts-search-full" placeholder="Search name/company..." oninput="loadDraftsFull()" style="width:180px">
+            <button class="btn btn-sm" onclick="loadDraftsFull()">Refresh</button>
         </div>
     </div>
     <div class="kpi-row" id="drafts-kpis"></div>
     <div id="drafts-list"><div class="empty">Loading...</div></div>
+</div>
+
+<!-- IMPORT RUNBUNDLE PAGE -->
+<div class="page" id="page-import">
+    <div class="page-hdr"><h1>Import RunBundle</h1></div>
+    <div class="card" style="margin-top:16px">
+        <p style="color:var(--text-secondary);margin-bottom:16px">Upload a RunBundle v1 JSON file from your prospecting session. This will import prospects, research, and message drafts into the dashboard.</p>
+        <div style="display:flex;gap:16px;margin-bottom:16px">
+            <div style="flex:1">
+                <h4 style="margin-bottom:8px">Upload JSON File</h4>
+                <div id="rb-drop-zone" style="border:2px dashed var(--border);border-radius:8px;padding:40px;text-align:center;cursor:pointer" onclick="document.getElementById('rb-file-input').click()">
+                    <div style="font-size:32px;margin-bottom:8px">📦</div>
+                    <p>Drop RunBundle JSON here or click to browse</p>
+                    <input type="file" id="rb-file-input" accept=".json" style="display:none" onchange="handleRunBundleFile(event)">
+                </div>
+            </div>
+            <div style="flex:1">
+                <h4 style="margin-bottom:8px">Or Paste JSON</h4>
+                <textarea id="rb-paste-input" class="inp" rows="8" placeholder='Paste RunBundle JSON here...' style="width:100%;font-family:monospace;font-size:11px"></textarea>
+                <button class="btn" style="margin-top:8px" onclick="handleRunBundlePaste()">Parse JSON</button>
+            </div>
+        </div>
+        <div id="rb-preview" style="display:none">
+            <h4 style="margin-bottom:8px">Import Preview</h4>
+            <div id="rb-preview-stats" style="display:flex;gap:12px;margin-bottom:16px"></div>
+            <div id="rb-preview-table" style="max-height:300px;overflow-y:auto;margin-bottom:16px"></div>
+            <button class="btn btn-primary" id="rb-import-btn" onclick="executeRunBundleImport()">Import into Dashboard</button>
+            <div id="rb-import-result" style="display:none;margin-top:16px"></div>
+        </div>
+    </div>
 </div>
 
 <!-- INTELLIGENCE -->
@@ -2106,44 +2134,48 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
 <!-- PROSPECTS -->
 <div class="page" id="page-prospects">
     <div class="page-hdr"><h1>Prospects</h1>
-        <div style="display:flex;gap:8px">
-            <button class="btn" onclick="showPage('runs')">+ Import Prospects</button>
-            <select class="inp" id="prospects-filter" onchange="filterProspects()" style="width:160px">
-                <option value="">All Stages</option>
-                <option value="new">New</option>
-                <option value="touched">Touched</option>
-                <option value="engaged">Engaged</option>
-                <option value="replied">Replied</option>
-                <option value="meeting_booked">Meeting Booked</option>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn" onclick="showPage('import')">+ Import RunBundle</button>
+            <select class="inp" id="prospects-persona-filter" onchange="filterFullProspects()" style="width:140px">
+                <option value="">All Personas</option>
+                <option value="qa_leader">QA Leaders</option>
+                <option value="vp_eng">VP Engineering</option>
             </select>
+            <select class="inp" id="prospects-priority-filter" onchange="filterFullProspects()" style="width:130px">
+                <option value="">All Priority</option>
+                <option value="5">Hot (5)</option>
+                <option value="4">Warm (4)</option>
+                <option value="3">Standard (3)</option>
+            </select>
+            <input class="inp" id="prospects-search" placeholder="Search name/company..." oninput="filterFullProspects()" style="width:180px">
         </div>
     </div>
     <div class="kpi-row" id="prospects-kpis"></div>
-    <div class="card" style="margin-top:16px">
-        <div style="display:flex;gap:12px;margin-bottom:12px">
-            <div class="tab-item active" onclick="showProspectsTab('contacts')">Contacts</div>
-            <div class="tab-item" onclick="showProspectsTab('accounts')">Accounts</div>
-            <div class="tab-item" onclick="showProspectsTab('activity')">Activity</div>
+    <div id="prospects-table-wrap" class="card" style="margin-top:16px">
+        <div style="overflow-x:auto">
+            <table class="tbl"><thead><tr>
+                <th style="width:50px">Pri</th>
+                <th>Name</th>
+                <th>Title</th>
+                <th>Company</th>
+                <th>Persona</th>
+                <th style="width:80px">LinkedIn</th>
+                <th style="width:60px">Drafts</th>
+                <th style="width:50px"></th>
+            </tr></thead><tbody id="prospects-full-body"></tbody></table>
         </div>
-        <div class="tab-content active" id="prospects-tab-contacts">
-            <div style="overflow-x:auto"><table class="tbl"><thead><tr>
-                <th>Priority</th><th>Name</th><th>Title</th><th>Company</th><th>Stage</th><th>Persona</th><th>Source</th>
-            </tr></thead><tbody id="prospects-contacts-body"></tbody></table></div>
-        </div>
-        <div class="tab-content" id="prospects-tab-accounts">
-            <div style="overflow-x:auto"><table class="tbl"><thead><tr>
-                <th>Company</th><th>Industry</th><th>Employees</th><th>Contacts</th><th>Intent</th>
-            </tr></thead><tbody id="prospects-accounts-body"></tbody></table></div>
-        </div>
-        <div class="tab-content" id="prospects-tab-activity">
-            <div id="prospects-activity-list" style="max-height:500px;overflow-y:auto"></div>
+    </div>
+    <div id="prospect-detail-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;overflow-y:auto;padding:20px">
+        <div style="max-width:800px;margin:20px auto;background:var(--bg-secondary);border-radius:12px;padding:24px;position:relative">
+            <button onclick="closeProspectDetail()" style="position:absolute;top:12px;right:16px;background:none;border:none;color:var(--text-secondary);font-size:24px;cursor:pointer">&times;</button>
+            <div id="prospect-detail-content"></div>
         </div>
     </div>
     <div id="prospects-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--text-secondary)">
         <div style="font-size:48px;margin-bottom:16px">👥</div>
         <h3 style="margin-bottom:8px">No prospects yet</h3>
-        <p style="margin-bottom:16px">Upload a CSV from Sales Navigator to get started</p>
-        <button class="btn btn-primary" onclick="showPage('runs')">Start Research Run</button>
+        <p style="margin-bottom:16px">Import a RunBundle JSON from your prospecting session</p>
+        <button class="btn btn-primary" onclick="showPage('import')">Import RunBundle</button>
     </div>
 </div>
 
@@ -2566,7 +2598,8 @@ function showPage(id) {
     if (id === 'activity') loadActivity();
     if (id === 'accounts') loadAccounts();
     if (id === 'contacts') loadContacts();
-    if (id === 'drafts') loadDrafts();
+    if (id === 'drafts') loadDraftsFull();
+    if (id === 'import') {};
     if (id === 'settings') loadSettings();
 }
 
@@ -3196,50 +3229,8 @@ async function loadContacts() {
 
 // DRAFTS PAGE
 async function loadDrafts() {
-    const channel = document.getElementById('drafts-channel')?.value || '';
-    const status = document.getElementById('drafts-status')?.value || '';
-    const search = document.getElementById('drafts-search')?.value || '';
-
-    const url = `/api/drafts${channel || status || search ? '?' : ''}${channel ? `channel=${channel}` : ''}${channel && (status || search) ? '&' : ''}${status ? `status=${status}` : ''}${(channel || status) && search ? '&' : ''}${search ? `search=${search}` : ''}`;
-
-    const data = await api(url);
-    const kpisEl = document.getElementById('drafts-kpis');
-    const listEl = document.getElementById('drafts-list');
-
-    if (!data || !data.length) {
-        if (kpisEl) kpisEl.innerHTML = '';
-        if (listEl) listEl.innerHTML = '<div class="empty"><div class="empty-icon">✍️</div><strong>No drafts</strong><br>Start writing messages.</div>';
-        return;
-    }
-
-    const draft = data.filter(d => d.status === 'draft').length;
-    const approved = data.filter(d => d.status === 'approved').length;
-    const sent = data.filter(d => d.status === 'sent').length;
-
-    if (kpisEl) kpisEl.innerHTML = [
-        kpi('Drafts', draft),
-        kpi('Approved', approved),
-        kpi('Sent', sent),
-    ].join('');
-
-    if (listEl) listEl.innerHTML = data.map(m => {
-        const statusBadge = m.status === 'sent' ? 'badge-gn' : m.status === 'approved' ? 'badge-bl' : 'badge-yw';
-        return `
-            <div class="card" style="margin-bottom:12px;">
-                <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px;">
-                    <div>
-                        <h3 style="margin:0;font-size:15px;">${m.subject || '(no subject)'}</h3>
-                        <div style="font-size:12px;color:var(--text-secondary);">${m.contact_name || 'Unknown'} • ${m.channel || 'email'} • Touch ${m.touch_number || 1}</div>
-                    </div>
-                    <span class="${statusBadge}">${m.status || 'draft'}</span>
-                </div>
-                <div style="background:var(--bg-secondary);padding:10px;border-radius:4px;font-size:13px;margin-bottom:12px;max-height:60px;overflow:hidden;color:var(--text-secondary);">
-                    ${m.body || '(no preview)'}
-                </div>
-                <div style="font-size:11px;color:var(--text-muted);">${timeAgo(m.created_at)}</div>
-            </div>
-        `;
-    }).join('');
+    // Redirect to new enhanced drafts loader
+    return loadDraftsFull();
 }
 
 // INTELLIGENCE PAGE
@@ -4265,70 +4256,410 @@ function showProspectsTab(tab) {
     document.getElementById('prospects-tab-' + tab).classList.add('active');
 }
 
+// =====================================================
+// ENHANCED PROSPECTS PAGE (with LinkedIn + Copy buttons)
+// =====================================================
+let allProspects = [];
+
 async function loadProspectsPage() {
     try {
-        const [statsData, contactsData, accountsData, activityData] = await Promise.all([
-            api('/api/stats'),
-            api('/api/contacts?limit=200'),
-            api('/api/accounts?limit=200'),
-            api('/api/activity?limit=50')
-        ]);
+        const data = await api('/api/prospects/full');
+        allProspects = data.prospects || [];
 
         const el = document.getElementById('prospects-kpis');
+        const qa = allProspects.filter(p => p.persona_type === 'qa_leader').length;
+        const eng = allProspects.filter(p => p.persona_type === 'vp_eng').length;
+        const hot = allProspects.filter(p => (p.priority_score || 0) >= 5).length;
+        const withLinkedin = allProspects.filter(p => p.linkedin_url && p.linkedin_url.includes('linkedin.com')).length;
+        const withDrafts = allProspects.filter(p => p.drafts && p.drafts.length > 0).length;
         el.innerHTML = `
-            <div class="kpi"><div class="kpi-label">Total Contacts</div><div class="kpi-val">${statsData.total_contacts || 0}</div></div>
-            <div class="kpi"><div class="kpi-label">Replied</div><div class="kpi-val">${statsData.total_replies || 0}</div></div>
-            <div class="kpi"><div class="kpi-label">Meetings</div><div class="kpi-val">${statsData.total_meetings || 0}</div></div>
-            <div class="kpi"><div class="kpi-label">Reply Rate</div><div class="kpi-val">${(statsData.reply_rate || 0).toFixed(1)}%</div></div>
+            <div class="kpi"><div class="kpi-label">Total</div><div class="kpi-val">${allProspects.length}</div></div>
+            <div class="kpi"><div class="kpi-label">QA Leaders</div><div class="kpi-val">${qa}</div></div>
+            <div class="kpi"><div class="kpi-label">VP Eng</div><div class="kpi-val">${eng}</div></div>
+            <div class="kpi"><div class="kpi-label">Hot (5)</div><div class="kpi-val">${hot}</div></div>
+            <div class="kpi"><div class="kpi-label">LinkedIn</div><div class="kpi-val">${withLinkedin}</div></div>
+            <div class="kpi"><div class="kpi-label">With Drafts</div><div class="kpi-val">${withDrafts}</div></div>
         `;
 
-        const contacts = contactsData.contacts || contactsData || [];
-        const tbody = document.getElementById('prospects-contacts-body');
-        if (contacts.length === 0) {
-            document.getElementById('prospects-empty').style.display = 'block';
-            tbody.closest('.card').style.display = 'none';
-        } else {
-            document.getElementById('prospects-empty').style.display = 'none';
-            tbody.closest('.card').style.display = 'block';
-            tbody.innerHTML = contacts.map(c => `<tr>
-                <td><span class="tag ${c.priority_score >= 4 ? 'tag-hot' : c.priority_score >= 3 ? 'tag-warm' : ''}">${c.priority_score || '-'}</span></td>
-                <td>${c.first_name || ''} ${c.last_name || ''}</td>
-                <td>${c.title || ''}</td>
-                <td>${c.company_name || c.account_id || ''}</td>
-                <td><span class="tag">${c.stage || 'new'}</span></td>
-                <td><span class="tag ${c.persona_type === 'qa_leader' ? 'tag-qa' : ''}">${c.persona_type || ''}</span></td>
-                <td><span class="tag" style="font-size:10px">${c.source || ''}</span></td>
-            </tr>`).join('');
-        }
-
-        const accounts = accountsData.accounts || accountsData || [];
-        document.getElementById('prospects-accounts-body').innerHTML = accounts.map(a => `<tr>
-            <td>${a.name || ''}</td>
-            <td>${a.industry || ''}</td>
-            <td>${a.employee_count || '-'}</td>
-            <td>${a.contact_count || '-'}</td>
-            <td>${a.buyer_intent ? '<span class="tag tag-hot">Intent</span>' : '-'}</td>
-        </tr>`).join('');
-
-        const activities = activityData.activities || activityData || [];
-        document.getElementById('prospects-activity-list').innerHTML = activities.map(a => `
-            <div style="padding:8px 0;border-bottom:1px solid var(--border-subtle)">
-                <span style="color:var(--text-muted);font-size:11px">${a.created_at || ''}</span>
-                <span style="margin-left:8px">${a.description || a.event_type || ''}</span>
-            </div>
-        `).join('') || '<p style="color:var(--text-muted)">No activity yet</p>';
+        renderProspectsTable(allProspects);
     } catch(e) { console.error('loadProspectsPage:', e); }
 }
 
-function filterProspects() {
-    const stage = document.getElementById('prospects-filter').value;
-    const rows = document.querySelectorAll('#prospects-contacts-body tr');
-    rows.forEach(r => {
-        if (!stage) { r.style.display = ''; return; }
-        const stageCell = r.cells[4]?.textContent?.trim()?.toLowerCase();
-        r.style.display = stageCell === stage ? '' : 'none';
+function renderProspectsTable(prospects) {
+    const tbody = document.getElementById('prospects-full-body');
+    const emptyEl = document.getElementById('prospects-empty');
+    const tableWrap = document.getElementById('prospects-table-wrap');
+
+    if (!prospects.length) {
+        emptyEl.style.display = 'block';
+        tableWrap.style.display = 'none';
+        return;
+    }
+    emptyEl.style.display = 'none';
+    tableWrap.style.display = '';
+
+    tbody.innerHTML = prospects.map(c => {
+        const name = `${c.first_name || ''} ${c.last_name || ''}`.trim();
+        const priBadge = c.priority_score >= 5 ? 'background:#ef4444;color:#fff' :
+                         c.priority_score >= 4 ? 'background:#f59e0b;color:#000' :
+                         c.priority_score >= 3 ? 'background:#3b82f6;color:#fff' : 'background:#6b7280;color:#fff';
+        const personaBadge = c.persona_type === 'qa_leader' ? 'background:#10b981;color:#fff' :
+                            c.persona_type === 'vp_eng' ? 'background:#8b5cf6;color:#fff' : 'background:#6b7280;color:#fff';
+        const personaLabel = c.persona_type === 'qa_leader' ? 'QA' : c.persona_type === 'vp_eng' ? 'VP Eng' : c.persona_type || '-';
+        const hasLinkedin = c.linkedin_url && c.linkedin_url.includes('linkedin.com');
+        const linkedinUrl = hasLinkedin ? (c.linkedin_url.startsWith('http') ? c.linkedin_url : 'https://' + c.linkedin_url) : '';
+        const draftCount = (c.drafts || []).length;
+
+        return `<tr data-persona="${c.persona_type || ''}" data-priority="${c.priority_score || 0}" data-name="${name.toLowerCase()}" data-company="${(c.company_name || '').toLowerCase()}">
+            <td><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:bold;${priBadge}">${c.priority_score || '-'}</span></td>
+            <td><strong style="cursor:pointer;color:var(--accent)" onclick="openProspectDetail('${c.id}')">${esc(name)}</strong></td>
+            <td style="font-size:12px">${esc(c.title || '')}</td>
+            <td>${esc(c.company_name || '')}</td>
+            <td><span style="display:inline-block;padding:2px 6px;border-radius:4px;font-size:11px;${personaBadge}">${personaLabel}</span></td>
+            <td>${hasLinkedin ? `<a href="${linkedinUrl}" target="_blank" rel="noopener" style="color:#0a66c2;text-decoration:none;font-size:12px" title="Open LinkedIn profile">Open</a>` : '<span style="color:var(--text-muted);font-size:11px">-</span>'}</td>
+            <td style="text-align:center">${draftCount > 0 ? `<span style="background:var(--accent);color:#fff;padding:2px 6px;border-radius:4px;font-size:11px">${draftCount}</span>` : '-'}</td>
+            <td><button class="btn btn-sm" onclick="openProspectDetail('${c.id}')" style="font-size:11px;padding:2px 8px">View</button></td>
+        </tr>`;
+    }).join('');
+}
+
+function filterFullProspects() {
+    const persona = document.getElementById('prospects-persona-filter').value;
+    const priority = document.getElementById('prospects-priority-filter').value;
+    const search = (document.getElementById('prospects-search').value || '').toLowerCase();
+
+    const filtered = allProspects.filter(p => {
+        if (persona && p.persona_type !== persona) return false;
+        if (priority && (p.priority_score || 0) != parseInt(priority)) return false;
+        if (search) {
+            const name = `${p.first_name || ''} ${p.last_name || ''}`.toLowerCase();
+            const company = (p.company_name || '').toLowerCase();
+            if (!name.includes(search) && !company.includes(search)) return false;
+        }
+        return true;
+    });
+    renderProspectsTable(filtered);
+}
+
+async function openProspectDetail(contactId) {
+    const modal = document.getElementById('prospect-detail-modal');
+    const content = document.getElementById('prospect-detail-content');
+    modal.style.display = 'block';
+    content.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-secondary)">Loading...</div>';
+
+    try {
+        const data = await api(`/api/prospects/${contactId}/drafts`);
+        const c = data.contact;
+        const drafts = data.drafts || [];
+        const research = data.research;
+        const name = `${c.first_name || ''} ${c.last_name || ''}`.trim();
+        const hasLinkedin = c.linkedin_url && c.linkedin_url.includes('linkedin.com');
+        const linkedinUrl = hasLinkedin ? (c.linkedin_url.startsWith('http') ? c.linkedin_url : 'https://' + c.linkedin_url) : '';
+
+        const touchLabels = {1:'Touch 1 - InMail', 2:'Touch 2 - Call Script', 3:'Touch 3 - Follow-up', 4:'Touch 4 - Call Script #2', 5:'Touch 5 - Email', 6:'Touch 6 - Break-up'};
+
+        let html = `
+            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:20px">
+                <div>
+                    <h2 style="margin:0">${esc(name)}</h2>
+                    <div style="color:var(--text-secondary);margin-top:4px">${esc(c.title || '')} at ${esc(c.company_name || c.vertical || '')}</div>
+                </div>
+                <div style="display:flex;gap:8px">
+                    ${hasLinkedin ? `<a href="${linkedinUrl}" target="_blank" rel="noopener" class="btn btn-sm" style="background:#0a66c2;color:#fff;text-decoration:none">Open LinkedIn</a>` : ''}
+                    ${hasLinkedin ? `<button class="btn btn-sm" onclick="copyToClip('${linkedinUrl}')">Copy URL</button>` : ''}
+                </div>
+            </div>
+        `;
+
+        // Research section
+        if (research) {
+            html += `<div style="background:var(--bg-primary);border-radius:8px;padding:16px;margin-bottom:16px">
+                <h4 style="margin:0 0 8px">Research</h4>
+                <div style="font-size:13px;color:var(--text-secondary)">
+                    <div style="margin-bottom:4px"><em>${esc(research.headline || c.key_detail || '')}</em></div>
+                    <div>${esc(research.summary || c.company_detail || '')}</div>
+                </div>
+            </div>`;
+        }
+
+        // Objection section
+        if (c.predicted_objection) {
+            html += `<div style="background:#1e1b30;border-left:3px solid #f59e0b;border-radius:4px;padding:12px;margin-bottom:16px">
+                <div style="font-size:12px;font-weight:bold;color:#f59e0b;margin-bottom:4px">Predicted Objection</div>
+                <div style="font-size:13px;margin-bottom:6px">${esc(c.predicted_objection)}</div>
+                <div style="font-size:12px;color:var(--text-secondary)"><strong>Response:</strong> ${esc(c.objection_response || '')}</div>
+            </div>`;
+        }
+
+        // Drafts section
+        if (drafts.length) {
+            html += '<h3 style="margin-bottom:12px">Messages</h3>';
+            for (const d of drafts) {
+                const label = touchLabels[d.touch_number] || `Touch ${d.touch_number}`;
+                const isCall = d.touch_type === 'call' || d.touch_number === 2 || d.touch_number === 4;
+                html += `<div style="background:var(--bg-primary);border-radius:8px;padding:16px;margin-bottom:12px">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                        <h4 style="margin:0;font-size:14px">${label}</h4>
+                        <div style="display:flex;gap:6px">
+                            ${d.subject_line ? `<button class="btn btn-sm" onclick="copyToClip(\`${escJs(d.subject_line)}\`)" style="font-size:11px;padding:2px 8px">Copy Subject</button>` : ''}
+                            <button class="btn btn-sm" onclick="copyToClip(\`${escJs(d.body)}\`)" style="font-size:11px;padding:2px 8px">${isCall ? 'Copy Script' : 'Copy Message'}</button>
+                        </div>
+                    </div>
+                    ${d.subject_line ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:6px"><strong>Subject:</strong> ${esc(d.subject_line)}</div>` : ''}
+                    <div style="font-size:13px;white-space:pre-line;${isCall ? 'font-family:monospace;font-size:12px;background:var(--bg-elevated);padding:10px;border-radius:4px' : ''}">${esc(d.body)}</div>
+                    <div style="font-size:11px;color:var(--text-muted);margin-top:6px">${d.word_count || 0} words</div>
+                </div>`;
+            }
+        } else {
+            html += '<p style="color:var(--text-muted)">No message drafts for this prospect yet.</p>';
+        }
+
+        content.innerHTML = html;
+    } catch(e) {
+        content.innerHTML = `<p style="color:#ef4444">Error loading prospect details: ${e.message}</p>`;
+    }
+}
+
+function closeProspectDetail() {
+    document.getElementById('prospect-detail-modal').style.display = 'none';
+}
+
+function copyToClip(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        const toast = document.createElement('div');
+        toast.textContent = 'Copied!';
+        toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#10b981;color:#fff;padding:8px 16px;border-radius:6px;z-index:9999;font-size:13px';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 1500);
     });
 }
+
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escJs(s) { return (s||'').replace(/\\/g,'\\\\').replace(/`/g,'\\`').replace(/\$/g,'\\$'); }
+
+// =====================================================
+// ENHANCED DRAFTS PAGE
+// =====================================================
+async function loadDraftsFull() {
+    const touchFilter = document.getElementById('drafts-touch-filter')?.value || '';
+    const search = (document.getElementById('drafts-search-full')?.value || '').toLowerCase();
+
+    try {
+        const data = await api('/api/prospects/full');
+        const prospects = data.prospects || [];
+        const kpisEl = document.getElementById('drafts-kpis');
+        const listEl = document.getElementById('drafts-list');
+
+        // Collect all drafts with prospect info
+        let allDrafts = [];
+        for (const p of prospects) {
+            for (const d of (p.drafts || [])) {
+                allDrafts.push({
+                    ...d,
+                    prospect_name: `${p.first_name || ''} ${p.last_name || ''}`.trim(),
+                    company: p.company_name || '',
+                    linkedin_url: p.linkedin_url || '',
+                    priority: p.priority_score || 0
+                });
+            }
+        }
+
+        // Filter
+        if (touchFilter) {
+            allDrafts = allDrafts.filter(d => d.touch_number == parseInt(touchFilter));
+        }
+        if (search) {
+            allDrafts = allDrafts.filter(d =>
+                d.prospect_name.toLowerCase().includes(search) ||
+                d.company.toLowerCase().includes(search) ||
+                (d.body || '').toLowerCase().includes(search)
+            );
+        }
+
+        const touchLabels = {1:'InMail', 2:'Call', 3:'Follow-up', 4:'Call #2', 5:'Email', 6:'Break-up'};
+        const t1 = allDrafts.filter(d => d.touch_number === 1).length;
+        const t3 = allDrafts.filter(d => d.touch_number === 3).length;
+        const t6 = allDrafts.filter(d => d.touch_number === 6).length;
+        const calls = allDrafts.filter(d => d.touch_number === 2 || d.touch_number === 4).length;
+
+        if (kpisEl) kpisEl.innerHTML = `
+            <div class="kpi"><div class="kpi-label">Total Drafts</div><div class="kpi-val">${allDrafts.length}</div></div>
+            <div class="kpi"><div class="kpi-label">InMails</div><div class="kpi-val">${t1}</div></div>
+            <div class="kpi"><div class="kpi-label">Follow-ups</div><div class="kpi-val">${t3}</div></div>
+            <div class="kpi"><div class="kpi-label">Call Scripts</div><div class="kpi-val">${calls}</div></div>
+            <div class="kpi"><div class="kpi-label">Break-ups</div><div class="kpi-val">${t6}</div></div>
+        `;
+
+        if (!allDrafts.length) {
+            if (listEl) listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-secondary)">No drafts found. Import a RunBundle to get started.</div>';
+            return;
+        }
+
+        // Sort by prospect priority desc, then touch number
+        allDrafts.sort((a,b) => (b.priority - a.priority) || (a.touch_number - b.touch_number));
+
+        if (listEl) listEl.innerHTML = allDrafts.map(d => {
+            const isCall = d.touch_number === 2 || d.touch_number === 4;
+            const touchLabel = touchLabels[d.touch_number] || `Touch ${d.touch_number}`;
+            const hasLinkedin = d.linkedin_url && d.linkedin_url.includes('linkedin.com');
+            const linkedinUrl = hasLinkedin ? (d.linkedin_url.startsWith('http') ? d.linkedin_url : 'https://' + d.linkedin_url) : '';
+
+            return `<div class="card" style="margin-bottom:10px">
+                <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px">
+                    <div>
+                        <div style="display:flex;align-items:center;gap:8px">
+                            <strong>${esc(d.prospect_name)}</strong>
+                            <span style="background:var(--bg-elevated);padding:2px 6px;border-radius:4px;font-size:11px">${touchLabel}</span>
+                        </div>
+                        <div style="font-size:12px;color:var(--text-secondary)">${esc(d.company)}</div>
+                        ${d.subject_line ? `<div style="font-size:12px;color:var(--text-muted);margin-top:2px">Subject: ${esc(d.subject_line)}</div>` : ''}
+                    </div>
+                    <div style="display:flex;gap:6px;flex-shrink:0">
+                        ${d.subject_line ? `<button class="btn btn-sm" onclick="copyToClip(\`${escJs(d.subject_line)}\`)" style="font-size:11px;padding:2px 8px">Copy Subj</button>` : ''}
+                        <button class="btn btn-sm" onclick="copyToClip(\`${escJs(d.body)}\`)" style="font-size:11px;padding:2px 8px">${isCall ? 'Copy Script' : 'Copy Msg'}</button>
+                        ${hasLinkedin ? `<a href="${linkedinUrl}" target="_blank" rel="noopener" class="btn btn-sm" style="font-size:11px;padding:2px 8px;background:#0a66c2;color:#fff;text-decoration:none">LinkedIn</a>` : ''}
+                    </div>
+                </div>
+                <div style="background:var(--bg-primary);padding:10px;border-radius:6px;font-size:13px;white-space:pre-line;max-height:120px;overflow-y:auto;${isCall ? 'font-family:monospace;font-size:12px' : ''}">${esc(d.body)}</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-top:4px">${d.word_count || 0} words${d.ab_group ? ' - ' + esc(d.ab_group) : ''}</div>
+            </div>`;
+        }).join('');
+    } catch(e) {
+        console.error('loadDraftsFull:', e);
+        const listEl = document.getElementById('drafts-list');
+        if (listEl) listEl.innerHTML = `<div style="color:#ef4444;padding:20px">Error loading drafts: ${e.message}</div>`;
+    }
+}
+
+// =====================================================
+// RUNBUNDLE IMPORT PAGE
+// =====================================================
+let pendingRunBundle = null;
+
+function handleRunBundleFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            pendingRunBundle = JSON.parse(e.target.result);
+            showRunBundlePreview(pendingRunBundle, file.name);
+        } catch(err) {
+            alert('Invalid JSON file: ' + err.message);
+        }
+    };
+    reader.readAsText(file);
+}
+
+function handleRunBundlePaste() {
+    const text = document.getElementById('rb-paste-input').value;
+    if (!text.trim()) return;
+    try {
+        pendingRunBundle = JSON.parse(text);
+        showRunBundlePreview(pendingRunBundle, 'pasted');
+    } catch(err) {
+        alert('Invalid JSON: ' + err.message);
+    }
+}
+
+function showRunBundlePreview(bundle, source) {
+    const previewEl = document.getElementById('rb-preview');
+    const statsEl = document.getElementById('rb-preview-stats');
+    const tableEl = document.getElementById('rb-preview-table');
+    previewEl.style.display = 'block';
+
+    const prospects = bundle.prospects || [];
+    const active = prospects.filter(p => !p.status || !p.status.includes('Removed'));
+    const qa = active.filter(p => (p.persona || '').toLowerCase().includes('qa')).length;
+    const eng = active.length - qa;
+    const withLinkedin = active.filter(p => p.linkedin && p.linkedin.includes('linkedin.com')).length;
+
+    // Check for drafts (embedded in prospects)
+    let draftCount = 0;
+    for (const p of active) {
+        if (p.touch_1_body) draftCount++;
+        if (p.touch_3) draftCount++;
+        if (p.touch_6) draftCount++;
+        if (p.call_snippet_1) draftCount++;
+        if (p.call_snippet_2) draftCount++;
+    }
+
+    statsEl.innerHTML = `
+        <div class="kpi"><div class="kpi-label">Prospects</div><div class="kpi-val">${active.length}</div></div>
+        <div class="kpi"><div class="kpi-label">QA Leaders</div><div class="kpi-val">${qa}</div></div>
+        <div class="kpi"><div class="kpi-label">VP Eng</div><div class="kpi-val">${eng}</div></div>
+        <div class="kpi"><div class="kpi-label">LinkedIn URLs</div><div class="kpi-val">${withLinkedin}</div></div>
+        <div class="kpi"><div class="kpi-label">Drafts</div><div class="kpi-val">${draftCount}</div></div>
+    `;
+
+    tableEl.innerHTML = `<table class="tbl"><thead><tr><th>Pri</th><th>Name</th><th>Title</th><th>Company</th><th>LinkedIn</th></tr></thead><tbody>
+        ${active.slice(0, 20).map(p => `<tr>
+            <td>${p.priority_score || '-'}</td>
+            <td>${esc(p.name || '')}</td>
+            <td style="font-size:12px">${esc(p.title || '')}</td>
+            <td>${esc(p.company || '')}</td>
+            <td>${p.linkedin && p.linkedin.includes('linkedin.com') ? 'Yes' : '<span style="color:#f59e0b">No</span>'}</td>
+        </tr>`).join('')}
+        ${active.length > 20 ? `<tr><td colspan="5" style="text-align:center;color:var(--text-muted)">...and ${active.length - 20} more</td></tr>` : ''}
+    </tbody></table>`;
+}
+
+async function executeRunBundleImport() {
+    if (!pendingRunBundle) return;
+    const btn = document.getElementById('rb-import-btn');
+    const resultEl = document.getElementById('rb-import-result');
+    btn.disabled = true;
+    btn.textContent = 'Importing...';
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = '<div style="color:var(--text-secondary)">Importing prospects and drafts...</div>';
+
+    try {
+        // Transform the data to RunBundle format
+        const bundle = {
+            run: pendingRunBundle.run || {
+                batch_number: pendingRunBundle.batch_number || 1,
+                batch_date: pendingRunBundle.batch_date || new Date().toISOString().slice(0,10),
+                source: 'runbundle_import',
+                ab_variable: 'pain_hook',
+                quality_report: pendingRunBundle.quality_report || {}
+            },
+            prospects: pendingRunBundle.prospects || []
+        };
+
+        const resp = await fetch('/api/import/run-bundle', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(bundle)
+        });
+        const data = await resp.json();
+
+        if (!resp.ok) {
+            resultEl.innerHTML = `<div style="color:#ef4444;padding:12px;background:var(--bg-primary);border-radius:6px">
+                <strong>Import failed:</strong> ${JSON.stringify(data.detail || data.error || data)}
+            </div>`;
+            return;
+        }
+
+        resultEl.innerHTML = `<div style="padding:12px;background:var(--bg-primary);border-radius:6px">
+            <div style="color:#10b981;font-weight:bold;margin-bottom:8px">Import Successful</div>
+            <div>Contacts imported: <strong>${data.imported_contacts}</strong></div>
+            <div>Drafts imported: <strong>${data.imported_drafts}</strong></div>
+            <div>Deduped: <strong>${data.deduped}</strong></div>
+            <div>Skipped: <strong>${data.skipped}</strong></div>
+            <div style="margin-top:12px">
+                <button class="btn btn-primary" onclick="showPage('prospects')">View Prospects</button>
+                <button class="btn" onclick="showPage('drafts')" style="margin-left:8px">View Drafts</button>
+            </div>
+        </div>`;
+    } catch(e) {
+        resultEl.innerHTML = `<div style="color:#ef4444">Error: ${e.message}</div>`;
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Import into Dashboard';
+    }
+}
+
+function filterProspects() {}
 
 // =====================================================
 // RESEARCH RUNS PAGE
