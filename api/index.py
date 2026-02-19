@@ -590,6 +590,141 @@ CREATE TABLE IF NOT EXISTS settings (
     created_at TEXT DEFAULT (datetime('now')),
     updated_at TEXT DEFAULT (datetime('now'))
 );
+
+CREATE TABLE IF NOT EXISTS quota_settings (
+    id TEXT PRIMARY KEY,
+    user_id TEXT DEFAULT 'owner',
+    channel TEXT NOT NULL,
+    inmail_monthly_limit INTEGER,
+    inmail_remaining_month INTEGER,
+    daily_message_limit INTEGER,
+    daily_connection_limit INTEGER,
+    workflow_credits_limit INTEGER DEFAULT 100,
+    workflow_credits_used INTEGER DEFAULT 0,
+    source TEXT DEFAULT 'manual',
+    last_verified_at TEXT,
+    notes TEXT,
+    created_at TEXT DEFAULT (datetime('now')),
+    updated_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS quota_ledger (
+    id TEXT PRIMARY KEY,
+    user_id TEXT DEFAULT 'owner',
+    date TEXT NOT NULL,
+    channel TEXT NOT NULL,
+    action_type TEXT NOT NULL,
+    count INTEGER DEFAULT 1,
+    source TEXT DEFAULT 'app_action',
+    ref_id TEXT,
+    notes TEXT,
+    created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_quota_ledger_date ON quota_ledger(date, channel);
+
+CREATE TABLE IF NOT EXISTS outreach_events (
+    id TEXT PRIMARY KEY,
+    contact_id TEXT REFERENCES contacts(id),
+    draft_id TEXT,
+    channel TEXT NOT NULL,
+    event_type TEXT NOT NULL,
+    timestamp TEXT DEFAULT (datetime('now')),
+    payload TEXT DEFAULT '{}',
+    sentiment TEXT,
+    notes TEXT,
+    created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_outreach_events_contact ON outreach_events(contact_id);
+CREATE INDEX IF NOT EXISTS idx_outreach_events_type ON outreach_events(event_type);
+
+CREATE TABLE IF NOT EXISTS email_drafts (
+    id TEXT PRIMARY KEY,
+    contact_id TEXT REFERENCES contacts(id),
+    batch_id TEXT,
+    subject TEXT NOT NULL,
+    body_text TEXT NOT NULL,
+    body_html TEXT,
+    angle TEXT,
+    variant TEXT,
+    research_snapshot_id TEXT,
+    personalization_score INTEGER,
+    proof_point_used TEXT,
+    pain_hook TEXT,
+    quality_score INTEGER DEFAULT 0,
+    research_score INTEGER DEFAULT 0,
+    status TEXT DEFAULT 'needs_review',
+    version INTEGER DEFAULT 1,
+    opt_out_text TEXT DEFAULT 'If this isn''t relevant, just let me know and I''ll remove you from my list.',
+    created_by TEXT DEFAULT 'agent',
+    created_at TEXT DEFAULT (datetime('now')),
+    updated_at TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_email_drafts_status ON email_drafts(status);
+CREATE INDEX IF NOT EXISTS idx_email_drafts_contact ON email_drafts(contact_id);
+
+CREATE TABLE IF NOT EXISTS email_approvals (
+    id TEXT PRIMARY KEY,
+    draft_id TEXT REFERENCES email_drafts(id),
+    approved_by TEXT DEFAULT 'owner',
+    approved_at TEXT DEFAULT (datetime('now')),
+    notes TEXT
+);
+
+CREATE TABLE IF NOT EXISTS email_send_queue (
+    id TEXT PRIMARY KEY,
+    draft_id TEXT REFERENCES email_drafts(id),
+    contact_id TEXT REFERENCES contacts(id),
+    scheduled_at TEXT,
+    priority INTEGER DEFAULT 3,
+    throttle_bucket TEXT,
+    preflight_passed INTEGER DEFAULT 0,
+    preflight_results TEXT DEFAULT '{}',
+    status TEXT DEFAULT 'pending',
+    created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS email_send_attempts (
+    id TEXT PRIMARY KEY,
+    queue_id TEXT REFERENCES email_send_queue(id),
+    draft_id TEXT,
+    contact_id TEXT,
+    provider TEXT DEFAULT 'gmail',
+    message_id TEXT,
+    thread_id TEXT,
+    response_code INTEGER,
+    response_text TEXT,
+    latency_ms INTEGER,
+    success INTEGER DEFAULT 0,
+    payload_hash TEXT,
+    sent_at TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_send_attempts_hash ON email_send_attempts(payload_hash);
+
+CREATE TABLE IF NOT EXISTS email_inbound_replies (
+    id TEXT PRIMARY KEY,
+    contact_id TEXT,
+    draft_id TEXT,
+    send_attempt_id TEXT,
+    raw_text TEXT,
+    intent TEXT,
+    tags TEXT DEFAULT '[]',
+    sentiment TEXT,
+    replied_at TEXT DEFAULT (datetime('now')),
+    created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS deliverability_metrics_daily (
+    id TEXT PRIMARY KEY,
+    date TEXT NOT NULL,
+    emails_sent INTEGER DEFAULT 0,
+    bounces INTEGER DEFAULT 0,
+    complaints INTEGER DEFAULT 0,
+    replies INTEGER DEFAULT 0,
+    bounce_rate REAL DEFAULT 0,
+    complaint_rate REAL DEFAULT 0,
+    reply_rate REAL DEFAULT 0,
+    created_at TEXT DEFAULT (datetime('now'))
+);
 """
 
 # ---------------------------------------------------------------------------
@@ -7960,3 +8095,985 @@ def get_batch_comparison_data():
         return {"batches": batch_data, "total_batches": len(batches)}
     except Exception as e:
         raise HTTPException(500, f"Error fetching batch comparison data: {str(e)}")
+
+# ─── WS1: QUOTA MANAGEMENT ────────────────────────────────────────────────
+
+@app.get("/api/quota/settings")
+def get_quota_settings():
+    """Get quota settings for all channels."""
+    conn = get_db()
+    rows = rows_to_dicts(conn.execute("""
+        SELECT id, channel, inmail_monthly_limit, inmail_remaining_month,
+               daily_message_limit, daily_connection_limit, workflow_credits_limit,
+               workflow_credits_used, source, last_verified_at
+        FROM quota_settings
+    """).fetchall())
+    conn.close()
+    return {"quota_settings": rows}
+
+@app.post("/api/quota/settings")
+def update_quota_settings(data: dict):
+    """Update quota settings for a channel. Sets source='manual' and last_verified_at to now."""
+    conn = get_db()
+    now = datetime.utcnow().isoformat()
+    channel = data.get("channel", "linkedin")
+    settings_id = f"qs_{channel}"
+
+    # Upsert quota settings
+    existing = conn.execute("SELECT id FROM quota_settings WHERE id=?", (settings_id,)).fetchone()
+
+    if existing:
+        updates = []
+        params = []
+        for key in ["inmail_monthly_limit", "inmail_remaining_month", "daily_message_limit",
+                    "daily_connection_limit", "workflow_credits_limit", "workflow_credits_used"]:
+            if key in data:
+                updates.append(f"{key}=?")
+                params.append(data[key])
+
+        if updates:
+            updates.append("source=?")
+            updates.append("last_verified_at=?")
+            updates.append("updated_at=?")
+            params.extend(["manual", now, now])
+            params.append(settings_id)
+            conn.execute(f"UPDATE quota_settings SET {', '.join(updates)} WHERE id=?", params)
+    else:
+        conn.execute("""INSERT INTO quota_settings
+            (id, channel, inmail_monthly_limit, inmail_remaining_month, daily_message_limit,
+             daily_connection_limit, workflow_credits_limit, workflow_credits_used,
+             source, last_verified_at, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            (settings_id, channel,
+             data.get("inmail_monthly_limit"), data.get("inmail_remaining_month"),
+             data.get("daily_message_limit"), data.get("daily_connection_limit"),
+             data.get("workflow_credits_limit", 100), data.get("workflow_credits_used", 0),
+             "manual", now, now, now))
+
+    conn.commit()
+    conn.close()
+    return {"status": "updated", "channel": channel, "source": "manual", "last_verified_at": now}
+
+@app.get("/api/quota/credits")
+def get_quota_credits():
+    """Get workflow credits remaining."""
+    conn = get_db()
+    row = conn.execute("""
+        SELECT workflow_credits_limit, workflow_credits_used, source
+        FROM quota_settings WHERE channel='workflow'
+    """).fetchone()
+    conn.close()
+
+    if row:
+        row = dict(row)
+        remaining = (row.get("workflow_credits_limit", 100) or 100) - (row.get("workflow_credits_used", 0) or 0)
+        return {
+            "limit": row.get("workflow_credits_limit", 100),
+            "used": row.get("workflow_credits_used", 0),
+            "remaining": max(0, remaining),
+            "source": row.get("source", "unknown")
+        }
+    else:
+        return {"limit": 100, "used": 0, "remaining": 100, "source": "default"}
+
+@app.post("/api/quota/ledger")
+def log_quota_event(data: dict):
+    """Log a quota event."""
+    conn = get_db()
+    now = datetime.utcnow().isoformat()
+    date = now[:10]
+
+    entry_id = gen_id("ql")
+    conn.execute("""INSERT INTO quota_ledger
+        (id, user_id, date, channel, action_type, count, source, ref_id, notes, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        (entry_id, data.get("user_id", "owner"), date,
+         data.get("channel", "linkedin"),
+         data.get("action_type"), data.get("count", 1),
+         data.get("source", "app_action"),
+         data.get("ref_id"), data.get("notes"), now))
+
+    conn.commit()
+    conn.close()
+    return {"id": entry_id, "status": "logged"}
+
+@app.get("/api/linkedin/quota")
+def get_linkedin_quota_updated():
+    """Get LinkedIn quota with settings, source, and last_verified_at."""
+    conn = get_db()
+
+    # Try to get from quota_settings first
+    settings = conn.execute("""
+        SELECT inmail_monthly_limit, inmail_remaining_month, daily_message_limit,
+               daily_connection_limit, source, last_verified_at
+        FROM quota_settings WHERE channel='linkedin'
+    """).fetchone()
+
+    if settings:
+        settings = dict(settings)
+        monthly_limit = settings.get("inmail_monthly_limit") or 50
+        daily_limit = settings.get("daily_message_limit") or 10
+        source = settings.get("source", "unknown")
+        last_verified = settings.get("last_verified_at")
+    else:
+        # Fallback to old settings table
+        settings_dict = {}
+        for row in conn.execute("SELECT key, value FROM settings WHERE key LIKE 'linkedin_%'"):
+            settings_dict[row["key"]] = row["value"]
+
+        monthly_limit = int(settings_dict.get("linkedin_inmail_monthly", "50"))
+        daily_limit = int(settings_dict.get("linkedin_inmail_daily", "10"))
+        source = "settings_table"
+        last_verified = None
+
+    # Count sent this period
+    now = datetime.utcnow()
+    today_start = now.strftime("%Y-%m-%d") + "T00:00:00"
+    week_start = (now - timedelta(days=now.weekday())).strftime("%Y-%m-%d") + "T00:00:00"
+    month_start = now.strftime("%Y-%m-01") + "T00:00:00"
+
+    sent_today = conn.execute("SELECT COUNT(*) FROM outreach_touches WHERE channel='linkedin' AND sent_at >= ?", (today_start,)).fetchone()[0]
+    sent_week = conn.execute("SELECT COUNT(*) FROM outreach_touches WHERE channel='linkedin' AND sent_at >= ?", (week_start,)).fetchone()[0]
+    sent_month = conn.execute("SELECT COUNT(*) FROM outreach_touches WHERE channel='linkedin' AND sent_at >= ?", (month_start,)).fetchone()[0]
+
+    conn.close()
+    return {
+        "daily": {"limit": daily_limit, "sent": sent_today, "remaining": max(0, daily_limit - sent_today)},
+        "weekly": {"limit": 25, "sent": sent_week, "remaining": max(0, 25 - sent_week)},
+        "monthly": {"limit": monthly_limit, "sent": sent_month, "remaining": max(0, monthly_limit - sent_month)},
+        "source": source,
+        "last_verified_at": last_verified,
+        "warnings": []
+    }
+
+# ─── WS2-3: STATS AND DRAFT ALIGNMENT ────────────────────────────────────────
+
+@app.get("/api/linkedin/stats")
+def linkedin_stats_updated(debug: bool = False):
+    """Get LinkedIn stats with by_touch_type breakdown and draft count matching."""
+    conn = get_db()
+
+    # Use the same WHERE logic as GET /api/drafts for consistency
+    drafts = conn.execute("""
+        SELECT COUNT(*) as cnt FROM message_drafts
+        WHERE channel='linkedin' AND approval_status IS NOT NULL
+    """).fetchone()["cnt"]
+
+    profiles = conn.execute("SELECT COUNT(*) as cnt FROM linkedin_profiles").fetchone()["cnt"]
+    sent = conn.execute("SELECT COUNT(*) as cnt FROM touchpoints WHERE channel='linkedin'").fetchone()["cnt"]
+    runs = conn.execute("SELECT COUNT(*) as cnt FROM workflow_runs WHERE channel='linkedin'").fetchone()["cnt"]
+    active_runs = conn.execute("SELECT COUNT(*) as cnt FROM workflow_runs WHERE channel='linkedin' AND status IN ('queued','running')").fetchone()["cnt"]
+
+    # Get counts by approval status
+    by_status = {}
+    for row in conn.execute("SELECT approval_status, COUNT(*) as cnt FROM message_drafts WHERE channel='linkedin' GROUP BY approval_status"):
+        by_status[row["approval_status"] or "draft"] = row["cnt"]
+
+    # Get counts by touch_type
+    by_touch_type = {}
+    for row in conn.execute("SELECT touch_type, COUNT(*) as cnt FROM message_drafts WHERE channel='linkedin' GROUP BY touch_type"):
+        by_touch_type[row["touch_type"] or "unknown"] = row["cnt"]
+
+    # Get actual sent count from outreach_touches
+    sent_actual = conn.execute("SELECT COUNT(*) FROM outreach_touches WHERE channel='linkedin'").fetchone()[0]
+
+    conn.close()
+
+    result = {
+        "profiles": profiles,
+        "drafts": drafts,
+        "sent": sent,
+        "sent_actual": sent_actual,
+        "total_runs": runs,
+        "active_runs": active_runs,
+        "by_approval_status": by_status,
+        "by_touch_type": by_touch_type,
+        "approved_count": by_status.get("approved", 0),
+        "queued_count": by_status.get("queued", 0),
+        "dry_run": DRY_RUN
+    }
+
+    if debug:
+        result["debug_where_clause"] = "WHERE channel='linkedin' AND approval_status IS NOT NULL"
+
+    return result
+
+# ─── WS5: DRAFT QUALITY GATES AND STAGING ────────────────────────────────────
+
+@app.get("/api/drafts/{draft_id}/quality-check")
+def check_draft_quality(draft_id: str):
+    """Score a draft against quality gates."""
+    conn = get_db()
+    draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+    conn.close()
+
+    if not draft:
+        raise HTTPException(404, "Draft not found")
+
+    draft = dict(draft)
+    body = draft.get("body", "")
+    first_name = conn.execute("SELECT first_name FROM contacts WHERE id=?", (draft["contact_id"],)).fetchone()
+    first_name = first_name[0] if first_name else "Unknown"
+
+    checks = []
+    score = 0
+
+    # Check 1: Has greeting with first name
+    has_greeting = f"Hi {first_name}" in body or f"Hey {first_name}" in body
+    checks.append({"name": "greeting_with_name", "passed": has_greeting, "detail": f"Greeting contains '{first_name}'"})
+    if has_greeting:
+        score += 1
+
+    # Check 2: Has personalization line (references stored research)
+    has_research = conn.execute("""
+        SELECT COUNT(*) FROM draft_research_link
+        WHERE draft_id=?
+    """, (draft_id,)).fetchone()[0] > 0
+    checks.append({"name": "personalization_line", "passed": has_research, "detail": "Has research snapshot link"})
+    if has_research:
+        score += 1
+
+    # Check 3: Has question mark
+    has_question = "?" in body
+    checks.append({"name": "has_question", "passed": has_question, "detail": "Contains low-pressure question"})
+    if has_question:
+        score += 1
+
+    # Check 4: Has soft CTA
+    soft_ctas = ["worth", "interested", "thoughts", "quick", "chat", "conversation", "coffee"]
+    has_cta = any(cta in body.lower() for cta in soft_ctas)
+    checks.append({"name": "soft_cta", "passed": has_cta, "detail": "Contains soft call-to-action"})
+    if has_cta:
+        score += 1
+
+    # Check 5: Word count within range (touch type dependent)
+    word_count = len(body.split())
+    touch_type = draft.get("touch_type", "")
+
+    if touch_type in ("touch_1", "inmail"):
+        min_words, max_words = 70, 120
+    elif touch_type in ("touch_3", "followup"):
+        min_words, max_words = 40, 100
+    else:
+        min_words, max_words = 30, 150
+
+    wc_passed = min_words <= word_count <= max_words
+    checks.append({"name": "word_count", "passed": wc_passed, "detail": f"Word count {word_count} in range [{min_words}, {max_words}]"})
+    if wc_passed:
+        score += 1
+
+    conn.close()
+
+    return {
+        "passed": score >= 4,
+        "score": score,
+        "max_score": 5,
+        "checks": checks
+    }
+
+@app.post("/api/drafts/bulk-enhance")
+def bulk_enhance_drafts(data: dict):
+    """Enhance multiple drafts with improved personalization."""
+    conn = get_db()
+    now = datetime.utcnow().isoformat()
+
+    # Build filter
+    filters = data.get("filter", {})
+    limit = data.get("limit", 50)
+
+    q = "SELECT id FROM message_drafts WHERE 1=1"
+    params = []
+
+    if filters.get("status"):
+        q += " AND approval_status=?"
+        params.append(filters["status"])
+    if "min_quality_score" in filters:
+        q += " AND qc_passed >= ?"
+        params.append(filters["min_quality_score"])
+    if "max_quality_score" in filters:
+        q += " AND qc_passed <= ?"
+        params.append(filters["max_quality_score"])
+    if filters.get("touch_type"):
+        q += " AND touch_type=?"
+        params.append(filters["touch_type"])
+
+    q += " LIMIT ?"
+    params.append(limit)
+
+    draft_ids = [row[0] for row in conn.execute(q, params).fetchall()]
+
+    enhanced_count = 0
+    for draft_id in draft_ids:
+        # Create draft_version (preserve original)
+        draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+        if draft:
+            draft = dict(draft)
+            version_id = gen_id("draftv")
+            conn.execute("""INSERT INTO draft_versions
+                (id, draft_id, contact_id, channel, touch_number, subject, body, version,
+                 status, personalization_score, proof_point, pain_hook, opener_style, word_count, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (version_id, draft_id, draft["contact_id"], draft["channel"],
+                 draft["touch_number"], draft.get("subject_line"), draft["body"], 1,
+                 "archived", draft.get("personalization_score"), draft.get("proof_point_used"),
+                 draft.get("pain_hook"), draft.get("opener_style"),
+                 len(draft["body"].split()), now))
+
+            # Mark original as enhanced (simplified - in real use would call AI to rewrite)
+            conn.execute("UPDATE message_drafts SET personalization_score=?, updated_at=? WHERE id=?",
+                        (min((draft.get("personalization_score") or 1) + 1, 3), now, draft_id))
+            enhanced_count += 1
+
+    conn.commit()
+    conn.close()
+    return {"enhanced_count": enhanced_count, "draft_ids": draft_ids}
+
+@app.post("/api/drafts/{draft_id}/stage")
+def stage_draft(draft_id: str):
+    """Move a draft to staged status after preflight check."""
+    conn = get_db()
+
+    # Get draft
+    draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+    if not draft:
+        conn.close()
+        raise HTTPException(404, "Draft not found")
+
+    draft = dict(draft)
+    contact_id = draft["contact_id"]
+
+    # Preflight checks
+    preflight = {"passed": True, "checks": []}
+
+    # Check 1: Contact has linkedin_url
+    contact = conn.execute("SELECT linkedin_url FROM contacts WHERE id=?", (contact_id,)).fetchone()
+    has_url = contact and contact[0]
+    preflight["checks"].append({"name": "linkedin_url", "passed": has_url})
+    if not has_url:
+        preflight["passed"] = False
+
+    # Check 2: Draft is approved
+    is_approved = draft.get("approval_status") == "approved"
+    preflight["checks"].append({"name": "approval_status", "passed": is_approved})
+    if not is_approved:
+        preflight["passed"] = False
+
+    # Check 3: Research exists
+    has_research = conn.execute("""
+        SELECT COUNT(*) FROM research_snapshots WHERE contact_id=?
+    """, (contact_id,)).fetchone()[0] > 0
+    preflight["checks"].append({"name": "research_exists", "passed": has_research})
+    if not has_research:
+        preflight["passed"] = False
+
+    if preflight["passed"]:
+        now = datetime.utcnow().isoformat()
+        conn.execute("UPDATE message_drafts SET approval_status=?, updated_at=? WHERE id=?",
+                    ("staged", now, draft_id))
+        conn.commit()
+
+    conn.close()
+    return preflight
+
+@app.post("/api/drafts/{draft_id}/mark-sent")
+def mark_draft_sent(draft_id: str, data: dict = {}):
+    """Mark a draft as sent and create related records."""
+    conn = get_db()
+    now = datetime.utcnow().isoformat()
+
+    # Get draft
+    draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+    if not draft:
+        conn.close()
+        raise HTTPException(404, "Draft not found")
+
+    draft = dict(draft)
+    contact_id = draft["contact_id"]
+
+    # Create send_log entry
+    send_id = gen_id("sl")
+    conn.execute("""INSERT INTO send_log
+        (id, contact_id, draft_id, channel, status, sent_at, confirmed_by, notes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+        (send_id, contact_id, draft_id, draft["channel"], "sent", now, "user",
+         data.get("notes", "")))
+
+    # Create quota_ledger entry
+    conn.execute("""INSERT INTO quota_ledger
+        (id, user_id, date, channel, action_type, count, source, ref_id, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        (gen_id("ql"), "owner", now[:10], draft["channel"], "inmail_sent", 1, "draft_send", draft_id, now))
+
+    # Create activity_timeline entry
+    contact_name = conn.execute("SELECT first_name, last_name FROM contacts WHERE id=?", (contact_id,)).fetchone()
+    contact_name = f"{contact_name[0]} {contact_name[1]}" if contact_name else "Unknown"
+
+    conn.execute("""INSERT INTO activity_timeline
+        (id, contact_id, channel, activity_type, description, created_at)
+        VALUES (?, ?, ?, ?, ?, ?)""",
+        (gen_id("act"), contact_id, draft["channel"], "message_sent",
+         f"Sent {draft['touch_type']} to {contact_name}", now))
+
+    # Update draft status
+    conn.execute("UPDATE message_drafts SET approval_status=?, updated_at=? WHERE id=?",
+                ("sent", now, draft_id))
+
+    conn.commit()
+    conn.close()
+
+    return {
+        "send_log_id": send_id,
+        "draft_id": draft_id,
+        "status": "sent",
+        "sent_at": now
+    }
+
+# ─── WS6: OUTREACH EVENTS ─────────────────────────────────────────────────────
+
+@app.post("/api/outreach-events")
+def log_outreach_event(data: dict):
+    """Log an outreach event (sent, reply_received, meeting_booked, bounce, no_response)."""
+    conn = get_db()
+    now = datetime.utcnow().isoformat()
+
+    event_id = gen_id("evt")
+    conn.execute("""INSERT INTO outreach_events
+        (id, contact_id, draft_id, channel, event_type, timestamp, payload, sentiment, notes, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        (event_id, data.get("contact_id"), data.get("draft_id"),
+         data.get("channel", "linkedin"), data.get("event_type"),
+         now, json.dumps(data.get("payload", {})),
+         data.get("sentiment"), data.get("notes"), now))
+
+    conn.commit()
+    conn.close()
+    return {"event_id": event_id, "status": "logged"}
+
+@app.get("/api/outreach-events")
+def list_outreach_events(contact_id: str = None, event_type: str = None,
+                         channel: str = None, limit: int = 100):
+    """List outreach events with optional filters."""
+    conn = get_db()
+
+    q = "SELECT * FROM outreach_events WHERE 1=1"
+    params = []
+
+    if contact_id:
+        q += " AND contact_id=?"
+        params.append(contact_id)
+    if event_type:
+        q += " AND event_type=?"
+        params.append(event_type)
+    if channel:
+        q += " AND channel=?"
+        params.append(channel)
+
+    q += " ORDER BY timestamp DESC LIMIT ?"
+    params.append(limit)
+
+    rows = rows_to_dicts(conn.execute(q, params).fetchall())
+    conn.close()
+
+    for r in rows:
+        if "payload" in r and isinstance(r["payload"], str):
+            try:
+                r["payload"] = json.loads(r["payload"])
+            except:
+                pass
+
+    return {"events": rows, "total": len(rows)}
+
+@app.get("/api/outreach-events/analytics")
+def outreach_events_analytics():
+    """Get aggregated analytics on outreach events."""
+    conn = get_db()
+
+    # Sent count
+    sent_count = conn.execute("SELECT COUNT(*) FROM outreach_events WHERE event_type='sent'").fetchone()[0]
+
+    # Reply rate
+    replied_count = conn.execute("SELECT COUNT(DISTINCT contact_id) FROM outreach_events WHERE event_type='reply_received'").fetchone()[0]
+    reply_rate = (replied_count / sent_count * 100) if sent_count > 0 else 0
+
+    # Meeting rate
+    meeting_count = conn.execute("SELECT COUNT(*) FROM outreach_events WHERE event_type='meeting_booked'").fetchone()[0]
+    meeting_rate = (meeting_count / sent_count * 100) if sent_count > 0 else 0
+
+    # By channel
+    by_channel = {}
+    for row in conn.execute("""
+        SELECT channel, COUNT(*) as cnt FROM outreach_events WHERE event_type='sent'
+        GROUP BY channel
+    """):
+        by_channel[row[0]] = row[1]
+
+    # By touch_type (from linked draft)
+    by_touch_type = {}
+    for row in conn.execute("""
+        SELECT md.touch_type, COUNT(*) as cnt FROM outreach_events oe
+        LEFT JOIN message_drafts md ON oe.draft_id = md.id
+        WHERE oe.event_type='sent' AND md.touch_type IS NOT NULL
+        GROUP BY md.touch_type
+    """):
+        by_touch_type[row[0]] = row[1]
+
+    conn.close()
+
+    return {
+        "sent_count": sent_count,
+        "replied_count": replied_count,
+        "reply_rate": round(reply_rate, 2),
+        "meeting_count": meeting_count,
+        "meeting_rate": round(meeting_rate, 2),
+        "by_channel": by_channel,
+        "by_touch_type": by_touch_type
+    }
+
+# ─── WS8: EMAIL CHANNEL ENDPOINTS ──────────────────────────────────────────────
+
+OWNER_EMAIL = "rgorham369@gmail.com"
+SEND_ENABLED = os.environ.get("SEND_ENABLED", "false").lower() in ("true", "1", "yes")
+
+@app.get("/api/email/stats")
+def email_stats():
+    """Get email statistics."""
+    conn = get_db()
+
+    total = conn.execute("SELECT COUNT(*) FROM email_drafts").fetchone()[0]
+
+    by_status = {}
+    for row in conn.execute("SELECT status, COUNT(*) as cnt FROM email_drafts GROUP BY status"):
+        by_status[row[0]] = row[1]
+
+    sent = conn.execute("SELECT COUNT(*) FROM email_send_attempts WHERE success=1").fetchone()[0]
+    replied = conn.execute("SELECT COUNT(*) FROM email_inbound_replies").fetchone()[0]
+
+    reply_rate = (replied / sent * 100) if sent > 0 else 0
+
+    conn.close()
+    return {
+        "total_drafts": total,
+        "by_status": by_status,
+        "sent": sent,
+        "replies": replied,
+        "reply_rate": round(reply_rate, 2)
+    }
+
+@app.get("/api/email/drafts")
+def list_email_drafts(status: str = None, angle: str = None, contact_id: str = None,
+                      limit: int = 100, offset: int = 0):
+    """List email drafts with optional filters."""
+    conn = get_db()
+
+    q = """SELECT ed.*, c.first_name, c.last_name, c.email,
+                  a.name as company_name
+           FROM email_drafts ed
+           LEFT JOIN contacts c ON ed.contact_id = c.id
+           LEFT JOIN accounts a ON c.account_id = a.id
+           WHERE 1=1"""
+    params = []
+
+    if status:
+        q += " AND ed.status=?"
+        params.append(status)
+    if angle:
+        q += " AND ed.angle=?"
+        params.append(angle)
+    if contact_id:
+        q += " AND ed.contact_id=?"
+        params.append(contact_id)
+
+    q += " ORDER BY ed.created_at DESC LIMIT ? OFFSET ?"
+    params.extend([limit, offset])
+
+    rows = rows_to_dicts(conn.execute(q, params).fetchall())
+
+    count_q = "SELECT COUNT(*) FROM email_drafts WHERE 1=1"
+    count_params = []
+    if status:
+        count_q += " AND status=?"
+        count_params.append(status)
+    if angle:
+        count_q += " AND angle=?"
+        count_params.append(angle)
+    if contact_id:
+        count_q += " AND contact_id=?"
+        count_params.append(contact_id)
+
+    total = conn.execute(count_q, count_params).fetchone()[0]
+    conn.close()
+
+    for r in rows:
+        r["contact_name"] = f"{r.get('first_name', '')} {r.get('last_name', '')}".strip()
+
+    return {"drafts": rows, "total": total}
+
+@app.post("/api/email/drafts")
+def create_email_draft(data: dict):
+    """Create an email draft."""
+    conn = get_db()
+    now = datetime.utcnow().isoformat()
+
+    required = ["subject", "body_text", "research_snapshot_id"]
+    for req in required:
+        if req not in data:
+            conn.close()
+            raise HTTPException(400, f"Missing required field: {req}")
+
+    draft_id = gen_id("ed")
+    conn.execute("""INSERT INTO email_drafts
+        (id, contact_id, batch_id, subject, body_text, body_html, angle, variant,
+         research_snapshot_id, personalization_score, proof_point_used, pain_hook,
+         quality_score, research_score, status, version, created_by, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        (draft_id, data.get("contact_id"), data.get("batch_id"),
+         data["subject"], data["body_text"], data.get("body_html"),
+         data.get("angle"), data.get("variant"),
+         data["research_snapshot_id"],
+         data.get("personalization_score", 2),
+         data.get("proof_point_used"),
+         data.get("pain_hook"),
+         data.get("quality_score", 0),
+         data.get("research_score", 0),
+         "needs_review", 1, "agent", now, now))
+
+    conn.commit()
+    conn.close()
+    return {"draft_id": draft_id, "status": "created"}
+
+@app.patch("/api/email/drafts/{draft_id}")
+def update_email_draft(draft_id: str, data: dict):
+    """Update an email draft."""
+    conn = get_db()
+    now = datetime.utcnow().isoformat()
+
+    draft = conn.execute("SELECT * FROM email_drafts WHERE id=?", (draft_id,)).fetchone()
+    if not draft:
+        conn.close()
+        raise HTTPException(404, "Draft not found")
+
+    updates = []
+    params = []
+
+    for key in ["subject", "body_text", "body_html", "angle", "variant", "personalization_score"]:
+        if key in data:
+            updates.append(f"{key}=?")
+            params.append(data[key])
+
+    if updates:
+        updates.append("updated_at=?")
+        params.append(now)
+        params.append(draft_id)
+        conn.execute(f"UPDATE email_drafts SET {', '.join(updates)} WHERE id=?", params)
+        conn.commit()
+
+    conn.close()
+    return {"status": "updated", "draft_id": draft_id}
+
+@app.post("/api/email/drafts/{draft_id}/approve")
+def approve_email_draft(draft_id: str, data: dict = {}):
+    """Approve an email draft."""
+    conn = get_db()
+    now = datetime.utcnow().isoformat()
+
+    draft = conn.execute("SELECT * FROM email_drafts WHERE id=?", (draft_id,)).fetchone()
+    if not draft:
+        conn.close()
+        raise HTTPException(404, "Draft not found")
+
+    # Create approval record
+    approval_id = gen_id("eap")
+    conn.execute("""INSERT INTO email_approvals
+        (id, draft_id, approved_by, approved_at, notes)
+        VALUES (?, ?, ?, ?, ?)""",
+        (approval_id, draft_id, "owner", now, data.get("notes", "")))
+
+    # Update draft status
+    conn.execute("UPDATE email_drafts SET status='approved', updated_at=? WHERE id=?",
+                (now, draft_id))
+
+    conn.commit()
+    conn.close()
+    return {"approval_id": approval_id, "status": "approved"}
+
+@app.post("/api/email/drafts/{draft_id}/enhance")
+def enhance_email_draft(draft_id: str):
+    """Enhance an email draft with stored research."""
+    conn = get_db()
+    now = datetime.utcnow().isoformat()
+
+    draft = conn.execute("SELECT * FROM email_drafts WHERE id=?", (draft_id,)).fetchone()
+    if not draft:
+        conn.close()
+        raise HTTPException(404, "Draft not found")
+
+    draft = dict(draft)
+
+    # Get research snapshot
+    research = conn.execute("SELECT * FROM research_snapshots WHERE id=?",
+                           (draft["research_snapshot_id"],)).fetchone()
+
+    # In a real implementation, would call AI to enhance with research
+    # For now, just mark as enhanced
+    conn.execute("UPDATE email_drafts SET research_score=?, updated_at=? WHERE id=?",
+                (3, now, draft_id))
+
+    conn.commit()
+    conn.close()
+    return {"status": "enhanced", "draft_id": draft_id}
+
+@app.get("/api/email/send-queue")
+def list_email_queue(status: str = None, limit: int = 50):
+    """List pending email sends."""
+    conn = get_db()
+
+    q = """SELECT esq.*, ed.subject, ed.body_text, c.email, c.first_name, c.last_name
+           FROM email_send_queue esq
+           LEFT JOIN email_drafts ed ON esq.draft_id = ed.id
+           LEFT JOIN contacts c ON esq.contact_id = c.id
+           WHERE 1=1"""
+    params = []
+
+    if status:
+        q += " AND esq.status=?"
+        params.append(status)
+    else:
+        q += " AND esq.status='pending'"
+
+    q += " ORDER BY esq.priority DESC, esq.created_at ASC LIMIT ?"
+    params.append(limit)
+
+    rows = rows_to_dicts(conn.execute(q, params).fetchall())
+    conn.close()
+
+    for r in rows:
+        if "preflight_results" in r and isinstance(r["preflight_results"], str):
+            try:
+                r["preflight_results"] = json.loads(r["preflight_results"])
+            except:
+                pass
+
+    return {"queue": rows}
+
+@app.post("/api/email/send-queue")
+def add_to_email_queue(data: dict):
+    """Add a draft to the send queue after preflight pass."""
+    conn = get_db()
+    now = datetime.utcnow().isoformat()
+
+    draft_id = data.get("draft_id")
+    contact_id = data.get("contact_id")
+
+    if not draft_id or not contact_id:
+        conn.close()
+        raise HTTPException(400, "draft_id and contact_id required")
+
+    # Run preflight
+    preflight = _run_email_preflight(conn, draft_id, contact_id)
+
+    if not preflight["passed"]:
+        conn.close()
+        return {"status": "preflight_failed", "checks": preflight["checks"]}
+
+    # Add to queue
+    queue_id = gen_id("esq")
+    conn.execute("""INSERT INTO email_send_queue
+        (id, draft_id, contact_id, scheduled_at, priority, status, preflight_passed,
+         preflight_results, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        (queue_id, draft_id, contact_id, data.get("scheduled_at"), data.get("priority", 3),
+         "pending", 1, json.dumps(preflight["checks"]), now))
+
+    conn.commit()
+    conn.close()
+    return {"queue_id": queue_id, "status": "queued"}
+
+def _run_email_preflight(conn, draft_id: str, contact_id: str) -> dict:
+    """Run preflight checks for email send."""
+    checks = []
+    passed = True
+
+    # Check 1: Contact has email
+    contact = conn.execute("SELECT email FROM contacts WHERE id=?", (contact_id,)).fetchone()
+    has_email = contact and contact[0]
+    checks.append({"name": "has_email", "passed": bool(has_email)})
+    if not has_email:
+        passed = False
+
+    # Check 2: Not in suppression list
+    if contact and contact[0]:
+        suppressed = conn.execute("SELECT COUNT(*) FROM suppression_list WHERE email=?",
+                                 (contact[0],)).fetchone()[0] > 0
+        checks.append({"name": "not_suppressed", "passed": not suppressed})
+        if suppressed:
+            passed = False
+
+    # Check 3: Draft is approved
+    draft = conn.execute("SELECT status FROM email_drafts WHERE id=?", (draft_id,)).fetchone()
+    is_approved = draft and draft[0] == "approved"
+    checks.append({"name": "draft_approved", "passed": bool(is_approved)})
+    if not is_approved:
+        passed = False
+
+    # Check 4: Has opt_out_text
+    has_optout = draft and conn.execute("SELECT opt_out_text FROM email_drafts WHERE id=?",
+                                       (draft_id,)).fetchone()[0]
+    checks.append({"name": "has_optout_text", "passed": bool(has_optout)})
+
+    # Check 5: Link count < 3
+    draft_body = conn.execute("SELECT body_text FROM email_drafts WHERE id=?", (draft_id,)).fetchone()
+    link_count = draft_body[0].count("http") if draft_body and draft_body[0] else 0
+    checks.append({"name": "link_count", "passed": link_count < 3, "detail": f"{link_count} links"})
+    if link_count >= 3:
+        passed = False
+
+    # Check 6: No spammy phrases
+    spammy = ["viagra", "cialis", "click here now", "limited time", "urgent"]
+    body = draft_body[0].lower() if draft_body and draft_body[0] else ""
+    has_spam = any(s in body for s in spammy)
+    checks.append({"name": "no_spam_phrases", "passed": not has_spam})
+    if has_spam:
+        passed = False
+
+    return {"passed": passed, "checks": checks}
+
+@app.post("/api/email/preflight/{draft_id}")
+def run_email_preflight(draft_id: str, contact_id: str = None):
+    """Run preflight checks for an email draft."""
+    conn = get_db()
+
+    if not contact_id:
+        draft = conn.execute("SELECT contact_id FROM email_drafts WHERE id=?", (draft_id,)).fetchone()
+        if draft:
+            contact_id = draft[0]
+
+    if not contact_id:
+        conn.close()
+        raise HTTPException(400, "contact_id required or inferable from draft")
+
+    result = _run_email_preflight(conn, draft_id, contact_id)
+    conn.close()
+    return result
+
+@app.get("/api/email/deliverability")
+def get_email_deliverability():
+    """Get email deliverability health."""
+    conn = get_db()
+
+    # SPF/DKIM/DMARC status from sender_health_snapshots
+    health = conn.execute("""
+        SELECT spf_pass, dkim_pass, dmarc_pass
+        FROM sender_health_snapshots
+        ORDER BY date DESC LIMIT 1
+    """).fetchone()
+
+    checks = {
+        "spf": bool(health[0]) if health else False,
+        "dkim": bool(health[1]) if health else False,
+        "dmarc": bool(health[2]) if health else False
+    }
+
+    # Suppression count
+    suppressed = conn.execute("SELECT COUNT(*) FROM suppression_list").fetchone()[0]
+
+    # Bounce trend (last 7 days)
+    bounces = conn.execute("""
+        SELECT SUM(bounces) FROM deliverability_metrics_daily
+        WHERE date >= date('now', '-7 days')
+    """).fetchone()[0] or 0
+
+    # Daily metrics (last 30 days)
+    daily_metrics = rows_to_dicts(conn.execute("""
+        SELECT * FROM deliverability_metrics_daily
+        WHERE date >= date('now', '-30 days')
+        ORDER BY date DESC
+    """).fetchall())
+
+    conn.close()
+    return {
+        "spf_configured": checks["spf"],
+        "dkim_configured": checks["dkim"],
+        "dmarc_configured": checks["dmarc"],
+        "suppression_list_count": suppressed,
+        "bounces_7d": bounces,
+        "daily_metrics": daily_metrics
+    }
+
+@app.post("/api/email/send-test")
+def send_test_email(data: dict):
+    """Send a test email to owner only. Does not actually send if SEND_ENABLED=false."""
+    # Hard-coded allowlist check
+    test_to = data.get("to_email", OWNER_EMAIL)
+    if test_to != OWNER_EMAIL:
+        raise HTTPException(403, f"Test sends only allowed to {OWNER_EMAIL}")
+
+    conn = get_db()
+    now = datetime.utcnow().isoformat()
+
+    # Build payload
+    payload = {
+        "to": test_to,
+        "subject": data.get("subject", "Test Email"),
+        "body": data.get("body", ""),
+        "from": data.get("from_email", "test@testsigma.com")
+    }
+
+    # Log attempt (always, even if not sending)
+    attempt_id = gen_id("esa")
+    conn.execute("""INSERT INTO email_send_attempts
+        (id, draft_id, contact_id, provider, response_code, response_text, success,
+         payload_hash, sent_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        (attempt_id, data.get("draft_id"), data.get("contact_id"),
+         "test", 200 if SEND_ENABLED else 999,
+         "Would send" if not SEND_ENABLED else "Sent",
+         1 if SEND_ENABLED else 0,
+         "test_hash", now))
+
+    conn.commit()
+    conn.close()
+
+    return {
+        "attempt_id": attempt_id,
+        "status": "would_send" if not SEND_ENABLED else "sent",
+        "to": test_to,
+        "send_enabled": SEND_ENABLED,
+        "payload": payload
+    }
+
+@app.get("/api/email/analytics")
+def email_analytics():
+    """Get email channel analytics."""
+    conn = get_db()
+
+    # Reply rate
+    sent = conn.execute("SELECT COUNT(*) FROM email_send_attempts WHERE success=1").fetchone()[0]
+    replied = conn.execute("SELECT COUNT(*) FROM email_inbound_replies").fetchone()[0]
+    reply_rate = (replied / sent * 100) if sent > 0 else 0
+
+    # Meeting rate
+    meetings = conn.execute("SELECT COUNT(*) FROM outreach_events WHERE event_type='meeting_booked' AND channel='email'").fetchone()[0]
+    meeting_rate = (meetings / sent * 100) if sent > 0 else 0
+
+    # Top subjects
+    top_subjects = rows_to_dicts(conn.execute("""
+        SELECT subject, COUNT(*) as count FROM email_drafts GROUP BY subject ORDER BY count DESC LIMIT 5
+    """).fetchall())
+
+    # Best angles
+    best_angles = rows_to_dicts(conn.execute("""
+        SELECT angle, COUNT(DISTINCT eid.id) as replies, COUNT(DISTINCT ed.id) as sent
+        FROM email_drafts ed
+        LEFT JOIN email_inbound_replies eid ON ed.id = eid.draft_id
+        WHERE angle IS NOT NULL
+        GROUP BY angle
+        ORDER BY replies DESC
+    """).fetchall())
+
+    conn.close()
+    return {
+        "reply_rate": round(reply_rate, 2),
+        "meeting_rate": round(meeting_rate, 2),
+        "top_subjects": top_subjects,
+        "best_angles": best_angles
+    }

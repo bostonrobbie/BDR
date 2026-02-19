@@ -754,8 +754,8 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
 /* Quick Actions Grid */
 .quick-actions-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
 }
 
 .quick-action-btn {
@@ -787,6 +787,7 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
+    display: block;
 }
 
 .quick-action-desc {
@@ -2185,6 +2186,7 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
             <button class="channel-tab-btn" onclick="switchLITab('analytics')">Analytics</button>
             <button class="channel-tab-btn" onclick="switchLITab('review')">Review</button>
             <button class="channel-tab-btn" onclick="switchLITab('replies')">Replies</button>
+            <button class="channel-tab-btn" onclick="switchLITab('staging')">Staging</button>
             <button class="channel-tab-btn" onclick="switchLITab('memory')">Memory</button>
         </div>
     </div>
@@ -2456,70 +2458,149 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
             <div id="memory-manual-list"></div>
         </div>
     </div>
+
+    <!-- STAGING TAB - Pre-send preflight and manual sending -->
+    <div class="li-tab-content" id="li-tab-staging" style="display:none">
+        <div class="kpi-row" id="staging-kpis"></div>
+
+        <div class="card" style="margin-bottom:16px;padding:12px;">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:space-between;">
+                <h3>Ready to Send</h3>
+                <div style="display:flex;gap:8px;">
+                    <select class="inp" id="staging-filter-touch" onchange="loadStagingTab()" style="width:auto;min-width:140px;">
+                        <option value="">All Touches</option>
+                        <option value="inmail">Touch 1 - InMail</option>
+                        <option value="inmail_followup">Touch 3 - Follow-up</option>
+                        <option value="breakup">Touch 6 - Break-up</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="staging-list"><div class="empty">No staged messages yet. Approve drafts first, then click "Move to Staging" on each.</div></div>
+    </div>
 </div>
 
 <!-- EMAIL CHANNEL -->
 <div class="page" id="page-email">
     <div class="page-hdr" style="margin-bottom:0">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-            <h2>Email</h2>
-            <div style="display:flex;gap:8px">
-                <button class="btn btn-sm btn-primary" onclick="showPage('flow-email-draft')">Run Draft Flow</button>
+            <h2>Email Channel</h2>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <span id="email-send-badge" style="font-size:11px;padding:4px 10px;border-radius:12px;background:var(--error-bg);border:1px solid var(--error);color:var(--error);">🔒 SENDING DISABLED</span>
+                <span id="email-dry-run-badge" class="tag tag-warn">DRY RUN ON</span>
             </div>
         </div>
         <div class="channel-tabs" id="email-tabs">
-            <button class="channel-tab-btn active" onclick="switchChannelTab('email','prospects')">Prospects</button>
-            <button class="channel-tab-btn" onclick="switchChannelTab('email','drafts')">Drafts</button>
-            <button class="channel-tab-btn" onclick="switchChannelTab('email','analytics')">Analytics</button>
+            <button class="channel-tab-btn active" onclick="switchEmailTab('overview')">Overview</button>
+            <button class="channel-tab-btn" onclick="switchEmailTab('drafts')">Drafts</button>
+            <button class="channel-tab-btn" onclick="switchEmailTab('queue')">Send Queue</button>
+            <button class="channel-tab-btn" onclick="switchEmailTab('analytics')">Analytics</button>
+            <button class="channel-tab-btn" onclick="switchEmailTab('deliverability')">Deliverability</button>
         </div>
     </div>
 
-    <div class="kpi-row" id="email-kpis"></div>
+    <!-- EMAIL OVERVIEW TAB -->
+    <div class="email-tab-content" id="email-tab-overview">
+        <div class="kpi-row" id="email-overview-kpis"></div>
 
-    <div class="tab-bar" style="margin-bottom:16px;">
-        <button class="btn btn-sm active" onclick="showEmailTab('identities',this)">Sender Accounts</button>
-        <button class="btn btn-sm" onclick="showEmailTab('suppression',this)">Suppression List</button>
-        <button class="btn btn-sm" onclick="showEmailTab('events',this)">Events Log</button>
-        <button class="btn btn-sm" onclick="showEmailTab('pacing',this)">Pacing Rules</button>
-    </div>
-
-    <div id="email-tab-identities" class="email-tab"></div>
-    <div id="email-tab-suppression" class="email-tab" style="display:none"></div>
-    <div id="email-tab-events" class="email-tab" style="display:none"></div>
-    <div id="email-tab-pacing" class="email-tab" style="display:none"></div>
-
-    <div id="add-identity-modal" class="modal">
-        <div class="modal-content">
-            <h3>Add Sender Account</h3>
-            <div style="display:grid;gap:12px;margin:16px 0;">
-                <input class="inp" id="new-email" placeholder="Email address" />
-                <input class="inp" id="new-display-name" placeholder="Display name (e.g. Rob Gorham)" />
-                <input class="inp" id="new-daily-limit" type="number" value="25" placeholder="Daily send limit" />
-                <input class="inp" id="new-warmup-cap" type="number" value="5" placeholder="Warmup daily cap" />
-            </div>
-            <div style="display:flex;gap:8px;justify-content:flex-end;">
-                <button class="btn btn-sm" onclick="hideAddIdentity()">Cancel</button>
-                <button class="btn btn-sm btn-primary" onclick="createIdentity()">Add</button>
+        <div class="card" style="margin-bottom:16px;">
+            <h3 style="margin-bottom:14px;">Quick Actions</h3>
+            <div class="quick-actions-grid">
+                <button class="quick-action-btn" onclick="showEmailDraftModal()">
+                    <div class="quick-action-title">✉️ Create Email Draft</div>
+                    <div class="quick-action-desc">Draft a personalized email for a prospect</div>
+                </button>
+                <button class="quick-action-btn" onclick="bulkEnhanceEmailDrafts()">
+                    <div class="quick-action-title">✨ Enhance Drafts</div>
+                    <div class="quick-action-desc">AI-powered second pass on email drafts</div>
+                </button>
+                <button class="quick-action-btn" onclick="switchEmailTab('deliverability')">
+                    <div class="quick-action-title">🛡️ Health Check</div>
+                    <div class="quick-action-desc">Check deliverability and sender reputation</div>
+                </button>
+                <button class="quick-action-btn" onclick="switchEmailTab('analytics')">
+                    <div class="quick-action-title">📊 Analytics</div>
+                    <div class="quick-action-desc">Reply rates, bounce rates, performance</div>
+                </button>
             </div>
         </div>
+
+        <details class="card" style="margin-bottom:16px;">
+            <summary style="cursor:pointer;font-weight:600;font-size:14px;">💡 How the Email workflow works</summary>
+            <div style="margin-top:12px;font-size:12px;color:var(--text-secondary);line-height:1.7;">
+                <strong>1. Research</strong> - Account and persona research feeds into draft creation.<br>
+                <strong>2. Draft</strong> - Create personalized emails with subject, body, and rationale.<br>
+                <strong>3. Review</strong> - Quality gates check greeting, personalization, CTA, opt-out.<br>
+                <strong>4. Approve</strong> - Human approval required before any email can be queued.<br>
+                <strong>5. Preflight</strong> - Automated checks: suppression, deliverability, compliance.<br>
+                <strong>6. Send</strong> - Manual send through Gmail. Owner-only testing first.<br>
+                <strong>7. Track</strong> - Log replies, bounces, meetings. Feed learnings back.
+            </div>
+        </details>
     </div>
 
-    <div id="add-suppression-modal" class="modal">
-        <div class="modal-content">
-            <h3>Add to Suppression List</h3>
-            <div style="display:grid;gap:12px;margin:16px 0;">
-                <input class="inp" id="sup-email" placeholder="Email to suppress" />
-                <select class="sel" id="sup-reason">
-                    <option value="opt_out">Opt-out requested</option>
-                    <option value="hard_bounce">Hard bounce</option>
-                    <option value="do_not_contact">Do not contact</option>
-                    <option value="competitor">Competitor</option>
-                    <option value="manual">Manual removal</option>
+    <!-- EMAIL DRAFTS TAB -->
+    <div class="email-tab-content" id="email-tab-drafts" style="display:none">
+        <div class="kpi-row" id="email-drafts-kpis"></div>
+        <div class="card" style="margin-bottom:16px;padding:12px;">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                <select class="inp" id="email-draft-filter-status" onchange="loadEmailDrafts()" style="width:auto;min-width:140px;">
+                    <option value="">All Statuses</option>
+                    <option value="needs_review">Needs Review</option>
+                    <option value="enhanced">Enhanced</option>
+                    <option value="approved">Approved</option>
+                    <option value="queued">Queued</option>
                 </select>
+                <input class="inp" id="email-draft-search" placeholder="Search by name or company..." style="flex:1;min-width:200px;" />
             </div>
-            <div style="display:flex;gap:8px;justify-content:flex-end;">
-                <button class="btn btn-sm" onclick="document.getElementById('add-suppression-modal').style.display='none'">Cancel</button>
-                <button class="btn btn-sm btn-primary" onclick="addSuppression()">Suppress</button>
+        </div>
+        <div id="email-drafts-list"><div class="empty">No email drafts yet. Create drafts from the Overview tab.</div></div>
+    </div>
+
+    <!-- EMAIL SEND QUEUE TAB -->
+    <div class="email-tab-content" id="email-tab-queue" style="display:none">
+        <div class="kpi-row" id="email-queue-kpis"></div>
+        <div class="card" style="margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <h3>Send Queue</h3>
+                <div style="display:flex;gap:8px;">
+                    <button class="btn btn-sm" onclick="runEmailTestSend()">🧪 Test Send (Owner Only)</button>
+                </div>
+            </div>
+        </div>
+        <div id="email-queue-list"><div class="empty">No emails in queue. Approve drafts and run preflight to add them.</div></div>
+    </div>
+
+    <!-- EMAIL ANALYTICS TAB -->
+    <div class="email-tab-content" id="email-tab-analytics" style="display:none">
+        <div class="kpi-row" id="email-analytics-kpis"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="card">
+                <h3 style="margin-bottom:14px;">Top Subjects</h3>
+                <div id="email-top-subjects"><div class="empty">No data yet</div></div>
+            </div>
+            <div class="card">
+                <h3 style="margin-bottom:14px;">Best Angles</h3>
+                <div id="email-best-angles"><div class="empty">No data yet</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EMAIL DELIVERABILITY TAB -->
+    <div class="email-tab-content" id="email-tab-deliverability" style="display:none">
+        <div class="card" style="margin-bottom:16px;">
+            <h3 style="margin-bottom:14px;">Deliverability Health</h3>
+            <div id="email-health-checklist"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="card">
+                <h3 style="margin-bottom:14px;">Suppression List</h3>
+                <div id="email-suppression-stats"><div class="empty">No suppressions</div></div>
+            </div>
+            <div class="card">
+                <h3 style="margin-bottom:14px;">Daily Metrics</h3>
+                <div id="email-daily-metrics"><div class="empty">No metrics yet</div></div>
             </div>
         </div>
     </div>
@@ -3483,8 +3564,10 @@ function showPage(id) {
     if (id === 'flow-email-draft') loadFlowEmailDraftPage();
 }
 
-function kpi(label, val, sub = '') {
-    return `<div class="kpi"><div class="kpi-label">${label}</div><div class="kpi-val">${val}</div>${sub ? `<div class="kpi-sub">${sub}</div>` : ''}</div>`;
+function kpi(label, val, sub = '', onclick = '') {
+    const clickStyle = onclick ? 'cursor:pointer;' : '';
+    const clickAttr = onclick ? ` onclick="${onclick}" tabindex="0"` : '';
+    return `<div class="kpi" style="${clickStyle}"${clickAttr}><div class="kpi-label">${label}</div><div class="kpi-val">${val}</div>${sub ? `<div class="kpi-sub">${sub}</div>` : ''}</div>`;
 }
 
 function timeAgo(dateStr) {
@@ -4337,97 +4420,212 @@ async function loadAgentRuns() {
     }).join('');
 }
 
-// EMAIL PAGE
+// ─── EMAIL CHANNEL ──────────────────────────────────────────────────────
+function switchEmailTab(tab) {
+    document.querySelectorAll('.email-tab-content').forEach(el => el.style.display = 'none');
+    const target = document.getElementById('email-tab-' + tab);
+    if (target) target.style.display = '';
+    document.querySelectorAll('#email-tabs .channel-tab-btn').forEach(btn => btn.classList.remove('active'));
+    if (event && event.target) event.target.classList.add('active');
+
+    if (tab === 'overview') loadEmailOverview();
+    else if (tab === 'drafts') loadEmailDrafts();
+    else if (tab === 'queue') loadEmailQueue();
+    else if (tab === 'analytics') loadEmailAnalytics();
+    else if (tab === 'deliverability') loadEmailDeliverability();
+}
+
 async function loadEmailPage() {
-    const [health, identities, suppression, events, pacing] = await Promise.all([
-        api('/api/email/health'),
-        api('/api/email/identities'),
-        api('/api/email/suppression'),
-        api('/api/email/events'),
-        api('/api/email/pacing')
-    ]);
+    loadEmailOverview();
+}
 
-    const kpisEl = document.getElementById('email-kpis');
-    if (kpisEl && health) {
-        kpisEl.innerHTML = [
-            kpi('Sent', health.total_sent || 0),
-            kpi('Delivered', health.delivered || 0),
-            kpi('Bounce Rate', `${(health.bounce_rate || 0).toFixed(1)}%`),
-            kpi('Suppressed', health.suppressed_count || 0),
-        ].join('');
-    }
-
-    // Identities tab
-    const idEl = document.getElementById('email-tab-identities');
-    if (idEl) {
-        if (!identities || !identities.length) {
-            idEl.innerHTML = '<div class="empty">No sender identities configured</div>';
-        } else {
-            idEl.innerHTML = identities.map(id => `
-                <div style="padding:12px;border:1px solid var(--border);border-radius:6px;margin-bottom:8px;">
-                    <div><strong>${id.email || ''}</strong></div>
-                    <div style="font-size:12px;color:var(--text-secondary);">${id.domain || ''}</div>
-                    <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">SPF: ${id.spf ? '✓' : '✗'} • DKIM: ${id.dkim ? '✓' : '✗'} • DMARC: ${id.dmarc ? '✓' : '✗'}</div>
-                </div>
-            `).join('');
+async function loadEmailOverview() {
+    try {
+        const stats = await api('/api/email/stats');
+        const kpiEl = document.getElementById('email-overview-kpis');
+        if (kpiEl && stats) {
+            kpiEl.innerHTML = [
+                kpi('Total Drafts', stats.total_drafts || 0, '', "switchEmailTab('drafts')"),
+                kpi('Approved', stats.by_status?.approved || 0, '', "switchEmailTab('drafts')"),
+                kpi('Queued', stats.by_status?.queued || 0, '', "switchEmailTab('queue')"),
+                kpi('Sent', stats.total_sent || 0),
+                kpi('Reply Rate', (stats.reply_rate || 0).toFixed(1) + '%'),
+            ].join('');
         }
-    }
+    } catch(e) { console.error('Email stats:', e); }
+}
 
-    // Suppression tab
-    const supEl = document.getElementById('email-tab-suppression');
-    if (supEl && suppression) {
-        supEl.innerHTML = `
-            <div style="padding:12px;background:var(--bg-secondary);border-radius:6px;margin-bottom:12px;">
-                <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-                    <span style="color:var(--text-secondary);">Bounced</span>
-                    <strong>${suppression.bounced || 0}</strong>
-                </div>
-                <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-                    <span style="color:var(--text-secondary);">Complained</span>
-                    <strong>${suppression.complained || 0}</strong>
-                </div>
-                <div style="display:flex;justify-content:space-between;">
-                    <span style="color:var(--text-secondary);">Unsubscribed</span>
-                    <strong>${suppression.unsubscribed || 0}</strong>
-                </div>
-            </div>
-        `;
-    }
+async function loadEmailDrafts() {
+    const statusFilter = document.getElementById('email-draft-filter-status')?.value || '';
+    let url = '/api/email/drafts?limit=50';
+    if (statusFilter) url += `&status=${statusFilter}`;
 
-    // Events tab
-    const evEl = document.getElementById('email-tab-events');
-    if (evEl && events && events.length) {
-        evEl.innerHTML = events.slice(0, 10).map(e => `
-            <div style="padding:8px;border-bottom:1px solid var(--border);font-size:12px;">
-                <div style="display:flex;justify-content:space-between;">
-                    <strong>${e.event_type || ''}</strong>
-                    <span style="color:var(--text-secondary);">${timeAgo(e.timestamp)}</span>
+    try {
+        const data = await api(url);
+        const drafts = data?.drafts || [];
+
+        // KPIs
+        const stats = await api('/api/email/stats');
+        const kpiEl = document.getElementById('email-drafts-kpis');
+        if (kpiEl && stats) {
+            const bs = stats.by_status || {};
+            kpiEl.innerHTML = [
+                kpi('Total', stats.total_drafts || 0),
+                kpi('Needs Review', bs.needs_review || 0),
+                kpi('Enhanced', bs.enhanced || 0),
+                kpi('Approved', bs.approved || 0),
+            ].join('');
+        }
+
+        const listEl = document.getElementById('email-drafts-list');
+        if (!listEl) return;
+
+        if (!drafts.length) {
+            listEl.innerHTML = '<div class="empty">No email drafts found. Create one from the Overview tab.</div>';
+            return;
+        }
+
+        listEl.innerHTML = drafts.map(d => `
+            <div class="card" style="margin-bottom:12px;padding:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+                    <div>
+                        <strong>${d.contact_name || 'Unknown'}</strong>
+                        <span style="color:var(--text-muted);margin-left:8px;">${d.company_name || ''}</span>
+                        <span class="tag" style="margin-left:8px;">${d.status}</span>
+                    </div>
+                    <div style="display:flex;gap:6px;">
+                        ${d.status === 'needs_review' || d.status === 'enhanced' ? `<button class="btn btn-sm btn-primary" onclick="approveEmailDraft('${d.id}')">Approve</button>` : ''}
+                        ${d.status === 'approved' ? `<button class="btn btn-sm" onclick="runEmailPreflight('${d.id}')">🔍 Preflight</button>` : ''}
+                    </div>
                 </div>
-                ${e.email ? `<div style="color:var(--text-secondary);">${e.email}</div>` : ''}
+                <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Subject: ${d.subject || 'No subject'}</div>
+                <div style="background:var(--bg-primary);padding:10px;border-radius:var(--radius-sm);font-size:12px;white-space:pre-wrap;line-height:1.6;max-height:150px;overflow-y:auto;">${d.body_text || ''}</div>
+                ${d.opt_out_text ? `<div style="font-size:10px;color:var(--text-muted);margin-top:6px;font-style:italic;">Opt-out: ${d.opt_out_text}</div>` : ''}
             </div>
         `).join('');
-    }
+    } catch(e) { console.error('Email drafts:', e); }
+}
 
-    // Pacing tab
-    const pacEl = document.getElementById('email-tab-pacing');
-    if (pacEl && pacing) {
-        pacEl.innerHTML = `
-            <div style="padding:12px;background:var(--bg-secondary);border-radius:6px;">
-                <div style="margin-bottom:12px;">
-                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">Emails per hour</div>
-                    <strong>${pacing.per_hour || 0}</strong>
-                </div>
-                <div style="margin-bottom:12px;">
-                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">Emails per day</div>
-                    <strong>${pacing.per_day || 0}</strong>
-                </div>
+async function approveEmailDraft(draftId) {
+    try {
+        await apiPost(`/api/email/drafts/${draftId}/approve`, {});
+        showToast('Email draft approved');
+        loadEmailDrafts();
+    } catch(e) { showToast('Failed to approve', 'error'); }
+}
+
+async function runEmailPreflight(draftId) {
+    try {
+        const result = await apiPost(`/api/email/preflight/${draftId}`, {});
+        if (result?.passed) {
+            showToast('Preflight passed! Adding to send queue...');
+            await apiPost('/api/email/send-queue', { draft_id: draftId });
+            loadEmailDrafts();
+        } else {
+            const failed = (result?.checks || []).filter(c => !c.passed);
+            showToast(`Preflight failed: ${failed.map(f => f.name).join(', ')}`, 'error');
+        }
+    } catch(e) { showToast('Preflight error', 'error'); }
+}
+
+async function loadEmailQueue() {
+    try {
+        const data = await api('/api/email/send-queue');
+        const items = data?.items || [];
+        const kpiEl = document.getElementById('email-queue-kpis');
+        if (kpiEl) {
+            kpiEl.innerHTML = [
+                kpi('In Queue', items.length),
+                kpi('Preflight Passed', items.filter(i => i.preflight_passed).length),
+            ].join('');
+        }
+
+        const listEl = document.getElementById('email-queue-list');
+        if (!listEl) return;
+        if (!items.length) {
+            listEl.innerHTML = '<div class="empty">No emails in queue.</div>';
+            return;
+        }
+        listEl.innerHTML = items.map(i => `
+            <div class="card" style="margin-bottom:8px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
                 <div>
-                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">Current burst</div>
-                    <strong>${pacing.burst_size || 0}</strong>
+                    <strong>${i.contact_name || ''}</strong> - ${i.subject || 'No subject'}
+                    <span class="tag" style="margin-left:8px;">${i.status}</span>
                 </div>
+                <button class="btn btn-sm" onclick="sendTestEmail('${i.id}')">🧪 Test Send</button>
             </div>
-        `;
-    }
+        `).join('');
+    } catch(e) { console.error('Email queue:', e); }
+}
+
+async function runEmailTestSend() {
+    showToast('Test send feature: sends only to owner email (rgorham369@gmail.com)', 'info');
+}
+
+async function sendTestEmail(queueId) {
+    try {
+        const result = await apiPost('/api/email/send-test', { queue_id: queueId });
+        if (result?.status === 'logged') {
+            showToast('Test send logged (sending disabled in production)');
+        } else {
+            showToast(result?.message || 'Send test completed', 'info');
+        }
+    } catch(e) { showToast('Send test failed', 'error'); }
+}
+
+async function loadEmailAnalytics() {
+    try {
+        const data = await api('/api/email/analytics');
+        const kpiEl = document.getElementById('email-analytics-kpis');
+        if (kpiEl) {
+            kpiEl.innerHTML = [
+                kpi('Sent', data?.total_sent || 0),
+                kpi('Reply Rate', ((data?.reply_rate || 0) * 100).toFixed(1) + '%'),
+                kpi('Meeting Rate', ((data?.meeting_rate || 0) * 100).toFixed(1) + '%'),
+                kpi('Bounce Rate', ((data?.bounce_rate || 0) * 100).toFixed(1) + '%'),
+            ].join('');
+        }
+    } catch(e) { console.error('Email analytics:', e); }
+}
+
+async function loadEmailDeliverability() {
+    try {
+        const data = await api('/api/email/deliverability');
+        const checkEl = document.getElementById('email-health-checklist');
+        if (checkEl && data) {
+            const checks = data.checklist || {};
+            checkEl.innerHTML = `
+                <div style="display:grid;gap:8px;">
+                    <div style="padding:8px 12px;background:${checks.spf_configured ? 'var(--success-bg)' : 'var(--error-bg)'};border-radius:var(--radius-sm);font-size:12px;">
+                        ${checks.spf_configured ? '✅' : '❌'} SPF Record Configured
+                    </div>
+                    <div style="padding:8px 12px;background:${checks.dkim_configured ? 'var(--success-bg)' : 'var(--error-bg)'};border-radius:var(--radius-sm);font-size:12px;">
+                        ${checks.dkim_configured ? '✅' : '❌'} DKIM Signing Active
+                    </div>
+                    <div style="padding:8px 12px;background:${checks.dmarc_configured ? 'var(--success-bg)' : 'var(--warning-bg)'};border-radius:var(--radius-sm);font-size:12px;">
+                        ${checks.dmarc_configured ? '✅' : '⚠️'} DMARC Policy (Recommended)
+                    </div>
+                    <div style="padding:8px 12px;background:${(data.suppression_count || 0) === 0 ? 'var(--success-bg)' : 'var(--warning-bg)'};border-radius:var(--radius-sm);font-size:12px;">
+                        ${(data.suppression_count || 0) === 0 ? '✅' : '⚠️'} Suppression List: ${data.suppression_count || 0} entries
+                    </div>
+                    <div style="padding:8px 12px;background:var(--success-bg);border-radius:var(--radius-sm);font-size:12px;">
+                        ✅ Send Rate Limiting Active
+                    </div>
+                </div>
+            `;
+        }
+    } catch(e) { console.error('Deliverability:', e); }
+}
+
+function showEmailDraftModal() {
+    showToast('Email draft creation coming soon. Use the workflow engine to create drafts.', 'info');
+}
+
+async function bulkEnhanceEmailDrafts() {
+    showToast('Starting email draft enhancement...', 'info');
+    try {
+        showToast('Email bulk enhance coming soon', 'info');
+    } catch(e) { showToast('Enhance failed', 'error'); }
 }
 
 // SWARM PAGE
@@ -4677,6 +4875,7 @@ function switchLITab(tab) {
     else if (tab === 'analytics') loadLIAnalytics();
     else if (tab === 'review') loadReviewMode();
     else if (tab === 'replies') loadRepliesTab();
+    else if (tab === 'staging') loadStagingTab();
     else if (tab === 'memory') loadMemoryTab();
 }
 
@@ -4691,13 +4890,110 @@ async function loadLIQuotaBadge() {
         const badge = document.getElementById('li-quota-badge');
         if (badge && q) {
             const remaining = q.daily?.remaining ?? '-';
-            badge.innerHTML = `📨 ${remaining} InMails left today`;
-            if (q.daily && q.daily.remaining <= 2) {
+            const verified = q.source && q.source !== 'estimated' && q.last_verified_at;
+            const icon = verified ? '✅' : '⚠️';
+            const label = verified ? 'verified' : 'unverified';
+            badge.innerHTML = `📨 ${remaining} InMails left today <span style="font-size:9px;opacity:0.7">(${label})</span>`;
+            badge.style.cursor = 'pointer';
+            badge.onclick = () => showQuotaUpdateModal();
+            if (!verified) {
+                badge.style.borderColor = 'var(--warning)';
+                badge.style.color = 'var(--warning)';
+            } else if (q.daily && q.daily.remaining <= 2) {
                 badge.style.borderColor = 'var(--error)';
                 badge.style.color = 'var(--error)';
             }
         }
     } catch(e) { /* quota not configured yet */ }
+}
+
+// ─── QUOTA MANAGEMENT ───────────────────────────────────────────────────
+async function loadCreditsWidget() {
+    try {
+        const data = await api('/api/quota/credits');
+        const el = document.getElementById('quota-remaining');
+        const infoEl = document.getElementById('quota-info');
+        if (!el || !infoEl) return;
+        const remaining = (data.total || 100) - (data.used || 0);
+        const verified = data.source === 'manual' && data.last_verified_at;
+        el.textContent = remaining;
+        infoEl.textContent = `of ${data.total || 100} | Today: ${data.today_used || 0}`;
+        if (!verified && remaining < 20) {
+            el.style.color = 'var(--warning)';
+        }
+    } catch(e) { console.error('Credits widget:', e); }
+}
+
+function showQuotaUpdateModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal show';
+    modal.id = 'quota-update-modal';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width:500px;">
+            <div class="modal-header">
+                <h3>Update Quota Settings</h3>
+                <button class="modal-close" onclick="this.closest('.modal').remove()">&times;</button>
+            </div>
+            <div style="padding:20px">
+                <p style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;">
+                    Enter the values you see in your Sales Navigator account settings. This ensures the dashboard shows accurate remaining counts.
+                </p>
+                <div style="display:grid;gap:12px;">
+                    <div>
+                        <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px;">Monthly InMail Credits</label>
+                        <input class="inp" id="quota-inmail-monthly" type="number" value="50" style="width:100%">
+                    </div>
+                    <div>
+                        <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px;">Weekly InMail Limit</label>
+                        <input class="inp" id="quota-inmail-weekly" type="number" value="25" style="width:100%">
+                    </div>
+                    <div>
+                        <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px;">Daily InMail Limit</label>
+                        <input class="inp" id="quota-inmail-daily" type="number" value="10" style="width:100%">
+                    </div>
+                    <div>
+                        <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px;">Workflow Credits (Total)</label>
+                        <input class="inp" id="quota-workflow-total" type="number" value="100" style="width:100%">
+                    </div>
+                    <div style="padding:10px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:11px;color:var(--text-muted);">
+                        💡 <strong>Where to find these:</strong> In Sales Navigator, go to your account settings or check the InMail credit section in the top nav. Monthly credits reset on your billing date.
+                    </div>
+                </div>
+                <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px;">
+                    <button class="btn" onclick="this.closest('.modal').remove()">Cancel</button>
+                    <button class="btn btn-primary" onclick="saveQuotaSettings()">Save &amp; Verify</button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+
+    // Pre-load current values
+    api('/api/quota/settings').then(data => {
+        if (data?.settings) {
+            const s = data.settings.find(s => s.channel === 'linkedin') || {};
+            if (s.inmail_monthly_limit) document.getElementById('quota-inmail-monthly').value = s.inmail_monthly_limit;
+            if (s.daily_message_limit) document.getElementById('quota-inmail-daily').value = s.daily_message_limit;
+            if (s.workflow_credits_limit) document.getElementById('quota-workflow-total').value = s.workflow_credits_limit;
+        }
+    }).catch(() => {});
+}
+
+async function saveQuotaSettings() {
+    try {
+        await apiPost('/api/quota/settings', {
+            channel: 'linkedin',
+            inmail_monthly_limit: parseInt(document.getElementById('quota-inmail-monthly').value) || 50,
+            daily_message_limit: parseInt(document.getElementById('quota-inmail-daily').value) || 10,
+            workflow_credits_limit: parseInt(document.getElementById('quota-workflow-total').value) || 100,
+        });
+        document.getElementById('quota-update-modal')?.remove();
+        showToast('Quota settings updated and verified');
+        loadLIQuotaBadge();
+        loadCreditsWidget();
+    } catch(e) {
+        showToast('Failed to save quota settings', 'error');
+    }
 }
 
 async function loadLIOverview() {
@@ -4707,11 +5003,11 @@ async function loadLIOverview() {
         const kpiEl = document.getElementById('linkedin-kpis');
         if (stats && kpiEl) {
             kpiEl.innerHTML = [
-                kpi('Total Drafts', stats.drafts || 0),
-                kpi('Approved', stats.approved_count || 0),
-                kpi('Queued', stats.queued_count || 0),
-                kpi('Sent', stats.sent_actual || stats.sent || 0),
-                kpi('Profiles', stats.profiles || 0),
+                kpi('Total Drafts', stats.drafts || 0, '', "switchLITab('drafts')"),
+                kpi('Approved', stats.approved_count || 0, '', "switchLITab('drafts');document.getElementById('li-draft-filter-status').value='approved';loadLIDrafts()"),
+                kpi('Queued', stats.queued_count || 0, '', "switchLITab('queue')"),
+                kpi('Sent', stats.sent_actual || stats.sent || 0, '', "switchLITab('analytics')"),
+                kpi('Profiles', stats.profiles || 0, '', "showPage('prospects')"),
             ].join('');
         }
     } catch(e) { console.error('LI stats:', e); }
@@ -4762,11 +5058,11 @@ async function loadLIDrafts() {
             const allData = await api('/api/linkedin/stats');
             const byStatus = allData?.by_approval_status || {};
             kpiEl.innerHTML = [
-                kpi('Total', total),
-                kpi('Draft', byStatus.draft || 0),
-                kpi('Enhanced', byStatus.enhanced || 0),
-                kpi('Approved', byStatus.approved || 0),
-                kpi('Queued', byStatus.queued || 0),
+                kpi('Total', total, '', "document.getElementById('li-draft-filter-status').value='';loadLIDrafts()"),
+                kpi('Draft', byStatus.draft || 0, '', "document.getElementById('li-draft-filter-status').value='draft';loadLIDrafts()"),
+                kpi('Enhanced', byStatus.enhanced || 0, '', "document.getElementById('li-draft-filter-status').value='enhanced';loadLIDrafts()"),
+                kpi('Approved', byStatus.approved || 0, '', "document.getElementById('li-draft-filter-status').value='approved';loadLIDrafts()"),
+                kpi('Queued', byStatus.queued || 0, '', "document.getElementById('li-draft-filter-status').value='queued';loadLIDrafts()"),
             ].join('');
         }
 
@@ -4830,6 +5126,8 @@ function renderLIDraftsList(drafts) {
                     <button class="btn btn-sm" onclick="copyToClip(\`${escJs(d.body || '')}\`);showToast('Copied!')">Copy</button>
                     ${d.approval_status === 'draft' || d.approval_status === 'enhanced' ?
                         `<button class="btn btn-sm btn-primary" onclick="approveDraft('${d.id}')">Approve</button>` : ''}
+                    ${d.approval_status === 'approved' ?
+                        `<button class="btn btn-sm" style="background:var(--info-bg);border-color:var(--info);" onclick="moveDraftToStaging('${d.id}')">📤 Move to Staging</button>` : ''}
                     ${d.approval_status === 'approved' ?
                         `<button class="btn btn-sm" style="background:var(--info,#4da6ff);color:#fff;" onclick="queueDraft('${d.id}')">→ Queue</button>` : ''}
                     <button class="btn btn-sm" style="background:var(--warning-bg);color:var(--warning);" onclick="enhanceDraft('${d.id}')">Enhance</button>
@@ -4898,7 +5196,20 @@ async function queueDraft(draftId) {
 }
 
 async function enhanceBatchDrafts() {
-    showToast('Enhancement pass runs on individual drafts. Click Enhance on any draft card.');
+    const confirmed = confirm('This will enhance all draft-status messages to improve personalization. Continue?');
+    if (!confirmed) return;
+
+    showToast('Starting bulk enhancement...', 'info');
+    try {
+        const result = await apiPost('/api/drafts/bulk-enhance', {
+            filter: { status: 'draft' },
+            limit: 50
+        });
+        showToast(`Enhanced ${result?.enhanced_count || 0} drafts`);
+        loadLIDrafts();
+    } catch(e) {
+        showToast('Bulk enhance failed: ' + (e.message || ''), 'error');
+    }
 }
 
 // ─── QUEUE TAB ───────────────────────────────────────────────────
@@ -5828,6 +6139,110 @@ async function addMemoryPattern() {
     showToast('Pattern saved!');
     closeModal();
     loadMemoryPatterns();
+}
+
+// ─── STAGING TAB ────────────────────────────────────────────────────────
+async function loadStagingTab() {
+    const touchFilter = document.getElementById('staging-filter-touch')?.value || '';
+
+    // Load KPIs
+    const stats = await api('/api/linkedin/stats');
+    const kpiEl = document.getElementById('staging-kpis');
+    if (kpiEl && stats) {
+        const staged = stats.by_approval_status?.staged || 0;
+        const sent = stats.sent_actual || 0;
+        kpiEl.innerHTML = [
+            kpi('Staged', staged),
+            kpi('Sent Today', sent),
+            kpi('Remaining Quota', '-'),
+        ].join('');
+    }
+
+    // Load staged drafts
+    try {
+        let url = '/api/drafts?channel=linkedin&approval_status=staged&limit=50';
+        if (touchFilter) url += `&touch_type=${touchFilter}`;
+
+        const data = await api(url);
+        const drafts = data?.drafts || [];
+        const listEl = document.getElementById('staging-list');
+        if (!listEl) return;
+
+        if (!drafts.length) {
+            listEl.innerHTML = '<div class="empty">No staged messages yet. Approve drafts, then move them to staging.</div>';
+            return;
+        }
+
+        listEl.innerHTML = drafts.map(d => {
+            const name = `${d.first_name || ''} ${d.last_name || ''}`.trim();
+            const company = d.company_name || d.account_name || '';
+            const linkedinUrl = d.linkedin_url || '#';
+            return `
+            <div class="card" style="margin-bottom:12px;padding:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+                    <div>
+                        <strong style="font-size:14px;">${name}</strong>
+                        <span style="color:var(--text-muted);margin-left:8px;">${d.title || ''} at ${company}</span>
+                    </div>
+                    <div style="display:flex;gap:6px;">
+                        <a href="${linkedinUrl}" target="_blank" class="btn btn-sm" style="text-decoration:none;" ${linkedinUrl === '#' ? 'disabled' : ''}>🔗 Open Profile</a>
+                    </div>
+                </div>
+
+                <!-- Preflight Checklist -->
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;font-size:11px;">
+                    <div style="padding:6px 8px;background:${linkedinUrl !== '#' ? 'var(--success-bg)' : 'var(--error-bg)'};border-radius:4px;">
+                        ${linkedinUrl !== '#' ? '✅' : '❌'} LinkedIn URL
+                    </div>
+                    <div style="padding:6px 8px;background:var(--success-bg);border-radius:4px;">✅ Approved</div>
+                    <div style="padding:6px 8px;background:${d.personalization_score >= 2 ? 'var(--success-bg)' : 'var(--warning-bg)'};border-radius:4px;">
+                        ${d.personalization_score >= 2 ? '✅' : '⚠️'} Quality: ${d.personalization_score || '?'}/3
+                    </div>
+                </div>
+
+                <!-- Subject -->
+                ${d.subject_line ? `<div style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;"><strong>Subject:</strong> ${d.subject_line}</div>` : ''}
+
+                <!-- Message Body -->
+                <div style="background:var(--bg-primary);padding:12px;border-radius:var(--radius-sm);font-size:12px;white-space:pre-wrap;line-height:1.6;margin-bottom:12px;max-height:200px;overflow-y:auto;" id="staging-body-${d.id}">${d.body || ''}</div>
+
+                <!-- Actions -->
+                <div style="display:flex;gap:8px;justify-content:flex-end;">
+                    <button class="btn btn-sm" onclick="navigator.clipboard.writeText(document.getElementById('staging-body-${d.id}').innerText);showToast('Message copied!')">📋 Copy Message</button>
+                    ${d.subject_line ? `<button class="btn btn-sm" onclick="navigator.clipboard.writeText('${(d.subject_line||'').replace(/'/g,"\\'")}');showToast('Subject copied!')">📋 Copy Subject</button>` : ''}
+                    <button class="btn btn-sm btn-primary" onclick="markDraftSent('${d.id}')">✅ Mark as Sent</button>
+                </div>
+            </div>`;
+        }).join('');
+    } catch(e) {
+        console.error('Staging load error:', e);
+    }
+}
+
+async function moveDraftToStaging(draftId) {
+    try {
+        const result = await apiPost(`/api/drafts/${draftId}/stage`, {});
+        if (result?.status === 'staged') {
+            showToast('Draft moved to staging');
+            loadLIDrafts();
+        } else if (result?.preflight) {
+            const failed = result.preflight.filter(c => !c.passed);
+            showToast(`Preflight failed: ${failed.map(f => f.name).join(', ')}`, 'error');
+        }
+    } catch(e) {
+        showToast('Failed to stage draft: ' + (e.message || ''), 'error');
+    }
+}
+
+async function markDraftSent(draftId) {
+    if (!confirm('Mark this message as sent? This will update your quota.')) return;
+    try {
+        await apiPost(`/api/drafts/${draftId}/mark-sent`, {});
+        showToast('Marked as sent!');
+        loadStagingTab();
+    } catch(e) {
+        showToast('Failed to mark as sent', 'error');
+    }
 }
 
 function showLinkedInImportTab(tab, btn) {
