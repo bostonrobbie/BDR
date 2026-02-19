@@ -341,6 +341,90 @@ CREATE INDEX IF NOT EXISTS idx_activity_contact ON activity_timeline(contact_id)
 CREATE INDEX IF NOT EXISTS idx_draft_versions_draft ON draft_versions(draft_id);
 CREATE INDEX IF NOT EXISTS idx_drafts_contact ON draft_versions(contact_id);
 CREATE INDEX IF NOT EXISTS idx_sender_health_identity ON sender_health_snapshots(identity_id);
+
+CREATE TABLE IF NOT EXISTS workflow_definitions (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    workflow_type TEXT NOT NULL,
+    channel TEXT NOT NULL,
+    description TEXT,
+    version INTEGER DEFAULT 1,
+    input_schema TEXT DEFAULT '{}',
+    steps TEXT DEFAULT '[]',
+    output_schema TEXT DEFAULT '{}',
+    safety_gates TEXT DEFAULT '[]',
+    is_active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS workflow_runs (
+    id TEXT PRIMARY KEY,
+    workflow_id TEXT REFERENCES workflow_definitions(id),
+    workflow_type TEXT NOT NULL,
+    channel TEXT NOT NULL,
+    status TEXT DEFAULT 'queued',
+    dry_run INTEGER DEFAULT 1,
+    input_data TEXT DEFAULT '{}',
+    output_data TEXT DEFAULT '{}',
+    config TEXT DEFAULT '{}',
+    total_steps INTEGER DEFAULT 0,
+    completed_steps INTEGER DEFAULT 0,
+    failed_steps INTEGER DEFAULT 0,
+    error_message TEXT,
+    started_at TEXT,
+    completed_at TEXT,
+    duration_ms INTEGER DEFAULT 0,
+    created_by TEXT DEFAULT 'user',
+    created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS workflow_run_steps (
+    id TEXT PRIMARY KEY,
+    run_id TEXT REFERENCES workflow_runs(id),
+    step_name TEXT NOT NULL,
+    step_type TEXT NOT NULL,
+    status TEXT DEFAULT 'pending',
+    input_data TEXT DEFAULT '{}',
+    output_data TEXT DEFAULT '{}',
+    error_message TEXT,
+    tokens_used INTEGER DEFAULT 0,
+    duration_ms INTEGER DEFAULT 0,
+    started_at TEXT,
+    completed_at TEXT,
+    created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS safety_events (
+    id TEXT PRIMARY KEY,
+    run_id TEXT,
+    event_type TEXT NOT NULL,
+    severity TEXT DEFAULT 'info',
+    details TEXT DEFAULT '{}',
+    blocked_action TEXT,
+    created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS linkedin_profiles (
+    id TEXT PRIMARY KEY,
+    contact_id TEXT REFERENCES contacts(id),
+    linkedin_url TEXT,
+    headline TEXT,
+    about_text TEXT,
+    experience_json TEXT DEFAULT '[]',
+    education_json TEXT DEFAULT '[]',
+    skills_json TEXT DEFAULT '[]',
+    activity_json TEXT DEFAULT '[]',
+    connections_count INTEGER,
+    profile_source TEXT DEFAULT 'manual',
+    last_updated TEXT DEFAULT (datetime('now')),
+    created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_workflow_runs_status ON workflow_runs(status);
+CREATE INDEX IF NOT EXISTS idx_workflow_runs_channel ON workflow_runs(channel);
+CREATE INDEX IF NOT EXISTS idx_workflow_steps_run ON workflow_run_steps(run_id);
+CREATE INDEX IF NOT EXISTS idx_safety_events_run ON safety_events(run_id);
+CREATE INDEX IF NOT EXISTS idx_linkedin_profiles_contact ON linkedin_profiles(contact_id);
 """
 
 # ---------------------------------------------------------------------------
@@ -700,6 +784,66 @@ def seed_database():
              f"{FIRST_NAMES[contact_ids.index(cid) % len(FIRST_NAMES)].lower()}.{LAST_NAMES[contact_ids.index(cid) % len(LAST_NAMES)].lower()}@example.com",
              1, 1, now.isoformat()))
 
+    # --- WORKFLOW DEFINITIONS ---
+    workflows = [
+        ("wf_account_research", "Account Research", "account_research", "linkedin",
+         "Research a target account: company overview, ICP fit, org structure, pain hypothesis",
+         '["validate_input","gather_company_data","analyze_icp_fit","identify_pain_points","generate_brief"]',
+         '["company_name_required","domain_check"]'),
+        ("wf_prospect_shortlist", "Prospect Shortlist Builder", "prospect_shortlist", "linkedin",
+         "Filter and score a list of prospects against ICP criteria, flag exclusions",
+         '["validate_csv","filter_titles","score_icp","flag_exclusions","rank_output"]',
+         '["icp_title_match","seniority_check"]'),
+        ("wf_linkedin_draft", "LinkedIn Message Drafts", "linkedin_message_draft", "linkedin",
+         "Generate personalized LinkedIn messages using SOP rules: opener, pain hook, proof point, soft ask",
+         '["load_prospect","load_research","select_proof_point","generate_variants","quality_gate","finalize"]',
+         '["no_em_dashes","word_count_check","personalization_check","six_element_check"]'),
+        ("wf_followup_sequence", "Follow-Up Sequence Planner", "followup_sequence", "linkedin",
+         "Create follow-up 1, follow-up 2, and break-up message for non-responders",
+         '["load_original","analyze_angle","draft_followup1","draft_followup2","draft_breakup","quality_gate"]',
+         '["different_angle_check","word_count_check","no_guilt_trip"]'),
+        ("wf_daily_plan", "Daily BDR Plan Generator", "daily_plan", "multi",
+         "Generate today's prioritized action checklist based on pipeline state and targets",
+         '["load_pipeline","identify_hot","identify_overdue","plan_touches","generate_checklist"]',
+         '[]'),
+        ("wf_email_draft", "Email Draft Generator", "email_draft", "email",
+         "Generate personalized cold email with subject line, body, and follow-ups",
+         '["load_prospect","load_research","generate_subject","generate_body","quality_gate","finalize"]',
+         '["no_em_dashes","deliverability_check","subject_length","word_count_check"]'),
+        ("wf_call_prep", "Cold Call Prep", "call_prep", "phone",
+         "Generate 3-line call script snippet: opener, pain hypothesis, bridge to ask",
+         '["load_prospect","load_research","generate_opener","generate_pain","generate_bridge"]',
+         '["three_line_max","different_angle_from_inmail"]'),
+    ]
+    for wid, name, wtype, ch, desc, steps, gates in workflows:
+        conn.execute("""INSERT INTO workflow_definitions
+            (id, name, workflow_type, channel, description, steps, safety_gates, version)
+            VALUES (?,?,?,?,?,?,?,1)""", (wid, name, wtype, ch, desc, steps, gates))
+
+    # --- SEED SAMPLE WORKFLOW RUNS (for demo) ---
+    for i, (wid, name, wtype, ch, desc, steps, gates) in enumerate(workflows[:3]):
+        rid = f"wr_{uuid.uuid4().hex[:12]}"
+        status = "succeeded" if i < 2 else "running"
+        conn.execute("""INSERT INTO workflow_runs
+            (id, workflow_id, workflow_type, channel, status, dry_run, total_steps, completed_steps, started_at, completed_at, duration_ms, created_at)
+            VALUES (?,?,?,?,?,1,?,?,?,?,?,?)""",
+            (rid, wid, wtype, ch, status, 5, 5 if i < 2 else 3,
+             (now - timedelta(hours=random.randint(1,48))).isoformat(),
+             (now - timedelta(hours=random.randint(0,1))).isoformat() if i < 2 else None,
+             random.randint(2000, 15000), now.isoformat()))
+        # Add steps for each run
+        step_names_list = json.loads(steps)
+        for j, sname in enumerate(step_names_list):
+            sid = f"ws_{uuid.uuid4().hex[:12]}"
+            s_status = "succeeded" if j < (5 if i < 2 else 3) else "pending"
+            conn.execute("""INSERT INTO workflow_run_steps
+                (id, run_id, step_name, step_type, status, started_at, completed_at, duration_ms)
+                VALUES (?,?,?,?,?,?,?,?)""",
+                (sid, rid, sname, "agent", s_status,
+                 (now - timedelta(minutes=random.randint(1,30))).isoformat(),
+                 (now - timedelta(minutes=random.randint(0,1))).isoformat() if s_status == "succeeded" else None,
+                 random.randint(500, 5000) if s_status == "succeeded" else 0))
+
     conn.commit()
     conn.close()
 
@@ -728,6 +872,26 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ---------------------------------------------------------------------------
+# GLOBAL SAFETY: DRY RUN MODE
+# ---------------------------------------------------------------------------
+DRY_RUN = os.environ.get("DRY_RUN", "true").lower() in ("true", "1", "yes")
+
+def check_safety(action_type: str, run_id: str = None):
+    """Check if an action is allowed. Returns True if safe, raises if blocked."""
+    blocked_actions = {"send_linkedin_message", "send_email", "connect_request", "post_comment", "send_inmail"}
+    if action_type in blocked_actions:
+        # Log safety event
+        conn = get_db()
+        conn.execute("INSERT INTO safety_events (id, run_id, event_type, severity, details, blocked_action) VALUES (?,?,?,?,?,?)",
+            (gen_id("sev"), run_id, "action_blocked", "critical",
+             json.dumps({"reason": "DRY_RUN mode active" if DRY_RUN else "Action permanently blocked", "action": action_type}),
+             action_type))
+        conn.commit()
+        conn.close()
+        raise HTTPException(status_code=403, detail=f"Action '{action_type}' is blocked. DRY_RUN={DRY_RUN}. This system only generates drafts.")
+    return True
 
 # ─── API KEY AUTHENTICATION ────────────────────────────────────────────────
 API_KEY = os.environ.get("OCC_API_KEY", "")  # Empty = no auth required (dev mode)
@@ -3585,6 +3749,994 @@ a:hover { text-decoration: underline; }
   .filter-bar { flex-direction: column; gap: 8px; }
   .card-header h3 { font-size: 0.92rem; }
 }'''
+
+# ---------------------------------------------------------------------------
+# WORKFLOW ENGINE ENDPOINTS
+# ---------------------------------------------------------------------------
+
+@app.get("/api/workflows")
+def list_workflows(channel: str = None):
+    conn = get_db()
+    if channel:
+        rows = conn.execute("SELECT * FROM workflow_definitions WHERE channel=? AND is_active=1 ORDER BY name", (channel,)).fetchall()
+    else:
+        rows = conn.execute("SELECT * FROM workflow_definitions WHERE is_active=1 ORDER BY channel, name").fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+@app.get("/api/workflows/{workflow_id}")
+def get_workflow(workflow_id: str):
+    conn = get_db()
+    row = conn.execute("SELECT * FROM workflow_definitions WHERE id=?", (workflow_id,)).fetchone()
+    conn.close()
+    if not row:
+        raise HTTPException(404, "Workflow not found")
+    return dict(row)
+
+@app.get("/api/workflow-runs")
+def list_workflow_runs(channel: str = None, status: str = None, limit: int = 50):
+    conn = get_db()
+    q = "SELECT wr.*, wd.name as workflow_name FROM workflow_runs wr LEFT JOIN workflow_definitions wd ON wr.workflow_id = wd.id WHERE 1=1"
+    params = []
+    if channel:
+        q += " AND wr.channel=?"
+        params.append(channel)
+    if status:
+        q += " AND wr.status=?"
+        params.append(status)
+    q += " ORDER BY wr.created_at DESC LIMIT ?"
+    params.append(limit)
+    rows = conn.execute(q, params).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+@app.get("/api/workflow-runs/{run_id}")
+def get_workflow_run(run_id: str):
+    conn = get_db()
+    run = conn.execute("SELECT wr.*, wd.name as workflow_name FROM workflow_runs wr LEFT JOIN workflow_definitions wd ON wr.workflow_id = wd.id WHERE wr.id=?", (run_id,)).fetchone()
+    if not run:
+        conn.close()
+        raise HTTPException(404, "Run not found")
+    steps = conn.execute("SELECT * FROM workflow_run_steps WHERE run_id=? ORDER BY created_at", (run_id,)).fetchall()
+    artifacts = conn.execute("SELECT * FROM flow_artifacts WHERE flow_run_id=? ORDER BY created_at", (run_id,)).fetchall()
+    conn.close()
+    result = dict(run)
+    result["steps"] = [dict(s) for s in steps]
+    result["artifacts"] = [dict(a) for a in artifacts]
+    return result
+
+@app.get("/api/workflow-runs/{run_id}/steps")
+def get_workflow_run_steps(run_id: str):
+    conn = get_db()
+    steps = conn.execute("SELECT * FROM workflow_run_steps WHERE run_id=? ORDER BY created_at", (run_id,)).fetchall()
+    conn.close()
+    return [dict(s) for s in steps]
+
+@app.get("/api/safety-events")
+def list_safety_events(run_id: str = None, limit: int = 50):
+    conn = get_db()
+    if run_id:
+        rows = conn.execute("SELECT * FROM safety_events WHERE run_id=? ORDER BY created_at DESC LIMIT ?", (run_id, limit)).fetchall()
+    else:
+        rows = conn.execute("SELECT * FROM safety_events ORDER BY created_at DESC LIMIT ?", (limit,)).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+@app.get("/api/system/dry-run")
+def get_dry_run_status():
+    return {"dry_run": DRY_RUN, "message": "All outbound actions are blocked. Only drafts and research are produced." if DRY_RUN else "DRY RUN IS OFF - outbound actions could execute (but are still blocked by safety gates)."}
+
+# ---------------------------------------------------------------------------
+# LINKEDIN CHANNEL ENDPOINTS
+# ---------------------------------------------------------------------------
+
+@app.get("/api/linkedin/profiles")
+def list_linkedin_profiles(limit: int = 50):
+    conn = get_db()
+    rows = conn.execute("""SELECT lp.*, c.first_name, c.last_name, c.title, c.company_name
+        FROM linkedin_profiles lp
+        LEFT JOIN contacts c ON lp.contact_id = c.id
+        LEFT JOIN accounts a ON c.account_id = a.id
+        ORDER BY lp.last_updated DESC LIMIT ?""", (limit,)).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+@app.get("/api/linkedin/profiles/{profile_id}")
+def get_linkedin_profile(profile_id: str):
+    conn = get_db()
+    row = conn.execute("SELECT * FROM linkedin_profiles WHERE id=?", (profile_id,)).fetchone()
+    conn.close()
+    if not row:
+        raise HTTPException(404, "Profile not found")
+    return dict(row)
+
+@app.post("/api/linkedin/profiles/import")
+def import_linkedin_profile(data: dict):
+    """Import a LinkedIn profile from manual paste or CSV data."""
+    conn = get_db()
+    pid = gen_id("lp")
+    contact_id = data.get("contact_id")
+
+    # If no contact_id, try to match by linkedin_url
+    linkedin_url = data.get("linkedin_url", "")
+    if not contact_id and linkedin_url:
+        existing = conn.execute("SELECT id FROM contacts WHERE linkedin_url=?", (linkedin_url,)).fetchone()
+        if existing:
+            contact_id = existing["id"]
+
+    conn.execute("""INSERT INTO linkedin_profiles
+        (id, contact_id, linkedin_url, headline, about_text, experience_json, education_json, skills_json, activity_json, connections_count, profile_source)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+        (pid, contact_id, linkedin_url,
+         data.get("headline", ""), data.get("about_text", ""),
+         json.dumps(data.get("experience", [])), json.dumps(data.get("education", [])),
+         json.dumps(data.get("skills", [])), json.dumps(data.get("activity", [])),
+         data.get("connections_count"), data.get("source", "manual")))
+
+    # Log activity
+    conn.execute("""INSERT INTO activity_timeline (id, contact_id, channel, activity_type, description)
+        VALUES (?,?,?,?,?)""",
+        (gen_id("act"), contact_id, "linkedin", "profile_imported", f"LinkedIn profile imported: {linkedin_url}"))
+
+    # Log safety event
+    conn.execute("""INSERT INTO safety_events (id, event_type, severity, details)
+        VALUES (?,?,?,?)""",
+        (gen_id("sev"), "data_import", "info", json.dumps({"type": "linkedin_profile", "source": data.get("source", "manual")})))
+
+    conn.commit()
+    conn.close()
+    return {"id": pid, "contact_id": contact_id, "status": "imported"}
+
+@app.post("/api/linkedin/profiles/import-csv")
+def import_linkedin_csv(data: dict):
+    """Import multiple profiles from CSV data (Sales Navigator export format)."""
+    rows = data.get("rows", [])
+    if not rows:
+        raise HTTPException(400, "No rows provided")
+
+    conn = get_db()
+    imported = []
+    skipped = []
+
+    for row in rows:
+        first_name = row.get("first_name", row.get("First Name", ""))
+        last_name = row.get("last_name", row.get("Last Name", ""))
+        title = row.get("title", row.get("Title", ""))
+        company = row.get("company", row.get("Company", ""))
+        linkedin_url = row.get("linkedin_url", row.get("LinkedIn URL", row.get("Profile URL", "")))
+
+        if not first_name or not last_name:
+            skipped.append({"reason": "missing_name", "data": row})
+            continue
+
+        # Check for duplicate by linkedin_url
+        if linkedin_url:
+            existing = conn.execute("SELECT id FROM contacts WHERE linkedin_url=?", (linkedin_url,)).fetchone()
+            if existing:
+                skipped.append({"reason": "duplicate_url", "contact_id": existing["id"], "data": row})
+                continue
+
+        # Find or create account
+        account_id = None
+        if company:
+            acc = conn.execute("SELECT id FROM accounts WHERE name=?", (company,)).fetchone()
+            if acc:
+                account_id = acc["id"]
+            else:
+                account_id = gen_id("acc")
+                conn.execute("INSERT INTO accounts (id, name, domain, industry) VALUES (?,?,?,?)",
+                    (account_id, company, row.get("domain", ""), row.get("industry", "")))
+
+        # Create contact
+        contact_id = gen_id("con")
+        seniority = "director" if any(x in title.lower() for x in ["director", "head"]) else \
+                    "vp" if any(x in title.lower() for x in ["vp", "vice president", "cto", "cfo"]) else \
+                    "manager" if "manager" in title.lower() else "individual"
+        persona = "qa_leader" if any(x in title.lower() for x in ["qa", "quality", "test", "sdet"]) else "vp_eng"
+
+        conn.execute("""INSERT INTO contacts (id, account_id, first_name, last_name, title, persona_type,
+            seniority_level, email, linkedin_url, location, stage, priority_score, source)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (contact_id, account_id, first_name, last_name, title, persona, seniority,
+             row.get("email", ""), linkedin_url, row.get("location", ""),
+             "new", 3, "csv_import"))
+
+        # Create LinkedIn profile
+        pid = gen_id("lp")
+        conn.execute("""INSERT INTO linkedin_profiles (id, contact_id, linkedin_url, headline, profile_source)
+            VALUES (?,?,?,?,?)""",
+            (pid, contact_id, linkedin_url, row.get("headline", title), "csv_import"))
+
+        imported.append({"contact_id": contact_id, "name": f"{first_name} {last_name}", "profile_id": pid})
+
+    # Log
+    conn.execute("""INSERT INTO activity_timeline (id, channel, activity_type, description)
+        VALUES (?,?,?,?)""",
+        (gen_id("act"), "linkedin", "csv_import", f"Imported {len(imported)} profiles, skipped {len(skipped)}"))
+    conn.execute("""INSERT INTO safety_events (id, event_type, severity, details)
+        VALUES (?,?,?,?)""",
+        (gen_id("sev"), "csv_import", "info", json.dumps({"imported": len(imported), "skipped": len(skipped)})))
+
+    conn.commit()
+    conn.close()
+    return {"imported": len(imported), "skipped": len(skipped), "details": imported[:10], "skip_details": skipped[:10]}
+
+@app.get("/api/linkedin/stats")
+def linkedin_stats():
+    conn = get_db()
+    profiles = conn.execute("SELECT COUNT(*) as cnt FROM linkedin_profiles").fetchone()["cnt"]
+    drafts = conn.execute("SELECT COUNT(*) as cnt FROM message_drafts WHERE channel='linkedin'").fetchone()["cnt"]
+    sent = conn.execute("SELECT COUNT(*) as cnt FROM touchpoints WHERE channel='linkedin'").fetchone()["cnt"]
+    runs = conn.execute("SELECT COUNT(*) as cnt FROM workflow_runs WHERE channel='linkedin'").fetchone()["cnt"]
+    active_runs = conn.execute("SELECT COUNT(*) as cnt FROM workflow_runs WHERE channel='linkedin' AND status IN ('queued','running')").fetchone()["cnt"]
+    conn.close()
+    return {"profiles": profiles, "drafts": drafts, "sent": sent, "total_runs": runs, "active_runs": active_runs, "dry_run": DRY_RUN}
+
+# ---------------------------------------------------------------------------
+# WORKFLOW EXECUTION ENGINE
+# ---------------------------------------------------------------------------
+
+PROOF_POINTS_LIBRARY = {
+    "hansard": {"name": "Hansard", "metric": "regression 8 weeks -> 5 weeks with AI auto-heal", "verticals": ["insurance", "financial_services"], "use_for": "long regression cycles"},
+    "medibuddy": {"name": "Medibuddy", "metric": "2,500 tests automated, 50% maintenance cut", "verticals": ["healthcare"], "use_for": "mid-size teams scaling coverage"},
+    "cred": {"name": "CRED", "metric": "90% regression automation, 5x faster execution", "verticals": ["fintech"], "use_for": "high-velocity teams"},
+    "sanofi": {"name": "Sanofi", "metric": "regression 3 days -> 80 minutes", "verticals": ["pharma", "healthcare"], "use_for": "compliance-heavy"},
+    "fortune100": {"name": "Fortune 100 company", "metric": "3X productivity increase", "verticals": ["enterprise"], "use_for": "VP-level conversations"},
+    "nagra": {"name": "Nagra DTV", "metric": "2,500 tests in 8 months, 4X faster", "verticals": ["media", "streaming"], "use_for": "API + UI testing"},
+    "spendflo": {"name": "Spendflo", "metric": "50% manual testing cut", "verticals": ["saas"], "use_for": "smaller teams, quick wins"},
+}
+
+OBJECTION_MAP = {
+    "has_tool": {"trigger": "Uses TOSCA, Katalon, Testim, or mabl", "response": "Totally fair. A lot of teams we work with had {tool} too. The gap they kept hitting was {limitation}. Worth comparing?"},
+    "big_company": {"trigger": "50K+ employees", "response": "We offer on-prem, private cloud, and hybrid. SOC2/ISO certified. A few Fortune 500s run us behind their firewall."},
+    "no_qa_team": {"trigger": "No dedicated QA team", "response": "That's actually why teams like yours use us. Plain English means devs write tests without a dedicated QA team."},
+    "new_leader": {"trigger": "Recently hired QA leader", "response": "Makes sense. A lot of QA leaders in their first 90 days use our free trial to benchmark what's possible before committing."},
+    "compliance": {"trigger": "Pharma/healthcare/finance", "response": "We work with Sanofi, Oscar Health, and several banks. Happy to walk through our compliance story."},
+    "budget": {"trigger": "Startup/small team", "response": "Totally get it. One company your size (Spendflo) cut manual testing 50% and saw ROI in the first quarter."},
+}
+
+def execute_workflow(workflow_type: str, input_data: dict, dry_run: bool = True) -> dict:
+    """Core workflow execution engine. Always runs in dry-run mode by default."""
+    conn = get_db()
+
+    # Find workflow definition
+    wf = conn.execute("SELECT * FROM workflow_definitions WHERE workflow_type=? AND is_active=1", (workflow_type,)).fetchone()
+    if not wf:
+        conn.close()
+        raise HTTPException(404, f"Workflow '{workflow_type}' not found")
+
+    wf = dict(wf)
+    steps = json.loads(wf.get("steps", "[]"))
+
+    # Create run record
+    run_id = gen_id("wr")
+    now_iso = datetime.utcnow().isoformat()
+    conn.execute("""INSERT INTO workflow_runs (id, workflow_id, workflow_type, channel, status, dry_run, input_data, total_steps, started_at)
+        VALUES (?,?,?,?,?,?,?,?,?)""",
+        (run_id, wf["id"], workflow_type, wf["channel"], "running", 1 if dry_run else 0,
+         json.dumps(input_data), len(steps), now_iso))
+
+    # Create step records
+    for i, step_name in enumerate(steps):
+        sid = gen_id("ws")
+        conn.execute("""INSERT INTO workflow_run_steps (id, run_id, step_name, step_type, status)
+            VALUES (?,?,?,?,?)""",
+            (sid, run_id, step_name, "agent", "pending"))
+    conn.commit()
+
+    # Execute workflow based on type
+    try:
+        if workflow_type == "account_research":
+            result = _execute_account_research(conn, run_id, input_data)
+        elif workflow_type == "prospect_shortlist":
+            result = _execute_prospect_shortlist(conn, run_id, input_data)
+        elif workflow_type == "linkedin_message_draft":
+            result = _execute_linkedin_draft(conn, run_id, input_data)
+        elif workflow_type == "followup_sequence":
+            result = _execute_followup_sequence(conn, run_id, input_data)
+        elif workflow_type == "daily_plan":
+            result = _execute_daily_plan(conn, run_id, input_data)
+        elif workflow_type == "email_draft":
+            result = _execute_email_draft(conn, run_id, input_data)
+        elif workflow_type == "call_prep":
+            result = _execute_call_prep(conn, run_id, input_data)
+        else:
+            raise HTTPException(400, f"Unknown workflow type: {workflow_type}")
+
+        # Mark run as succeeded
+        end_time = datetime.utcnow()
+        duration = int((end_time - datetime.fromisoformat(now_iso)).total_seconds() * 1000)
+        conn.execute("""UPDATE workflow_runs SET status='succeeded', output_data=?, completed_steps=total_steps,
+            completed_at=?, duration_ms=? WHERE id=?""",
+            (json.dumps(result), end_time.isoformat(), duration, run_id))
+        conn.commit()
+
+        # Log activity
+        conn.execute("""INSERT INTO activity_timeline (id, channel, activity_type, description, flow_run_id)
+            VALUES (?,?,?,?,?)""",
+            (gen_id("act"), wf["channel"], "workflow_completed", f"{wf['name']} completed successfully", run_id))
+        conn.commit()
+        conn.close()
+
+        return {"run_id": run_id, "status": "succeeded", "workflow": wf["name"], "result": result, "dry_run": dry_run}
+
+    except Exception as e:
+        conn.execute("UPDATE workflow_runs SET status='failed', error_message=?, completed_at=? WHERE id=?",
+            (str(e), datetime.utcnow().isoformat(), run_id))
+        conn.commit()
+        conn.close()
+        raise HTTPException(500, f"Workflow failed: {str(e)}")
+
+def _update_step(conn, run_id: str, step_name: str, status: str, output: dict = None):
+    """Update a workflow step's status."""
+    now = datetime.utcnow().isoformat()
+    if status == "running":
+        conn.execute("UPDATE workflow_run_steps SET status=?, started_at=? WHERE run_id=? AND step_name=?",
+            (status, now, run_id, step_name))
+    elif status in ("succeeded", "failed"):
+        conn.execute("""UPDATE workflow_run_steps SET status=?, output_data=?, completed_at=?
+            WHERE run_id=? AND step_name=?""",
+            (status, json.dumps(output or {}), now, run_id, step_name))
+    conn.execute("UPDATE workflow_runs SET completed_steps = (SELECT COUNT(*) FROM workflow_run_steps WHERE run_id=? AND status='succeeded') WHERE id=?",
+        (run_id, run_id))
+    conn.commit()
+
+# ---- WORKFLOW: Account Research ----
+def _execute_account_research(conn, run_id: str, input_data: dict) -> dict:
+    company_name = input_data.get("company_name", "")
+    domain = input_data.get("domain", "")
+
+    if not company_name:
+        raise ValueError("company_name is required")
+
+    _update_step(conn, run_id, "validate_input", "running")
+    _update_step(conn, run_id, "validate_input", "succeeded", {"company": company_name, "domain": domain})
+
+    # Gather company data (from our database or generate research brief)
+    _update_step(conn, run_id, "gather_company_data", "running")
+    account = conn.execute("SELECT * FROM accounts WHERE name=? OR domain=?", (company_name, domain)).fetchone()
+    account_data = dict(account) if account else {"name": company_name, "domain": domain, "industry": input_data.get("industry", "Unknown")}
+    _update_step(conn, run_id, "gather_company_data", "succeeded", {"account_found": account is not None})
+
+    # Analyze ICP fit
+    _update_step(conn, run_id, "analyze_icp_fit", "running")
+    icp_score = 0
+    icp_reasons = []
+    industry = account_data.get("industry", "").lower()
+    emp_count = account_data.get("employee_count", 0)
+
+    top_verticals = ["fintech", "saas", "healthcare", "e-commerce", "telecom", "pharma"]
+    if any(v in industry for v in top_verticals):
+        icp_score += 2
+        icp_reasons.append(f"Target vertical: {industry}")
+    if emp_count and 200 < emp_count < 15000:
+        icp_score += 2
+        icp_reasons.append(f"Good company size: {emp_count} employees")
+    elif emp_count:
+        icp_score += 1
+        icp_reasons.append(f"Company size: {emp_count} employees (outside sweet spot)")
+
+    tools = json.loads(account_data.get("known_tools", "[]"))
+    if tools:
+        icp_score += 1
+        icp_reasons.append(f"Uses testing tools: {', '.join(tools)}")
+
+    if account_data.get("buyer_intent"):
+        icp_score += 2
+        icp_reasons.append("Buyer intent signal detected")
+
+    _update_step(conn, run_id, "analyze_icp_fit", "succeeded", {"score": icp_score, "reasons": icp_reasons})
+
+    # Identify pain points
+    _update_step(conn, run_id, "identify_pain_points", "running")
+    pain_points = []
+    if tools and any(t in ["Selenium", "Cypress", "Playwright"] for t in tools):
+        pain_points.append({"pain": "Maintenance burden with open-source frameworks", "severity": "high", "talk_track": f"Teams using {tools[0]} typically spend 40-60% of time on test maintenance. Our self-healing AI cuts that by 90%."})
+    if emp_count and emp_count > 1000:
+        pain_points.append({"pain": "Scaling test coverage across products", "severity": "high", "talk_track": "With multiple products and teams, NLP-based tests let anyone contribute to coverage, not just SDETs."})
+    pain_points.append({"pain": "Regression cycle blocking releases", "severity": "medium", "talk_track": "Parallel execution + AI optimization can compress multi-day regressions into hours."})
+    _update_step(conn, run_id, "identify_pain_points", "succeeded", {"pain_points": pain_points})
+
+    # Generate brief
+    _update_step(conn, run_id, "generate_brief", "running")
+
+    # Match best proof point
+    best_proof = "spendflo"  # default
+    for key, pp in PROOF_POINTS_LIBRARY.items():
+        if industry and any(v in industry for v in pp["verticals"]):
+            best_proof = key
+            break
+
+    brief = {
+        "company": company_name,
+        "domain": domain,
+        "industry": account_data.get("industry", "Unknown"),
+        "employee_count": emp_count,
+        "icp_score": icp_score,
+        "icp_max": 7,
+        "icp_reasons": icp_reasons,
+        "known_tools": tools,
+        "pain_points": pain_points,
+        "recommended_proof_point": PROOF_POINTS_LIBRARY[best_proof],
+        "recommended_titles": ["Director of QA", "Head of Quality Engineering", "VP Quality Assurance", "QA Manager"],
+        "talk_tracks": [pp["talk_track"] for pp in pain_points],
+        "predicted_objection": _predict_objection(account_data),
+    }
+
+    # Store research snapshot
+    snap_id = gen_id("rs")
+    conn.execute("""INSERT INTO research_snapshots (id, account_id, entity_type, headline, summary,
+        tech_stack_signals, pain_indicators, agent_run_id)
+        VALUES (?,?,?,?,?,?,?,?)""",
+        (snap_id, account_data.get("id"), "account", f"Account Research: {company_name}",
+         json.dumps(brief), json.dumps(tools), json.dumps([p["pain"] for p in pain_points]), run_id))
+    conn.commit()
+
+    _update_step(conn, run_id, "generate_brief", "succeeded", brief)
+    return brief
+
+def _predict_objection(account_data: dict) -> dict:
+    """Predict most likely objection based on account data."""
+    tools = json.loads(account_data.get("known_tools", "[]"))
+    emp = account_data.get("employee_count", 0)
+    industry = (account_data.get("industry", "") or "").lower()
+
+    if tools and any(t in ["TOSCA", "Katalon", "Testim", "mabl"] for t in tools):
+        return {"type": "has_tool", "tool": tools[0], **OBJECTION_MAP["has_tool"]}
+    if emp and emp > 50000:
+        return {"type": "big_company", **OBJECTION_MAP["big_company"]}
+    if industry in ["pharma", "healthcare", "fintech"]:
+        return {"type": "compliance", **OBJECTION_MAP["compliance"]}
+    if emp and emp < 200:
+        return {"type": "budget", **OBJECTION_MAP["budget"]}
+    return {"type": "has_tool", **OBJECTION_MAP["has_tool"]}  # default
+
+# ---- WORKFLOW: Prospect Shortlist ----
+def _execute_prospect_shortlist(conn, run_id: str, input_data: dict) -> dict:
+    contact_ids = input_data.get("contact_ids", [])
+    filters = input_data.get("filters", {})
+
+    _update_step(conn, run_id, "validate_csv", "running")
+
+    if contact_ids:
+        placeholders = ",".join(["?"] * len(contact_ids))
+        contacts = conn.execute(f"""SELECT c.*, a.name as company_name, a.industry, a.employee_count, a.known_tools, a.buyer_intent
+            FROM contacts c LEFT JOIN accounts a ON c.account_id = a.id
+            WHERE c.id IN ({placeholders})""", contact_ids).fetchall()
+    else:
+        # Get all active contacts
+        contacts = conn.execute("""SELECT c.*, a.name as company_name, a.industry, a.employee_count, a.known_tools, a.buyer_intent
+            FROM contacts c LEFT JOIN accounts a ON c.account_id = a.id
+            WHERE c.status = 'active' AND c.do_not_contact = 0""").fetchall()
+
+    contacts = [dict(c) for c in contacts]
+    _update_step(conn, run_id, "validate_csv", "succeeded", {"total_contacts": len(contacts)})
+
+    # Filter titles
+    _update_step(conn, run_id, "filter_titles", "running")
+    icp_titles = ["qa", "quality", "test", "sdet", "automation", "engineering", "cto", "vp"]
+    excluded_titles = ["pharma", "biotech", "manufacturing", "lab", "clinical", "regulatory"]
+
+    passed = []
+    excluded = []
+    for c in contacts:
+        title_lower = (c.get("title") or "").lower()
+        if any(ex in title_lower for ex in excluded_titles):
+            excluded.append({"id": c["id"], "name": f"{c['first_name']} {c['last_name']}", "reason": "excluded_title", "title": c.get("title")})
+            continue
+        seniority = c.get("seniority_level", "")
+        if seniority not in ["director", "vp", "manager"]:
+            excluded.append({"id": c["id"], "name": f"{c['first_name']} {c['last_name']}", "reason": "below_manager", "title": c.get("title")})
+            continue
+        passed.append(c)
+
+    _update_step(conn, run_id, "filter_titles", "succeeded", {"passed": len(passed), "excluded": len(excluded)})
+
+    # Score ICP
+    _update_step(conn, run_id, "score_icp", "running")
+    scored = []
+    for c in passed:
+        score = 0
+        factors = []
+
+        if c.get("buyer_intent"):
+            score += 2
+            factors.append("buyer_intent")
+        if c.get("persona_type") == "qa_leader":
+            score += 1
+            factors.append("qa_titled")
+        industry = (c.get("industry") or "").lower()
+        if any(v in industry for v in ["fintech", "saas", "healthcare"]):
+            score += 1
+            factors.append("target_vertical")
+        if c.get("recently_hired"):
+            score += 1
+            factors.append("recently_hired")
+        tools = json.loads(c.get("known_tools") or "[]")
+        if tools:
+            score += 1
+            factors.append("uses_competitor_tool")
+        emp = c.get("employee_count", 0)
+        if emp and emp > 50000 and c.get("persona_type") != "qa_leader":
+            score -= 1
+            factors.append("large_company_non_qa")
+
+        c["priority_score"] = min(score, 5)
+        c["priority_factors"] = factors
+        scored.append(c)
+
+    scored.sort(key=lambda x: x["priority_score"], reverse=True)
+    _update_step(conn, run_id, "score_icp", "succeeded", {"scored_count": len(scored)})
+
+    # Flag exclusions
+    _update_step(conn, run_id, "flag_exclusions", "running")
+    _update_step(conn, run_id, "flag_exclusions", "succeeded", {"excluded": excluded})
+
+    # Rank output
+    _update_step(conn, run_id, "rank_output", "running")
+    shortlist = [{
+        "id": c["id"],
+        "name": f"{c['first_name']} {c['last_name']}",
+        "title": c.get("title"),
+        "company": c.get("company_name"),
+        "industry": c.get("industry"),
+        "priority_score": c["priority_score"],
+        "priority_factors": c["priority_factors"],
+        "persona_type": c.get("persona_type"),
+        "linkedin_url": c.get("linkedin_url"),
+        "missing_info": [f for f in ["email" if not c.get("email") else None, "linkedin" if not c.get("linkedin_url") else None] if f]
+    } for c in scored]
+
+    _update_step(conn, run_id, "rank_output", "succeeded", {"shortlist_size": len(shortlist)})
+
+    return {"shortlist": shortlist, "excluded": excluded, "summary": {
+        "total_input": len(contacts), "passed_filters": len(passed), "excluded": len(excluded),
+        "hot": len([s for s in shortlist if s["priority_score"] >= 5]),
+        "warm": len([s for s in shortlist if s["priority_score"] == 4]),
+        "standard": len([s for s in shortlist if s["priority_score"] == 3]),
+    }}
+
+# ---- WORKFLOW: LinkedIn Message Draft ----
+def _execute_linkedin_draft(conn, run_id: str, input_data: dict) -> dict:
+    contact_id = input_data.get("contact_id")
+    if not contact_id:
+        raise ValueError("contact_id is required")
+
+    _update_step(conn, run_id, "load_prospect", "running")
+    contact = conn.execute("""SELECT c.*, a.name as company_name, a.industry, a.employee_count, a.known_tools, a.domain, a.buyer_intent
+        FROM contacts c LEFT JOIN accounts a ON c.account_id = a.id WHERE c.id=?""", (contact_id,)).fetchone()
+    if not contact:
+        raise ValueError(f"Contact {contact_id} not found")
+    contact = dict(contact)
+    _update_step(conn, run_id, "load_prospect", "succeeded", {"name": f"{contact['first_name']} {contact['last_name']}"})
+
+    _update_step(conn, run_id, "load_research", "running")
+    research = conn.execute("SELECT * FROM research_snapshots WHERE contact_id=? OR account_id=? ORDER BY created_at DESC LIMIT 1",
+        (contact_id, contact.get("account_id"))).fetchone()
+    research = dict(research) if research else {}
+    _update_step(conn, run_id, "load_research", "succeeded", {"has_research": bool(research)})
+
+    _update_step(conn, run_id, "select_proof_point", "running")
+    industry = (contact.get("industry") or "").lower()
+    best_proof = None
+    for key, pp in PROOF_POINTS_LIBRARY.items():
+        if any(v in industry for v in pp["verticals"]):
+            best_proof = pp
+            break
+    if not best_proof:
+        best_proof = PROOF_POINTS_LIBRARY["spendflo"]
+    _update_step(conn, run_id, "select_proof_point", "succeeded", {"proof_point": best_proof["name"]})
+
+    _update_step(conn, run_id, "generate_variants", "running")
+
+    first = contact["first_name"]
+    company = contact.get("company_name", "your company")
+    title = contact.get("title", "")
+    tenure = contact.get("tenure_months", 0)
+
+    # Build personalized elements
+    opener_personal = f"Your work leading QA at {company} caught my eye" if "QA" in title or "Quality" in title else f"Saw you're heading up engineering at {company}"
+    if tenure and tenure < 6:
+        opener_personal = f"Congrats on the move to {company}"
+
+    company_ref = f"{company}'s platform" if contact.get("domain") else company
+    emp = contact.get("employee_count", 0)
+    if emp:
+        company_ref += f" (with a {emp:,}+ person team)" if emp > 5000 else ""
+
+    pain = "keeping regression suites stable as your team ships faster" if "QA" in title else "scaling test coverage without growing the QA team"
+
+    proof = f"{best_proof['name']} {best_proof['metric']}"
+
+    # Generate 3 variants per SOP rules
+    variants = []
+
+    # Variant A: Warm conversational
+    body_a = f"Hi {first},\n\n{opener_personal}, especially the {title.lower()} scope.\n\n"
+    body_a += f"With {company_ref} scaling, I'd imagine {pain} is a constant challenge.\n\n"
+    body_a += f"We helped {proof}. Their team was dealing with similar complexity.\n\n"
+    body_a += "Would a quick 15-minute walkthrough be worth your time? If not relevant, no worries at all."
+
+    # Variant B: Direct concise
+    body_b = f"Hi {first},\n\n{company} is doing impressive work in {contact.get('industry', 'tech')}. Quick question for you.\n\n"
+    body_b += f"How's your team handling {pain}?\n\n"
+    body_b += f"{best_proof['name']} cut their {best_proof['metric'].split(',')[0]}. Happy to share how, if useful."
+
+    # Variant C: Value-first with proof
+    body_c = f"Hi {first},\n\n{best_proof['name']} was spending weeks on regression before switching to our platform. Now they {best_proof['metric']}.\n\n"
+    body_c += f"Given {company}'s growth, {pain} might resonate.\n\n"
+    body_c += "Worth a conversation? If the timing is off, totally fine."
+
+    for variant_label, body in [("warm_conversational", body_a), ("direct_concise", body_b), ("value_first", body_c)]:
+        # SOP quality checks
+        has_em_dash = "\u2014" in body or "\u2013" in body
+        word_count = len(body.split())
+
+        variants.append({
+            "variant": variant_label,
+            "subject": f"Quick question about QA at {company}" if "QA" in title else f"{company} + test automation",
+            "body": body.replace("\u2014", ",").replace("\u2013", ","),  # Remove em dashes per SOP
+            "word_count": word_count,
+            "in_range": 70 <= word_count <= 120,
+            "has_em_dash": has_em_dash,
+            "proof_point": best_proof["name"],
+            "pain_hook": pain,
+            "personalization_score": 3 if tenure and tenure < 6 else (2 if "QA" in title else 1),
+        })
+
+    _update_step(conn, run_id, "generate_variants", "succeeded", {"variants": len(variants)})
+
+    _update_step(conn, run_id, "quality_gate", "running")
+    qc_results = []
+    for v in variants:
+        issues = []
+        if v["has_em_dash"]:
+            issues.append("Contains em dash (SOP violation)")
+        if not v["in_range"]:
+            issues.append(f"Word count {v['word_count']} outside 70-120 range")
+        qc_results.append({"variant": v["variant"], "passed": len(issues) == 0, "issues": issues})
+    _update_step(conn, run_id, "quality_gate", "succeeded", {"qc_results": qc_results})
+
+    _update_step(conn, run_id, "finalize", "running")
+
+    # Store drafts in database
+    draft_ids = []
+    for v in variants:
+        did = gen_id("msg")
+        conn.execute("""INSERT INTO message_drafts (id, contact_id, channel, touch_number, touch_type,
+            subject_line, body, personalization_score, proof_point_used, pain_hook, opener_style,
+            word_count, qc_passed, approval_status, agent_run_id)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (did, contact_id, "linkedin", 1, "inmail",
+             v["subject"], v["body"], v["personalization_score"],
+             v["proof_point"], v["pain_hook"], v["variant"],
+             v["word_count"], 1 if not v["has_em_dash"] and v["in_range"] else 0,
+             "draft", run_id))
+        draft_ids.append(did)
+
+    conn.commit()
+    _update_step(conn, run_id, "finalize", "succeeded", {"draft_ids": draft_ids})
+
+    return {
+        "contact": f"{contact['first_name']} {contact['last_name']}",
+        "company": company,
+        "variants": variants,
+        "draft_ids": draft_ids,
+        "recommended": variants[0]["variant"],
+        "predicted_objection": _predict_objection(contact),
+    }
+
+# ---- WORKFLOW: Follow-Up Sequence ----
+def _execute_followup_sequence(conn, run_id: str, input_data: dict) -> dict:
+    contact_id = input_data.get("contact_id")
+    if not contact_id:
+        raise ValueError("contact_id is required")
+
+    _update_step(conn, run_id, "load_original", "running")
+    contact = conn.execute("""SELECT c.*, a.name as company_name, a.industry
+        FROM contacts c LEFT JOIN accounts a ON c.account_id = a.id WHERE c.id=?""", (contact_id,)).fetchone()
+    if not contact:
+        raise ValueError(f"Contact {contact_id} not found")
+    contact = dict(contact)
+
+    original = conn.execute("SELECT * FROM message_drafts WHERE contact_id=? AND touch_number=1 ORDER BY created_at DESC LIMIT 1", (contact_id,)).fetchone()
+    original = dict(original) if original else {}
+    _update_step(conn, run_id, "load_original", "succeeded", {"has_original": bool(original)})
+
+    first = contact["first_name"]
+    company = contact.get("company_name", "your company")
+    industry = contact.get("industry", "")
+
+    _update_step(conn, run_id, "analyze_angle", "running")
+    # Pick different proof point than original
+    original_proof = original.get("proof_point_used", "")
+    alt_proof = None
+    for key, pp in PROOF_POINTS_LIBRARY.items():
+        if pp["name"] != original_proof:
+            alt_proof = pp
+            break
+    if not alt_proof:
+        alt_proof = PROOF_POINTS_LIBRARY["cred"]
+    _update_step(conn, run_id, "analyze_angle", "succeeded", {"new_proof": alt_proof["name"]})
+
+    # Touch 3: Follow-up 1 (40-70 words, new angle)
+    _update_step(conn, run_id, "draft_followup1", "running")
+    followup1 = f"Hi {first},\n\nCircling back quick. {alt_proof['name']} just {alt_proof['metric']}, and their setup looked a lot like {company}'s.\n\nWorth a conversation? Happy to share more if helpful."
+    _update_step(conn, run_id, "draft_followup1", "succeeded", {"word_count": len(followup1.split())})
+
+    # Touch 5: Follow-up 2 / Email (short, more direct)
+    _update_step(conn, run_id, "draft_followup2", "running")
+    followup2 = f"Hi {first},\n\nOne more thought. Teams in {industry or 'your space'} keep telling us the same thing: test maintenance is eating their sprint velocity.\n\nIf that resonates, I'd love 15 minutes to show you how we fix it. If not, I'll get out of your hair."
+    _update_step(conn, run_id, "draft_followup2", "succeeded", {"word_count": len(followup2.split())})
+
+    # Touch 6: Break-up (30-50 words, no pitch)
+    _update_step(conn, run_id, "draft_breakup", "running")
+    breakup = f"Hi {first},\n\nTotally understand if the timing isn't right. Just wanted to close the loop so I'm not cluttering your inbox. If things change down the road, door's always open."
+    _update_step(conn, run_id, "draft_breakup", "succeeded", {"word_count": len(breakup.split())})
+
+    _update_step(conn, run_id, "quality_gate", "running")
+
+    # Store all drafts
+    drafts = []
+    for touch_num, touch_type, body, subj in [
+        (3, "followup_1", followup1, f"Re: QA at {company}"),
+        (5, "followup_2", followup2, f"Test automation for {company}"),
+        (6, "breakup", breakup, f"Closing the loop"),
+    ]:
+        did = gen_id("msg")
+        word_count = len(body.split())
+        conn.execute("""INSERT INTO message_drafts (id, contact_id, channel, touch_number, touch_type,
+            subject_line, body, word_count, proof_point_used, approval_status, agent_run_id)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+            (did, contact_id, "linkedin" if touch_num in [3,6] else "email", touch_num, touch_type,
+             subj, body, word_count, alt_proof["name"] if touch_num == 3 else None, "draft", run_id))
+        drafts.append({"id": did, "touch": touch_num, "type": touch_type, "body": body, "subject": subj, "word_count": word_count})
+
+    conn.commit()
+    _update_step(conn, run_id, "quality_gate", "succeeded", {"drafts_created": len(drafts)})
+
+    return {"contact": f"{contact['first_name']} {contact['last_name']}", "company": company, "drafts": drafts}
+
+# ---- WORKFLOW: Daily BDR Plan ----
+def _execute_daily_plan(conn, run_id: str, input_data: dict) -> dict:
+    target_touches = input_data.get("target_touches", 50)
+    hours_available = input_data.get("hours_available", 8)
+
+    _update_step(conn, run_id, "load_pipeline", "running")
+    pipeline = conn.execute("""SELECT c.*, a.name as company_name, a.industry
+        FROM contacts c LEFT JOIN accounts a ON c.account_id = a.id
+        WHERE c.status='active' AND c.do_not_contact=0
+        ORDER BY c.priority_score DESC""").fetchall()
+    pipeline = [dict(c) for c in pipeline]
+    _update_step(conn, run_id, "load_pipeline", "succeeded", {"total_active": len(pipeline)})
+
+    _update_step(conn, run_id, "identify_hot", "running")
+    hot = [c for c in pipeline if (c.get("priority_score") or 0) >= 5]
+    warm = [c for c in pipeline if (c.get("priority_score") or 0) == 4]
+    _update_step(conn, run_id, "identify_hot", "succeeded", {"hot": len(hot), "warm": len(warm)})
+
+    _update_step(conn, run_id, "identify_overdue", "running")
+    overdue = conn.execute("""SELECT f.*, c.first_name, c.last_name, a.name as company_name
+        FROM followups f
+        LEFT JOIN contacts c ON f.contact_id = c.id
+        LEFT JOIN accounts a ON c.account_id = a.id
+        WHERE f.state='pending' AND f.due_date <= date('now')
+        ORDER BY f.due_date""").fetchall()
+    overdue = [dict(f) for f in overdue]
+    _update_step(conn, run_id, "identify_overdue", "succeeded", {"overdue_count": len(overdue)})
+
+    _update_step(conn, run_id, "plan_touches", "running")
+    plan = {
+        "morning_block": {
+            "time": "8:00 AM - 11:00 AM",
+            "focus": "Cold calls to hot prospects (West Coast prime time)",
+            "tasks": [{"type": "call", "contact": f"{c['first_name']} {c['last_name']}", "company": c.get("company_name", ""), "reason": "Hot prospect, priority 5"} for c in hot[:5]]
+        },
+        "midday_block": {
+            "time": "11:00 AM - 1:00 PM",
+            "focus": "LinkedIn messages and research",
+            "tasks": [
+                {"type": "workflow", "action": "Run Prospect Shortlist on new leads"},
+                {"type": "workflow", "action": "Generate LinkedIn drafts for warm prospects"},
+            ] + [{"type": "linkedin", "contact": f"{c['first_name']} {c['last_name']}", "company": c.get("company_name", ""), "reason": "Warm prospect, send InMail"} for c in warm[:5]]
+        },
+        "afternoon_block": {
+            "time": "1:00 PM - 3:00 PM",
+            "focus": "Follow-ups and overdue touches",
+            "tasks": [{"type": "followup", "contact": f"{c.get('first_name', '')} {c.get('last_name', '')}", "company": c.get("company_name", ""), "due_date": c.get("due_date", ""), "touch": c.get("touch_number")} for c in overdue[:5]]
+        },
+        "late_block": {
+            "time": "3:00 PM - 6:00 PM",
+            "focus": "Second round of calls + email sends",
+            "tasks": [{"type": "call", "contact": f"{c['first_name']} {c['last_name']}", "company": c.get("company_name", ""), "reason": "Warm prospect, follow-up call"} for c in warm[:3]]
+        }
+    }
+    _update_step(conn, run_id, "plan_touches", "succeeded", {"blocks": 4})
+
+    _update_step(conn, run_id, "generate_checklist", "running")
+    checklist = {
+        "date": datetime.utcnow().strftime("%Y-%m-%d"),
+        "target_touches": target_touches,
+        "hours": hours_available,
+        "summary": {
+            "calls_planned": len(hot[:5]) + len(warm[:3]),
+            "linkedin_planned": len(warm[:5]),
+            "followups_due": len(overdue),
+            "hot_prospects": len(hot),
+            "warm_prospects": len(warm),
+        },
+        "plan": plan,
+    }
+    _update_step(conn, run_id, "generate_checklist", "succeeded", checklist)
+
+    return checklist
+
+# ---- WORKFLOW: Email Draft ----
+def _execute_email_draft(conn, run_id: str, input_data: dict) -> dict:
+    contact_id = input_data.get("contact_id")
+    if not contact_id:
+        raise ValueError("contact_id is required")
+
+    _update_step(conn, run_id, "load_prospect", "running")
+    contact = conn.execute("""SELECT c.*, a.name as company_name, a.industry, a.employee_count, a.known_tools, a.domain
+        FROM contacts c LEFT JOIN accounts a ON c.account_id = a.id WHERE c.id=?""", (contact_id,)).fetchone()
+    if not contact:
+        raise ValueError(f"Contact {contact_id} not found")
+    contact = dict(contact)
+    _update_step(conn, run_id, "load_prospect", "succeeded")
+
+    _update_step(conn, run_id, "load_research", "running")
+    research = conn.execute("SELECT * FROM research_snapshots WHERE contact_id=? OR account_id=? ORDER BY created_at DESC LIMIT 1",
+        (contact_id, contact.get("account_id"))).fetchone()
+    _update_step(conn, run_id, "load_research", "succeeded")
+
+    first = contact["first_name"]
+    company = contact.get("company_name", "your company")
+    title = contact.get("title", "")
+    industry = contact.get("industry", "")
+
+    # Select proof point
+    _update_step(conn, run_id, "generate_subject", "running")
+    best_proof = PROOF_POINTS_LIBRARY["spendflo"]
+    for key, pp in PROOF_POINTS_LIBRARY.items():
+        if industry and any(v in industry.lower() for v in pp["verticals"]):
+            best_proof = pp
+            break
+
+    subjects = [
+        f"Quick question about QA at {company}",
+        f"{company} + test automation",
+        f"Idea for {company}'s testing team",
+    ]
+    _update_step(conn, run_id, "generate_subject", "succeeded", {"subjects": subjects})
+
+    _update_step(conn, run_id, "generate_body", "running")
+    pain = "keeping regression cycles from blocking releases" if "QA" in title else "scaling test coverage without growing the QA team"
+
+    body = f"Hi {first},\n\n"
+    body += f"I've been following {company}'s growth in {industry}, and given your role as {title}, I'd imagine {pain} is a constant conversation.\n\n"
+    body += f"We helped {best_proof['name']} go from {best_proof['metric']}. Their team was in a similar spot.\n\n"
+    body += "Would a quick 15-minute call make sense to see if there's a fit? If not relevant, no worries at all.\n\n"
+    body += "Best,\nRob"
+
+    # SOP checks
+    body = body.replace("\u2014", ",").replace("\u2013", ",")
+    _update_step(conn, run_id, "generate_body", "succeeded", {"word_count": len(body.split())})
+
+    _update_step(conn, run_id, "quality_gate", "running")
+    issues = []
+    if "\u2014" in body or "\u2013" in body:
+        issues.append("em_dash_found")
+    if len(body.split()) > 150:
+        issues.append("too_long")
+    _update_step(conn, run_id, "quality_gate", "succeeded", {"passed": len(issues) == 0, "issues": issues})
+
+    _update_step(conn, run_id, "finalize", "running")
+    did = gen_id("msg")
+    conn.execute("""INSERT INTO message_drafts (id, contact_id, channel, touch_number, touch_type,
+        subject_line, body, word_count, proof_point_used, pain_hook, approval_status, agent_run_id)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""",
+        (did, contact_id, "email", 5, "cold_email", subjects[0], body,
+         len(body.split()), best_proof["name"], pain, "draft", run_id))
+    conn.commit()
+    _update_step(conn, run_id, "finalize", "succeeded", {"draft_id": did})
+
+    return {"contact": f"{contact['first_name']} {contact['last_name']}", "company": company,
+            "subjects": subjects, "body": body, "draft_id": did, "proof_point": best_proof["name"]}
+
+# ---- WORKFLOW: Call Prep ----
+def _execute_call_prep(conn, run_id: str, input_data: dict) -> dict:
+    contact_id = input_data.get("contact_id")
+    if not contact_id:
+        raise ValueError("contact_id is required")
+
+    _update_step(conn, run_id, "load_prospect", "running")
+    contact = conn.execute("""SELECT c.*, a.name as company_name, a.industry, a.employee_count, a.known_tools
+        FROM contacts c LEFT JOIN accounts a ON c.account_id = a.id WHERE c.id=?""", (contact_id,)).fetchone()
+    if not contact:
+        raise ValueError(f"Contact {contact_id} not found")
+    contact = dict(contact)
+    _update_step(conn, run_id, "load_prospect", "succeeded")
+
+    _update_step(conn, run_id, "load_research", "running")
+    _update_step(conn, run_id, "load_research", "succeeded")
+
+    first = contact["first_name"]
+    company = contact.get("company_name", "your company")
+    title = contact.get("title", "")
+    industry = contact.get("industry", "")
+
+    # Pick proof point different from any InMail
+    existing_proof = conn.execute("SELECT proof_point_used FROM message_drafts WHERE contact_id=? AND channel='linkedin' ORDER BY created_at DESC LIMIT 1",
+        (contact_id,)).fetchone()
+    existing_proof_name = existing_proof["proof_point_used"] if existing_proof else ""
+
+    call_proof = PROOF_POINTS_LIBRARY["cred"]
+    for key, pp in PROOF_POINTS_LIBRARY.items():
+        if pp["name"] != existing_proof_name and industry and any(v in industry.lower() for v in pp["verticals"]):
+            call_proof = pp
+            break
+
+    _update_step(conn, run_id, "generate_opener", "running")
+    opener = f"Hey {first}, this is Rob from Testsigma. I see you're {title.lower()} at {company}, so I figured you'd be the right person to ask."
+    _update_step(conn, run_id, "generate_opener", "succeeded")
+
+    _update_step(conn, run_id, "generate_pain", "running")
+    pain = f"A lot of {industry} teams tell us regression testing is their biggest bottleneck as they scale." if industry else f"Testing teams at companies like {company} often tell us flaky tests eat up 40% of their sprint."
+    _update_step(conn, run_id, "generate_pain", "succeeded")
+
+    _update_step(conn, run_id, "generate_bridge", "running")
+    bridge = f"We helped {call_proof['name']} {call_proof['metric']}. Worth 60 seconds to see if it's relevant?"
+    _update_step(conn, run_id, "generate_bridge", "succeeded")
+
+    script = {"opener": opener, "pain_hypothesis": pain, "bridge": bridge}
+
+    return {"contact": f"{first} {contact['last_name']}", "company": company, "call_script": script, "proof_point": call_proof["name"]}
+
+# ---------------------------------------------------------------------------
+# WORKFLOW TRIGGER ENDPOINTS
+# ---------------------------------------------------------------------------
+
+@app.post("/api/workflows/execute")
+def trigger_workflow(data: dict):
+    """Execute a workflow. Always runs in DRY_RUN mode."""
+    workflow_type = data.get("workflow_type")
+    input_data = data.get("input", {})
+
+    if not workflow_type:
+        raise HTTPException(400, "workflow_type is required")
+
+    # Safety: always dry run
+    result = execute_workflow(workflow_type, input_data, dry_run=True)
+    return result
+
+@app.post("/api/workflows/account-research")
+def run_account_research(data: dict):
+    return execute_workflow("account_research", data, dry_run=True)
+
+@app.post("/api/workflows/prospect-shortlist")
+def run_prospect_shortlist(data: dict):
+    return execute_workflow("prospect_shortlist", data, dry_run=True)
+
+@app.post("/api/workflows/linkedin-draft")
+def run_linkedin_draft(data: dict):
+    return execute_workflow("linkedin_message_draft", data, dry_run=True)
+
+@app.post("/api/workflows/followup-sequence")
+def run_followup_sequence(data: dict):
+    return execute_workflow("followup_sequence", data, dry_run=True)
+
+@app.post("/api/workflows/daily-plan")
+def run_daily_plan(data: dict):
+    return execute_workflow("daily_plan", data, dry_run=True)
+
+@app.post("/api/workflows/email-draft")
+def run_email_draft(data: dict):
+    return execute_workflow("email_draft", data, dry_run=True)
+
+@app.post("/api/workflows/call-prep")
+def run_call_prep(data: dict):
+    return execute_workflow("call_prep", data, dry_run=True)
 
 
 # ─── UTILITIES ────────────────────────────────────────────────────────────────

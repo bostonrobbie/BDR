@@ -381,6 +381,7 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
 .tag-qa { background: var(--success-bg); color: var(--success); }
 .tag-vp { background: var(--info-bg); color: var(--info); }
 .tag-intent { background: var(--warning-bg); color: var(--warning); }
+.tag-warn { background: var(--warning-bg); color: var(--warning); }
 
 /* Buttons */
 .btn {
@@ -1295,6 +1296,10 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
             <span>🤖</span>
             <span>Agent Logs</span>
         </div>
+        <div class="nav-item" onclick="showPage('linkedin')">
+            <span>🔗</span>
+            <span>LinkedIn Channel</span>
+        </div>
         <div class="nav-item" onclick="showPage('email')">
             <span>✉</span>
             <span>Email Channel</span>
@@ -1799,6 +1804,95 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
     </div>
 </div>
 
+<!-- LINKEDIN CHANNEL -->
+<div class="page" id="page-linkedin">
+    <div class="page-hdr">
+        <h1>LinkedIn Channel</h1>
+        <div style="display:flex;gap:10px;align-items:center;">
+            <span id="linkedin-dry-run-badge" class="tag tag-warn" style="font-size:11px;">DRY RUN ON</span>
+            <button class="btn btn-sm" onclick="loadLinkedInPage()">Refresh</button>
+        </div>
+    </div>
+
+    <div class="kpi-row" id="linkedin-kpis"></div>
+
+    <!-- Quick Actions -->
+    <div class="card" style="margin-bottom:16px;">
+        <h3 style="margin-bottom:14px;">Quick Actions</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
+            <button class="btn btn-primary" onclick="showWorkflowModal('account_research')" style="padding:14px;text-align:left;">
+                <strong style="display:block;margin-bottom:4px;">🔍 Account Research</strong>
+                <span style="font-size:11px;color:rgba(255,255,255,0.7);">Research a target company, ICP fit, pain points</span>
+            </button>
+            <button class="btn btn-primary" onclick="showWorkflowModal('prospect_shortlist')" style="padding:14px;text-align:left;">
+                <strong style="display:block;margin-bottom:4px;">📋 Prospect Shortlist</strong>
+                <span style="font-size:11px;color:rgba(255,255,255,0.7);">Score and rank prospects against ICP</span>
+            </button>
+            <button class="btn btn-primary" onclick="showWorkflowModal('linkedin_message_draft')" style="padding:14px;text-align:left;">
+                <strong style="display:block;margin-bottom:4px;">✉️ Draft Messages</strong>
+                <span style="font-size:11px;color:rgba(255,255,255,0.7);">Generate personalized InMail drafts</span>
+            </button>
+            <button class="btn btn-primary" onclick="showWorkflowModal('followup_sequence')" style="padding:14px;text-align:left;">
+                <strong style="display:block;margin-bottom:4px;">🔄 Follow-Up Sequence</strong>
+                <span style="font-size:11px;color:rgba(255,255,255,0.7);">Create follow-ups and break-up messages</span>
+            </button>
+            <button class="btn btn-primary" onclick="showWorkflowModal('daily_plan')" style="padding:14px;text-align:left;">
+                <strong style="display:block;margin-bottom:4px;">📅 Daily Plan</strong>
+                <span style="font-size:11px;color:rgba(255,255,255,0.7);">Generate today's action checklist</span>
+            </button>
+            <button class="btn btn-primary" onclick="showWorkflowModal('call_prep')" style="padding:14px;text-align:left;">
+                <strong style="display:block;margin-bottom:4px;">📞 Call Prep</strong>
+                <span style="font-size:11px;color:rgba(255,255,255,0.7);">3-line call script for cold calls</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Data Import -->
+    <div class="card" style="margin-bottom:16px;">
+        <h3 style="margin-bottom:14px;">Import LinkedIn Data</h3>
+        <div class="tab-bar" style="margin-bottom:12px;">
+            <button class="btn btn-sm active" onclick="showLinkedInImportTab('csv', this)">CSV Import</button>
+            <button class="btn btn-sm" onclick="showLinkedInImportTab('paste', this)">Paste Profile</button>
+        </div>
+        <div id="li-import-csv" class="email-tab">
+            <p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;">Upload a Sales Navigator export CSV or paste CSV data below.</p>
+            <textarea class="inp" id="li-csv-data" style="width:100%;height:120px;resize:vertical;font-family:monospace;font-size:11px;" placeholder="first_name,last_name,title,company,linkedin_url,email,industry,location&#10;John,Doe,Director of QA,Acme Corp,https://linkedin.com/in/johndoe,john@acme.com,SaaS,San Francisco"></textarea>
+            <div style="margin-top:10px;display:flex;gap:8px;">
+                <button class="btn btn-primary btn-sm" onclick="importLinkedInCSV()">Import CSV</button>
+                <span id="li-csv-result" style="font-size:12px;color:var(--text-secondary);"></span>
+            </div>
+        </div>
+        <div id="li-import-paste" class="email-tab" style="display:none;">
+            <p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;">Paste LinkedIn profile text (copied from a profile page). We'll parse it automatically.</p>
+            <textarea class="inp" id="li-paste-data" style="width:100%;height:120px;resize:vertical;font-size:12px;" placeholder="Paste profile text here..."></textarea>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
+                <input class="inp" id="li-paste-url" placeholder="LinkedIn URL" />
+                <input class="inp" id="li-paste-company" placeholder="Company name" />
+            </div>
+            <div style="margin-top:10px;">
+                <button class="btn btn-primary btn-sm" onclick="importLinkedInPaste()">Import Profile</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Workflow Runs -->
+    <div class="card" style="margin-bottom:16px;">
+        <h3 style="margin-bottom:14px;">Recent Workflow Runs</h3>
+        <div style="overflow-x:auto;">
+            <table class="tbl">
+                <thead><tr><th>Workflow</th><th>Status</th><th>Steps</th><th>Duration</th><th>Started</th><th>Actions</th></tr></thead>
+                <tbody id="linkedin-runs-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Recent Drafts from LinkedIn -->
+    <div class="card">
+        <h3 style="margin-bottom:14px;">LinkedIn Drafts</h3>
+        <div id="linkedin-drafts-list"><div class="empty">Loading...</div></div>
+    </div>
+</div>
+
 <!-- EMAIL CHANNEL -->
 <div class="page" id="page-email">
     <div class="page-hdr">
@@ -1857,6 +1951,45 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
                 <button class="btn btn-sm btn-primary" onclick="addSuppression()">Suppress</button>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Workflow Execution Modal -->
+<div id="workflow-modal" class="modal">
+    <div class="modal-content" style="width:640px;max-height:85vh;overflow-y:auto;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h3 id="wf-modal-title">Run Workflow</h3>
+            <button class="btn btn-sm" onclick="closeWorkflowModal()">✕</button>
+        </div>
+        <p id="wf-modal-desc" style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;"></p>
+
+        <div id="wf-modal-inputs"></div>
+
+        <div id="wf-modal-result" style="display:none;margin-top:16px;">
+            <h3 style="margin-bottom:12px;">Results</h3>
+            <div id="wf-modal-result-content"></div>
+        </div>
+
+        <div id="wf-modal-steps" style="display:none;margin-top:16px;">
+            <h3 style="margin-bottom:8px;">Execution Steps</h3>
+            <div id="wf-steps-list"></div>
+        </div>
+
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+            <button class="btn btn-sm" onclick="closeWorkflowModal()">Close</button>
+            <button class="btn btn-sm btn-primary" id="wf-run-btn" onclick="executeWorkflow()">Run Workflow</button>
+        </div>
+    </div>
+</div>
+
+<!-- Workflow Result Detail Modal -->
+<div id="workflow-detail-modal" class="modal">
+    <div class="modal-content" style="width:700px;max-height:85vh;overflow-y:auto;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h3>Workflow Run Details</h3>
+            <button class="btn btn-sm" onclick="document.getElementById('workflow-detail-modal').style.display='none'">✕</button>
+        </div>
+        <div id="wf-detail-content"></div>
     </div>
 </div>
 
@@ -2222,6 +2355,7 @@ function showPage(id) {
     if (id === 'agents') loadAgentRuns();
     if (id === 'approval') loadApprovalQueue();
     if (id === 'launch') { loadBatches(); loadPreBrief(); }
+    if (id === 'linkedin') loadLinkedInPage();
     if (id === 'email') loadEmailPage();
     if (id === 'swarm') loadSwarmPage();
     if (id === 'health') loadHealthPage();
@@ -3448,6 +3582,475 @@ function showSettingsTab(tab) {
 function saveGeneralSettings() { showToast('Settings saved', 'success'); }
 
 function confirmBulk(action) { showConfirm(`${action.charAt(0).toUpperCase() + action.slice(1)} all?`, `Confirm bulk ${action}?`, () => showToast(`All ${action}d`, 'success')); }
+
+// LINKEDIN CHANNEL PAGE
+async function loadLinkedInPage() {
+    // KPIs
+    const stats = await api('/api/linkedin/stats');
+    const kpiEl = document.getElementById('linkedin-kpis');
+    if (stats && kpiEl) {
+        kpiEl.innerHTML = [
+            kpi('Profiles', stats.profiles || 0),
+            kpi('LI Drafts', stats.drafts || 0),
+            kpi('Sent', stats.sent || 0),
+            kpi('Workflow Runs', stats.total_runs || 0),
+            kpi('Active Runs', stats.active_runs || 0),
+        ].join('');
+        const badge = document.getElementById('linkedin-dry-run-badge');
+        if (badge) {
+            badge.textContent = stats.dry_run ? 'DRY RUN ON' : 'LIVE MODE';
+            badge.className = stats.dry_run ? 'tag tag-warn' : 'tag tag-hot';
+        }
+    }
+
+    // Recent runs
+    const runs = await api('/api/workflow-runs?channel=linkedin&limit=20');
+    const runsBody = document.getElementById('linkedin-runs-body');
+    if (runsBody) {
+        if (!runs || !runs.length) {
+            runsBody.innerHTML = '<tr><td colspan="6"><div class="empty">No workflow runs yet. Click a Quick Action above to get started.</div></td></tr>';
+        } else {
+            runsBody.innerHTML = runs.map(r => {
+                const statusClass = r.status === 'succeeded' ? 'badge-gn' : r.status === 'failed' ? 'badge-rd' : r.status === 'running' ? 'badge-bl' : 'badge-yw';
+                const dur = r.duration_ms ? (r.duration_ms / 1000).toFixed(1) + 's' : '-';
+                return `<tr>
+                    <td><strong>${r.workflow_name || r.workflow_type}</strong></td>
+                    <td><span class="${statusClass}">${r.status}</span></td>
+                    <td>${r.completed_steps || 0}/${r.total_steps || 0}</td>
+                    <td>${dur}</td>
+                    <td>${timeAgo(r.started_at)}</td>
+                    <td><button class="btn btn-sm" onclick="viewWorkflowRun('${r.id}')">View</button></td>
+                </tr>`;
+            }).join('');
+        }
+    }
+
+    // Recent LinkedIn drafts
+    const drafts = await api('/api/drafts?channel=linkedin&limit=10');
+    const draftsEl = document.getElementById('linkedin-drafts-list');
+    if (draftsEl) {
+        const draftList = Array.isArray(drafts) ? drafts : [];
+        if (!draftList.length) {
+            draftsEl.innerHTML = '<div class="empty"><div class="empty-icon">✉️</div><strong>No LinkedIn drafts yet</strong><br>Run a workflow to generate personalized messages.</div>';
+        } else {
+            draftsEl.innerHTML = draftList.map(d => `
+                <div class="card" style="margin-bottom:10px;padding:14px;">
+                    <div style="display:flex;justify-content:space-between;align-items:start;">
+                        <div style="flex:1;">
+                            <strong>${d.subject || d.subject_line || '(no subject)'}</strong>
+                            <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">${d.contact_name || ''} - Touch ${d.touch_number || '?'} (${d.touch_type || d.channel})</div>
+                        </div>
+                        <div style="display:flex;gap:6px;">
+                            <button class="btn btn-sm" onclick="copyDraftBody('${d.id}')">Copy</button>
+                        </div>
+                    </div>
+                    <div style="margin-top:10px;padding:10px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:12px;white-space:pre-wrap;max-height:120px;overflow:hidden;">${(d.body || '').substring(0, 300)}${(d.body || '').length > 300 ? '...' : ''}</div>
+                    <div style="margin-top:6px;display:flex;gap:8px;font-size:11px;color:var(--text-muted);">
+                        <span>Words: ${d.word_count || '-'}</span>
+                        <span>Proof: ${d.proof_point_used || d.proof_point || '-'}</span>
+                        <span>P-Score: ${d.personalization_score || '-'}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+}
+
+function showLinkedInImportTab(tab, btn) {
+    document.querySelectorAll('#page-linkedin .email-tab').forEach(e => e.style.display = 'none');
+    document.getElementById('li-import-' + tab).style.display = '';
+    if (btn) {
+        btn.parentElement.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+}
+
+async function importLinkedInCSV() {
+    const raw = document.getElementById('li-csv-data')?.value?.trim();
+    if (!raw) { showToast('Paste CSV data first', 'warning'); return; }
+
+    const lines = raw.split('\n');
+    if (lines.length < 2) { showToast('Need header row + at least one data row', 'warning'); return; }
+
+    const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/\s+/g, '_'));
+    const rows = [];
+    for (let i = 1; i < lines.length; i++) {
+        const vals = lines[i].split(',').map(v => v.trim());
+        if (vals.length < 2) continue;
+        const row = {};
+        headers.forEach((h, j) => { row[h] = vals[j] || ''; });
+        rows.push(row);
+    }
+
+    const result = await apiPost('/api/linkedin/profiles/import-csv', { rows });
+    if (result && !result._error) {
+        showToast(`Imported ${result.imported} profiles, skipped ${result.skipped}`, 'success');
+        document.getElementById('li-csv-data').value = '';
+        document.getElementById('li-csv-result').textContent = `${result.imported} imported, ${result.skipped} skipped`;
+        loadLinkedInPage();
+    } else {
+        showToast('Import failed: ' + (result?.message || 'Unknown error'), 'error');
+    }
+}
+
+async function importLinkedInPaste() {
+    const text = document.getElementById('li-paste-data')?.value?.trim();
+    const url = document.getElementById('li-paste-url')?.value?.trim();
+    const company = document.getElementById('li-paste-company')?.value?.trim();
+
+    if (!text) { showToast('Paste profile text first', 'warning'); return; }
+
+    // Simple parsing of pasted profile text
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+    const name = lines[0] || '';
+    const headline = lines[1] || '';
+    const parts = name.split(' ');
+
+    const result = await apiPost('/api/linkedin/profiles/import', {
+        linkedin_url: url,
+        headline: headline,
+        about_text: lines.slice(2).join('\n'),
+        source: 'manual_paste',
+    });
+
+    if (result && !result._error) {
+        showToast('Profile imported', 'success');
+        document.getElementById('li-paste-data').value = '';
+        loadLinkedInPage();
+    } else {
+        showToast('Import failed: ' + (result?.message || 'Unknown error'), 'error');
+    }
+}
+
+// WORKFLOW EXECUTION SYSTEM
+let currentWorkflowType = null;
+
+const WORKFLOW_CONFIGS = {
+    account_research: {
+        title: 'Account Research',
+        description: 'Research a target account: company overview, ICP fit score, pain points, recommended titles and talk tracks.',
+        inputs: [
+            { id: 'wf-company', label: 'Company Name', type: 'text', placeholder: 'e.g. Stripe', required: true },
+            { id: 'wf-domain', label: 'Domain (optional)', type: 'text', placeholder: 'e.g. stripe.com' },
+            { id: 'wf-industry', label: 'Industry (optional)', type: 'text', placeholder: 'e.g. FinTech' },
+        ]
+    },
+    prospect_shortlist: {
+        title: 'Prospect Shortlist Builder',
+        description: 'Score and rank all active contacts against ICP criteria. Flags exclusions and highlights missing info.',
+        inputs: [
+            { id: 'wf-note', label: 'Note', type: 'info', text: 'This will analyze all active contacts in your pipeline and produce a ranked shortlist.' },
+        ]
+    },
+    linkedin_message_draft: {
+        title: 'LinkedIn Message Drafts',
+        description: 'Generate 3 personalized InMail variants (warm, direct, value-first) following the SOP writing rules.',
+        inputs: [
+            { id: 'wf-contact-select', label: 'Select Prospect', type: 'contact_select', required: true },
+        ]
+    },
+    followup_sequence: {
+        title: 'Follow-Up Sequence Planner',
+        description: 'Create Touch 3 (follow-up), Touch 5 (email), and Touch 6 (break-up) with different angles.',
+        inputs: [
+            { id: 'wf-contact-select', label: 'Select Prospect', type: 'contact_select', required: true },
+        ]
+    },
+    daily_plan: {
+        title: 'Daily BDR Plan Generator',
+        description: 'Generate a prioritized daily checklist organized by time blocks: morning calls, midday LinkedIn, afternoon follow-ups.',
+        inputs: [
+            { id: 'wf-target', label: 'Target Touches Today', type: 'number', placeholder: '50', value: '50' },
+            { id: 'wf-hours', label: 'Hours Available', type: 'number', placeholder: '8', value: '8' },
+        ]
+    },
+    call_prep: {
+        title: 'Cold Call Prep Script',
+        description: 'Generate a 3-line call cheat sheet: opener, pain hypothesis, bridge to ask. Uses different proof point than InMail.',
+        inputs: [
+            { id: 'wf-contact-select', label: 'Select Prospect', type: 'contact_select', required: true },
+        ]
+    },
+    email_draft: {
+        title: 'Email Draft Generator',
+        description: 'Generate a cold email with subject lines and body. Quality-checked for deliverability.',
+        inputs: [
+            { id: 'wf-contact-select', label: 'Select Prospect', type: 'contact_select', required: true },
+        ]
+    },
+};
+
+function showWorkflowModal(type) {
+    currentWorkflowType = type;
+    const config = WORKFLOW_CONFIGS[type];
+    if (!config) { showToast('Unknown workflow type', 'error'); return; }
+
+    document.getElementById('wf-modal-title').textContent = config.title;
+    document.getElementById('wf-modal-desc').textContent = config.description;
+    document.getElementById('wf-modal-result').style.display = 'none';
+    document.getElementById('wf-modal-steps').style.display = 'none';
+    document.getElementById('wf-run-btn').disabled = false;
+    document.getElementById('wf-run-btn').textContent = 'Run Workflow';
+
+    const inputsEl = document.getElementById('wf-modal-inputs');
+    inputsEl.innerHTML = config.inputs.map(inp => {
+        if (inp.type === 'info') {
+            return `<div style="padding:10px;background:var(--info-bg);border:1px solid var(--info);border-radius:var(--radius-sm);font-size:12px;color:var(--info);margin-bottom:12px;">${inp.text}</div>`;
+        }
+        if (inp.type === 'contact_select') {
+            const options = (window.contacts || []).map(c => `<option value="${c.id}">${c.first_name} ${c.last_name} - ${c.title || ''} @ ${c.company_name || ''}</option>`).join('');
+            return `<div class="form-row"><label>${inp.label}</label><select class="sel" id="${inp.id}" style="width:100%;">${options}</select></div>`;
+        }
+        return `<div class="form-row"><label>${inp.label}</label><input class="inp" id="${inp.id}" type="${inp.type}" placeholder="${inp.placeholder || ''}" value="${inp.value || ''}" style="width:100%;" ${inp.required ? 'required' : ''} /></div>`;
+    }).join('');
+
+    document.getElementById('workflow-modal').style.display = 'flex';
+}
+
+function closeWorkflowModal() {
+    document.getElementById('workflow-modal').style.display = 'none';
+    currentWorkflowType = null;
+}
+
+async function executeWorkflow() {
+    if (!currentWorkflowType) return;
+
+    const btn = document.getElementById('wf-run-btn');
+    btn.disabled = true;
+    btn.textContent = 'Running...';
+
+    let inputData = {};
+
+    switch (currentWorkflowType) {
+        case 'account_research':
+            inputData = {
+                company_name: document.getElementById('wf-company')?.value || '',
+                domain: document.getElementById('wf-domain')?.value || '',
+                industry: document.getElementById('wf-industry')?.value || '',
+            };
+            if (!inputData.company_name) { showToast('Company name required', 'warning'); btn.disabled = false; btn.textContent = 'Run Workflow'; return; }
+            break;
+        case 'prospect_shortlist':
+            inputData = {};
+            break;
+        case 'linkedin_message_draft':
+        case 'followup_sequence':
+        case 'call_prep':
+        case 'email_draft':
+            inputData = { contact_id: document.getElementById('wf-contact-select')?.value || '' };
+            if (!inputData.contact_id) { showToast('Select a prospect', 'warning'); btn.disabled = false; btn.textContent = 'Run Workflow'; return; }
+            break;
+        case 'daily_plan':
+            inputData = {
+                target_touches: parseInt(document.getElementById('wf-target')?.value) || 50,
+                hours_available: parseInt(document.getElementById('wf-hours')?.value) || 8,
+            };
+            break;
+    }
+
+    const result = await apiPost('/api/workflows/execute', {
+        workflow_type: currentWorkflowType,
+        input: inputData,
+    });
+
+    btn.textContent = 'Done';
+
+    if (result && !result._error) {
+        showToast(`${WORKFLOW_CONFIGS[currentWorkflowType]?.title || 'Workflow'} completed!`, 'success');
+        renderWorkflowResult(result);
+        loadLinkedInPage(); // refresh the page data
+    } else {
+        showToast('Workflow failed: ' + (result?.message || 'Unknown error'), 'error');
+        document.getElementById('wf-modal-result').style.display = 'block';
+        document.getElementById('wf-modal-result-content').innerHTML = `<div style="padding:12px;background:var(--error-bg);border:1px solid var(--error);border-radius:var(--radius-sm);color:var(--error);">${result?.message || 'Unknown error'}</div>`;
+    }
+}
+
+function renderWorkflowResult(response) {
+    const resultEl = document.getElementById('wf-modal-result');
+    const contentEl = document.getElementById('wf-modal-result-content');
+    resultEl.style.display = 'block';
+
+    const result = response.result || response;
+
+    if (currentWorkflowType === 'account_research') {
+        contentEl.innerHTML = `
+            <div style="display:grid;gap:12px;">
+                <div class="card" style="padding:14px;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                        <strong>${result.company || ''}</strong>
+                        <span class="tag ${(result.icp_score || 0) >= 5 ? 'tag-hot' : (result.icp_score || 0) >= 3 ? 'tag-warm' : 'tag-std'}">ICP: ${result.icp_score || 0}/${result.icp_max || 7}</span>
+                    </div>
+                    <div style="font-size:12px;color:var(--text-secondary);">${result.industry || ''} | ${(result.employee_count || 0).toLocaleString()} employees</div>
+                    <div style="margin-top:8px;"><strong>ICP Reasons:</strong></div>
+                    <ul style="font-size:12px;margin-top:4px;padding-left:16px;">${(result.icp_reasons || []).map(r => `<li>${r}</li>`).join('')}</ul>
+                </div>
+                <div class="card" style="padding:14px;">
+                    <strong>Pain Points</strong>
+                    ${(result.pain_points || []).map(p => `
+                        <div style="margin-top:8px;padding:8px;background:var(--bg-primary);border-radius:var(--radius-sm);">
+                            <div style="font-size:12px;"><strong>${p.pain}</strong> <span class="tag ${p.severity === 'high' ? 'tag-hot' : 'tag-std'}">${p.severity}</span></div>
+                            <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">${p.talk_track}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="card" style="padding:14px;">
+                    <strong>Recommended Proof Point:</strong> ${result.recommended_proof_point?.name || ''} - ${result.recommended_proof_point?.metric || ''}
+                </div>
+                ${result.predicted_objection ? `<div class="card" style="padding:14px;">
+                    <strong>Predicted Objection:</strong> ${result.predicted_objection.trigger || ''}
+                    <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;"><em>Response:</em> ${result.predicted_objection.response || ''}</div>
+                </div>` : ''}
+            </div>`;
+    } else if (currentWorkflowType === 'linkedin_message_draft' || currentWorkflowType === 'email_draft') {
+        const variants = result.variants || [];
+        const drafts = variants.length ? variants : [result];
+        contentEl.innerHTML = `
+            <div style="margin-bottom:8px;"><strong>Prospect:</strong> ${result.contact || ''} @ ${result.company || ''}</div>
+            ${drafts.map((v, i) => `
+                <div class="card" style="padding:14px;margin-bottom:10px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                        <strong>Variant ${i+1}: ${v.variant || 'Default'}</strong>
+                        <div style="display:flex;gap:6px;">
+                            <span style="font-size:11px;color:var(--text-muted);">${v.word_count || '-'} words | P-Score: ${v.personalization_score || '-'}</span>
+                            <button class="btn btn-sm" onclick="navigator.clipboard.writeText(this.closest('.card').querySelector('.draft-body').textContent);showToast('Copied!','success')">Copy</button>
+                        </div>
+                    </div>
+                    ${v.subject ? `<div style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;"><strong>Subject:</strong> ${v.subject}</div>` : ''}
+                    <div class="draft-body" style="padding:10px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:12px;white-space:pre-wrap;">${v.body || ''}</div>
+                </div>
+            `).join('')}
+            ${result.predicted_objection ? `<div style="margin-top:8px;font-size:12px;"><strong>Predicted objection:</strong> ${result.predicted_objection.trigger || ''}<br><em>Response:</em> ${result.predicted_objection.response || ''}</div>` : ''}`;
+    } else if (currentWorkflowType === 'followup_sequence') {
+        contentEl.innerHTML = `
+            <div style="margin-bottom:8px;"><strong>Follow-ups for:</strong> ${result.contact || ''} @ ${result.company || ''}</div>
+            ${(result.drafts || []).map(d => `
+                <div class="card" style="padding:14px;margin-bottom:10px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                        <strong>Touch ${d.touch}: ${d.type}</strong>
+                        <div style="display:flex;gap:6px;">
+                            <span style="font-size:11px;color:var(--text-muted);">${d.word_count} words</span>
+                            <button class="btn btn-sm" onclick="navigator.clipboard.writeText(this.closest('.card').querySelector('.draft-body').textContent);showToast('Copied!','success')">Copy</button>
+                        </div>
+                    </div>
+                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;"><strong>Subject:</strong> ${d.subject || ''}</div>
+                    <div class="draft-body" style="padding:10px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:12px;white-space:pre-wrap;">${d.body || ''}</div>
+                </div>
+            `).join('')}`;
+    } else if (currentWorkflowType === 'daily_plan') {
+        const plan = result.plan || {};
+        contentEl.innerHTML = `
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px;">
+                ${kpi('Calls Planned', result.summary?.calls_planned || 0)}
+                ${kpi('LinkedIn Planned', result.summary?.linkedin_planned || 0)}
+                ${kpi('Follow-ups Due', result.summary?.followups_due || 0)}
+                ${kpi('Hot Prospects', result.summary?.hot_prospects || 0)}
+            </div>
+            ${Object.entries(plan).map(([key, block]) => `
+                <div class="card" style="padding:14px;margin-bottom:10px;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                        <strong>${block.focus || key}</strong>
+                        <span style="font-size:11px;color:var(--text-muted);">${block.time || ''}</span>
+                    </div>
+                    ${(block.tasks || []).map(t => `
+                        <div style="padding:6px 8px;margin-top:4px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:12px;display:flex;align-items:center;gap:8px;">
+                            <span style="font-size:14px;">${t.type === 'call' ? '📞' : t.type === 'linkedin' ? '🔗' : t.type === 'followup' ? '🔄' : '⚡'}</span>
+                            <div><strong>${t.contact || t.action || ''}</strong> ${t.company ? `<span style="color:var(--text-muted);">@ ${t.company}</span>` : ''} ${t.reason ? `<div style="font-size:11px;color:var(--text-secondary);">${t.reason}</div>` : ''}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('')}`;
+    } else if (currentWorkflowType === 'prospect_shortlist') {
+        const shortlist = result.shortlist || [];
+        contentEl.innerHTML = `
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;">
+                ${kpi('Total Input', result.summary?.total_input || 0)}
+                ${kpi('Passed', result.summary?.passed_filters || 0)}
+                ${kpi('Hot (5)', result.summary?.hot || 0)}
+                ${kpi('Warm (4)', result.summary?.warm || 0)}
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="tbl">
+                    <thead><tr><th>Score</th><th>Name</th><th>Title</th><th>Company</th><th>Persona</th><th>Missing</th></tr></thead>
+                    <tbody>${shortlist.slice(0, 25).map(s => `
+                        <tr>
+                            <td><span class="tag ${s.priority_score >= 5 ? 'tag-hot' : s.priority_score >= 4 ? 'tag-warm' : 'tag-std'}">${s.priority_score}</span></td>
+                            <td><strong>${s.name}</strong></td>
+                            <td style="font-size:12px;">${s.title || ''}</td>
+                            <td style="font-size:12px;">${s.company || ''}</td>
+                            <td><span class="tag ${s.persona_type === 'qa_leader' ? 'tag-qa' : 'tag-vp'}">${s.persona_type || ''}</span></td>
+                            <td style="font-size:11px;color:var(--warning);">${(s.missing_info || []).join(', ') || '-'}</td>
+                        </tr>
+                    `).join('')}</tbody>
+                </table>
+            </div>`;
+    } else if (currentWorkflowType === 'call_prep') {
+        const script = result.call_script || {};
+        contentEl.innerHTML = `
+            <div style="margin-bottom:8px;"><strong>Call Prep for:</strong> ${result.contact || ''} @ ${result.company || ''}</div>
+            <div class="card" style="padding:14px;">
+                <div style="margin-bottom:12px;">
+                    <strong style="color:var(--accent);">1. Opener:</strong>
+                    <div class="draft-body" style="margin-top:4px;padding:8px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:13px;">${script.opener || ''}</div>
+                </div>
+                <div style="margin-bottom:12px;">
+                    <strong style="color:var(--warning);">2. Pain Hypothesis:</strong>
+                    <div class="draft-body" style="margin-top:4px;padding:8px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:13px;">${script.pain_hypothesis || ''}</div>
+                </div>
+                <div>
+                    <strong style="color:var(--success);">3. Bridge to Ask:</strong>
+                    <div class="draft-body" style="margin-top:4px;padding:8px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:13px;">${script.bridge || ''}</div>
+                </div>
+                <div style="margin-top:12px;text-align:right;">
+                    <button class="btn btn-sm btn-primary" onclick="navigator.clipboard.writeText([document.querySelectorAll('.draft-body')[0]?.textContent,document.querySelectorAll('.draft-body')[1]?.textContent,document.querySelectorAll('.draft-body')[2]?.textContent].join('\\n\\n'));showToast('Script copied!','success')">Copy Full Script</button>
+                </div>
+            </div>`;
+    } else {
+        contentEl.innerHTML = `<pre style="font-size:11px;white-space:pre-wrap;max-height:400px;overflow-y:auto;">${JSON.stringify(result, null, 2)}</pre>`;
+    }
+}
+
+async function viewWorkflowRun(runId) {
+    const data = await api('/api/workflow-runs/' + runId);
+    if (!data) { showToast('Could not load run details', 'error'); return; }
+
+    const el = document.getElementById('wf-detail-content');
+    const statusClass = data.status === 'succeeded' ? 'badge-gn' : data.status === 'failed' ? 'badge-rd' : 'badge-bl';
+
+    el.innerHTML = `
+        <div style="display:flex;gap:16px;margin-bottom:16px;">
+            ${kpi('Status', `<span class="${statusClass}">${data.status}</span>`)}
+            ${kpi('Steps', `${data.completed_steps}/${data.total_steps}`)}
+            ${kpi('Duration', data.duration_ms ? (data.duration_ms/1000).toFixed(1) + 's' : '-')}
+            ${kpi('Dry Run', data.dry_run ? 'Yes' : 'No')}
+        </div>
+        <div class="card" style="padding:14px;margin-bottom:12px;">
+            <strong>Steps</strong>
+            ${(data.steps || []).map(s => {
+                const sc = s.status === 'succeeded' ? '✅' : s.status === 'failed' ? '❌' : s.status === 'running' ? '⏳' : '⏸️';
+                return `<div style="padding:6px 0;border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;gap:8px;font-size:12px;">
+                    <span>${sc}</span>
+                    <strong>${s.step_name}</strong>
+                    <span style="color:var(--text-muted);margin-left:auto;">${s.duration_ms ? s.duration_ms + 'ms' : ''}</span>
+                </div>`;
+            }).join('')}
+        </div>
+        ${data.output_data ? `<div class="card" style="padding:14px;">
+            <strong>Output</strong>
+            <pre style="margin-top:8px;font-size:11px;white-space:pre-wrap;max-height:300px;overflow-y:auto;">${JSON.stringify(JSON.parse(data.output_data || '{}'), null, 2)}</pre>
+        </div>` : ''}`;
+
+    document.getElementById('workflow-detail-modal').style.display = 'flex';
+}
+
+function copyDraftBody(draftId) {
+    // Find the draft card and copy its body
+    api('/api/drafts/' + draftId).then(d => {
+        if (d && d.body) {
+            navigator.clipboard.writeText(d.body).then(() => showToast('Draft copied!', 'success'));
+        }
+    });
+}
 
 </script>
 
