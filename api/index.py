@@ -2387,6 +2387,24 @@ def skip_approval(run_id: str):
     conn.close()
     return {"status": "running", "run_id": run_id}
 
+@app.get("/api/pipeline/runs/active")
+def get_active_pipeline_runs():
+    """Get currently active/running pipeline runs."""
+    conn = get_db()
+    try:
+        runs = conn.execute("""
+            SELECT id, workflow_type, channel, status, input_data, started_at, created_at
+            FROM workflow_runs
+            WHERE status IN ('running', 'pending', 'queued')
+            ORDER BY created_at DESC
+            LIMIT 20
+        """).fetchall()
+        return {"runs": [dict(r) for r in runs], "count": len(runs)}
+    except Exception as e:
+        return {"runs": [], "count": 0}
+    finally:
+        conn.close()
+
 @app.get("/api/pipeline/runs/{run_id}/stream")
 def pipeline_run_stream(run_id: str):
     """Stub SSE endpoint - returns current run state."""
@@ -5515,6 +5533,7 @@ def linkedin_stats():
     return {
         "profiles": profiles,
         "drafts": drafts,
+        "total_drafts": drafts,
         "sent": sent,
         "sent_actual": sent_actual,
         "total_runs": runs,
@@ -6984,6 +7003,22 @@ def enhance_draft(draft_id: str):
         touch_num = draft.get("touch_number", 1)
         old_body = draft.get("body", "")
 
+        # Save current body as a version before rewriting
+        try:
+            current_version = draft.get("version", 1)
+            old_version_id = gen_id("dv")
+            conn.execute("""INSERT INTO draft_versions
+                (id, draft_id, contact_id, channel, touch_number, subject, body, version, status, personalization_score, proof_point, pain_hook, opener_style, word_count, qc_passed, confidence_score, edited_by, created_at)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                (old_version_id, draft_id, draft.get("contact_id"), draft.get("channel"), draft.get("touch_number"),
+                 draft.get("subject_line"), old_body, current_version, draft.get("approval_status", "draft"),
+                 draft.get("personalization_score"), draft.get("proof_point_used"), draft.get("pain_hook"),
+                 draft.get("opener_style"), len(old_body.split()), draft.get("qc_passed"),
+                 0.0, "pre_enhance_backup", datetime.utcnow().isoformat()))
+            conn.commit()
+        except Exception:
+            pass  # Non-critical - continue with enhance even if version save fails
+
         # Build personalized opener
         opener = ""
         research_used = []
@@ -8422,6 +8457,7 @@ def linkedin_stats_updated(debug: bool = False):
     result = {
         "profiles": profiles,
         "drafts": drafts,
+        "total_drafts": drafts,
         "sent": sent,
         "sent_actual": sent_actual,
         "total_runs": runs,

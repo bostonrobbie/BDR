@@ -3615,7 +3615,128 @@ async function loadStats() {
         kpi('Queued', byStatus.queued || 0),
     ].join('');
 
-    document.getElementById('kpi-row').innerHTML = realMetricsHtml;
+    // Channel Health Cards
+    const liDrafts = liStats?.drafts || liStats?.total_drafts || 0;
+    const emailDrafts = emailStats?.drafts || emailStats?.total_drafts || 0;
+
+    // Calculate stage distribution for LinkedIn
+    const liDraft = liStats?.by_approval_status?.draft || 0;
+    const liEnhanced = liStats?.by_approval_status?.enhanced || 0;
+    const liApproved = liStats?.by_approval_status?.approved || 0;
+    const liQueued = liStats?.by_approval_status?.queued || 0;
+    const liTotal = liDraft + liEnhanced + liApproved + liQueued;
+    const liReady = liApproved + liQueued;
+    const liRate = liTotal > 0 ? Math.round((liReady / liTotal) * 100) : 0;
+
+    // Calculate stage distribution for Email
+    const emailDraft = emailStats?.by_status?.draft || 0;
+    const emailEnhanced = emailStats?.by_status?.enhanced || 0;
+    const emailApproved = emailStats?.by_status?.approved || 0;
+    const emailQueued = emailStats?.by_status?.queued || 0;
+    const emailTotal = emailDraft + emailEnhanced + emailApproved + emailQueued;
+    const emailReady = emailApproved + emailQueued;
+    const emailRate = emailTotal > 0 ? Math.round((emailReady / emailTotal) * 100) : 0;
+
+    const channelHealthHtml = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;">
+                <h3 style="margin:0 0 12px;font-size:14px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">💼 LinkedIn Channel</h3>
+                <div style="display:flex;gap:4px;height:8px;border-radius:4px;overflow:hidden;margin-bottom:12px;">
+                    ${liDraft > 0 ? `<div style="flex:${liDraft};background:#3498db;"></div>` : ''}
+                    ${liEnhanced > 0 ? `<div style="flex:${liEnhanced};background:#f39c12;"></div>` : ''}
+                    ${liApproved > 0 ? `<div style="flex:${liApproved};background:#2ecc71;"></div>` : ''}
+                    ${liQueued > 0 ? `<div style="flex:${liQueued};background:#9b59b6;"></div>` : ''}
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;font-size:13px;">
+                    <div><span style="color:var(--text-muted);">Drafts</span><br><strong>${liTotal}</strong></div>
+                    <div><span style="color:var(--text-muted);">Ready</span><br><strong>${liReady}</strong></div>
+                    <div><span style="color:var(--text-muted);">Rate</span><br><strong>${liRate}%</strong></div>
+                </div>
+            </div>
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;">
+                <h3 style="margin:0 0 12px;font-size:14px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">📧 Email Channel</h3>
+                <div style="display:flex;gap:4px;height:8px;border-radius:4px;overflow:hidden;margin-bottom:12px;">
+                    ${emailDraft > 0 ? `<div style="flex:${emailDraft};background:#3498db;"></div>` : ''}
+                    ${emailEnhanced > 0 ? `<div style="flex:${emailEnhanced};background:#f39c12;"></div>` : ''}
+                    ${emailApproved > 0 ? `<div style="flex:${emailApproved};background:#2ecc71;"></div>` : ''}
+                    ${emailQueued > 0 ? `<div style="flex:${emailQueued};background:#9b59b6;"></div>` : ''}
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;font-size:13px;">
+                    <div><span style="color:var(--text-muted);">Drafts</span><br><strong>${emailTotal}</strong></div>
+                    <div><span style="color:var(--text-muted);">Ready</span><br><strong>${emailReady}</strong></div>
+                    <div><span style="color:var(--text-muted);">Rate</span><br><strong>${emailRate}%</strong></div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Stage Distribution Chart
+    const totalByStage = {
+        draft: (liDraft + emailDraft),
+        enhanced: (liEnhanced + emailEnhanced),
+        approved: (liApproved + emailApproved),
+        queued: (liQueued + emailQueued),
+    };
+    const stageTotal = Object.values(totalByStage).reduce((a, b) => a + b, 0);
+
+    let stageDistributionHtml = '';
+    if (stageTotal > 0) {
+        const draftPct = (totalByStage.draft / stageTotal) * 100;
+        const enhancedPct = (totalByStage.enhanced / stageTotal) * 100;
+        const approvedPct = (totalByStage.approved / stageTotal) * 100;
+        const queuedPct = (totalByStage.queued / stageTotal) * 100;
+
+        stageDistributionHtml = `
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:24px;">
+                <h3 style="margin:0 0 16px;font-size:14px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Overall Pipeline Stage Distribution</h3>
+                <div style="display:flex;gap:2px;height:24px;border-radius:6px;overflow:hidden;margin-bottom:12px;font-size:11px;font-weight:600;">
+                    ${totalByStage.draft > 0 ? `<div style="flex:${draftPct};background:#3498db;display:flex;align-items:center;justify-content:center;color:white;min-width:40px;">${totalByStage.draft}</div>` : ''}
+                    ${totalByStage.enhanced > 0 ? `<div style="flex:${enhancedPct};background:#f39c12;display:flex;align-items:center;justify-content:center;color:white;min-width:40px;">${totalByStage.enhanced}</div>` : ''}
+                    ${totalByStage.approved > 0 ? `<div style="flex:${approvedPct};background:#2ecc71;display:flex;align-items:center;justify-content:center;color:white;min-width:40px;">${totalByStage.approved}</div>` : ''}
+                    ${totalByStage.queued > 0 ? `<div style="flex:${queuedPct};background:#9b59b6;display:flex;align-items:center;justify-content:center;color:white;min-width:40px;">${totalByStage.queued}</div>` : ''}
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;font-size:12px;">
+                    <div><span style="color:var(--text-muted);font-size:10px;">DRAFT</span><br><strong style="color:#3498db;">${totalByStage.draft}</strong></div>
+                    <div><span style="color:var(--text-muted);font-size:10px;">ENHANCED</span><br><strong style="color:#f39c12;">${totalByStage.enhanced}</strong></div>
+                    <div><span style="color:var(--text-muted);font-size:10px;">APPROVED</span><br><strong style="color:#2ecc71;">${totalByStage.approved}</strong></div>
+                    <div><span style="color:var(--text-muted);font-size:10px;">QUEUED</span><br><strong style="color:#9b59b6;">${totalByStage.queued}</strong></div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Quick Stats Row
+    const researchCoverage = stats.total_contacts > 0 ? Math.round((stats.researched_contacts || 0) / stats.total_contacts * 100) : 0;
+    const qcPassRate = stats.total_drafts > 0 ? Math.round((stats.qc_passed_drafts || 0) / stats.total_drafts * 100) : 0;
+    const avgWords = stats.avg_draft_words || 0;
+    const pipelineVelocity = stats.workflow_runs_completed || 0;
+
+    const quickStatsHtml = `
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;margin-bottom:24px;">
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;">
+                <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Research Coverage</div>
+                <div style="font-size:24px;font-weight:700;color:var(--primary);">${researchCoverage}%</div>
+                <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">${stats.researched_contacts || 0} of ${stats.total_contacts} prospects</div>
+            </div>
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;">
+                <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">QC Pass Rate</div>
+                <div style="font-size:24px;font-weight:700;color:var(--success);">${qcPassRate}%</div>
+                <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">${stats.qc_passed_drafts || 0} of ${stats.total_drafts} drafts</div>
+            </div>
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;">
+                <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Avg Words/Draft</div>
+                <div style="font-size:24px;font-weight:700;color:var(--warning);">${avgWords}</div>
+                <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">Average message length</div>
+            </div>
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;">
+                <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Pipeline Velocity</div>
+                <div style="font-size:24px;font-weight:700;color:var(--accent);">${pipelineVelocity}</div>
+                <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">Workflow runs completed</div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('kpi-row').innerHTML = realMetricsHtml + channelHealthHtml + stageDistributionHtml + quickStatsHtml;
 }
 
 async function loadActionQueue() {
@@ -3628,7 +3749,9 @@ async function loadActionQueue() {
     }
     document.getElementById('badge-actions').style.display = '';
     document.getElementById('badge-actions').textContent = q.length;
-    el.innerHTML = q.slice(0, 12).map(a => {
+
+    const topN = q.slice(0, 5);
+    const itemsHtml = topN.map(a => {
         const iconClass = a.type === 'overdue_followup' ? 'overdue' : a.type === 'untouched_hot' ? 'hot' : a.type === 'stuck' ? 'stuck' : 'signal';
         const icon = a.type === 'overdue_followup' ? '!' : a.type === 'untouched_hot' ? '★' : a.type === 'stuck' ? '⏱' : '⚡';
         return `<div class="action-item">
@@ -3640,6 +3763,10 @@ async function loadActionQueue() {
             ${a.contact_id ? `<button class="btn btn-sm" onclick="event.stopPropagation();openDetail('${a.contact_id}')">View</button>` : ''}
         </div>`;
     }).join('');
+
+    const viewAllLink = q.length > 5 ? `<div style="padding:12px;border-top:1px solid var(--border);text-align:center;"><a href="#" onclick="showPage('pipeline');event.preventDefault();" style="color:var(--primary);text-decoration:none;font-size:13px;font-weight:600;">View All → (${q.length} total)</a></div>` : '';
+
+    el.innerHTML = itemsHtml + viewAllLink;
 }
 
 async function loadIntelligenceHome() {
