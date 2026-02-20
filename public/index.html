@@ -5047,6 +5047,11 @@ function switchLITab(tab) {
 async function loadLinkedInPage() {
     loadLIOverview();
     loadLIQuotaBadge();
+    // Pre-load contacts for workflow modals (Draft Messages, Call Prep, etc.)
+    try {
+        const data = await api('/api/contacts?limit=500');
+        window.contacts = data?.contacts || data || [];
+    } catch(e) { window.contacts = []; }
 }
 
 async function loadLIQuotaBadge() {
