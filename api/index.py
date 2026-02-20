@@ -10,6 +10,9 @@ import json
 import uuid
 from datetime import datetime, timedelta
 import random
+import threading
+import urllib.request
+import urllib.error
 
 # Set DB path to /tmp for Vercel serverless (only if not already set, e.g. by tests)
 if "OCC_DB_PATH" not in os.environ:
@@ -1036,10 +1039,90 @@ def _auto_import_run_bundle(conn):
     print(f"Auto-import: Done. {imported_contacts} contacts, {imported_drafts} drafts")
 
 
+# ---------------------------------------------------------------------------
+# VERCEL BLOB PERSISTENCE (auto-save/restore across cold starts)
+# ---------------------------------------------------------------------------
+BLOB_TOKEN = os.environ.get("BLOB_READ_WRITE_TOKEN", "")
+BLOB_DB_NAME = "outreach-state.db"
+_blob_save_timer = None
+_blob_save_lock = threading.Lock()
+
+def _blob_download_db(db_path: str) -> bool:
+    """Download latest DB state from Vercel Blob on cold start. Returns True if successful."""
+    if not BLOB_TOKEN:
+        return False
+    try:
+        # List blobs to find our DB file
+        req = urllib.request.Request(
+            f"https://blob.vercel-storage.com/?prefix={BLOB_DB_NAME}",
+            headers={"Authorization": f"Bearer {BLOB_TOKEN}"}
+        )
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            data = json.loads(resp.read())
+        blobs = data.get("blobs", [])
+        if not blobs:
+            return False
+        # Download the most recent blob
+        blob_url = blobs[0].get("downloadUrl") or blobs[0].get("url")
+        if not blob_url:
+            return False
+        urllib.request.urlretrieve(blob_url, db_path)
+        size = os.path.getsize(db_path)
+        print(f"Blob restore: Downloaded DB from Vercel Blob ({size} bytes)")
+        return True
+    except Exception as e:
+        print(f"Blob restore failed (will use seed): {e}")
+        return False
+
+def _blob_upload_db():
+    """Upload current DB state to Vercel Blob for persistence."""
+    if not BLOB_TOKEN:
+        return
+    db_path = os.environ.get("OCC_DB_PATH", "/tmp/outreach.db")
+    if not os.path.exists(db_path):
+        return
+    try:
+        with open(db_path, "rb") as f:
+            db_bytes = f.read()
+        req = urllib.request.Request(
+            f"https://blob.vercel-storage.com/{BLOB_DB_NAME}",
+            data=db_bytes,
+            headers={
+                "Authorization": f"Bearer {BLOB_TOKEN}",
+                "Content-Type": "application/octet-stream",
+                "x-api-version": "7",
+                "x-content-type": "application/x-sqlite3",
+            },
+            method="PUT"
+        )
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            result = json.loads(resp.read())
+        print(f"Blob save: Uploaded DB ({len(db_bytes)} bytes) -> {result.get('url', 'ok')}")
+    except Exception as e:
+        print(f"Blob save failed (non-fatal): {e}")
+
+def schedule_blob_save():
+    """Debounced blob save - waits 5 seconds after last write to avoid thrashing."""
+    global _blob_save_timer
+    if not BLOB_TOKEN:
+        return
+    with _blob_save_lock:
+        if _blob_save_timer:
+            _blob_save_timer.cancel()
+        _blob_save_timer = threading.Timer(5.0, _blob_upload_db)
+        _blob_save_timer.daemon = True
+        _blob_save_timer.start()
+
+
 def init_and_seed():
     db_path = os.environ.get("OCC_DB_PATH", "/tmp/outreach.db")
 
-    # FAST PATH: If a pre-built seed DB exists, just copy it (< 1 second)
+    # FAST PATH 1: Try to restore from Vercel Blob (persisted state)
+    if not os.path.exists(db_path):
+        if _blob_download_db(db_path):
+            return  # Successfully restored from blob
+
+    # FAST PATH 2: If a pre-built seed DB exists, just copy it (< 1 second)
     if not os.path.exists(db_path):
         import shutil
         seed_db = os.path.join(os.path.dirname(__file__), "data", "outreach_seed.db")
@@ -1099,6 +1182,20 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Auto-persist to Vercel Blob after mutating API calls
+from starlette.requests import Request as StarletteRequest
+from starlette.middleware.base import BaseHTTPMiddleware
+
+class BlobPersistMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: StarletteRequest, call_next):
+        response = await call_next(request)
+        if request.method in ("POST", "PUT", "DELETE", "PATCH") and response.status_code < 400:
+            schedule_blob_save()
+        return response
+
+if BLOB_TOKEN:
+    app.add_middleware(BlobPersistMiddleware)
 
 # ---------------------------------------------------------------------------
 # GLOBAL SAFETY: DRY RUN MODE
@@ -1210,6 +1307,26 @@ def list_defects(status: str = None):
         rows = conn.execute("SELECT * FROM defect_log ORDER BY created_at DESC").fetchall()
     conn.close()
     return [dict(r) for r in rows]
+
+@app.post("/api/state/blob-save")
+def manual_blob_save():
+    """Manually trigger a Vercel Blob save."""
+    if not BLOB_TOKEN:
+        return {"status": "disabled", "message": "BLOB_READ_WRITE_TOKEN not configured. Add it in Vercel Project Settings > Environment Variables."}
+    try:
+        _blob_upload_db()
+        return {"status": "saved", "message": "Database saved to Vercel Blob"}
+    except Exception as e:
+        raise HTTPException(500, f"Blob save failed: {str(e)}")
+
+@app.get("/api/state/blob-status")
+def blob_status():
+    """Check if Vercel Blob persistence is configured and working."""
+    return {
+        "configured": bool(BLOB_TOKEN),
+        "auto_persist": bool(BLOB_TOKEN),
+        "message": "Vercel Blob auto-persist is active. DB saves automatically after every write." if BLOB_TOKEN else "Not configured. Add BLOB_READ_WRITE_TOKEN to Vercel env vars for auto-persist."
+    }
 
 @app.get("/api/state/export")
 def export_state():
@@ -1431,9 +1548,10 @@ def add_contact_identity(contact_id: str, data: dict):
 def list_accounts(limit: int = 100, offset: int = 0):
     conn = get_db()
     rows = rows_to_dicts(conn.execute("""
-        SELECT a.*, COALESCE(rs.research_count, 0) as research_count
+        SELECT a.*, COALESCE(rs.research_count, 0) as research_count, COALESCE(cc.contact_count, 0) as contact_count
         FROM accounts a
         LEFT JOIN (SELECT account_id, COUNT(*) as research_count FROM research_snapshots GROUP BY account_id) rs ON a.id = rs.account_id
+        LEFT JOIN (SELECT account_id, COUNT(*) as contact_count FROM contacts GROUP BY account_id) cc ON a.id = cc.account_id
         ORDER BY a.name LIMIT ? OFFSET ?""", (limit, offset)).fetchall())
     total = conn.execute("SELECT COUNT(*) FROM accounts").fetchone()[0]
     conn.close()
@@ -5775,6 +5893,8 @@ def execute_workflow(workflow_type: str, input_data: dict, dry_run: bool = True)
 
         return {"run_id": run_id, "status": "succeeded", "workflow": wf["name"], "result": result, "dry_run": dry_run}
 
+    except HTTPException:
+        raise  # Re-raise HTTP exceptions as-is
     except Exception as e:
         conn.execute("UPDATE workflow_runs SET status='failed', error_message=?, completed_at=? WHERE id=?",
             (str(e), datetime.utcnow().isoformat(), run_id))
@@ -5800,9 +5920,19 @@ def _update_step(conn, run_id: str, step_name: str, status: str, output: dict = 
 def _execute_account_research(conn, run_id: str, input_data: dict) -> dict:
     company_name = input_data.get("company_name", "")
     domain = input_data.get("domain", "")
-
+    contact_id = input_data.get("contact_id", "")
+    
+    # If contact_id given but no company_name, resolve from contact -> account
+    if not company_name and contact_id:
+        contact = conn.execute("""SELECT c.*, a.name as company_name, a.domain as company_domain, a.industry, a.employee_count 
+            FROM contacts c LEFT JOIN accounts a ON c.account_id = a.id WHERE c.id=?""", (contact_id,)).fetchone()
+        if contact:
+            contact = dict(contact)
+            company_name = contact.get("company_name", "")
+            domain = contact.get("company_domain", "") or domain
+    
     if not company_name:
-        raise HTTPException(400, "company_name is required")
+        raise HTTPException(400, "company_name is required (or provide contact_id with linked account)")
 
     _update_step(conn, run_id, "validate_input", "running")
     _update_step(conn, run_id, "validate_input", "succeeded", {"company": company_name, "domain": domain})

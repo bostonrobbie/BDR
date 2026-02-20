@@ -1647,6 +1647,7 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
             <button class="btn btn-sm" onclick="refreshAll()">Refresh</button>
             <button class="btn btn-sm" onclick="saveState()" title="Save current state for persistence">💾 Save</button>
             <button class="btn btn-sm" onclick="restoreState()" title="Restore previously saved state">📂 Restore</button>
+            <span id="persist-badge" style="font-size:11px;padding:4px 8px;border-radius:4px;display:none;"></span>
         </div>
     </div>
     <div class="kpi-row" id="kpi-row"></div>
@@ -3534,12 +3535,20 @@ function showToast(msg, type = 'success') {
 })();
 
 async function refreshAll() {
-    await Promise.all([loadStats(), loadPipeline(), loadActionQueue(), loadIntelligenceHome(), updateQuotaWidget()]);
+    await Promise.all([loadStats(), loadPipeline(), loadActionQueue(), loadIntelligenceHome(), updateQuotaWidget(), checkPersistStatus()]);
 }
 
 async function saveState() {
     showToast('Saving state...', 'info');
     try {
+        // Try blob save first (auto-persist)
+        const blobResult = await api('/api/state/blob-status');
+        if (blobResult?.configured) {
+            await apiPost('/api/state/blob-save', {});
+            showToast('State auto-saved to cloud!', 'success');
+            return;
+        }
+        // Fallback: download as JSON file
         const state = await api('/api/state/export');
         const blob = new Blob([JSON.stringify(state, null, 2)], {type: 'application/json'});
         const url = URL.createObjectURL(blob);
@@ -3552,6 +3561,25 @@ async function saveState() {
     } catch(e) {
         showToast('Failed to save state: ' + e.message, 'error');
     }
+}
+
+async function checkPersistStatus() {
+    try {
+        const status = await api('/api/state/blob-status');
+        const badge = document.getElementById('persist-badge');
+        if (badge) {
+            badge.style.display = 'inline-block';
+            if (status?.configured) {
+                badge.textContent = '☁️ Auto-save ON';
+                badge.style.background = 'rgba(46,204,113,0.15)';
+                badge.style.color = '#2ecc71';
+            } else {
+                badge.textContent = '💾 Manual save';
+                badge.style.background = 'rgba(243,156,18,0.15)';
+                badge.style.color = '#f39c12';
+            }
+        }
+    } catch(e) { /* silent */ }
 }
 
 async function restoreState() {
