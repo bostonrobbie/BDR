@@ -725,6 +725,23 @@ CREATE TABLE IF NOT EXISTS deliverability_metrics_daily (
     reply_rate REAL DEFAULT 0,
     created_at TEXT DEFAULT (datetime('now'))
 );
+
+CREATE TABLE IF NOT EXISTS defect_log (
+    id TEXT PRIMARY KEY,
+    module TEXT NOT NULL,
+    severity TEXT DEFAULT 'medium',
+    title TEXT NOT NULL,
+    description TEXT,
+    steps_to_reproduce TEXT,
+    expected_behavior TEXT,
+    actual_behavior TEXT,
+    stack_trace TEXT,
+    status TEXT DEFAULT 'open',
+    fix_description TEXT,
+    verified_at TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
 """
 
 # ---------------------------------------------------------------------------
@@ -1139,6 +1156,18 @@ def dashboard_stats():
     sent = conn.execute("SELECT COUNT(*) FROM touchpoints").fetchone()[0]
     with_drafts = conn.execute("SELECT COUNT(DISTINCT contact_id) FROM message_drafts").fetchone()[0]
     total_drafts = conn.execute("SELECT COUNT(*) FROM message_drafts").fetchone()[0]
+
+    # Additional stats for dashboard Quick Stats
+    researched = conn.execute("SELECT COUNT(DISTINCT contact_id) FROM research_snapshots").fetchone()[0]
+    qc_passed = conn.execute("SELECT COUNT(*) FROM message_drafts WHERE qc_passed=1").fetchone()[0]
+    avg_words = conn.execute("SELECT COALESCE(AVG(word_count), 0) FROM message_drafts WHERE word_count > 0").fetchone()[0]
+    wf_completed = conn.execute("SELECT COUNT(*) FROM workflow_runs WHERE status='succeeded'").fetchone()[0]
+
+    # Draft approval stage counts
+    by_approval = {}
+    for row in conn.execute("SELECT approval_status, COUNT(*) as c FROM message_drafts GROUP BY approval_status"):
+        by_approval[row["approval_status"] or "draft"] = row["c"]
+
     conn.close()
     return {
         "total_contacts": total,
@@ -1150,7 +1179,78 @@ def dashboard_stats():
         "total_sent": sent,
         "reply_rate": round(replies / max(sent, 1) * 100, 1),
         "meeting_rate": round(meetings / max(replies, 1) * 100, 1),
+        "researched_contacts": researched,
+        "qc_passed_drafts": qc_passed,
+        "avg_draft_words": round(avg_words, 0),
+        "workflow_runs_completed": wf_completed,
+        "by_approval_status": by_approval,
     }
+
+@app.post("/api/defects")
+def log_defect(data: dict):
+    """Log a defect/error for tracking."""
+    conn = get_db()
+    did = gen_id("def")
+    conn.execute("""INSERT INTO defect_log (id, module, severity, title, description, steps_to_reproduce, expected_behavior, actual_behavior, stack_trace, status)
+        VALUES (?,?,?,?,?,?,?,?,?,?)""",
+        (did, data.get("module", "unknown"), data.get("severity", "medium"),
+         data.get("title", "Untitled defect"), data.get("description"),
+         data.get("steps_to_reproduce"), data.get("expected_behavior"),
+         data.get("actual_behavior"), data.get("stack_trace"), "open"))
+    conn.commit()
+    conn.close()
+    return {"id": did, "status": "logged"}
+
+@app.get("/api/defects")
+def list_defects(status: str = None):
+    conn = get_db()
+    if status:
+        rows = conn.execute("SELECT * FROM defect_log WHERE status=? ORDER BY created_at DESC", (status,)).fetchall()
+    else:
+        rows = conn.execute("SELECT * FROM defect_log ORDER BY created_at DESC").fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+@app.get("/api/state/export")
+def export_state():
+    """Export current DB state as JSON for persistence across cold starts."""
+    conn = get_db()
+    state = {}
+    # Export key tables that change at runtime
+    for table in ["message_drafts", "contacts", "research_snapshots", "workflow_runs", "workflow_run_steps", "draft_versions", "defect_log"]:
+        try:
+            rows = conn.execute(f"SELECT * FROM {table}").fetchall()
+            state[table] = [dict(r) for r in rows]
+        except:
+            state[table] = []
+    conn.close()
+    return state
+
+@app.post("/api/state/import")
+def import_state(data: dict):
+    """Import previously exported state to restore after cold start."""
+    conn = get_db()
+    imported = {}
+    for table, rows in data.items():
+        if table not in ["message_drafts", "contacts", "research_snapshots", "workflow_runs", "workflow_run_steps", "draft_versions", "defect_log"]:
+            continue
+        if not rows:
+            continue
+        count = 0
+        for row in rows:
+            cols = list(row.keys())
+            placeholders = ",".join(["?" for _ in cols])
+            col_names = ",".join(cols)
+            try:
+                conn.execute(f"INSERT OR REPLACE INTO {table} ({col_names}) VALUES ({placeholders})",
+                    [row[c] for c in cols])
+                count += 1
+            except Exception as e:
+                pass
+        imported[table] = count
+    conn.commit()
+    conn.close()
+    return {"imported": imported}
 
 @app.get("/api/action-queue")
 def action_queue():
@@ -1330,8 +1430,11 @@ def add_contact_identity(contact_id: str, data: dict):
 @app.get("/api/accounts")
 def list_accounts(limit: int = 100, offset: int = 0):
     conn = get_db()
-    rows = rows_to_dicts(conn.execute(
-        "SELECT * FROM accounts ORDER BY name LIMIT ? OFFSET ?", (limit, offset)).fetchall())
+    rows = rows_to_dicts(conn.execute("""
+        SELECT a.*, COALESCE(rs.research_count, 0) as research_count
+        FROM accounts a
+        LEFT JOIN (SELECT account_id, COUNT(*) as research_count FROM research_snapshots GROUP BY account_id) rs ON a.id = rs.account_id
+        ORDER BY a.name LIMIT ? OFFSET ?""", (limit, offset)).fetchall())
     total = conn.execute("SELECT COUNT(*) FROM accounts").fetchone()[0]
     conn.close()
     for r in rows:
@@ -5699,7 +5802,7 @@ def _execute_account_research(conn, run_id: str, input_data: dict) -> dict:
     domain = input_data.get("domain", "")
 
     if not company_name:
-        raise ValueError("company_name is required")
+        raise HTTPException(400, "company_name is required")
 
     _update_step(conn, run_id, "validate_input", "running")
     _update_step(conn, run_id, "validate_input", "succeeded", {"company": company_name, "domain": domain})
@@ -5912,7 +6015,7 @@ def _execute_prospect_shortlist(conn, run_id: str, input_data: dict) -> dict:
 def _execute_linkedin_draft(conn, run_id: str, input_data: dict) -> dict:
     contact_id = input_data.get("contact_id")
     if not contact_id:
-        raise ValueError("contact_id is required")
+        raise HTTPException(400, "contact_id is required")
 
     _update_step(conn, run_id, "load_prospect", "running")
     contact = conn.execute("""SELECT c.*, a.name as company_name, a.industry, a.employee_count, a.known_tools, a.domain, a.buyer_intent
@@ -6187,7 +6290,7 @@ def _execute_daily_plan(conn, run_id: str, input_data: dict) -> dict:
 def _execute_email_draft(conn, run_id: str, input_data: dict) -> dict:
     contact_id = input_data.get("contact_id")
     if not contact_id:
-        raise ValueError("contact_id is required")
+        raise HTTPException(400, "contact_id is required")
 
     _update_step(conn, run_id, "load_prospect", "running")
     contact = conn.execute("""SELECT c.*, a.name as company_name, a.industry, a.employee_count, a.known_tools, a.domain
@@ -6260,7 +6363,7 @@ def _execute_email_draft(conn, run_id: str, input_data: dict) -> dict:
 def _execute_call_prep(conn, run_id: str, input_data: dict) -> dict:
     contact_id = input_data.get("contact_id")
     if not contact_id:
-        raise ValueError("contact_id is required")
+        raise HTTPException(400, "contact_id is required")
 
     _update_step(conn, run_id, "load_prospect", "running")
     contact = conn.execute("""SELECT c.*, a.name as company_name, a.industry, a.employee_count, a.known_tools
@@ -8552,13 +8655,20 @@ def bulk_enhance_drafts(data: dict):
     """Enhance multiple drafts using stored research."""
     conn = get_db()
 
+    draft_ids = data.get("draft_ids")
     filter_data = data.get("filter", {})
     limit = data.get("limit", 50)
     status_filter = filter_data.get("status", "draft")
 
-    drafts = conn.execute("""SELECT md.id FROM message_drafts md
-        WHERE md.channel='linkedin' AND md.approval_status=?
-        ORDER BY md.created_at LIMIT ?""", (status_filter, limit)).fetchall()
+    # If draft_ids provided, only enhance those specific drafts
+    if draft_ids:
+        placeholders = ",".join(["?" for _ in draft_ids])
+        drafts = conn.execute(f"SELECT md.id FROM message_drafts md WHERE md.id IN ({placeholders})", draft_ids).fetchall()
+    else:
+        # Fall back to filtering by channel and status
+        drafts = conn.execute("""SELECT md.id FROM message_drafts md
+            WHERE md.channel='linkedin' AND md.approval_status=?
+            ORDER BY md.created_at LIMIT ?""", (status_filter, limit)).fetchall()
 
     enhanced = 0
     errors = []
@@ -8790,27 +8900,55 @@ SEND_ENABLED = os.environ.get("SEND_ENABLED", "false").lower() in ("true", "1", 
 
 @app.get("/api/email/stats")
 def email_stats():
-    """Get email statistics."""
+    """Get email statistics - merges message_drafts (channel=email) and email_drafts tables."""
     conn = get_db()
 
-    total = conn.execute("SELECT COUNT(*) FROM email_drafts").fetchone()[0]
+    # Count from message_drafts (workflow-generated email drafts)
+    md_total = conn.execute("SELECT COUNT(*) FROM message_drafts WHERE channel='email'").fetchone()[0]
+    md_by_status = {}
+    for row in conn.execute("SELECT approval_status, COUNT(*) as cnt FROM message_drafts WHERE channel='email' GROUP BY approval_status"):
+        md_by_status[row["approval_status"] or "draft"] = row["cnt"]
 
+    # Count from email_drafts (legacy/direct email drafts)
+    ed_total = 0
+    ed_by_status = {}
+    try:
+        ed_total = conn.execute("SELECT COUNT(*) FROM email_drafts").fetchone()[0]
+        for row in conn.execute("SELECT status, COUNT(*) as cnt FROM email_drafts GROUP BY status"):
+            ed_by_status[row[0] or "draft"] = row[1]
+    except:
+        pass
+
+    # Merge counts
+    total = md_total + ed_total
     by_status = {}
-    for row in conn.execute("SELECT status, COUNT(*) as cnt FROM email_drafts GROUP BY status"):
-        by_status[row[0]] = row[1]
+    for k, v in md_by_status.items():
+        by_status[k] = by_status.get(k, 0) + v
+    for k, v in ed_by_status.items():
+        by_status[k] = by_status.get(k, 0) + v
 
-    sent = conn.execute("SELECT COUNT(*) FROM email_send_attempts WHERE success=1").fetchone()[0]
-    replied = conn.execute("SELECT COUNT(*) FROM email_inbound_replies").fetchone()[0]
+    sent = 0
+    replied = 0
+    try:
+        sent = conn.execute("SELECT COUNT(*) FROM email_send_attempts WHERE success=1").fetchone()[0]
+        replied = conn.execute("SELECT COUNT(*) FROM email_inbound_replies").fetchone()[0]
+    except:
+        pass
 
     reply_rate = (replied / sent * 100) if sent > 0 else 0
 
     conn.close()
     return {
         "total_drafts": total,
+        "drafts": total,
         "by_status": by_status,
+        "by_approval_status": by_status,
         "sent": sent,
+        "sent_actual": sent,
         "replies": replied,
-        "reply_rate": round(reply_rate, 2)
+        "reply_rate": round(reply_rate, 2),
+        "approved_count": by_status.get("approved", 0),
+        "queued_count": by_status.get("queued", 0),
     }
 
 @app.get("/api/email/drafts")

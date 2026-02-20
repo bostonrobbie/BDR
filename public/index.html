@@ -1643,7 +1643,11 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
 <div class="page active" id="page-home">
     <div class="page-hdr">
         <h1>Dashboard</h1>
-        <button class="btn btn-sm" onclick="refreshAll()">Refresh</button>
+        <div class="btn-group">
+            <button class="btn btn-sm" onclick="refreshAll()">Refresh</button>
+            <button class="btn btn-sm" onclick="saveState()" title="Save current state for persistence">💾 Save</button>
+            <button class="btn btn-sm" onclick="restoreState()" title="Restore previously saved state">📂 Restore</button>
+        </div>
     </div>
     <div class="kpi-row" id="kpi-row"></div>
 
@@ -1910,6 +1914,7 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
                     <th>Tier</th>
                     <th>Intent</th>
                     <th>Contacts</th>
+                    <th>Research</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -3532,6 +3537,44 @@ async function refreshAll() {
     await Promise.all([loadStats(), loadPipeline(), loadActionQueue(), loadIntelligenceHome(), updateQuotaWidget()]);
 }
 
+async function saveState() {
+    showToast('Saving state...', 'info');
+    try {
+        const state = await api('/api/state/export');
+        const blob = new Blob([JSON.stringify(state, null, 2)], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'occ-state-' + new Date().toISOString().split('T')[0] + '.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('State saved! File downloaded.', 'success');
+    } catch(e) {
+        showToast('Failed to save state: ' + e.message, 'error');
+    }
+}
+
+async function restoreState() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        showToast('Restoring state...', 'info');
+        try {
+            const text = await file.text();
+            const state = JSON.parse(text);
+            const result = await apiPost('/api/state/import', state);
+            showToast('State restored! Refreshing...', 'success');
+            setTimeout(() => location.reload(), 1000);
+        } catch(e) {
+            showToast('Failed to restore: ' + e.message, 'error');
+        }
+    };
+    input.click();
+}
+
 function showPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -3540,6 +3583,7 @@ function showPage(id) {
     const navItem = document.querySelector(`.nav-item[onclick="showPage('${id}')"]`);
     if (navItem) navItem.classList.add('active');
 
+    if (id === 'home') loadStats();
     if (id === 'prospects') loadProspectsPage();
     if (id === 'runs') loadRunsPage();
     if (id === 'analytics') loadAnalyticsPage();
@@ -3603,8 +3647,12 @@ async function loadStats() {
 
     if (!stats) return;
 
-    const byStatus = liStats?.by_approval_status || {};
-    const emailByStatus = emailStats?.by_status || {};
+    const byStatus = {};
+    const liByStatus = liStats?.by_approval_status || {};
+    const emailByStatus = emailStats?.by_approval_status || emailStats?.by_status || {};
+    for (const key of ['draft', 'enhanced', 'approved', 'queued', 'staged', 'sent']) {
+        byStatus[key] = (liByStatus[key] || 0) + (emailByStatus[key] || 0);
+    }
 
     let realMetricsHtml = [
         kpi('Total Prospects', stats.total_contacts || 0),
@@ -3629,10 +3677,10 @@ async function loadStats() {
     const liRate = liTotal > 0 ? Math.round((liReady / liTotal) * 100) : 0;
 
     // Calculate stage distribution for Email
-    const emailDraft = emailStats?.by_status?.draft || 0;
-    const emailEnhanced = emailStats?.by_status?.enhanced || 0;
-    const emailApproved = emailStats?.by_status?.approved || 0;
-    const emailQueued = emailStats?.by_status?.queued || 0;
+    const emailDraft = emailStats?.by_approval_status?.draft || emailStats?.by_status?.draft || 0;
+    const emailEnhanced = emailStats?.by_approval_status?.enhanced || emailStats?.by_status?.enhanced || 0;
+    const emailApproved = emailStats?.by_approval_status?.approved || emailStats?.by_status?.approved || 0;
+    const emailQueued = emailStats?.by_approval_status?.queued || emailStats?.by_status?.queued || 0;
     const emailTotal = emailDraft + emailEnhanced + emailApproved + emailQueued;
     const emailReady = emailApproved + emailQueued;
     const emailRate = emailTotal > 0 ? Math.round((emailReady / emailTotal) * 100) : 0;
@@ -4274,12 +4322,15 @@ async function loadAccounts() {
 
     const tbody = document.getElementById('accounts-body');
     if (!data.length) {
-        tbody.innerHTML = '<tr><td colspan="8"><div class="empty">No accounts</div></td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9"><div class="empty">No accounts</div></td></tr>';
         return;
     }
 
     tbody.innerHTML = data.map(a => {
         const intentClass = (a.intent_score || 0) >= 4 ? 'tag-hot' : (a.intent_score || 0) >= 3 ? 'tag-warm' : 'tag-std';
+        const researchStatus = (a.research_count || 0) > 0
+            ? `<span class="tag" style="background:#2ecc71;color:white;">✓ ${a.research_count}</span>`
+            : '<span class="tag" style="background:#95a5a6;color:white;">None</span>';
         return `<tr>
             <td><strong>${a.name || ''}</strong></td>
             <td style="font-size:12px;">${a.domain || ''}</td>
@@ -4288,6 +4339,7 @@ async function loadAccounts() {
             <td><span class="tag">${a.tier || 'standard'}</span></td>
             <td><span class="tag ${intentClass}">${a.intent_score || 0}</span></td>
             <td style="font-size:12px;">${a.contact_count || 0} contacts</td>
+            <td>${researchStatus}</td>
             <td><button class="btn btn-sm" onclick="showToast('Opening account detail', 'success')">View</button></td>
         </tr>`;
     }).join('');
