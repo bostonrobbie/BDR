@@ -177,6 +177,36 @@ CREATE TABLE IF NOT EXISTS audit_log (
     record_id TEXT NOT NULL, action TEXT NOT NULL, changed_by TEXT,
     old_values TEXT, new_values TEXT, timestamp TEXT DEFAULT (datetime('now'))
 );
+CREATE TABLE IF NOT EXISTS stage_audit_log (
+    id TEXT PRIMARY KEY,
+    draft_id TEXT NOT NULL,
+    from_stage TEXT,
+    to_stage TEXT NOT NULL,
+    reason TEXT,
+    actor TEXT DEFAULT 'user',
+    metadata TEXT DEFAULT '{}',
+    created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_stage_audit_draft ON stage_audit_log(draft_id);
+CREATE TABLE IF NOT EXISTS send_queue (
+    id TEXT PRIMARY KEY,
+    draft_id TEXT NOT NULL,
+    contact_id TEXT NOT NULL,
+    channel TEXT DEFAULT 'linkedin',
+    status TEXT DEFAULT 'queued',
+    subject TEXT,
+    message_body TEXT,
+    linkedin_url TEXT,
+    preflight_passed INTEGER DEFAULT 0,
+    preflight_results TEXT DEFAULT '{}',
+    verification_notes TEXT,
+    queued_at TEXT DEFAULT (datetime('now')),
+    started_at TEXT,
+    completed_at TEXT,
+    error_message TEXT,
+    created_by TEXT DEFAULT 'user'
+);
+CREATE INDEX IF NOT EXISTS idx_send_queue_status ON send_queue(status);
 CREATE TABLE IF NOT EXISTS email_identities (
     id TEXT PRIMARY KEY, email_address TEXT NOT NULL UNIQUE,
     display_name TEXT, smtp_host TEXT, smtp_port INTEGER DEFAULT 587,
@@ -9562,11 +9592,13 @@ def create_owner_test_prospect():
 
 @app.post("/api/drafts/{draft_id}/move-stage")
 def move_draft_stage(draft_id: str, body: dict = Body(...)):
-    """Move draft to a new stage in the approval workflow."""
+    """Move draft to a new stage in the approval workflow. Allows any-to-any transitions."""
     conn = get_db()
     try:
         target_stage = body.get("target_stage", "").lower()
-        valid_stages = ["draft", "enhanced", "approved", "staged", "queued"]
+        valid_stages = ["draft", "enhanced", "approved", "staged", "queued", "sent"]
+        reason = body.get("reason", "")
+        actor = body.get("actor", "user")
 
         if target_stage not in valid_stages:
             raise HTTPException(400, f"Invalid target_stage. Must be one of: {', '.join(valid_stages)}")
@@ -9578,17 +9610,9 @@ def move_draft_stage(draft_id: str, body: dict = Body(...)):
         draft = dict(draft)
         current_stage = draft.get("approval_status", "draft")
 
-        # Validate transition rules
-        valid_transitions = {
-            "draft": ["enhanced"],
-            "enhanced": ["approved", "draft"],
-            "approved": ["staged", "enhanced"],
-            "staged": ["approved", "queued"],
-            "queued": ["staged"]
-        }
-
-        if target_stage not in valid_transitions.get(current_stage, []):
-            raise HTTPException(400, f"Cannot transition from '{current_stage}' to '{target_stage}'")
+        # Special handling for "sent" stage: requires confirmation
+        if current_stage == "sent" and not body.get("confirm_reopen", False):
+            raise HTTPException(400, "Moving from 'sent' stage requires confirm_reopen=true")
 
         # Create workflow_run for this transition
         workflow_run_id = gen_id("wf")
@@ -9601,6 +9625,12 @@ def move_draft_stage(draft_id: str, body: dict = Body(...)):
         # Update draft stage
         conn.execute("""UPDATE message_drafts SET approval_status=?, updated_at=? WHERE id=?""",
             (target_stage, datetime.utcnow().isoformat(), draft_id))
+        conn.commit()
+
+        # Log to stage_audit_log
+        conn.execute("""INSERT INTO stage_audit_log (id, draft_id, from_stage, to_stage, reason, actor, metadata, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+            (gen_id("sal"), draft_id, current_stage, target_stage, reason, actor, '{}', datetime.utcnow().isoformat()))
         conn.commit()
 
         # Log the transition step
@@ -9620,6 +9650,370 @@ def move_draft_stage(draft_id: str, body: dict = Body(...)):
             "from_stage": current_stage,
             "to_stage": target_stage,
             "workflow_run_id": workflow_run_id
+        }
+    finally:
+        conn.close()
+
+@app.post("/api/drafts/batch-move-stage")
+def batch_move_draft_stage(body: dict = Body(...)):
+    """Move multiple drafts to a new stage."""
+    conn = get_db()
+    try:
+        draft_ids = body.get("draft_ids", [])
+        target_stage = body.get("target_stage", "").lower()
+        reason = body.get("reason", "")
+        actor = body.get("actor", "user")
+
+        valid_stages = ["draft", "enhanced", "approved", "staged", "queued", "sent"]
+        if target_stage not in valid_stages:
+            raise HTTPException(400, f"Invalid target_stage")
+
+        results = []
+        for draft_id in draft_ids:
+            draft = conn.execute("SELECT id, approval_status FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+            if not draft:
+                results.append({"draft_id": draft_id, "status": "not_found"})
+                continue
+            draft = dict(draft)
+            from_stage = draft.get("approval_status", "draft")
+
+            if from_stage == "sent" and not body.get("confirm_reopen", False):
+                results.append({"draft_id": draft_id, "status": "requires_confirmation", "message": "Moving from sent requires confirm_reopen=true"})
+                continue
+
+            conn.execute("UPDATE message_drafts SET approval_status=?, updated_at=? WHERE id=?",
+                (target_stage, datetime.utcnow().isoformat(), draft_id))
+
+            conn.execute("""INSERT INTO stage_audit_log (id, draft_id, from_stage, to_stage, reason, actor, metadata, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+                (gen_id("sal"), draft_id, from_stage, target_stage, reason, actor, '{}', datetime.utcnow().isoformat()))
+
+            results.append({"draft_id": draft_id, "status": "moved", "from_stage": from_stage, "to_stage": target_stage})
+
+        conn.commit()
+        moved = sum(1 for r in results if r["status"] == "moved")
+        return {"status": "batch_complete", "total": len(draft_ids), "moved": moved, "results": results}
+    finally:
+        conn.close()
+
+@app.get("/api/stage-audit-log")
+def get_stage_audit_log(draft_id: str = None, limit: int = 50):
+    """Get stage transition audit log."""
+    conn = get_db()
+    try:
+        if draft_id:
+            rows = conn.execute("SELECT * FROM stage_audit_log WHERE draft_id=? ORDER BY created_at DESC LIMIT ?", (draft_id, limit)).fetchall()
+        else:
+            rows = conn.execute("SELECT * FROM stage_audit_log ORDER BY created_at DESC LIMIT ?", (limit,)).fetchall()
+        return {"audit_log": [dict(r) for r in rows]}
+    finally:
+        conn.close()
+
+@app.post("/api/send-queue/add")
+def add_to_send_queue(body: dict = Body(...)):
+    """Add draft(s) to send queue with preflight check."""
+    conn = get_db()
+    try:
+        draft_ids = body.get("draft_ids", []) if isinstance(body.get("draft_ids"), list) else [body.get("draft_id")]
+        contact_id = body.get("contact_id")
+        channel = body.get("channel", "linkedin").lower()
+
+        if not draft_ids or not contact_id:
+            raise HTTPException(400, "draft_id(s) and contact_id required")
+
+        results = []
+        for draft_id in draft_ids:
+            # Get draft details
+            draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+            if not draft:
+                results.append({"draft_id": draft_id, "status": "not_found"})
+                continue
+            draft = dict(draft)
+
+            # Get contact details
+            contact = conn.execute("SELECT * FROM contacts WHERE id=?", (contact_id,)).fetchone()
+            if not contact:
+                results.append({"draft_id": draft_id, "status": "contact_not_found"})
+                continue
+            contact = dict(contact)
+
+            # Preflight checks for LinkedIn
+            preflight_passed = True
+            preflight_results = {}
+
+            if channel == "linkedin":
+                # Check for linkedin_url
+                if not contact.get("linkedin_url"):
+                    preflight_passed = False
+                    preflight_results["linkedin_url"] = "missing"
+
+                # Check for body and subject
+                if not draft.get("body"):
+                    preflight_passed = False
+                    preflight_results["body"] = "missing"
+                if not draft.get("subject_line"):
+                    preflight_passed = False
+                    preflight_results["subject_line"] = "missing"
+
+                # Check for em dashes in body
+                if draft.get("body") and "—" in draft.get("body", ""):
+                    preflight_passed = False
+                    preflight_results["em_dashes"] = "found"
+
+                # Check for greeting with first name
+                body_text = draft.get("body", "").lower()
+                if contact.get("first_name"):
+                    if contact.get("first_name").lower() not in body_text:
+                        preflight_results["personalization"] = "first_name_not_in_body"
+
+                # Check word count
+                word_count = len(draft.get("body", "").split())
+                if word_count < 50 or word_count > 150:
+                    preflight_results["word_count"] = f"{word_count} (expected 50-150)"
+
+            # Add to queue
+            queue_id = gen_id("sq")
+            conn.execute("""INSERT INTO send_queue (id, draft_id, contact_id, channel, status, subject, message_body,
+                linkedin_url, preflight_passed, preflight_results, created_by, queued_at)
+                VALUES (?, ?, ?, ?, 'queued', ?, ?, ?, ?, ?, 'user', ?)""",
+                (queue_id, draft_id, contact_id, channel, draft.get("subject_line"), draft.get("body"),
+                 contact.get("linkedin_url"), 1 if preflight_passed else 0, json.dumps(preflight_results),
+                 datetime.utcnow().isoformat()))
+
+            results.append({
+                "draft_id": draft_id,
+                "queue_id": queue_id,
+                "status": "queued",
+                "preflight_passed": preflight_passed,
+                "preflight_results": preflight_results
+            })
+
+        conn.commit()
+        queued = sum(1 for r in results if r["status"] == "queued")
+        return {"status": "added_to_queue", "total": len(draft_ids), "queued": queued, "results": results}
+    finally:
+        conn.close()
+
+@app.get("/api/send-queue")
+def get_send_queue(status: str = None, limit: int = 50):
+    """Get items in send queue."""
+    conn = get_db()
+    try:
+        if status:
+            rows = conn.execute(
+                "SELECT * FROM send_queue WHERE status=? ORDER BY queued_at DESC LIMIT ?",
+                (status, limit)
+            ).fetchall()
+        else:
+            rows = conn.execute(
+                "SELECT * FROM send_queue ORDER BY queued_at DESC LIMIT ?",
+                (limit,)
+            ).fetchall()
+
+        queue_items = []
+        for row in rows:
+            item = dict(row)
+            # Parse JSON fields
+            for field in ['preflight_results']:
+                if item.get(field) and isinstance(item[field], str):
+                    try:
+                        item[field] = json.loads(item[field])
+                    except:
+                        pass
+            queue_items.append(item)
+
+        return {"queue_items": queue_items, "total": len(queue_items)}
+    finally:
+        conn.close()
+
+@app.patch("/api/send-queue/{item_id}")
+def update_send_queue_item(item_id: str, body: dict = Body(...)):
+    """Update send queue item status."""
+    conn = get_db()
+    try:
+        new_status = body.get("status")
+        verification_notes = body.get("verification_notes", "")
+
+        if not new_status:
+            raise HTTPException(400, "status required")
+
+        valid_statuses = ["queued", "in_progress", "needs_review", "done", "failed"]
+        if new_status not in valid_statuses:
+            raise HTTPException(400, f"Invalid status. Must be one of: {', '.join(valid_statuses)}")
+
+        item = conn.execute("SELECT * FROM send_queue WHERE id=?", (item_id,)).fetchone()
+        if not item:
+            raise HTTPException(404, "Queue item not found")
+
+        update_fields = {"status": new_status}
+        if new_status == "in_progress":
+            update_fields["started_at"] = datetime.utcnow().isoformat()
+        elif new_status in ["done", "failed"]:
+            update_fields["completed_at"] = datetime.utcnow().isoformat()
+
+        if verification_notes:
+            update_fields["verification_notes"] = verification_notes
+
+        # Build UPDATE query
+        set_clause = ", ".join([f"{k}=?" for k in update_fields.keys()])
+        values = list(update_fields.values()) + [item_id]
+        conn.execute(f"UPDATE send_queue SET {set_clause} WHERE id=?", values)
+        conn.commit()
+
+        return {"status": "updated", "queue_item_id": item_id, "new_status": new_status}
+    finally:
+        conn.close()
+
+@app.post("/api/send-queue/batch-add")
+def batch_add_to_send_queue(body: dict = Body(...)):
+    """Add multiple drafts to send queue in batch."""
+    conn = get_db()
+    try:
+        items = body.get("items", [])
+        channel = body.get("channel", "linkedin").lower()
+
+        if not items:
+            raise HTTPException(400, "items array required")
+
+        results = []
+        for item in items:
+            draft_id = item.get("draft_id")
+            contact_id = item.get("contact_id")
+
+            if not draft_id or not contact_id:
+                results.append({"draft_id": draft_id, "contact_id": contact_id, "status": "missing_required_fields"})
+                continue
+
+            # Get draft and contact
+            draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+            contact = conn.execute("SELECT * FROM contacts WHERE id=?", (contact_id,)).fetchone()
+
+            if not draft:
+                results.append({"draft_id": draft_id, "contact_id": contact_id, "status": "draft_not_found"})
+                continue
+            if not contact:
+                results.append({"draft_id": draft_id, "contact_id": contact_id, "status": "contact_not_found"})
+                continue
+
+            draft = dict(draft)
+            contact = dict(contact)
+
+            # Basic validation
+            if not draft.get("body") or not draft.get("subject_line"):
+                results.append({"draft_id": draft_id, "contact_id": contact_id, "status": "draft_incomplete"})
+                continue
+
+            if channel == "linkedin" and not contact.get("linkedin_url"):
+                results.append({"draft_id": draft_id, "contact_id": contact_id, "status": "missing_linkedin_url"})
+                continue
+
+            # Add to queue
+            queue_id = gen_id("sq")
+            conn.execute("""INSERT INTO send_queue (id, draft_id, contact_id, channel, status, subject, message_body,
+                linkedin_url, created_by, queued_at)
+                VALUES (?, ?, ?, ?, 'queued', ?, ?, ?, 'user', ?)""",
+                (queue_id, draft_id, contact_id, channel, draft.get("subject_line"), draft.get("body"),
+                 contact.get("linkedin_url"), datetime.utcnow().isoformat()))
+
+            results.append({"draft_id": draft_id, "contact_id": contact_id, "queue_id": queue_id, "status": "queued"})
+
+        conn.commit()
+        queued = sum(1 for r in results if r["status"] == "queued")
+        return {"status": "batch_added", "total": len(items), "queued": queued, "results": results}
+    finally:
+        conn.close()
+
+@app.post("/api/quota/sync-credits")
+def sync_credits(body: dict = Body(...)):
+    """Sync InMail credits from manual input or Sales Navigator."""
+    conn = get_db()
+    try:
+        credits_remaining = body.get("credits_remaining")
+        credits_total = body.get("credits_total", 150)
+        reset_date = body.get("reset_date")
+        source = body.get("source", "manual")
+
+        if credits_remaining is None:
+            raise HTTPException(400, "credits_remaining required")
+
+        snapshot_id = gen_id("qs")
+        conn.execute("""INSERT OR REPLACE INTO quota_settings
+            (id, channel, inmail_remaining_month, inmail_monthly_limit, source, last_verified_at, notes)
+            VALUES (?, 'linkedin', ?, ?, ?, ?, ?)""",
+            (snapshot_id, credits_remaining, credits_total, source,
+             datetime.utcnow().isoformat(), json.dumps({"reset_date": reset_date})))
+        conn.commit()
+
+        return {
+            "status": "synced",
+            "credits_remaining": credits_remaining,
+            "credits_total": credits_total,
+            "reset_date": reset_date,
+            "synced_at": datetime.utcnow().isoformat()
+        }
+    finally:
+        conn.close()
+
+@app.get("/api/accounts/{account_id}/research")
+def get_account_research(account_id: str):
+    """Get all research for an account."""
+    conn = get_db()
+    try:
+        account = conn.execute("SELECT * FROM accounts WHERE id=?", (account_id,)).fetchone()
+        if not account:
+            raise HTTPException(404, "Account not found")
+        account = dict(account)
+
+        # Get account-level research snapshots
+        snapshots = []
+        for row in conn.execute("""
+            SELECT * FROM research_snapshots
+            WHERE account_id=? AND entity_type='company'
+            ORDER BY created_at DESC
+        """, (account_id,)):
+            s = dict(row)
+            for field in ['career_history', 'tech_stack_signals', 'pain_indicators', 'sources']:
+                if s.get(field) and isinstance(s[field], str):
+                    try:
+                        s[field] = json.loads(s[field])
+                    except:
+                        pass
+            snapshots.append(s)
+
+        # Get contacts for this account
+        contacts = []
+        for row in conn.execute("""
+            SELECT c.*,
+                (SELECT COUNT(*) FROM message_drafts WHERE contact_id=c.id) as draft_count,
+                (SELECT COUNT(*) FROM research_snapshots WHERE contact_id=c.id) as research_count
+            FROM contacts c WHERE c.account_id=?
+        """, (account_id,)):
+            contacts.append(dict(row))
+
+        # Get person research snapshots
+        person_research = []
+        for row in conn.execute("""
+            SELECT rs.*, c.first_name, c.last_name, c.title
+            FROM research_snapshots rs
+            JOIN contacts c ON rs.contact_id = c.id
+            WHERE rs.account_id=? AND rs.entity_type='person'
+            ORDER BY rs.created_at DESC
+        """, (account_id,)):
+            r = dict(row)
+            for field in ['career_history', 'tech_stack_signals', 'pain_indicators', 'sources']:
+                if r.get(field) and isinstance(r[field], str):
+                    try:
+                        r[field] = json.loads(r[field])
+                    except:
+                        pass
+            person_research.append(r)
+
+        return {
+            "account": account,
+            "company_research": snapshots,
+            "person_research": person_research,
+            "contacts": contacts,
+            "has_research": len(snapshots) > 0 or len(person_research) > 0
         }
     finally:
         conn.close()

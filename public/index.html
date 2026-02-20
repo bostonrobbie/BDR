@@ -1624,9 +1624,10 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
     </nav>
     <div class="sidebar-status">
         <div style="padding:10px;background:var(--bg-elevated);border-radius:6px;margin-bottom:8px;cursor:pointer;transition:all var(--transition)" onclick="showPage('quota')" id="quota-widget" title="Click to view full quota tracker">
-            <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;font-weight:bold;margin-bottom:4px">Credits</div>
+            <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;font-weight:bold;margin-bottom:4px">InMail Credits</div>
             <div style="font-size:18px;font-weight:bold;color:var(--accent)" id="quota-remaining">-</div>
             <div style="font-size:10px;color:var(--text-muted);margin-top:2px" id="quota-info">Loading...</div>
+            <div style="font-size:9px;color:var(--text-muted);margin-top:2px" id="quota-synced"></div>
         </div>
         <div class="status-badge" id="mode-badge">
             <span class="status-dot"></span>
@@ -4369,7 +4370,7 @@ async function loadAccounts() {
             <td><span class="tag ${intentClass}">${a.intent_score || 0}</span></td>
             <td style="font-size:12px;">${a.contact_count || 0} contacts</td>
             <td>${researchStatus}</td>
-            <td><button class="btn btn-sm" onclick="showToast('Opening account detail', 'success')">View</button></td>
+            <td><button class="btn btn-sm" onclick="showAccountResearch('${a.id}')">View</button></td>
         </tr>`;
     }).join('');
 }
@@ -5170,18 +5171,39 @@ async function loadLIQuotaBadge() {
 // ─── QUOTA MANAGEMENT ───────────────────────────────────────────────────
 async function loadCreditsWidget() {
     try {
-        const data = await api('/api/quota/credits');
+        // Try verified quota first
+        const verified = await api('/api/quota/current');
         const el = document.getElementById('quota-remaining');
         const infoEl = document.getElementById('quota-info');
+        const syncedEl = document.getElementById('quota-synced');
         if (!el || !infoEl) return;
-        const remaining = (data.total || 100) - (data.used || 0);
-        const verified = data.source === 'manual' && data.last_verified_at;
-        el.textContent = remaining;
-        infoEl.textContent = `of ${data.total || 100} | Today: ${data.today_used || 0}`;
-        if (!verified && remaining < 20) {
-            el.style.color = 'var(--warning)';
+
+        if (verified.status === 'verified') {
+            const remaining = verified.inmails_remaining || 0;
+            const total = verified.inmails_total || 150;
+            el.textContent = remaining;
+            el.style.color = remaining <= 10 ? 'var(--error)' : remaining <= 30 ? 'var(--warning)' : 'var(--accent)';
+            infoEl.textContent = `of ${total} InMails`;
+            if (syncedEl && verified.verified_at) {
+                const d = new Date(verified.verified_at);
+                syncedEl.textContent = `Synced ${d.toLocaleDateString()} ${d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`;
+            }
+            const widget = document.getElementById('quota-widget');
+            if (widget) widget.style.borderLeft = remaining <= 10 ? '3px solid var(--error)' : remaining <= 30 ? '3px solid var(--warning)' : '3px solid var(--success)';
+        } else {
+            el.textContent = '?';
+            infoEl.textContent = 'Not verified - click to sync';
+            if (syncedEl) syncedEl.textContent = '';
+            const widget = document.getElementById('quota-widget');
+            if (widget) widget.style.borderLeft = '3px solid var(--warning)';
         }
-    } catch(e) { console.error('Credits widget:', e); }
+    } catch(e) {
+        console.error('Credits widget:', e);
+        const el = document.getElementById('quota-remaining');
+        if (el) el.textContent = '?';
+        const infoEl = document.getElementById('quota-info');
+        if (infoEl) infoEl.textContent = 'Click to sync';
+    }
 }
 
 function showQuotaUpdateModal() {
@@ -5373,6 +5395,7 @@ function renderLIDraftsList(drafts) {
             <input type="checkbox" id="select-all-drafts" onchange="toggleAllDraftSelection(this.checked)">
             <label for="select-all-drafts" style="font-size:12px;color:var(--text-muted);cursor:pointer;">Select all</label>
             <button class="btn btn-sm" onclick="enhanceSelectedDrafts()" style="margin-left:8px;background:var(--warning-bg);color:var(--warning);">✨ Enhance Selected</button>
+            <select class="inp" style="width:auto;min-width:120px;font-size:11px;padding:3px 6px;height:auto;margin-left:4px;" onchange="if(this.value){batchMoveSelectedDrafts(this.value);this.value=''}"><option value="">Batch move to...</option><option value="draft">Draft</option><option value="enhanced">Enhanced</option><option value="approved">Approved</option><option value="staged">Staged</option></select>
             <span id="selected-count" style="font-size:11px;color:var(--text-muted);"></span>
         </div>
     ` + drafts.map(d => {
@@ -5422,15 +5445,18 @@ function renderLIDraftsList(drafts) {
 
             <!-- Action buttons -->
             <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
-                ${d.approval_status === 'draft' ? `<button class="btn btn-sm" style="background:var(--warning-bg);color:var(--warning);" onclick="enhanceDraftReal('${d.id}')">✨ Enhance</button>` : ''}
-                ${d.approval_status === 'enhanced' ? `<button class="btn btn-sm" style="background:var(--warning-bg);color:var(--warning);" onclick="enhanceDraftReal('${d.id}')">✨ Enhance</button>` : ''}
-                ${d.approval_status === 'enhanced' ? `<button class="btn btn-sm" onclick="moveDraftStage('${d.id}','draft')">← Back to Draft</button>` : ''}
-                ${d.approval_status === 'enhanced' ? `<button class="btn btn-sm btn-primary" onclick="moveDraftStage('${d.id}','approved')">Approve →</button>` : ''}
-                ${d.approval_status === 'approved' ? `<button class="btn btn-sm" onclick="moveDraftStage('${d.id}','enhanced')">← Unapprove</button>` : ''}
+                ${d.approval_status !== 'sent' ? `<button class="btn btn-sm" style="background:var(--warning-bg);color:var(--warning);" onclick="enhanceDraftReal('${d.id}')">✨ Enhance</button>` : ''}
+                ${d.approval_status === 'draft' || d.approval_status === 'enhanced' ? `<button class="btn btn-sm btn-primary" onclick="moveDraftStage('${d.id}','approved')">Approve →</button>` : ''}
                 ${d.approval_status === 'approved' ? `<button class="btn btn-sm btn-primary" onclick="moveDraftStage('${d.id}','staged')">Stage →</button>` : ''}
-                ${d.approval_status === 'staged' ? `<button class="btn btn-sm" onclick="moveDraftStage('${d.id}','approved')">← Back to Approved</button>` : ''}
-                ${(d.approval_status === 'draft' || d.approval_status === 'enhanced') && !d.approval_status?.includes('enhanced') ? `<button class="btn btn-sm btn-primary" onclick="moveDraftStage('${d.id}','approved')">✅ Approve</button>` : ''}
-                <button class="btn btn-sm" onclick="copyToClip(document.getElementById('draft-body-${d.id}').innerText);showToast('Message copied!')">📋 Copy Message</button>
+                ${d.approval_status === 'staged' ? `<button class="btn btn-sm btn-primary" onclick="queueAssistedSend('${d.id}','${d.contact_id || ''}')">🚀 Queue Send</button>` : ''}
+                <select class="inp" style="width:auto;min-width:100px;font-size:11px;padding:3px 6px;height:auto;" onchange="if(this.value){moveDraftStage('${d.id}',this.value);this.value=''}">
+                    <option value="">Move to...</option>
+                    ${d.approval_status !== 'draft' ? '<option value="draft">← Draft</option>' : ''}
+                    ${d.approval_status !== 'enhanced' ? '<option value="enhanced">Enhanced</option>' : ''}
+                    ${d.approval_status !== 'approved' ? '<option value="approved">Approved</option>' : ''}
+                    ${d.approval_status !== 'staged' ? '<option value="staged">Staged</option>' : ''}
+                </select>
+                <button class="btn btn-sm" onclick="copyToClip(document.getElementById('draft-body-${d.id}').innerText);showToast('Message copied!')">📋 Copy</button>
                 <button class="btn btn-sm" onclick="toggleResearch('${d.id}')">🔍 Research</button>
                 <button class="btn btn-sm" onclick="showDraftVersions('${d.id}')">📝 Versions</button>
             </div>
@@ -5675,11 +5701,169 @@ async function restoreDraftVersion(draftId, versionId) {
 
 async function moveDraftStage(draftId, targetStage) {
     try {
-        const result = await apiPost('/api/drafts/' + draftId + '/move-stage', { target_stage: targetStage });
-        showToast('Moved to ' + targetStage, 'success');
+        showToast(`Moving to ${targetStage}...`, 'info');
+        await apiPost(`/api/drafts/${draftId}/move-stage`, { target_stage: targetStage, reason: 'manual_move' });
+        showToast(`Moved to ${targetStage}`, 'success');
+        // Refresh the current view
         loadLIDrafts();
+        refreshDraftKPIs();
+        if (document.getElementById('li-tab-staging')?.style.display !== 'none') loadStagingTab();
     } catch(e) {
-        showToast('Stage move failed: ' + (e.message || ''), 'error');
+        showToast('Move failed: ' + (e.message || 'Unknown error'), 'error');
+    }
+}
+
+// Queue assisted send for a single draft
+async function queueAssistedSend(draftId, contactId) {
+    try {
+        showToast('Queuing for assisted send...', 'info');
+        const result = await apiPost('/api/send-queue/add', { draft_id: draftId, contact_id: contactId });
+        if (result.status === 'queued') {
+            showToast('Queued for assisted send! Preflight passed.', 'success');
+        } else if (result.status === 'preflight_failed') {
+            const fails = (result.preflight_checks || []).filter(c => !c.passed).map(c => c.check + ': ' + c.detail).join(', ');
+            showToast('Preflight failed: ' + fails, 'error');
+        } else {
+            showToast(result.message || 'Queue result: ' + result.status, 'info');
+        }
+    } catch(e) {
+        showToast('Queue error: ' + e.message, 'error');
+    }
+}
+
+// Batch queue assisted send from staging
+async function batchQueueAssistedSend() {
+    const checkboxes = document.querySelectorAll('.staging-checkbox:checked');
+    if (!checkboxes.length) { showToast('Select prospects first', 'warning'); return; }
+
+    const items = Array.from(checkboxes).map(cb => ({ draft_id: cb.dataset.id, contact_id: cb.dataset.contactId }));
+    showToast(`Queuing ${items.length} for send...`, 'info');
+
+    try {
+        const result = await apiPost('/api/send-queue/batch-add', { items });
+        const queued = (result.results || []).filter(r => r.status === 'queued').length;
+        const failed = (result.results || []).filter(r => r.status !== 'queued').length;
+        showToast(`Queued: ${queued}, Failed: ${failed}`, queued > 0 ? 'success' : 'warning');
+    } catch(e) {
+        showToast('Batch queue error: ' + e.message, 'error');
+    }
+}
+
+// Batch move staged drafts to a different stage
+async function batchMoveStagedDrafts(targetStage) {
+    const checkboxes = document.querySelectorAll('.staging-checkbox:checked');
+    if (!checkboxes.length) { showToast('Select prospects first', 'warning'); return; }
+
+    const ids = Array.from(checkboxes).map(cb => cb.dataset.id);
+    if (!confirm(`Move ${ids.length} drafts to "${targetStage}"?`)) return;
+
+    showToast(`Moving ${ids.length} drafts to ${targetStage}...`, 'info');
+    try {
+        const result = await apiPost('/api/drafts/batch-move-stage', { draft_ids: ids, target_stage: targetStage, reason: 'batch_move_from_staging' });
+        showToast(`Moved ${result.moved || 0} of ${ids.length} drafts`, 'success');
+        loadStagingTab();
+        refreshDraftKPIs();
+    } catch(e) {
+        showToast('Batch move error: ' + e.message, 'error');
+    }
+}
+
+// Show account research modal
+async function showAccountResearch(accountId) {
+    try {
+        const data = await api(`/api/accounts/${accountId}/research`);
+        const account = data.account || {};
+        const companyResearch = data.company_research || [];
+        const personResearch = data.person_research || [];
+        const contacts = data.contacts || [];
+
+        const modal = document.createElement('div');
+        modal.className = 'modal show';
+        modal.id = 'account-research-modal';
+
+        let companyHtml = '';
+        if (companyResearch.length) {
+            companyResearch.forEach(r => {
+                companyHtml += `
+                    <div style="margin-bottom:12px;padding:12px;background:var(--bg-primary);border-radius:8px;">
+                        ${r.headline ? `<div style="font-weight:600;margin-bottom:4px;">${r.headline}</div>` : ''}
+                        ${r.summary ? `<div style="font-size:12px;line-height:1.6;margin-bottom:8px;">${r.summary}</div>` : ''}
+                        ${r.company_products ? `<div style="font-size:11px;"><strong>Products:</strong> ${typeof r.company_products === 'string' ? r.company_products : JSON.stringify(r.company_products)}</div>` : ''}
+                        ${r.company_news ? `<div style="font-size:11px;margin-top:4px;"><strong>News:</strong> ${typeof r.company_news === 'string' ? r.company_news : JSON.stringify(r.company_news)}</div>` : ''}
+                        ${r.hiring_signals ? `<div style="font-size:11px;margin-top:4px;"><strong>Hiring:</strong> ${typeof r.hiring_signals === 'string' ? r.hiring_signals : JSON.stringify(r.hiring_signals)}</div>` : ''}
+                        ${r.tech_stack_signals && r.tech_stack_signals.length ? `<div style="font-size:11px;margin-top:4px;"><strong>Tech Stack:</strong> ${Array.isArray(r.tech_stack_signals) ? r.tech_stack_signals.join(', ') : r.tech_stack_signals}</div>` : ''}
+                        ${r.pain_indicators && r.pain_indicators.length ? `<div style="font-size:11px;margin-top:4px;"><strong>Pain Indicators:</strong> ${Array.isArray(r.pain_indicators) ? r.pain_indicators.join(', ') : r.pain_indicators}</div>` : ''}
+                        <div style="font-size:10px;color:var(--text-muted);margin-top:6px;">Confidence: ${r.confidence_score || '-'}/5 | ${r.created_at || ''}</div>
+                    </div>`;
+            });
+        } else {
+            companyHtml = '<div class="empty" style="padding:16px;">No company research yet</div>';
+        }
+
+        let personHtml = '';
+        if (personResearch.length) {
+            personResearch.forEach(r => {
+                personHtml += `
+                    <div style="margin-bottom:8px;padding:10px;background:var(--bg-primary);border-radius:6px;">
+                        <strong style="font-size:12px;">${r.first_name || ''} ${r.last_name || ''}</strong>
+                        <span style="font-size:11px;color:var(--text-muted);margin-left:6px;">${r.title || ''}</span>
+                        ${r.summary ? `<div style="font-size:11px;margin-top:4px;">${r.summary}</div>` : ''}
+                        ${r.responsibilities ? `<div style="font-size:11px;margin-top:2px;"><strong>Focus:</strong> ${r.responsibilities}</div>` : ''}
+                    </div>`;
+            });
+        } else {
+            personHtml = '<div style="font-size:12px;color:var(--text-muted);padding:8px;">No person research</div>';
+        }
+
+        let contactsHtml = contacts.map(c => `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;">
+                <div><strong>${c.first_name || ''} ${c.last_name || ''}</strong> - ${c.title || ''}</div>
+                <div style="display:flex;gap:8px;color:var(--text-muted);">
+                    <span>${c.draft_count || 0} drafts</span>
+                    <span>${c.research_count || 0} research</span>
+                </div>
+            </div>
+        `).join('');
+
+        modal.innerHTML = `
+            <div class="modal-content" style="max-width:800px;max-height:85vh;overflow-y:auto;">
+                <div class="modal-header">
+                    <h3>${account.name || 'Account'} - Research</h3>
+                    <button class="modal-close" onclick="this.closest('.modal').remove()">&times;</button>
+                </div>
+                <div style="padding:20px;">
+                    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+                        <div style="padding:8px;background:var(--bg-primary);border-radius:6px;font-size:12px;">
+                            <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;">Industry</div>
+                            <strong>${account.industry || '-'}</strong>
+                        </div>
+                        <div style="padding:8px;background:var(--bg-primary);border-radius:6px;font-size:12px;">
+                            <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;">Employees</div>
+                            <strong>${account.employee_count ? account.employee_count.toLocaleString() : '-'}</strong>
+                        </div>
+                        <div style="padding:8px;background:var(--bg-primary);border-radius:6px;font-size:12px;">
+                            <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;">Known Tools</div>
+                            <strong>${account.known_tools || '-'}</strong>
+                        </div>
+                        <div style="padding:8px;background:var(--bg-primary);border-radius:6px;font-size:12px;">
+                            <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;">Buyer Intent</div>
+                            <strong>${account.buyer_intent ? '🔥 Yes' : 'No'}</strong>
+                        </div>
+                    </div>
+
+                    <h4 style="margin-bottom:12px;">Company Research</h4>
+                    ${companyHtml}
+
+                    <h4 style="margin:16px 0 12px;">People Research (${personResearch.length})</h4>
+                    ${personHtml}
+
+                    <h4 style="margin:16px 0 12px;">Contacts (${contacts.length})</h4>
+                    ${contactsHtml}
+                </div>
+            </div>`;
+        document.body.appendChild(modal);
+    } catch(e) {
+        showToast('Error loading research: ' + e.message, 'error');
     }
 }
 
@@ -5723,6 +5907,21 @@ async function enhanceSelectedDrafts() {
     loadLIDrafts();
 }
 
+async function batchMoveSelectedDrafts(targetStage) {
+    const ids = getSelectedDraftIds();
+    if (!ids.length) { showToast('Select drafts first', 'warning'); return; }
+    if (!confirm(`Move ${ids.length} drafts to "${targetStage}"?`)) return;
+
+    showToast(`Moving ${ids.length} to ${targetStage}...`, 'info');
+    try {
+        const result = await apiPost('/api/drafts/batch-move-stage', { draft_ids: ids, target_stage: targetStage, reason: 'batch_move_from_drafts_page' });
+        showToast(`Moved ${result.moved || 0} of ${ids.length}`, 'success');
+        loadLIDrafts();
+        refreshDraftKPIs();
+    } catch(e) {
+        showToast('Move error: ' + e.message, 'error');
+    }
+}
 
 async function approveDraft(draftId) {
     try {
@@ -6712,23 +6911,32 @@ async function loadStagingTab() {
             return;
         }
 
-        listEl.innerHTML = drafts.map(d => {
+        listEl.innerHTML = `
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;padding:10px;background:var(--bg-elevated);border-radius:8px;">
+                <input type="checkbox" id="staging-select-all" onchange="document.querySelectorAll('.staging-checkbox').forEach(c=>c.checked=this.checked)">
+                <label for="staging-select-all" style="font-size:12px;color:var(--text-muted);cursor:pointer;">Select all</label>
+                <button class="btn btn-sm btn-primary" onclick="batchQueueAssistedSend()" style="margin-left:8px;">🚀 Queue Selected for Send</button>
+                <button class="btn btn-sm" onclick="batchMoveStagedDrafts('draft')">← Move to Drafts</button>
+                <button class="btn btn-sm" onclick="batchMoveStagedDrafts('enhanced')">← Move to Enhanced</button>
+                <button class="btn btn-sm" onclick="batchMoveStagedDrafts('approved')">← Move to Approved</button>
+            </div>
+        ` + drafts.map(d => {
             const name = `${d.first_name || ''} ${d.last_name || ''}`.trim();
             const company = d.company_name || d.account_name || '';
             const linkedinUrl = d.linkedin_url || '#';
             return `
-            <div class="card" style="margin-bottom:12px;padding:16px;">
+            <div class="card" style="margin-bottom:12px;padding:16px;" data-staging-draft-id="${d.id}" data-contact-id="${d.contact_id || ''}">
                 <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
-                    <div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <input type="checkbox" class="staging-checkbox" data-id="${d.id}" data-contact-id="${d.contact_id || ''}">
                         <strong style="font-size:14px;">${name}</strong>
-                        <span style="color:var(--text-muted);margin-left:8px;">${d.title || ''} at ${company}</span>
+                        <span style="color:var(--text-muted);margin-left:4px;font-size:12px;">${d.title || ''} at ${company}</span>
                     </div>
                     <div style="display:flex;gap:6px;">
-                        <a href="${linkedinUrl}" target="_blank" class="btn btn-sm" style="text-decoration:none;" ${linkedinUrl === '#' ? 'disabled' : ''}>🔗 Open Profile</a>
+                        <a href="${linkedinUrl}" target="_blank" class="btn btn-sm" style="text-decoration:none;" ${linkedinUrl === '#' ? 'disabled' : ''}>🔗 Profile</a>
                     </div>
                 </div>
 
-                <!-- Preflight Checklist -->
                 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;font-size:11px;">
                     <div style="padding:6px 8px;background:${linkedinUrl !== '#' ? 'var(--success-bg)' : 'var(--error-bg)'};border-radius:4px;">
                         ${linkedinUrl !== '#' ? '✅' : '❌'} LinkedIn URL
@@ -6739,17 +6947,21 @@ async function loadStagingTab() {
                     </div>
                 </div>
 
-                <!-- Subject -->
                 ${d.subject_line ? `<div style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;"><strong>Subject:</strong> ${d.subject_line}</div>` : ''}
 
-                <!-- Message Body -->
                 <div style="background:var(--bg-primary);padding:12px;border-radius:var(--radius-sm);font-size:12px;white-space:pre-wrap;line-height:1.6;margin-bottom:12px;max-height:200px;overflow-y:auto;" id="staging-body-${d.id}">${d.body || ''}</div>
 
-                <!-- Actions -->
-                <div style="display:flex;gap:8px;justify-content:flex-end;">
+                <div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;">
+                    <select class="inp" style="width:auto;min-width:100px;font-size:11px;padding:3px 6px;height:auto;" onchange="if(this.value){moveDraftStage('${d.id}',this.value);this.value=''}">
+                        <option value="">Move to...</option>
+                        <option value="draft">← Draft</option>
+                        <option value="enhanced">Enhanced</option>
+                        <option value="approved">← Approved</option>
+                    </select>
                     <button class="btn btn-sm" onclick="navigator.clipboard.writeText(document.getElementById('staging-body-${d.id}').innerText);showToast('Message copied!')">📋 Copy Message</button>
                     ${d.subject_line ? `<button class="btn btn-sm" onclick="navigator.clipboard.writeText('${(d.subject_line||'').replace(/'/g,"\\'")}');showToast('Subject copied!')">📋 Copy Subject</button>` : ''}
-                    <button class="btn btn-sm btn-primary" onclick="markDraftSent('${d.id}')">✅ Mark as Sent</button>
+                    <button class="btn btn-sm btn-primary" onclick="queueAssistedSend('${d.id}','${d.contact_id || ''}')">🚀 Queue Send</button>
+                    <button class="btn btn-sm" onclick="markDraftSent('${d.id}')">✅ Mark Sent</button>
                 </div>
             </div>`;
         }).join('');
