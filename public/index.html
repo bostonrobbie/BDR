@@ -3736,7 +3736,17 @@ async function loadStats() {
         </div>
     `;
 
-    document.getElementById('kpi-row').innerHTML = realMetricsHtml + channelHealthHtml + stageDistributionHtml + quickStatsHtml;
+    // Render KPI tiles in the grid row, then full-width sections below
+    document.getElementById('kpi-row').innerHTML = realMetricsHtml;
+
+    // Render full-width sections after the kpi-row
+    let dashSections = document.getElementById('dash-sections');
+    if (!dashSections) {
+        dashSections = document.createElement('div');
+        dashSections.id = 'dash-sections';
+        document.getElementById('kpi-row').insertAdjacentElement('afterend', dashSections);
+    }
+    dashSections.innerHTML = channelHealthHtml + stageDistributionHtml + quickStatsHtml;
 }
 
 async function loadActionQueue() {
