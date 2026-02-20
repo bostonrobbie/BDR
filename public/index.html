@@ -4318,7 +4318,8 @@ async function loadApprovalQueue() {
 async function loadAccounts() {
     const search = document.getElementById('accounts-search')?.value || '';
     let data = await api(`/api/accounts${search ? '?search=' + search : ''}`);
-    if (!data || !data.length) data = [];
+    data = data?.accounts || data || [];
+    if (!Array.isArray(data)) data = [];
 
     const tbody = document.getElementById('accounts-body');
     if (!data.length) {
