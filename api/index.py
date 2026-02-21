@@ -776,6 +776,12 @@ CREATE TABLE IF NOT EXISTS defect_log (
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS gateway_config (
+    key TEXT PRIMARY KEY,
+    value TEXT,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
 """
 
 # ---------------------------------------------------------------------------
@@ -2484,6 +2490,49 @@ def toggle_feature_flag(name: str, enabled: bool = Query(True)):
     conn.commit()
     conn.close()
     return {"name": name, "enabled": enabled}
+
+# ─── GATEWAY CONFIG (for Vercel ↔ local LLM relay) ───────────
+
+@app.get("/api/gateway/config")
+def get_gateway_config():
+    """Get stored gateway/tunnel configuration."""
+    conn = get_db()
+    rows = conn.execute("SELECT key, value FROM gateway_config").fetchall()
+    conn.close()
+    config = {r["key"]: r["value"] for r in rows}
+    return {
+        "gateway_url": config.get("gateway_url", ""),
+        "gateway_key": config.get("gateway_key", ""),
+        "ollama_model": config.get("ollama_model", "llama3.1:8b-instruct-q5_K_M"),
+    }
+
+@app.put("/api/gateway/config")
+def save_gateway_config(data: dict):
+    """Save gateway/tunnel configuration (persists across devices)."""
+    conn = get_db()
+    for key in ("gateway_url", "gateway_key", "ollama_model"):
+        if key in data and data[key] is not None:
+            conn.execute(
+                "INSERT OR REPLACE INTO gateway_config (key, value, updated_at) VALUES (?, ?, datetime('now'))",
+                (key, str(data[key]))
+            )
+    conn.commit()
+    conn.close()
+    return {"status": "saved"}
+
+@app.get("/api/gateway/status")
+def get_gateway_status():
+    """Check if gateway is configured (no proxy check)."""
+    conn = get_db()
+    url_row = conn.execute("SELECT value FROM gateway_config WHERE key='gateway_url'").fetchone()
+    key_row = conn.execute("SELECT value FROM gateway_config WHERE key='gateway_key'").fetchone()
+    conn.close()
+    gw_url = url_row["value"] if url_row else ""
+    return {
+        "configured": bool(gw_url),
+        "gateway_url": gw_url,
+        "has_key": bool(key_row and key_row["value"]),
+    }
 
 # ─── INSIGHTS ──────────────────────────────────────────────────
 
@@ -8349,13 +8398,38 @@ def enhance_message_tier1(message_id: str):
 
         tier2_prompt = build_tier2_prompt(message_id, conn)
 
+        # Gather contact/research context for gateway LLM relay
+        contact_ctx = {}
+        research_ctx = {}
+        if msg.get("contact_id"):
+            crow = conn.execute("""
+                SELECT c.first_name, c.last_name, c.title, c.persona_type,
+                       a.name as company_name, a.industry
+                FROM contacts c LEFT JOIN accounts a ON c.account_id = a.id
+                WHERE c.id = ?
+            """, (msg["contact_id"],)).fetchone()
+            if crow:
+                contact_ctx = dict(crow)
+            # Get latest research
+            rrow = conn.execute("""
+                SELECT summary, pain_indicators, company_products, company_news, hiring_signals
+                FROM research_snapshots WHERE contact_id = ?
+                ORDER BY created_at DESC LIMIT 1
+            """, (msg["contact_id"],)).fetchone()
+            if rrow:
+                research_ctx = dict(rrow)
+
         conn.close()
 
         return {
             "message_id": message_id,
             "tier1": tier1_result,
             "tier2_prompt": tier2_prompt,
-            "status": "ready_for_review"
+            "status": "ready_for_review",
+            "contact": contact_ctx,
+            "research": research_ctx,
+            "channel": msg.get("channel", "linkedin"),
+            "touch_number": msg.get("touch_number", 1),
         }
     except HTTPException:
         raise

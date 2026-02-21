@@ -1799,7 +1799,11 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
             <span class="status-dot"></span>
             <span>Online</span>
         </div>
-        <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);" id="api-status">API not connected</div>
+        <div style="margin-top:6px;display:flex;align-items:center;gap:6px;cursor:pointer;padding:2px 0" onclick="showPage('settings');setTimeout(()=>showSettingsTab('gateway'),100)" title="LLM Gateway Status">
+            <span id="llm-dot" style="width:8px;height:8px;border-radius:50%;background:#555;display:inline-block"></span>
+            <span id="llm-label" style="font-size:11px;color:var(--text-muted)">LLM: --</span>
+        </div>
+        <div style="margin-top: 4px; font-size: 11px; color: var(--text-muted);" id="api-status">API not connected</div>
     </div>
 </div>
 
@@ -3005,6 +3009,7 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
         <div class="tab-item" onclick="showSettingsTab('email')">Email Setup</div>
         <div class="tab-item" onclick="showSettingsTab('flags')">Feature Flags</div>
         <div class="tab-item" onclick="showSettingsTab('api')">API</div>
+        <div class="tab-item" onclick="showSettingsTab('gateway')">LLM Gateway</div>
     </div>
 
     <div class="tab-content active" id="settings-tab-general">
@@ -3066,6 +3071,55 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
         <div class="card">
             <h3>Database Tables</h3>
             <div id="settings-table-counts"></div>
+        </div>
+    </div>
+
+    <div class="tab-content" id="settings-tab-gateway">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="card">
+                <h3>LLM Gateway Connection</h3>
+                <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px">Connect to your local Ollama LLM via Cloudflare Tunnel for AI-powered enhance, research, and draft generation.</p>
+                <div style="margin-bottom:12px;">
+                    <label style="font-size:11px;color:var(--text-secondary);display:block;margin-bottom:4px">Gateway URL (Cloudflare Tunnel)</label>
+                    <input class="inp" id="set-gateway-url" style="width:100%;" placeholder="https://your-tunnel.trycloudflare.com">
+                </div>
+                <div style="margin-bottom:12px;">
+                    <label style="font-size:11px;color:var(--text-secondary);display:block;margin-bottom:4px">API Key</label>
+                    <input class="inp" id="set-gateway-key" type="password" style="width:100%;" placeholder="occ-rob-2026-gateway">
+                </div>
+                <div style="margin-bottom:12px;">
+                    <label style="font-size:11px;color:var(--text-secondary);display:block;margin-bottom:4px">Ollama Model</label>
+                    <select class="inp" id="set-ollama-model" style="width:100%;">
+                        <option value="llama3.1:8b-instruct-q5_K_M">Llama 3.1 8B Instruct (Q5_K_M)</option>
+                        <option value="qwen2.5:7b">Qwen 2.5 7B</option>
+                        <option value="qwen2.5:7b-32k">Qwen 2.5 7B 32K</option>
+                        <option value="qwen2.5:14b">Qwen 2.5 14B</option>
+                        <option value="llama3:latest">Llama 3 8B</option>
+                        <option value="gemma3:4b">Gemma 3 4B</option>
+                    </select>
+                </div>
+                <div style="display:flex;gap:8px;">
+                    <button class="btn btn-primary" onclick="saveGatewaySettings()">Save Settings</button>
+                    <button class="btn" onclick="testGatewayConnection()">Test Connection</button>
+                </div>
+                <div id="gateway-test-result" style="margin-top:12px;font-size:12px;"></div>
+            </div>
+            <div class="card">
+                <h3>Gateway Status</h3>
+                <div id="gateway-status-detail" style="font-size:12px;color:var(--text-muted);">
+                    Click "Test Connection" to check gateway health.
+                </div>
+                <div style="margin-top:16px">
+                    <h3>How It Works</h3>
+                    <div style="font-size:12px;color:var(--text-muted);line-height:1.6">
+                        <p>1. Run Ollama + the OCC gateway on your local PC</p>
+                        <p>2. Expose via Cloudflare Tunnel (cloudflared)</p>
+                        <p>3. Paste the tunnel URL above</p>
+                        <p>4. LLM operations (Enhance, Write, Research) will use your local GPU</p>
+                        <p style="margin-top:8px;color:var(--text-secondary)">When gateway is offline, Tier 1 (rule-based) enhance still works. Only Tier 2 (LLM) features require the gateway.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -3673,6 +3727,288 @@ async function apiPost(path, body, method='POST') {
     }
 }
 
+// ─── GATEWAY CALL INFRASTRUCTURE ─────────────────────────────────
+function _getGatewayUrl() {
+    return localStorage.getItem('occ_gateway_url') || '';
+}
+function _getGatewayKey() {
+    return localStorage.getItem('occ_gateway_key') || '';
+}
+function _getOllamaModel() {
+    return localStorage.getItem('occ_ollama_model') || 'llama3.1:8b-instruct-q5_K_M';
+}
+
+async function _gatewayCall(endpoint, method = 'POST', body = null) {
+    const gw = _getGatewayUrl();
+    if (!gw) throw new Error('Gateway not configured. Go to Settings > LLM Gateway.');
+    const key = _getGatewayKey();
+    const url = gw.replace(/\/+$/, '') + endpoint;
+    const headers = { 'Content-Type': 'application/json' };
+    if (key) headers['X-OCC-Key'] = key;
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 120000);
+    const opts = { method, headers, signal: controller.signal };
+    if (body && method !== 'GET') opts.body = JSON.stringify(body);
+
+    let lastErr;
+    for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+            const r = await fetch(url, opts);
+            clearTimeout(timeout);
+            if (!r.ok) {
+                const err = await r.json().catch(() => ({ detail: r.statusText }));
+                throw new Error(err.detail || `HTTP ${r.status}`);
+            }
+            return await r.json();
+        } catch (e) {
+            lastErr = e;
+            if (e.name === 'AbortError') throw new Error('Gateway request timed out (120s)');
+            if (attempt < 2) await new Promise(r => setTimeout(r, (attempt + 1) * 2000));
+        }
+    }
+    throw lastErr;
+}
+
+function updateLLMDot(status) {
+    const dot = document.getElementById('llm-dot');
+    const label = document.getElementById('llm-label');
+    if (!dot || !label) return;
+    if (status === 'online') {
+        dot.style.background = '#2ecc71';
+        label.textContent = 'LLM: Online';
+        label.style.color = '#2ecc71';
+    } else if (status === 'degraded') {
+        dot.style.background = '#f39c12';
+        label.textContent = 'LLM: Degraded';
+        label.style.color = '#f39c12';
+    } else if (status === 'offline') {
+        dot.style.background = '#e74c3c';
+        label.textContent = 'LLM: Offline';
+        label.style.color = '#e74c3c';
+    } else {
+        dot.style.background = '#555';
+        label.textContent = 'LLM: --';
+        label.style.color = 'var(--text-muted)';
+    }
+}
+
+async function checkLLMStatus() {
+    const gw = _getGatewayUrl();
+    if (!gw) { updateLLMDot('none'); return; }
+    try {
+        const data = await _gatewayCall('/api/llm/status', 'GET');
+        if (data.ollama?.status === 'ok') updateLLMDot('online');
+        else updateLLMDot('degraded');
+    } catch {
+        updateLLMDot('offline');
+    }
+}
+
+async function loadGatewaySettings() {
+    // Load from Vercel API first (persisted across devices)
+    try {
+        const data = await api('/api/gateway/config');
+        if (data && !data._error) {
+            if (data.gateway_url) {
+                document.getElementById('set-gateway-url').value = data.gateway_url;
+                localStorage.setItem('occ_gateway_url', data.gateway_url);
+            }
+            if (data.gateway_key) {
+                document.getElementById('set-gateway-key').value = data.gateway_key;
+                localStorage.setItem('occ_gateway_key', data.gateway_key);
+            }
+            if (data.ollama_model) {
+                document.getElementById('set-ollama-model').value = data.ollama_model;
+                localStorage.setItem('occ_ollama_model', data.ollama_model);
+            }
+        }
+    } catch {}
+    // Override with localStorage if present (more recent)
+    const url = localStorage.getItem('occ_gateway_url');
+    const key = localStorage.getItem('occ_gateway_key');
+    const model = localStorage.getItem('occ_ollama_model');
+    if (url) document.getElementById('set-gateway-url').value = url;
+    if (key) document.getElementById('set-gateway-key').value = key;
+    if (model) document.getElementById('set-ollama-model').value = model;
+}
+
+async function saveGatewaySettings() {
+    const url = document.getElementById('set-gateway-url').value.trim();
+    const key = document.getElementById('set-gateway-key').value.trim();
+    const model = document.getElementById('set-ollama-model').value;
+
+    localStorage.setItem('occ_gateway_url', url);
+    localStorage.setItem('occ_gateway_key', key);
+    localStorage.setItem('occ_ollama_model', model);
+
+    // Persist to Vercel API
+    try {
+        await apiPost('/api/gateway/config', { gateway_url: url, gateway_key: key, ollama_model: model }, 'PUT');
+    } catch {}
+
+    showToast('Gateway settings saved', 'success');
+    checkLLMStatus();
+}
+
+async function testGatewayConnection() {
+    const resultEl = document.getElementById('gateway-test-result');
+    const statusEl = document.getElementById('gateway-status-detail');
+    resultEl.innerHTML = '<span class="spinner"></span> Testing connection...';
+
+    try {
+        const data = await _gatewayCall('/api/llm/status', 'GET');
+        if (data.ollama?.status === 'ok') {
+            const models = data.ollama.models_available || [];
+            const current = data.ollama.model || _getOllamaModel();
+            resultEl.innerHTML = '<span style="color:#2ecc71;font-weight:600;">Connected</span> — Gateway and Ollama are online.';
+            statusEl.innerHTML = `
+                <div style="margin-bottom:8px"><strong style="color:#2ecc71;">Gateway:</strong> Online</div>
+                <div style="margin-bottom:8px"><strong style="color:#2ecc71;">Ollama:</strong> Online</div>
+                <div style="margin-bottom:8px"><strong>Active Model:</strong> ${current}</div>
+                <div><strong>Available Models:</strong> ${models.join(', ') || 'unknown'}</div>
+            `;
+            updateLLMDot('online');
+        } else {
+            resultEl.innerHTML = '<span style="color:#f39c12;font-weight:600;">Degraded</span> — Gateway is up but Ollama may be down.';
+            statusEl.innerHTML = `<div style="color:#f39c12;">Gateway reachable, but Ollama reported: ${data.ollama?.status || 'unknown'}</div>`;
+            updateLLMDot('degraded');
+        }
+    } catch (e) {
+        resultEl.innerHTML = `<span style="color:#e74c3c;font-weight:600;">Failed</span> — ${e.message}`;
+        statusEl.innerHTML = `<div style="color:#e74c3c;">Could not reach gateway. Check URL and that cloudflared tunnel is running.</div>`;
+        updateLLMDot('offline');
+    }
+}
+
+// ─── AUTO-ENHANCE VIA LOCAL LLM ─────────────────────────────────
+async function autoEnhanceTier2() {
+    if (!_enhanceMsgId || !_enhanceData) { showToast('No message loaded', 'error'); return; }
+
+    const btn = document.getElementById('btn-auto-enhance');
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Enhancing via LLM...'; }
+
+    try {
+        const tier1Body = document.getElementById('enhance-tier1-body').value.trim() ||
+                          _enhanceData.tier1?.fixed_body || '';
+        if (!tier1Body) { showToast('No text to enhance', 'error'); return; }
+
+        const payload = {
+            text: tier1Body,
+            contact: _enhanceData.contact || {},
+            research: _enhanceData.research || {},
+            channel: _enhanceData.channel || 'linkedin',
+            touch_number: _enhanceData.touch_number || 1,
+            model: _getOllamaModel(),
+            instructions: 'Rewrite for maximum personalization and impact. Keep under word limit for channel.'
+        };
+
+        const result = await _gatewayCall('/llm/enhance', 'POST', payload);
+        if (result.enhanced_text) {
+            document.getElementById('enhance-tier2-paste').value = result.enhanced_text;
+            const info = `LLM: ${result.model_used || 'local'} | ${((result.duration_ms || 0) / 1000).toFixed(1)}s`;
+            showToast('Auto-enhance complete (' + info + ')', 'success');
+        } else {
+            showToast('LLM returned empty result', 'error');
+        }
+    } catch (e) {
+        showToast('Auto-enhance failed: ' + e.message, 'error');
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Auto-Enhance via Local LLM'; }
+    }
+}
+
+// ─── AUTO-WRITE DRAFT VIA LOCAL LLM ─────────────────────────────
+async function gatewayWriteDraft(contactId) {
+    showToast('Generating draft via LLM...', 'info');
+    try {
+        const [contact, research] = await Promise.all([
+            api(`/api/contacts/${contactId}`),
+            api(`/api/research/${contactId}`).catch(() => null)
+        ]);
+        if (!contact || contact._error) { showToast('Contact not found', 'error'); return; }
+
+        const payload = {
+            contact: {
+                first_name: contact.first_name,
+                last_name: contact.last_name,
+                title: contact.title,
+                persona_type: contact.persona_type,
+                company_name: contact.account_name || contact.company || '',
+                industry: contact.industry || ''
+            },
+            research: research || {},
+            channel: 'linkedin',
+            touch_number: 1,
+            model: _getOllamaModel()
+        };
+
+        const result = await _gatewayCall('/llm/write', 'POST', payload);
+        if (result.body) {
+            // Save draft back to Vercel API
+            const draft = await apiPost('/api/messages', {
+                contact_id: contactId,
+                channel: 'linkedin',
+                touch_number: 1,
+                touch_type: 'initial',
+                subject_line: result.subject_line || '',
+                body: result.body,
+                approval_status: 'draft',
+                word_count: result.word_count || result.body.split(/\s+/).length
+            });
+            if (draft && !draft._error) {
+                showToast('Draft generated and saved!', 'success');
+                loadLIDrafts?.();
+            } else {
+                showToast('Draft generated but save failed', 'error');
+            }
+        } else {
+            showToast('LLM returned empty draft', 'error');
+        }
+    } catch (e) {
+        showToast('Write failed: ' + e.message, 'error');
+    }
+}
+
+// ─── AUTO-RESEARCH VIA LOCAL LLM ─────────────────────────────────
+async function gatewayResearch(contactId) {
+    showToast('Researching via LLM...', 'info');
+    try {
+        const contact = await api(`/api/contacts/${contactId}`);
+        if (!contact || contact._error) { showToast('Contact not found', 'error'); return; }
+
+        const payload = {
+            company: contact.account_name || contact.company || '',
+            person_name: `${contact.first_name} ${contact.last_name}`,
+            person_title: contact.title || '',
+            industry: contact.industry || '',
+            linkedin_url: contact.linkedin_url || '',
+            model: _getOllamaModel()
+        };
+
+        const result = await _gatewayCall('/llm/research', 'POST', payload);
+        if (result.summary) {
+            // Save research back to Vercel API
+            const snap = await apiPost('/api/research', {
+                contact_id: contactId,
+                account_id: contact.account_id,
+                entity_type: 'contact',
+                summary: result.summary,
+                pain_indicators: JSON.stringify(result.pain_indicators || []),
+                company_news: result.company_news || '',
+                hiring_signals: result.hiring_signals || '',
+                confidence_score: result.confidence_score || 3,
+                sources: JSON.stringify(['local-llm'])
+            });
+            showToast('Research complete!', 'success');
+        } else {
+            showToast('LLM returned empty research', 'error');
+        }
+    } catch (e) {
+        showToast('Research failed: ' + e.message, 'error');
+    }
+}
+
 function showToast(msg, type = 'success') {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');
@@ -3699,6 +4035,8 @@ function showToast(msg, type = 'success') {
     await loadBatches();
     await updateQuotaWidget();
     checkActiveRuns();
+    // Gateway: restore from localStorage and check status after 2s
+    setTimeout(() => { loadGatewaySettings().catch(()=>{}); checkLLMStatus(); }, 2000);
 })();
 
 async function refreshAll() {
@@ -5260,7 +5598,9 @@ function showSettingsTab(tab) {
     document.querySelectorAll('[id^="settings-tab-"]').forEach(e => e.classList.remove('active'));
     document.getElementById('settings-tab-' + tab).classList.add('active');
     document.querySelectorAll('#page-settings .tab-item').forEach(e => e.classList.remove('active'));
-    event.target.classList.add('active');
+    if (event && event.target) event.target.classList.add('active');
+    else document.querySelectorAll('#page-settings .tab-item').forEach(e => { if (e.textContent.toLowerCase().includes(tab)) e.classList.add('active'); });
+    if (tab === 'gateway') loadGatewaySettings().catch(()=>{});
 }
 
 function saveGeneralSettings() { showToast('Settings saved', 'success'); }
@@ -5831,6 +6171,10 @@ async function enhanceMsg(msgId) {
         document.getElementById('enhance-tier1-body').value = tier1.fixed_body || '';
 
         document.getElementById('enhance-tier2-prompt').value = data.tier2_prompt || '';
+
+        // Show auto-enhance button if gateway is configured
+        const aeWrap = document.getElementById('auto-enhance-wrap');
+        if (aeWrap) aeWrap.style.display = _getGatewayUrl() ? 'block' : 'none';
 
         const origWc = (tier1.original_body || '').split(/\s+/).filter(Boolean).length;
         const fixedWc = (tier1.fixed_body || '').split(/\s+/).filter(Boolean).length;
@@ -7808,9 +8152,11 @@ async function openProspectDetail(contactId) {
                     <div style="color:var(--text-secondary);margin-top:4px">${esc(c.title || '')} at ${esc(c.company_name || c.vertical || '')}</div>
                     <div style="margin-top:8px;display:inline-block;padding:4px 12px;background:${researchCompletenessState.bgColor};color:${researchCompletenessState.color};border-radius:12px;font-size:12px;font-weight:600">${researchCompletenessState.badge}</div>
                 </div>
-                <div style="display:flex;gap:8px">
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
                     ${hasLinkedin ? `<a href="${linkedinUrl}" target="_blank" rel="noopener" class="btn btn-sm" style="background:#0a66c2;color:#fff;text-decoration:none">Open LinkedIn</a>` : ''}
                     ${hasLinkedin ? `<button class="btn btn-sm" onclick="copyToClip('${linkedinUrl}')">Copy URL</button>` : ''}
+                    ${_getGatewayUrl() ? `<button class="btn btn-sm" onclick="gatewayResearch('${contactId}')" style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;font-size:11px">Research via LLM</button>` : ''}
+                    ${_getGatewayUrl() ? `<button class="btn btn-sm" onclick="gatewayWriteDraft('${contactId}')" style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;font-size:11px">Write via LLM</button>` : ''}
                 </div>
             </div>
         `;
@@ -7916,7 +8262,10 @@ async function openProspectDetail(contactId) {
                 </div>`;
             }
         } else {
-            html += '<p style="color:var(--text-muted)">No message drafts for this prospect yet.</p>';
+            html += `<p style="color:var(--text-muted)">No message drafts for this prospect yet.</p>`;
+            if (_getGatewayUrl()) {
+                html += `<button class="btn btn-sm" onclick="gatewayWriteDraft('${contactId}')" style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;margin-top:8px">Generate Draft via Local LLM</button>`;
+            }
         }
 
         content.innerHTML = html;
@@ -9482,6 +9831,9 @@ async function runFlowEmailDrafts() {
             <div class="enhance-col">
                 <h4>Tier 2: Full Reformulation</h4>
                 <div style="margin-bottom:8px;font-size:11px;color:var(--text-muted);">Copy the prompt below, paste into Claude, then paste the output back here.</div>
+                <div id="auto-enhance-wrap" style="margin-bottom:10px;display:none;">
+                    <button id="btn-auto-enhance" class="btn btn-sm" onclick="autoEnhanceTier2()" style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;width:100%;font-weight:600;">Auto-Enhance via Local LLM</button>
+                </div>
                 <div style="position:relative;">
                     <textarea id="enhance-tier2-prompt" readonly style="min-height:120px;font-size:11px;opacity:.85;cursor:default;"></textarea>
                     <button class="btn btn-sm" onclick="copyTier2Prompt()" style="position:absolute;top:6px;right:6px;font-size:10px;">Copy Prompt</button>
