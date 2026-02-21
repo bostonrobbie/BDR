@@ -1155,9 +1155,10 @@ def init_and_seed():
     db_path = os.environ.get("OCC_DB_PATH", "/tmp/outreach.db")
 
     # FAST PATH 1: Try to restore from Vercel Blob (persisted state)
+    restored = False
     if not os.path.exists(db_path):
         if _blob_download_db(db_path):
-            return  # Successfully restored from blob
+            restored = True
 
     # FAST PATH 2: If a pre-built seed DB exists, just copy it (< 1 second)
     if not os.path.exists(db_path):
@@ -1166,7 +1167,18 @@ def init_and_seed():
         if os.path.exists(seed_db):
             shutil.copy2(seed_db, db_path)
             print(f"Cold start: Copied pre-built DB ({os.path.getsize(db_path)} bytes)")
-            return
+            restored = True
+
+    # Run schema migrations on restored DBs (adds new tables like gateway_config)
+    if restored:
+        try:
+            rconn = sqlite3.connect(db_path)
+            rconn.executescript(SCHEMA_SQL)
+            rconn.close()
+            print("Schema migration applied to restored DB")
+        except Exception as e:
+            print(f"Schema migration warning (non-fatal): {e}")
+        return
 
     # SLOW PATH: Build from scratch (used for tests and local dev)
     conn = sqlite3.connect(db_path)
