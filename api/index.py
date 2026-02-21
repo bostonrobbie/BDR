@@ -8,6 +8,7 @@ import sys
 import sqlite3
 import json
 import uuid
+import re
 from datetime import datetime, timedelta
 import random
 import threading
@@ -7910,6 +7911,486 @@ def log_reply_action(reply_id: str, data: dict = Body(...)):
         return {"reply_id": reply_id, "action": action, "status": "logged"}
     except Exception as e:
         raise HTTPException(500, f"Error logging reply action: {str(e)}")
+
+# ─── TIER 1 ENHANCER: RULE-BASED MESSAGE FIXES ───────────────────────────────
+
+EASY_OUT_PHRASES = [
+    "no worries", "no pressure", "no stress",
+    "if not, all good", "if not, no worries",
+    "feel free to ignore", "feel free to disregard",
+    "totally understand if not", "totally get it if not",
+    "no obligation", "no commitment",
+    "if it's not a fit", "if this isn't a fit",
+    "if the timing is off", "if timing isn't right",
+    "if not, totally get it",
+]
+
+SELF_SERVING_PATTERNS = [
+    r"I(?:'d| would) (?:love|like) to show you",
+    r"I(?:'d| would) (?:love|like) to share",
+    r"I want to show you",
+    r"I want to share",
+    r"Let me show you",
+    r"I(?:'d| would) (?:love|like) to demo",
+    r"I(?:'d| would) (?:love|like) to walk you through",
+]
+
+OVERUSED_OPENERS = [
+    r"^I noticed",
+    r"^I saw",
+    r"^I came across",
+    r"^I was looking",
+]
+
+def _fix_em_dashes(body: str, subject: str) -> tuple:
+    """Replace em dashes with commas or hyphens."""
+    fixes = []
+    em_count_body = body.count("\u2014")
+    em_count_subj = subject.count("\u2014")
+
+    if em_count_body > 0:
+        body = re.sub(r'\s*\u2014\s*', ', ', body)
+        body = re.sub(r',\s*,', ',', body)
+        fixes.append(f"Removed {em_count_body} em dash(es) from body")
+
+    if em_count_subj > 0:
+        subject = re.sub(r'\s*\u2014\s*', ' - ', subject)
+        fixes.append(f"Removed {em_count_subj} em dash(es) from subject")
+
+    return body, subject, fixes
+
+def _fix_easy_outs(body: str, touch_number: int) -> tuple:
+    """Remove easy-out phrases per SOP rules.
+
+    Touch 1: strict - remove all easy-outs.
+    Touch 3+: allow some softer phrases but remove blatant easy-outs.
+    """
+    fixes = []
+    body_lower = body.lower()
+
+    if touch_number <= 1:
+        for phrase in EASY_OUT_PHRASES:
+            pattern = re.compile(re.escape(phrase), re.IGNORECASE)
+            if pattern.search(body):
+                body = pattern.sub('', body)
+                fixes.append(f"Removed easy-out: \"{phrase}\"")
+
+        body = re.sub(r'\.\s*\.', '.', body)
+        body = re.sub(r',\s*\.', '.', body)
+        body = re.sub(r'\s{2,}', ' ', body)
+        body = body.strip()
+
+    else:
+        blatant = ["no worries", "feel free to ignore", "feel free to disregard",
+                    "no obligation", "no commitment"]
+        for phrase in blatant:
+            if phrase in body_lower:
+                fixes.append(f"Flag: easy-out \"{phrase}\" found in Touch {touch_number} (consider removing)")
+
+    return body, fixes
+
+def _check_overused_opener(body: str) -> list:
+    """Detect overused openers. Returns fix suggestions (doesn't auto-replace)."""
+    fixes = []
+    for pattern in OVERUSED_OPENERS:
+        if re.match(pattern, body.strip(), re.IGNORECASE):
+            first_words = ' '.join(body.strip().split()[:3])
+            fixes.append(
+                f"Overused opener detected: \"{first_words}...\" "
+                f"Consider starting with \"Is...\", \"Has...\", or \"What's keeping...\""
+            )
+            break
+    return fixes
+
+def _check_word_count(body: str, touch_number: int) -> list:
+    """Check word count against SOP bounds."""
+    fixes = []
+    wc = len(body.split())
+    bounds = {1: (70, 120), 3: (40, 70), 5: (70, 120), 6: (30, 50)}
+    low, high = bounds.get(touch_number, (40, 120))
+
+    if wc > high:
+        fixes.append(f"Over word limit: {wc} words (max {high} for Touch {touch_number}). Trim {wc - high} words.")
+    elif wc < low:
+        fixes.append(f"Under word limit: {wc} words (min {low} for Touch {touch_number}). Add {low - wc} words.")
+
+    return fixes
+
+def _fix_proof_point_rotation(body: str, contact_id: str, proof_used: str,
+                               touch_number: int, message_data: dict, conn) -> tuple:
+    """Check if the same proof point was used in a prior touch and suggest swap."""
+    fixes = []
+    if not contact_id or not proof_used or touch_number <= 1:
+        return body, fixes
+
+    try:
+        prev_messages = conn.execute(
+            "SELECT proof_point_used, touch_number FROM message_drafts WHERE contact_id=? AND touch_number < ? AND proof_point_used IS NOT NULL",
+            (contact_id, touch_number)
+        ).fetchall()
+        prev_proofs = [m["proof_point_used"] for m in prev_messages if m.get("proof_point_used")]
+
+        if proof_used in prev_proofs:
+            fixes.append(
+                f"Proof point \"{proof_used}\" was already used in a prior touch. "
+                f"Consider rotating to a different customer story."
+            )
+    except Exception:
+        pass
+
+    return body, fixes
+
+def _check_question_marks(body: str) -> list:
+    """Ensure at least one question mark exists, especially in the close."""
+    fixes = []
+    qm_count = body.count("?")
+
+    if qm_count == 0:
+        fixes.append("No question mark found. SOP requires at least one ? (preferably two: one early, one at close).")
+    else:
+        lines = [l.strip() for l in body.strip().split('\n') if l.strip()]
+        if lines:
+            last_line = lines[-1]
+            sentences = re.split(r'[.!]', body)
+            last_sentence = sentences[-1].strip() if sentences else ""
+            if "?" not in last_line and "?" not in last_sentence:
+                fixes.append("Close line has no question mark. SOP requires the close to end with ?")
+
+    return fixes
+
+def _fix_self_serving(body: str) -> tuple:
+    """Remove self-serving framing phrases per SOP."""
+    fixes = []
+    for pattern in SELF_SERVING_PATTERNS:
+        match = re.search(pattern, body, re.IGNORECASE)
+        if match:
+            matched_text = match.group(0)
+            body = re.sub(pattern, '', body, flags=re.IGNORECASE)
+            fixes.append(f"Removed self-serving framing: \"{matched_text}\"")
+
+    body = re.sub(r'\s{2,}', ' ', body)
+    body = re.sub(r'\.\s*\.', '.', body)
+    body = body.strip()
+
+    return body, fixes
+
+def apply_tier1_fixes(message_data: dict, conn) -> dict:
+    """Apply automatic rule-based fixes to a message draft.
+
+    Args:
+        message_data: dict with keys matching message_drafts columns
+        conn: database connection
+
+    Returns:
+        dict with fixed_body, fixed_subject, fixes_applied, original_body
+    """
+    body = message_data.get("body", "")
+    subject = message_data.get("subject_line", "")
+    touch_number = message_data.get("touch_number", 1)
+    contact_id = message_data.get("contact_id", "")
+    proof_used = message_data.get("proof_point_used", "")
+
+    original_body = body
+    original_subject = subject
+    fixes = []
+
+    body, subject, em_fixes = _fix_em_dashes(body, subject)
+    fixes.extend(em_fixes)
+
+    body, easy_fixes = _fix_easy_outs(body, touch_number)
+    fixes.extend(easy_fixes)
+
+    opener_fixes = _check_overused_opener(body)
+    fixes.extend(opener_fixes)
+
+    wc_fixes = _check_word_count(body, touch_number)
+    fixes.extend(wc_fixes)
+
+    body, pp_fixes = _fix_proof_point_rotation(body, contact_id, proof_used, touch_number, message_data, conn)
+    fixes.extend(pp_fixes)
+
+    qm_fixes = _check_question_marks(body)
+    fixes.extend(qm_fixes)
+
+    body, ss_fixes = _fix_self_serving(body)
+    fixes.extend(ss_fixes)
+
+    return {
+        "fixed_body": body,
+        "fixed_subject": subject,
+        "fixes_applied": fixes,
+        "original_body": original_body,
+        "original_subject": original_subject,
+        "fix_count": len(fixes),
+    }
+
+def build_tier2_prompt(message_id: str, conn) -> str:
+    """Build a comprehensive reformulation prompt for Claude.
+
+    Includes: current message, research context, SOP rules, and QC flags.
+    """
+    row = conn.execute("SELECT * FROM message_drafts WHERE id=?", (message_id,)).fetchone()
+    if not row:
+        return "Error: Message not found"
+
+    msg = dict(row)
+    body = msg.get("body", "")
+    subject = msg.get("subject_line", "")
+    touch_num = msg.get("touch_number", 1)
+    channel = msg.get("channel", "inmail")
+    contact_id = msg.get("contact_id", "")
+
+    research_context = {}
+    try:
+        contact = conn.execute("SELECT * FROM contacts WHERE id=?", (contact_id,)).fetchone()
+        if contact:
+            contact = dict(contact)
+            account = conn.execute("SELECT * FROM accounts WHERE id=?", (contact.get("account_id"),)).fetchone()
+            account = dict(account) if account else {}
+            snapshot = conn.execute(
+                "SELECT * FROM research_snapshots WHERE contact_id=? ORDER BY created_at DESC LIMIT 1",
+                (contact_id,)
+            ).fetchone()
+            snapshot = dict(snapshot) if snapshot else {}
+
+            research_context = {
+                "contact": contact,
+                "account": account,
+                "snapshot": snapshot
+            }
+    except Exception:
+        pass
+
+    sections = []
+
+    sections.append("=== MESSAGE REFORMULATION REQUEST ===\n")
+    sections.append(f"Touch: {touch_num} | Channel: {channel}\n")
+
+    sections.append("--- CURRENT MESSAGE (to be rewritten) ---")
+    if subject:
+        sections.append(f"Subject: {subject}")
+    sections.append(f"Body:\n{body}\n")
+
+    if research_context and research_context.get("contact"):
+        sections.append("--- PROSPECT RESEARCH ---")
+        contact = research_context.get("contact", {})
+        account = research_context.get("account", {})
+        snapshot = research_context.get("snapshot", {})
+
+        sections.append(f"Name: {contact.get('first_name', '')} {contact.get('last_name', '')}")
+        sections.append(f"Title: {contact.get('title', '')}")
+        sections.append(f"Company: {account.get('name', '')}")
+        sections.append(f"Industry: {account.get('industry', '')}")
+        sections.append(f"Persona: {contact.get('persona_type', '')}")
+
+        if account.get("employee_count"):
+            sections.append(f"Company size: ~{account['employee_count']} employees")
+        if contact.get("recently_hired"):
+            sections.append("Recently hired (< 6 months)")
+        if account.get("known_tools"):
+            tools = account.get("known_tools", "")
+            if isinstance(tools, str) and tools.startswith("["):
+                try:
+                    tools = json.loads(tools)
+                    sections.append(f"Known tools: {', '.join(tools)}")
+                except Exception:
+                    sections.append(f"Known tools: {tools}")
+            else:
+                sections.append(f"Known tools: {tools}")
+
+        if snapshot.get("headline"):
+            sections.append(f"Headline: {snapshot['headline']}")
+        if snapshot.get("summary"):
+            summary = snapshot.get("summary", "")
+            if len(summary) > 300:
+                summary = summary[:300] + "..."
+            sections.append(f"About: {summary}")
+        if snapshot.get("company_products"):
+            sections.append(f"Company focus: {snapshot['company_products']}")
+
+        sections.append("")
+
+    sections.append(_get_sop_rules(touch_num, channel))
+
+    sections.append("--- AVAILABLE PROOF POINTS ---")
+    for pp in PROOF_POINTS:
+        sections.append(f"  - {pp}")
+    sections.append("")
+
+    sections.append("--- INSTRUCTION ---")
+    sections.append(
+        f"Rewrite this Touch {touch_num} {channel} message following ALL rules above. "
+        f"Use the research to personalize deeply. "
+        f"Output ONLY the rewritten subject line and body in this format:\n\n"
+        f"Subject: [your subject line]\n\n"
+        f"Body:\n[your message body]"
+    )
+
+    return "\n".join(sections)
+
+def _get_sop_rules(touch_number: int, channel: str) -> str:
+    """Return the SOP writing rules section for the prompt."""
+    rules = [
+        "--- SOP WRITING RULES (follow exactly) ---",
+        "- NO em dashes. Use commas or short hyphens only.",
+        "- Sound like Rob wrote it personally. Not AI-generated, not templated.",
+        "- Warm, conversational, low-pressure, specific, respectful.",
+        "- No feature dumping. Focus on a specific solution to something they're already doing.",
+        "- Clear spacing between paragraphs. No wall of text.",
+        "- NEVER reference LinkedIn, profiles, resume facts, or years at a company.",
+        "- No \"I noticed\" or \"I saw\" or \"based on your profile\".",
+        "- No generic assertions like \"you must be doing manual testing\". Ask, don't assert.",
+        "- Simple words, short sentences, no corporate buzzwords.",
+        "- At least one real question mark (preferably two: one early, one at close).",
+        "- Close MUST have a question mark and directly tie to the value angle.",
+        "- NO easy-out lines: no \"no worries\", \"if not, all good\", \"feel free to ignore\".",
+        "- Never frame anything as benefiting us. No \"I want to show you\" or \"I'd love to share\".",
+        "- Use specific numbers in proof points (not \"significant reduction\").",
+    ]
+
+    if touch_number == 1:
+        rules.extend([
+            "",
+            "TOUCH 1 STRUCTURE (all 5 elements must be present but invisible as structure):",
+            "1. Subject line: 2-4 words, specific, not clickbaity",
+            "2. Opening question: curiosity-led, connects to their company's challenge. Do NOT cite LinkedIn.",
+            "3. Context sentence: why the question matters for teams like theirs",
+            "4. Proof point: one verified customer example with real numbers, matched to their vertical",
+            "5. Close: confident casual meeting ask with ? that references the value angle",
+            f"Word count: 70-120 words",
+        ])
+    elif touch_number == 3:
+        rules.extend([
+            "",
+            "TOUCH 3 (Follow-up): Shorter, 40-70 words. New angle or proof point.",
+            "Reference prior outreach lightly (\"Circling back quick...\").",
+            "Add one new piece of value. Softer ask (\"Worth a conversation?\").",
+        ])
+    elif touch_number == 5:
+        rules.extend([
+            "",
+            "TOUCH 5 (Email): Same rules as InMail, can be slightly more direct.",
+            "Word count: 70-120 words.",
+        ])
+    elif touch_number == 6:
+        rules.extend([
+            "",
+            "TOUCH 6 (Break-up): Shortest, 30-50 words.",
+            "Acknowledge silence without guilt-tripping.",
+            "Offer to close the loop. Leave door open. Never pitch.",
+        ])
+
+    return "\n".join(rules)
+
+def store_enhanced_version(message_id: str, new_body: str,
+                           new_subject: str = None,
+                           enhancement_type: str = "tier1") -> dict:
+    """Store the enhanced version of a message, incrementing the version.
+
+    Args:
+        message_id: ID of the message_draft to update
+        new_body: The enhanced message body
+        new_subject: Optional new subject line
+        enhancement_type: "tier1" (rule-based) or "tier2" (llm reformulation)
+
+    Returns:
+        Updated message draft dict with new QC results
+    """
+    conn = get_db()
+    row = conn.execute("SELECT * FROM message_drafts WHERE id=?", (message_id,)).fetchone()
+    if not row:
+        conn.close()
+        return {"error": "Message not found"}
+
+    msg = dict(row)
+    old_version = msg.get("version", 1) or 1
+    new_version = old_version + 1
+
+    update_fields = {
+        "body": new_body,
+        "version": new_version,
+        "approval_status": "draft",
+    }
+    if new_subject is not None:
+        update_fields["subject_line"] = new_subject
+
+    set_parts = []
+    params = []
+    for k, v in update_fields.items():
+        set_parts.append(f"{k}=?")
+        params.append(v)
+
+    set_parts.append("updated_at=datetime('now')")
+
+    params.append(message_id)
+    conn.execute(f"UPDATE message_drafts SET {', '.join(set_parts)} WHERE id=?", params)
+    conn.commit()
+
+    row = conn.execute("SELECT * FROM message_drafts WHERE id=?", (message_id,)).fetchone()
+    conn.close()
+    result = dict(row) if row else {"id": message_id}
+    result["enhancement_type"] = enhancement_type
+    return result
+
+@app.post("/api/messages/{message_id}/enhance")
+def enhance_message_tier1(message_id: str):
+    """Apply Tier 1 rule-based fixes and return tier 2 prompt (read-only, nothing saved)."""
+    try:
+        conn = get_db()
+
+        draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (message_id,)).fetchone()
+        if not draft:
+            conn.close()
+            raise HTTPException(404, "Message not found")
+
+        msg = dict(draft)
+
+        tier1_result = apply_tier1_fixes(msg, conn)
+
+        tier2_prompt = build_tier2_prompt(message_id, conn)
+
+        conn.close()
+
+        return {
+            "message_id": message_id,
+            "tier1": tier1_result,
+            "tier2_prompt": tier2_prompt,
+            "status": "ready_for_review"
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, f"Error enhancing message: {str(e)}")
+
+@app.post("/api/messages/{message_id}/enhance/commit")
+def enhance_message_commit(message_id: str, data: dict = Body(...)):
+    """Commit enhanced message body and re-run QC."""
+    try:
+        conn = get_db()
+
+        draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (message_id,)).fetchone()
+        if not draft:
+            conn.close()
+            raise HTTPException(404, "Message not found")
+
+        new_body = data.get("body")
+        new_subject = data.get("subject")
+        if not new_body:
+            conn.close()
+            raise HTTPException(400, "body is required")
+
+        result = store_enhanced_version(message_id, new_body, new_subject, "tier1")
+
+        return {
+            "message_id": message_id,
+            "version": result.get("version"),
+            "status": "enhanced",
+            "updated_at": result.get("updated_at")
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, f"Error committing enhancement: {str(e)}")
 
 # ─── FEATURE 3: DRAFT ENHANCEMENT WITH REVISIONS ──────────────────────────────
 

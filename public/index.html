@@ -1254,6 +1254,172 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
     border-left-color: var(--warning);
 }
 
+.toast.info {
+    border-left-color: var(--info);
+}
+
+/* Enhance button and modal */
+.btn-enhance {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-color: #6366f1;
+    color: #fff;
+    font-weight: 600;
+}
+
+.btn-enhance:hover {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    border-color: #4f46e5;
+    color: #fff;
+}
+
+.enhance-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 500;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.enhance-overlay.show {
+    display: flex;
+}
+
+.enhance-modal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    width: 92vw;
+    max-width: 1100px;
+    max-height: 88vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+}
+
+.enhance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.enhance-header h3 {
+    margin: 0;
+    font-size: 15px;
+    color: var(--text);
+}
+
+.enhance-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
+.enhance-close:hover {
+    color: var(--text);
+}
+
+.enhance-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    min-height: 400px;
+}
+
+.enhance-col {
+    padding: 16px 20px;
+}
+
+.enhance-col:first-child {
+    border-right: 1px solid var(--border);
+}
+
+.enhance-col h4 {
+    margin: 0 0 10px;
+    font-size: 13px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.enhance-col textarea {
+    width: 100%;
+    min-height: 180px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 12px;
+    padding: 10px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.enhance-col textarea:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+
+.fix-chip {
+    display: inline-block;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin: 2px 4px 2px 0;
+}
+
+.fix-chip.auto {
+    border-color: var(--success);
+    color: var(--success);
+}
+
+.fix-chip.flag {
+    border-color: var(--warning);
+    color: var(--warning);
+}
+
+.enhance-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.enhance-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    border-top: 1px solid var(--border);
+}
+
+.enhance-diff {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+@media (max-width: 800px) {
+    .enhance-body {
+        grid-template-columns: 1fr;
+    }
+    .enhance-col:first-child {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+}
+
 /* Spinner */
 .spinner {
     display: inline-block;
@@ -5628,6 +5794,126 @@ async function enhanceDraftReal(draftId) {
     }
 }
 
+// Enhance message modal (Tier 1 auto-fix + Tier 2 prompt)
+let _enhanceData = null;
+let _enhanceMsgId = null;
+
+async function enhanceMsg(msgId) {
+    _enhanceMsgId = msgId;
+    const overlay = document.getElementById('enhance-overlay');
+    overlay.classList.add('show');
+
+    document.getElementById('enhance-tier1-fixes').innerHTML = '<span class="spinner"></span> Analyzing...';
+    document.getElementById('enhance-tier1-body').value = '';
+    document.getElementById('enhance-tier2-prompt').value = '';
+    document.getElementById('enhance-tier2-paste').value = '';
+    document.getElementById('enhance-diff').textContent = '';
+
+    try {
+        const data = await apiPost(`/api/messages/${msgId}/enhance`, {});
+        if (!data || data._error) {
+            showToast(data?.message || 'Enhance failed', 'error');
+            closeEnhanceModal();
+            return;
+        }
+        _enhanceData = data;
+
+        const tier1 = data.tier1 || {};
+        const fixes = tier1.fixes_applied || [];
+        if (fixes.length > 0) {
+            document.getElementById('enhance-tier1-fixes').innerHTML = fixes.map(f => {
+                const isAuto = f.startsWith('Removed') || f.startsWith('Replaced');
+                return `<span class="fix-chip ${isAuto ? 'auto' : 'flag'}">${f}</span>`;
+            }).join('');
+        } else {
+            document.getElementById('enhance-tier1-fixes').innerHTML = '<span style="color:var(--success);font-size:12px;">No issues found</span>';
+        }
+        document.getElementById('enhance-tier1-body').value = tier1.fixed_body || '';
+
+        document.getElementById('enhance-tier2-prompt').value = data.tier2_prompt || '';
+
+        const origWc = (tier1.original_body || '').split(/\s+/).filter(Boolean).length;
+        const fixedWc = (tier1.fixed_body || '').split(/\s+/).filter(Boolean).length;
+        document.getElementById('enhance-diff').textContent =
+            `Original: ${origWc} words | Tier 1 fixed: ${fixedWc} words | ${fixes.length} fix(es) applied`;
+
+    } catch (e) {
+        showToast('Enhance request failed', 'error');
+        closeEnhanceModal();
+    }
+}
+
+function closeEnhanceModal() {
+    document.getElementById('enhance-overlay').classList.remove('show');
+    _enhanceData = null;
+    _enhanceMsgId = null;
+}
+
+async function commitTier1() {
+    if (!_enhanceMsgId) return;
+    const body = document.getElementById('enhance-tier1-body').value.trim();
+    if (!body) { showToast('Body cannot be empty', 'error'); return; }
+
+    const btn = document.querySelector('#enhance-overlay .btn-t1-commit');
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Saving...'; }
+
+    const result = await apiPost(`/api/messages/${_enhanceMsgId}/enhance/commit`, {
+        body: body,
+        enhancement_type: 'tier1',
+    });
+
+    if (result && !result._error) {
+        showToast('Tier 1 fixes committed (v' + (result.version || '?') + ')', 'success');
+        closeEnhanceModal();
+        loadLIDrafts?.();
+    } else {
+        showToast(result?.message || 'Commit failed', 'error');
+        if (btn) { btn.disabled = false; btn.textContent = 'Apply Tier 1 Fixes'; }
+    }
+}
+
+async function commitTier2() {
+    if (!_enhanceMsgId) return;
+    const body = document.getElementById('enhance-tier2-paste').value.trim();
+    if (!body) { showToast('Paste the reformulated message first', 'error'); return; }
+
+    let subject = null;
+    let msgBody = body;
+    const subjectMatch = body.match(/^Subject:\s*(.+?)(?:\n|$)/i);
+    if (subjectMatch) {
+        subject = subjectMatch[1].trim();
+        msgBody = body.replace(/^Subject:\s*.+?\n+/i, '').replace(/^Body:\s*\n?/i, '').trim();
+    }
+
+    const btn = document.querySelector('#enhance-overlay .btn-t2-commit');
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Saving...'; }
+
+    const payload = { body: msgBody, enhancement_type: 'tier2' };
+    if (subject) payload.subject_line = subject;
+
+    const result = await apiPost(`/api/messages/${_enhanceMsgId}/enhance/commit`, payload);
+
+    if (result && !result._error) {
+        showToast('Reformulation committed (v' + (result.version || '?') + ')', 'success');
+        closeEnhanceModal();
+        loadLIDrafts?.();
+    } else {
+        showToast(result?.message || 'Commit failed', 'error');
+        if (btn) { btn.disabled = false; btn.textContent = 'Commit Reformulation'; }
+    }
+}
+
+function copyTier2Prompt() {
+    const textarea = document.getElementById('enhance-tier2-prompt');
+    navigator.clipboard.writeText(textarea.value).then(() => {
+        showToast('Prompt copied to clipboard', 'success');
+    }).catch(() => {
+        textarea.select();
+        document.execCommand('copy');
+        showToast('Prompt copied', 'success');
+    });
+}
+
 async function refreshDraftKPIs() {
     try {
         const allData = await api('/api/linkedin/stats');
@@ -9173,6 +9459,48 @@ async function runFlowEmailDrafts() {
 }
 
 </script>
+
+<!-- Enhance Modal -->
+<div class="enhance-overlay" id="enhance-overlay" onclick="if(event.target===this)closeEnhanceModal()">
+    <div class="enhance-modal">
+        <div class="enhance-header">
+            <h3>&#10022; Enhance Message</h3>
+            <button class="enhance-close" onclick="closeEnhanceModal()">&times;</button>
+        </div>
+        <div class="enhance-body">
+            <!-- Tier 1: Auto-Fix -->
+            <div class="enhance-col">
+                <h4>Tier 1: Auto-Fix</h4>
+                <div style="margin-bottom:8px;font-size:11px;color:var(--text-muted);">Rule-based fixes applied automatically. You can edit before committing.</div>
+                <div id="enhance-tier1-fixes" style="margin-bottom:10px;"></div>
+                <textarea id="enhance-tier1-body" placeholder="Fixed message body..."></textarea>
+                <div class="enhance-actions">
+                    <button class="btn btn-sm btn-primary btn-t1-commit" onclick="commitTier1()">Apply Tier 1 Fixes</button>
+                </div>
+            </div>
+            <!-- Tier 2: Full Reformulation -->
+            <div class="enhance-col">
+                <h4>Tier 2: Full Reformulation</h4>
+                <div style="margin-bottom:8px;font-size:11px;color:var(--text-muted);">Copy the prompt below, paste into Claude, then paste the output back here.</div>
+                <div style="position:relative;">
+                    <textarea id="enhance-tier2-prompt" readonly style="min-height:120px;font-size:11px;opacity:.85;cursor:default;"></textarea>
+                    <button class="btn btn-sm" onclick="copyTier2Prompt()" style="position:absolute;top:6px;right:6px;font-size:10px;">Copy Prompt</button>
+                </div>
+                <div style="margin-top:10px;">
+                    <div style="font-size:11px;color:var(--text-secondary);margin-bottom:4px;">Paste Claude's output here:</div>
+                    <textarea id="enhance-tier2-paste" placeholder="Subject: ...\n\nBody:\n..." style="min-height:120px;"></textarea>
+                </div>
+                <div class="enhance-actions">
+                    <button class="btn btn-sm btn-enhance btn-t2-commit" onclick="commitTier2()">Commit Reformulation</button>
+                </div>
+            </div>
+        </div>
+        <div class="enhance-footer">
+            <div class="enhance-diff" id="enhance-diff"></div>
+            <button class="btn btn-sm" onclick="closeEnhanceModal()">Cancel</button>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
