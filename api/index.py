@@ -1638,20 +1638,39 @@ def create_account(data: dict):
 
 @app.get("/api/messages")
 def list_messages(contact_id: str = None, batch_id: str = None,
-                  approval_status: str = None, limit: int = 100, offset: int = 0):
+                  channel: str = None, approval_status: str = None,
+                  limit: int = 100, offset: int = 0):
     conn = get_db()
     q = """SELECT m.*, c.first_name, c.last_name
            FROM message_drafts m LEFT JOIN contacts c ON m.contact_id=c.id WHERE 1=1"""
     params = []
     if contact_id: q += " AND m.contact_id=?"; params.append(contact_id)
     if batch_id: q += " AND m.batch_id=?"; params.append(batch_id)
+    if channel: q += " AND m.channel=?"; params.append(channel)
     if approval_status: q += " AND m.approval_status=?"; params.append(approval_status)
     q += " ORDER BY m.created_at DESC LIMIT ? OFFSET ?"
     params.extend([limit, offset])
     rows = rows_to_dicts(conn.execute(q, params).fetchall())
-    total = conn.execute("SELECT COUNT(*) FROM message_drafts").fetchone()[0]
+    count_q = "SELECT COUNT(*) FROM message_drafts WHERE 1=1"
+    count_params = []
+    if channel: count_q += " AND channel=?"; count_params.append(channel)
+    total = conn.execute(count_q, count_params).fetchone()[0]
     conn.close()
     return {"messages": rows, "total": total}
+
+@app.get("/api/messages/{message_id}")
+def get_message(message_id: str):
+    """Get a single message draft by ID."""
+    conn = get_db()
+    row = conn.execute("""SELECT m.*, c.first_name, c.last_name, c.title, c.persona_type,
+           c.linkedin_url, c.email, a.name as company_name, a.industry
+           FROM message_drafts m
+           LEFT JOIN contacts c ON m.contact_id=c.id
+           LEFT JOIN accounts a ON c.account_id=a.id
+           WHERE m.id=?""", (message_id,)).fetchone()
+    conn.close()
+    if not row: raise HTTPException(404, "Message not found")
+    return dict(row)
 
 @app.put("/api/messages/{message_id}/approve")
 def approve_message(message_id: str):
@@ -2053,16 +2072,42 @@ def list_drafts(channel: str = None, status: str = None,
 @app.get("/api/drafts/{draft_id}")
 def get_draft(draft_id: str):
     conn = get_db()
-    # Get all versions of this draft
-    rows = rows_to_dicts(conn.execute(
+    # Try message_drafts first (the authoritative table)
+    draft = conn.execute("""SELECT m.*, c.first_name, c.last_name, c.title, c.persona_type,
+           c.linkedin_url, c.email, a.name as company_name, a.industry
+           FROM message_drafts m
+           LEFT JOIN contacts c ON m.contact_id=c.id
+           LEFT JOIN accounts a ON c.account_id=a.id
+           WHERE m.id=?""", (draft_id,)).fetchone()
+    if not draft:
+        conn.close()
+        raise HTTPException(404, "Draft not found")
+    result = dict(draft)
+    parse_json_fields(result, ["qc_flags"])
+    # Include version history if any
+    versions = rows_to_dicts(conn.execute(
         "SELECT * FROM draft_versions WHERE draft_id=? ORDER BY version DESC",
         (draft_id,)).fetchall())
+    for v in versions:
+        parse_json_fields(v, ["qc_flags"])
+    result["versions"] = versions
     conn.close()
-    if not rows:
+    return result
+
+@app.get("/api/drafts/{draft_id}/versions")
+def get_draft_versions(draft_id: str):
+    """Get all versions of a draft including the current message_drafts entry."""
+    conn = get_db()
+    draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+    if not draft:
+        conn.close()
         raise HTTPException(404, "Draft not found")
-    for r in rows:
-        parse_json_fields(r, ["qc_flags"])
-    return {"versions": rows, "current": rows[0] if rows else None}
+    current = dict(draft)
+    versions = rows_to_dicts(conn.execute(
+        "SELECT * FROM draft_versions WHERE draft_id=? ORDER BY version ASC",
+        (draft_id,)).fetchall())
+    conn.close()
+    return {"draft_id": draft_id, "current": current, "versions": versions, "total_versions": len(versions)}
 
 @app.put("/api/drafts/{draft_id}/status")
 def update_draft_status(draft_id: str, data: dict):
@@ -5174,6 +5219,47 @@ def get_prospect_drafts(contact_id: str):
 
 
 # ---------------------------------------------------------------------------
+# RESEARCH SNAPSHOTS
+# ---------------------------------------------------------------------------
+
+@app.get("/api/research-snapshots")
+def list_research_snapshots(contact_id: str = None, account_id: str = None,
+                            entity_type: str = None, limit: int = 100, offset: int = 0):
+    """List research snapshots with optional filters."""
+    conn = get_db()
+    q = "SELECT * FROM research_snapshots WHERE 1=1"
+    params = []
+    if contact_id: q += " AND contact_id=?"; params.append(contact_id)
+    if account_id: q += " AND account_id=?"; params.append(account_id)
+    if entity_type: q += " AND entity_type=?"; params.append(entity_type)
+    q += " ORDER BY created_at DESC LIMIT ? OFFSET ?"
+    params.extend([limit, offset])
+    rows = rows_to_dicts(conn.execute(q, params).fetchall())
+    total = conn.execute("SELECT COUNT(*) FROM research_snapshots").fetchone()[0]
+    conn.close()
+    return {"snapshots": rows, "total": total}
+
+@app.get("/api/contacts/{contact_id}/research")
+def get_contact_research(contact_id: str):
+    """Get all research snapshots for a contact and their account."""
+    conn = get_db()
+    contact = conn.execute("SELECT * FROM contacts WHERE id=?", (contact_id,)).fetchone()
+    if not contact:
+        conn.close()
+        raise HTTPException(404, "Contact not found")
+    c = dict(contact)
+    person_research = rows_to_dicts(conn.execute(
+        "SELECT * FROM research_snapshots WHERE contact_id=? ORDER BY created_at DESC",
+        (contact_id,)).fetchall())
+    company_research = []
+    if c.get("account_id"):
+        company_research = rows_to_dicts(conn.execute(
+            "SELECT * FROM research_snapshots WHERE account_id=? ORDER BY created_at DESC",
+            (c["account_id"],)).fetchall())
+    conn.close()
+    return {"contact_id": contact_id, "person": person_research, "company": company_research}
+
+# ---------------------------------------------------------------------------
 # RESEARCH RUN ENDPOINTS
 # ---------------------------------------------------------------------------
 
@@ -7010,9 +7096,9 @@ def update_research_evidence(contact_id: str, data: dict):
 
 # ─── DRAFT RESEARCH LINKING ───────────────────────────────────────────────────
 
-@app.get("/api/drafts/{draft_id}/research")
-def get_draft_research(draft_id: str):
-    """Get research data linked to a specific draft for the Research tab."""
+@app.get("/api/drafts/{draft_id}/research-compact")
+def get_draft_research_compact(draft_id: str):
+    """Get compact research data linked to a specific draft for the Research tab."""
     conn = get_db()
     try:
         # Get the draft itself
