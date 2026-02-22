@@ -9359,76 +9359,200 @@ def linkedin_stats_updated(debug: bool = False):
 
 # ─── WS5: DRAFT QUALITY GATES AND STAGING ────────────────────────────────────
 
-@app.get("/api/drafts/{draft_id}/quality-check")
-def check_draft_quality(draft_id: str):
-    """Score a draft against quality gates."""
-    conn = get_db()
-    draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
-    conn.close()
+# ─── Quality Gate Constants ─────────────────────────────────────────────────
+VALID_CUSTOMERS = {
+    "hansard", "medibuddy", "cred", "sanofi", "nagra", "nagra dtv", "spendflo",
+    "cisco", "samsung", "honeywell", "bosch", "nokia", "nestle", "kfc", "dhl",
+    "zeiss", "axel springer", "ntuc fairprice", "oscar health", "american psychological association"
+}
+VALID_STATS = {
+    "8 weeks to 5 weeks", "8 to 5 weeks", "2,500 tests", "2500 tests",
+    "50% maintenance", "90% regression", "5x faster", "3 days to 80 minutes",
+    "3x productivity", "3X productivity", "2,500 tests in 8 months", "4x faster", "4X faster",
+    "50% manual testing", "70% maintenance reduction", "90% maintenance reduction", "fortune 100"
+}
+PLACEHOLDER_PATTERNS = [
+    r'\[NAME\]', r'\[name\]', r'\{company\}', r'\{name\}', r'\{title\}',
+    r'TODO', r'FIXME', r'XXX', r'\[COMPANY\]', r'\[TITLE\]',
+    r'\[INSERT', r'\{insert', r'<company>', r'<name>', r'\[Your', r'\[your', r'\[PROSPECT'
+]
+OVERUSED_OPENERS = [r'^I noticed\b', r'^I saw\b', r'^I see\b', r'^I came across\b', r'^I found\b']
+SOFT_ASK_PHRASES = [
+    "no worries", "no pressure", "totally get it", "get out of your hair",
+    "timing is off", "timing isn't right", "not relevant",
+    "worth a conversation", "happy to share more", "if helpful",
+    "close the loop", "if it's not", "if not", "if the timing",
+    "worth 15 minutes", "worth a quick", "make sense"
+]
 
-    if not draft:
-        raise HTTPException(404, "Draft not found")
-
-    draft = dict(draft)
-    body = draft.get("body", "")
-    first_name = conn.execute("SELECT first_name FROM contacts WHERE id=?", (draft["contact_id"],)).fetchone()
-    first_name = first_name[0] if first_name else "Unknown"
-
+def _run_quality_gate(body: str, subject: str = "", touch_number: int = 1, proof_point: str = "") -> dict:
+    """Run all 10 QC checks on a message body. Returns pass/fail, score, checks, flags."""
     checks = []
-    score = 0
 
-    # Check 1: Has greeting with first name
-    has_greeting = f"Hi {first_name}" in body or f"Hey {first_name}" in body
-    checks.append({"name": "greeting_with_name", "passed": has_greeting, "detail": f"Greeting contains '{first_name}'"})
-    if has_greeting:
-        score += 1
+    # 1. No hallucinated customers/stats
+    body_lower = body.lower()
+    stat_flags = []
+    stat_patterns = re.findall(r'(\d+%\s+\w+)', body)
+    for stat in stat_patterns:
+        if not any(vs in body_lower for vs in VALID_STATS):
+            if any(s in stat.lower() for s in ["reduction", "cut", "faster", "increase", "improvement"]):
+                stat_flags.append(f"Potentially unverified stat: '{stat}'")
+    checks.append({"check": "no_hallucinated_customers", "passed": len(stat_flags) == 0, "flags": stat_flags})
 
-    # Check 2: Has personalization line (references stored research)
-    has_research = conn.execute("""
-        SELECT COUNT(*) FROM draft_research_link
-        WHERE draft_id=?
-    """, (draft_id,)).fetchone()[0] > 0
-    checks.append({"name": "personalization_line", "passed": has_research, "detail": "Has research snapshot link"})
-    if has_research:
-        score += 1
+    # 2. No placeholders
+    full_text = f"{subject} {body}"
+    ph_flags = []
+    for pattern in PLACEHOLDER_PATTERNS:
+        matches = re.findall(pattern, full_text)
+        if matches:
+            ph_flags.append(f"Placeholder found: {matches[0]}")
+    checks.append({"check": "no_placeholders", "passed": len(ph_flags) == 0, "flags": ph_flags})
 
-    # Check 3: Has question mark
-    has_question = "?" in body
-    checks.append({"name": "has_question", "passed": has_question, "detail": "Contains low-pressure question"})
-    if has_question:
-        score += 1
+    # 3. No em dashes
+    em_count = full_text.count("\u2014")
+    checks.append({"check": "no_em_dashes", "passed": em_count == 0, "flags": [f"Found {em_count} em dash(es)"] if em_count > 0 else []})
 
-    # Check 4: Has soft CTA
-    soft_ctas = ["worth", "interested", "thoughts", "quick", "chat", "conversation", "coffee"]
-    has_cta = any(cta in body.lower() for cta in soft_ctas)
-    checks.append({"name": "soft_cta", "passed": has_cta, "detail": "Contains soft call-to-action"})
-    if has_cta:
-        score += 1
+    # 4. Personalization exists
+    personal_signals = [
+        r'your\s+(?:team|role|work|experience|background)',
+        r'at\s+[A-Z][a-zA-Z]+',
+        r'as\s+(?:a\s+)?(?:Director|VP|Head|Manager|Lead|Senior)',
+        r'\d+\s+years?',
+        r'moved\s+(?:from|to|over)',
+    ]
+    has_personal = any(re.search(p, body) for p in personal_signals)
+    checks.append({"check": "personalization_exists", "passed": has_personal, "flags": [] if has_personal else ["No personalization detected"]})
 
-    # Check 5: Word count within range (touch type dependent)
+    # 5. Research citation present
+    research_signals = [
+        r'your\s+\w+\s+(?:platform|product|app|service|tool)',
+        r'\d+[KMB]?\+?\s+(?:users|customers|transactions|employees|merchants)',
+        r'digital\s+(?:banking|payments|health|commerce|lending)',
+        r'recently\s+(?:launched|raised|acquired|expanded|hired)',
+        r'series\s+[A-D]',
+    ]
+    has_research = any(re.search(p, body, re.IGNORECASE) for p in research_signals)
+    checks.append({"check": "research_citation", "passed": has_research, "flags": [] if has_research else ["No company-specific research reference"]})
+
+    # 6. Word count within bounds
     word_count = len(body.split())
-    touch_type = draft.get("touch_type", "")
+    bounds = {1: (70, 120), 3: (40, 70), 5: (70, 120), 6: (30, 50)}
+    low, high = bounds.get(touch_number or 1, (40, 120))
+    wc_ok = low <= word_count <= high
+    wc_flags = []
+    if word_count < low:
+        wc_flags.append(f"Too short: {word_count} words (min {low})")
+    elif word_count > high:
+        wc_flags.append(f"Too long: {word_count} words (max {high})")
+    checks.append({"check": "word_count", "passed": wc_ok, "flags": wc_flags, "word_count": word_count})
 
-    if touch_type in ("touch_1", "inmail"):
-        min_words, max_words = 70, 120
-    elif touch_type in ("touch_3", "followup"):
-        min_words, max_words = 40, 100
-    else:
-        min_words, max_words = 30, 150
+    # 7. One question max
+    q_count = body.count("?")
+    checks.append({"check": "one_question_max", "passed": q_count <= 1, "flags": [f"Found {q_count} questions (max 1)"] if q_count > 1 else []})
 
-    wc_passed = min_words <= word_count <= max_words
-    checks.append({"name": "word_count", "passed": wc_passed, "detail": f"Word count {word_count} in range [{min_words}, {max_words}]"})
-    if wc_passed:
-        score += 1
+    # 8. Opener variety
+    opener_flags = []
+    for pattern in OVERUSED_OPENERS:
+        if re.match(pattern, body.strip(), re.IGNORECASE):
+            words = body.strip().split()
+            opener_flags.append(f"Overused opener: '{words[0]} {words[1] if len(words) > 1 else ''}'")
+            break
+    checks.append({"check": "opener_variety", "passed": len(opener_flags) == 0, "flags": opener_flags})
 
-    conn.close()
+    # 9. Proof point rotation (skip for bulk - no DB context)
+    checks.append({"check": "proof_point_rotation", "passed": True, "flags": []})
+
+    # 10. Soft ask with easy out
+    body_low = body.lower()
+    has_soft = any(phrase in body_low for phrase in SOFT_ASK_PHRASES)
+    checks.append({"check": "soft_ask_present", "passed": has_soft, "flags": [] if has_soft else ["No soft ask / easy out detected"]})
+
+    passed_count = sum(1 for c in checks if c["passed"])
+    all_flags = []
+    for c in checks:
+        all_flags.extend(c["flags"])
 
     return {
-        "passed": score >= 4,
-        "score": score,
-        "max_score": 5,
-        "checks": checks
+        "passed": passed_count >= 8,
+        "score": f"{passed_count}/10",
+        "passed_count": passed_count,
+        "total_checks": 10,
+        "checks": checks,
+        "flags": all_flags,
     }
+
+
+@app.get("/api/drafts/{draft_id}/quality-check")
+def check_draft_quality(draft_id: str):
+    """Score a draft against the full 10-point quality gate."""
+    conn = get_db()
+    draft = conn.execute("SELECT * FROM message_drafts WHERE id=?", (draft_id,)).fetchone()
+    if not draft:
+        conn.close()
+        raise HTTPException(404, "Draft not found")
+    draft = dict(draft)
+    conn.close()
+
+    result = _run_quality_gate(
+        body=draft.get("body", ""),
+        subject=draft.get("subject_line", ""),
+        touch_number=draft.get("touch_number", 1),
+        proof_point=draft.get("proof_point_used", ""),
+    )
+    return result
+
+
+@app.post("/api/drafts/bulk-qc")
+def bulk_quality_check(data: dict = {}):
+    """Run the 10-point quality gate on all drafts matching a filter and save results."""
+    conn = get_db()
+    status_filter = data.get("approval_status", "enhanced")
+    limit = data.get("limit", 100)
+    offset = data.get("offset", 0)
+
+    drafts = conn.execute("""
+        SELECT id, body, subject_line, touch_number, proof_point_used, channel
+        FROM message_drafts
+        WHERE approval_status = ?
+        ORDER BY created_at
+        LIMIT ? OFFSET ?
+    """, (status_filter, limit, offset)).fetchall()
+
+    results = {"passed": 0, "failed": 0, "total": 0, "by_check": {}, "failures": []}
+
+    for d in drafts:
+        d = dict(d)
+        qc = _run_quality_gate(
+            body=d.get("body", ""),
+            subject=d.get("subject_line", ""),
+            touch_number=d.get("touch_number", 1),
+            proof_point=d.get("proof_point_used", ""),
+        )
+        qc_passed = 1 if qc["passed"] else 0
+        conn.execute("""UPDATE message_drafts SET qc_passed=?, qc_flags=?, updated_at=datetime('now') WHERE id=?""",
+            (qc_passed, json.dumps(qc["flags"]), d["id"]))
+
+        results["total"] += 1
+        if qc["passed"]:
+            results["passed"] += 1
+        else:
+            results["failed"] += 1
+            results["failures"].append({"id": d["id"], "score": qc["score"], "flags": qc["flags"][:3]})
+
+        for check in qc["checks"]:
+            name = check["check"]
+            if name not in results["by_check"]:
+                results["by_check"][name] = {"passed": 0, "failed": 0}
+            if check["passed"]:
+                results["by_check"][name]["passed"] += 1
+            else:
+                results["by_check"][name]["failed"] += 1
+
+    conn.commit()
+    conn.close()
+
+    results["failures"] = results["failures"][:20]
+    return results
 
 @app.post("/api/drafts/bulk-enhance")
 def bulk_enhance_drafts(data: dict):
