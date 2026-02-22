@@ -3075,55 +3075,22 @@ def analytics_top_messages(limit: int = 10):
 # Complete inline agent implementations for Vercel serverless environment
 # These replace the src.agents modules which won't work without proper imports
 
-# ─── PROOF POINTS LIBRARY (from message_writer.py) ───────────────────────
+# ─── PROOF POINTS LIBRARY (loaded from api/data/proof_points.json - single source of truth) ──
 
-PROOF_POINTS_LIBRARY = {
-    "hansard_regression": {
-        "text": "Hansard cut regression from 8 weeks to 5 weeks with AI auto-heal",
-        "short": "regression 8 weeks to 5 weeks",
-        "best_for": ["insurance", "financial services", "finserv", "long regression cycles"],
-    },
-    "medibuddy_scale": {
-        "text": "Medibuddy automated 2,500 tests and cut maintenance 50%",
-        "short": "2,500 tests automated, 50% maintenance cut",
-        "best_for": ["healthcare", "digital health", "mid-size teams", "scaling"],
-    },
-    "cred_coverage": {
-        "text": "CRED hit 90% regression automation and 5x faster execution",
-        "short": "90% regression coverage, 5x faster",
-        "best_for": ["fintech", "high-velocity", "fast release cycles"],
-    },
-    "sanofi_speed": {
-        "text": "Sanofi went from 3-day regression to 80 minutes",
-        "short": "3 days to 80 minutes",
-        "best_for": ["pharma", "healthcare", "compliance-heavy", "large regression"],
-    },
-    "fortune100_productivity": {
-        "text": "A Fortune 100 company saw 3X productivity increase",
-        "short": "3X productivity increase",
-        "best_for": ["enterprise", "vp-level", "big tech"],
-    },
-    "nagra_api": {
-        "text": "Nagra DTV built 2,500 tests in 8 months, 4X faster",
-        "short": "2,500 tests in 8 months, 4X faster",
-        "best_for": ["media", "streaming", "api testing", "telecom"],
-    },
-    "spendflo_roi": {
-        "text": "Spendflo cut 50% of manual testing with ROI in first quarter",
-        "short": "50% manual testing cut, ROI in Q1",
-        "best_for": ["saas", "small teams", "startup", "budget-conscious"],
-    },
-    "selenium_maintenance": {
-        "text": "70% maintenance reduction vs Selenium",
-        "short": "70% less maintenance than Selenium",
-        "best_for": ["selenium users", "cypress users", "playwright users"],
-    },
-    "self_healing": {
-        "text": "90% maintenance reduction with AI self-healing",
-        "short": "90% maintenance reduction",
-        "best_for": ["flaky tests", "brittle tests", "frequent ui changes"],
-    },
-}
+def _load_proof_points():
+    """Load proof points from JSON file (shared with occ-bdr gateway)."""
+    pp_path = os.path.join(os.path.dirname(__file__), "data", "proof_points.json")
+    try:
+        with open(pp_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        # Fallback inline if file missing
+        return {
+            "spendflo_roi": {"text": "Spendflo cut 50% of manual testing with ROI in first quarter", "short": "50% manual testing cut, ROI in Q1", "best_for": ["saas"]},
+            "cred_coverage": {"text": "CRED hit 90% regression automation and 5x faster execution", "short": "90% regression coverage, 5x faster", "best_for": ["fintech"]},
+        }
+
+PROOF_POINTS_LIBRARY = _load_proof_points()
 
 # ─── OBJECTION MAP (from message_writer.py) ───────────────────────────────
 

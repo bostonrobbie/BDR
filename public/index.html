@@ -294,6 +294,27 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
+.mini-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 16px;
+    background: var(--bg-elevated);
+    border-radius: var(--radius-sm);
+    min-width: 70px;
+}
+.mini-val {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+.mini-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
 .card h3 {
     margin-bottom: 16px;
 }
@@ -1839,6 +1860,25 @@ h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-trans
             <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
             <div id="phase-detail" style="font-size:12px;color:var(--text-muted);margin-top:8px;"></div>
         </div>
+    </div>
+
+    <!-- Job Queue Health -->
+    <div class="card" id="job-queue-card" style="margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <h3 style="margin:0;">LLM Job Queue</h3>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <span id="worker-status-badge" style="font-size:11px;padding:3px 10px;border-radius:12px;background:var(--bg-elevated);border:1px solid var(--border);color:var(--text-muted);">Worker: --</span>
+                <button class="btn btn-sm" onclick="refreshJobQueueHealth()">Refresh</button>
+            </div>
+        </div>
+        <div id="job-queue-stats" style="display:flex;gap:16px;flex-wrap:wrap;">
+            <div class="mini-stat"><span class="mini-val" id="jq-pending">-</span><span class="mini-label">Pending</span></div>
+            <div class="mini-stat"><span class="mini-val" id="jq-running">-</span><span class="mini-label">Running</span></div>
+            <div class="mini-stat"><span class="mini-val" id="jq-completed">-</span><span class="mini-label">Completed</span></div>
+            <div class="mini-stat"><span class="mini-val" id="jq-failed">-</span><span class="mini-label">Failed</span></div>
+            <div class="mini-stat"><span class="mini-val" id="jq-total">-</span><span class="mini-label">Total</span></div>
+        </div>
+        <div id="job-queue-recent" style="margin-top:12px;font-size:12px;color:var(--text-secondary);"></div>
     </div>
 
     <div class="grid2">
@@ -4040,7 +4080,7 @@ function showToast(msg, type = 'success') {
 })();
 
 async function refreshAll() {
-    await Promise.all([loadStats(), loadPipeline(), loadActionQueue(), loadIntelligenceHome(), updateQuotaWidget(), checkPersistStatus()]);
+    await Promise.all([loadStats(), loadPipeline(), loadActionQueue(), loadIntelligenceHome(), updateQuotaWidget(), checkPersistStatus(), refreshJobQueueHealth()]);
 }
 
 async function saveState() {
@@ -5371,10 +5411,22 @@ function showEmailDraftModal() {
 }
 
 async function bulkEnhanceEmailDrafts() {
-    showToast('Starting email draft enhancement...', 'info');
+    const confirmed = confirm('Queue all email drafts for LLM enhancement?');
+    if (!confirmed) return;
+    showToast('Queueing email draft enhancement jobs...', 'info');
     try {
-        showToast('Email bulk enhance coming soon', 'info');
-    } catch(e) { showToast('Enhance failed', 'error'); }
+        const gw = _getGatewayUrl();
+        if (gw) {
+            const result = await _gatewayCall('/api/jobs/batch-enhance', 'POST', {
+                channel: 'email',
+                approval_status: 'draft'
+            });
+            showToast(`Queued ${result?.jobs_created || 0} email enhance jobs.`);
+            refreshJobQueueHealth();
+        } else {
+            showToast('Gateway not configured. Go to Settings > LLM Gateway.', 'error');
+        }
+    } catch(e) { showToast('Enhance failed: ' + (e.message || ''), 'error'); }
 }
 
 // SWARM PAGE
@@ -6587,19 +6639,80 @@ async function queueDraft(draftId) {
 }
 
 async function enhanceBatchDrafts() {
-    const confirmed = confirm('This will enhance all draft-status messages to improve personalization. Continue?');
+    const confirmed = confirm('This will queue all draft-status messages for LLM enhancement via the gateway. Continue?');
     if (!confirmed) return;
 
-    showToast('Starting bulk enhancement...', 'info');
+    showToast('Queueing batch enhancement jobs...', 'info');
     try {
-        const result = await apiPost('/api/drafts/bulk-enhance', {
-            filter: { status: 'draft' },
-            limit: 50
-        });
-        showToast(`Enhanced ${result?.enhanced_count || 0} drafts`);
+        // Try gateway batch-enhance endpoint first (creates jobs in queue)
+        const gw = _getGatewayUrl();
+        if (gw) {
+            const result = await _gatewayCall('/api/jobs/batch-enhance', 'POST', {
+                approval_status: 'draft'
+            });
+            showToast(`Queued ${result?.jobs_created || 0} enhance jobs. Worker will process them.`);
+            refreshJobQueueHealth();
+        } else {
+            // Fallback to Vercel-side bulk enhance
+            const result = await apiPost('/api/drafts/bulk-enhance', {
+                filter: { status: 'draft' },
+                limit: 50
+            });
+            showToast(`Enhanced ${result?.enhanced_count || 0} drafts`);
+        }
         loadLIDrafts();
     } catch(e) {
-        showToast('Bulk enhance failed: ' + (e.message || ''), 'error');
+        showToast('Batch enhance failed: ' + (e.message || ''), 'error');
+    }
+}
+
+async function refreshJobQueueHealth() {
+    const gw = _getGatewayUrl();
+    if (!gw) {
+        document.getElementById('job-queue-card').style.display = 'none';
+        return;
+    }
+    document.getElementById('job-queue-card').style.display = '';
+    try {
+        // Get queue stats
+        const stats = await _gatewayCall('/api/jobs/stats', 'GET');
+        document.getElementById('jq-pending').textContent = stats.pending || 0;
+        document.getElementById('jq-running').textContent = stats.running || 0;
+        document.getElementById('jq-completed').textContent = stats.completed || 0;
+        document.getElementById('jq-failed').textContent = stats.failed || 0;
+        document.getElementById('jq-total').textContent = stats.total || 0;
+
+        // Color code
+        if (stats.failed > 0) document.getElementById('jq-failed').style.color = '#e74c3c';
+        if (stats.running > 0) document.getElementById('jq-running').style.color = '#3498db';
+        if (stats.pending > 0) document.getElementById('jq-pending').style.color = '#f39c12';
+
+        // Get worker status
+        const worker = await _gatewayCall('/api/worker/status', 'GET');
+        const badge = document.getElementById('worker-status-badge');
+        if (worker.running) {
+            badge.textContent = `Worker: Active (${worker.jobs_processed} done)`;
+            badge.style.borderColor = '#2ecc71';
+            badge.style.color = '#2ecc71';
+        } else {
+            badge.textContent = 'Worker: Idle';
+            badge.style.borderColor = 'var(--border)';
+            badge.style.color = 'var(--text-muted)';
+        }
+
+        // Show recent jobs
+        const jobs = await _gatewayCall('/api/jobs?limit=5', 'GET');
+        const recent = document.getElementById('job-queue-recent');
+        if (jobs && jobs.length > 0) {
+            recent.innerHTML = '<strong>Recent jobs:</strong> ' + jobs.map(j =>
+                `<span style="margin-left:6px;" title="${j.id}">${j.job_type} (${j.status})</span>`
+            ).join(' | ');
+        } else {
+            recent.innerHTML = 'No jobs yet.';
+        }
+    } catch(e) {
+        document.getElementById('job-queue-recent').innerHTML =
+            '<span style="color:#e74c3c">Gateway unreachable</span>';
     }
 }
 
