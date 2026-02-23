@@ -3,15 +3,21 @@ Outreach Command Center - Database Initialization
 Creates all tables, indexes, and seeds initial data.
 """
 
+import logging
 import sqlite3
 import os
 from datetime import datetime
+
 try:
     from .migrate_v2 import run_migration as run_v2_migration
+    from .migrate_v3 import run_migration as run_v3_migration
 except ImportError:
     from migrate_v2 import run_migration as run_v2_migration
+    from migrate_v3 import run_migration as run_v3_migration
 
-DB_PATH = os.environ.get("OCC_DB_PATH", "outreach.db")
+logger = logging.getLogger(__name__)
+
+DB_PATH = os.environ.get("OCC_DB_PATH", os.path.join(os.path.dirname(__file__), "../../outreach.db"))
 
 SCHEMA_SQL = """
 -- Accounts (company-level)
@@ -344,26 +350,33 @@ def init_db(db_path=None):
         "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
     )
     tables = [row[0] for row in cursor.fetchall()]
-    print(f"Database initialized at {path}")
-    print(f"Tables created: {len(tables)}")
+    logger.info("Database initialized at %s", path)
+    logger.info("Tables created: %d", len(tables))
     for t in tables:
         count = conn.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]
-        print(f"  {t}: {count} rows")
+        logger.info("  %s: %d rows", t, count)
 
     conn.close()
     return tables
 
 
 def verify_db(db_path=None):
-    """Verify the database schema is correct."""
+    """Verify the database schema is correct (covers v1 + v2 tables)."""
     path = db_path or DB_PATH
     conn = sqlite3.connect(path)
 
     expected_tables = [
+        # v1 tables
         'accounts', 'contacts', 'icp_scores', 'signals',
         'research_snapshots', 'message_drafts', 'touchpoints',
         'replies', 'followups', 'opportunities', 'batches',
-        'batch_prospects', 'experiments', 'agent_runs', 'audit_log'
+        'batch_prospects', 'experiments', 'agent_runs', 'audit_log',
+        # v2 tables
+        'email_identities', 'suppression_list', 'email_events',
+        'deliverability_snapshots', 'pacing_rules', 'swarm_runs',
+        'swarm_tasks', 'quality_scores', 'feature_flags',
+        # migration tracking
+        'schema_migrations',
     ]
 
     cursor = conn.execute(
@@ -373,19 +386,25 @@ def verify_db(db_path=None):
 
     missing = set(expected_tables) - set(actual_tables)
     if missing:
-        print(f"FAIL: Missing tables: {missing}")
+        logger.warning("Missing tables: %s", missing)
         return False
 
-    print(f"PASS: All {len(expected_tables)} tables present")
+    logger.info("PASS: All %d expected tables present", len(expected_tables))
     conn.close()
     return True
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     init_db()
     verify_db()
-    print("\n[init_db] Running v2 migration...")
+    logger.info("Running v2 migration...")
     if run_v2_migration():
-        print("[init_db] v2 migration successful!")
+        logger.info("v2 migration successful!")
     else:
-        print("[init_db] WARNING: v2 migration failed")
+        logger.warning("v2 migration failed")
+    logger.info("Running v3 migration...")
+    if run_v3_migration():
+        logger.info("v3 migration successful!")
+    else:
+        logger.warning("v3 migration failed")

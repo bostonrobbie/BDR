@@ -5,13 +5,9 @@ REST API for CRUD, analytics, pipeline control, SSE streaming, and agent trigger
 Run: uvicorn src.api.app:app --reload --port 8000
 """
 
-import sys
 import os
 import asyncio
 import json
-
-# Add project root to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -21,16 +17,31 @@ from pydantic import BaseModel
 from typing import Optional, List
 
 from src.db import models
+from src.api.routers import accounts, contacts, messages, email, linkedin, analytics
 
-app = FastAPI(title="Outreach Command Center", version="2.0.0")
+ALLOWED_ORIGINS = os.environ.get("OCC_CORS_ORIGINS", "http://localhost:3000,http://localhost:8000,http://localhost:8765").split(",")
 
-# CORS for local dev
+app = FastAPI(
+    title="Outreach Command Center",
+    description="BDR operations platform API for LinkedIn, Email, and Cold Calling outreach.",
+    version="2.0.0",
+)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ─── ROUTERS ─────────────────────────────────────────────────
+# New modular routers (preferred for new development)
+app.include_router(accounts.router)
+app.include_router(contacts.router)
+app.include_router(messages.router)
+app.include_router(email.router)
+app.include_router(linkedin.router)
+app.include_router(analytics.router)
 
 
 # ─── PYDANTIC MODELS ────────────────────────────────────────────
@@ -128,6 +139,21 @@ class BatchCreate(BaseModel):
     ab_variable: Optional[str] = None
     ab_description: Optional[str] = None
     pre_brief: Optional[str] = None
+
+class AccountUpdate(BaseModel):
+    name: Optional[str] = None
+    domain: Optional[str] = None
+    industry: Optional[str] = None
+    sub_industry: Optional[str] = None
+    employee_count: Optional[int] = None
+    employee_band: Optional[str] = None
+    tier: Optional[str] = None
+    known_tools: Optional[list] = None
+    linkedin_company_url: Optional[str] = None
+    website_url: Optional[str] = None
+    buyer_intent: Optional[int] = None
+    hq_location: Optional[str] = None
+    notes: Optional[str] = None
 
 class ContactUpdate(BaseModel):
     stage: Optional[str] = None
@@ -313,8 +339,11 @@ def get_account(account_id: str):
     return result
 
 @app.patch("/api/accounts/{account_id}")
-def update_account(account_id: str, data: dict):
-    result = models.update_account(account_id, data)
+def update_account(account_id: str, data: AccountUpdate):
+    update_data = {k: v for k, v in data.model_dump().items() if v is not None}
+    if not update_data:
+        raise HTTPException(status_code=400, detail="No fields to update")
+    result = models.update_account(account_id, update_data)
     if not result:
         raise HTTPException(status_code=404, detail="Account not found")
     return result
@@ -762,8 +791,29 @@ def health():
         tables = conn.execute(
             "SELECT COUNT(*) FROM sqlite_master WHERE type='table'"
         ).fetchone()[0]
+
+        # Check LLM gateway connectivity
+        gateway_status = "unknown"
+        gateway_url = None
+        try:
+            gw = conn.execute("SELECT value FROM gateway_config WHERE key='gateway_url'").fetchone()
+            if gw:
+                gateway_url = gw[0]
+                import urllib.request
+                req = urllib.request.Request(f"{gateway_url}/health", method="GET")
+                req.add_header("User-Agent", "OCC-HealthCheck")
+                with urllib.request.urlopen(req, timeout=3) as resp:
+                    gateway_status = "healthy" if resp.status == 200 else "degraded"
+        except Exception:
+            gateway_status = "unreachable" if gateway_url else "not_configured"
+
         conn.close()
-        return {"status": "healthy", "tables": tables, "db_path": models.DB_PATH}
+        return {
+            "status": "healthy",
+            "tables": tables,
+            "db_path": models.DB_PATH,
+            "gateway": {"status": gateway_status, "url": gateway_url},
+        }
     except Exception as e:
         return JSONResponse(status_code=500, content={"status": "unhealthy", "error": str(e)})
 
@@ -1181,7 +1231,7 @@ class EmailIdentityCreate(BaseModel):
 @app.post("/api/email/identities")
 def create_identity(req: EmailIdentityCreate):
     """Create a new email sending identity."""
-    return models.create_email_identity(req.dict())
+    return models.create_email_identity(req.model_dump())
 
 @app.get("/api/email/identities")
 def list_identities(active_only: bool = True):
@@ -1254,7 +1304,7 @@ class EmailEventLog(BaseModel):
 @app.post("/api/email/events")
 def log_event(req: EmailEventLog):
     """Log an email event (bounce, reply, open, etc.)."""
-    return models.log_email_event(req.dict())
+    return models.log_email_event(req.model_dump())
 
 @app.get("/api/email/events")
 def list_events(contact_id: str = None, event_type: str = None, limit: int = 50):

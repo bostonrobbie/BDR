@@ -5,13 +5,46 @@ Provides CRUD operations for all 15 tables via a clean Python API.
 
 import sqlite3
 import json
+import logging
 import os
 import uuid
-from datetime import datetime, timedelta
+from contextlib import contextmanager
+from datetime import datetime, timezone, timedelta
 from typing import Optional
 
+logger = logging.getLogger(__name__)
 
 DB_PATH = os.environ.get("OCC_DB_PATH", os.path.join(os.path.dirname(__file__), "../../outreach.db"))
+
+
+# ─── ALLOWED FIELDS (SQL injection prevention) ────────────────────
+ACCOUNT_FIELDS = {
+    "name", "domain", "industry", "sub_industry", "employee_count",
+    "employee_band", "tier", "known_tools", "linkedin_company_url",
+    "website_url", "buyer_intent", "buyer_intent_date", "annual_revenue",
+    "funding_stage", "last_funding_date", "last_funding_amount",
+    "hq_location", "notes", "research_freshness", "updated_at",
+}
+
+CONTACT_FIELDS = {
+    "account_id", "first_name", "last_name", "title", "persona_type",
+    "seniority_level", "email", "email_verified", "linkedin_url", "phone",
+    "location", "timezone", "tenure_months", "recently_hired",
+    "previous_company", "previous_title", "stage", "priority_score",
+    "priority_factors", "personalization_score", "predicted_objection",
+    "objection_response", "status", "do_not_contact", "dnc_reason",
+    "source", "updated_at",
+}
+
+SWARM_RUN_FIELDS = {
+    "status", "total_tasks", "completed_tasks", "failed_tasks",
+    "completed_at",
+}
+
+SWARM_TASK_FIELDS = {
+    "status", "output_data", "error_message", "retry_count",
+    "started_at", "completed_at",
+}
 
 
 def get_db():
@@ -25,6 +58,30 @@ def get_db():
     return conn
 
 
+@contextmanager
+def get_db_conn():
+    """Context manager for database connections. Ensures connections are always closed."""
+    conn = get_db()
+    try:
+        yield conn
+    finally:
+        conn.close()
+
+
+def _safe_update(table: str, record_id: str, data: dict, allowed_fields: set, id_column: str = "id") -> Optional[dict]:
+    """Generic safe update that whitelists field names to prevent SQL injection."""
+    safe_data = {k: v for k, v in data.items() if k in allowed_fields}
+    if not safe_data:
+        return None
+    fields = ", ".join(f"{k}=?" for k in safe_data.keys())
+    values = list(safe_data.values()) + [record_id]
+    with get_db_conn() as conn:
+        conn.execute(f"UPDATE {table} SET {fields} WHERE {id_column}=?", values)
+        conn.commit()
+        row = conn.execute(f"SELECT * FROM {table} WHERE {id_column}=?", (record_id,)).fetchone()
+        return dict(row) if row else None
+
+
 def gen_id(prefix=""):
     """Generate a prefixed UUID."""
     short = uuid.uuid4().hex[:12]
@@ -36,7 +93,7 @@ def gen_id(prefix=""):
 def create_account(data: dict) -> dict:
     conn = get_db()
     aid = data.get("id", gen_id("acc"))
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     conn.execute("""
         INSERT INTO accounts (id, name, domain, industry, sub_industry, employee_count,
             employee_band, tier, known_tools, linkedin_company_url, website_url,
@@ -83,15 +140,8 @@ def list_accounts(limit=100, offset=0, industry=None) -> list:
 
 
 def update_account(account_id: str, data: dict) -> Optional[dict]:
-    conn = get_db()
-    data["updated_at"] = datetime.utcnow().isoformat()
-    fields = ", ".join(f"{k}=?" for k in data.keys())
-    values = list(data.values()) + [account_id]
-    conn.execute(f"UPDATE accounts SET {fields} WHERE id=?", values)
-    conn.commit()
-    row = conn.execute("SELECT * FROM accounts WHERE id=?", (account_id,)).fetchone()
-    conn.close()
-    return dict(row) if row else None
+    data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    return _safe_update("accounts", account_id, data, ACCOUNT_FIELDS)
 
 
 # ─── CONTACTS ───────────────────────────────────────────────────
@@ -99,7 +149,7 @@ def update_account(account_id: str, data: dict) -> Optional[dict]:
 def create_contact(data: dict) -> dict:
     conn = get_db()
     cid = data.get("id", gen_id("con"))
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     conn.execute("""
         INSERT INTO contacts (id, account_id, first_name, last_name, title, persona_type,
             seniority_level, email, email_verified, linkedin_url, phone, location, timezone,
@@ -170,15 +220,8 @@ def list_contacts(limit=100, offset=0, stage=None, min_priority=None,
 
 
 def update_contact(contact_id: str, data: dict) -> Optional[dict]:
-    conn = get_db()
-    data["updated_at"] = datetime.utcnow().isoformat()
-    fields = ", ".join(f"{k}=?" for k in data.keys())
-    values = list(data.values()) + [contact_id]
-    conn.execute(f"UPDATE contacts SET {fields} WHERE id=?", values)
-    conn.commit()
-    row = conn.execute("SELECT * FROM contacts WHERE id=?", (contact_id,)).fetchone()
-    conn.close()
-    return dict(row) if row else None
+    data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    return _safe_update("contacts", contact_id, data, CONTACT_FIELDS)
 
 
 # ─── ICP SCORING ────────────────────────────────────────────────
@@ -252,7 +295,7 @@ def compute_priority_score(contact: dict, account: dict) -> dict:
 
 
 def score_and_save(contact_id: str) -> dict:
-    """Score a contact and persist the result."""
+    """Score a contact and persist the result. Also records in icp_scores for audit trail."""
     contact = get_contact(contact_id)
     if not contact:
         return {"error": "Contact not found"}
@@ -262,6 +305,29 @@ def score_and_save(contact_id: str) -> dict:
         "priority_score": result["score"],
         "priority_factors": json.dumps(result["factors"])
     })
+
+    # Record scoring history in icp_scores
+    factors = result["factors"]
+    with get_db_conn() as conn:
+        sid = gen_id("icp")
+        conn.execute("""
+            INSERT INTO icp_scores (id, contact_id, title_match, vertical_match,
+                company_size_fit, seniority_fit, software_qa_confirmed, buyer_intent_bonus,
+                total_score, scoring_version)
+            VALUES (?,?,?,?,?,?,?,?,?,?)
+        """, (
+            sid, contact_id,
+            1 if factors.get("qa_title") else 0,
+            1 if factors.get("top_vertical") else 0,
+            1 if not factors.get("vp_eng_large_co_penalty") else 0,
+            1,  # seniority always counted if contact exists
+            1 if factors.get("competitor_tool") else 0,
+            1 if factors.get("buyer_intent") else 0,
+            result["score"],
+            "v2",
+        ))
+        conn.commit()
+
     return result
 
 
@@ -270,7 +336,7 @@ def score_and_save(contact_id: str) -> dict:
 def create_message_draft(data: dict) -> dict:
     conn = get_db()
     mid = data.get("id", gen_id("msg"))
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     conn.execute("""
         INSERT INTO message_drafts (id, contact_id, batch_id, channel, touch_number,
             touch_type, subject_line, body, version, personalization_score, proof_point_used,
@@ -335,7 +401,7 @@ def list_messages(batch_id=None, channel=None, approval_status=None, limit=100) 
 def log_touchpoint(data: dict) -> dict:
     conn = get_db()
     tid = gen_id("tp")
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     conn.execute("""
         INSERT INTO touchpoints (id, contact_id, message_draft_id, channel,
             touch_number, sent_at, outcome, call_duration_seconds, call_notes,
@@ -365,7 +431,7 @@ def log_touchpoint(data: dict) -> dict:
 def log_reply(data: dict) -> dict:
     conn = get_db()
     rid = gen_id("rep")
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     conn.execute("""
         INSERT INTO replies (id, contact_id, touchpoint_id, channel, intent, reply_tag,
             summary, raw_text, referral_name, referral_title, recommended_next_step,
@@ -401,7 +467,7 @@ def log_reply(data: dict) -> dict:
 def create_opportunity(data: dict) -> dict:
     conn = get_db()
     oid = gen_id("opp")
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     conn.execute("""
         INSERT INTO opportunities (id, contact_id, account_id, meeting_date, meeting_held,
             meeting_outcome, opportunity_created_date, opportunity_created, status,
@@ -439,8 +505,8 @@ def create_opportunity(data: dict) -> dict:
 def schedule_followup(contact_id: str, touch_number: int, channel: str, days_from_now: int) -> dict:
     conn = get_db()
     fid = gen_id("fu")
-    due = (datetime.utcnow() + timedelta(days=days_from_now)).isoformat()
-    now = datetime.utcnow().isoformat()
+    due = (datetime.now(timezone.utc) + timedelta(days=days_from_now)).isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     conn.execute("""
         INSERT INTO followups (id, contact_id, touch_number, channel, due_date, state,
             message_draft_id, reminder_sent, created_at, completed_at)
@@ -454,7 +520,7 @@ def schedule_followup(contact_id: str, touch_number: int, channel: str, days_fro
 
 def get_due_followups(as_of=None) -> list:
     conn = get_db()
-    cutoff = as_of or datetime.utcnow().isoformat()
+    cutoff = as_of or datetime.now(timezone.utc).isoformat()
     rows = conn.execute("""
         SELECT f.*, c.first_name, c.last_name, c.title as contact_title,
                a.name as company_name
@@ -473,7 +539,7 @@ def get_due_followups(as_of=None) -> list:
 def create_batch(data: dict) -> dict:
     conn = get_db()
     bid = gen_id("bat")
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     conn.execute("""
         INSERT INTO batches (id, batch_number, created_date, prospect_count, ab_variable,
             ab_description, pre_brief, mix_ratio, status, html_file_path, metrics, created_at)
@@ -497,7 +563,7 @@ def start_agent_run(run_type: str, agent_name: str, contact_id=None, batch_id=No
                     inputs=None, parent_run_id=None) -> dict:
     conn = get_db()
     rid = gen_id("run")
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     conn.execute("""
         INSERT INTO agent_runs (id, run_type, agent_name, contact_id, batch_id, inputs,
             outputs, sources_used, decisions, tokens_used, duration_ms, status,
@@ -516,7 +582,7 @@ def start_agent_run(run_type: str, agent_name: str, contact_id=None, batch_id=No
 def complete_agent_run(run_id: str, outputs: dict, sources: list = None,
                        decisions: dict = None, tokens: int = 0, error: str = None) -> dict:
     conn = get_db()
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     status = "error" if error else "completed"
     conn.execute("""
         UPDATE agent_runs SET outputs=?, sources_used=?, decisions=?, tokens_used=?,
@@ -537,7 +603,7 @@ def complete_agent_run(run_id: str, outputs: dict, sources: list = None,
 def save_research(data: dict) -> dict:
     conn = get_db()
     rid = gen_id("res")
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     conn.execute("""
         INSERT INTO research_snapshots (id, contact_id, account_id, entity_type, headline,
             summary, career_history, responsibilities, tech_stack_signals, pain_indicators,
@@ -566,7 +632,7 @@ def save_research(data: dict) -> dict:
 def create_signal(data: dict) -> dict:
     conn = get_db()
     sid = gen_id("sig")
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     conn.execute("""
         INSERT INTO signals (id, account_id, contact_id, signal_type, description,
             source_url, detected_at, expires_at, acted_on, created_at)
@@ -588,7 +654,7 @@ def create_signal(data: dict) -> dict:
 def create_experiment(data: dict) -> dict:
     conn = get_db()
     eid = gen_id("exp")
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     conn.execute("""
         INSERT INTO experiments (id, name, variable, group_a_desc, group_b_desc, status,
             batches_included, group_a_sent, group_a_replies, group_a_meetings, group_a_opps,
@@ -1111,7 +1177,7 @@ def create_email_identity(data: dict) -> dict:
     """Create a new email identity (sender account)."""
     conn = get_db()
     eid = data.get("id", gen_id("eid"))
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     conn.execute("""
         INSERT INTO email_identities (id, email_address, display_name, daily_send_limit,
             warmup_phase, warmup_daily_cap, is_active, notes, created_at, updated_at)
@@ -1296,7 +1362,7 @@ def create_swarm_run(swarm_type: str, batch_id: str = None, config: dict = None)
     """Create a new swarm run."""
     conn = get_db()
     rid = gen_id("swarm")
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     conn.execute("""
         INSERT INTO swarm_runs (id, swarm_type, batch_id, config, status, started_at, created_at)
         VALUES (?,?,?,?,?,?,?)
@@ -1309,14 +1375,8 @@ def create_swarm_run(swarm_type: str, batch_id: str = None, config: dict = None)
 
 def update_swarm_run(run_id: str, data: dict) -> dict:
     """Update a swarm run."""
-    conn = get_db()
-    fields = ", ".join(f"{k}=?" for k in data.keys())
-    values = list(data.values()) + [run_id]
-    conn.execute(f"UPDATE swarm_runs SET {fields} WHERE id=?", values)
-    conn.commit()
-    row = conn.execute("SELECT * FROM swarm_runs WHERE id=?", (run_id,)).fetchone()
-    conn.close()
-    return dict(row) if row else {}
+    result = _safe_update("swarm_runs", run_id, data, SWARM_RUN_FIELDS)
+    return result or {}
 
 
 def get_swarm_run(run_id: str) -> Optional[dict]:
@@ -1341,7 +1401,7 @@ def create_swarm_task(data: dict) -> dict:
     """Create a new swarm task within a run."""
     conn = get_db()
     tid = gen_id("stask")
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     dedupe_key = data.get("dedupe_key") or f"{data.get('agent_name')}:{data.get('task_type')}:{data.get('contact_id')}"
     
     # Check for duplicate
@@ -1366,16 +1426,10 @@ def create_swarm_task(data: dict) -> dict:
 
 def update_swarm_task(task_id: str, data: dict) -> dict:
     """Update a swarm task."""
-    conn = get_db()
     if "output_data" in data and isinstance(data["output_data"], dict):
         data["output_data"] = json.dumps(data["output_data"])
-    fields = ", ".join(f"{k}=?" for k in data.keys())
-    values = list(data.values()) + [task_id]
-    conn.execute(f"UPDATE swarm_tasks SET {fields} WHERE id=?", values)
-    conn.commit()
-    row = conn.execute("SELECT * FROM swarm_tasks WHERE id=?", (task_id,)).fetchone()
-    conn.close()
-    return dict(row) if row else {}
+    result = _safe_update("swarm_tasks", task_id, data, SWARM_TASK_FIELDS)
+    return result or {}
 
 
 def get_swarm_tasks(swarm_run_id: str, status: str = None) -> list:
@@ -1482,7 +1536,7 @@ def get_email_health() -> dict:
 def get_linkedin_daily_stats(date: str = None) -> dict:
     """Get LinkedIn InMail stats for a specific date (defaults to today)."""
     if not date:
-        date = datetime.utcnow().strftime("%Y-%m-%d")
+        date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
     conn = get_db()
 
@@ -1520,7 +1574,7 @@ def check_linkedin_pacing(daily_limit: int = 25) -> dict:
 
     Returns dict with 'ok' (bool), 'sent_today', 'limit', 'remaining'.
     """
-    today = datetime.utcnow().strftime("%Y-%m-%d")
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
     conn = get_db()
     sent_today = conn.execute("""
@@ -1546,7 +1600,7 @@ def log_linkedin_event(contact_id: str, event_type: str, details: str = None) ->
     """
     conn = get_db()
     sid = gen_id("sig")
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
 
     event_type_map = {
         "inmail_sent": "linkedin_inmail_sent",
@@ -1572,8 +1626,8 @@ def log_linkedin_event(contact_id: str, event_type: str, details: str = None) ->
 
 def get_linkedin_health() -> dict:
     """Get LinkedIn channel health metrics (daily/weekly stats, engagement rates)."""
-    today = datetime.utcnow().strftime("%Y-%m-%d")
-    week_ago = (datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d")
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    week_ago = (datetime.now(timezone.utc) - timedelta(days=7)).strftime("%Y-%m-%d")
 
     conn = get_db()
 

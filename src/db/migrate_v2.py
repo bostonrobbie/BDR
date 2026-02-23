@@ -13,23 +13,20 @@ All tables use CREATE TABLE IF NOT EXISTS for idempotence.
 Run with: python3 migrate_v2.py
 """
 
+import logging
 import sqlite3
 import json
 import os
 from datetime import datetime
 
+logger = logging.getLogger(__name__)
+
+DB_PATH = os.environ.get("OCC_DB_PATH", os.path.join(os.path.dirname(__file__), "../../outreach.db"))
+
 
 def get_db_path():
     """Get database path, default to outreach.db in project root"""
-    db_path = os.getenv("OCC_DB_PATH")
-    if not db_path:
-        # Try project root first, then src/db
-        if os.path.exists("outreach.db"):
-            db_path = "outreach.db"
-        else:
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            db_path = os.path.join(script_dir, "app.db")
-    return db_path
+    return os.environ.get("OCC_DB_PATH", DB_PATH)
 
 
 def run_migration(db_path=None):
@@ -37,10 +34,10 @@ def run_migration(db_path=None):
     if db_path is None:
         db_path = get_db_path()
     
-    print(f"[migrate_v2] Starting migration on: {db_path}")
+    logger.info(f"[migrate_v2] Starting migration on: {db_path}")
     
     if not os.path.exists(db_path):
-        print(f"[migrate_v2] ERROR: Database {db_path} not found. Run init_db.py first.")
+        logger.error("[migrate_v2] Database {db_path} not found. Run init_db.py first.")
         return False
     
     conn = sqlite3.connect(db_path)
@@ -49,7 +46,7 @@ def run_migration(db_path=None):
     
     try:
         # ─── EMAIL IDENTITIES ──────────────────────────────────────────
-        print("[migrate_v2] Creating email_identities table...")
+        logger.info("[migrate_v2] Creating email_identities table...")
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS email_identities (
                 id TEXT PRIMARY KEY,
@@ -69,7 +66,7 @@ def run_migration(db_path=None):
         """)
         
         # ─── SUPPRESSION LIST ──────────────────────────────────────────
-        print("[migrate_v2] Creating suppression_list table...")
+        logger.info("[migrate_v2] Creating suppression_list table...")
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS suppression_list (
                 id TEXT PRIMARY KEY,
@@ -81,7 +78,7 @@ def run_migration(db_path=None):
         """)
         
         # ─── EMAIL EVENTS ─────────────────────────────────────────────
-        print("[migrate_v2] Creating email_events table...")
+        logger.info("[migrate_v2] Creating email_events table...")
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS email_events (
                 id TEXT PRIMARY KEY,
@@ -96,7 +93,7 @@ def run_migration(db_path=None):
         """)
         
         # ─── DELIVERABILITY SNAPSHOTS ──────────────────────────────────
-        print("[migrate_v2] Creating deliverability_snapshots table...")
+        logger.info("[migrate_v2] Creating deliverability_snapshots table...")
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS deliverability_snapshots (
                 id TEXT PRIMARY KEY,
@@ -114,7 +111,7 @@ def run_migration(db_path=None):
         """)
         
         # ─── PACING RULES ─────────────────────────────────────────────
-        print("[migrate_v2] Creating pacing_rules table...")
+        logger.info("[migrate_v2] Creating pacing_rules table...")
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS pacing_rules (
                 id TEXT PRIMARY KEY,
@@ -133,7 +130,7 @@ def run_migration(db_path=None):
         """)
         
         # ─── SWARM RUNS ───────────────────────────────────────────────
-        print("[migrate_v2] Creating swarm_runs table...")
+        logger.info("[migrate_v2] Creating swarm_runs table...")
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS swarm_runs (
                 id TEXT PRIMARY KEY,
@@ -151,7 +148,7 @@ def run_migration(db_path=None):
         """)
         
         # ─── SWARM TASKS ──────────────────────────────────────────────
-        print("[migrate_v2] Creating swarm_tasks table...")
+        logger.info("[migrate_v2] Creating swarm_tasks table...")
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS swarm_tasks (
                 id TEXT PRIMARY KEY,
@@ -174,7 +171,7 @@ def run_migration(db_path=None):
         """)
         
         # ─── QUALITY SCORES ───────────────────────────────────────────
-        print("[migrate_v2] Creating quality_scores table...")
+        logger.info("[migrate_v2] Creating quality_scores table...")
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS quality_scores (
                 id TEXT PRIMARY KEY,
@@ -191,7 +188,7 @@ def run_migration(db_path=None):
         """)
         
         # ─── FEATURE FLAGS ────────────────────────────────────────────
-        print("[migrate_v2] Creating feature_flags table...")
+        logger.info("[migrate_v2] Creating feature_flags table...")
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS feature_flags (
                 id TEXT PRIMARY KEY,
@@ -204,7 +201,7 @@ def run_migration(db_path=None):
         """)
         
         # ─── INDEXES ───────────────────────────────────────────────────
-        print("[migrate_v2] Creating indexes...")
+        logger.info("[migrate_v2] Creating indexes...")
         
         indexes = [
             ("idx_suppression_email", "suppression_list(email_address)"),
@@ -223,7 +220,7 @@ def run_migration(db_path=None):
             cursor.execute(f"CREATE INDEX IF NOT EXISTS {idx_name} ON {idx_def}")
         
         # ─── SEED DEFAULT FEATURE FLAGS ────────────────────────────────
-        print("[migrate_v2] Seeding feature flags...")
+        logger.info("[migrate_v2] Seeding feature flags...")
         feature_flags = [
             ("ff_email", "email_channel", 1, "Enable email channel for outreach"),
             ("ff_swarm", "agent_swarm", 1, "Enable multi-agent swarm processing"),
@@ -239,7 +236,7 @@ def run_migration(db_path=None):
             """, (ff_id, flag_name, enabled, description))
         
         # ─── SEED DEFAULT PACING RULE ─────────────────────────────────
-        print("[migrate_v2] Seeding pacing rules...")
+        logger.info("[migrate_v2] Seeding pacing rules...")
         cursor.execute("""
             INSERT OR IGNORE INTO pacing_rules (id, rule_name, channel, max_per_day, 
                 max_per_hour, min_interval_minutes, ramp_enabled, ramp_increment_per_week, ramp_max)
@@ -247,11 +244,11 @@ def run_migration(db_path=None):
         """, ("pr_email_default", "Default Email Pacing", "email", 25, 5, 15, 1, 5, 50))
         
         conn.commit()
-        print("[migrate_v2] Migration completed successfully!")
+        logger.info("[migrate_v2] Migration completed successfully!")
         return True
         
     except Exception as e:
-        print(f"[migrate_v2] ERROR: {e}")
+        logger.error("[migrate_v2] {e}")
         conn.rollback()
         return False
     finally:
@@ -263,10 +260,10 @@ def verify_migration(db_path=None):
     if db_path is None:
         db_path = get_db_path()
     
-    print(f"\n[verify_migration] Checking: {db_path}")
+    logger.info(f"\n[verify_migration] Checking: {db_path}")
     
     if not os.path.exists(db_path):
-        print("[verify_migration] ERROR: Database not found")
+        logger.error("[verify_migration] Database not found")
         return False
     
     conn = sqlite3.connect(db_path)
@@ -294,26 +291,26 @@ def verify_migration(db_path=None):
                 missing_tables.append(table_name)
         
         if missing_tables:
-            print(f"[verify_migration] ERROR: Missing tables: {missing_tables}")
+            logger.error("[verify_migration] Missing tables: %s", missing_tables)
             return False
         else:
-            print(f"[verify_migration] OK: All {len(tables_to_check)} tables present")
+            logger.info(f"[verify_migration] OK: All {len(tables_to_check)} tables present")
         
         # Check feature flags seeded
         cursor.execute("SELECT COUNT(*) FROM feature_flags")
         ff_count = cursor.fetchone()[0]
-        print(f"[verify_migration] OK: {ff_count} feature flags seeded")
+        logger.info(f"[verify_migration] OK: {ff_count} feature flags seeded")
         
         # Check pacing rule seeded
         cursor.execute("SELECT COUNT(*) FROM pacing_rules")
         pr_count = cursor.fetchone()[0]
-        print(f"[verify_migration] OK: {pr_count} pacing rules seeded")
+        logger.info(f"[verify_migration] OK: {pr_count} pacing rules seeded")
         
-        print("[verify_migration] All checks passed!")
+        logger.info("[verify_migration] All checks passed!")
         return True
         
     except Exception as e:
-        print(f"[verify_migration] ERROR: {e}")
+        logger.info(f"[verify_migration] ERROR: {e}")
         return False
     finally:
         conn.close()
