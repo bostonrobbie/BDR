@@ -207,14 +207,14 @@ def test_cta_varies_by_tier():
 
     output_cold = generate_message_variants(artifact_cold, scoring_cold)
 
-    # Hot friendly CTA should be more confident (15-minute, comparison, etc.)
+    # Hot friendly CTA should be more confident and reference the proof point
     hot_friendly = next(v for v in output_hot["variants"] if v["tone"] == "friendly")
     cold_friendly = next(v for v in output_cold["variants"] if v["tone"] == "friendly")
     assert hot_friendly["cta"] != cold_friendly["cta"], \
         f"Hot and cold CTAs should differ: '{hot_friendly['cta']}' vs '{cold_friendly['cta']}'"
-    # Hot should mention a time frame or specific offer
-    assert any(word in hot_friendly["cta"].lower() for word in ["15-minute", "this week", "make sense"]), \
-        f"Hot CTA should be specific: '{hot_friendly['cta']}'"
+    # Hot should use back-references and be specific
+    assert any(word in hot_friendly["cta"].lower() for word in ["that'd", "15 minutes", "show you"]), \
+        f"Hot CTA should be specific and reference PP: '{hot_friendly['cta']}'"
     # Cold should be softer
     assert any(word in cold_friendly["cta"].lower() for word in ["flag", "helpful", "if", "radar"]), \
         f"Cold CTA should be soft: '{cold_friendly['cta']}'"
@@ -260,11 +260,11 @@ def test_cta_varies_by_seniority():
     vp_direct = next(v for v in vp_output["variants"] if v["tone"] == "direct")
     mgr_direct = next(v for v in mgr_output["variants"] if v["tone"] == "direct")
 
-    # VP should get "conversation" offer, manager with Cypress should get "comparison"
-    assert "conversation" in vp_direct["cta"].lower(), \
-        f"VP CTA should mention conversation: '{vp_direct['cta']}'"
-    assert "comparison" in mgr_direct["cta"].lower() or "cypress" in mgr_direct["cta"].lower(), \
-        f"Manager with Cypress should get comparison offer: '{mgr_direct['cta']}'"
+    # VP should get strategic framing, manager with Cypress should reference the tool
+    assert any(w in vp_direct["cta"].lower() for w in ["exploring", "apply", "maps"]), \
+        f"VP CTA should use strategic framing: '{vp_direct['cta']}'"
+    assert "cypress" in mgr_direct["cta"].lower() or "stacks up" in mgr_direct["cta"].lower(), \
+        f"Manager with Cypress should reference tool: '{mgr_direct['cta']}'"
     print("PASS: test_cta_varies_by_seniority")
 
 
@@ -305,6 +305,48 @@ def test_ps_line_email_only():
     print("PASS: test_ps_line_email_only")
 
 
+def test_cta_flows_from_proof_point():
+    """CTAs should use back-references ('that', 'similar') to tie into the proof point."""
+    artifact, scoring = _get_test_data()
+    output = generate_message_variants(artifact, scoring)
+
+    back_refs = ["that", "similar"]
+    for v in output["variants"]:
+        cta = v["cta"].lower()
+        has_back_ref = any(ref in cta for ref in back_refs)
+        assert has_back_ref, \
+            f"{v['tone']} CTA should reference back to proof point: '{v['cta']}'"
+    print("PASS: test_cta_flows_from_proof_point")
+
+
+def test_direct_merges_pp_and_cta():
+    """Direct variant should have PP and CTA in the same paragraph, not separate blocks."""
+    artifact, scoring = _get_test_data()
+    output = generate_message_variants(artifact, scoring)
+
+    direct = next(v for v in output["variants"] if v["tone"] == "direct")
+    body = direct["body"]
+    # Split body into paragraphs (separated by blank lines)
+    paragraphs = [p.strip() for p in body.split("\n\n") if p.strip()]
+    # The proof-and-ask paragraph should contain both the PP metric and the CTA
+    pp_short = direct["proof_point"].lower()
+    cta_text = direct["cta"].lower()
+    # Find the paragraph that contains the PP
+    pp_para = None
+    for p in paragraphs:
+        # Look for a key metric word from the proof point
+        if any(word in p.lower() for word in ["90%", "70%", "cred", "medibuddy", "sanofi", "hansard"]):
+            pp_para = p
+            break
+    assert pp_para is not None, f"Should find a paragraph with proof point in: {paragraphs}"
+    # The CTA should be in the SAME paragraph
+    cta_words = cta_text.split()[:4]  # first few words of CTA
+    cta_start = " ".join(cta_words)
+    assert cta_start in pp_para.lower(), \
+        f"Direct CTA should be in same paragraph as PP. CTA starts: '{cta_start}', PP para: '{pp_para[:100]}...'"
+    print("PASS: test_direct_merges_pp_and_cta")
+
+
 if __name__ == "__main__":
     test_generates_three_variants()
     test_each_variant_has_required_fields()
@@ -320,4 +362,6 @@ if __name__ == "__main__":
     test_cta_varies_by_seniority()
     test_signoff_varies_by_tone()
     test_ps_line_email_only()
-    print("\n=== All 14 message writer v2 tests passed ===")
+    test_cta_flows_from_proof_point()
+    test_direct_merges_pp_and_cta()
+    print("\n=== All 16 message writer v2 tests passed ===")

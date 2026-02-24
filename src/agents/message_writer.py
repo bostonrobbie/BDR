@@ -1041,65 +1041,73 @@ def _short_pain_label(raw_pain: str) -> str:
     return " ".join(words).lower().rstrip(",")
 
 
-# ─── CONTEXT-AWARE CLOSING RENDERERS ─────────────────────────
-# These build the CTA, soft-ask, sign-off, and P.S. based on
-# seniority, scoring tier, pain type, and known tools.
+# ─── INTEGRATED CLOSING RENDERERS ────────────────────────────
+# Instead of a standalone CTA dropped onto the end, these tie
+# the ask directly to the proof point and pain from the body.
+# The CTA uses "that" / "similar" to reference back, and a
+# bridge phrase connects the PP to the prospect's situation.
 
 
-def _build_offer(seniority: str, has_competitor: bool, tools: list, pain_lower: str) -> str:
-    """Determine what to offer based on prospect context.
+def _bridge_phrase(pp_text: str, artifact: dict, tools: list) -> str:
+    """Short phrase connecting the proof point to the prospect's situation.
 
-    Competitor tool users get a comparison. Compliance-heavy gets case study.
-    Strategic roles get a conversation. Default: quick look.
+    Appended to the PP text so the CTA can reference it with 'that'.
+    Avoids duplicating tool names the PP already mentions.
     """
-    if has_competitor:
-        tool_name = next((t for t in tools if t.lower() in
-                          ("selenium", "cypress", "playwright", "katalon", "testcomplete")), "")
-        if tool_name:
-            return f"comparison with {tool_name}"
-        return "side-by-side comparison"
-    # Strategic roles get conversation framing regardless of pain type
-    if seniority in ("vp", "c-suite"):
-        return "quick conversation"
-    if "compliance" in pain_lower or "regulated" in pain_lower:
-        return "case study"
-    if "scaling" in pain_lower:
-        return "walkthrough"
-    return "quick look"
+    competitor = next((t for t in tools if t.lower() in
+                       ("selenium", "cypress", "playwright", "katalon", "testcomplete")), "")
+    industry = artifact.get("company", {}).get("industry", "")
+
+    # Don't duplicate tool name if PP already mentions it
+    if competitor and competitor.lower() not in pp_text.lower():
+        return " after a similar switch"
+    if not competitor and industry:
+        # Use first word of industry (e.g. "Healthcare" from "Healthcare / Digital Health")
+        ind_short = industry.split("/")[0].split(",")[0].strip().lower()
+        return f" in a similar {ind_short} environment"
+    return ""
 
 
-def _build_cta_line(offer: str, tier: str, tone: str, seniority: str, company: str) -> str:
-    """Build the CTA sentence, varying by confidence tier and tone.
+def _connected_cta(tier: str, tone: str, seniority: str, company: str,
+                   competitor: str) -> str:
+    """Build a CTA that references the proof point just mentioned.
 
-    Hot prospects get confident, specific asks. Cold prospects get soft flags.
+    Uses 'that', 'similar results', etc. so the ask flows from the PP
+    instead of reading like a separate drop-in block.
     """
     is_strategic = seniority in ("vp", "c-suite", "director", "head")
 
     if tier == "hot":
         if tone == "friendly":
-            if is_strategic:
-                return f"Would a 15-minute {offer} be worth your time?"
-            return f"Would a 15-minute {offer} make sense?"
+            if competitor:
+                return f"Happy to show you what that'd look like against your {competitor} setup - 15 minutes, tops."
+            return f"Happy to show you what that'd look like for {company} - 15 minutes, tops."
         elif tone == "direct":
             if is_strategic:
-                return f"Open to a {offer} this week?"
-            return f"Open to a quick {offer}?"
+                return f"Open to exploring how that maps to {company}?"
+            if competitor:
+                return f"Open to seeing how that compares to your {competitor} setup?"
+            return f"Open to seeing how that'd work for {company}?"
         else:  # curious
-            if "comparison" in offer or "case study" in offer:
-                return f"Would it help to see a {offer} tailored to {company}?"
-            return f"Would it make sense to explore this for {company}?"
+            return f"Curious if you'd see similar results at {company}."
 
     elif tier == "warm":
         if tone == "friendly":
-            return f"Would a {offer} be helpful?"
+            if competitor:
+                return f"If that resonates, happy to walk through how it'd compare to your {competitor} setup."
+            return f"If that resonates, happy to walk through how it'd map to {company}."
         elif tone == "direct":
-            return f"Worth a {offer}?"
+            if is_strategic:
+                return f"Worth exploring how that'd apply to {company}?"
+            if competitor:
+                return f"Worth seeing how that stacks up against {competitor}?"
+            return f"Worth exploring if that fits {company}?"
         else:
-            return f"Curious if a {offer} would be relevant for {company}."
+            return f"Curious if you're running into something similar at {company}."
 
     elif tier == "cool":
         if tone == "friendly":
-            return f"Happy to share a {offer} if it's relevant."
+            return f"If any of that's relevant to {company}, happy to share more."
         elif tone == "direct":
             return "Happy to share more if useful."
         else:
@@ -1118,7 +1126,8 @@ def _build_soft_ask(tier: str, tone: str) -> str:
     if tone == "direct":
         return ""
     if tier == "hot":
-        return "Happy to keep it quick." if tone == "friendly" else "Either way, appreciate the read."
+        # Friendly CTA already includes "15 minutes, tops" so skip the softener
+        return "" if tone == "friendly" else "Either way, appreciate the read."
     elif tier == "warm":
         return "No worries if the timing's off." if tone == "friendly" else "No pressure either way."
     else:
@@ -1156,48 +1165,16 @@ def _build_ps_line(scoring_result: dict, pp_used: dict,
     return f"P.S. {pp_other.get('text', '')} - happy to share the full story if relevant."
 
 
-def _render_closing_block(artifact: dict, scoring_result: dict, tone: str,
-                          product_config: dict, pp_used: dict,
-                          pp_other: dict = None, channel: str = "linkedin") -> dict:
-    """Assemble the complete closing block and return it with metadata.
-
-    Varies by:
-    - Seniority: VPs get strategic asks, Managers get tactical, ICs get low-commitment
-    - Scoring tier: Hot = confident, Warm = standard, Cool/Cold = soft
-    - Pain type: Maintenance w/ competitor tools -> comparison, Compliance -> case study
-    - Tone: Friendly = warm, Direct = concise, Curious = question-led
-
-    Returns:
-        {"block": str, "cta": str}
-    """
-    prospect = artifact.get("prospect", {})
-    seniority = prospect.get("seniority", "").lower()
-    company = prospect.get("company_name", "your company")
-    sender = product_config.get("sender", "Rob Gorham")
-
-    raw_pain = _pick_pain_hook(artifact)
+def _get_tools_and_competitor(artifact: dict) -> tuple:
+    """Extract tool list and primary competitor name from artifact signals."""
     tools = []
     for item in artifact.get("signals", {}).get("tech_stack", []):
         val = item.get("value", "") if isinstance(item, dict) else str(item)
         if val:
             tools.append(val)
-    has_competitor = any(t.lower() in ("selenium", "cypress", "playwright", "katalon", "testcomplete")
-                        for t in tools)
-
-    tier = scoring_result.get("tier", "cool")
-    offer = _build_offer(seniority, has_competitor, tools, raw_pain.lower())
-    cta = _build_cta_line(offer, tier, tone, seniority, company)
-    soft_ask = _build_soft_ask(tier, tone)
-    signoff = _build_signoff(tone, sender)
-    ps = _build_ps_line(scoring_result, pp_used, pp_other, channel)
-
-    # Assemble closing text
-    closing_line = f"{cta} {soft_ask}".rstrip() if soft_ask else cta
-    block = f"{closing_line}\n\n{signoff}"
-    if ps:
-        block += f"\n\n{ps}"
-
-    return {"block": block, "cta": cta}
+    competitor = next((t for t in tools if t.lower() in
+                       ("selenium", "cypress", "playwright", "katalon", "testcomplete")), "")
+    return tools, competitor
 
 
 def _pick_value_prop(product_config: dict, artifact: dict, tone: str) -> str:
@@ -1249,8 +1226,7 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
     Each variant uses:
     - A naturally-rendered personalization opener (no raw evidence strings)
     - A seniority-aware pain framing (strategic for VPs, tactical for managers)
-    - A context-matched proof point and value prop
-    - A tone-specific CTA with soft ask
+    - An integrated proof-and-ask paragraph where CTA flows from the proof point
     - Proof point rotation between variants where possible
 
     Args:
@@ -1268,10 +1244,14 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
     first_name = prospect.get("full_name", "").split()[0] if prospect.get("full_name") else ""
     company_name = prospect.get("company_name", "your company")
     title = prospect.get("title", "")
+    seniority = prospect.get("seniority", "").lower()
+    sender = product_config.get("sender", "Rob Gorham")
     our_company = product_config.get("company", "Testsigma")
+    tier = scoring_result.get("tier", "cool")
 
     raw_opener, opener_evidence = _pick_personalization_opener(artifact)
     raw_pain = _pick_pain_hook(artifact)
+    tools, competitor = _get_tools_and_competitor(artifact)
 
     # Select primary + secondary proof points for variety across variants
     pp_primary = _select_best_proof_point(artifact, product_config)
@@ -1294,21 +1274,30 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
             pp = pp_primary
             pp_other = pp_secondary
 
-        # Build context-aware closing (CTA + soft ask + sign-off + optional P.S.)
-        closing = _render_closing_block(artifact, scoring_result, tone,
-                                         product_config, pp, pp_other, channel)
+        # Build integrated closing pieces
+        pp_text = pp.get("text", "")
+        bridge = _bridge_phrase(pp_text, artifact, tools)
+        cta = _connected_cta(tier, tone, seniority, company_name, competitor)
+        soft = _build_soft_ask(tier, tone)
+        signoff = _build_signoff(tone, sender)
+        ps = _build_ps_line(scoring_result, pp, pp_other, channel)
 
         pain_label = _short_pain_label(raw_pain)
         func = _function_label(title)
 
         if tone == "friendly":
+            # PP in first paragraph with bridge, CTA flows from it
+            cta_line = f"{cta} {soft}".rstrip() if soft else cta
             body = (
                 f"Hi {first_name},\n\n"
                 f"{opener}. "
                 f"{pain[0].upper()}{pain[1:]} - "
-                f"and {pp.get('text', '')}.\n\n"
-                f"{closing['block']}"
+                f"{pp_text}{bridge}.\n\n"
+                f"{cta_line}\n\n"
+                f"{signoff}"
             )
+            if ps:
+                body += f"\n\n{ps}"
             subjects = [
                 f"{func} at {company_name}",
                 f"Thought for {first_name} re: {pain_label}",
@@ -1316,22 +1305,24 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
             ]
 
         elif tone == "direct":
-            # Only include value prop if it doesn't duplicate the proof point stat
-            pp_text = pp.get("text", "")
+            # Merge PP + value prop + bridge + CTA into one paragraph
             pp_metric = pp.get("metric", "").lower()
             vp_overlaps = pp_metric and any(
                 word in vp.lower() for word in pp_metric.split()
                 if len(word) > 3
             )
-            proof_line = pp_text
+            proof_and_ask = f"{pp_text}{bridge}."
             if vp and not vp_overlaps:
-                proof_line = f"{pp_text}. {vp}"
+                proof_and_ask += f" {vp}."
+            proof_and_ask += f" {cta}"
             body = (
                 f"Hi {first_name},\n\n"
                 f"{opener}. {pain[0].upper()}{pain[1:]}.\n\n"
-                f"{proof_line}.\n\n"
-                f"{closing['block']}"
+                f"{proof_and_ask}\n\n"
+                f"{signoff}"
             )
+            if ps:
+                body += f"\n\n{ps}"
             subjects = [
                 f"{pain_label.capitalize()} at {company_name}",
                 f"{first_name} - quick question",
@@ -1339,12 +1330,17 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
             ]
 
         else:  # curious
+            # Merge PP + bridge + CTA into one flowing paragraph
+            cta_line = f"{cta} {soft}".rstrip() if soft else cta
+            proof_and_ask = f"{pp_text}{bridge}. {cta_line}"
             body = (
                 f"Hi {first_name},\n\n"
                 f"{opener} - {pain}?\n\n"
-                f"{pp.get('text', '')}.\n\n"
-                f"{closing['block']}"
+                f"{proof_and_ask}\n\n"
+                f"{signoff}"
             )
+            if ps:
+                body += f"\n\n{ps}"
             subjects = [
                 f"How {company_name} handles {pain_label}",
                 f"Question for {first_name}",
@@ -1360,7 +1356,7 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
             "value_prop": vp,
             "proof_point": pp.get("short", ""),
             "proof_point_key": pp.get("key", ""),
-            "cta": closing["cta"],
+            "cta": cta,
             "pain_hook": raw_pain,
             "char_count": len(body),
             "word_count": len(body.split()),
