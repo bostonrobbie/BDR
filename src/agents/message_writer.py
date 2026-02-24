@@ -753,3 +753,353 @@ def store_generated_messages(contact_id: str, generated: dict,
         })
 
     return stored
+
+
+# ═══════════════════════════════════════════════════════════════
+# GROUNDED MULTI-VARIANT MESSAGE GENERATION (v2)
+# Consumes ResearchArtifact + ScoringResult + ProductConfig
+# Produces 3 variants (friendly/direct/curious) with QA checks
+# ═══════════════════════════════════════════════════════════════
+
+_PRODUCT_CONFIG_PATH = os.path.join(os.path.dirname(__file__), "../../config/product_config.json")
+_product_config_cache = None
+
+
+def _load_product_config(path: str = None) -> dict:
+    """Load product config (value props, proof points, CTAs)."""
+    global _product_config_cache
+    if _product_config_cache is not None and path is None:
+        return _product_config_cache
+    p = path or _PRODUCT_CONFIG_PATH
+    try:
+        with open(p, "r") as f:
+            _product_config_cache = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        _product_config_cache = {
+            "company": "Testsigma", "sender": "Rob Gorham",
+            "value_props": ["AI-powered test automation"],
+            "proof_points": PROOF_POINTS,
+            "cta_options": ["Worth a quick chat?", "Happy to share more if helpful."],
+            "forbidden_phrases": ["saw your post", "noticed you", "came across your",
+                                  "I was browsing", "I looked you up"],
+            "max_chars": {"linkedin": 600, "email": 1200, "subject_line": 80},
+            "tone_descriptions": {
+                "friendly": "Warm, conversational.",
+                "direct": "Concise, to the point.",
+                "curious": "Question-led, exploratory.",
+            },
+        }
+    return _product_config_cache
+
+
+def _select_best_proof_point(artifact: dict, product_config: dict,
+                              exclude_keys: list = None) -> dict:
+    """Select best proof point from product config given the artifact."""
+    exclude_keys = exclude_keys or []
+    proof_points = product_config.get("proof_points", PROOF_POINTS)
+    industry = artifact.get("company", {}).get("industry", "").lower()
+    tech = artifact.get("signals", {}).get("tech_stack", [])
+    tool_names = [t.get("value", "").lower() if isinstance(t, dict) else str(t).lower()
+                  for t in tech]
+
+    best_key = None
+    best_score = -1
+
+    for key, pp in proof_points.items():
+        if key in exclude_keys:
+            continue
+        score = 0
+        best_for = " ".join(pp.get("best_for", [])).lower()
+        if industry and industry in best_for:
+            score += 3
+        for tool in tool_names:
+            if tool in best_for:
+                score += 2
+        if score > best_score:
+            best_score = score
+            best_key = key
+
+    if not best_key:
+        # fallback to first non-excluded
+        for key in proof_points:
+            if key not in exclude_keys:
+                best_key = key
+                break
+    if not best_key:
+        best_key = list(proof_points.keys())[0] if proof_points else None
+
+    if best_key and best_key in proof_points:
+        return {"key": best_key, **proof_points[best_key]}
+    return {"key": "unknown", "text": "", "short": "", "best_for": [], "metric": ""}
+
+
+def _pick_personalization_opener(artifact: dict) -> tuple:
+    """Pick the best personalization hook and return (opener_text, evidence_field).
+
+    Only uses hooks that have evidence.
+    """
+    hooks = artifact.get("personalization", {}).get("hooks", [])
+    # Prefer hooks with non-CRM evidence first (person_research > company > CRM)
+    prioritized = sorted(hooks, key=lambda h: (
+        0 if "person_research" in h.get("evidence_field", "") else
+        1 if "company" in h.get("evidence_field", "") else
+        2
+    ))
+    for hook in prioritized:
+        ev = hook.get("evidence_field", "")
+        if ev and ev != "unknown - hypothesis only":
+            return hook.get("hook", ""), ev
+    # Fallback: use title+company
+    prospect = artifact.get("prospect", {})
+    return f"Role as {prospect.get('title', 'your role')} at {prospect.get('company_name', 'your company')}", "from CRM field: title"
+
+
+def _pick_pain_hook(artifact: dict) -> str:
+    """Pick the best pain hypothesis for the hook."""
+    pains = artifact.get("pains", {}).get("hypothesized_pains", [])
+    # Sort by confidence, highest first
+    sorted_pains = sorted(pains, key=lambda p: p.get("confidence", 0), reverse=True)
+    if sorted_pains:
+        return sorted_pains[0].get("pain", "test maintenance and release velocity")
+    return "test maintenance and release velocity"
+
+
+def _pick_cta(product_config: dict, tone: str) -> str:
+    """Pick a CTA matching the tone."""
+    ctas = product_config.get("cta_options", [])
+    if tone == "friendly" and len(ctas) > 1:
+        return ctas[1]  # "Worth a quick reply..."
+    elif tone == "direct" and len(ctas) > 0:
+        return ctas[0]  # "Would a 15-minute comparison..."
+    elif tone == "curious" and len(ctas) > 2:
+        return ctas[2]  # "Happy to share more..."
+    return ctas[0] if ctas else "Worth a quick chat?"
+
+
+def generate_message_variants(artifact: dict, scoring_result: dict,
+                               product_config: dict = None,
+                               channel: str = "linkedin") -> dict:
+    """Generate 3 grounded message variants from ResearchArtifact + ScoringResult.
+
+    Args:
+        artifact: A validated ResearchArtifact.
+        scoring_result: A ScoringResult from scorer.score_from_artifact().
+        product_config: Product config dict (loaded from file if None).
+        channel: "linkedin" or "email".
+
+    Returns:
+        {
+          "variants": [
+            {"tone": "friendly", "subject_lines": [...], "body": "...", "opener": "...",
+             "value_prop": "...", "proof_point": "...", "cta": "...", "char_count": int},
+            ... (3 variants)
+          ],
+          "qa_results": [...],
+          "metadata": {...}
+        }
+    """
+    product_config = product_config or _load_product_config()
+    prospect = artifact.get("prospect", {})
+    company_info = artifact.get("company", {})
+    first_name = prospect.get("full_name", "").split()[0] if prospect.get("full_name") else ""
+    company_name = prospect.get("company_name", "your company")
+    title = prospect.get("title", "")
+    sender = product_config.get("sender", "Rob Gorham")
+    sender_title = product_config.get("sender_title", "BDR")
+    our_company = product_config.get("company", "Testsigma")
+
+    opener_text, opener_evidence = _pick_personalization_opener(artifact)
+    pain_hook = _pick_pain_hook(artifact)
+    proof_point = _select_best_proof_point(artifact, product_config)
+    value_props = product_config.get("value_props", [])
+    max_chars = product_config.get("max_chars", {}).get(channel, 600)
+
+    tones = ["friendly", "direct", "curious"]
+    variants = []
+
+    for tone in tones:
+        cta = _pick_cta(product_config, tone)
+        vp = value_props[tones.index(tone) % len(value_props)] if value_props else ""
+
+        if tone == "friendly":
+            body = (
+                f"Hi {first_name},\n\n"
+                f"{opener_text} caught my attention. "
+                f"{pain_hook.capitalize()} is something a lot of "
+                f"{company_info.get('industry', 'tech')} teams wrestle with, "
+                f"especially at {company_name}'s scale.\n\n"
+                f"{proof_point.get('text', '')}. "
+                f"{vp}.\n\n"
+                f"{cta} If not relevant, no worries at all.\n\n"
+                f"Best,\n{sender}"
+            )
+            subjects = [
+                f"{title.split()[0] if title else 'QA'} at {company_name}",
+                f"Quick thought for {first_name}",
+                f"Testing at {company_name}",
+            ]
+        elif tone == "direct":
+            body = (
+                f"Hi {first_name},\n\n"
+                f"{sender} here from {our_company}. "
+                f"Given your role as {title} at {company_name}, "
+                f"I wanted to flag one thing: {pain_hook}.\n\n"
+                f"{proof_point.get('text', '')}.\n\n"
+                f"{cta}\n\n"
+                f"{sender}"
+            )
+            subjects = [
+                f"{pain_hook.split()[0].capitalize()} at {company_name}",
+                f"For {first_name} - {our_company}",
+                f"{company_name} + {our_company}",
+            ]
+        else:  # curious
+            body = (
+                f"Hi {first_name},\n\n"
+                f"Curious how your team at {company_name} handles {pain_hook}? "
+                f"A lot of {company_info.get('industry', 'tech')} teams in the "
+                f"{company_info.get('size_band', '')} range run into this.\n\n"
+                f"{proof_point.get('text', '')}.\n\n"
+                f"{cta} Either way, happy to share what we're seeing.\n\n"
+                f"Best,\n{sender}"
+            )
+            subjects = [
+                f"Question about {pain_hook.split()[0].lower()} at {company_name}",
+                f"How does {company_name} handle this?",
+                f"Quick question, {first_name}",
+            ]
+
+        variants.append({
+            "tone": tone,
+            "subject_lines": subjects,
+            "body": body,
+            "opener": opener_text,
+            "opener_evidence": opener_evidence,
+            "value_prop": vp,
+            "proof_point": proof_point.get("short", ""),
+            "proof_point_key": proof_point.get("key", ""),
+            "cta": cta,
+            "pain_hook": pain_hook,
+            "char_count": len(body),
+            "word_count": len(body.split()),
+        })
+
+    # Run QA on all variants
+    qa_results = []
+    for v in variants:
+        qa = check_message_variant(v, artifact, product_config, channel)
+        qa_results.append(qa)
+
+    return {
+        "variants": variants,
+        "qa_results": qa_results,
+        "metadata": {
+            "prospect_name": prospect.get("full_name", ""),
+            "company": company_name,
+            "channel": channel,
+            "scoring_tier": scoring_result.get("tier", "unknown"),
+            "total_score": scoring_result.get("total_score", 0),
+            "proof_point_used": proof_point.get("key", ""),
+            "generated_at": datetime.utcnow().isoformat(),
+        },
+    }
+
+
+# ─── MESSAGE QA CHECKS (v2) ─────────────────────────────────────
+
+def check_message_variant(variant: dict, artifact: dict,
+                           product_config: dict = None,
+                           channel: str = "linkedin") -> dict:
+    """Run QA checks on a single message variant.
+
+    Rejects or flags if:
+    - personalization hook lacks evidence
+    - message exceeds character limit
+    - contains forbidden phrases (unless evidenced)
+    - mentions browsing/scraping
+    - says "I saw" / "I noticed" without evidence
+    """
+    product_config = product_config or _load_product_config()
+    body = variant.get("body", "")
+    opener_ev = variant.get("opener_evidence", "")
+    checks = []
+    all_passed = True
+
+    # 1. Evidence check on opener
+    has_opener_evidence = bool(opener_ev and opener_ev != "unknown - hypothesis only")
+    checks.append({
+        "check": "opener_has_evidence",
+        "passed": has_opener_evidence,
+        "detail": f"Evidence: {opener_ev}" if has_opener_evidence else "Opener lacks evidence grounding",
+    })
+    if not has_opener_evidence:
+        all_passed = False
+
+    # 2. Character limit
+    max_chars = product_config.get("max_chars", {}).get(channel, 600)
+    char_ok = len(body) <= max_chars
+    checks.append({
+        "check": "char_limit",
+        "passed": char_ok,
+        "detail": f"{len(body)}/{max_chars} chars" if char_ok else f"Over limit: {len(body)}/{max_chars}",
+    })
+    if not char_ok:
+        all_passed = False
+
+    # 3. Forbidden phrases
+    forbidden = product_config.get("forbidden_phrases", [])
+    body_lower = body.lower()
+    found_forbidden = [fp for fp in forbidden if fp.lower() in body_lower]
+    checks.append({
+        "check": "no_forbidden_phrases",
+        "passed": len(found_forbidden) == 0,
+        "detail": f"Found: {found_forbidden}" if found_forbidden else "Clean",
+    })
+    if found_forbidden:
+        all_passed = False
+
+    # 4. No em dashes
+    has_em = "\u2014" in body or "\u2013" in body
+    checks.append({
+        "check": "no_em_dashes",
+        "passed": not has_em,
+        "detail": "Contains em/en dash" if has_em else "Clean",
+    })
+    if has_em:
+        all_passed = False
+
+    # 5. Anti-hallucination: check proof point is from config
+    pp_key = variant.get("proof_point_key", "")
+    valid_pp = pp_key in (product_config.get("proof_points", {}) or PROOF_POINTS)
+    checks.append({
+        "check": "proof_point_valid",
+        "passed": valid_pp or not pp_key,
+        "detail": f"Using '{pp_key}'" if valid_pp else f"Unknown proof point: '{pp_key}'",
+    })
+    if pp_key and not valid_pp:
+        all_passed = False
+
+    # 6. Must_not_claim check
+    constraints = artifact.get("constraints", {}).get("must_not_claim", [])
+    constraint_violations = []
+    for c in constraints:
+        if "private docs" in c.lower() and any(phrase in body_lower for phrase in
+                                                 ["private doc", "internal doc", "your document"]):
+            constraint_violations.append(c)
+        if "recent news" in c.lower() and "i saw" in body_lower and "news" in body_lower:
+            constraint_violations.append(c)
+    checks.append({
+        "check": "constraints_respected",
+        "passed": len(constraint_violations) == 0,
+        "detail": f"Violations: {constraint_violations}" if constraint_violations else "All constraints met",
+    })
+    if constraint_violations:
+        all_passed = False
+
+    return {
+        "tone": variant.get("tone", ""),
+        "passed": all_passed,
+        "checks": checks,
+        "passed_count": sum(1 for c in checks if c["passed"]),
+        "total_checks": len(checks),
+    }

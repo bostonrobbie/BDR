@@ -1,10 +1,11 @@
 """
 Outreach Command Center - Researcher Agent
-Two-source research extraction: LinkedIn profiles + external company data.
+Input-driven research extraction that produces validated ResearchArtifacts.
 
-LinkedIn data is extracted via Chrome MCP (Claude reads the profile).
-Company data is extracted via WebSearch/WebFetch or parallel Task subagents.
-This module provides structured extraction, caching, and signal detection.
+Sources: CRM/CSV prospect data, local cached enrichment, internal notes.
+No web lookups. Every non-trivial claim requires an evidence string.
+
+Outputs a typed ResearchArtifact with evidence discipline and QA validation.
 """
 
 import json
@@ -12,10 +13,204 @@ import os
 import sys
 import re
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, List
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 from src.db import models
+
+
+# ─── RESEARCH ARTIFACT SCHEMA ──────────────────────────────────
+
+# Default guardrails that must always be present
+DEFAULT_MUST_NOT_CLAIM = [
+    "No claims of having read private docs",
+    "No claims of seeing recent news unless from cached research",
+    "No claims of exact metrics unless provided in CRM data",
+]
+
+
+def make_evidence(value: str, source: str) -> dict:
+    """Create an evidence-tracked field.
+
+    Args:
+        value: The claim or data point.
+        source: One of:
+          - "from CRM field: <field_name>"
+          - "from local enrichment field: <field_name>"
+          - "from cached research: <snapshot_id>"
+          - "unknown - hypothesis only"
+    """
+    return {"value": value, "evidence": source}
+
+
+def make_pain_hypothesis(pain: str, confidence: float, evidence: str) -> dict:
+    """Create a pain hypothesis with confidence and evidence.
+
+    Args:
+        pain: Description of the hypothesized pain point.
+        confidence: 0.0 to 1.0.
+        evidence: Evidence string (required if confidence > 0.7).
+    """
+    return {
+        "pain": pain,
+        "confidence": round(min(1.0, max(0.0, confidence)), 2),
+        "evidence": evidence,
+    }
+
+
+def make_hook(hook: str, evidence_field: str) -> dict:
+    """Create a personalization hook with evidence citation.
+
+    Args:
+        hook: The personalization hook text.
+        evidence_field: Which input field this is grounded in.
+    """
+    return {"hook": hook, "evidence_field": evidence_field}
+
+
+def build_empty_artifact() -> dict:
+    """Return an empty ResearchArtifact skeleton."""
+    return {
+        "prospect": {
+            "full_name": "",
+            "title": "",
+            "seniority": "",
+            "function": "",
+            "linkedin_url": "",
+            "company_name": "",
+            "company_domain": "",
+        },
+        "company": {
+            "industry": "",
+            "size_band": "",
+            "geo": "",
+            "product_summary": "",
+        },
+        "signals": {
+            "tech_stack": [],
+            "intent_signals": [],
+            "triggers": [],
+        },
+        "icp_fit": {
+            "fit_summary": "",
+            "fit_reasons": [],
+            "disqualifiers": [],
+        },
+        "pains": {
+            "hypothesized_pains": [],
+        },
+        "personalization": {
+            "hooks": [],
+            "mutual_context": [],
+        },
+        "constraints": {
+            "must_not_claim": list(DEFAULT_MUST_NOT_CLAIM),
+        },
+        "metadata": {
+            "created_at": datetime.utcnow().isoformat(),
+            "data_sources": [],
+            "research_quality_score": 0.0,
+        },
+    }
+
+
+# ─── RESEARCH ARTIFACT VALIDATOR (QA) ────────────────────────────
+
+class ResearchValidationError:
+    """A single validation failure."""
+    def __init__(self, field: str, message: str, severity: str = "error"):
+        self.field = field
+        self.message = message
+        self.severity = severity  # "error" or "warning"
+
+    def to_dict(self):
+        return {"field": self.field, "message": self.message, "severity": self.severity}
+
+
+def validate_research_artifact(artifact: dict) -> dict:
+    """Validate a ResearchArtifact for evidence discipline.
+
+    Returns:
+        {"valid": bool, "errors": [...], "warnings": [...]}
+
+    Rejects if:
+    - hooks are present without evidence
+    - pains have confidence > 0.7 without evidence
+    - tech stack is populated without evidence
+    - must_not_claim is empty
+    """
+    errors = []
+    warnings = []
+
+    # Check must_not_claim is not empty
+    constraints = artifact.get("constraints", {})
+    must_not = constraints.get("must_not_claim", [])
+    if not must_not:
+        errors.append(ResearchValidationError(
+            "constraints.must_not_claim",
+            "must_not_claim is empty. Must include default guardrails.",
+        ))
+
+    # Check hooks have evidence
+    hooks = artifact.get("personalization", {}).get("hooks", [])
+    for i, hook in enumerate(hooks):
+        ev = hook.get("evidence_field", "")
+        if not ev or ev == "unknown - hypothesis only":
+            errors.append(ResearchValidationError(
+                f"personalization.hooks[{i}]",
+                f"Hook '{hook.get('hook', '')[:50]}' has no evidence field.",
+            ))
+
+    # Check pain confidence vs evidence
+    pains = artifact.get("pains", {}).get("hypothesized_pains", [])
+    for i, pain in enumerate(pains):
+        conf = pain.get("confidence", 0)
+        ev = pain.get("evidence", "")
+        if conf > 0.7 and (not ev or ev == "unknown - hypothesis only"):
+            errors.append(ResearchValidationError(
+                f"pains.hypothesized_pains[{i}]",
+                f"Pain '{pain.get('pain', '')[:50]}' has confidence {conf} but no evidence.",
+            ))
+        if conf > 0.5 and (not ev or ev == "unknown - hypothesis only"):
+            warnings.append(ResearchValidationError(
+                f"pains.hypothesized_pains[{i}]",
+                f"Pain '{pain.get('pain', '')[:50]}' has confidence {conf} without evidence (consider lowering).",
+                severity="warning",
+            ))
+
+    # Check tech stack has evidence
+    tech = artifact.get("signals", {}).get("tech_stack", [])
+    for i, item in enumerate(tech):
+        if isinstance(item, dict):
+            ev = item.get("evidence", "")
+            if not ev or ev == "unknown - hypothesis only":
+                errors.append(ResearchValidationError(
+                    f"signals.tech_stack[{i}]",
+                    f"Tech stack item '{item.get('value', '')[:50]}' has no evidence.",
+                ))
+        elif isinstance(item, str):
+            # Plain strings without evidence are not allowed
+            errors.append(ResearchValidationError(
+                f"signals.tech_stack[{i}]",
+                f"Tech stack item '{item[:50]}' is a plain string; must be {{value, evidence}} dict.",
+            ))
+
+    # Check prospect has basic fields
+    prospect = artifact.get("prospect", {})
+    if not prospect.get("full_name"):
+        errors.append(ResearchValidationError("prospect.full_name", "Missing prospect name."))
+    if not prospect.get("company_name"):
+        warnings.append(ResearchValidationError(
+            "prospect.company_name", "Missing company name.", severity="warning"))
+
+    valid = len(errors) == 0
+    return {
+        "valid": valid,
+        "errors": [e.to_dict() for e in errors],
+        "warnings": [w.to_dict() for w in warnings],
+        "error_count": len(errors),
+        "warning_count": len(warnings),
+    }
 
 
 # ─── COMPETITOR TOOLS TO DETECT ───────────────────────────────
@@ -297,6 +492,280 @@ def detect_signals(company_research: dict, person_research: dict = None) -> list
         })
 
     return signals
+
+
+# ─── RESEARCH ARTIFACT BUILDER (input-driven) ────────────────
+
+def _infer_function(title: str) -> str:
+    """Infer job function from title."""
+    t = title.lower()
+    if any(kw in t for kw in ["qa", "quality", "test", "sdet", "automation"]):
+        return "QA/Testing"
+    if any(kw in t for kw in ["engineering", "software", "developer", "cto", "architect"]):
+        return "Engineering"
+    if any(kw in t for kw in ["devops", "platform", "infrastructure", "sre", "release"]):
+        return "DevOps/Platform"
+    if any(kw in t for kw in ["product", "program"]):
+        return "Product"
+    return "Other"
+
+
+def _infer_seniority(title: str, seniority_field: str = "") -> str:
+    """Infer seniority from title or explicit field."""
+    if seniority_field:
+        return seniority_field
+    t = title.lower()
+    if any(kw in t for kw in ["chief", "cto", "ceo", "coo", "cio"]):
+        return "c-suite"
+    if any(kw in t for kw in ["vp", "vice president"]):
+        return "vp"
+    if any(kw in t for kw in ["director", "head of"]):
+        return "director"
+    if any(kw in t for kw in ["manager", "lead"]):
+        return "manager"
+    if any(kw in t for kw in ["senior", "sr", "principal", "staff"]):
+        return "senior"
+    return "individual"
+
+
+def build_research_artifact(contact: dict, account: dict = None,
+                            person_research: dict = None,
+                            company_research: dict = None,
+                            signals: list = None) -> dict:
+    """Build a validated ResearchArtifact from available input data.
+
+    Uses ONLY:
+    - contact/account row fields (CRM data)
+    - cached person_research and company_research
+    - detected signals
+
+    No web lookups. Every claim is evidence-tagged.
+
+    Returns:
+        {"artifact": ResearchArtifact, "validation": validation_result}
+    """
+    account = account or {}
+    person_research = person_research or {}
+    company_research = company_research or {}
+    signals = signals or []
+
+    artifact = build_empty_artifact()
+    data_sources = []
+
+    # ── Prospect fields ──
+    first = contact.get("first_name", "")
+    last = contact.get("last_name", "")
+    title = contact.get("title", "")
+    artifact["prospect"]["full_name"] = f"{first} {last}".strip()
+    artifact["prospect"]["title"] = title
+    artifact["prospect"]["seniority"] = _infer_seniority(
+        title, contact.get("seniority_level", ""))
+    artifact["prospect"]["function"] = _infer_function(title)
+    artifact["prospect"]["linkedin_url"] = contact.get("linkedin_url", "")
+    artifact["prospect"]["company_name"] = contact.get("company_name", "") or account.get("name", "")
+    artifact["prospect"]["company_domain"] = account.get("domain", "")
+    data_sources.append("CRM contact record")
+
+    # ── Company fields ──
+    if account:
+        artifact["company"]["industry"] = account.get("industry", "")
+        artifact["company"]["size_band"] = account.get("employee_band", "")
+        artifact["company"]["geo"] = account.get("hq_location", "")
+        data_sources.append("CRM account record")
+
+    if company_research:
+        if company_research.get("description"):
+            artifact["company"]["product_summary"] = company_research["description"]
+        if company_research.get("industry") and not artifact["company"]["industry"]:
+            artifact["company"]["industry"] = company_research["industry"]
+        data_sources.append("cached company research")
+
+    # ── Signals: tech stack (evidence-tagged) ──
+    known_tools_raw = company_research.get("known_tools", [])
+    if isinstance(known_tools_raw, str):
+        try:
+            known_tools_raw = json.loads(known_tools_raw)
+        except (json.JSONDecodeError, TypeError):
+            known_tools_raw = []
+    # Also check account.known_tools
+    account_tools_raw = account.get("known_tools", "[]")
+    if isinstance(account_tools_raw, str):
+        try:
+            account_tools_raw = json.loads(account_tools_raw)
+        except (json.JSONDecodeError, TypeError):
+            account_tools_raw = []
+
+    all_tools = set()
+    for tool in known_tools_raw:
+        if isinstance(tool, str) and tool.strip():
+            all_tools.add(tool.strip())
+    for tool in account_tools_raw:
+        if isinstance(tool, str) and tool.strip():
+            all_tools.add(tool.strip())
+
+    for tool in all_tools:
+        source = "from local enrichment field: known_tools"
+        artifact["signals"]["tech_stack"].append(make_evidence(tool, source))
+
+    # ── Signals: intent and triggers ──
+    for sig in signals:
+        sig_type = sig.get("signal_type", "")
+        sig_desc = sig.get("description", "")
+        sig_source = sig.get("source", "unknown")
+
+        if sig_type in ("buyer_intent", "funding", "digital_transformation", "hiring_qa"):
+            artifact["signals"]["intent_signals"].append(
+                make_evidence(sig_desc, f"from local enrichment field: signal_{sig_type}"))
+        if sig_type in ("recently_hired", "funding", "digital_transformation", "hiring_qa", "competitor_tool"):
+            trigger_label = {
+                "recently_hired": "job change",
+                "funding": "funding event",
+                "digital_transformation": "digital transformation",
+                "hiring_qa": "QA hiring",
+                "competitor_tool": "competitor tool usage",
+            }.get(sig_type, sig_type)
+            artifact["signals"]["triggers"].append(
+                make_evidence(f"{trigger_label}: {sig_desc}", f"from local enrichment field: signal_{sig_type}"))
+
+    if account.get("buyer_intent"):
+        artifact["signals"]["intent_signals"].append(
+            make_evidence("Buyer intent flag set", "from CRM field: buyer_intent"))
+
+    # ── ICP fit ──
+    vertical = classify_vertical(
+        artifact["company"].get("product_summary", ""),
+        artifact["company"].get("industry", ""))
+    fit_reasons = []
+    disqualifiers = []
+
+    seniority = artifact["prospect"]["seniority"]
+    function = artifact["prospect"]["function"]
+    if function == "QA/Testing":
+        fit_reasons.append("Prospect is in QA/Testing function")
+    elif function == "Engineering":
+        fit_reasons.append("Prospect is in Engineering (secondary ICP)")
+    else:
+        disqualifiers.append(f"Function '{function}' is not primary ICP")
+
+    if seniority in ("director", "vp", "c-suite", "head"):
+        fit_reasons.append(f"Senior role: {seniority}")
+    elif seniority in ("manager", "senior"):
+        fit_reasons.append(f"Mid-level: {seniority}")
+    else:
+        disqualifiers.append(f"Seniority '{seniority}' may lack decision-making authority")
+
+    size = artifact["company"].get("size_band", "")
+    if size in ("201-500", "501-1000", "1001-5000"):
+        fit_reasons.append(f"Company size {size} is sweet spot")
+    elif size in ("50000+", "1-50"):
+        disqualifiers.append(f"Company size {size} is outside sweet spot")
+
+    artifact["icp_fit"]["fit_summary"] = (
+        f"{'Strong' if len(fit_reasons) >= 3 else 'Moderate' if len(fit_reasons) >= 2 else 'Weak'} "
+        f"ICP fit: {function} {seniority} at {vertical} company"
+    )
+    artifact["icp_fit"]["fit_reasons"] = fit_reasons
+    artifact["icp_fit"]["disqualifiers"] = disqualifiers
+
+    # ── Pain hypotheses ──
+    if all_tools:
+        tool_list = ", ".join(all_tools)
+        artifact["pains"]["hypothesized_pains"].append(
+            make_pain_hypothesis(
+                f"Test maintenance overhead with {tool_list}",
+                0.8 if any(t.lower() in ("selenium", "cypress", "playwright") for t in all_tools) else 0.5,
+                f"from local enrichment field: known_tools ({tool_list})"
+            ))
+
+    if function == "QA/Testing" and seniority in ("director", "vp", "manager", "head"):
+        artifact["pains"]["hypothesized_pains"].append(
+            make_pain_hypothesis(
+                "Scaling test automation while managing team bandwidth",
+                0.6,
+                f"from CRM field: title ({title})"
+            ))
+
+    industry = artifact["company"]["industry"].lower()
+    if any(v in industry for v in ["fintech", "finserv", "banking", "insurance"]):
+        artifact["pains"]["hypothesized_pains"].append(
+            make_pain_hypothesis(
+                "Regression testing across compliance-sensitive financial workflows",
+                0.5,
+                f"from CRM field: industry ({artifact['company']['industry']})"
+            ))
+    elif any(v in industry for v in ["healthcare", "pharma", "health"]):
+        artifact["pains"]["hypothesized_pains"].append(
+            make_pain_hypothesis(
+                "Compliance-heavy regression cycles in regulated environment",
+                0.5,
+                f"from CRM field: industry ({artifact['company']['industry']})"
+            ))
+
+    # Add a general fallback pain if none yet
+    if not artifact["pains"]["hypothesized_pains"]:
+        artifact["pains"]["hypothesized_pains"].append(
+            make_pain_hypothesis(
+                "Test maintenance and flaky tests slowing release velocity",
+                0.3,
+                "unknown - hypothesis only"
+            ))
+
+    # ── Personalization hooks ──
+    if title:
+        artifact["personalization"]["hooks"].append(
+            make_hook(f"Role as {title}", f"from CRM field: title"))
+
+    company_name = artifact["prospect"]["company_name"]
+    if company_name:
+        artifact["personalization"]["hooks"].append(
+            make_hook(f"Work at {company_name}", f"from CRM field: company_name"))
+
+    if person_research.get("headline"):
+        artifact["personalization"]["hooks"].append(
+            make_hook(
+                f"LinkedIn headline: {person_research['headline']}",
+                "from local enrichment field: person_research.headline"))
+        data_sources.append("cached person research")
+
+    if person_research.get("recently_hired"):
+        artifact["personalization"]["hooks"].append(
+            make_hook("Recently started in role (< 6 months)",
+                      "from local enrichment field: person_research.recently_hired"))
+
+    if person_research.get("about"):
+        # Extract a short snippet for personalization
+        about_snippet = person_research["about"][:100]
+        artifact["personalization"]["hooks"].append(
+            make_hook(f"About: {about_snippet}",
+                      "from local enrichment field: person_research.about"))
+
+    # ── Constraints ──
+    artifact["constraints"]["must_not_claim"] = list(DEFAULT_MUST_NOT_CLAIM)
+    if not person_research:
+        artifact["constraints"]["must_not_claim"].append(
+            "No claims about prospect's LinkedIn activity (no person research available)")
+    if not company_research:
+        artifact["constraints"]["must_not_claim"].append(
+            "No claims about company products/metrics (no company research available)")
+
+    # ── Metadata ──
+    artifact["metadata"]["data_sources"] = data_sources
+    # Compute research quality: ratio of filled fields
+    filled = 0
+    total = 0
+    for section_key in ("prospect", "company"):
+        section = artifact[section_key]
+        for v in section.values():
+            total += 1
+            if v:
+                filled += 1
+    quality = round(filled / max(total, 1), 2)
+    artifact["metadata"]["research_quality_score"] = quality
+
+    # ── Validate ──
+    validation = validate_research_artifact(artifact)
+
+    return {"artifact": artifact, "validation": validation}
 
 
 # ─── RESEARCH SUMMARY FOR MESSAGE WRITER ──────────────────────
