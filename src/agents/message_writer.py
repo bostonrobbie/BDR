@@ -834,9 +834,10 @@ def _select_best_proof_point(artifact: dict, product_config: dict,
 
 
 def _pick_personalization_opener(artifact: dict) -> tuple:
-    """Pick the best personalization hook and return (opener_text, evidence_field).
+    """Pick the best personalization hook and return (raw_hook_text, evidence_field).
 
-    Only uses hooks that have evidence.
+    Only uses hooks that have evidence. Returns raw data; use _render_opener()
+    to turn this into natural prose for the message body.
     """
     hooks = artifact.get("personalization", {}).get("hooks", [])
     # Prefer hooks with non-CRM evidence first (person_research > company > CRM)
@@ -854,14 +855,190 @@ def _pick_personalization_opener(artifact: dict) -> tuple:
     return f"Role as {prospect.get('title', 'your role')} at {prospect.get('company_name', 'your company')}", "from CRM field: title"
 
 
+# ─── NATURAL LANGUAGE RENDERERS ────────────────────────────────
+# These turn raw evidence-tagged data into human-sounding prose.
+# Each renderer varies output by tone so the 3 variants read differently.
+
+def _render_opener(raw_hook: str, artifact: dict, tone: str) -> str:
+    """Turn a raw personalization hook into a natural opener sentence.
+
+    Prevents evidence labels (\"LinkedIn headline: ...\") from leaking
+    into the message body. Varies phrasing by tone.
+    """
+    prospect = artifact.get("prospect", {})
+    company = prospect.get("company_name", "your company")
+    title = prospect.get("title", "")
+
+    raw_lower = raw_hook.lower()
+
+    # ── LinkedIn headline hook ──
+    if "linkedin headline" in raw_lower:
+        headline = raw_hook.split(":", 1)[1].strip() if ":" in raw_hook else raw_hook
+        # Take just the first part before any pipe separator, keep original casing
+        headline_short = headline.split("|")[0].strip()
+        func = _function_label(title)
+        # Keep "QA" uppercase, lowercase everything else
+        func_lower = func if func == "QA" else func.lower()
+        if tone == "friendly":
+            return f"Your work leading {func} at {company} stood out"
+        elif tone == "direct":
+            return f"Given your background in {func_lower} at {company}"
+        else:
+            return f"Your experience leading {func_lower} at {company} got me thinking"
+
+    # ── Recently hired hook ──
+    if "recently started" in raw_lower or "recently hired" in raw_lower:
+        if tone == "friendly":
+            return f"Congrats on the new role at {company}"
+        elif tone == "direct":
+            return f"Starting a new {title} role is the perfect time to evaluate tools"
+        else:
+            return f"Curious what's top of mind as you settle into the {title} role at {company}"
+
+    # ── About / bio hook ──
+    if raw_lower.startswith("about:"):
+        snippet = raw_hook.split(":", 1)[1].strip()[:60].rstrip(".")
+        if tone == "friendly":
+            return f"Your focus on {snippet.lower()} resonated"
+        elif tone == "direct":
+            return f"Based on your background in {snippet.lower()}"
+        else:
+            return f"Your experience with {snippet.lower()} got me thinking"
+
+    # ── Role-based hook ──
+    if raw_lower.startswith("role as"):
+        func = _function_label(title)
+        if tone == "friendly":
+            return f"Your work leading {func} at {company} stood out"
+        elif tone == "direct":
+            return f"Given your role as {title} at {company}"
+        else:
+            return f"Running {func} at a company like {company} is no small feat"
+
+    # ── Company-based hook ──
+    if raw_lower.startswith("work at"):
+        if tone == "friendly":
+            return f"What {company} is building caught my attention"
+        elif tone == "direct":
+            return f"Reaching out because of {company}'s engineering team"
+        else:
+            return f"Curious about how {company} handles test automation at scale"
+
+    # ── Generic fallback ──
+    func = _function_label(title)
+    if tone == "friendly":
+        return f"Your work leading {func} at {company} stood out"
+    elif tone == "direct":
+        return f"Given your role as {title} at {company}"
+    return f"Your work at {company} caught my attention"
+
+
+def _function_label(title: str) -> str:
+    """Turn a title into a short function label for natural prose."""
+    t = title.lower()
+    if any(kw in t for kw in ["qa", "quality", "test"]):
+        return "QA"
+    if any(kw in t for kw in ["engineering", "software"]):
+        return "engineering"
+    if "devops" in t or "platform" in t:
+        return "platform engineering"
+    if " of " in title:
+        return title.split(" of ", 1)[-1].strip()
+    return title
+
+
+def _render_pain_sentence(raw_pain: str, artifact: dict, tone: str) -> str:
+    """Turn a raw pain hypothesis into a natural sentence.
+
+    Adapts framing by seniority: VPs/Directors get strategic angles,
+    Managers/ICs get tactical angles. Uses actual tool names from signals.
+    """
+    prospect = artifact.get("prospect", {})
+    company = prospect.get("company_name", "your company")
+    seniority = prospect.get("seniority", "").lower()
+    industry = artifact.get("company", {}).get("industry", "tech")
+
+    # Extract tool names
+    tools = []
+    for item in artifact.get("signals", {}).get("tech_stack", []):
+        val = item.get("value", "") if isinstance(item, dict) else str(item)
+        if val:
+            tools.append(val)
+
+    is_strategic = seniority in ("vp", "c-suite", "director", "head")
+    pain_lower = raw_pain.lower()
+
+    # ── Maintenance pain with known tools ──
+    if "maintenance" in pain_lower and tools:
+        tool_list = " and ".join(tools[:2])
+        if is_strategic:
+            if tone == "friendly":
+                return f"Keeping {tool_list} suites stable while shipping fast is a grind most {industry} teams know well"
+            elif tone == "direct":
+                return f"at {company}'s scale, {tool_list} maintenance is probably eating into your team's velocity"
+            else:
+                return f"how much engineering time goes into keeping {tool_list} tests from breaking"
+        else:
+            if tone == "friendly":
+                return f"Wrangling {tool_list} test maintenance while keeping release cycles tight is a constant balancing act"
+            elif tone == "direct":
+                return f"{tool_list} maintenance overhead tends to grow faster than teams can keep up with"
+            else:
+                return f"are flaky {tool_list} tests still the biggest time sink for your team"
+
+    # ── Compliance / regulated pain ──
+    if "compliance" in pain_lower or "regulated" in pain_lower:
+        if is_strategic:
+            if tone == "curious":
+                return f"how do you keep regression cycles short when compliance requires full coverage before every release"
+            return f"Regression cycles in a regulated {industry} environment can be a real bottleneck for release velocity"
+        else:
+            if tone == "curious":
+                return f"how much of your sprint gets eaten by compliance-driven regression"
+            return f"Running full regression before every release in a compliance-heavy environment takes serious bandwidth"
+
+    # ── Scaling pain ──
+    if "scaling" in pain_lower:
+        if is_strategic:
+            return f"Scaling test coverage without scaling headcount is one of the harder problems in {industry} engineering"
+        else:
+            return f"Growing automation coverage while your team's already stretched thin is a tough balance"
+
+    # ── Maintenance pain without specific tools ──
+    if "maintenance" in pain_lower:
+        if is_strategic:
+            return f"At {company}'s scale, test maintenance tends to become a real drag on release velocity"
+        else:
+            return f"Keeping test suites reliable as {company} ships faster is a constant challenge"
+
+    # ── Generic fallback ──
+    if is_strategic:
+        return f"Test automation at {company}'s scale tends to become a strategic bottleneck"
+    return f"Keeping test suites reliable as {company} ships faster is a constant challenge"
+
+
 def _pick_pain_hook(artifact: dict) -> str:
-    """Pick the best pain hypothesis for the hook."""
+    """Pick the best pain hypothesis for the hook (raw text)."""
     pains = artifact.get("pains", {}).get("hypothesized_pains", [])
-    # Sort by confidence, highest first
     sorted_pains = sorted(pains, key=lambda p: p.get("confidence", 0), reverse=True)
     if sorted_pains:
         return sorted_pains[0].get("pain", "test maintenance and release velocity")
     return "test maintenance and release velocity"
+
+
+def _short_pain_label(raw_pain: str) -> str:
+    """Create a short label from a pain hypothesis for subject lines."""
+    p = raw_pain.lower()
+    if "maintenance" in p:
+        return "test maintenance"
+    if "compliance" in p or "regulated" in p:
+        return "regression cycles"
+    if "scaling" in p:
+        return "scaling automation"
+    if "flaky" in p:
+        return "flaky tests"
+    words = raw_pain.split()[:3]
+    return " ".join(words).lower().rstrip(",")
 
 
 def _pick_cta(product_config: dict, tone: str) -> str:
@@ -871,15 +1048,65 @@ def _pick_cta(product_config: dict, tone: str) -> str:
         return ctas[1]  # "Worth a quick reply..."
     elif tone == "direct" and len(ctas) > 0:
         return ctas[0]  # "Would a 15-minute comparison..."
+    elif tone == "curious" and len(ctas) > 3:
+        return ctas[3]  # "Worth a conversation?"
     elif tone == "curious" and len(ctas) > 2:
         return ctas[2]  # "Happy to share more..."
     return ctas[0] if ctas else "Worth a quick chat?"
+
+
+def _pick_value_prop(product_config: dict, artifact: dict, tone: str) -> str:
+    """Pick a value prop that fits the prospect's context."""
+    vps = product_config.get("value_props", [])
+    if not vps:
+        return ""
+    tools = []
+    for item in artifact.get("signals", {}).get("tech_stack", []):
+        val = item.get("value", "") if isinstance(item, dict) else str(item)
+        if val:
+            tools.append(val.lower())
+
+    seniority = artifact.get("prospect", {}).get("seniority", "").lower()
+    func = artifact.get("prospect", {}).get("function", "").lower()
+
+    # Strategic VPs get high-level props
+    if seniority in ("vp", "c-suite"):
+        for vp in vps:
+            if "maintenance" in vp.lower() or "reduction" in vp.lower():
+                return vp
+        return vps[0]
+
+    # Users of competitor tools get the maintenance reduction prop
+    if any(t in ("selenium", "cypress", "playwright") for t in tools):
+        for vp in vps:
+            if "maintenance" in vp.lower() or "selenium" in vp.lower() or "cypress" in vp.lower():
+                return vp
+
+    # QA roles get the collaboration prop
+    if "qa" in func:
+        for vp in vps:
+            if "collaborate" in vp.lower() or "no-code" in vp.lower():
+                return vp
+
+    # Vary by tone as final fallback
+    if tone == "friendly":
+        return vps[0]
+    elif tone == "direct":
+        return vps[1] if len(vps) > 1 else vps[0]
+    return vps[2] if len(vps) > 2 else vps[0]
 
 
 def generate_message_variants(artifact: dict, scoring_result: dict,
                                product_config: dict = None,
                                channel: str = "linkedin") -> dict:
     """Generate 3 grounded message variants from ResearchArtifact + ScoringResult.
+
+    Each variant uses:
+    - A naturally-rendered personalization opener (no raw evidence strings)
+    - A seniority-aware pain framing (strategic for VPs, tactical for managers)
+    - A context-matched proof point and value prop
+    - A tone-specific CTA with soft ask
+    - Proof point rotation between variants where possible
 
     Args:
         artifact: A validated ResearchArtifact.
@@ -888,15 +1115,7 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
         channel: "linkedin" or "email".
 
     Returns:
-        {
-          "variants": [
-            {"tone": "friendly", "subject_lines": [...], "body": "...", "opener": "...",
-             "value_prop": "...", "proof_point": "...", "cta": "...", "char_count": int},
-            ... (3 variants)
-          ],
-          "qa_results": [...],
-          "metadata": {...}
-        }
+        {"variants": [...], "qa_results": [...], "metadata": {...}}
     """
     product_config = product_config or _load_product_config()
     prospect = artifact.get("prospect", {})
@@ -905,81 +1124,98 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
     company_name = prospect.get("company_name", "your company")
     title = prospect.get("title", "")
     sender = product_config.get("sender", "Rob Gorham")
-    sender_title = product_config.get("sender_title", "BDR")
     our_company = product_config.get("company", "Testsigma")
 
-    opener_text, opener_evidence = _pick_personalization_opener(artifact)
-    pain_hook = _pick_pain_hook(artifact)
-    proof_point = _select_best_proof_point(artifact, product_config)
-    value_props = product_config.get("value_props", [])
-    max_chars = product_config.get("max_chars", {}).get(channel, 600)
+    raw_opener, opener_evidence = _pick_personalization_opener(artifact)
+    raw_pain = _pick_pain_hook(artifact)
+
+    # Select primary + secondary proof points for variety across variants
+    pp_primary = _select_best_proof_point(artifact, product_config)
+    pp_secondary = _select_best_proof_point(artifact, product_config,
+                                             exclude_keys=[pp_primary["key"]])
 
     tones = ["friendly", "direct", "curious"]
     variants = []
 
     for tone in tones:
+        opener = _render_opener(raw_opener, artifact, tone)
+        pain = _render_pain_sentence(raw_pain, artifact, tone)
         cta = _pick_cta(product_config, tone)
-        vp = value_props[tones.index(tone) % len(value_props)] if value_props else ""
+        vp = _pick_value_prop(product_config, artifact, tone)
+
+        # Rotate proof points: curious variant gets secondary if available
+        if tone == "curious" and pp_secondary["key"] != pp_primary["key"]:
+            pp = pp_secondary
+        else:
+            pp = pp_primary
+
+        pain_label = _short_pain_label(raw_pain)
+        func = _function_label(title)
 
         if tone == "friendly":
             body = (
                 f"Hi {first_name},\n\n"
-                f"{opener_text} caught my attention. "
-                f"{pain_hook.capitalize()} is something a lot of "
-                f"{company_info.get('industry', 'tech')} teams wrestle with, "
-                f"especially at {company_name}'s scale.\n\n"
-                f"{proof_point.get('text', '')}. "
-                f"{vp}.\n\n"
-                f"{cta} If not relevant, no worries at all.\n\n"
+                f"{opener}. "
+                f"{pain[0].upper()}{pain[1:]} - "
+                f"and {pp.get('text', '')}.\n\n"
+                f"{cta} If not, totally get it.\n\n"
                 f"Best,\n{sender}"
             )
             subjects = [
-                f"{title.split()[0] if title else 'QA'} at {company_name}",
-                f"Quick thought for {first_name}",
-                f"Testing at {company_name}",
+                f"{func} at {company_name}",
+                f"Thought for {first_name} re: {pain_label}",
+                f"{company_name}'s {func} team",
             ]
+
         elif tone == "direct":
+            # Only include value prop if it doesn't duplicate the proof point stat
+            pp_text = pp.get("text", "")
+            pp_metric = pp.get("metric", "").lower()
+            vp_overlaps = pp_metric and any(
+                word in vp.lower() for word in pp_metric.split()
+                if len(word) > 3
+            )
+            proof_line = pp_text
+            if vp and not vp_overlaps:
+                proof_line = f"{pp_text}. {vp}"
             body = (
                 f"Hi {first_name},\n\n"
-                f"{sender} here from {our_company}. "
-                f"Given your role as {title} at {company_name}, "
-                f"I wanted to flag one thing: {pain_hook}.\n\n"
-                f"{proof_point.get('text', '')}.\n\n"
+                f"{opener}. {pain[0].upper()}{pain[1:]}.\n\n"
+                f"{proof_line}.\n\n"
                 f"{cta}\n\n"
                 f"{sender}"
             )
             subjects = [
-                f"{pain_hook.split()[0].capitalize()} at {company_name}",
-                f"For {first_name} - {our_company}",
-                f"{company_name} + {our_company}",
+                f"{pain_label.capitalize()} at {company_name}",
+                f"{first_name} - quick question",
+                f"{our_company} for {company_name}",
             ]
+
         else:  # curious
             body = (
                 f"Hi {first_name},\n\n"
-                f"Curious how your team at {company_name} handles {pain_hook}? "
-                f"A lot of {company_info.get('industry', 'tech')} teams in the "
-                f"{company_info.get('size_band', '')} range run into this.\n\n"
-                f"{proof_point.get('text', '')}.\n\n"
-                f"{cta} Either way, happy to share what we're seeing.\n\n"
+                f"{opener} - {pain}?\n\n"
+                f"{pp.get('text', '')}.\n\n"
+                f"{cta} Either way, no worries.\n\n"
                 f"Best,\n{sender}"
             )
             subjects = [
-                f"Question about {pain_hook.split()[0].lower()} at {company_name}",
-                f"How does {company_name} handle this?",
-                f"Quick question, {first_name}",
+                f"How {company_name} handles {pain_label}",
+                f"Question for {first_name}",
+                f"{func} challenge at {company_name}?",
             ]
 
         variants.append({
             "tone": tone,
             "subject_lines": subjects,
             "body": body,
-            "opener": opener_text,
+            "opener": opener,
             "opener_evidence": opener_evidence,
             "value_prop": vp,
-            "proof_point": proof_point.get("short", ""),
-            "proof_point_key": proof_point.get("key", ""),
+            "proof_point": pp.get("short", ""),
+            "proof_point_key": pp.get("key", ""),
             "cta": cta,
-            "pain_hook": pain_hook,
+            "pain_hook": raw_pain,
             "char_count": len(body),
             "word_count": len(body.split()),
         })
@@ -999,7 +1235,7 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
             "channel": channel,
             "scoring_tier": scoring_result.get("tier", "unknown"),
             "total_score": scoring_result.get("total_score", 0),
-            "proof_point_used": proof_point.get("key", ""),
+            "proof_point_used": pp_primary.get("key", ""),
             "generated_at": datetime.utcnow().isoformat(),
         },
     }
