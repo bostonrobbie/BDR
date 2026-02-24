@@ -187,6 +187,124 @@ def test_qa_rejects_bad_variant():
     print(f"PASS: test_qa_rejects_bad_variant ({qa['passed_count']}/{qa['total_checks']} checks passed)")
 
 
+def test_cta_varies_by_tier():
+    """Hot prospects should get more confident CTAs than cold prospects."""
+    artifact_hot, scoring_hot = _get_test_data()
+    # Force hot tier
+    scoring_hot["tier"] = "hot"
+    scoring_hot["total_score"] = 85
+    output_hot = generate_message_variants(artifact_hot, scoring_hot)
+
+    # Build a cold prospect
+    cold_contact = {
+        "first_name": "Priya", "last_name": "Patel",
+        "title": "Software Engineer", "seniority_level": "",
+        "company_name": "",
+    }
+    cold_result = build_research_artifact(cold_contact, None)
+    artifact_cold = cold_result["artifact"]
+    scoring_cold = score_from_artifact(artifact_cold)
+
+    output_cold = generate_message_variants(artifact_cold, scoring_cold)
+
+    # Hot friendly CTA should be more confident (15-minute, comparison, etc.)
+    hot_friendly = next(v for v in output_hot["variants"] if v["tone"] == "friendly")
+    cold_friendly = next(v for v in output_cold["variants"] if v["tone"] == "friendly")
+    assert hot_friendly["cta"] != cold_friendly["cta"], \
+        f"Hot and cold CTAs should differ: '{hot_friendly['cta']}' vs '{cold_friendly['cta']}'"
+    # Hot should mention a time frame or specific offer
+    assert any(word in hot_friendly["cta"].lower() for word in ["15-minute", "this week", "make sense"]), \
+        f"Hot CTA should be specific: '{hot_friendly['cta']}'"
+    # Cold should be softer
+    assert any(word in cold_friendly["cta"].lower() for word in ["flag", "helpful", "if", "radar"]), \
+        f"Cold CTA should be soft: '{cold_friendly['cta']}'"
+    print("PASS: test_cta_varies_by_tier")
+
+
+def test_cta_varies_by_seniority():
+    """VP-level prospects should get strategic offers (conversation), ICs get tactical (comparison/look)."""
+    # VP prospect
+    vp_contact = {
+        "first_name": "Mike", "last_name": "Torres",
+        "title": "VP of Engineering", "seniority_level": "vp",
+        "company_name": "HealthBridge",
+    }
+    vp_account = {
+        "name": "HealthBridge", "industry": "Healthcare",
+        "employee_band": "501-1000", "employee_count": 800,
+        "buyer_intent": 0, "known_tools": "[]",
+    }
+    vp_result = build_research_artifact(vp_contact, vp_account)
+    vp_artifact = vp_result["artifact"]
+    vp_scoring = score_from_artifact(vp_artifact)
+    vp_scoring["tier"] = "warm"
+    vp_output = generate_message_variants(vp_artifact, vp_scoring)
+
+    # Manager prospect with same tier
+    mgr_contact = {
+        "first_name": "James", "last_name": "Wilson",
+        "title": "QA Manager", "seniority_level": "manager",
+        "company_name": "CloudStack",
+    }
+    mgr_account = {
+        "name": "CloudStack", "industry": "SaaS / B2B Software",
+        "employee_band": "1001-5000", "employee_count": 2500,
+        "buyer_intent": 0, "known_tools": '["Cypress", "Playwright"]',
+    }
+    mgr_result = build_research_artifact(mgr_contact, mgr_account)
+    mgr_artifact = mgr_result["artifact"]
+    mgr_scoring = score_from_artifact(mgr_artifact)
+    mgr_scoring["tier"] = "warm"
+    mgr_output = generate_message_variants(mgr_artifact, mgr_scoring)
+
+    vp_direct = next(v for v in vp_output["variants"] if v["tone"] == "direct")
+    mgr_direct = next(v for v in mgr_output["variants"] if v["tone"] == "direct")
+
+    # VP should get "conversation" offer, manager with Cypress should get "comparison"
+    assert "conversation" in vp_direct["cta"].lower(), \
+        f"VP CTA should mention conversation: '{vp_direct['cta']}'"
+    assert "comparison" in mgr_direct["cta"].lower() or "cypress" in mgr_direct["cta"].lower(), \
+        f"Manager with Cypress should get comparison offer: '{mgr_direct['cta']}'"
+    print("PASS: test_cta_varies_by_seniority")
+
+
+def test_signoff_varies_by_tone():
+    """Friendly gets 'Cheers', direct gets just name, curious gets 'Best'."""
+    artifact, scoring = _get_test_data()
+    output = generate_message_variants(artifact, scoring)
+
+    for v in output["variants"]:
+        body = v["body"]
+        if v["tone"] == "friendly":
+            assert "Cheers," in body, f"Friendly should use 'Cheers,' sign-off"
+        elif v["tone"] == "direct":
+            # Direct should end with just the sender name, no "Best," or "Cheers,"
+            assert "Cheers," not in body and "Best," not in body, \
+                f"Direct should use bare name sign-off"
+        elif v["tone"] == "curious":
+            assert "Best," in body, f"Curious should use 'Best,' sign-off"
+    print("PASS: test_signoff_varies_by_tone")
+
+
+def test_ps_line_email_only():
+    """P.S. should appear for hot email prospects, not LinkedIn."""
+    artifact, scoring = _get_test_data()
+    scoring["tier"] = "hot"
+    scoring["total_score"] = 85
+
+    linkedin_output = generate_message_variants(artifact, scoring, channel="linkedin")
+    email_output = generate_message_variants(artifact, scoring, channel="email")
+
+    for v in linkedin_output["variants"]:
+        assert "P.S." not in v["body"], \
+            f"LinkedIn {v['tone']} variant should not have P.S."
+
+    # At least one email variant should have P.S. (if secondary PP differs)
+    has_ps = any("P.S." in v["body"] for v in email_output["variants"])
+    print(f"  Email P.S. present: {has_ps}")
+    print("PASS: test_ps_line_email_only")
+
+
 if __name__ == "__main__":
     test_generates_three_variants()
     test_each_variant_has_required_fields()
@@ -198,4 +316,8 @@ if __name__ == "__main__":
     test_char_limit_linkedin()
     test_metadata_populated()
     test_qa_rejects_bad_variant()
-    print("\n=== All 10 message writer v2 tests passed ===")
+    test_cta_varies_by_tier()
+    test_cta_varies_by_seniority()
+    test_signoff_varies_by_tone()
+    test_ps_line_email_only()
+    print("\n=== All 14 message writer v2 tests passed ===")

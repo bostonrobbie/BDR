@@ -1041,18 +1041,163 @@ def _short_pain_label(raw_pain: str) -> str:
     return " ".join(words).lower().rstrip(",")
 
 
-def _pick_cta(product_config: dict, tone: str) -> str:
-    """Pick a CTA matching the tone."""
-    ctas = product_config.get("cta_options", [])
-    if tone == "friendly" and len(ctas) > 1:
-        return ctas[1]  # "Worth a quick reply..."
-    elif tone == "direct" and len(ctas) > 0:
-        return ctas[0]  # "Would a 15-minute comparison..."
-    elif tone == "curious" and len(ctas) > 3:
-        return ctas[3]  # "Worth a conversation?"
-    elif tone == "curious" and len(ctas) > 2:
-        return ctas[2]  # "Happy to share more..."
-    return ctas[0] if ctas else "Worth a quick chat?"
+# ─── CONTEXT-AWARE CLOSING RENDERERS ─────────────────────────
+# These build the CTA, soft-ask, sign-off, and P.S. based on
+# seniority, scoring tier, pain type, and known tools.
+
+
+def _build_offer(seniority: str, has_competitor: bool, tools: list, pain_lower: str) -> str:
+    """Determine what to offer based on prospect context.
+
+    Competitor tool users get a comparison. Compliance-heavy gets case study.
+    Strategic roles get a conversation. Default: quick look.
+    """
+    if has_competitor:
+        tool_name = next((t for t in tools if t.lower() in
+                          ("selenium", "cypress", "playwright", "katalon", "testcomplete")), "")
+        if tool_name:
+            return f"comparison with {tool_name}"
+        return "side-by-side comparison"
+    # Strategic roles get conversation framing regardless of pain type
+    if seniority in ("vp", "c-suite"):
+        return "quick conversation"
+    if "compliance" in pain_lower or "regulated" in pain_lower:
+        return "case study"
+    if "scaling" in pain_lower:
+        return "walkthrough"
+    return "quick look"
+
+
+def _build_cta_line(offer: str, tier: str, tone: str, seniority: str, company: str) -> str:
+    """Build the CTA sentence, varying by confidence tier and tone.
+
+    Hot prospects get confident, specific asks. Cold prospects get soft flags.
+    """
+    is_strategic = seniority in ("vp", "c-suite", "director", "head")
+
+    if tier == "hot":
+        if tone == "friendly":
+            if is_strategic:
+                return f"Would a 15-minute {offer} be worth your time?"
+            return f"Would a 15-minute {offer} make sense?"
+        elif tone == "direct":
+            if is_strategic:
+                return f"Open to a {offer} this week?"
+            return f"Open to a quick {offer}?"
+        else:  # curious
+            if "comparison" in offer or "case study" in offer:
+                return f"Would it help to see a {offer} tailored to {company}?"
+            return f"Would it make sense to explore this for {company}?"
+
+    elif tier == "warm":
+        if tone == "friendly":
+            return f"Would a {offer} be helpful?"
+        elif tone == "direct":
+            return f"Worth a {offer}?"
+        else:
+            return f"Curious if a {offer} would be relevant for {company}."
+
+    elif tier == "cool":
+        if tone == "friendly":
+            return f"Happy to share a {offer} if it's relevant."
+        elif tone == "direct":
+            return "Happy to share more if useful."
+        else:
+            return "Curious if this is even on your radar."
+
+    else:  # cold
+        return "Figured I'd flag it in case it's helpful down the road."
+
+
+def _build_soft_ask(tier: str, tone: str) -> str:
+    """Build the softener/easy-out after the CTA.
+
+    Hot prospects get minimal softeners. Cold prospects get generous easy-outs.
+    Direct tone skips softeners entirely.
+    """
+    if tone == "direct":
+        return ""
+    if tier == "hot":
+        return "Happy to keep it quick." if tone == "friendly" else "Either way, appreciate the read."
+    elif tier == "warm":
+        return "No worries if the timing's off." if tone == "friendly" else "No pressure either way."
+    else:
+        return "Either way, no worries at all." if tone == "friendly" else "No pressure at all."
+
+
+def _build_signoff(tone: str, sender: str) -> str:
+    """Build the sign-off. Friendly gets 'Cheers', direct is just the name, curious gets 'Best'."""
+    if tone == "friendly":
+        return f"Cheers,\n{sender}"
+    elif tone == "direct":
+        return sender
+    return f"Best,\n{sender}"
+
+
+def _build_ps_line(scoring_result: dict, pp_used: dict,
+                   pp_other: dict, channel: str) -> str:
+    """Build an optional P.S. line for hot/warm prospects on email channel.
+
+    Only adds P.S. when:
+    - Prospect is hot or warm tier
+    - Channel is email (LinkedIn messages need to stay short)
+    - There's a different proof point to reference
+    """
+    if channel != "email":
+        return ""
+    tier = scoring_result.get("tier", "cool")
+    if tier not in ("hot", "warm"):
+        return ""
+    if not pp_other or pp_other.get("key") == pp_used.get("key"):
+        return ""
+    if tier == "hot":
+        return f"P.S. {pp_other.get('text', '')}"
+    # warm: softer, offers to share details
+    return f"P.S. {pp_other.get('text', '')} - happy to share the full story if relevant."
+
+
+def _render_closing_block(artifact: dict, scoring_result: dict, tone: str,
+                          product_config: dict, pp_used: dict,
+                          pp_other: dict = None, channel: str = "linkedin") -> dict:
+    """Assemble the complete closing block and return it with metadata.
+
+    Varies by:
+    - Seniority: VPs get strategic asks, Managers get tactical, ICs get low-commitment
+    - Scoring tier: Hot = confident, Warm = standard, Cool/Cold = soft
+    - Pain type: Maintenance w/ competitor tools -> comparison, Compliance -> case study
+    - Tone: Friendly = warm, Direct = concise, Curious = question-led
+
+    Returns:
+        {"block": str, "cta": str}
+    """
+    prospect = artifact.get("prospect", {})
+    seniority = prospect.get("seniority", "").lower()
+    company = prospect.get("company_name", "your company")
+    sender = product_config.get("sender", "Rob Gorham")
+
+    raw_pain = _pick_pain_hook(artifact)
+    tools = []
+    for item in artifact.get("signals", {}).get("tech_stack", []):
+        val = item.get("value", "") if isinstance(item, dict) else str(item)
+        if val:
+            tools.append(val)
+    has_competitor = any(t.lower() in ("selenium", "cypress", "playwright", "katalon", "testcomplete")
+                        for t in tools)
+
+    tier = scoring_result.get("tier", "cool")
+    offer = _build_offer(seniority, has_competitor, tools, raw_pain.lower())
+    cta = _build_cta_line(offer, tier, tone, seniority, company)
+    soft_ask = _build_soft_ask(tier, tone)
+    signoff = _build_signoff(tone, sender)
+    ps = _build_ps_line(scoring_result, pp_used, pp_other, channel)
+
+    # Assemble closing text
+    closing_line = f"{cta} {soft_ask}".rstrip() if soft_ask else cta
+    block = f"{closing_line}\n\n{signoff}"
+    if ps:
+        block += f"\n\n{ps}"
+
+    return {"block": block, "cta": cta}
 
 
 def _pick_value_prop(product_config: dict, artifact: dict, tone: str) -> str:
@@ -1123,7 +1268,6 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
     first_name = prospect.get("full_name", "").split()[0] if prospect.get("full_name") else ""
     company_name = prospect.get("company_name", "your company")
     title = prospect.get("title", "")
-    sender = product_config.get("sender", "Rob Gorham")
     our_company = product_config.get("company", "Testsigma")
 
     raw_opener, opener_evidence = _pick_personalization_opener(artifact)
@@ -1140,14 +1284,19 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
     for tone in tones:
         opener = _render_opener(raw_opener, artifact, tone)
         pain = _render_pain_sentence(raw_pain, artifact, tone)
-        cta = _pick_cta(product_config, tone)
         vp = _pick_value_prop(product_config, artifact, tone)
 
         # Rotate proof points: curious variant gets secondary if available
         if tone == "curious" and pp_secondary["key"] != pp_primary["key"]:
             pp = pp_secondary
+            pp_other = pp_primary
         else:
             pp = pp_primary
+            pp_other = pp_secondary
+
+        # Build context-aware closing (CTA + soft ask + sign-off + optional P.S.)
+        closing = _render_closing_block(artifact, scoring_result, tone,
+                                         product_config, pp, pp_other, channel)
 
         pain_label = _short_pain_label(raw_pain)
         func = _function_label(title)
@@ -1158,8 +1307,7 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
                 f"{opener}. "
                 f"{pain[0].upper()}{pain[1:]} - "
                 f"and {pp.get('text', '')}.\n\n"
-                f"{cta} If not, totally get it.\n\n"
-                f"Best,\n{sender}"
+                f"{closing['block']}"
             )
             subjects = [
                 f"{func} at {company_name}",
@@ -1182,8 +1330,7 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
                 f"Hi {first_name},\n\n"
                 f"{opener}. {pain[0].upper()}{pain[1:]}.\n\n"
                 f"{proof_line}.\n\n"
-                f"{cta}\n\n"
-                f"{sender}"
+                f"{closing['block']}"
             )
             subjects = [
                 f"{pain_label.capitalize()} at {company_name}",
@@ -1196,8 +1343,7 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
                 f"Hi {first_name},\n\n"
                 f"{opener} - {pain}?\n\n"
                 f"{pp.get('text', '')}.\n\n"
-                f"{cta} Either way, no worries.\n\n"
-                f"Best,\n{sender}"
+                f"{closing['block']}"
             )
             subjects = [
                 f"How {company_name} handles {pain_label}",
@@ -1214,7 +1360,7 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
             "value_prop": vp,
             "proof_point": pp.get("short", ""),
             "proof_point_key": pp.get("key", ""),
-            "cta": cta,
+            "cta": closing["cta"],
             "pain_hook": raw_pain,
             "char_count": len(body),
             "word_count": len(body.split()),
