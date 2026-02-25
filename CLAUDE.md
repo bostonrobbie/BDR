@@ -60,6 +60,29 @@ Cisco, Samsung, Honeywell, Bosch, Nokia, Nestle, KFC, DHL, Zeiss, Axel Springer,
 - Use customer stories matched to prospect pain
 - Keep emails short (<150 words), one CTA, social proof
 
+## Tool Stack & Access Rules
+| Tool | Status | Notes |
+|------|--------|-------|
+| LinkedIn Sales Navigator | Primary | Browser automation for prospecting + InMail |
+| Apollo | Connected (MCP) | Enrichment-first, not sequence-first. 6,879 lead credits. |
+| Gmail | Connected (MCP) | Email for Touch 5 and general comms |
+| Google Calendar | Connected (MCP) | Meeting scheduling |
+| Google Drive | Connected (MCP) | File storage, batch trackers |
+| Salesforce | SKIP | Too much 2FA. Use Apollo for CRM-like functions instead. |
+| Slack | DO NOT CONNECT | Rob does NOT want Claude to interact with Slack in any way. Never send messages, react with emojis, reply to threads, or take any visible action that coworkers could see. If Slack read-only access becomes available in the future, revisit. |
+| Stripe | Connected (MCP) | Not relevant to BDR workflow |
+| Vercel | Connected (MCP) | Not relevant to BDR workflow |
+
+### Hard Rule: Coworker Visibility
+**NEVER take any action that would be visible to Rob's coworkers.** This includes:
+- Sending Slack messages or reactions
+- Posting in any team channels
+- Sending emails to internal Testsigma addresses (unless Rob explicitly asks)
+- Any action that reveals Claude is being used
+- Logging into shared tools where activity would be visible to the team
+
+Rob's use of AI tools is private. All outreach is manually sent by Rob (copy/paste from our drafts). Claude drafts, Rob executes.
+
 ---
 
 ## Outreach SOP (for Claude)
@@ -768,3 +791,528 @@ Never use the same proof point twice for the same prospect across their sequence
 | Avg msgs sent (no-reply) | 3.82 | No-reply threads average 4 msgs before giving up |
 
 **Rule:** Never abandon a prospect before Touch 3. The data shows 31.1% of wins would be lost by stopping at 2 touches.
+
+---
+
+## LinkedIn Sales Navigator Live Send SOP (Browser Automation)
+
+This section defines the step-by-step procedure for Claude (via Cowork browser automation) to send InMail messages through LinkedIn Sales Navigator on Rob's behalf. Every send requires explicit user approval before clicking Send.
+
+### Hard Rules
+- **NEVER click Send until Rob replies with APPROVE SEND in chat.**
+- If anything looks off (wrong person, wrong company, missing InMail access, message box issues), STOP and report with a screenshot + suggested fix.
+- Do not invent data. Only use what is visible in Sales Navigator and our tracker.
+- One prospect at a time. Complete the full workflow before moving to the next.
+
+### Inputs Required (from HTML tracker)
+For each prospect, load before starting:
+- Full name, Title, Company
+- Sales Navigator profile URL (required)
+- LinkedIn normal URL (optional)
+- Apollo ID and email (if available)
+- LinkedIn Message 1 (final approved copy)
+- Subject line
+- Personalization hooks / research notes
+
+### Step-by-Step Procedure
+
+#### Step 1: Load Prospect Record
+- Extract prospect data from the HTML tracker file.
+- Confirm all required fields are present (name, title, company, Sales Nav URL, message text, subject).
+- If any required field is missing, STOP and ask Rob.
+
+#### Step 2: Navigate to Sales Navigator Profile
+- Open the Sales Nav URL in a browser tab.
+- Wait for full page load.
+- Take a screenshot showing: Name, Current title, Company, Location.
+
+#### Step 3: Pre-Flight Identity Check
+Run these checks and record PASS/FAIL for each:
+
+| Check | Criteria |
+|-------|----------|
+| Name match | Name on profile matches tracker exactly (or obvious variant like middle initial) |
+| Title match | Title matches within reason (recent promotion allowed but must be noted) |
+| Company match | Company matches (or recent change must be noted) |
+| Target fit | Role plausibly owns/impacts QA/testing |
+| InMail access | "Message" button is available and composer opens |
+| No prior contact | No "Messaged:" or "Viewed:" indicator showing prior outreach |
+
+If ANY check FAILS: STOP, output issue summary + screenshot + recommended fix.
+
+#### Step 4: Open InMail Composer
+- Click the "Message" button on the Sales Navigator profile.
+- Wait for the InMail composer modal/window to load.
+- Check if a Subject line field exists:
+  - If YES: Enter the tracker-provided subject line.
+  - If NO: Note "Subject field not present" in logs and proceed.
+
+#### Step 5: Compose Message (Mobile-Friendly Formatting)
+Formatting rules for InMail body:
+- Max 2-3 short sentences per paragraph.
+- 1 blank line between each paragraph (opener, context, proof, close, sign-off).
+- No bullets unless 2 or fewer.
+- No emojis.
+- Keep total body under 600 characters when possible.
+- Paste Message 1 text from tracker EXACTLY as written.
+- After paste, verify line breaks are preserved (LinkedIn sometimes collapses them).
+- Fix any collapsed line breaks manually by adding returns between paragraphs.
+
+#### Step 6: Quality Check Before Showing User
+Before presenting for approval, verify:
+- [ ] No placeholders remain ([Name], [Company], etc.)
+- [ ] Prospect name spelling matches profile
+- [ ] Company name matches profile
+- [ ] CTA present and clear ("what day works")
+- [ ] No extra spaces, weird line breaks, or jumbled text
+- [ ] Exactly 2 question marks in body
+- [ ] Message looks clean in the composer preview
+- [ ] Subject line present (if field exists)
+
+#### Step 7: Present for Approval (NO SEND)
+Return to Rob with:
+1. Pre-flight check results (all PASS/FAIL)
+2. Any discrepancies noted (title change, etc.)
+3. The exact final message as composed (subject + body)
+4. A screenshot of the composed message in the InMail box
+
+Then say: **"Reply APPROVE SEND to send, or reply EDIT with changes."**
+
+**STOP here and wait for Rob's response.**
+
+#### Step 8: Send (Only After APPROVE SEND)
+- Only if Rob replies: **APPROVE SEND**
+- Click the Send button.
+- Wait for sent confirmation UI (thread created, sent indicator).
+- Take a screenshot confirming the send.
+
+#### Step 9: Post-Send Logging
+Update the prospect record in the HTML tracker with:
+
+| Field | Value |
+|-------|-------|
+| Status | Touch 1 Sent |
+| messagingStatus | Sent |
+| dateSent | ISO timestamp (local time) |
+| subjectUsed | (value or "N/A - no subject field") |
+| conversationUrl | (copy thread URL if visible) |
+| preFlightResult | PASS (or PASS with notes) |
+| discrepancies | (any title/company changes noted) |
+| nextStepDue | +3 business days for Touch 2 (call) |
+
+Output a structured LOG PAYLOAD in chat so Rob can verify.
+
+#### Step 10: Close Conversation & Prepare for Next Prospect
+- Close the InMail conversation window/thread in the browser (navigate away from the messaging thread or close the composer).
+- Navigate back to Sales Navigator search page to clear the screen for the next prospect.
+- Confirm the loop is closed: "Prospect #X complete. Ready for Prospect #[X+1]."
+- Begin Step 1 for the next prospect.
+
+### Error Handling
+| Issue | Action |
+|-------|--------|
+| Profile not found / URL broken | STOP, ask Rob for alternate URL |
+| InMail not available (no credits or restricted) | STOP, suggest connection request as fallback |
+| Message composer won't load | Refresh, retry once, then STOP and report |
+| "Messaged" indicator present (prior contact) | STOP, flag as already contacted, ask Rob to confirm |
+| Title/company mismatch | Note the change, present to Rob, let him decide |
+| LinkedIn session expired / logged out | STOP, ask Rob to re-authenticate |
+
+### Send Log (Running Record)
+Each send appends to this log. Format:
+
+```
+[YYYY-MM-DD HH:MM] Prospect #X - [Name] @ [Company]
+Channel: LinkedIn Sales Navigator InMail
+Subject: [subject used]
+Pre-flight: PASS/FAIL
+Result: SENT / BLOCKED / ERROR
+Thread URL: [if available]
+Notes: [any discrepancies or issues]
+Next step: [Touch 2 call on YYYY-MM-DD]
+```
+
+### Version History
+| Date | Change |
+|------|--------|
+| 2026-02-25 | v1.0 - Initial SOP created for Batch 3 pilot send |
+| 2026-02-25 | v1.1 - Added Step 10: Close conversation window before moving to next prospect |
+| 2026-02-25 | v2.0 - Major update: Added SOP B (Research+Draft), SOP C (Batch Prepare), Safety modules, Cycle Logging, Apollo integration, LinkedIn compliance, plugin customization |
+
+---
+
+## SOP B - Prospect Research + Message Draft (Pre-Send)
+
+**Purpose:** Before any sending session, generate all message touches, personalization hooks, and risk flags for a prospect.
+
+### Inputs Required
+- Sales Navigator URL or search query
+- Apollo contact + account enrichment (if available)
+- Salesforce CRM record (lead/contact + activity history) if connected
+- Previous batch files (for Pre-Brief and feedback loop)
+
+### Outputs Per Prospect
+- Approved Message 1 (Touch 1 InMail), Message 3 (Follow-up), Message 5 (Email), Message 6 (Break-up)
+- Cold call snippets for Touch 2 and Touch 4
+- Personalization hooks (minimum 2 per prospect)
+- Risk flags: known person, already contacted, missing InMail, low-priority persona
+- Predicted objection + pre-loaded response
+- Priority score (1-5)
+- Personalization score (1-3)
+- MQS score (must be >= 9/12 to proceed)
+
+### Research Pipeline (Per Prospect)
+1. **LinkedIn Profile** (Sales Navigator) → Extract QA scope, team signals, tech stack clues, career trajectory, pain signals
+2. **Apollo Enrichment** → Verify email, phone, title, tech stack, company size, industry
+3. **Company External Research** → Product pages, engineering blogs, job postings, press releases, news for QA-relevant signals
+4. Tag each research bullet with which message element it feeds (opener, context, proof match, or close)
+
+### Pre-Draft Checklist
+- [ ] Single Theme Rule defined (one sentence)
+- [ ] QA-Relevant Research Filter applied (only categories affecting QA outcomes)
+- [ ] Proof point matched to pain and vertical
+- [ ] Close Construction completed (3 questions answered)
+- [ ] Plain Language Pass completed
+- [ ] Known Person / Past Coworker check (see Module A1)
+- [ ] Already Messaged check (see Module A2)
+
+---
+
+## SOP C - Batch Run (25 Prospects) - "Prepare Only"
+
+**Purpose:** Build a complete batch of prospects with all messages ready, but do NOT send. Rob reviews the full set before any sending begins.
+
+### Process
+1. Run Pre-Brief (read all previous batch files, generate "What's Working" summary)
+2. Source 25 prospects from Sales Navigator saved searches (per Prospect Mix Ratio)
+3. For each prospect, execute SOP B (Research + Draft)
+4. Run QA Gate on all 25 messages (all 14 checks)
+5. Build HTML deliverable with all prospect cards, messages, and metadata
+6. Set all statuses to READY_FOR_REVIEW
+7. Present to Rob for review
+
+### Outputs
+- HTML tracker file (prospect-outreach-[batch#]-[date].html)
+- Pre-Brief at top of file
+- All messages in copy-paste-ready format
+- All statuses = READY_FOR_REVIEW (not sent)
+- send-loop-data.json with all prospect data for the send loop
+
+### Quality Checks Before Presenting
+- [ ] All 25 prospects meet ICP criteria
+- [ ] No duplicates within batch or across previous batches
+- [ ] No more than 2 prospects from same company
+- [ ] Prospect Mix Ratio met (10-12 Manager/Lead, 4-6 Director, 3-5 Architect, 2-3 Buyer Intent, max 2 VP)
+- [ ] All messages pass QA Gate (14 checks, MQS >= 9/12)
+- [ ] A/B test variable defined and groups assigned
+- [ ] All research from 3 sources (LinkedIn, Apollo, Company External)
+- [ ] Pre-Brief generated from previous batch data
+
+---
+
+## SOP Module A1 - Known Person / Past Coworker Blocker
+
+**When:** Pre-flight check, before composing any message.
+
+### Check Procedure
+1. Check connection degree on Sales Navigator profile
+2. If **1st-degree connection**: STOP. Check context.
+   - Look at shared history: Did Rob work at the same company? (Check for mabl, or any shared past employer)
+   - Look at mutual connections context: Are they personal friends or professional acquaintances?
+   - If any evidence of real-life relationship or past coworker status → DO NOT CONTACT
+3. If profile shows **shared past company** (e.g., mabl, or any company in Rob's work history) → DO NOT CONTACT
+4. If Rob recognizes the name as someone he knows personally → DO NOT CONTACT
+
+### Actions If Triggered
+- Set status = **DO NOT CONTACT**
+- Log reason: "Known contact / past coworker / friend risk - [specific reason]"
+- STOP and inform Rob: "This prospect appears to be a past coworker or personal connection. Skipping. Let me know if you want to handle this differently."
+- Move to next prospect
+
+### Edge Cases
+- 1st-degree connection but clearly a cold LinkedIn accept (no shared companies, no mutual friends, never interacted) → Ask Rob before proceeding
+- 2nd-degree connection with shared past company → Likely safe, but note it in the pre-flight log
+- Mutual connections include known personal friends of Rob → Flag and ask
+
+---
+
+## SOP Module A2 - Already Messaged Blocker
+
+**When:** Pre-flight check, after opening the Sales Navigator profile.
+
+### Check Procedure
+1. On Sales Navigator search results, check for "Messaged:" indicator next to the prospect
+2. If "Messaged:" shows prior activity → This prospect has been contacted before
+3. When opening InMail composer, check if an existing conversation thread appears
+4. If prior outreach exists in the thread → DO NOT send Message 1 again
+
+### Actions If Prior Outreach Found
+- Set status = **EXISTING_THREAD**
+- Log: "Prior outreach detected - [date of last message if visible]"
+- Propose next best action to Rob:
+  - If last message was >60 days ago → Propose re-engagement (new angle, per Re-Engagement Triggers)
+  - If last message was <60 days ago → Skip for now, revisit later
+  - If there's an unanswered reply from the prospect → Propose response
+- STOP and wait for Rob's direction
+
+### Detection Methods
+- Sales Navigator "Messaged:" badge on search results
+- InMail composer shows existing thread when opened
+- "Viewed:" indicator (means Rob viewed their profile before, may or may not have messaged)
+
+---
+
+## LinkedIn Safety & Compliance Rules
+
+### Core Compliance Principles
+Our workflow is **human-in-the-loop** and compliant with LinkedIn's policies. Claude drafts, Rob reviews and manually sends. This section codifies the rules to prevent any policy violations.
+
+### Hard Safety Rules (NEVER violate)
+| Rule | Rationale |
+|------|-----------|
+| No browser extensions for LinkedIn automation | 60% higher detection risk; 23% ban rate within 90 days |
+| Rob must manually click Send for every message | Automated sending violates LinkedIn ToS |
+| No scraping or bulk data extraction from LinkedIn | Violates LinkedIn User Agreement Section 8.2 |
+| No VPN or IP spoofing during send sessions | Triggers location-anomaly detection |
+| Stay within InMail monthly quota (check credits before each session) | Exceeding quota triggers account review |
+| No identical messages to multiple prospects | Template detection flags spam behavior |
+| Minimum 3-day gap between follow-up messages to same prospect | Rapid follow-ups trigger harassment flags |
+
+### Pacing Limits (Per Session)
+| Activity | Safe Daily Max | Safe Weekly Max | Danger Zone |
+|----------|---------------|----------------|-------------|
+| InMails sent | 8 | 20 | >15/day or >25/week |
+| Profile views | 100 | 500 | >150/day |
+| Connection requests | 15 | 80 | >25/day or >100/week |
+| Total messages (all types) | 15 | 60 | >20/day |
+| Searches | 50 | 250 | >100/day |
+
+### Session Pacing Rules
+- Maximum 25 InMails per batch send session (our standard batch size)
+- Space sends by at least 2-3 minutes each (never rapid-fire)
+- Take a 10-minute break every 10 sends
+- Send during business hours only (9 AM - 5 PM local, ideally 12-1 PM)
+- Never send on back-to-back days at identical times (varies timing)
+- If any "unusual activity" warning appears: STOP immediately, pause 72 hours, reduce volume by 50%
+
+### Account Health Monitoring
+Track these metrics in every cycle log:
+- InMail credits remaining (should decrease predictably)
+- Any LinkedIn warnings or restrictions
+- Connection request acceptance rate (if sending any)
+- Profile view count (check in Sales Navigator settings)
+- Reply rate trend (declining reply rate may signal deliverability issues)
+
+### Recovery Protocol (If Restricted)
+1. **Tier 1 (feature restriction, 1-24 hours):** Stop all activity. Wait 24 hours. Resume at 50% volume.
+2. **Tier 2 (account lock, 3-14 days):** Submit ID verification. Pause all outreach 7 days after recovery. Resume at 25% volume, gradually increase.
+3. **Tier 3 (permanent ban):** Escalate to Rob immediately. This is unlikely with our workflow but must be documented.
+
+---
+
+## Apollo Integration Strategy
+
+### Current Apollo Account Status
+- **Lead Credits:** ~6,879 remaining / 7,104 effective
+- **Direct Dial Credits:** 600 available
+- **AI Credits:** 50 million available
+- **Email Accounts Linked:** 4 (robert.gorham@testsigma.in, .tech, .net, .web)
+- **Existing Sequences:** 52 team-wide, 4 Rob-specific
+
+### How We Use Apollo (Enrichment-First, Not Sequence-First)
+Apollo's primary value for our workflow is **contact enrichment**, not sequence management. Our InMail-first model outperforms email-first (28.7% vs ~6-8% cold email reply rates).
+
+**Apollo Workflow Per Batch:**
+1. **Before Research:** Search Apollo contacts to check for duplicates (avoid re-enriching known contacts)
+2. **During Research:** Enrich each prospect (person + organization) to get verified email, phone, tech stack, industry
+3. **After InMail Sent:** Create Apollo contact records for all prospects (for CRM sync and future email follow-up)
+4. **For Touch 5 (Email):** If prospect has verified email, use Apollo to send email Touch 5 OR manually send from Gmail
+5. **For Call Touches:** Use Apollo phone data for Touches 2 and 4
+
+### Apollo Sequence Recommendations
+- **Don't replace InMail with Apollo email sequences** for Touches 1 and 3
+- **Do create a "Batch 3 Call Tasks" sequence** with manual call task steps for Touches 2 and 4
+- **Do use Apollo for Touch 5 email** when InMail follow-ups haven't gotten a reply
+- **Do create Apollo contacts for all prospects** for long-term tracking and CRM sync
+
+### Apollo Credit Budget Per Batch
+| Action | Credits Used | Per Batch (25 prospects) |
+|--------|-------------|-------------------------|
+| Person Enrichment | 1 credit each | 25 credits |
+| Organization Enrichment | 1 credit each | ~15-20 credits (some share companies) |
+| Contact Creation | Free | 0 credits |
+| Sequence Enrollment | Free | 0 credits |
+| **Total per batch** | | **~40-45 credits** |
+
+---
+
+## Cycle Logging Framework
+
+### Purpose
+Every send session generates a cycle log. The goal is continuous improvement: track what worked, what broke, and what to change next time.
+
+### Cycle Log Record Structure
+
+#### A) Per-Cycle Log (1 record per send session)
+```
+CYCLE LOG
+=========
+Cycle ID: [YYYYMMDD-HHMM]
+Date: [date]
+Operator: Rob / CoWork
+Batch: [batch number]
+Session Type: [Full Send / Partial Send / Research Only / Review Only]
+
+VOLUME
+------
+Batch size attempted: [N]
+Batch size sent: [N]
+Batch size skipped: [N] (with reasons)
+InMail credits used: [N]
+InMail credits remaining: [N]
+
+TIMING
+------
+Session start: [HH:MM]
+Session end: [HH:MM]
+Total duration: [minutes]
+Avg time per prospect: [minutes]
+Fastest send: [minutes]
+Slowest send: [minutes]
+
+FRICTION LOG
+-----------
+Total friction events: [N]
+[List each friction event with category, description, resolution, time lost]
+
+Categories: SEARCH_FAIL, PROFILE_MISMATCH, INMAIL_BLOCKED, COMPOSER_ERROR,
+           NETWORK_ERROR, SESSION_EXPIRED, SKELETON_LOADING, KNOWN_PERSON,
+           ALREADY_MESSAGED, 3RD_DEGREE_WORKAROUND, OTHER
+
+TOOLS USED
+----------
+[List: Sales Navigator, Apollo, Salesforce, Google Sheets, etc.]
+
+EFFICIENCY NOTES
+---------------
+[What went well, what was slow, what should change for next session]
+
+SAFETY CHECK
+-----------
+LinkedIn warnings received: [Y/N]
+Pacing violations: [Y/N]
+Any unusual behavior from LinkedIn: [description]
+
+PROCESS IMPROVEMENTS
+-------------------
+[Specific changes to make to SOPs based on this session]
+```
+
+#### B) Per-Prospect Send Log (1 record per prospect touched)
+```
+PROSPECT SEND LOG
+=================
+Prospect ID: [N]
+Name: [Name] @ [Company]
+Sales Nav URL: [URL]
+Salesforce URL: [URL if exists]
+Apollo URL: [URL if exists]
+Email: [email if found]
+
+PRE-FLIGHT CHECKS
+-----------------
+Identity match: PASS/FAIL [notes]
+Title match: PASS/FAIL [notes]
+Company match: PASS/FAIL [notes]
+Known-person check: PASS/FAIL
+Already-messaged check: PASS/FAIL
+InMail available: PASS/FAIL
+Connection degree: [1st/2nd/3rd]
+Buyer intent: [None/Low/Moderate/High]
+
+SEND DATA
+---------
+Message type: InMail / Connection Note / Email / Thread Reply
+Subject used: [subject]
+Message body: [exact text]
+Timestamp sent: [ISO datetime local]
+Thread URL: [if available]
+InMail credits after send: [N]
+
+OUTCOME
+-------
+Status: SENT / SKIPPED_KNOWN_PERSON / SKIPPED_ALREADY_MESSAGED / BLOCKED_NO_INMAIL / ERROR / SKIPPED_NOT_FOUND
+Error details: [if applicable]
+Next step: [Touch 2 call on YYYY-MM-DD]
+```
+
+#### C) Weekly Metrics (computed from cycle logs)
+| Metric | Formula | Target |
+|--------|---------|--------|
+| Sends per week | Sum of batch size sent | 20-25 |
+| Send success rate | Sent / Attempted | >90% |
+| Avg time per prospect | Total duration / Batch size | <3 min |
+| Friction rate | Friction events / Attempted | <10% |
+| Skip rate (known person) | Known person skips / Attempted | <5% |
+| Skip rate (already messaged) | Already messaged skips / Attempted | <5% |
+| Skip rate (not found) | Not found skips / Attempted | <5% |
+| InMail block rate | Blocked no InMail / Attempted | <5% |
+| Reply rate (cumulative) | Replies / Total sent | >25% (target) |
+| Positive reply rate | Positive replies / Total sent | >10% (target) |
+| Meeting book rate | Meetings / Total sent | >5% (target) |
+| Credits consumed per batch | Credits start - Credits end | ~25 |
+| LinkedIn safety incidents | Count of warnings | 0 (target) |
+
+#### D) Efficiency Improvement Tracker
+After each cycle, log ONE specific improvement to implement next time:
+```
+IMPROVEMENT LOG
+==============
+Cycle: [ID]
+Problem observed: [description]
+Root cause: [analysis]
+Proposed fix: [specific change to SOP or process]
+Implemented: [Y/N]
+Result after implementation: [measured outcome]
+```
+
+---
+
+## Salesforce CRM Integration
+
+### Status: SKIPPED
+Salesforce requires too much 2FA and the login page at testsigma.my.salesforce.com only has username/password (no Google SSO). Apollo covers CRM-like enrichment and contact management needs. If Salesforce access becomes easier in the future, revisit.
+
+### What Apollo Replaces
+- **Contact/Lead lookup:** Apollo contact search + enrichment
+- **Activity logging:** Track in HTML batch tracker instead
+- **Opportunity check:** Not available without CRM, but Apollo org enrichment gives company-level intel
+- **Duplicate detection:** Apollo contact search before creating new records
+
+---
+
+## Plugin Customization for Testsigma
+
+### Goal
+Every Cowork plugin and connector should be pre-loaded with Testsigma context so Claude can operate as effectively as possible without re-reading the full CLAUDE.md every session.
+
+### Testsigma Context Profile (for plugin headers)
+The following context should be available to all plugins:
+
+**Company:** Testsigma, agentic AI test automation platform
+**User:** Rob Gorham, BDR
+**ICP:** QA Managers, Directors of QA, Test Architects, SDETs at mid-to-large software companies
+**Verticals:** SaaS, FinTech, Healthcare, Retail, Telecom, Pharma
+**Product:** Plain English test creation, AI self-healing, cross-platform (web, mobile, API, desktop, Salesforce, SAP)
+**Key differentiators:** NLP test authoring, Atto AI agent suite, 90% maintenance reduction, Copilot for test generation
+**Proof points:** Hansard (8wk→5wk regression), CRED (90% automation, 5X faster), Sanofi (3 days→80 min), Medibuddy (2,500 tests, 50% maintenance cut)
+**Outreach style:** Conversational, consultative, data-driven. No feature dumps. Short messages (75-99 words). "What day works" CTA.
+**Tools:** Sales Navigator, Apollo, Salesforce CRM, Google Suite, Cowork
+**Banned patterns:** "I noticed/saw," feature-leading, bullet lists, generic closes, em dashes
+
+### Plugins to Customize
+1. **Sales plugins** (account-research, call-prep, daily-briefing, draft-outreach, competitive-intelligence, create-an-asset): Pre-load Testsigma product info, ICP definitions, proof points, and outreach style rules
+2. **Data plugins** (data-exploration, data-visualization, interactive-dashboard-builder): Configure for outreach metrics analysis (reply rates, send volumes, A/B test results)
+3. **Productivity plugins** (memory-management, task-management): Sync with CLAUDE.md memory and TASKS.md
+4. **Enterprise search plugins**: Configure to search across Google Drive, Gmail, and connected sources for Testsigma-related context
+5. **Apollo plugins** (enrich-lead, prospect, sequence-load): Pre-load ICP filters, enrichment preferences, sequence templates
