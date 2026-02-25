@@ -1564,3 +1564,157 @@ def weekly_insights():
     except ImportError:
         return {"status": "insights_unavailable"}
 
+
+# ─── SIGNAL ENRICHMENT ENDPOINTS ───────────────────────────────
+
+class JobPostingInput(BaseModel):
+    title: str
+    text: str
+
+class EnrichmentRequest(BaseModel):
+    company_name: str
+    job_postings: Optional[List[JobPostingInput]] = []
+    funding_text: Optional[str] = ""
+    funding_amount: Optional[str] = ""
+    funding_stage: Optional[str] = ""
+    funding_date: Optional[str] = ""
+    news_text: Optional[str] = ""
+
+@app.post("/api/enrichment/analyze")
+def analyze_enrichment(req: EnrichmentRequest):
+    """Run signal-based enrichment on provided data."""
+    from src.agents.signal_enrichment import enrich_from_signals
+    postings = [{"title": p.title, "text": p.text} for p in (req.job_postings or [])]
+    result = enrich_from_signals(
+        company_name=req.company_name,
+        job_postings=postings,
+        funding_text=req.funding_text or "",
+        funding_amount=req.funding_amount or "",
+        funding_stage=req.funding_stage or "",
+        funding_date=req.funding_date or "",
+        news_text=req.news_text or "",
+    )
+    return result
+
+@app.post("/api/enrichment/merge/{contact_id}")
+def merge_enrichment(contact_id: str, req: EnrichmentRequest):
+    """Run enrichment and merge results into existing research artifact."""
+    from src.agents.signal_enrichment import enrich_from_signals, merge_enrichment_into_artifact
+    from src.agents.researcher import build_research_artifact
+
+    contact = models.get_contact(contact_id)
+    if not contact:
+        raise HTTPException(404, "Contact not found")
+
+    account = models.get_account(contact.get("account_id", "")) if contact.get("account_id") else {}
+    research = build_research_artifact(contact, account or {})
+    artifact = research["artifact"]
+
+    postings = [{"title": p.title, "text": p.text} for p in (req.job_postings or [])]
+    enrichment = enrich_from_signals(
+        company_name=req.company_name,
+        job_postings=postings,
+        funding_text=req.funding_text or "",
+        funding_amount=req.funding_amount or "",
+        funding_stage=req.funding_stage or "",
+        funding_date=req.funding_date or "",
+        news_text=req.news_text or "",
+    )
+
+    merged = merge_enrichment_into_artifact(artifact, enrichment)
+    return {
+        "artifact": merged,
+        "enrichment_summary": enrichment.get("enrichment_summary", ""),
+        "signals_added": len(enrichment.get("signals", [])),
+        "pains_added": len(enrichment.get("pain_hypotheses", [])),
+    }
+
+
+# ─── FEEDBACK TRACKING ENDPOINTS ──────────────────────────────
+
+class ReplyInput(BaseModel):
+    contact_id: str
+    touchpoint_id: Optional[str] = None
+    channel: Optional[str] = "linkedin"
+    intent: Optional[str] = "neutral"
+    reply_tag: Optional[str] = ""
+    summary: Optional[str] = ""
+    raw_text: Optional[str] = ""
+
+class MeetingInput(BaseModel):
+    contact_id: str
+    meeting_date: Optional[str] = None
+    trigger_touchpoint_id: Optional[str] = None
+    trigger_reply_id: Optional[str] = None
+    pipeline_value: Optional[float] = None
+    ae_name: Optional[str] = ""
+    notes: Optional[str] = ""
+
+@app.post("/api/feedback/reply")
+def record_feedback_reply(req: ReplyInput):
+    """Record a prospect reply with attribution tracking."""
+    from src.agents.feedback_tracker import record_reply
+    return record_reply(
+        contact_id=req.contact_id,
+        touchpoint_id=req.touchpoint_id,
+        channel=req.channel or "linkedin",
+        intent=req.intent or "neutral",
+        reply_tag=req.reply_tag or "",
+        summary=req.summary or "",
+        raw_text=req.raw_text or "",
+    )
+
+@app.post("/api/feedback/meeting")
+def record_feedback_meeting(req: MeetingInput):
+    """Record a meeting/opportunity with full attribution."""
+    from src.agents.feedback_tracker import record_meeting
+    return record_meeting(
+        contact_id=req.contact_id,
+        meeting_date=req.meeting_date,
+        trigger_touchpoint_id=req.trigger_touchpoint_id,
+        trigger_reply_id=req.trigger_reply_id,
+        pipeline_value=req.pipeline_value,
+        ae_name=req.ae_name or "",
+        notes=req.notes or "",
+    )
+
+@app.get("/api/feedback/stats")
+def get_feedback_stats(days: int = Query(default=90, ge=1, le=365)):
+    """Get conversion stats broken down by message attributes."""
+    from src.agents.feedback_tracker import get_conversion_stats
+    return get_conversion_stats(days)
+
+@app.get("/api/feedback/winning-patterns")
+def get_winning_patterns_endpoint(days: int = Query(default=90, ge=1, le=365),
+                                   min_sample: int = Query(default=5, ge=1)):
+    """Get winning patterns and recommendations."""
+    from src.agents.feedback_tracker import get_winning_patterns
+    return get_winning_patterns(min_sample_size=min_sample, days=days)
+
+@app.get("/api/feedback/report")
+def get_feedback_report(days: int = Query(default=90, ge=1, le=365)):
+    """Get a human-readable performance report."""
+    from src.agents.feedback_tracker import generate_feedback_report
+    return {"report": generate_feedback_report(days)}
+
+
+# ─── LLM POLISH ENDPOINT ──────────────────────────────────────
+
+class PolishRequest(BaseModel):
+    body: str
+    tone: str = "friendly"
+    prospect_name: Optional[str] = ""
+    company: Optional[str] = ""
+    temperature: Optional[float] = 0.3
+
+@app.post("/api/polish/message")
+def polish_single_message(req: PolishRequest):
+    """Polish a single message body using the LLM."""
+    from src.agents.llm_polish import polish_message
+    return polish_message(
+        body=req.body,
+        tone=req.tone,
+        metadata={"prospect_name": req.prospect_name, "company": req.company},
+        temperature=req.temperature or 0.3,
+    )
+
