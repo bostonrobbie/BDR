@@ -1,0 +1,519 @@
+{
+  "phase1": {
+    "total": 1330,
+    "reply": 384,
+    "noreply": 946,
+    "rate": 28.9
+  },
+  "phase2": {
+    "avg_len_reply": 578,
+    "avg_len_noreply": 630,
+    "question_reply": 93.2,
+    "question_noreply": 99.4,
+    "avg_msgs_before": 2.47,
+    "msgs_before_dist": {
+      "0": 58,
+      "1": 96,
+      "2": 108,
+      "3": 54,
+      "4": 29,
+      "5": 6,
+      "6": 2,
+      "7": 10,
+      "10": 2,
+      "12": 11,
+      "14": 3,
+      "15": 1,
+      "30": 1
+    },
+    "time_reply": {
+      "morning(6-11)": 0.6,
+      "afternoon(12-17)": 88.7,
+      "evening(18-23)": 10.8,
+      "night(0-5)": 0.0
+    },
+    "time_noreply": {
+      "morning(6-11)": 0.0,
+      "afternoon(12-17)": 80.4,
+      "evening(18-23)": 19.4,
+      "night(0-5)": 0.2
+    }
+  },
+  "phase3": {
+    "patterns": {
+      "role_reference": {
+        "reply": 86.1,
+        "noreply": 98.8,
+        "diff": -12.7
+      },
+      "company_reference": {
+        "reply": 85.3,
+        "noreply": 88.8,
+        "diff": -3.5
+      },
+      "question_opener": {
+        "reply": 6.5,
+        "noreply": 3.9,
+        "diff": 2.6
+      },
+      "pain_hook": {
+        "reply": 67.4,
+        "noreply": 75.3,
+        "diff": -7.9
+      },
+      "reaching_out": {
+        "reply": 14.7,
+        "noreply": 28.0,
+        "diff": -13.3
+      },
+      "customer_story": {
+        "reply": 55.2,
+        "noreply": 55.7,
+        "diff": -0.4
+      },
+      "direct_meeting_ask": {
+        "reply": 1.4,
+        "noreply": 0.1,
+        "diff": 1.3
+      },
+      "curiosity_hook": {
+        "reply": 0.3,
+        "noreply": 0.0,
+        "diff": 0.3
+      },
+      "testsigma_mention": {
+        "reply": 0.0,
+        "noreply": 0.0,
+        "diff": 0.0
+      },
+      "ai_mention": {
+        "reply": 76.5,
+        "noreply": 84.4,
+        "diff": -8.0
+      },
+      "credential_dump": {
+        "reply": 3.4,
+        "noreply": 6.8,
+        "diff": -3.4
+      },
+      "plain_english": {
+        "reply": 0.0,
+        "noreply": 0.0,
+        "diff": 0.0
+      },
+      "self_healing": {
+        "reply": 12.5,
+        "noreply": 19.3,
+        "diff": -6.8
+      }
+    },
+    "ctas": {
+      "question_led": {
+        "reply": 31,
+        "noreply": 99,
+        "rate": 23.8
+      },
+      "permission_ask": {
+        "reply": 8,
+        "noreply": 26,
+        "rate": 23.5
+      },
+      "other": {
+        "reply": 311,
+        "noreply": 819,
+        "rate": 27.5
+      },
+      "meeting_ask": {
+        "reply": 3,
+        "noreply": 1,
+        "rate": 75.0
+      }
+    },
+    "tone": {
+      "word_count": {
+        "reply": 98.7,
+        "noreply": 107.65
+      },
+      "avg_sent_len": {
+        "reply": 24.5,
+        "noreply": 24.99
+      },
+      "exclamations": {
+        "reply": 0.05,
+        "noreply": 0.0
+      },
+      "buzzwords": {
+        "reply": 0.0,
+        "noreply": 0.02
+      },
+      "personalization": {
+        "reply": 0.21,
+        "noreply": 0.23
+      }
+    }
+  },
+  "phase5": {
+    "reply_cats": {
+      "other": 446,
+      "polite": 413,
+      "positive": 248,
+      "negative": 102,
+      "curiosity": 90,
+      "referral": 81,
+      "has_tool": 25,
+      "timing": 23
+    },
+    "prospect_total": 1089,
+    "top_titles": [
+      [
+        "QA Automation Engineer",
+        2
+      ],
+      [
+        "Lead Recruiter | Data Obsessed | Strategic Talent Partner | CX Curator",
+        2
+      ],
+      [
+        "QA Director",
+        2
+      ],
+      [
+        "QA Manager",
+        2
+      ],
+      [
+        "Business Insurance @ World (formerly Tarpey) | Risk Management | English & Falo Portuguese | Lover of the game \u26f3\ufe0f | Ouimet Scholar | Providing comfort on your worst days, so you can cherish your best.",
+        2
+      ],
+      [
+        "Principal Performance Test Engineer",
+        1
+      ],
+      [
+        "Services Director, Quality Management at Siemens Digital Industries Software",
+        1
+      ],
+      [
+        "Director, Digital Assurance Solutions at Canada Life Visionary & Thought Leader | Ideator | Innovation Speaker | Motivator",
+        1
+      ],
+      [
+        "Architect at Delta Air Lines",
+        1
+      ],
+      [
+        "Vice President, QA Engineering Lead at Swiss Re",
+        1
+      ],
+      [
+        "Founder, Honest Wealth Builders | Podcast Host | Author of The Land Business | 700+ Deals",
+        1
+      ],
+      [
+        "Manager, Sales Development",
+        1
+      ],
+      [
+        "Enterprise Test Automation Architect at Delta Dental of California",
+        1
+      ],
+      [
+        "Senior Engineering Manager | GCP x 2 | AWS | CKA | Test Automation Talks Meetup Host | Quality Architect",
+        1
+      ],
+      [
+        "Experienced Lead Software Engineer with background in SRE and SDET Manager/Lead ICP, ICP-ATF",
+        1
+      ],
+      [
+        "Engineer @ Google | Ex. \uf8ff Apple | Entrepreneur | Ex. EM at Tile, Life360 & AMC Networks | Communication & Partnership Management | People Leadership| SDKs | Scalable Architecture | Automation",
+        1
+      ],
+      [
+        "SENIOR IT PROFESSIONAL, ENGINEERING DELIVERY HEAD & COMPLEX PROGRAM DELIVERY STALWART",
+        1
+      ],
+      [
+        "QA Engineer",
+        1
+      ],
+      [
+        "Contact-level ads for enterprise sales | Animal lover \ud83d\udc36 \ud83d\ude3b | Potter fan \ud83e\ude84| Mentor | Consultant",
+        1
+      ],
+      [
+        "Digital Marketing Specialist at Digitalcode360",
+        1
+      ]
+    ]
+  },
+  "high_performers": [
+    {
+      "name": "Eddie Fisher",
+      "headline": "Dad of 2 | Getting a Grip on AI Risk, SaaS Sprawl, & Shadow IT",
+      "body": "I can\u2019t compete with that imma just let u win ",
+      "prospect_msgs": 16,
+      "total": 20
+    },
+    {
+      "name": "Indira Rachakonda",
+      "headline": "Salesforce Test Engineer II",
+      "body": "Great, I just sent over our calendar invite. When you have a free moment during your day please accept it so that I know I sent it to the right email.\n\nLastly, In order to make the most use of your time, what would you potentially use mabl for?\u00a0\nThis helps us personalize our discussion to your needs.\n\nYou can message me at any time if anything changes Indira, I look forward to Wednesday!",
+      "prospect_msgs": 16,
+      "total": 20
+    },
+    {
+      "name": "Sarita Dash",
+      "headline": "VP, Sr Manager of Software Engineering | Digital Quality Engineering, Quality Champion, FinTech, Digital Accessibility",
+      "body": "Sounds good Sarita,\n\nI look forward to hearing back next week!\n\nHave a great day",
+      "prospect_msgs": 13,
+      "total": 20
+    },
+    {
+      "name": "Shawn Maloney",
+      "headline": "Sr. Software Test Engineer/Test Manager/QA/Cybersecurity",
+      "body": "Hi Shawn, \nI noticed that you are a Sr. Software Test Engineer & Test Manager at Phase Change Software and might be involved in API testing.\n\nAt mabl we automate API testing and have been able to cut down maintenance time by 85% and increase test creation by 300%. \nWhat are your initiatives towards improving test automation in the new year?\n\nBest,\nRob",
+      "prospect_msgs": 12,
+      "total": 20
+    },
+    {
+      "name": "Andrew Stoves",
+      "headline": "GTM Headhunter | Executive Search | SaaS Marketing Recruitment | SaaS GTM Recruiter | SaaS Sales | SaaS Recruiter | Sales Recruiter | GTM Recruiter | USA",
+      "body": "Hi Andrew,\n\nThanks for reaching out and for the great news!\nYes, 10:30 on Thursday works for me. \nI\u2019m looking forward to connecting with KR and discussing the opportunity further.\n\nIs there anything you need from me ahead of Thursday?",
+      "prospect_msgs": 10,
+      "total": 20
+    },
+    {
+      "name": "Ted Corbeill Jr",
+      "headline": "Helping SOCs find and disrupt lateral movement, living-off-the-land, and other \u201cEDR evasive\u201d attacks | Marine Veteran",
+      "body": "Enjoy your weekend ",
+      "prospect_msgs": 10,
+      "total": 20
+    },
+    {
+      "name": "Micky Uppal",
+      "headline": "Test Architect | QA Lead | Test Engineer | Test Management | Software Quality Assurance at Orange County, CA",
+      "body": "Hi Micky,\n\nMabl\u2019s test automation platform shortens release cycles, cuts down test maintenance by 85%, test accessibility coverage, and decreases bugs by 40% on average. \nSeeing that you\u2019re the Test Architect at Orange County I thought it would be worth exploring your options to see if we can increase testing efficiency.\n\nIf that\u2019s a priority of yours, would it be unreasonable to find 20 minutes to show you exactly how other companies are using our platform to Increase testing efficiency and determine if you can do the same?\n \nWhat day would you be available?\n\nBest,\nRob",
+      "prospect_msgs": 9,
+      "total": 19
+    },
+    {
+      "name": "Adam Landry",
+      "headline": "Manager, Sales Development",
+      "body": "Thanks Adam!",
+      "prospect_msgs": 8,
+      "total": 15
+    },
+    {
+      "name": "Bhaumik Shroff",
+      "headline": "Test Automation & QualityOps Architect |\u00a0Architecting Robust & Scalable Test Automation Frameworks | Elevating QA Through Engineering Excellence | Empowering Scalable Quality Solutions",
+      "body": "Hi Bhaumik,\n\nMabl\u2019s test automation platform shortens release cycles, cuts down test maintenance by 85%, test accessibility coverage, and decreases bugs by 40% on average. \nSeeing that you\u2019re the Test Automation Architect at OTC Global Holdings I thought it would be worth exploring your options to see if we can increase testing efficiency.\n\nIf that\u2019s a priority of yours, would it be unreasonable to find 20 minutes to show you exactly how other companies are using our platform to Increase testing efficiency and determine if you can do the same?\n\nWhat day would you be available?\n\nBest,\nRob",
+      "prospect_msgs": 8,
+      "total": 13
+    },
+    {
+      "name": "Lawrence K",
+      "headline": "Senior Manager @ SQ1 Security I AI-powered Next-Generation Cybersecurity",
+      "body": "I appreciate it, Thank you!",
+      "prospect_msgs": 8,
+      "total": 10
+    },
+    {
+      "name": "Jonathan Krieger",
+      "headline": "Founder @ Quirk Events- We build events that foster joy and connection through games",
+      "body": "As promised I'm here to provide you with a quote Jonathan. \n\nPrice changes depending on the frequency you pay employees - these are our weekly plans:\nSelect Plan - Base fee $43.50 + $3.10/employee \nPro Plan - $91 + $3.85\nEnterprise plan - $131 + $5.15\n\nTo give you a 100% accurate quote please reply with the amount of employees you have, the frequency you'd like to pay them, and a price you'd like me to beat.\n\nEach tier gives you additional free services such as free HR Handbook Creation, Automated QuickBooks Integrations, $150 labor law posters for free, filing taxes for you, and more. \n\nLet me know your honest opinion, I'm happy to work with you to earn your business.",
+      "prospect_msgs": 7,
+      "total": 11
+    },
+    {
+      "name": "Kassandra (Turowsky) Elkins",
+      "headline": "Event Operations | Conferences & Seminars | S&P Global Energy",
+      "body": "Yo I got the job but gotta pass a drug test on Monday, did they care about weed lol?",
+      "prospect_msgs": 7,
+      "total": 20
+    },
+    {
+      "name": "Partha Sarathi Samal",
+      "headline": "Quality Engineering Leader | Author | Inventor | Keynote Speaker |9x Hackathon Winner| AI/ML Evangelist |",
+      "body": "Hi Partha,\n\nI noticed that you are a Quality Engineering Manager at UST and it looks like you have a hand in software testing.\n\nAt mabl our platform automates API, end-to-end, and UI testing. \nWe have been able to cut down maintenance time by 85%, increase test creation by 300%, and even have an AI auto healing function for broken tests.\nOur mission is to help you spend less time on time consuming tasks like those so you can spend more time doing the important stuff.\n\nNow that 2022 is starting, what are your initiatives to improve test automation in the new year?\n\nBest,\nRob",
+      "prospect_msgs": 7,
+      "total": 16
+    },
+    {
+      "name": "Ravi Sindhia",
+      "headline": "Director / Product Owner - Digital Investment Products",
+      "body": "Hi Ravi,\n\nMabl\u2019s test automation platform shortens release cycles, cuts down test maintenance by 85%, test accessibility coverage, and decreases bugs by 40% on average. \nSeeing that you\u2019re the Vice President &\u00a0Software Quality Assurance Manager at Morgan Stanley I thought it would be worth exploring your options to see if we can increase testing efficiency.\n\nIf that\u2019s a priority of yours, would it be unreasonable to find 20 minutes to show you exactly how other companies are using our platform to Increase testing efficiency and determine if you can do the same?\n\nWhat day would you be available?\n\nBest,\nRob",
+      "prospect_msgs": 7,
+      "total": 11
+    },
+    {
+      "name": "Sarat Ramineni",
+      "headline": "Director of Quality Engineering | 1.7x ROI on Automation | Enterprise QA Strategy & DevOps | 2x Release Velocity via Shift-Left & CI/CD",
+      "body": "Hi Sarat,\n\nA lot of the Software Quality Director's I\u2019ve met with this year have said that their QA teams has a lot of software testing that needs to be completed in time for their release deadlines.\nThe problem is that their QA teams can\u2019t finish testing in time so they end up having to push release dates or push out a product that has errors in the code. This has caused negative customer experiences in the past and has pushed customers away from using their applications.\n\nMabl was able to solve this problem for companies like Charles Schwab, Intuit, and Chewy so was hoping to hear if you\u2019re experiencing any challenges with your teams to see if we can help you?\n\nBest,\nRob",
+      "prospect_msgs": 7,
+      "total": 17
+    },
+    {
+      "name": "Sumit  K. Das",
+      "headline": "5+ years Experience | Software Test Engineer @ Renssoft Solutions Ltd. | Manual & Automation | Playwright | Selenium",
+      "body": "Hi Sumit,\n\nMabl\u2019s test automation platform shortens release cycles, cuts down test maintenance by 85%, test accessibility coverage, and decreases bugs by 40% on average. \nSeeing that you\u2019re the Assistant Director at Re-test I thought it would be worth exploring your options to see if we can increase testing efficiency.\n\nIf that\u2019s a priority of yours, would it be unreasonable to find 20 minutes to show you exactly how other companies are using our platform to Increase testing efficiency and determine if you can do the same?\n\nWhat day would you be available?\n\nBest,\nRob",
+      "prospect_msgs": 7,
+      "total": 14
+    },
+    {
+      "name": "Suresh C",
+      "headline": "Selenium-Jenkins-Dockers | GitHub/GitLab | UFT | Robot Framework| ALM Octane Admin | HP QC/ALM | Migrations | Upgrades | JMeter | LoadRunner | DevOps | SOAPUI | Agile Project Management",
+      "body": "I just sent the invite over to you.\u00a0\n\nMost importantly, to make the most use of your time on the demo, is there anything specific that you're looking to learn about that would peak your interest?\n\nI'll let my engineer know so he has it prepared for you.\n\nTalk to you soon,\nRob",
+      "prospect_msgs": 7,
+      "total": 20
+    },
+    {
+      "name": "Drew DeBari",
+      "headline": "Sales and Alliances Leader",
+      "body": "holy shit no way\u00a0\nsorry to hear that man",
+      "prospect_msgs": 6,
+      "total": 15
+    },
+    {
+      "name": "Gabriel Dawson",
+      "headline": "Husband ~ Personal Finance ~ Personal Development ~ Fitness ~ Legacy Minded",
+      "body": "Thank you!",
+      "prospect_msgs": 6,
+      "total": 8
+    },
+    {
+      "name": "Gary Horne",
+      "headline": "Technical Support Manager",
+      "body": "Hi Gary,  \nI noticed that you are a QA Manager at Sony and oversee software testing within an Agile team. \n \nMabl is a low code automation platform and could be of use to you because it has been able to improve release velocity and decrease bugs sent to production since it cuts down the time of maintenance by 85%, increases test execution speed by 300%, and auto heals broken tests automatically. Leaving much more time for you or your team to focus on important tasks. \n \nCompanies like JetBlue, ADP, and Charles Shwab have all seen a major increase in testing efficiency because of Mabl\u2019s capabilities. \n \nEnough about me though, what is your focus within testing for your team?\n \nBest, \nRob",
+      "prospect_msgs": 6,
+      "total": 13
+    },
+    {
+      "name": "Jack Cornell",
+      "headline": "Cintas Facility Services Field Representative",
+      "body": "so glad you sent this to me while your taking a dump hahah",
+      "prospect_msgs": 6,
+      "total": 9
+    },
+    {
+      "name": "Nick Eliopoulos - Insurance Advisor",
+      "headline": "Business Insurance @ World (formerly Tarpey) | Risk Management | English & Falo Portuguese | Lover of the game \u26f3\ufe0f | Ouimet Scholar | Providing comfort on your worst days, so you can cherish your best.",
+      "body": "Hey Nick, long time no see and glad to help answer any questions. Mabl actually already started evaluating lusha in q2 with an AE named Chris before our zoom info contract expired. \n\nMy team and manager wanted to go with lusha but the founder made the decision to stay with zoominfo cuz they gave us a good deal. \nIdk how the contracts work but I\u2019m assuming we\u2019re locked in until the summer. \nI can try to put you in contact with my manager if you\u2019d like?\n\nWe\u2019re using salesforce for crm, outreach for dialing, and sales nav/zoominfo for prospects ",
+      "prospect_msgs": 6,
+      "total": 10
+    },
+    {
+      "name": "Nikhil Arora",
+      "headline": "Vice President - Test Engineering",
+      "body": "Hi Nikhil,\n\nA lot of the Vice President's I\u2019ve met with this year that are responsible for testing have said that their QA teams have a lot of software testing that needs to be completed in time for their release deadlines.\nThe problem is that their QA teams can\u2019t finish testing in time so have to push release dates or push out a product that has errors in the code. This has caused negative customer experiences in the past and has pushed customers away from using their applications.\n\nMabl\u2019s test automation platform was able to solve this problem using AI and Machine Learning for Charles Schwab, Intuit, and Chewy so was hoping to hear if you\u2019re experiencing any challenges with your teams to s",
+      "prospect_msgs": 6,
+      "total": 9
+    },
+    {
+      "name": "Nitin Kainth",
+      "headline": "Quality Analyst | Photography Enthusiast | 4+ Years Experience | I Help Companies Enhance Value with Precise Testing",
+      "body": "Hi Nitin,  \nI noticed that you are a QA Engineer at Cybertron Technologies and oversee software testing within an Agile team. \n \nMabl is a low code automation platform and could be of use to you because it has been able to improve release velocity and decrease bugs sent to production.\n \nMabl is able to accomplish this since it cuts down the time of maintenance through increasing test execution speed (by 300%), and auto fixes broken tests automatically. Leaving much more time for you or your team to focus on important tasks. \n \nCompanies like JetBlue, ADP, and Charles Shwab have all seen a major increase in testing efficiency because of Mabl\u2019s capabilities. \n \nEnough about me though, what is ",
+      "prospect_msgs": 6,
+      "total": 9
+    },
+    {
+      "name": "Sathish Kumar Backiam",
+      "headline": "QE Architect | Design & Solutions | QE Evangelist",
+      "body": "Hi Sathish,\n\nMabl\u2019s test automation platform shortens release cycles, cuts down test maintenance by 85%, test accessibility coverage, and decreases bugs by 40% on average. \nSeeing that you\u2019re the Principal QA Architect\u00a0at Southwest Airlines I thought it would be worth exploring your options to see if we can increase testing efficiency.\n\nIf that\u2019s a priority of yours, would it be unreasonable to show you exactly how other companies are using our platform to Increase testing efficiency and determine if you can do the same?\n\nWhat day would you be available?\n\nBest,\nRob",
+      "prospect_msgs": 6,
+      "total": 11
+    }
+  ],
+  "noreply_samples": [
+    {
+      "body": "Hello Aaron,\nAre you looking for a solution to improve the efficiency, scalability, and reliability of your testing process?\n\nI understand you're constantly looking for ways to improve your testing process and deliver high-quality software faster.\n\nMabl provides a comprehensive and user-friendly test automation solution that can help you achieve both. \n\nWith mabl, you'll be able to automate repetitive and time-consuming tasks, freeing up your team's time to focus on more strategic and creative work. \n\nAdditionally, mabl's auto healing & visual testing features help identify and fix flaky tests"
+    },
+    {
+      "body": "Hello Aaron,\nAre you looking for a solution to improve the efficiency, scalability, and reliability of your testing process?\n\nI understand you're constantly looking for ways to improve your testing process and deliver high-quality software faster as an Engineering Leader.\nMabl provides a comprehensive and user-friendly test automation solution that can help you achieve both. \n\nWith mabl, you'll be able to automate repetitive and time-consuming tasks, freeing up your team's time to focus on more strategic and creative work. \n\nAdditionally, mabl's auto healing & visual testing features help iden"
+    },
+    {
+      "body": "Hi Aarti,\n\nMabl\u2019s test automation platform shortens release cycles, cuts down test maintenance by 85%, test accessibility coverage, and decreases bugs by 40% on average. \nSeeing that you\u2019re the Director of QA at Beachbody I thought it would be worth exploring your options to see if we can increase testing efficiency.\n\nIf that\u2019s a priority of yours, would it be unreasonable to find 20 minutes to show you exactly how other companies are using our platform to Increase testing efficiency and determine if you can do the same?\n\nWhat day would you be available?\n\nBest,\nRob"
+    },
+    {
+      "body": "Hi Aastha,\n\nSeeing that you're the Quality Assurance Manager at Mio I wanted to reach out and see if you're also thinking of ways to upgrade the quality of your application using AI like other Agile Managers?\n\nA lot of the QA\u00a0Managers I\u2019ve met with this year have said that their SDLC has room for improvement when it comes to testing their application thoroughly in every step of their release cycle or CI/CD.\nThe problem they report seeing is that their Engineer's can\u2019t finish testing by their deadline so management has to either push release dates or push out an application that has bugs that's"
+    },
+    {
+      "body": "Hi Abby,\n\nI\u2019m reaching out because a lot of the Director's of Software Engineering I\u2019ve met with this year have said that their QA teams have a lot of software testing that needs to be completed in time for their release deadlines.\nThe problem is that their QA teams can\u2019t finish testing in time so have to push release dates or push out a product that has errors in the code. This has caused negative customer experiences in the past and has pushed customers away from using their applications.\n\nMabl\u2019s test automation platform was able to solve this problem using AI and Machine Learning for Charle"
+    },
+    {
+      "body": "Hi Abdallah,\n\nWould you like to share what you and your team are looking to improve this year?\n\nThe beginning of the year is typically the time to start evaluating solutions so If improving parts of your QA Process is on your radar, we'd love to see if mabl can help."
+    },
+    {
+      "body": "Hi Abhijit,\n\nMabl\u2019s test automation platform shortens release cycles, cuts down test maintenance by 85%, test accessibility coverage, and decreases bugs by 40% on average.\nSeeing that you\u2019re the QE Manager at CrunchMediaWorks I thought it would be worth exploring your options to see if we can increase testing efficiency.\n\nIf that\u2019s a priority of yours, would it be unreasonable to find 20 minutes to show you exactly how other companies are using our platform to Increase testing efficiency and determine if you can do the same?\n\nWhat day would you be available?\n\nBest,\nRob"
+    },
+    {
+      "body": "Hi Abhinav,\n\nWould you like to share what you and your team are looking to improve this year?\n\nThe beginning of the year is typically the time to start evaluating solutions so If improving parts of your QA Process is on your radar, we'd love to see if mabl can help."
+    },
+    {
+      "body": "Hi Abhinav,\n\nI've been tasked with reaching out to folks in the Software Engineering and Quality Assurance space to get a pulse on the awareness of our test automation platform.\n\nI saw that you're the Advisory Quality Assurance Engineer at Belcan so I figure it'd be smart to ask you if you've heard of mabl before or automated testing with it in the past?\n\nBest,\nRob"
+    },
+    {
+      "body": "Hello Abhishek,\nAre you looking for a solution to improve the efficiency, scalability, and reliability of your testing process?\n\nI understand you're constantly looking for ways to improve your testing process and deliver high-quality software faster.\n\nMabl provides a comprehensive and user-friendly test automation solution that can help you achieve both. \n\nWith mabl, you'll be able to automate repetitive and time-consuming tasks, freeing up your team's time to focus on more strategic and creative work. \n\nAdditionally, mabl's auto healing & visual testing features help identify and fix flaky te"
+    },
+    {
+      "body": "Hi Abhishek,  \nI noticed that you are a Manager in Software Test at Intuitive and oversee software testing within an Agile team. \n \nMabl is a low code automation platform and could be of use to you because it has been able to improve release velocity and decrease bugs sent to production since it cuts down the time of maintenance by 85%, increases test execution speed by 300%, and auto heals broken tests automatically. Leaving much more time for you or your team to focus on important tasks. \n \nCompanies like JetBlue, ADP, and Charles Shwab have all seen a major increase in testing efficiency be"
+    },
+    {
+      "body": "Hi Abies,\n\nMabl\u2019s test automation platform shortens release cycles, cuts down test maintenance by 85%, test accessibility coverage, and decreases bugs by 40% on average. \nSeeing that you\u2019re the Test Manager at NIMBL I thought it would be worth exploring your options to see if we can increase testing efficiency.\n\nIf that\u2019s a priority of yours, would it be unreasonable to find 20 minutes to show you exactly how other companies are using our platform to Increase testing efficiency and determine if you can do the same?\n \nWhat day would you be available?\n\nBest,\nRob"
+    },
+    {
+      "body": "Hi Adam,\n\nMabl\u2019s test automation platform shortens release cycles, cuts down test maintenance by 85%, test accessibility coverage, and decreases bugs by 40% on average. \nSeeing that you\u2019re the Senior Quality Assurance Manager at Epic Games I thought it would be worth exploring your options to see if we can increase testing efficiency.\n\nIf that\u2019s a priority of yours, would it be unreasonable to find 20 minutes to show you exactly how other companies are using our platform to Increase testing efficiency and determine if you can do the same?\n \nWhat day would you be available?\n\nBest,\nRob"
+    },
+    {
+      "body": "Hi Adam,\n\nMany of the QA Manager's I\u2019ve been meeting with this year have been dealing with testing backups that are slowing the speed of their releases.\u00a0\nOur platform uses machine learning to maintain, create, and execute tests so your testing can keep up with the speed of those releases.\n\nIf you\u2019d like to see if this is something you can benefit from too I\u2019d be happy to call you right now and see if we can help.\nWhat\u2019s your number? Or I can drop my # and you can call me.\n\nBest,\nRob"
+    },
+    {
+      "body": "Hi Adam,\n\nMabl\u2019s test automation platform shortens release cycles, cuts down test maintenance by 85%, test accessibility coverage, and decreases bugs by 40% on average. \nSeeing that you\u2019re the Senior QA Architect at BMI I thought it would be worth exploring your options to see if we can increase testing efficiency.\n\nIf that\u2019s a priority of yours, would it be unreasonable to find 20 minutes to show you exactly how other companies are using our platform to Increase testing efficiency and determine if you can do the same?\n \nWhat day would you be available?\n\nBest,\nRob"
+    },
+    {
+      "body": "Hi Aditya,  \nI noticed that you are a Software Development Manager at Amazon and oversee software testing within an Agile team. \n \nMabl is a low code automation platform and could be of use to you because it has been able to improve release velocity and decrease bugs sent to production since it cuts down the time of maintenance by 85%, increases test execution speed by 300%, and auto heals broken tests automatically. Leaving much more time for you or your team to focus on important tasks. \n \nCompanies like JetBlue, ADP, and Charles Shwab have all seen a major increase in testing efficiency bec"
+    },
+    {
+      "body": "Hi Aditya, thank you for connecting with me.\u00a0\n\nI was hoping you\u2019d be able to share if you've used mabl at work or heard of us within the QA community?\n\nBest,\nRob"
+    },
+    {
+      "body": "Hi Adnan,\n\nMany of the CTO's I\u2019ve been meeting with this year have been dealing with testing backups that are slowing the speed of their releases.\u00a0\nOur platform uses machine learning to maintain, create, and execute tests so your testing can keep up with the speed of those releases.\n\nIf you\u2019d like to see if this is something you can benefit from too I\u2019d be happy to call you right now and see if we can help.\nWhat\u2019s your number? Or I can drop my # and you can call me.\n\nBest,\nRob"
+    },
+    {
+      "body": "Hi Adrian,\n\nI noticed that you are the CTO\u00a0 at Zendesk and are involved in End-to-End testing.\nI reached out to you because you\u2019re leading QA/Engineering of the SDLC and Mabl\u2019s testing platform automates E2E, UI, API, and Unit tests. \n\nHere\u2019s what I think will apply to you as a leader:\nOur Case Studies show that on average we\n-Cut down maintenance time by 85%,\n-Increase test creation by 300% \n-and Mabl auto fixes broken tests automatically\n\nHow does this affect your testing team?\n-Reduced maintenance = Improved release velocity\n-Intelligent Automation = 40% Less bugs released to production \n-F"
+    },
+    {
+      "body": "Hi Ady,\n\nTo get straight to the point, mabl\u2019s AI Test Automation Platform creates high quality software that provides a flawless User Experience for JetBlue, Charles Schwab, and Chewy\u2019s web applications because it:\n\nShortens Release Cycles \nReduces Test Maintenance by 85%\nIncrease Test Coverage by 90%\nAI fixes broken tests automatically\n\nSeeing that you\u2019re the Quality Engineering Architect at easyJet It might be worth exploring your options to improve upon certain parts of your QA process, If that\u2019s on your radar this year.\n\nIf that\u2019s a priority of yours, would it be unreasonable to find 20 mi"
+    },
+    {
+      "body": "Hi Ahmed,\n\nMabl\u2019s test automation platform shortens release cycles, cuts down test maintenance by 85%, test accessibility coverage, and decreases bugs by 40% on average. \nSeeing that you\u2019re the\u00a0QA Manager at Allergan Data Labs I thought it would be worth exploring your options to see if we can increase testing efficiency.\n\nIf that\u2019s a priority of yours, would it be unreasonable to find 20 minutes to show you exactly how other companies are using our platform to Increase testing efficiency and determine if you can do the same?\n\nWhat day would you be available?\n\nBest,\nRob"
+    },
+    {
+      "body": "Hi Aimee,\n\nMabl\u2019s test automation platform shortens release cycles, cuts down test maintenance by 85%, test accessibility coverage, and decreases bugs by 40% on average. \nSeeing that you\u2019re the Lead Software Engineer at Stitch Fix I thought it would be worth exploring your options to see if we can increase testing efficiency.\n\nIf that\u2019s a priority of yours, would it be unreasonable to find 20 minutes to show you exactly how other companies are using our platform to Increase testing efficiency and determine if you can do the same?\n\nWhat day would you be available?\n\nBest,\nRob"
+    },
+    {
+      "body": "Hello Ajay,\nAre you looking for a solution to improve the efficiency, scalability, and reliability of your testing process?\n\nI understand you're constantly looking for ways to improve your testing process and deliver high-quality software faster.\n\nMabl provides a comprehensive and user-friendly test automation solution that can help you achieve both. \n\nWith mabl, you'll be able to automate repetitive and time-consuming tasks, freeing up your team's time to focus on more strategic and creative work. \n\nAdditionally, mabl's auto healing & visual testing features help identify and fix flaky tests,"
+    },
+    {
+      "body": "Hello Ajit,\nAre you looking for a solution to improve the efficiency, scalability, and reliability of your testing process?\n\nI understand you're constantly looking for ways to improve your testing process and deliver high-quality software faster.\n\nMabl provides a comprehensive and user-friendly test automation solution that can help you achieve both. \n\nWith mabl, you'll be able to automate repetitive and time-consuming tasks, freeing up your team's time to focus on more strategic and creative work. \n\nAdditionally, mabl's auto healing & visual testing features help identify and fix flaky tests,"
+    },
+    {
+      "body": "Hi Akanksha, \n\nI\u2019ve had a lot of discussions with Managers this year and there are 2 common recurring challenges they share. \n1. Their release cycle has been slowed down by a QA testing bottleneck and it\u2019s stopping them from being able to test thoroughly for bugs that can affect the customer experience / quality of your application.\n\n2. Their teams are spending far too much time on test maintenance which is holding them back from working on more important projects and consuming too many resources.\n\nI see in your bio that you\u2019re the Test Manager at One Main Financial so I was wondering If you\u2019v"
+    },
+    {
+      "body": "Hello Akanksha,\nAre you looking for a solution to improve the efficiency, scalability, and reliability of your testing process?\n\nI understand you're constantly looking for ways to improve your testing process and deliver high-quality software faster.\n\nMabl provides a comprehensive and user-friendly test automation solution that can help you achieve both. \n\nWith mabl, you'll be able to automate repetitive and time-consuming tasks, freeing up your team's time to focus on more strategic and creative work. \n\nAdditionally, mabl's auto healing & visual testing features help identify and fix flaky te"
+    },
+    {
+      "body": "Hi Akshay,\n\nSeeing that you're the Sr. Engineering Manager in charge of Product Quality at Twitter I wanted to reach out and see if you're also thinking of ways to upgrade the quality of your application like other Managers?\n\nA lot of the Quality Manager's I\u2019ve met with this year have said that their SDLC has room for improvement when it comes to testing their application thoroughly in every step of their release cycle or CI/CD.\nThe problem they report seeing is that their Engineer's can\u2019t finish testing by their deadline so management has to either push release dates or push out an applicatio"
+    },
+    {
+      "body": "Hi Akua,\n\nMabl\u2019s test automation platform shortens release cycles, decreases test maintenance by 85%, and bugs by 40% on average. \nSeeing that you\u2019re the Director of QA at Vibalogics I thought it would be worth exploring your options.\n\nIf that\u2019s a priority of yours, would it be unreasonable to show you exactly how others are using our platform to Increase testing efficiency? \n\nAt the very least I can show you how other companies like Charles Schwab and JetBlue are using us so I can guarantee you walk away with some value. \n\nBest,\nRob"
+    },
+    {
+      "body": "Hi AK,\n\nMabl\u2019s test automation platform shortens release cycles, cuts down test maintenance by 85%, test accessibility coverage, and decreases bugs by 40% on average. \nSeeing that you\u2019re the SDET at Foundation Medicine I thought it would be worth exploring your options to see if we can increase testing efficiency.\n\nIf that\u2019s a priority of yours, would it be unreasonable to find 20 minutes to show you exactly how other companies are using our platform to Increase testing efficiency and determine if you can do the same?\n \nWhat day would you be available?\n\nBest,\nRob"
+    },
+    {
+      "body": "Hello Alagupandi,\nAre you looking for a solution to improve the efficiency, scalability, and reliability of your testing process?\n\nI understand you're constantly looking for ways to improve your testing process and deliver high-quality software faster.\n\nMabl provides a comprehensive and user-friendly test automation solution that can help you achieve both. \n\nWith mabl, you'll be able to automate repetitive and time-consuming tasks, freeing up your team's time to focus on more strategic and creative work. \n\nAdditionally, mabl's auto healing & visual testing features help identify and fix flaky "
+    }
+  ]
+}
