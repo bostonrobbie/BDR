@@ -275,8 +275,9 @@ def create_message_draft(data: dict) -> dict:
         INSERT INTO message_drafts (id, contact_id, batch_id, channel, touch_number,
             touch_type, subject_line, body, version, personalization_score, proof_point_used,
             pain_hook, opener_style, ask_style, word_count, qc_passed, qc_flags, qc_run_id,
-            approval_status, ab_group, ab_variable, agent_run_id, created_at, updated_at)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+            approval_status, ab_group, ab_variable, subject_line_style,
+            agent_run_id, created_at, updated_at)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     """, (
         mid, data.get("contact_id"), data.get("batch_id"), data["channel"],
         data.get("touch_number"), data["touch_type"], data.get("subject_line"),
@@ -285,7 +286,8 @@ def create_message_draft(data: dict) -> dict:
         data.get("ask_style"), data.get("word_count"), data.get("qc_passed"),
         json.dumps(data.get("qc_flags", [])), data.get("qc_run_id"),
         data.get("approval_status", "draft"), data.get("ab_group"),
-        data.get("ab_variable"), data.get("agent_run_id"), now, now
+        data.get("ab_variable"), data.get("subject_line_style"),
+        data.get("agent_run_id"), now, now
     ))
     conn.commit()
     row = conn.execute("SELECT * FROM message_drafts WHERE id=?", (mid,)).fetchone()
@@ -339,13 +341,13 @@ def log_touchpoint(data: dict) -> dict:
     conn.execute("""
         INSERT INTO touchpoints (id, contact_id, message_draft_id, channel,
             touch_number, sent_at, outcome, call_duration_seconds, call_notes,
-            confirmed_by_user, created_at)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?)
+            confirmed_by_user, subject_line_style, created_at)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
     """, (
         tid, data["contact_id"], data.get("message_draft_id"), data["channel"],
         data.get("touch_number"), data.get("sent_at", now), data.get("outcome"),
         data.get("call_duration_seconds"), data.get("call_notes"),
-        data.get("confirmed_by_user", 1), now
+        data.get("confirmed_by_user", 1), data.get("subject_line_style"), now
     ))
     conn.commit()
 

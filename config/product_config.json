@@ -1,0 +1,83 @@
+{
+  "company": "Testsigma",
+  "sender": "Rob Gorham",
+  "sender_title": "BDR",
+  "value_props": [
+    "AI-powered test automation with plain English test creation",
+    "Self-healing tests that auto-fix when UI changes",
+    "Unified platform for web, mobile, and API testing",
+    "70% reduction in test maintenance vs Selenium/Cypress",
+    "No-code test creation that lets devs and QA collaborate"
+  ],
+  "proof_points": {
+    "hansard_regression": {
+      "text": "Hansard cut regression from 8 weeks to 5 weeks with AI auto-heal",
+      "short": "regression 8 weeks to 5 weeks",
+      "best_for": ["insurance", "financial services", "finserv", "long regression cycles"],
+      "metric": "8 weeks to 5 weeks"
+    },
+    "medibuddy_scale": {
+      "text": "Medibuddy automated 2,500 tests and cut maintenance 50%",
+      "short": "2,500 tests automated, 50% maintenance cut",
+      "best_for": ["healthcare", "digital health", "mid-size teams", "scaling"],
+      "metric": "2,500 tests, 50% maintenance cut"
+    },
+    "cred_coverage": {
+      "text": "CRED hit 90% regression automation and 5x faster execution",
+      "short": "90% regression coverage, 5x faster",
+      "best_for": ["fintech", "high-velocity", "fast release cycles"],
+      "metric": "90% coverage, 5x faster"
+    },
+    "sanofi_speed": {
+      "text": "Sanofi went from 3-day regression to 80 minutes",
+      "short": "3 days to 80 minutes",
+      "best_for": ["pharma", "healthcare", "compliance-heavy", "large regression"],
+      "metric": "3 days to 80 minutes"
+    },
+    "fortune100_productivity": {
+      "text": "A Fortune 100 company saw 3X productivity increase",
+      "short": "3X productivity increase",
+      "best_for": ["enterprise", "vp-level", "big tech"],
+      "metric": "3X productivity"
+    },
+    "spendflo_roi": {
+      "text": "Spendflo cut 50% of manual testing with ROI in first quarter",
+      "short": "50% manual testing cut, ROI in Q1",
+      "best_for": ["saas", "small teams", "startup", "budget-conscious"],
+      "metric": "50% manual testing cut"
+    },
+    "selenium_maintenance": {
+      "text": "70% maintenance reduction vs Selenium",
+      "short": "70% less maintenance than Selenium",
+      "best_for": ["selenium users", "cypress users", "playwright users"],
+      "metric": "70% maintenance reduction"
+    }
+  },
+  "cta_options": [
+    "Would a 15-minute comparison make sense?",
+    "Worth a quick reply to see if it's relevant?",
+    "Happy to share more if helpful.",
+    "Worth a conversation?",
+    "Open to a quick look?"
+  ],
+  "forbidden_phrases": [
+    "saw your post",
+    "noticed you",
+    "came across your",
+    "I was browsing",
+    "I looked you up",
+    "I was researching you",
+    "I scraped",
+    "our AI found"
+  ],
+  "max_chars": {
+    "linkedin": 600,
+    "email": 1200,
+    "subject_line": 80
+  },
+  "tone_descriptions": {
+    "friendly": "Warm, conversational, peer-to-peer. Uses casual language, shows genuine curiosity.",
+    "direct": "Concise, gets to the point quickly. Respects the reader's time. Professional but not stiff.",
+    "curious": "Question-led, exploratory. Frames outreach as genuine curiosity about their challenges."
+  }
+}

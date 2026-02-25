@@ -1,0 +1,118 @@
+{
+  "version": "2.0",
+  "description": "Calibratable scoring weights for the BDR lead scoring engine. Edit weights without code changes.",
+  "features": {
+    "title_seniority": {
+      "max_points": 20,
+      "description": "How well the prospect's title/seniority matches our ICP",
+      "tiers": {
+        "primary_qa_leader": 20,
+        "secondary_eng_leader": 14,
+        "influencer_ic": 8,
+        "adjacent_role": 4,
+        "no_match": 0
+      },
+      "primary_titles": ["qa manager", "qa lead", "director of qa", "head of qa", "vp quality", "vp quality engineering", "director quality engineering", "director of quality engineering", "director of quality", "head of quality", "quality engineering manager"],
+      "secondary_titles": ["vp engineering", "vp software engineering", "cto", "director of engineering", "director engineering", "software eng manager", "engineering manager"],
+      "influencer_titles": ["senior sdet", "automation lead", "qa architect", "test architect", "sdet lead", "principal sdet", "test lead", "staff sdet"],
+      "adjacent_titles": ["product manager", "devops lead", "release manager", "platform lead"]
+    },
+    "function_match": {
+      "max_points": 15,
+      "description": "Does the prospect work in QA/Testing/Engineering function",
+      "tiers": {
+        "qa_testing": 15,
+        "engineering": 10,
+        "devops_platform": 7,
+        "product": 4,
+        "other": 0
+      },
+      "qa_keywords": ["qa", "quality", "test", "sdet", "automation"],
+      "engineering_keywords": ["engineering", "software", "development", "cto"],
+      "devops_keywords": ["devops", "platform", "infrastructure", "sre", "release"],
+      "product_keywords": ["product", "program"]
+    },
+    "company_size_fit": {
+      "max_points": 10,
+      "description": "Company size sweet spot for our product",
+      "bands": {
+        "51-200": 6,
+        "201-500": 10,
+        "501-1000": 10,
+        "1001-5000": 8,
+        "5001-10000": 6,
+        "10001-50000": 4,
+        "1-50": 2,
+        "50000+": 2
+      }
+    },
+    "industry_fit": {
+      "max_points": 10,
+      "description": "How well the company's industry matches our ICP verticals",
+      "tiers": {
+        "primary": 10,
+        "secondary": 6,
+        "tertiary": 3,
+        "no_match": 0
+      },
+      "primary_verticals": ["fintech", "saas", "healthcare", "digital health", "finserv"],
+      "secondary_verticals": ["e-commerce", "insurtech", "pharma", "insurance", "banking"],
+      "tertiary_verticals": ["telecom", "retail", "media", "tech"]
+    },
+    "pain_confidence": {
+      "max_points": 20,
+      "description": "How confident we are that the prospect has a real pain we solve",
+      "scoring": {
+        "has_competitor_tool": 8,
+        "has_pain_hypothesis_high_conf": 6,
+        "has_pain_hypothesis_medium_conf": 3,
+        "has_hiring_signal": 4,
+        "has_tech_stack_evidence": 4
+      }
+    },
+    "intent_signal": {
+      "max_points": 15,
+      "description": "Buyer intent and trigger event signals",
+      "scoring": {
+        "buyer_intent_flag": 8,
+        "recently_hired": 5,
+        "funding_event": 4,
+        "digital_transformation": 5,
+        "hiring_qa": 4,
+        "compliance_trigger": 3
+      }
+    },
+    "data_quality": {
+      "max_points": 10,
+      "description": "How complete is our data on this prospect",
+      "scoring": {
+        "has_email": 2,
+        "has_linkedin_url": 2,
+        "has_company_research": 2,
+        "has_person_research": 2,
+        "has_title": 1,
+        "has_company_name": 1
+      }
+    }
+  },
+  "thresholds": {
+    "hot": 70,
+    "warm": 45,
+    "cool": 25,
+    "cold": 0
+  },
+  "signal_decay": {
+    "description": "Half-life in days for each signal type. After half_life_days, a signal contributes 50% of its original score.",
+    "half_lives": {
+      "recently_hired": 90,
+      "funding_event": 365,
+      "hiring_qa": 120,
+      "digital_transformation": 180,
+      "buyer_intent_flag": 180,
+      "compliance_trigger": 365,
+      "tech_stack": 180,
+      "competitor_tool": 180
+    },
+    "min_factor": 0.1
+  }
+}
