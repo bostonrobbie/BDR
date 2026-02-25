@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outreach Command Center - System Architecture</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #232733;
+    --border: #2d3140;
+    --text: #e2e4e9;
+    --text-dim: #8b8fa3;
+    --accent: #6366f1;
+    --accent-light: #818cf8;
+    --green: #22c55e;
+    --yellow: #eab308;
+    --red: #ef4444;
+    --orange: #f97316;
+    --cyan: #06b6d4;
+    --pink: #ec4899;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    padding: 0;
+  }
+
+  /* Top nav */
+  .top-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(15,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 32px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .top-nav h1 { font-size: 18px; font-weight: 700; color: var(--accent-light); white-space: nowrap; }
+  .nav-links { display: flex; gap: 4px; flex-wrap: wrap; }
+  .nav-links a {
+    color: var(--text-dim); text-decoration: none; font-size: 13px; padding: 6px 12px;
+    border-radius: 6px; transition: all 0.15s;
+  }
+  .nav-links a:hover { color: var(--text); background: var(--surface); }
+
+  /* Layout */
+  .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+
+  /* Section headers */
+  .section-num {
+    display: inline-block; background: var(--accent); color: #fff; font-size: 12px;
+    font-weight: 700; padding: 2px 10px; border-radius: 12px; margin-bottom: 8px;
+  }
+  h2 {
+    font-size: 28px; font-weight: 700; margin-bottom: 6px;
+    background: linear-gradient(135deg, var(--accent-light), var(--cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  h2.plain { background: none; -webkit-text-fill-color: var(--text); }
+  .section-subtitle { color: var(--text-dim); font-size: 15px; margin-bottom: 24px; }
+  h3 { font-size: 18px; font-weight: 600; margin: 24px 0 10px; color: var(--text); }
+  h4 { font-size: 15px; font-weight: 600; margin: 16px 0 8px; color: var(--accent-light); }
+
+  section { margin-bottom: 56px; }
+
+  /* Cards */
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px 24px; margin-bottom: 16px;
+  }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); gap: 16px; }
+  .card-sm { padding: 16px 20px; }
+
+  /* Tags */
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px;
+    border-radius: 10px; margin: 2px 2px;
+  }
+  .tag-purple { background: rgba(99,102,241,0.15); color: var(--accent-light); }
+  .tag-green { background: rgba(34,197,94,0.15); color: var(--green); }
+  .tag-yellow { background: rgba(234,179,8,0.15); color: var(--yellow); }
+  .tag-red { background: rgba(239,68,68,0.15); color: var(--red); }
+  .tag-cyan { background: rgba(6,182,212,0.15); color: var(--cyan); }
+  .tag-orange { background: rgba(249,115,22,0.15); color: var(--orange); }
+  .tag-pink { background: rgba(236,72,153,0.15); color: var(--pink); }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  th {
+    text-align: left; padding: 10px 14px; background: var(--surface2);
+    color: var(--text-dim); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+  }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .col-name { font-weight: 600; color: var(--accent-light); white-space: nowrap; }
+  .col-type { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; color: var(--cyan); white-space: nowrap; }
+  .col-pk { color: var(--yellow); }
+  .col-fk { color: var(--orange); }
+
+  /* Collapsible */
+  details { margin-bottom: 12px; }
+  details summary {
+    cursor: pointer; font-weight: 600; font-size: 15px; padding: 12px 16px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    list-style: none; display: flex; align-items: center; gap: 8px;
+    transition: background 0.15s;
+  }
+  details summary:hover { background: var(--surface2); }
+  details summary::before { content: "▸"; font-size: 12px; color: var(--text-dim); transition: transform 0.15s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+  details .detail-body { padding: 16px 20px; border: 1px solid var(--border); border-top: none; border-radius: 0 0 8px 8px; background: var(--surface); }
+
+  /* Code */
+  code {
+    font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px;
+    background: var(--surface2); padding: 2px 6px; border-radius: 4px; color: var(--cyan);
+  }
+  pre {
+    background: var(--surface2); padding: 16px 20px; border-radius: 8px;
+    overflow-x: auto; font-size: 13px; line-height: 1.5; margin: 12px 0;
+    border: 1px solid var(--border);
+  }
+  pre code { background: none; padding: 0; }
+
+  /* Flowchart */
+  .flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+  .flow-step {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 14px; font-size: 13px; font-weight: 500;
+  }
+  .flow-arrow { color: var(--text-dim); font-size: 16px; }
+  .flow-step.agent { border-color: var(--accent); background: rgba(99,102,241,0.1); }
+  .flow-step.human { border-color: var(--green); background: rgba(34,197,94,0.1); }
+  .flow-step.system { border-color: var(--cyan); background: rgba(6,182,212,0.1); }
+
+  /* Milestone cards */
+  .milestone {
+    border-left: 3px solid var(--accent);
+    padding: 16px 20px; margin-bottom: 16px;
+    background: var(--surface); border-radius: 0 8px 8px 0;
+  }
+  .milestone-label { font-size: 12px; font-weight: 700; color: var(--accent-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .milestone h4 { margin-top: 0; }
+
+  /* Wireframe mockup */
+  .wireframe {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden; margin: 16px 0;
+  }
+  .wf-bar { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: var(--surface); border-bottom: 1px solid var(--border); }
+  .wf-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .wf-body { padding: 16px; }
+  .wf-row { display: flex; gap: 12px; margin-bottom: 12px; }
+  .wf-col { flex: 1; }
+  .wf-placeholder { background: var(--border); border-radius: 6px; height: 20px; margin-bottom: 8px; }
+  .wf-placeholder.w50 { width: 50%; }
+  .wf-placeholder.w75 { width: 75%; }
+  .wf-placeholder.h40 { height: 40px; }
+  .wf-placeholder.h80 { height: 80px; }
+  .wf-placeholder.h120 { height: 120px; }
+  .wf-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+
+  /* Diagram */
+  .diagram-box {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 16px; font-size: 13px; font-weight: 500; text-align: center;
+    min-width: 120px;
+  }
+  .diagram-box.primary { border-color: var(--accent); color: var(--accent-light); }
+  .diagram-box.success { border-color: var(--green); color: var(--green); }
+  .diagram-box.warn { border-color: var(--yellow); color: var(--yellow); }
+
+  ul, ol { margin: 8px 0 8px 20px; }
+  li { margin-bottom: 4px; font-size: 14px; }
+  p { margin-bottom: 10px; font-size: 14px; }
+  .dim { color: var(--text-dim); }
+  .bold { font-weight: 600; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  /* TOC */
+  .toc { columns: 2; column-gap: 32px; }
+  .toc a { display: block; color: var(--text-dim); text-decoration: none; padding: 4px 0; font-size: 14px; }
+  .toc a:hover { color: var(--accent-light); }
+  .toc-num { color: var(--accent-light); font-weight: 600; margin-right: 6px; }
+
+  @media (max-width: 768px) {
+    .card-grid { grid-template-columns: 1fr; }
+    .toc { columns: 1; }
+    .top-nav { flex-direction: column; align-items: flex-start; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <h1>Outreach Command Center</h1>
+  <div class="nav-links">
+    <a href="#overview">Overview</a>
+    <a href="#ui">UI Map</a>
+    <a href="#schema">Data Model</a>
+    <a href="#agents">Agents</a>
+    <a href="#templates">Templates</a>
+    <a href="#testing">Testing</a>
+    <a href="#deploy">Deploy</a>
+    <a href="#milestones">Milestones</a>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ============================================ -->
+<!-- HEADER -->
+<!-- ============================================ -->
+<div style="text-align:center; padding: 40px 0 32px;">
+  <h1 style="font-size:36px; font-weight:800; background:linear-gradient(135deg,var(--accent-light),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Outreach Command Center</h1>
+  <p style="color:var(--text-dim); font-size:16px; margin-top:8px;">System Architecture &amp; Design Document</p>
+  <p style="color:var(--text-dim); font-size:13px; margin-top:4px;">Rob Gorham, BDR @ Testsigma &nbsp;|&nbsp; February 2026</p>
+</div>
+
+<div class="card" style="margin-bottom:40px;">
+  <h3 style="margin-top:0;">Table of Contents</h3>
+  <div class="toc">
+    <a href="#overview"><span class="toc-num">1</span> System Overview</a>
+    <a href="#ui"><span class="toc-num">2</span> UI Map, Pages &amp; Components</a>
+    <a href="#schema"><span class="toc-num">3</span> Data Model &amp; Schema</a>
+    <a href="#agents"><span class="toc-num">4</span> Agent Workflows by Channel</a>
+    <a href="#templates"><span class="toc-num">5</span> Templates &amp; SOP Library</a>
+    <a href="#testing"><span class="toc-num">6</span> Testing Plan</a>
+    <a href="#deploy"><span class="toc-num">7</span> Deployment Plan</a>
+    <a href="#milestones"><span class="toc-num">8</span> Milestones &amp; Phased Build</a>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 1: OVERVIEW -->
+<!-- ============================================ -->
+<section id="overview">
+<span class="section-num">Section 1</span>
+<h2>System Overview</h2>
+<p class="section-subtitle">What the Outreach Command Center does and does not do.</p>
+
+<div class="card">
+  <h3 style="margin-top:0;">What It Is</h3>
+  <p>A local, browser-based dashboard that sits on top of your file system and a lightweight SQLite database. It consolidates your three outreach channels (LinkedIn, Email, Calls) into one unified workspace where you can research prospects, generate personalized messaging, track every touchpoint, and learn from outcomes over time. It is designed for one user (you) running locally, with no cloud infrastructure required.</p>
+
+  <h3>What It Does</h3>
+  <div class="card-grid">
+    <div class="card card-sm">
+      <span class="tag tag-purple">Research</span>
+      <p style="margin-top:8px;">Agent-powered prospect and company research from Sales Navigator, company websites, news, job postings. Stores structured snapshots so you never research the same company twice.</p>
+    </div>
+    <div class="card card-sm">
+      <span class="tag tag-green">Draft</span>
+      <p style="margin-top:8px;">Generates copy-paste-ready messages for all 6 touches in your voice, with personalization scores, proof point rotation, and objection pre-mapping. You copy, paste, and send manually.</p>
+    </div>
+    <div class="card card-sm">
+      <span class="tag tag-cyan">Track</span>
+      <p style="margin-top:8px;">Logs every touchpoint, reply, status change, and outcome. Links opportunities back to the specific messages and angles that created them. Tracks A/B experiments and personalization scores.</p>
+    </div>
+    <div class="card card-sm">
+      <span class="tag tag-yellow">Learn</span>
+      <p style="margin-top:8px;">Analyzes accumulated data to surface what works: which personas convert, which proof points get replies, which openers perform. Generates pre-briefs before each new batch. Gets smarter with every cycle.</p>
+    </div>
+  </div>
+
+  <h3>What It Does NOT Do</h3>
+  <ul>
+    <li><strong>Does not send messages.</strong> You copy and paste. The system prepares and tracks, you execute.</li>
+    <li><strong>Does not log into platforms autonomously.</strong> You provide access via your browser session. The agent reads data from pages you navigate to.</li>
+    <li><strong>Does not make purchasing decisions or financial transactions.</strong></li>
+    <li><strong>Does not store passwords or credentials.</strong></li>
+    <li><strong>Does not violate any platform terms of service.</strong> No automated scraping at scale, no bot behavior, no mass messaging.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0;">Architecture at a Glance</h3>
+  <pre><code>
+┌─────────────────────────────────────────────────────────────────┐
+│                    BROWSER (your Chrome)                        │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │              Outreach Command Center UI                   │  │
+│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐ │  │
+│  │  │ LinkedIn  │  │  Email   │  │  Calls   │  │ Pipeline │ │  │
+│  │  │Workspace  │  │Workspace │  │Workspace │  │  + Intel │ │  │
+│  │  └──────────┘  └──────────┘  └──────────┘  └──────────┘ │  │
+│  └──────────────────────┬────────────────────────────────────┘  │
+│                         │ HTTP (localhost:3000)                  │
+└─────────────────────────┼───────────────────────────────────────┘
+                          │
+┌─────────────────────────┼───────────────────────────────────────┐
+│  LOCAL SERVER (Python FastAPI)                                   │
+│  ┌──────────┐  ┌──────────────┐  ┌────────────────────────────┐│
+│  │  REST API │  │ Agent Engine  │  │     Background Workers    ││
+│  │ /api/...  │  │ (Claude via  │  │  - Batch processor        ││
+│  │           │  │  Cowork)     │  │  - Follow-up scheduler    ││
+│  └─────┬────┘  └──────┬───────┘  │  - Learning loop runner   ││
+│        │              │          └────────────────────────────┘│
+│  ┌─────┴──────────────┴──────────────────────────────────────┐│
+│  │                   Data Layer                               ││
+│  │  ┌─────────┐  ┌───────────────────────┐  ┌─────────────┐ ││
+│  │  │ SQLite  │  │  File System (Work/)   │  │  JSON Cache │ ││
+│  │  │ outreach│  │  templates/ research/  │  │  company    │ ││
+│  │  │ .db     │  │  drafts/ logs/ sops/   │  │  profiles   │ ││
+│  │  └─────────┘  └───────────────────────┘  └─────────────┘ ││
+│  └────────────────────────────────────────────────────────────┘│
+└─────────────────────────────────────────────────────────────────┘
+  </code></pre>
+  <p class="dim" style="font-size:13px;">The entire stack runs on your machine. No cloud, no external APIs except Claude (via Cowork) and your browser sessions for Sales Navigator and Gmail.</p>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0;">Tech Stack</h3>
+  <table>
+    <tr><th style="width:180px;">Layer</th><th>Technology</th><th>Why</th></tr>
+    <tr><td class="col-name">Frontend</td><td>Single HTML + React (via CDN)</td><td>Opens in any browser. No build step. Ships as one file. Can be previewed as artifact.</td></tr>
+    <tr><td class="col-name">Backend API</td><td>Python FastAPI</td><td>Lightweight, async, easy to extend. Rob can run with one command.</td></tr>
+    <tr><td class="col-name">Database</td><td>SQLite</td><td>Zero config, file-based, portable. One <code>.db</code> file in Work folder.</td></tr>
+    <tr><td class="col-name">Agent Engine</td><td>Claude via Cowork session</td><td>Research, drafting, analysis. Uses existing CLAUDE.md SOPs.</td></tr>
+    <tr><td class="col-name">File Storage</td><td>Local file system (Work/)</td><td>Templates, research snapshots, message drafts, run logs, SOPs.</td></tr>
+    <tr><td class="col-name">Browser Bridge</td><td>Claude in Chrome MCP tools</td><td>Reads Sales Navigator pages, extracts prospect data, does company research.</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0;">Core Design Principles</h3>
+  <table>
+    <tr><th style="width:60px;">#</th><th style="width:200px;">Principle</th><th>What It Means</th></tr>
+    <tr><td>1</td><td class="bold">Human in the Loop</td><td>Claude researches and drafts. Rob reviews, edits, and sends. No automated outreach ever.</td></tr>
+    <tr><td>2</td><td class="bold">Opportunity Focused</td><td>Every metric traces back to opportunities created, not vanity counts like "messages sent."</td></tr>
+    <tr><td>3</td><td class="bold">Sounds Like Rob</td><td>All messaging enforces the voice rules in CLAUDE.md. No em dashes, no feature dumps, warm and specific.</td></tr>
+    <tr><td>4</td><td class="bold">Compounding Intelligence</td><td>Every touchpoint, reply, and outcome feeds the learning loop. Each batch is smarter than the last.</td></tr>
+    <tr><td>5</td><td class="bold">Token Efficient</td><td>Cache company profiles, reuse research, version message blocks. Don't re-research what you already know.</td></tr>
+    <tr><td>6</td><td class="bold">Local First</td><td>Everything runs on Rob's machine. No cloud dependencies except Claude. Data never leaves the device.</td></tr>
+  </table>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- SECTION 2: UI MAP -->
+<!-- ============================================ -->
+<section id="ui">
+<span class="section-num">Section 2</span>
+<h2>UI Map, Pages &amp; Components</h2>
+<p class="section-subtitle">Dashboard structure, navigation, and component layout for each workspace.</p>
+
+<div class="card">
+  <h3 style="margin-top:0;">Global Navigation</h3>
+  <pre><code>
+┌──────────────────────────────────────────────────────────────────┐
+│  [Logo] Outreach Command Center                                  │
+│                                                                  │
+│  Sidebar:                        Main Content Area:              │
+│  ┌──────────────┐               ┌──────────────────────────────┐│
+│  │ 🏠 Home       │               │                              ││
+│  │ 📊 Pipeline    │               │   (Page content renders      ││
+│  │ 🔗 LinkedIn    │               │    here based on sidebar     ││
+│  │ 📧 Email       │               │    selection)                ││
+│  │ 📞 Calls       │               │                              ││
+│  │ ─────────────│               │                              ││
+│  │ 🧪 Experiments │               │                              ││
+│  │ 📈 Intelligence│               │                              ││
+│  │ ⚙️ Settings    │               │                              ││
+│  │ 📋 Agent Logs  │               │                              ││
+│  └──────────────┘               └──────────────────────────────┘│
+└──────────────────────────────────────────────────────────────────┘
+  </code></pre>
+</div>
+
+<h3>Page Breakdown</h3>
+
+<details>
+  <summary><span class="tag tag-purple">Page</span> Home / Command Center</summary>
+  <div class="detail-body">
+    <p>The daily cockpit. What Rob sees first thing in the morning.</p>
+    <h4>Components</h4>
+    <table>
+      <tr><th>Component</th><th>Content</th></tr>
+      <tr><td class="col-name">Today's Actions</td><td>Prioritized list: "5 prospects need Touch 3 today, 2 calls overdue, 1 reply to handle." Each row is clickable and opens the prospect card.</td></tr>
+      <tr><td class="col-name">Pipeline Snapshot</td><td>Horizontal funnel: Researched (N) → Drafted (N) → Sent (N) → Follow-up (N) → Replied (N) → Meeting (N) → Opportunity (N). Click any stage to filter pipeline.</td></tr>
+      <tr><td class="col-name">Pre-Brief Card</td><td>If a new batch is pending, shows the 5-line "What's Working" summary generated from historical data.</td></tr>
+      <tr><td class="col-name">Hot Prospects</td><td>Priority 5 (Hot) and 4 (Warm) prospects with next action and days since last touch.</td></tr>
+      <tr><td class="col-name">Reply Queue</td><td>Unhandled replies, sorted by intent classification (positive first, then timing, then referral).</td></tr>
+      <tr><td class="col-name">Weekly Scorecard</td><td>This week: touches sent, replies received, meetings booked, opportunities created. Compared to last week and trailing 4-week average.</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-cyan">Page</span> Pipeline (Unified View)</summary>
+  <div class="detail-body">
+    <p>All prospects across all channels in one filterable, sortable table.</p>
+    <h4>Table Columns</h4>
+    <p><code>Priority</code> <code>Name</code> <code>Title</code> <code>Company</code> <code>Channel</code> <code>Stage</code> <code>Last Touch</code> <code>Next Action</code> <code>Reply Status</code> <code>ICP Score</code> <code>Tags</code></p>
+    <h4>Filters</h4>
+    <p><code>Persona type</code> <code>ICP score range</code> <code>Account tier</code> <code>Channel</code> <code>Stage</code> <code>Priority</code> <code>Vertical</code> <code>Last touch date</code> <code>A/B group</code> <code>Has reply</code></p>
+    <h4>Right-Side Panel (opens on row click)</h4>
+    <table>
+      <tr><th>Tab</th><th>Content</th></tr>
+      <tr><td class="col-name">Research</td><td>Person research + company research notes. Source links. Last updated timestamp.</td></tr>
+      <tr><td class="col-name">Messages</td><td>All drafted touches with copy buttons. Version history. Personalization score.</td></tr>
+      <tr><td class="col-name">Timeline</td><td>Full audit trail: every touchpoint, status change, reply, agent run. Chronological.</td></tr>
+      <tr><td class="col-name">Next Actions</td><td>System-recommended next step. Follow-up due date. Objection prep if call is next.</td></tr>
+      <tr><td class="col-name">Meeting Prep</td><td>Auto-generated when status = Meeting Booked. Company snapshot, discovery questions, proof points, objection card.</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-green">Page</span> LinkedIn Workspace</summary>
+  <div class="detail-body">
+    <p>The primary prospecting workspace. Where batches get built.</p>
+    <h4>Layout: Three-Column</h4>
+    <table>
+      <tr><th>Left Panel (300px)</th><th>Center Panel (flex)</th><th>Right Panel (400px)</th></tr>
+      <tr>
+        <td>
+          <strong>Batch Manager</strong><br>
+          Current batch info (batch #, date, A/B variable, prospect count).<br><br>
+          <strong>Saved Searches</strong><br>
+          References to your Sales Navigator saved searches. "Run Batch" button triggers the agent workflow.<br><br>
+          <strong>Batch Queue</strong><br>
+          List of prospects in the current batch with status indicators: researched, drafted, QC'd, ready.
+        </td>
+        <td>
+          <strong>Prospect Card (active)</strong><br>
+          Full view of selected prospect: profile summary, research notes, company research, ICP score breakdown, priority score, predicted objection.<br><br>
+          <strong>Message Editor</strong><br>
+          All 6 touches displayed with copy buttons. Editable before marking as "ready." Personalization score auto-calculated. Word count shown.<br><br>
+          <strong>Call Prep Section</strong><br>
+          3-line call snippets for Touch 2 and Touch 4.
+        </td>
+        <td>
+          <strong>Research Panel</strong><br>
+          Live research output from agent. Structured extraction: role details, career history, company context, tech stack signals, pain indicators.<br><br>
+          <strong>Agent Activity</strong><br>
+          Real-time log of what the research agent is doing and what sources it's using.
+        </td>
+      </tr>
+    </table>
+    <h4>Key Actions</h4>
+    <ul>
+      <li><strong>"Start New Batch"</strong> - Opens batch config (size, A/B variable, mix ratio). Triggers agent to pull from saved search.</li>
+      <li><strong>"Research This Prospect"</strong> - Triggers deep research agent for a single prospect.</li>
+      <li><strong>"Generate Messages"</strong> - Drafts all touches for selected prospect(s) using research data + SOP rules.</li>
+      <li><strong>"Mark as Sent"</strong> - Rob clicks this after manually sending. Logs touchpoint with timestamp.</li>
+      <li><strong>"Log Reply"</strong> - Opens reply classification modal (positive, referral, not interested, etc.) with reply tag selector.</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-orange">Page</span> Email Workspace</summary>
+  <div class="detail-body">
+    <p>For prospects who have email addresses. Overlaps with LinkedIn but different formatting and cadence.</p>
+    <h4>Layout: Similar to LinkedIn but email-specific</h4>
+    <table>
+      <tr><th>Component</th><th>Content</th></tr>
+      <tr><td class="col-name">Email Queue</td><td>Prospects who have email addresses, filtered to those who need an email touch. Sorted by priority and follow-up due date.</td></tr>
+      <tr><td class="col-name">Draft Composer</td><td>Subject line + body. Shows character count, reading time, mobile preview. Copy-to-clipboard button for both subject and body separately.</td></tr>
+      <tr><td class="col-name">Thread View</td><td>If connected to Gmail (read-only), shows the prospect's email thread so you can see what's been sent and any replies.</td></tr>
+      <tr><td class="col-name">Follow-up Schedule</td><td>Calendar view showing when follow-ups are due. Color-coded by priority.</td></tr>
+      <tr><td class="col-name">Template Library</td><td>Quick access to email templates by persona and touch number. One-click to load and personalize.</td></tr>
+    </table>
+    <h4>Email-Specific Rules</h4>
+    <ul>
+      <li>Subject lines: short, specific, not clickbait. Reference company or role.</li>
+      <li>Body: under 150 words, 2-3 short paragraphs. Mobile-friendly spacing.</li>
+      <li>If no email available, prospect shows in LinkedIn workspace only. Email workspace auto-filters to email-available only.</li>
+      <li>Email touch (Touch 5) can be slightly more direct than InMail since email feels less intrusive.</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-red">Page</span> Calls Workspace</summary>
+  <div class="detail-body">
+    <p>Rob's call cockpit. Shows who to call today and gives instant prep.</p>
+    <h4>Layout: Two-Column</h4>
+    <table>
+      <tr><th>Left: Call Queue</th><th>Right: Active Call Card</th></tr>
+      <tr>
+        <td>
+          Sorted by:<br>
+          1. Overdue calls (Touch 2 or Touch 4 past due)<br>
+          2. Priority score (Hot first)<br>
+          3. Time zone (call window optimization)<br><br>
+          Each row shows: Name, Company, Title, Touch # (2 or 4), Time Zone, Priority badge. Click to load call card.
+        </td>
+        <td>
+          <strong>Call Snippet</strong> (3 lines, large font, copy button)<br>
+          1. Opener line<br>
+          2. Pain hypothesis line<br>
+          3. Bridge to ask line<br><br>
+          <strong>Objection Card</strong><br>
+          Predicted objection + pre-loaded response. Expandable to show all common objections.<br><br>
+          <strong>Quick Notes</strong><br>
+          Text area for post-call notes. Status buttons: "Connected + Interested", "Connected + Not Now", "Voicemail", "No Answer", "Wrong Number".<br><br>
+          <strong>Context Panel</strong><br>
+          Company snapshot, prospect's recent LinkedIn activity, what messages have been sent so far, any prior call notes.
+        </td>
+      </tr>
+    </table>
+    <h4>Post-Call Flow</h4>
+    <div class="flow">
+      <div class="flow-step human">Rob makes call</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step human">Clicks outcome button</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step system">System logs touchpoint</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step agent">Agent suggests next step</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step system">Updates follow-up schedule</div>
+    </div>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-yellow">Page</span> Experiments (A/B Testing)</summary>
+  <div class="detail-body">
+    <p>View, configure, and analyze A/B tests across batches.</p>
+    <h4>Components</h4>
+    <table>
+      <tr><th>Component</th><th>Content</th></tr>
+      <tr><td class="col-name">Active Experiment</td><td>Current batch's A/B variable, group assignments, sample sizes per group.</td></tr>
+      <tr><td class="col-name">Results Table</td><td>For each completed experiment: variable tested, group A vs B, reply rates, meetings booked, opportunities created, statistical significance (if sample size allows).</td></tr>
+      <tr><td class="col-name">Experiment History</td><td>All past experiments in a timeline. What was tested, what won, what was inconclusive.</td></tr>
+      <tr><td class="col-name">Rotation Planner</td><td>Shows what to test next per the rotation schedule (pain hook → proof point style → opener style → ask intensity → message length).</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-pink">Page</span> Intelligence (Analytics &amp; Learning)</summary>
+  <div class="detail-body">
+    <p>The brain. Aggregated insights from all batches and touchpoints.</p>
+    <h4>Dashboard Charts</h4>
+    <table>
+      <tr><th>Chart</th><th>What It Shows</th></tr>
+      <tr><td class="col-name">Reply Rate by Persona</td><td>Bar chart: QA Director, VP QA, VP Eng, QA Manager, SDET. Which persona replies most?</td></tr>
+      <tr><td class="col-name">Reply Rate by Vertical</td><td>Bar chart: FinTech, SaaS, Healthcare, Pharma, Retail, Telecom. Which industry is warmest?</td></tr>
+      <tr><td class="col-name">Reply Rate by Proof Point</td><td>Bar chart: Hansard, CRED, Sanofi, Medibuddy, etc. Which story resonates?</td></tr>
+      <tr><td class="col-name">Reply Rate by Personalization Score</td><td>Bar chart: Score 1 vs 2 vs 3. Does deeper personalization actually convert?</td></tr>
+      <tr><td class="col-name">Funnel Conversion Over Time</td><td>Line chart: Sent → Reply → Meeting → Opportunity rates, by batch. Shows improvement over time.</td></tr>
+      <tr><td class="col-name">Touch Effectiveness</td><td>Which touch number generates the most replies? (Hypothesis: Touch 3-5 based on existing data.)</td></tr>
+      <tr><td class="col-name">Opportunity Attribution</td><td>For each opportunity created, trace back: which touchpoint, which message, which angle, which channel.</td></tr>
+    </table>
+    <h4>Insights Engine</h4>
+    <p>Agent-generated insights updated weekly (or on demand):</p>
+    <ul>
+      <li>"Directors of QA are replying at 2.3x the rate of VP Eng. Consider shifting mix to 15 QA + 8 VP."</li>
+      <li>"Sanofi proof point has appeared in 4 of your 6 positive replies. Use it more in pharma and compliance verticals."</li>
+      <li>"Score 3 personalization messages convert at 3.1x Score 1. Invest more time in deep profile research."</li>
+      <li>"Touch 3 (InMail follow-up) generates 40% of all replies. The follow-up matters more than the first touch."</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-cyan">Page</span> Agent Logs</summary>
+  <div class="detail-body">
+    <p>Transparency into what the agents are doing.</p>
+    <h4>Components</h4>
+    <table>
+      <tr><th>Component</th><th>Content</th></tr>
+      <tr><td class="col-name">Run History</td><td>Chronological list of all agent runs. Each row: run ID, type (research, draft, analysis), prospect/batch, start time, duration, status (success, partial, error).</td></tr>
+      <tr><td class="col-name">Run Detail</td><td>Click any run to see: inputs (what was provided), outputs (what was generated), sources used, decisions made, errors encountered.</td></tr>
+      <tr><td class="col-name">QA Flags</td><td>Agent outputs that failed QA checks: hallucinated customer names, missing personalization, placeholder text left in, word count violations, em dash detected.</td></tr>
+      <tr><td class="col-name">Token Usage</td><td>Running total of tokens used per day/week. Trend chart. Breakdown by agent type (research vs draft vs analysis).</td></tr>
+    </table>
+  </div>
+</details>
+
+</section>
+
+<!-- ============================================ -->
+<!-- SECTION 3: DATA MODEL -->
+<!-- ============================================ -->
+<section id="schema">
+<span class="section-num">Section 3</span>
+<h2>Data Model &amp; Schema</h2>
+<p class="section-subtitle">SQLite database tables, key fields, and relationships.</p>
+
+<div class="card">
+  <h3 style="margin-top:0;">Entity Relationship Overview</h3>
+  <pre><code>
+  accounts ──┐
+             ├──→ contacts ──→ research_snapshots (person)
+             │       │
+             │       ├──→ icp_scores
+             │       │
+             │       ├──→ message_drafts ──→ message_versions
+             │       │
+             │       ├──→ touchpoints ──→ replies
+             │       │
+             │       ├──→ followups
+             │       │
+             │       └──→ opportunities
+             │
+             └──→ research_snapshots (company)
+
+  batches ──→ batch_prospects ──→ contacts
+         └──→ experiments
+
+  agent_runs ──→ (linked to contacts, batches, or standalone)
+
+  audit_log ──→ (tracks all changes across all tables)
+  </code></pre>
+</div>
+
+<details>
+  <summary><span class="tag tag-purple">Table</span> accounts</summary>
+  <div class="detail-body">
+    <p>Company-level records. One per company.</p>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td class="col-name col-pk">id</td><td class="col-type">TEXT (UUID)</td><td>Primary key</td></tr>
+      <tr><td class="col-name">name</td><td class="col-type">TEXT NOT NULL</td><td>Company name</td></tr>
+      <tr><td class="col-name">domain</td><td class="col-type">TEXT</td><td>Primary website domain</td></tr>
+      <tr><td class="col-name">industry</td><td class="col-type">TEXT</td><td>Vertical: SaaS, FinTech, Healthcare, etc.</td></tr>
+      <tr><td class="col-name">employee_count</td><td class="col-type">INTEGER</td><td>Approximate headcount</td></tr>
+      <tr><td class="col-name">tier</td><td class="col-type">TEXT</td><td>Enterprise, Mid-Market, SMB</td></tr>
+      <tr><td class="col-name">known_tools</td><td class="col-type">TEXT (JSON array)</td><td>Testing tools detected: ["Selenium","Cypress"]</td></tr>
+      <tr><td class="col-name">linkedin_company_url</td><td class="col-type">TEXT</td><td>Sales Navigator company page URL</td></tr>
+      <tr><td class="col-name">buyer_intent</td><td class="col-type">BOOLEAN</td><td>Buyer intent signal detected in Sales Nav</td></tr>
+      <tr><td class="col-name">notes</td><td class="col-type">TEXT</td><td>Free-form account notes</td></tr>
+      <tr><td class="col-name">created_at</td><td class="col-type">DATETIME</td><td>Record creation timestamp</td></tr>
+      <tr><td class="col-name">updated_at</td><td class="col-type">DATETIME</td><td>Last update timestamp</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-purple">Table</span> contacts</summary>
+  <div class="detail-body">
+    <p>Person-level records. Each contact belongs to one account.</p>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td class="col-name col-pk">id</td><td class="col-type">TEXT (UUID)</td><td>Primary key</td></tr>
+      <tr><td class="col-name col-fk">account_id</td><td class="col-type">TEXT</td><td>FK → accounts.id</td></tr>
+      <tr><td class="col-name">first_name</td><td class="col-type">TEXT NOT NULL</td><td></td></tr>
+      <tr><td class="col-name">last_name</td><td class="col-type">TEXT NOT NULL</td><td></td></tr>
+      <tr><td class="col-name">title</td><td class="col-type">TEXT</td><td>Current job title</td></tr>
+      <tr><td class="col-name">persona_type</td><td class="col-type">TEXT</td><td>QA Director, VP Eng, QA Manager, SDET, etc.</td></tr>
+      <tr><td class="col-name">email</td><td class="col-type">TEXT</td><td>Work email (nullable, not all have)</td></tr>
+      <tr><td class="col-name">linkedin_url</td><td class="col-type">TEXT</td><td>Sales Navigator profile URL</td></tr>
+      <tr><td class="col-name">phone</td><td class="col-type">TEXT</td><td>Phone number if available</td></tr>
+      <tr><td class="col-name">location</td><td class="col-type">TEXT</td><td>City, State</td></tr>
+      <tr><td class="col-name">timezone</td><td class="col-type">TEXT</td><td>For call window optimization</td></tr>
+      <tr><td class="col-name">tenure_months</td><td class="col-type">INTEGER</td><td>Months in current role</td></tr>
+      <tr><td class="col-name">recently_hired</td><td class="col-type">BOOLEAN</td><td>True if &lt;6 months in role</td></tr>
+      <tr><td class="col-name">stage</td><td class="col-type">TEXT</td><td>new, researched, drafted, sent, follow_up, replied, meeting, opportunity, dormant, re_engaged</td></tr>
+      <tr><td class="col-name">priority_score</td><td class="col-type">INTEGER</td><td>1-5 calculated score</td></tr>
+      <tr><td class="col-name">priority_factors</td><td class="col-type">TEXT (JSON)</td><td>Breakdown: {"buyer_intent":2,"qa_title":1,...}</td></tr>
+      <tr><td class="col-name">predicted_objection</td><td class="col-type">TEXT</td><td>Most likely objection based on research</td></tr>
+      <tr><td class="col-name">objection_response</td><td class="col-type">TEXT</td><td>Pre-loaded response for the predicted objection</td></tr>
+      <tr><td class="col-name">status</td><td class="col-type">TEXT</td><td>Active, Dormant, Bounced, Do Not Contact</td></tr>
+      <tr><td class="col-name">do_not_contact</td><td class="col-type">BOOLEAN DEFAULT 0</td><td>Hard stop, never reach out again</td></tr>
+      <tr><td class="col-name">created_at</td><td class="col-type">DATETIME</td><td></td></tr>
+      <tr><td class="col-name">updated_at</td><td class="col-type">DATETIME</td><td></td></tr>
+    </table>
+    <p class="dim" style="margin-top:8px;">Unique constraint on (linkedin_url) to prevent duplicate contacts.</p>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-purple">Table</span> icp_scores</summary>
+  <div class="detail-body">
+    <p>ICP fit scoring breakdown per contact. Stored separately so scoring logic can be re-run.</p>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td class="col-name col-pk">id</td><td class="col-type">TEXT (UUID)</td><td>Primary key</td></tr>
+      <tr><td class="col-name col-fk">contact_id</td><td class="col-type">TEXT</td><td>FK → contacts.id</td></tr>
+      <tr><td class="col-name">title_match</td><td class="col-type">INTEGER (0-3)</td><td>0=no match, 1=secondary, 2=primary, 3=exact ICP</td></tr>
+      <tr><td class="col-name">vertical_match</td><td class="col-type">INTEGER (0-2)</td><td>0=off-vertical, 1=adjacent, 2=top vertical</td></tr>
+      <tr><td class="col-name">company_size_fit</td><td class="col-type">INTEGER (0-2)</td><td>0=too small/large, 1=acceptable, 2=sweet spot</td></tr>
+      <tr><td class="col-name">seniority_fit</td><td class="col-type">INTEGER (0-2)</td><td>0=too junior, 1=manager, 2=director+</td></tr>
+      <tr><td class="col-name">software_qa_confirmed</td><td class="col-type">BOOLEAN</td><td>Confirmed they own software testing decisions</td></tr>
+      <tr><td class="col-name">total_score</td><td class="col-type">INTEGER</td><td>Composite ICP score (0-10)</td></tr>
+      <tr><td class="col-name">scored_at</td><td class="col-type">DATETIME</td><td>When scoring was last run</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-green">Table</span> research_snapshots</summary>
+  <div class="detail-body">
+    <p>Structured research output. One per research run per entity.</p>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td class="col-name col-pk">id</td><td class="col-type">TEXT (UUID)</td><td>Primary key</td></tr>
+      <tr><td class="col-name col-fk">contact_id</td><td class="col-type">TEXT</td><td>FK → contacts.id (nullable)</td></tr>
+      <tr><td class="col-name col-fk">account_id</td><td class="col-type">TEXT</td><td>FK → accounts.id (nullable)</td></tr>
+      <tr><td class="col-name">entity_type</td><td class="col-type">TEXT</td><td>'person' or 'company'</td></tr>
+      <tr><td class="col-name">headline</td><td class="col-type">TEXT</td><td>LinkedIn headline (person) or tagline (company)</td></tr>
+      <tr><td class="col-name">summary</td><td class="col-type">TEXT</td><td>Structured research summary</td></tr>
+      <tr><td class="col-name">career_history</td><td class="col-type">TEXT (JSON)</td><td>Previous roles, tenures, transitions</td></tr>
+      <tr><td class="col-name">responsibilities</td><td class="col-type">TEXT</td><td>Key responsibilities from profile</td></tr>
+      <tr><td class="col-name">tech_stack_signals</td><td class="col-type">TEXT (JSON)</td><td>Tools, frameworks, languages mentioned</td></tr>
+      <tr><td class="col-name">pain_indicators</td><td class="col-type">TEXT (JSON)</td><td>Signals of testing pain from profile/company</td></tr>
+      <tr><td class="col-name">recent_activity</td><td class="col-type">TEXT</td><td>Recent posts, shares, comments</td></tr>
+      <tr><td class="col-name">company_products</td><td class="col-type">TEXT</td><td>Products, platforms, services the company ships</td></tr>
+      <tr><td class="col-name">company_metrics</td><td class="col-type">TEXT</td><td>Users, revenue, transactions, market size</td></tr>
+      <tr><td class="col-name">company_news</td><td class="col-type">TEXT</td><td>Recent news, launches, funding, hiring</td></tr>
+      <tr><td class="col-name">sources</td><td class="col-type">TEXT (JSON array)</td><td>URLs used for research</td></tr>
+      <tr><td class="col-name col-fk">agent_run_id</td><td class="col-type">TEXT</td><td>FK → agent_runs.id (which run created this)</td></tr>
+      <tr><td class="col-name">created_at</td><td class="col-type">DATETIME</td><td></td></tr>
+    </table>
+    <p class="dim" style="margin-top:8px;">Company research snapshots are cached and reused. If another contact is at the same company, the company snapshot is shared, not re-researched (token savings).</p>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-green">Table</span> message_drafts</summary>
+  <div class="detail-body">
+    <p>One row per message per contact. Versioned.</p>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td class="col-name col-pk">id</td><td class="col-type">TEXT (UUID)</td><td>Primary key</td></tr>
+      <tr><td class="col-name col-fk">contact_id</td><td class="col-type">TEXT</td><td>FK → contacts.id</td></tr>
+      <tr><td class="col-name">channel</td><td class="col-type">TEXT</td><td>'linkedin', 'email', 'call'</td></tr>
+      <tr><td class="col-name">touch_number</td><td class="col-type">INTEGER</td><td>1-6 per the multi-channel sequence</td></tr>
+      <tr><td class="col-name">touch_type</td><td class="col-type">TEXT</td><td>'inmail', 'email', 'call_snippet', 'breakup'</td></tr>
+      <tr><td class="col-name">subject_line</td><td class="col-type">TEXT</td><td>For email/InMail. Null for calls.</td></tr>
+      <tr><td class="col-name">body</td><td class="col-type">TEXT NOT NULL</td><td>The message body or call snippet</td></tr>
+      <tr><td class="col-name">version</td><td class="col-type">INTEGER DEFAULT 1</td><td>Increments on edit</td></tr>
+      <tr><td class="col-name">personalization_score</td><td class="col-type">INTEGER</td><td>1-3 per scoring rubric</td></tr>
+      <tr><td class="col-name">proof_point_used</td><td class="col-type">TEXT</td><td>Which customer story was used</td></tr>
+      <tr><td class="col-name">pain_hook</td><td class="col-type">TEXT</td><td>Which pain angle was used</td></tr>
+      <tr><td class="col-name">word_count</td><td class="col-type">INTEGER</td><td>Auto-calculated</td></tr>
+      <tr><td class="col-name">qc_passed</td><td class="col-type">BOOLEAN</td><td>Did it pass all QA checks?</td></tr>
+      <tr><td class="col-name">qc_flags</td><td class="col-type">TEXT (JSON)</td><td>Any QC issues: ["em_dash","too_long","placeholder"]</td></tr>
+      <tr><td class="col-name col-fk">agent_run_id</td><td class="col-type">TEXT</td><td>FK → agent_runs.id</td></tr>
+      <tr><td class="col-name">created_at</td><td class="col-type">DATETIME</td><td></td></tr>
+      <tr><td class="col-name">updated_at</td><td class="col-type">DATETIME</td><td></td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-cyan">Table</span> touchpoints</summary>
+  <div class="detail-body">
+    <p>Every actual outreach action Rob takes. Created when Rob marks something as "sent" or "called."</p>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td class="col-name col-pk">id</td><td class="col-type">TEXT (UUID)</td><td>Primary key</td></tr>
+      <tr><td class="col-name col-fk">contact_id</td><td class="col-type">TEXT</td><td>FK → contacts.id</td></tr>
+      <tr><td class="col-name col-fk">message_draft_id</td><td class="col-type">TEXT</td><td>FK → message_drafts.id (links to what was sent)</td></tr>
+      <tr><td class="col-name">channel</td><td class="col-type">TEXT</td><td>'linkedin', 'email', 'call'</td></tr>
+      <tr><td class="col-name">touch_number</td><td class="col-type">INTEGER</td><td>1-6</td></tr>
+      <tr><td class="col-name">sent_at</td><td class="col-type">DATETIME</td><td>When Rob actually sent/called</td></tr>
+      <tr><td class="col-name">outcome</td><td class="col-type">TEXT</td><td>For calls: connected, voicemail, no_answer, wrong_number</td></tr>
+      <tr><td class="col-name">call_notes</td><td class="col-type">TEXT</td><td>Rob's post-call notes</td></tr>
+      <tr><td class="col-name">created_at</td><td class="col-type">DATETIME</td><td></td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-cyan">Table</span> replies</summary>
+  <div class="detail-body">
+    <p>When a prospect replies (any channel). Classified and linked to the triggering touchpoint.</p>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td class="col-name col-pk">id</td><td class="col-type">TEXT (UUID)</td><td>Primary key</td></tr>
+      <tr><td class="col-name col-fk">contact_id</td><td class="col-type">TEXT</td><td>FK → contacts.id</td></tr>
+      <tr><td class="col-name col-fk">touchpoint_id</td><td class="col-type">TEXT</td><td>FK → touchpoints.id (which touch triggered this)</td></tr>
+      <tr><td class="col-name">channel</td><td class="col-type">TEXT</td><td>'linkedin', 'email', 'call'</td></tr>
+      <tr><td class="col-name">intent</td><td class="col-type">TEXT</td><td>positive, neutral, not_now, referral, unsubscribe, negative</td></tr>
+      <tr><td class="col-name">reply_tag</td><td class="col-type">TEXT</td><td>opener, pain_hook, proof_point, timing, referral, not_interested, unknown</td></tr>
+      <tr><td class="col-name">summary</td><td class="col-type">TEXT</td><td>Brief summary of what they said</td></tr>
+      <tr><td class="col-name">referral_name</td><td class="col-type">TEXT</td><td>If they referred to someone, who?</td></tr>
+      <tr><td class="col-name">recommended_next_step</td><td class="col-type">TEXT</td><td>Agent-suggested next action</td></tr>
+      <tr><td class="col-name">replied_at</td><td class="col-type">DATETIME</td><td></td></tr>
+      <tr><td class="col-name">created_at</td><td class="col-type">DATETIME</td><td></td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-yellow">Table</span> followups</summary>
+  <div class="detail-body">
+    <p>Scheduled follow-up actions. Generated by the system, executed by Rob.</p>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td class="col-name col-pk">id</td><td class="col-type">TEXT (UUID)</td><td>Primary key</td></tr>
+      <tr><td class="col-name col-fk">contact_id</td><td class="col-type">TEXT</td><td>FK → contacts.id</td></tr>
+      <tr><td class="col-name">touch_number</td><td class="col-type">INTEGER</td><td>Which touch this follow-up is for</td></tr>
+      <tr><td class="col-name">channel</td><td class="col-type">TEXT</td><td>linkedin, email, call</td></tr>
+      <tr><td class="col-name">due_date</td><td class="col-type">DATE</td><td>When this follow-up should happen</td></tr>
+      <tr><td class="col-name">state</td><td class="col-type">TEXT</td><td>pending, completed, skipped, overdue</td></tr>
+      <tr><td class="col-name col-fk">message_draft_id</td><td class="col-type">TEXT</td><td>FK → message_drafts.id (pre-drafted message)</td></tr>
+      <tr><td class="col-name">created_at</td><td class="col-type">DATETIME</td><td></td></tr>
+      <tr><td class="col-name">completed_at</td><td class="col-type">DATETIME</td><td></td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-orange">Table</span> opportunities</summary>
+  <div class="detail-body">
+    <p>The money table. Linked back to everything that created them.</p>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td class="col-name col-pk">id</td><td class="col-type">TEXT (UUID)</td><td>Primary key</td></tr>
+      <tr><td class="col-name col-fk">contact_id</td><td class="col-type">TEXT</td><td>FK → contacts.id</td></tr>
+      <tr><td class="col-name col-fk">account_id</td><td class="col-type">TEXT</td><td>FK → accounts.id</td></tr>
+      <tr><td class="col-name">meeting_date</td><td class="col-type">DATETIME</td><td>When the meeting was held</td></tr>
+      <tr><td class="col-name">opportunity_created_date</td><td class="col-type">DATETIME</td><td>When it became an opportunity in CRM</td></tr>
+      <tr><td class="col-name">status</td><td class="col-type">TEXT</td><td>meeting_booked, meeting_held, opportunity_created, disqualified</td></tr>
+      <tr><td class="col-name col-fk">trigger_touchpoint_id</td><td class="col-type">TEXT</td><td>FK → touchpoints.id (which touch led to the meeting)</td></tr>
+      <tr><td class="col-name col-fk">trigger_reply_id</td><td class="col-type">TEXT</td><td>FK → replies.id (which reply converted)</td></tr>
+      <tr><td class="col-name">attribution_channel</td><td class="col-type">TEXT</td><td>Which channel created it</td></tr>
+      <tr><td class="col-name">attribution_touch_number</td><td class="col-type">INTEGER</td><td>Which touch number created it</td></tr>
+      <tr><td class="col-name">attribution_proof_point</td><td class="col-type">TEXT</td><td>Which proof point was in the converting message</td></tr>
+      <tr><td class="col-name">attribution_pain_hook</td><td class="col-type">TEXT</td><td>Which pain angle was in the converting message</td></tr>
+      <tr><td class="col-name">notes</td><td class="col-type">TEXT</td><td>Outcome notes</td></tr>
+      <tr><td class="col-name">created_at</td><td class="col-type">DATETIME</td><td></td></tr>
+    </table>
+    <p class="dim" style="margin-top:8px;">This is the North Star table. Every analytics query ultimately traces back to "did this result in an opportunity?"</p>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-red">Table</span> batches</summary>
+  <div class="detail-body">
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td class="col-name col-pk">id</td><td class="col-type">TEXT (UUID)</td><td>Primary key</td></tr>
+      <tr><td class="col-name">batch_number</td><td class="col-type">INTEGER</td><td>Sequential batch number</td></tr>
+      <tr><td class="col-name">created_date</td><td class="col-type">DATE</td><td></td></tr>
+      <tr><td class="col-name">prospect_count</td><td class="col-type">INTEGER</td><td>Number of prospects in batch</td></tr>
+      <tr><td class="col-name">ab_variable</td><td class="col-type">TEXT</td><td>What's being A/B tested this batch</td></tr>
+      <tr><td class="col-name">pre_brief</td><td class="col-type">TEXT</td><td>The 5-line "What's Working" summary</td></tr>
+      <tr><td class="col-name">status</td><td class="col-type">TEXT</td><td>building, ready, active, completed</td></tr>
+      <tr><td class="col-name">html_file_path</td><td class="col-type">TEXT</td><td>Path to the exported HTML deliverable</td></tr>
+      <tr><td class="col-name">created_at</td><td class="col-type">DATETIME</td><td></td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-red">Table</span> batch_prospects</summary>
+  <div class="detail-body">
+    <p>Join table linking contacts to batches with batch-specific metadata.</p>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td class="col-name col-pk">id</td><td class="col-type">TEXT (UUID)</td><td>Primary key</td></tr>
+      <tr><td class="col-name col-fk">batch_id</td><td class="col-type">TEXT</td><td>FK → batches.id</td></tr>
+      <tr><td class="col-name col-fk">contact_id</td><td class="col-type">TEXT</td><td>FK → contacts.id</td></tr>
+      <tr><td class="col-name">ab_group</td><td class="col-type">TEXT</td><td>'A' or 'B' (or 'C' for 3-way tests)</td></tr>
+      <tr><td class="col-name">sequence_status</td><td class="col-type">TEXT</td><td>not_started, touch_1_sent, call_1_made, ..., completed</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-yellow">Table</span> experiments</summary>
+  <div class="detail-body">
+    <p>A/B test definitions and results.</p>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td class="col-name col-pk">id</td><td class="col-type">TEXT (UUID)</td><td>Primary key</td></tr>
+      <tr><td class="col-name">name</td><td class="col-type">TEXT</td><td>"Pain hook: maintenance vs velocity"</td></tr>
+      <tr><td class="col-name">variable</td><td class="col-type">TEXT</td><td>pain_hook, proof_point_style, opener_style, ask_intensity, message_length</td></tr>
+      <tr><td class="col-name">group_a_description</td><td class="col-type">TEXT</td><td>"Maintenance/flaky tests angle"</td></tr>
+      <tr><td class="col-name">group_b_description</td><td class="col-type">TEXT</td><td>"Release velocity/speed angle"</td></tr>
+      <tr><td class="col-name">status</td><td class="col-type">TEXT</td><td>active, completed, inconclusive</td></tr>
+      <tr><td class="col-name">group_a_sent</td><td class="col-type">INTEGER DEFAULT 0</td><td></td></tr>
+      <tr><td class="col-name">group_a_replies</td><td class="col-type">INTEGER DEFAULT 0</td><td></td></tr>
+      <tr><td class="col-name">group_a_meetings</td><td class="col-type">INTEGER DEFAULT 0</td><td></td></tr>
+      <tr><td class="col-name">group_a_opps</td><td class="col-type">INTEGER DEFAULT 0</td><td></td></tr>
+      <tr><td class="col-name">group_b_sent</td><td class="col-type">INTEGER DEFAULT 0</td><td></td></tr>
+      <tr><td class="col-name">group_b_replies</td><td class="col-type">INTEGER DEFAULT 0</td><td></td></tr>
+      <tr><td class="col-name">group_b_meetings</td><td class="col-type">INTEGER DEFAULT 0</td><td></td></tr>
+      <tr><td class="col-name">group_b_opps</td><td class="col-type">INTEGER DEFAULT 0</td><td></td></tr>
+      <tr><td class="col-name">winner</td><td class="col-type">TEXT</td><td>'A', 'B', or NULL if inconclusive</td></tr>
+      <tr><td class="col-name">conclusion</td><td class="col-type">TEXT</td><td>Written summary of findings</td></tr>
+      <tr><td class="col-name">created_at</td><td class="col-type">DATETIME</td><td></td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-pink">Table</span> agent_runs</summary>
+  <div class="detail-body">
+    <p>Audit log for every agent execution. Full transparency.</p>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td class="col-name col-pk">id</td><td class="col-type">TEXT (UUID)</td><td>Primary key</td></tr>
+      <tr><td class="col-name">run_type</td><td class="col-type">TEXT</td><td>research, draft, analysis, pre_brief, batch_build, qc_check</td></tr>
+      <tr><td class="col-name col-fk">contact_id</td><td class="col-type">TEXT</td><td>FK → contacts.id (nullable)</td></tr>
+      <tr><td class="col-name col-fk">batch_id</td><td class="col-type">TEXT</td><td>FK → batches.id (nullable)</td></tr>
+      <tr><td class="col-name">inputs</td><td class="col-type">TEXT (JSON)</td><td>What was provided to the agent</td></tr>
+      <tr><td class="col-name">outputs</td><td class="col-type">TEXT (JSON)</td><td>What the agent produced</td></tr>
+      <tr><td class="col-name">sources_used</td><td class="col-type">TEXT (JSON array)</td><td>URLs, files, data sources consulted</td></tr>
+      <tr><td class="col-name">decisions</td><td class="col-type">TEXT (JSON)</td><td>Key decisions made and why</td></tr>
+      <tr><td class="col-name">tokens_used</td><td class="col-type">INTEGER</td><td>Approximate token count</td></tr>
+      <tr><td class="col-name">duration_ms</td><td class="col-type">INTEGER</td><td>How long the run took</td></tr>
+      <tr><td class="col-name">status</td><td class="col-type">TEXT</td><td>success, partial, error</td></tr>
+      <tr><td class="col-name">error_message</td><td class="col-type">TEXT</td><td>If error, what went wrong</td></tr>
+      <tr><td class="col-name">started_at</td><td class="col-type">DATETIME</td><td></td></tr>
+      <tr><td class="col-name">completed_at</td><td class="col-type">DATETIME</td><td></td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary><span class="tag tag-pink">Table</span> audit_log</summary>
+  <div class="detail-body">
+    <p>Tracks every change across the system. Immutable append-only log.</p>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+      <tr><td class="col-name col-pk">id</td><td class="col-type">INTEGER AUTOINCREMENT</td><td>Primary key</td></tr>
+      <tr><td class="col-name">table_name</td><td class="col-type">TEXT</td><td>Which table was changed</td></tr>
+      <tr><td class="col-name">record_id</td><td class="col-type">TEXT</td><td>ID of the changed record</td></tr>
+      <tr><td class="col-name">action</td><td class="col-type">TEXT</td><td>insert, update, delete</td></tr>
+      <tr><td class="col-name">changed_by</td><td class="col-type">TEXT</td><td>'user' or 'agent:{run_id}'</td></tr>
+      <tr><td class="col-name">old_values</td><td class="col-type">TEXT (JSON)</td><td>Previous field values (for updates)</td></tr>
+      <tr><td class="col-name">new_values</td><td class="col-type">TEXT (JSON)</td><td>New field values</td></tr>
+      <tr><td class="col-name">timestamp</td><td class="col-type">DATETIME</td><td></td></tr>
+    </table>
+  </div>
+</details>
+
+</section>
+
+<!-- ============================================ -->
+<!-- SECTION 4: AGENT WORKFLOWS -->
+<!-- ============================================ -->
+<section id="agents">
+<span class="section-num">Section 4</span>
+<h2>Agent Workflows by Channel</h2>
+<p class="section-subtitle">Step-by-step workflows for LinkedIn, Email, and Calls. Agents do research and drafting. Rob does sending.</p>
+
+<div class="card">
+  <h3 style="margin-top:0;">Agent Types</h3>
+  <table>
+    <tr><th>Agent</th><th>Purpose</th><th>Triggers</th></tr>
+    <tr><td class="col-name">Research Agent</td><td>Visits LinkedIn profiles and company websites. Extracts structured data. Stores research snapshots.</td><td>Manual ("Research this prospect"), Batch build</td></tr>
+    <tr><td class="col-name">Draft Agent</td><td>Generates personalized messages for all touches using research data + SOP rules. Runs QC checks.</td><td>After research completes, Manual ("Generate messages")</td></tr>
+    <tr><td class="col-name">QC Agent</td><td>Validates drafted messages: no em dashes, word count, personalization score, no hallucinated proof points, no placeholders.</td><td>Automatically after Draft Agent completes</td></tr>
+    <tr><td class="col-name">Analysis Agent</td><td>Generates pre-briefs, batch comparisons, experiment conclusions, intelligence insights.</td><td>Before new batch, Weekly analysis run, On-demand</td></tr>
+    <tr><td class="col-name">Follow-up Agent</td><td>Calculates follow-up due dates based on touchpoint dates and sequence timing. Generates daily action list.</td><td>After Rob marks a touch as sent, Daily morning run</td></tr>
+    <tr><td class="col-name">Next-Action Agent</td><td>When a reply comes in, recommends next step based on intent classification and context.</td><td>When Rob logs a reply</td></tr>
+  </table>
+</div>
+
+<h3>LinkedIn Workflow (Primary Channel)</h3>
+<div class="card">
+  <h4 style="margin-top:0;">Workflow: Build a New Batch</h4>
+  <div class="flow">
+    <div class="flow-step human">Rob clicks "New Batch"</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step system">System loads config</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step agent">Analysis Agent: Pre-Brief</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step human">Rob opens Sales Nav</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step agent">Research Agent: Extract prospects</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step agent">Research Agent: Deep research</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step agent">Draft Agent: All touches</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step agent">QC Agent: Validate</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step human">Rob reviews + sends</div>
+  </div>
+
+  <h4>Step-by-Step</h4>
+  <table>
+    <tr><th style="width:60px;">Step</th><th style="width:100px;">Actor</th><th>Action</th><th>Data Written</th></tr>
+    <tr><td>1</td><td><span class="tag tag-green">Rob</span></td><td>Clicks "New Batch." Selects batch size (default 25), A/B variable, mix ratio.</td><td>batches (new row)</td></tr>
+    <tr><td>2</td><td><span class="tag tag-purple">Agent</span></td><td>Analysis Agent reads all previous batch data. Generates 5-line pre-brief: best persona, best proof point, best vertical, best pattern, stop doing.</td><td>batches.pre_brief, agent_runs</td></tr>
+    <tr><td>3</td><td><span class="tag tag-green">Rob</span></td><td>Navigates to Sales Navigator saved search in Chrome. Clicks "Show X new results."</td><td>(none, browser action)</td></tr>
+    <tr><td>4</td><td><span class="tag tag-purple">Agent</span></td><td>Research Agent reads the search results page via Chrome tools. Extracts: names, titles, companies, headlines. Runs qualification checklist. Checks for prior interactions ("Messaged:" / "Viewed:"). Dedupes against existing contacts in DB. Applies mix ratio (12-15 QA + 8-10 VP Eng + 2-3 Buyer Intent).</td><td>accounts, contacts, icp_scores, batch_prospects, agent_runs</td></tr>
+    <tr><td>5</td><td><span class="tag tag-purple">Agent</span></td><td>For each qualified prospect: visits LinkedIn profile, extracts structured person research (headline, about, responsibilities, career history, recent activity). Checks if company already has a research snapshot in DB. If yes, reuses it (token savings). If no, researches company via web search (website, news, job postings, engineering blog).</td><td>research_snapshots (person + company), agent_runs</td></tr>
+    <tr><td>6</td><td><span class="tag tag-purple">Agent</span></td><td>Calculates priority score per prospect using the formula in CLAUDE.md. Assigns A/B groups evenly split by persona and vertical. Predicts most likely objection per prospect.</td><td>contacts (priority_score, predicted_objection), batch_prospects (ab_group)</td></tr>
+    <tr><td>7</td><td><span class="tag tag-purple">Agent</span></td><td>Draft Agent generates all 6 touches per prospect: Touch 1 InMail (full 6-element structure), Touch 2 call snippet, Touch 3 InMail follow-up, Touch 4 call snippet #2, Touch 5 email (if email available), Touch 6 break-up. Rotates proof points. Applies A/B variable.</td><td>message_drafts (multiple per contact), agent_runs</td></tr>
+    <tr><td>8</td><td><span class="tag tag-purple">Agent</span></td><td>QC Agent validates every message: no em dashes, word count within range (70-120 for Touch 1, 40-70 for Touch 3, 30-50 for Touch 6), personalization score assigned, no placeholder text ("[Name]", "[Company]" still present), proof point is real (exists in proof point table), opener is not "I noticed" for &gt;3 messages in batch.</td><td>message_drafts (qc_passed, qc_flags, personalization_score), agent_runs</td></tr>
+    <tr><td>9</td><td><span class="tag tag-green">Rob</span></td><td>Reviews batch in dashboard. Can edit any message. Copies and pastes Touch 1 into Sales Navigator InMail. Clicks "Mark as Sent."</td><td>touchpoints, followups (auto-scheduled for Touch 2-6), contacts.stage</td></tr>
+  </table>
+</div>
+
+<h3>Email Workflow</h3>
+<div class="card">
+  <h4 style="margin-top:0;">Workflow: Email Touch (Touch 5 in sequence)</h4>
+  <div class="flow">
+    <div class="flow-step system">Follow-up Agent flags due</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step human">Rob opens Email workspace</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step system">Pre-drafted email loaded</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step human">Rob copies subject + body</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step human">Rob pastes in Gmail, sends</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step human">Rob clicks "Mark as Sent"</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step system">Touchpoint logged</div>
+  </div>
+
+  <h4>Email-Specific Agent Behavior</h4>
+  <ul>
+    <li>Email messages are drafted at the same time as LinkedIn messages (Step 7 of batch build).</li>
+    <li>Subject lines are generated separately and stored in <code>message_drafts.subject_line</code>.</li>
+    <li>Email body can be slightly more direct than InMail per SOP rules.</li>
+    <li>If no email address is available for a contact, Touch 5 is auto-skipped and the follow-up agent adjusts the schedule (Touch 6 moves to Day 12 instead of Day 15).</li>
+    <li>Gmail thread view is read-only via Gmail MCP tools. Agent does NOT compose or send emails.</li>
+  </ul>
+</div>
+
+<h3>Calls Workflow</h3>
+<div class="card">
+  <h4 style="margin-top:0;">Workflow: Cold Call (Touch 2 or Touch 4)</h4>
+  <div class="flow">
+    <div class="flow-step system">Call Queue populated</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step human">Rob opens Calls workspace</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step human">Clicks prospect, reads 3-line snippet</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step human">Rob dials</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step human">Clicks outcome button</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step human">Types quick notes</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step system">Touchpoint + notes saved</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step agent">Next-Action Agent recommends</div>
+  </div>
+
+  <h4>Call-Specific Agent Behavior</h4>
+  <ul>
+    <li>Call snippets are pre-generated during batch build (3 lines max per CLAUDE.md rules).</li>
+    <li>Touch 2 and Touch 4 use DIFFERENT proof points and pain angles (variety across channels).</li>
+    <li>Call queue is sorted by: overdue calls first, then priority, then time zone (calls within the prospect's optimal window: 8-11 AM or 3-6 PM local time).</li>
+    <li>Post-call, the Next-Action Agent recommends: if connected + interested → book meeting immediately, suggest times. If voicemail → proceed with Touch 3 on schedule. If connected + not interested → note reason, consider early break-up or adjust pain angle for Touch 3.</li>
+    <li>If outcome = "meeting booked," the system auto-generates a Meeting Prep card from existing research data.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0;">Reply Handling Workflow (All Channels)</h3>
+  <div class="flow">
+    <div class="flow-step human">Rob sees reply</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step human">Clicks "Log Reply" in dashboard</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step human">Classifies intent + reply tag</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step system">Reply record created</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step agent">Next-Action Agent fires</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step system">Prospect stage updated</div>
+  </div>
+
+  <h4>Next-Action Recommendations by Intent</h4>
+  <table>
+    <tr><th>Intent</th><th>Agent Recommendation</th></tr>
+    <tr><td class="col-name" style="color:var(--green)">Positive</td><td>Draft a reply thanking them and proposing 2-3 specific meeting times. Generate meeting prep card. Stage → Meeting.</td></tr>
+    <tr><td class="col-name" style="color:var(--yellow)">Timing / Not Now</td><td>Acknowledge, ask when to follow up, set re-engagement reminder. Stage → Dormant with trigger date.</td></tr>
+    <tr><td class="col-name" style="color:var(--cyan)">Referral</td><td>Thank them. Create new contact record for the referred person. Link to same account. Start fresh sequence for the referral.</td></tr>
+    <tr><td class="col-name" style="color:var(--orange)">Neutral</td><td>Respond with one additional piece of value (different proof point or angle). Don't push.</td></tr>
+    <tr><td class="col-name" style="color:var(--red)">Negative / Unsubscribe</td><td>Respect it. Mark as Do Not Contact if they explicitly asked. Stage → closed. Log the reason for pattern analysis.</td></tr>
+  </table>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- SECTION 5: TEMPLATES -->
+<!-- ============================================ -->
+<section id="templates">
+<span class="section-num">Section 5</span>
+<h2>Templates &amp; SOP Library</h2>
+<p class="section-subtitle">File system structure for templates, playbooks, research, drafts, and run logs.</p>
+
+<div class="card">
+  <h3 style="margin-top:0;">File System Structure</h3>
+  <pre><code>
+Work/
+├── CLAUDE.md                          # Source of truth: all SOP rules
+├── outreach.db                        # SQLite database
+├── outreach-command-center.html       # The dashboard UI
+│
+├── memory/
+│   ├── glossary.md                    # Product, sales, competitor terms
+│   └── context/
+│       ├── sales-playbook.md          # Templates, examples, reference
+│       └── testsigma-platform.md      # Platform capabilities reference
+│
+├── templates/
+│   ├── linkedin/
+│   │   ├── touch-1-inmail.md          # Touch 1 framework by persona
+│   │   ├── touch-3-followup.md        # Touch 3 follow-up templates
+│   │   └── touch-6-breakup.md         # Break-up message templates
+│   ├── email/
+│   │   ├── touch-5-email.md           # Email-specific templates
+│   │   └── subject-lines.md           # Subject line library
+│   ├── calls/
+│   │   ├── call-snippets.md           # Call snippet templates by persona
+│   │   └── objection-responses.md     # Quick-reference objection cheat sheet
+│   ├── replies/
+│   │   ├── positive-reply.md          # Response templates for positive replies
+│   │   ├── referral-reply.md          # Templates for referral follow-through
+│   │   └── not-now-reply.md           # Templates for "not now" responses
+│   └── re-engagement/
+│       └── triggers.md                # Re-engagement templates by trigger type
+│
+├── research/
+│   ├── companies/                     # Cached company research (JSON)
+│   │   ├── ally-financial.json
+│   │   ├── the-clearing-house.json
+│   │   └── ...
+│   └── prospects/                     # Prospect research snapshots (JSON)
+│       ├── alessandro-petroni.json
+│       └── ...
+│
+├── batches/
+│   ├── batch-001-2026-02-17/
+│   │   ├── prospect-outreach-1-2026-02-17.html   # HTML deliverable
+│   │   ├── pre-brief.md                            # Pre-brief for this batch
+│   │   └── batch-config.json                       # A/B variable, mix ratio
+│   └── batch-002-YYYY-MM-DD/
+│       └── ...
+│
+├── logs/
+│   ├── agent-runs/                    # Detailed agent run logs (JSON)
+│   │   ├── run-2026-02-17-001.json
+│   │   └── ...
+│   └── errors/                        # Error logs
+│       └── ...
+│
+├── analytics/
+│   ├── outreach-dashboard.html        # Batch comparison dashboard
+│   ├── weekly-reports/                # Weekly performance summaries
+│   └── experiment-results/            # A/B test analysis reports
+│
+└── sops/
+    ├── batch-build-sop.md             # Step-by-step batch building process
+    ├── qualification-checklist.md      # Prospect qualification rules
+    ├── message-qc-checklist.md         # Message quality checks
+    ├── reply-handling-sop.md           # How to handle each reply type
+    └── meeting-prep-sop.md            # Meeting prep generation rules
+  </code></pre>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0;">Template Hierarchy (how templates are used)</h3>
+  <p>Templates are reference frameworks, not copy-paste scripts. The Draft Agent uses them as starting structures, then personalizes heavily with research data.</p>
+  <table>
+    <tr><th>Layer</th><th>What It Provides</th><th>Example</th></tr>
+    <tr><td class="col-name">SOP Rules (CLAUDE.md)</td><td>Hard rules that must always be followed</td><td>"NO em dashes. 70-120 words for Touch 1. One question max."</td></tr>
+    <tr><td class="col-name">Persona Framework (templates/)</td><td>Structural template by persona type</td><td>"For QA Directors: lead with regression pain, use CRED or Hansard proof point"</td></tr>
+    <tr><td class="col-name">Research Data (research/)</td><td>Specific data about this person and company</td><td>"Alessandro, 7 years at The Clearing House, runs risk technology engineering"</td></tr>
+    <tr><td class="col-name">Learning Adjustments (analytics/)</td><td>What's working from past batches</td><td>"Career-reference openers outperform company-metric openers by 2x"</td></tr>
+    <tr><td class="col-name">Final Message</td><td>Unique, personalized, sounds like Rob</td><td>The actual drafted message</td></tr>
+  </table>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- SECTION 6: TESTING -->
+<!-- ============================================ -->
+<section id="testing">
+<span class="section-num">Section 6</span>
+<h2>Testing Plan</h2>
+<p class="section-subtitle">Unit tests, integration tests, E2E flows, and agent QA.</p>
+
+<div class="card">
+  <h3 style="margin-top:0;">Unit Tests</h3>
+  <table>
+    <tr><th style="width:250px;">Test</th><th>What It Validates</th></tr>
+    <tr><td class="col-name">ICP scoring logic</td><td>Given a contact with known attributes, the ICP score calculation returns the correct composite score. Edge cases: missing fields default to 0, max score cap.</td></tr>
+    <tr><td class="col-name">Priority scoring</td><td>Given known factors (buyer intent, title, vertical), priority score is calculated correctly. Verify: VP Eng at 50K+ gets -1, Buyer Intent gets +2.</td></tr>
+    <tr><td class="col-name">Dedupe logic</td><td>Contacts with the same LinkedIn URL are rejected as duplicates. Contacts at the same company are allowed (up to 2 per batch).</td></tr>
+    <tr><td class="col-name">Follow-up scheduling</td><td>Given Touch 1 sent on Day 1, verify: Touch 2 due Day 3, Touch 3 due Day 5, Touch 4 due Day 8, Touch 5 due Day 10, Touch 6 due Day 15. Verify: if no email, Touch 5 is skipped and Touch 6 moves to Day 12.</td></tr>
+    <tr><td class="col-name">Stage transitions</td><td>Verify valid transitions: new→researched→drafted→sent→follow_up→replied→meeting→opportunity. Invalid: can't go from "new" to "meeting" without intermediate steps.</td></tr>
+    <tr><td class="col-name">Word count validation</td><td>Touch 1: 70-120 words. Touch 3: 40-70 words. Touch 6: 30-50 words. Call snippets: under 40 words.</td></tr>
+    <tr><td class="col-name">A/B group assignment</td><td>Given 25 prospects with known persona types and verticals, verify even split across A/B groups with balanced persona/vertical distribution.</td></tr>
+    <tr><td class="col-name">Proof point rotation</td><td>No prospect uses the same proof point in back-to-back touches. Each touch in a sequence uses a different proof point.</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0;">Integration Tests</h3>
+  <table>
+    <tr><th style="width:250px;">Test</th><th>What It Validates</th></tr>
+    <tr><td class="col-name">Add prospect flow</td><td>Create account → create contact → attach research snapshot → calculate ICP score → calculate priority score. Verify all DB records are consistent and linked.</td></tr>
+    <tr><td class="col-name">Draft generation flow</td><td>Given a contact with research data, generate all 6 message drafts. Verify: all drafts exist in DB, word counts are valid, proof points are rotated, QC flags are empty.</td></tr>
+    <tr><td class="col-name">Touchpoint logging</td><td>Mark Touch 1 as sent → verify touchpoint created → verify follow-ups auto-scheduled for Touches 2-6 → verify contact stage updated to "sent."</td></tr>
+    <tr><td class="col-name">Reply logging</td><td>Log a positive reply → verify reply record created → verify contact stage updated → verify next-action recommendation generated.</td></tr>
+    <tr><td class="col-name">Opportunity creation</td><td>Meeting booked → meeting held → opportunity created → verify attribution links (touchpoint, reply, channel, proof point, pain hook).</td></tr>
+    <tr><td class="col-name">Company research caching</td><td>Research prospect A at Company X → research prospect B at Company X → verify company research was NOT re-run (cached).</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0;">E2E Flows (per channel)</h3>
+  <h4>LinkedIn E2E</h4>
+  <div class="flow">
+    <div class="flow-step">New prospect</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step">Research</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step">Draft all touches</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step">QC pass</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step">Send Touch 1</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step">Call (Touch 2)</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step">Send Touch 3</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step">Reply (positive)</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step">Meeting</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step">Opportunity</div>
+  </div>
+  <p class="dim">Verify: all 10 stages produce correct DB records, all follow-ups are scheduled/completed correctly, opportunity has full attribution chain.</p>
+
+  <h4>Email E2E</h4>
+  <p>Same flow but Touch 5 (email) is the primary channel. Verify subject line stored separately, email body under 150 words.</p>
+
+  <h4>Calls E2E</h4>
+  <p>Focus on: call queue ordering, snippet display, outcome logging (connected/voicemail/no answer), post-call note capture, next-action recommendation.</p>
+
+  <h4>Re-engagement E2E</h4>
+  <div class="flow">
+    <div class="flow-step">Complete sequence (Touch 6)</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step">Dormant (60+ days)</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step">Trigger detected</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step">New sequence with fresh angle</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step">Contact stage → re_engaged</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0;">Agent QA Checks</h3>
+  <p>These run automatically after every agent output. Failures block the output from being presented to Rob.</p>
+  <table>
+    <tr><th style="width:250px;">Check</th><th>Rule</th><th>Action on Fail</th></tr>
+    <tr><td class="col-name">No hallucinated customers</td><td>Every customer name in a message must exist in the proof points table in CLAUDE.md</td><td>Flag message, require manual edit</td></tr>
+    <tr><td class="col-name">No hallucinated claims</td><td>Every number/stat must match a known proof point (e.g., "50%" must tie to Spendflo, not made up)</td><td>Flag message, require manual edit</td></tr>
+    <tr><td class="col-name">No placeholder text</td><td>Search for "[Name]", "[Company]", "[specific", "[insert", "[your" in final drafts</td><td>Block until fixed</td></tr>
+    <tr><td class="col-name">No em dashes</td><td>Regex check for U+2014 character in all message text</td><td>Auto-replace with comma, log warning</td></tr>
+    <tr><td class="col-name">Personalization exists</td><td>Message must reference at least one data point from research_snapshots for this specific contact</td><td>Flag as Score 1, warn Rob</td></tr>
+    <tr><td class="col-name">Research has citations</td><td>Research snapshots must have at least 2 entries in the sources array</td><td>Flag research as incomplete</td></tr>
+    <tr><td class="col-name">Word count in range</td><td>Per touch type: T1 70-120, T3 40-70, T5 &lt;150, T6 30-50, Call &lt;40</td><td>Flag, require trim or expansion</td></tr>
+    <tr><td class="col-name">One question max</td><td>Count sentences ending in "?" in each message. Must be ≤1.</td><td>Flag for edit</td></tr>
+    <tr><td class="col-name">Opener variety</td><td>No more than 3 messages in a batch start with "I noticed" or "I saw"</td><td>Flag duplicates for rewrite</td></tr>
+    <tr><td class="col-name">Proof point rotation</td><td>Same proof point not used in consecutive touches for same contact</td><td>Flag, suggest alternative</td></tr>
+  </table>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- SECTION 7: DEPLOYMENT -->
+<!-- ============================================ -->
+<section id="deploy">
+<span class="section-num">Section 7</span>
+<h2>Deployment Plan</h2>
+<p class="section-subtitle">How to run, back up, monitor, and iterate safely.</p>
+
+<div class="card">
+  <h3 style="margin-top:0;">Local-First Architecture</h3>
+  <p>Everything runs on your machine within the Cowork session. No cloud hosting needed.</p>
+  <table>
+    <tr><th>Component</th><th>How It Runs</th></tr>
+    <tr><td class="col-name">Dashboard UI</td><td>Single HTML file. Open in Chrome. Served via Python's built-in HTTP server (<code>python -m http.server 3000</code>) or directly as a file.</td></tr>
+    <tr><td class="col-name">API Server</td><td>Python FastAPI app. Run with <code>uvicorn server:app --port 3001</code>. Handles CRUD operations on SQLite DB.</td></tr>
+    <tr><td class="col-name">SQLite DB</td><td>Single <code>outreach.db</code> file in Work/. No installation needed. Python's sqlite3 module is built-in.</td></tr>
+    <tr><td class="col-name">Agent Engine</td><td>Claude via the Cowork session. Agents are triggered from the dashboard and run as Claude tool calls.</td></tr>
+    <tr><td class="col-name">Browser Bridge</td><td>Claude in Chrome MCP tools. Reads Sales Navigator pages when Rob navigates there.</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0;">Backup Strategy</h3>
+  <table>
+    <tr><th>What</th><th>How</th><th>When</th></tr>
+    <tr><td class="col-name">SQLite DB</td><td>Copy <code>outreach.db</code> to <code>backups/outreach-YYYY-MM-DD.db</code></td><td>Before each batch build. Weekly at minimum.</td></tr>
+    <tr><td class="col-name">Research files</td><td>The research/ folder is already versioned (new files, not overwrites). No action needed.</td><td>Automatic</td></tr>
+    <tr><td class="col-name">Batch HTMLs</td><td>Each batch is in its own dated folder under batches/. Already versioned by design.</td><td>Automatic</td></tr>
+    <tr><td class="col-name">SOPs and templates</td><td>These are in the Work/ folder which persists. Consider git init if you want version history.</td><td>Optional</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0;">Observability &amp; Monitoring</h3>
+  <table>
+    <tr><th>Signal</th><th>Where to See It</th><th>Alert Condition</th></tr>
+    <tr><td class="col-name">Agent run failures</td><td>Agent Logs page → error filter</td><td>Any run with status = "error"</td></tr>
+    <tr><td class="col-name">QC failure rate</td><td>Agent Logs page → QA Flags tab</td><td>If &gt;20% of messages fail QC in a batch</td></tr>
+    <tr><td class="col-name">Token usage</td><td>Agent Logs page → Token Usage chart</td><td>If weekly tokens &gt;2x the trailing 4-week avg</td></tr>
+    <tr><td class="col-name">Stale prospects</td><td>Pipeline → filter by "last touch &gt; 7 days" + stage not Dormant</td><td>Prospects stuck in active sequence with no action</td></tr>
+    <tr><td class="col-name">Reply handling lag</td><td>Home → Reply Queue</td><td>Any unhandled reply &gt;24 hours old</td></tr>
+    <tr><td class="col-name">Opportunity conversion</td><td>Intelligence → Funnel chart</td><td>If meeting→opportunity conversion drops below 30%</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0;">Learning Loop (How the System Gets Smarter)</h3>
+  <pre><code>
+  ┌─────────────┐     ┌──────────────┐     ┌──────────────┐
+  │  Rob sends   │────→│ Outcomes      │────→│ Analysis     │
+  │  messages    │     │ tracked in DB │     │ Agent runs   │
+  └─────────────┘     └──────────────┘     └──────┬───────┘
+                                                   │
+  ┌─────────────┐     ┌──────────────┐             │
+  │  Better     │←────│ Pre-Brief    │←────────────┘
+  │  messages   │     │ + Insights   │
+  └─────────────┘     └──────────────┘
+  </code></pre>
+  <h4>What Gets Fed Back</h4>
+  <ul>
+    <li><strong>Reply rates by persona type:</strong> Adjust mix ratio (more of what converts).</li>
+    <li><strong>Reply rates by proof point:</strong> Use winning proof points more, retire underperformers.</li>
+    <li><strong>Reply rates by personalization score:</strong> Invest more research time on high-score messages if Score 3 converts better.</li>
+    <li><strong>A/B test results:</strong> Lock in winning variants, test new variables.</li>
+    <li><strong>Opportunity attribution:</strong> Which specific messages and angles created real pipeline? Double down.</li>
+    <li><strong>Objection patterns:</strong> Which objections come up most? Refine pre-loaded responses.</li>
+    <li><strong>Touch effectiveness:</strong> Which touch number generates replies? Optimize the sequence.</li>
+  </ul>
+  <h4>Token Efficiency Measures</h4>
+  <ul>
+    <li><strong>Company research caching:</strong> Once a company is researched, the snapshot is reused for all contacts at that company.</li>
+    <li><strong>Template-first drafting:</strong> Agent starts from persona template, not blank page. Less generation, more personalization.</li>
+    <li><strong>Structured research extraction:</strong> Agent fills in a fixed JSON schema, not free-form text. Less tokens, more consistent output.</li>
+    <li><strong>Incremental analysis:</strong> Pre-brief only analyzes new data since last run, not all historical data every time.</li>
+  </ul>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- SECTION 8: MILESTONES -->
+<!-- ============================================ -->
+<section id="milestones">
+<span class="section-num">Section 8</span>
+<h2>Milestones &amp; Phased Build</h2>
+<p class="section-subtitle">MVP → v1 → v2. What each phase delivers.</p>
+
+<div class="milestone" style="border-color: var(--green);">
+  <div class="milestone-label" style="color:var(--green);">Phase 1: MVP</div>
+  <h4>Foundation: Database + LinkedIn Workspace + Basic Pipeline</h4>
+  <p class="dim">Goal: Replace the current single HTML batch file with a database-backed system that persists data across batches.</p>
+  <table>
+    <tr><th>Deliverable</th><th>Description</th></tr>
+    <tr><td class="col-name">SQLite schema</td><td>All 14 tables created with proper relationships and constraints. Migration script.</td></tr>
+    <tr><td class="col-name">Python API server</td><td>FastAPI CRUD endpoints for all core tables. Runs locally.</td></tr>
+    <tr><td class="col-name">LinkedIn Workspace (basic)</td><td>Prospect list view, research panel, message draft view with copy buttons. Batch creation flow.</td></tr>
+    <tr><td class="col-name">Pipeline view (basic)</td><td>All prospects in one sortable, filterable table. Status dropdowns. Priority badges.</td></tr>
+    <tr><td class="col-name">Research Agent</td><td>Structured research extraction from Sales Navigator profiles + web search. Stores to DB.</td></tr>
+    <tr><td class="col-name">Draft Agent</td><td>Generates all 6 touches per prospect. Stores to DB. Basic QC (em dash, word count).</td></tr>
+    <tr><td class="col-name">Data migration</td><td>Import existing prospect-outreach-25.html data into the new database.</td></tr>
+  </table>
+  <p class="dim" style="margin-top:8px;">After MVP: Rob can build batches with the new system and everything is stored in the database instead of standalone HTML files.</p>
+</div>
+
+<div class="milestone" style="border-color: var(--yellow);">
+  <div class="milestone-label" style="color:var(--yellow);">Phase 2: v1</div>
+  <h4>Full Multi-Channel + Tracking + Agent QA</h4>
+  <p class="dim">Goal: All three workspaces functional. Full touchpoint tracking. QC automation.</p>
+  <table>
+    <tr><th>Deliverable</th><th>Description</th></tr>
+    <tr><td class="col-name">Email Workspace</td><td>Email queue, draft composer with subject line, mobile preview, copy buttons.</td></tr>
+    <tr><td class="col-name">Calls Workspace</td><td>Call queue sorted by priority + time zone. Call snippets. Outcome buttons. Post-call notes.</td></tr>
+    <tr><td class="col-name">Follow-up engine</td><td>Auto-schedules all follow-ups when Touch 1 is sent. Daily "Today's Actions" list on Home page.</td></tr>
+    <tr><td class="col-name">Reply handling</td><td>Reply classification modal. Intent classification. Next-action recommendations.</td></tr>
+    <tr><td class="col-name">Full QC Agent</td><td>All 10 QC checks automated. Failures block output until fixed. QC report per batch.</td></tr>
+    <tr><td class="col-name">Meeting prep cards</td><td>Auto-generated when status → Meeting Booked. Company snapshot, discovery questions, proof points.</td></tr>
+    <tr><td class="col-name">Audit log</td><td>All changes tracked. Full timeline per prospect.</td></tr>
+    <tr><td class="col-name">Opportunity tracking</td><td>Opportunities table. Full attribution chain (touchpoint → reply → channel → proof point).</td></tr>
+  </table>
+  <p class="dim" style="margin-top:8px;">After v1: Complete BDR workflow is managed through the dashboard. All data flows into the database. Full audit trail.</p>
+</div>
+
+<div class="milestone" style="border-color: var(--accent);">
+  <div class="milestone-label">Phase 3: v2</div>
+  <h4>Intelligence + Experiments + Learning Loop</h4>
+  <p class="dim">Goal: The system actively gets smarter. Analytics, A/B testing, and insights drive decisions.</p>
+  <table>
+    <tr><th>Deliverable</th><th>Description</th></tr>
+    <tr><td class="col-name">Intelligence page</td><td>All 7 analytics charts: reply rate by persona, vertical, proof point, personalization score. Funnel conversion. Touch effectiveness. Opportunity attribution.</td></tr>
+    <tr><td class="col-name">Experiments page</td><td>A/B test management: create, assign groups, track results, declare winners.</td></tr>
+    <tr><td class="col-name">Pre-Brief engine</td><td>Analysis Agent generates 5-line pre-brief before each batch by reading all historical data.</td></tr>
+    <tr><td class="col-name">Insights engine</td><td>Weekly auto-generated insights: "Directors of QA are replying at 2.3x..." etc.</td></tr>
+    <tr><td class="col-name">Token usage tracking</td><td>Track tokens per agent run. Trend chart. Efficiency optimization recommendations.</td></tr>
+    <tr><td class="col-name">Re-engagement automation</td><td>System detects dormant prospects and surfaces re-engagement triggers. Drafts fresh sequences.</td></tr>
+    <tr><td class="col-name">Batch comparison dashboard</td><td>Cross-batch analytics. Which batch performed best? What changed?</td></tr>
+    <tr><td class="col-name">Agent Logs page</td><td>Full transparency: every agent run, inputs, outputs, sources, decisions, errors.</td></tr>
+  </table>
+  <p class="dim" style="margin-top:8px;">After v2: The system is self-improving. Each batch leverages all historical data to make better decisions. Rob spends less time on research and more time on sending and closing.</p>
+</div>
+
+<div class="card" style="margin-top:24px;">
+  <h3 style="margin-top:0;">Build Priority Within Each Phase</h3>
+  <p>Within each phase, build in this order:</p>
+  <ol>
+    <li><strong>Database layer first</strong> - tables, migrations, API endpoints. The foundation everything else sits on.</li>
+    <li><strong>Agent workflows second</strong> - research and drafting logic. This is where the value is created.</li>
+    <li><strong>UI third</strong> - the dashboard is the interface to the data and agents. It can be basic at first and get polished over time.</li>
+    <li><strong>Testing last (but continuous)</strong> - write tests as you build each component, not after. Unit tests for scoring logic from day one.</li>
+  </ol>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0;">Success Metrics by Phase</h3>
+  <table>
+    <tr><th>Phase</th><th>Metric</th><th>Target</th></tr>
+    <tr><td class="col-name">MVP</td><td>Time to build a 25-prospect batch</td><td>&lt;2 hours (down from 3-4 with current HTML approach)</td></tr>
+    <tr><td class="col-name">MVP</td><td>All prospects stored in database</td><td>100% (no more standalone HTML-only data)</td></tr>
+    <tr><td class="col-name">v1</td><td>Follow-up compliance</td><td>&gt;90% of scheduled follow-ups executed within 1 day of due date</td></tr>
+    <tr><td class="col-name">v1</td><td>Reply handling speed</td><td>&lt;4 hours from reply to logged response</td></tr>
+    <tr><td class="col-name">v1</td><td>QC pass rate</td><td>&gt;95% of messages pass QC on first draft</td></tr>
+    <tr><td class="col-name">v2</td><td>Reply rate improvement</td><td>&gt;1.5% (up from ~1% baseline) driven by learning loop</td></tr>
+    <tr><td class="col-name">v2</td><td>Meeting-to-opportunity conversion</td><td>&gt;40% of meetings become opportunities</td></tr>
+    <tr><td class="col-name">v2</td><td>Token cost per batch</td><td>Decreasing trend over time (efficiency gains from caching + templates)</td></tr>
+  </table>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- FOOTER -->
+<!-- ============================================ -->
+<hr>
+<div style="text-align:center; padding: 24px 0; color: var(--text-dim); font-size: 13px;">
+  <p>Outreach Command Center Architecture v1.0</p>
+  <p>Designed for Rob Gorham, BDR @ Testsigma</p>
+  <p style="margin-top:4px;">February 2026</p>
+</div>
+
+</div><!-- end container -->
+
+<script>
+// Smooth scrolling for nav links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>

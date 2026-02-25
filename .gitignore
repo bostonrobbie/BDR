@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+BDR-backup/
+.claude/

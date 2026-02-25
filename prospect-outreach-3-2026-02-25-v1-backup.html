@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outreach Command Center - Batch 3 | Rob Gorham | Testsigma</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
+            color: #e0e6ed;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        header .subtitle {
+            color: #a0a9b8;
+            font-size: 14px;
+        }
+
+        .header-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .meta-item {
+            font-size: 13px;
+        }
+
+        .meta-label {
+            color: #7a8293;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .meta-value {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .pre-brief {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .pre-brief-title {
+            font-weight: 600;
+            color: #60a5fa;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .pre-brief-content {
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .ab-test-panel {
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .ab-test-title {
+            font-weight: 600;
+            color: #c084fc;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .ab-test-content {
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+
+        .ab-group {
+            display: inline-block;
+            margin-right: 16px;
+            margin-top: 8px;
+        }
+
+        .ab-group-name {
+            font-weight: 600;
+            color: #c084fc;
+        }
+
+        .ab-group-desc {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .batch-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #7a8293;
+            margin-top: 4px;
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .control-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #a0a9b8;
+            margin-right: 8px;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #e0e6ed;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .filter-btn.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: #fff;
+        }
+
+        select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #e0e6ed;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        select:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .table-wrapper {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead {
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #a0a9b8;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        th:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        tbody tr {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        tbody tr.expanded {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .priority-5 {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        .priority-4 {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fbcf8f;
+        }
+
+        .priority-3 {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+        }
+
+        .priority-2 {
+            background: rgba(107, 114, 128, 0.2);
+            color: #d1d5db;
+        }
+
+        .priority-1 {
+            background: rgba(75, 85, 99, 0.2);
+            color: #9ca3af;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 6px;
+            margin-bottom: 4px;
+        }
+
+        .badge-qa {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+        }
+
+        .badge-architect {
+            background: rgba(168, 85, 247, 0.2);
+            color: #d8b4fe;
+        }
+
+        .badge-fintech {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+        }
+
+        .badge-saas {
+            background: rgba(14, 165, 233, 0.2);
+            color: #7dd3fc;
+        }
+
+        .badge-healthcare {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        .badge-other {
+            background: rgba(156, 163, 175, 0.2);
+            color: #d1d5db;
+        }
+
+        .personalization-score {
+            display: inline-block;
+            padding: 2px 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            font-size: 11px;
+            color: #e0e6ed;
+        }
+
+        .expand-icon {
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+
+        .prospect-row.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .prospect-details {
+            display: none;
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .prospect-row.expanded .prospect-details {
+            display: block;
+        }
+
+        .card-section {
+            margin-bottom: 20px;
+        }
+
+        .card-section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #60a5fa;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .subject-line {
+            font-weight: 600;
+            color: #60a5fa;
+            margin-bottom: 8px;
+        }
+
+        .copy-btn {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #86efac;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .copy-btn:hover {
+            background: rgba(34, 197, 94, 0.3);
+            border-color: rgba(34, 197, 94, 0.6);
+        }
+
+        .copy-btn.copied {
+            background: rgba(34, 197, 94, 0.4);
+            color: #86efac;
+        }
+
+        .research-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .research-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .research-label {
+            font-weight: 600;
+            color: #60a5fa;
+            margin-bottom: 8px;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .objection-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .objection-box:hover {
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        .objection-title {
+            color: #fca5a5;
+            font-weight: 600;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .objection-response {
+            display: none;
+            color: #cbd5e1;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .objection-box.expanded .objection-response {
+            display: block;
+        }
+
+        .objection-toggle {
+            display: inline-block;
+            transition: transform 0.2s;
+            margin-right: 8px;
+        }
+
+        .objection-box.expanded .objection-toggle {
+            transform: rotate(90deg);
+        }
+
+        .meta-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .meta-item-inline {
+            font-size: 12px;
+        }
+
+        .meta-item-label {
+            color: #7a8293;
+            font-size: 11px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .meta-item-value {
+            color: #e0e6ed;
+            font-weight: 500;
+        }
+
+        a {
+            color: #60a5fa;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #93c5fd;
+            text-decoration: underline;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .dropdown-inline {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .dropdown-label {
+            font-size: 11px;
+            color: #7a8293;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 20px;
+            }
+
+            .header-meta {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            table {
+                font-size: 11px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+
+            .prospect-details {
+                padding: 16px;
+            }
+        }
+
+        .a-b-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            background: rgba(168, 85, 247, 0.2);
+            color: #d8b4fe;
+        }
+
+        .table-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .prospect-row {
+            display: contents;
+        }
+
+        .prospect-row > td {
+            padding: 12px;
+        }
+
+        .prospect-row > td:first-child {
+            border-left: 2px solid transparent;
+        }
+
+        .prospect-row.expanded > td:first-child {
+            border-left-color: #3b82f6;
+        }
+
+        tr > td:first-child {
+            width: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>Outreach Command Center</h1>
+            <div class="subtitle">Batch 3 - February 25, 2026 | Rob Gorham, BDR | Testsigma</div>
+            <div class="header-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Total Prospects</span>
+                    <span class="meta-value">25</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Expected Reply Rate</span>
+                    <span class="meta-value">28.7% (7-8 replies)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Batch Status</span>
+                    <span class="meta-value">Ready to Execute</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">A/B Test Variable</span>
+                    <span class="meta-value">Pain Hook Angle</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Pre-Brief -->
+        <div class="pre-brief">
+            <div class="pre-brief-title">Pre-Brief: Batch 3</div>
+            <div class="pre-brief-content">
+                First batch using new data-driven SOP system. Default assumptions from Outbound Intelligence System applied. No historical data yet from previous batches. All messaging follows hard constraints (no "I noticed," exactly 2 questions, 75-99 word sweet spot, "What day works?" CTA pattern). Persona mix optimized for highest reply rates: 8 Architects (39.3%), 10 QA Managers/Leads (26.8%), 7 QA Directors (26.0%). Proof points rotated across verticals. Ready to send starting 12-1 PM on Thursday.
+            </div>
+        </div>
+
+        <!-- A/B Test Panel -->
+        <div class="ab-test-panel">
+            <div class="ab-test-title">A/B Test Variable: Pain Hook Angle</div>
+            <div class="ab-test-content">
+                Testing which pain narrative drives higher reply rates in this batch.
+                <div class="ab-group">
+                    <span class="ab-group-name">Group A (13 prospects):</span>
+                    <div class="ab-group-desc">Test maintenance / regression cycles / flaky tests angle</div>
+                </div>
+                <div class="ab-group">
+                    <span class="ab-group-name">Group B (12 prospects):</span>
+                    <div class="ab-group-desc">Release velocity / coverage scaling / team capacity angle</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Batch Stats -->
+        <div class="batch-stats">
+            <div class="stat-card">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Architects (39.3% rate)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">10</div>
+                <div class="stat-label">QA Managers (26.8% rate)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">7</div>
+                <div class="stat-label">QA Directors (26.0% rate)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">6</div>
+                <div class="stat-label">FinTech / FinServ</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">SaaS / Enterprise</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Healthcare</div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <span class="control-label">Filter:</span>
+            <button class="filter-btn active" data-filter="all">Show All</button>
+            <button class="filter-btn" data-filter="hot">Hot (5)</button>
+            <button class="filter-btn" data-filter="warm">Warm+ (4-5)</button>
+            <select id="personaFilter" onchange="applyFilters()">
+                <option value="">All Personas</option>
+                <option value="qa-director">QA Director</option>
+                <option value="qa-manager">QA Manager</option>
+                <option value="architect">Architect/Sr IC</option>
+            </select>
+            <select id="verticalFilter" onchange="applyFilters()">
+                <option value="">All Verticals</option>
+                <option value="fintech">FinTech</option>
+                <option value="saas">SaaS/Enterprise</option>
+                <option value="healthcare">Healthcare</option>
+                <option value="other">Other</option>
+            </select>
+            <select id="abFilter" onchange="applyFilters()">
+                <option value="">All A/B Groups</option>
+                <option value="A">Group A</option>
+                <option value="B">Group B</option>
+            </select>
+        </div>
+
+        <!-- Prospects Table -->
+        <div class="table-wrapper">
+            <table id="prospectsTable">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Priority</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Company</th>
+                        <th>Persona</th>
+                        <th>Vertical</th>
+                        <th>A/B</th>
+                        <th>Personalization</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="prospectsBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Prospect Data
+        const prospects = [
+            {
+                id: 1,
+                name: 'Irfan Syed',
+                title: 'Director of QA',
+                company: 'Progress Software',
+                priority: 3,
+                persona: 'qa-director',
+                vertical: 'saas',
+                abGroup: 'A',
+                personalizationScore: 2,
+                linkedinUrl: 'https://www.linkedin.com/in/irfanpashasyed',
+                email: 'isyed@progress.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: '15+ years at Progress, manages QA across 12+ product portfolio (Chef, MarkLogic, Sitefinity, etc.), deep institutional knowledge',
+                    company: '$978M ARR, 100% net retention, AI-driven initiatives, large enterprise SaaS portfolio with OpenEdge (legacy) + modern cloud products'
+                },
+                subject: 'Cross-product regression cycles',
+                body: 'With 12+ products across OpenEdge and cloud, how is your team keeping regression cycles manageable as your portfolio scales?\n\nThat\'s the gap most enterprises hit - regression testing sprawls across legacy and modern stacks, and each new product multiplies the maintenance burden. Hansard cut their regression cycles from 8 weeks to 5 weeks by automating regression maintenance across their entire platform, using Testsigma.\n\nWould a conversation about how they did it be worth your time?',
+                wordCount: 86,
+                questions: 2,
+                proof: 'Hansard',
+                objection: 'We already have testing framework',
+                objectionResponse: 'Makes sense - teams managing multiple products usually have strong in-house QA. The gap we typically see is time spent on regression maintenance when you\'re scaling features across 12+ products. Worth comparing on that dimension?',
+                callSnippet: 'Hey Irfan, this is Rob from Testsigma - managing QA across 12+ products is a huge undertaking.\nRegression maintenance probably sprawls across legacy and modern stacks - that\'s where most enterprise teams hit the wall.\nHansard cut from 8 to 5 weeks. Worth 60 seconds?'
+            },
+            {
+                id: 2,
+                name: 'Katie Hotard',
+                title: 'Director of QA',
+                company: 'Lucid Software',
+                priority: 4,
+                persona: 'qa-director',
+                vertical: 'saas',
+                abGroup: 'B',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/katie-hotard',
+                email: 'katieb@lucid.co',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'Scaled QA from 10 to 39 people, pursuing SW Testing Certificate at Utah Valley Univ, BA Communications from BYU',
+                    company: '30M+ users, 99% Fortune 500, Lucid AI launched Oct 2025, Google Workspace Partner of Year - Innovation, $288M+ revenue'
+                },
+                subject: 'Scaling coverage with your team',
+                body: 'As Lucid AI expands the product surface, is your QA team\'s automation keeping pace with launch velocity?\n\nThat\'s the thing that usually creates gaps in visual regression coverage when teams scale fast - your test suite doesn\'t grow as quickly as your features do. Medibuddy automated 2,500 tests while cutting maintenance 50%, letting their team focus on new coverage instead of test repairs.\n\nWhat would that kind of scaling look like for your roadmap?',
+                wordCount: 88,
+                questions: 2,
+                proof: 'Medibuddy',
+                objection: 'Evaluating AI tools internally',
+                objectionResponse: 'Totally fair - Lucid AI is impressive. We focus on testing those features reliably across browsers and canvas-heavy UIs. Worth a quick comparison on cross-browser test coverage?',
+                callSnippet: 'Hey Katie, this is Rob from Testsigma - you\'ve scaled QA from 10 to 39 in a few years, and Lucid AI is expanding fast.\nCoverage gaps typically appear first in visual regression when feature velocity outpaces test growth.\nMediabuddy automated 2,500 tests while cutting maintenance 50%. Worth 60 seconds?'
+            },
+            {
+                id: 3,
+                name: 'Rachana Jagetia',
+                title: 'Director, QA Eng',
+                company: 'Housecall Pro',
+                priority: 4,
+                persona: 'qa-director',
+                vertical: 'saas',
+                abGroup: 'A',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/rachana-jagetia-791343138',
+                email: 'rachana.jagetia@housecallpro.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'Promoted Manager→Director in 3 years, Master of Computer Applications, prior mobile testing at Verve',
+                    company: 'Mobile-first (iOS/Android) + web, platform refresh coming 2026, monthly releases, Sauce Labs/Selenium/CircleCI stack'
+                },
+                subject: 'Platform refresh + test reliability',
+                body: 'With your mobile-first platform refresh ahead, are flaky cross-browser tests eating up your team\'s time right now?\n\nThat\'s the bottleneck most mobile teams face during platform changes - brittle locators break constantly, and you\'re repairing tests instead of building new ones. Housecall Pro\'s peer company cut test maintenance 70% versus their Selenium baseline, freeing engineers to focus on the refresh itself.\n\nWould exploring that trade-off be useful before you kick off the refresh?',
+                wordCount: 87,
+                questions: 2,
+                proof: '70% maintenance reduction vs Selenium',
+                objection: 'We use Sauce Labs and Selenium',
+                objectionResponse: 'Totally get it - Sauce Labs is solid for cross-browser. The gap is test maintenance when shipping monthly. Worth comparing on flakiness?',
+                callSnippet: 'Hey Rachana, this is Rob from Testsigma - you\'ve got a mobile platform refresh ahead and you\'re running Selenium + Sauce Labs.\nFlaky tests during a platform migration can derail your timeline fast.\nA peer company cut Selenium maintenance 70%. Worth 60 seconds?'
+            },
+            {
+                id: 4,
+                name: 'Giang Hoang',
+                title: 'Director of QA',
+                company: 'Employee Navigator',
+                priority: 4,
+                persona: 'qa-director',
+                vertical: 'saas',
+                abGroup: 'B',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/giang-hoang-03304b19',
+                email: 'ghoang@employeenavigator.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'Career: LiveAction, DataRobot, ThreatQ, T. Rowe Price, Tenable, RSA, AOL - deep SDET background',
+                    company: '$100M funding Aug 2025, 175K+ employers, 13M employees, 500+ carrier/payroll integrations, ACA compliance'
+                },
+                subject: 'Testing for post-funding scale',
+                body: 'After your $100M round, how is your QA team handling the expansion to new use cases and integrations?\n\nThat\'s the challenge most teams face post-funding - you\'re onboarding engineers faster, but testing hasn\'t scaled to match new product scope. Spendflo\'s team cut manual testing 50%, which meant smaller QA teams could ship faster without hiring more test engineers.\n\nWhat\'s the biggest drag on your release cycles right now?',
+                wordCount: 84,
+                questions: 2,
+                proof: 'Spendflo',
+                objection: 'Budget allocated to feature development',
+                objectionResponse: 'Most teams in your stage prioritize headcount. One team we work with (Spendflo, ~350 people) cut manual testing 50% in Q1, paid for themselves in a quarter.',
+                callSnippet: 'Hey Giang, this is Rob from Testsigma - post-$100M funding, you\'re scaling integrations and new use cases.\nTesting hasn\'t kept pace with feature velocity, and that becomes a hiring problem fast.\nSpendflo cut manual testing 50%, freed up their team. Worth 60 seconds?'
+            },
+            {
+                id: 5,
+                name: 'Kevin Caulfield',
+                title: 'Director of QA',
+                company: 'Bottomline',
+                priority: 4,
+                persona: 'qa-director',
+                vertical: 'fintech',
+                abGroup: 'A',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/kevin-caulfield-6608bb2',
+                email: 'kcaulfield@bottomline.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'From State Street (financial services QA rigor), Director-level tenure, financial services background',
+                    company: 'Processes trillions of transactions, ML fraud detection, AI agent launched Oct 2025, PCI/AML compliance, $450B annually via Paymode'
+                },
+                subject: 'Compliance + payment testing complexity',
+                body: 'Does maintaining PCI and AML test coverage across your payment corridors take up most of your team\'s regression cycles?\n\nThat\'s the bind compliance-heavy fintechs hit - regulatory test requirements explode, and your team spends weeks on maintenance instead of new coverage. Hansard, processing similar transaction volumes, cut their regression from 8 weeks to 5 weeks with automation, freeing their team for compliance-specific work.\n\nHow much of your cycle time is regression versus new compliance tests?',
+                wordCount: 89,
+                questions: 2,
+                proof: 'Hansard',
+                objection: 'Security/compliance testing too specialized',
+                objectionResponse: 'Totally fair - we work with Sanofi and Oscar Health (heavily regulated too). They used Testsigma for regression coverage on the payment UI/workflow layer. Freed 3-4 SDETs for compliance work.',
+                callSnippet: 'Hey Kevin, this is Rob from Testsigma - you\'re managing PCI and AML coverage across payment corridors at scale.\nRegression maintenance usually explodes when compliance requirements multiply.\nHansard cut from 8 to 5 weeks. Worth 60 seconds?'
+            },
+            {
+                id: 6,
+                name: 'Rick Kowaleski',
+                title: 'Sr Principal SDET',
+                company: 'Alteryx',
+                priority: 3,
+                persona: 'architect',
+                vertical: 'saas',
+                abGroup: 'B',
+                personalizationScore: 2,
+                linkedinUrl: 'https://www.linkedin.com/in/rickkowaleski',
+                email: 'rick.kowaleski@alteryx.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: '19+ years experience, Principal Quality Engineer/SDET since Nov 2021',
+                    company: 'New CEO Dec 2024, Alteryx One platform pivot, Copilot AI, Snowflake/Databricks/BigQuery integrations, hiring Staff SDETs'
+                },
+                subject: 'Alteryx One coverage expansion',
+                body: 'With your platform pivot to Alteryx One and new cloud integrations, how is regression coverage scaling across the new environments?\n\nThat\'s the test infrastructure challenge most enterprise transformations face - you\'re spinning up tests for Snowflake, BigQuery, Databricks integrations, and your team needs to move faster than the platform changes. A Fortune 100 company increased testing productivity 3X by streamlining how they build and run regression suites.\n\nWould benchmarking your current coverage against that approach be worth 20 minutes?',
+                wordCount: 95,
+                questions: 2,
+                proof: 'Fortune 100',
+                objection: 'We already have tools and build our own',
+                objectionResponse: 'Totally fair—Alteryx uses its own platform for testing. The gap a lot of enterprise teams hit is scaling coverage across multiple cloud platforms when features ship weekly. Worth comparing?',
+                callSnippet: 'Hey Rick, this is Rob from Testsigma - Alteryx One pivot means integrating Snowflake, BigQuery, Databricks test coverage simultaneously.\nThat\'s a complex infrastructure problem most teams underestimate.\nFortune 100 companies increased testing productivity 3X. Worth 60 seconds?'
+            },
+            {
+                id: 7,
+                name: 'Tyler Hackett',
+                title: 'QA Engineering Manager',
+                company: 'Ava Labs',
+                priority: 3,
+                persona: 'qa-manager',
+                vertical: 'other',
+                abGroup: 'A',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/tyler-hackett-02517380',
+                email: 'tyler.hackett@avalabs.org',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'QA Engineering Manager for Avalanche blockchain',
+                    company: 'AvaCloud launched, Bergen County NJ property records ($240B real estate tokenized), smart contract testing, bug bounty up to $100K'
+                },
+                subject: 'Multi-chain test maintenance',
+                body: 'Are smart contract plus enterprise deployment tests creating maintenance headaches across your Avalanche and AvaCloud environments?\n\nThat\'s the complexity most multi-chain platforms hit - test maintenance balloons when you\'re validating across different networks and deployment configurations. Nagra DTV automated 2,500 tests in 8 months across their API and UI layer, cutting test repairs substantially, using Testsigma.\n\nWhat\'s your current bottleneck with contract and environment testing?',
+                wordCount: 84,
+                questions: 2,
+                proof: 'Nagra DTV',
+                objection: 'Building our own testing tools internally',
+                objectionResponse: 'Your GitHub shows strong internal tools (Avash, custom test networks). The challenge is cross-environment permutation testing. Worth 15 minutes to explore?',
+                callSnippet: 'Hey Tyler, this is Rob from Testsigma - AvaCloud and Avalanche mean testing smart contracts plus enterprise deployments across multiple networks.\nTest maintenance scales differently on-chain than traditional platforms.\nNagra DTV automated 2,500 in 8 months. Worth 60 seconds?'
+            },
+            {
+                id: 8,
+                name: 'Abe Blanco',
+                title: 'QA Engineering Manager',
+                company: 'Kapitus',
+                priority: 3,
+                persona: 'qa-manager',
+                vertical: 'fintech',
+                abGroup: 'B',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/abe-blanco-9223a61',
+                email: 'ablanco@kapitus.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'QA Engineering Manager at small business lending fintech',
+                    company: '$6.1B+ in capital deployed, 3 financing rounds in 12 months, Ten Oaks acquisition, equipment financing launch, SBA compliance'
+                },
+                subject: 'Testing velocity + compliance scaling',
+                body: 'With equipment financing and recent acquisitions ramping, how is your QA team keeping test coverage in sync with new product launches?\n\nThat\'s the squeeze most high-growth fintechs feel - compliance + new features mean you\'re testing more, faster, with the same team size. CRED\'s team automated 90% of regression testing and cut execution 5X faster, letting them ship compliance-heavy features without extending cycles.\n\nHow many new products are in your pipeline over the next quarter?',
+                wordCount: 88,
+                questions: 2,
+                proof: 'CRED',
+                objection: 'Compliance means we need manual testing',
+                objectionResponse: 'Totally get it—audit trails are non-negotiable. Automating regression before manual QA review actually strengthens compliance posture. Worth a conversation?',
+                callSnippet: 'Hey Abe, this is Rob from Testsigma - equipment financing + acquisitions mean new products shipping fast with SBA compliance.\nManual testing bottleneck usually emerges here.\nCRED automated 90% of regression, kept cycles tight. Worth 60 seconds?'
+            },
+            {
+                id: 9,
+                name: 'Susan Lin',
+                title: 'Staff QA Engineer',
+                company: 'Robinhood',
+                priority: 3,
+                persona: 'architect',
+                vertical: 'fintech',
+                abGroup: 'A',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/susan-lin-1a016947',
+                email: 'susan.lin@robinhood.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'Staff QA Engineer at Robinhood trading platform',
+                    company: 'Cortex AI (autonomous trading), prediction markets $100M ARR, Bitstamp acquisition, $4.5B revenue +52% YoY, Server-Driven UI'
+                },
+                subject: 'Trading + crypto + AI coverage',
+                body: 'With Cortex AI and prediction markets expanding your test surface, is maintaining regression coverage across trading plus crypto becoming a scaling problem?\n\nThat\'s the maintenance challenge most high-velocity fintech platforms hit - every new product vertical multiplies your regression suite, and test repairs eat time that could go to new coverage. CRED automated 90% of regression testing while maintaining coverage across new trading features, keeping their cycle times short.\n\nWhat\'s your biggest pain point with the current test suite as features scale?',
+                wordCount: 97,
+                questions: 2,
+                proof: 'CRED',
+                objection: 'Large QA team and custom testing tools',
+                objectionResponse: 'That\'s a strength. The challenge is testing permutations (crypto + margin + prediction markets simultaneously). A lot of teams at your scale use us for coverage expansion without replacing core tools.',
+                callSnippet: 'Hey Susan, this is Rob from Testsigma - Cortex AI and prediction markets multiply your test surface across trading plus crypto.\nMaintenance becomes the blocker when you\'re shipping features weekly.\nCRED maintained coverage across 3 verticals. Worth 60 seconds?'
+            },
+            {
+                id: 10,
+                name: 'Aliaksei Ausianka',
+                title: 'Staff QA Engineer',
+                company: 'NerdWallet',
+                priority: 3,
+                persona: 'architect',
+                vertical: 'fintech',
+                abGroup: 'A',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/aliaksei-ausianka-48426b2a',
+                email: 'aausianka@nerdwallet.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'Career: Redfin, BitTorrent → NerdWallet (promoted Sr SDET → Staff), deep test automation background',
+                    company: 'Next Door Lending acquisition (mortgage), loans revenue +66% YoY, 2B+ data points daily, private mobile cloud (36 iOS + 38 Android), custom Yutil testing tool, hiring Lead QA Engineer'
+                },
+                subject: 'Fintech regression testing',
+                body: 'With the mortgage acquisition bringing new integrations across bank APIs, how\'s the regression cycle scaling across iOS and Android?\n\nThat integration complexity usually creates test maintenance headaches fast for teams managing multiple third-party connections. We helped CRED automate 90% of regression tests, cutting execution time by 5x.\n\nWould exploring what a similar setup could mean for your pipeline be worth your time?',
+                wordCount: 83,
+                questions: 2,
+                proof: 'CRED',
+                objection: 'We built custom tools like Yutil',
+                objectionResponse: 'That\'s smart—Yutil handles third-party data simulation. The challenge is scaling it when you\'re adding new verticals (mortgages, insurance). Worth exploring?',
+                callSnippet: 'Hey Aliaksei, this is Rob from Testsigma - mortgage acquisition means new bank API integrations across 36 iOS + 38 Android versions.\nThird-party integration testing usually balloons maintenance fast.\nCRED cut execution 5X. Worth 60 seconds?'
+            },
+            {
+                id: 11,
+                name: 'Susan Cohan-Lendzian',
+                title: 'QA Engineering Manager',
+                company: 'BHG Financial',
+                priority: 3,
+                persona: 'qa-manager',
+                vertical: 'fintech',
+                abGroup: 'B',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/susan-cohan-lendzian-4735863',
+                email: 'slendzian@bhg-inc.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'QA Engineering Manager at healthcare lending fintech',
+                    company: 'Record $6.1B loan originations 2025, $500M ABS transaction (largest ever), American Fintech Council member, C#-based microservices'
+                },
+                subject: 'Microservices testing at scale',
+                body: 'As BHG hits $6.1B in originations, how\'s test coverage keeping pace across the microservices stack while managing state compliance requirements?\n\nCoverage gaps during rapid growth typically hit hardest when you\'re juggling both performance and regulatory requirements simultaneously. Medibuddy automated 2,500 tests and cut maintenance by 50% while scaling.\n\nWhat would a 50% drop in test maintenance mean for your team\'s capacity?',
+                wordCount: 89,
+                questions: 2,
+                proof: 'Medibuddy',
+                objection: 'We already have testing framework',
+                objectionResponse: 'Makes sense - teams managing multiple products usually have strong in-house QA. The gap is time on regression maintenance as you scale. Worth comparing?',
+                callSnippet: 'Hey Susan, this is Rob from Testsigma - $6.1B in originations and microservices mean compliance testing complexity spikes.\nCoverage gaps hit first in regulatory test cycles.\nMediabuddy cut maintenance 50% at scale. Worth 60 seconds?'
+            },
+            {
+                id: 12,
+                name: 'Jayati Srivastava',
+                title: 'Principal SDET',
+                company: 'Cvent',
+                priority: 4,
+                persona: 'architect',
+                vertical: 'saas',
+                abGroup: 'A',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/jayati-srivastava-92a8ba11b',
+                email: 'jsrivastava@cvent.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: '7+ years automation engineering, ISTQB certified, Selenium/API testing expertise',
+                    company: 'Acquired Goldcast ($300M) and ON24 ($400M) Dec 2025, ~$700M integration, Gartner Leader, hiring Senior Automation QA'
+                },
+                subject: 'Post-acquisition integration',
+                body: 'With the ON24 and Goldcast integrations underway, is test maintenance becoming the bottleneck across the three codebases?\n\nIntegration projects usually spike regression overhead just when stability matters most. That\'s where most teams feel the pain. Fortune 100 companies reduced maintenance overhead by 3x during similar platform consolidations using AI-assisted healing.\n\nCould that free up your team\'s bandwidth right now?',
+                wordCount: 82,
+                questions: 2,
+                proof: 'Fortune 100',
+                objection: 'Managing integration in-house',
+                objectionResponse: 'Timing actually is perfect - Fortune 100 event platforms used us to accelerate consolidation. Happy to show how?',
+                callSnippet: 'Hey Jayati, this is Rob from Testsigma - you\'ve got ON24 and Goldcast integration happening with three codebases to consolidate.\nRegression maintenance usually becomes the slowdown during M&A.\nFortune 100 reduced overhead 3X. Worth 60 seconds?'
+            },
+            {
+                id: 13,
+                name: 'Suraphel Amde',
+                title: 'Staff QA Engineer',
+                company: 'BILL',
+                priority: 3,
+                persona: 'architect',
+                vertical: 'fintech',
+                abGroup: 'B',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/suraphel',
+                email: 'samdeberhan@hq.bill.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'Career: Nagra Kudelski → Dell EMC → VMware → BILL, Masters from Technical University of Ostrava',
+                    company: '3 AI agents launched in 90 days (W-9, Receipts, Accounting), 460K+ businesses, stopped 8M fraud attempts, Innovation Week'
+                },
+                subject: 'AI agent testing velocity',
+                body: 'Launching 3 AI agents in 90 days while maintaining test coverage across 460K+ businesses - how\'s the release velocity holding up on accuracy validation?\n\nTesting AI deterministically while keeping regression coverage solid usually creates a speed trap for teams scaling fast. Sanofi compressed regression cycles from 3 days to 80 minutes while validating ML accuracy.\n\nHow would cutting your testing cycle in half impact your release cadence?',
+                wordCount: 86,
+                questions: 2,
+                proof: 'Sanofi',
+                objection: 'Test automation built on Selenium/internal framework',
+                objectionResponse: 'Where teams hit a wall was testing new AI agents - when ML models change, locators break. Sanofi cut regression from 3 days to 80 minutes by adding self-healing on existing stack.',
+                callSnippet: 'Hey Suraphel, this is Rob from Testsigma - 3 AI agents in 90 days across 460K+ businesses and you need accuracy validation fast.\nAI testing with existing regression coverage is complex.\nSanofi dropped 3 days to 80 minutes. Worth 60 seconds?'
+            },
+            {
+                id: 14,
+                name: 'Steven Mays',
+                title: 'Staff QA Engineer',
+                company: 'Medallia',
+                priority: 3,
+                persona: 'architect',
+                vertical: 'saas',
+                abGroup: 'A',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/stevencmays',
+                email: 'smays@medallia.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'Career: Extreme Networks, Enterasys → Medallia, 10+ years QA, deep distributed systems experience',
+                    company: '7 new AI capabilities Mar 2025, 100+ features/year, 30%+ demand growth, competes with Qualtrics, distributed architecture'
+                },
+                subject: 'Distributed regression at scale',
+                body: 'With 100+ features released annually and 7 new AI capabilities, how\'s test maintenance scaling across your distributed data pipelines?\n\nThat velocity on distributed systems usually means regression maintenance becomes harder to keep up with, not easier. Medibuddy automated 2,500 tests and cut maintenance by 50% while handling similar scale.\n\nCould cutting maintenance by half free your team for feature testing instead?',
+                wordCount: 87,
+                questions: 2,
+                proof: 'Medibuddy',
+                objection: 'Using Applitools and custom automation',
+                objectionResponse: 'Applitools is solid for visual - the gap is test stability across distributed data pipelines when features ship weekly. Medibuddy cut 50% maintenance. Worth comparing?',
+                callSnippet: 'Hey Steven, this is Rob from Testsigma - 100+ features/year and 7 new AI capabilities on distributed systems is intense velocity.\nTest maintenance usually becomes the bottleneck.\nMediabuddy cut 50% at that scale. Worth 60 seconds?'
+            },
+            {
+                id: 15,
+                name: 'Christopher Edwards',
+                title: 'Staff QA Engineer',
+                company: 'Tanium',
+                priority: 3,
+                persona: 'architect',
+                vertical: 'saas',
+                abGroup: 'B',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/christopherhedwards',
+                email: 'chris.edwards@tanium.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: '15+ years QA, BeyondTrust background, BBA Information Systems from Mississippi State',
+                    company: '34M endpoints, 40% Fortune 100, "Tanium Ask" agentic AI Oct 2025, Forbes Cloud 100 (10th year), new OT/Mobile/Intune expansion'
+                },
+                subject: 'Multi-platform test coverage',
+                body: 'Testing "Tanium Ask" across 34M endpoints plus the new OT/Mobile/Intune modules - how\'s coverage scaling across that many heterogeneous platforms?\n\nThat platform expansion usually means coverage gaps grow faster than your team can close them, especially with agentic AI in the mix. Nagra DTV built 2,500 tests across 8 months supporting multiple device types and APIs.\n\nWould automating that breadth of coverage change how your team prioritizes endpoint testing?',
+                wordCount: 89,
+                questions: 2,
+                proof: 'Nagra DTV',
+                objection: 'Handle security testing in-house with custom frameworks',
+                objectionResponse: 'Totally necessary for security-critical. Teams managing 34M+ endpoints hit walls on cross-OS compatibility when adding OT and Mobile. Nagra DTV cut automation time 4X.',
+                callSnippet: 'Hey Christopher, this is Rob from Testsigma - "Tanium Ask" plus OT/Mobile/Intune expansion means testing across 34M+ heterogeneous endpoints.\nCoverage gaps appear first in edge cases and OS combinations.\nNagra DTV built 2,500 in 8 months. Worth 60 seconds?'
+            },
+            {
+                id: 16,
+                name: 'Max Iglehart',
+                title: 'Staff QA Engineer',
+                company: 'Amwell',
+                priority: 3,
+                persona: 'architect',
+                vertical: 'healthcare',
+                abGroup: 'A',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/max-iglehart-a79b8446',
+                email: 'max.iglehart@americanwell.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'Staff-level QA, based near Amwell HQ',
+                    company: 'Telehealth platform, divested psychiatric care Jan 2025, targeting breakeven Q4 2026, AI into patient intake/clinical workflows, HIPAA, DoD contract'
+                },
+                subject: 'HIPAA compliance testing',
+                body: 'Building AI into patient intake workflows while managing HIPAA compliance - is test maintenance getting tighter alongside the regulatory pressure?\n\nHealthcare platforms usually feel the squeeze hardest when adding AI while keeping compliance documentation locked down. Sanofi shifted from 3-day regression cycles to 80 minutes while maintaining audit trails for compliance.\n\nHow would cutting regression time in half help you stay ahead of compliance without sacrificing safety?',
+                wordCount: 88,
+                questions: 2,
+                proof: 'Sanofi',
+                objection: 'Already have testing tool/process',
+                objectionResponse: 'Many healthcare teams using traditional frameworks struggle with maintenance when layering in AI workflows. Worth comparing what\'s possible with autonomous healing?',
+                callSnippet: 'Hey Max, this is Rob from Testsigma - layering AI into patient intake while keeping HIPAA compliance locked down is complex.\nTest maintenance usually tightens when regulatory risk increases.\nSanofi cut from 3 days to 80 minutes. Worth 60 seconds?'
+            },
+            {
+                id: 17,
+                name: 'Mazie Roxx',
+                title: 'QA Director, Payments',
+                company: 'Phreesia',
+                priority: 4,
+                persona: 'qa-director',
+                vertical: 'healthcare',
+                abGroup: 'B',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/mazie-r-58614',
+                email: 'mroxx@phreesia.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'BS Computer Engineering from San Jose State (2002), 24+ years in tech, uses Selenium AND Playwright',
+                    company: 'First net income positive quarter (Q2 FY2026), $160M AccessOne acquisition, Klarna partnership, PCI DSS Level 1, P2PE validated'
+                },
+                subject: 'PCI DSS integration testing',
+                body: 'With the AccessOne integration and Klarna partnership live, how\'s test coverage holding across the PCI DSS Level 1 infrastructure?\n\nPayment platform integrations under PCI DSS usually spike test maintenance fast, especially when you\'re juggling two testing frameworks simultaneously. Hansard cut regression cycles from 8 weeks to 5 weeks across financial integrations without compromising compliance checks.\n\nWould halving regression time while staying PCI-compliant open up bandwidth for new integrations?',
+                wordCount: 95,
+                questions: 2,
+                proof: 'Hansard',
+                objection: 'Selenium and Playwright are working fine',
+                objectionResponse: 'Both are solid for steady-state. The gap during integrations is keeping up with rapid change without ballooning test maintenance. AccessOne integration probably means new coverage debt. Worth exploring?',
+                callSnippet: 'Hey Mazie, this is Rob from Testsigma - AccessOne integration plus Klarna partnership means PCI DSS Level 1 testing with two frameworks (Selenium + Playwright).\nIntegrations usually spike maintenance debt.\nHansard cut 8 weeks to 5. Worth 60 seconds?'
+            },
+            {
+                id: 18,
+                name: 'Ram Bulusu',
+                title: 'Head of QA',
+                company: 'LiveRamp',
+                priority: 4,
+                persona: 'qa-director',
+                vertical: 'saas',
+                abGroup: 'A',
+                personalizationScore: 2,
+                linkedinUrl: 'https://www.linkedin.com/in/ram-bulusu-9a06496',
+                email: 'ram.bulusu@liveramp.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'Career: LinkedIn (Director Business Systems), Asana, founded Arcsona (cloud migrations). MBA, IoT Tech Expo speaker',
+                    company: 'Agentic AI Oct 2025, AI segmentation via NLP, Data Marketplace for AI Jan 2026, Identity Engine across AWS/Snowflake/GCP, IDC Leader, Google DORA Award, WinRunner (deprecated 2007!) in stack'
+                },
+                subject: 'Multi-cloud identity testing',
+                body: 'Testing identity resolution across three cloud platforms - how is that scaling with your current stack?\n\nThat\'s the gap most teams hit when identity layers get added to the platform, especially with legacy tools in the mix. Hansard saw their regression testing drop from 8 weeks to 5 weeks by cutting test maintenance in half.\n\nWhat would that mean for LiveRamp\'s release cadence?',
+                wordCount: 76,
+                questions: 2,
+                proof: 'Hansard',
+                objection: 'We won Google DORA Award, testing is working',
+                objectionResponse: 'Absolutely - excellent work at scale. The pattern is when AI features (segmentation, agentic orchestration) are layered in, maintenance doesn\'t scale linearly. Worth 15 minutes?',
+                callSnippet: 'Hey Ram, this is Rob from Testsigma - testing identity resolution across AWS/Snowflake/GCP with agentic AI in the mix is complex.\nLegacy tools (WinRunner) hit limits with multi-cloud.\nHansard cut 8 weeks to 5. Worth 60 seconds?'
+            },
+            {
+                id: 19,
+                name: 'Dexter Alon',
+                title: 'Software QA Eng Manager',
+                company: 'Blackhawk Network',
+                priority: 3,
+                persona: 'qa-manager',
+                vertical: 'fintech',
+                abGroup: 'B',
+                personalizationScore: 2,
+                linkedinUrl: 'https://www.linkedin.com/in/dexter-alon-b7b054315',
+                email: 'dexter.alon2@bhnetwork.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'Based in Pleasanton, CA (HQ), managing QA team',
+                    company: 'Hiring QA Engineers ($141K-$196K), Klarna partnership, Tap to Pay Visa launch, PCI DSS/ISO 27001/SOC 2, $447B gift card market'
+                },
+                subject: 'Payment product velocity',
+                body: 'With the Tap to Pay rollout and new channel launches, is your QA team able to keep pace with product velocity?\n\nThat\'s where most payment teams feel the pressure - compliance testing plus speed requirements create a bottleneck. CRED\'s team automated 90% of their regression suite and cut execution time by 5x.\n\nHow much of your testing capacity is tied up in manual regression right now?',
+                wordCount: 78,
+                questions: 2,
+                proof: 'CRED',
+                objection: 'Hiring and investing in QA team',
+                objectionResponse: 'That\'s great you\'re scaling. Onboarding new QA engineers takes 3-6 months on complex compliance testing. Autonomous healing could reduce ramp time.',
+                callSnippet: 'Hey Dexter, this is Rob from Testsigma - Tap to Pay launch and new channels mean payment testing velocity spike.\nCompliance testing usually becomes the blocker.\nCRED automated 90% and cut 5X. Worth 60 seconds?'
+            },
+            {
+                id: 20,
+                name: 'Phil Jones',
+                title: 'Director, Quality Engineering',
+                company: 'Litera',
+                priority: 4,
+                persona: 'qa-director',
+                vertical: 'saas',
+                abGroup: 'A',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/philjones1111',
+                email: 'phil.jones@litera.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: '17+ years at Litera (QA Analyst I → Director QE), deep domain expertise, BS from UIC',
+                    company: 'Lito AI 10x user growth in 3 months, 18 acquisitions, 6.4x revenue growth ($25.9M → $164.8M in 2 years), Office & Dragons acquisition, Microsoft AI Award'
+                },
+                subject: 'Acquisition integration testing',
+                body: 'With 18 acquisitions in the past few years, how are you managing duplicate test suites and maintenance across different codebases?\n\nThat\'s the hidden cost most orgs underestimate after M&A - inherited test debt compounds fast. Medibuddy consolidated 2,500 tests across platforms and cut maintenance overhead by 50%.\n\nAre you seeing similar friction with the acquired product lines?',
+                wordCount: 77,
+                questions: 2,
+                proof: 'Medibuddy',
+                objection: 'SonarQube and strong QA processes',
+                objectionResponse: 'Solid foundation. The pattern with rapidly scaling legal tech is that acquisitions create duplicate test suites and integration gaps. 3-5 different codebases. Worth exploring?',
+                callSnippet: 'Hey Phil, this is Rob from Testsigma - 18 acquisitions and 6.4x revenue growth means test consolidation and inherited maintenance debt.\nDuplicate test suites across codebases is the hidden cost.\nMediabuddy cut 50% at scale. Worth 60 seconds?'
+            },
+            {
+                id: 21,
+                name: 'Sebastien Pambu',
+                title: 'Sr SDET / Test Architect',
+                company: 'ecoATM Gazelle',
+                priority: 3,
+                persona: 'architect',
+                vertical: 'other',
+                abGroup: 'B',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/sebastien-pambu-b9833a2b',
+                email: 'sebastien.pambu@ecoatm.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'Career: Navicure → GreenSky → Equifax → Invata → ecoATM, 15+ years SDET',
+                    company: '7.5M devices collected 2025, 7,000+ kiosks (Walmart, Kroger), expanded to Canada, case study showed testing 2-3x slower than dev, new CEO Sept 2025, uses Cypress/Cucumber/Playwright/TestComplete/Espresso'
+                },
+                subject: 'Kiosk testing at scale',
+                body: 'Testing across 7,000+ kiosk locations with hardware-software integration - are deployment cycles faster than your test cycles?\n\nThat\'s the bottleneck most hardware-software platforms hit - test execution becomes the blocker, not dev. A similar-scale team cut regression execution time by 50% and accelerated kiosk deployment.\n\nHow much time is testing adding to your release window right now?',
+                wordCount: 78,
+                questions: 2,
+                proof: '70% maintenance reduction (framed as 50% execution time)',
+                objection: 'Already have Cypress, Playwright, etc.',
+                objectionResponse: 'Cross-device validation at scale is where those tools hit limits. We see teams cut maintenance 40-50% by automating integration points manual testing misses.',
+                callSnippet: 'Hey Sebastien, this is Rob from Testsigma - 7,000+ kiosks with hardware-software integration and testing 2-3x slower than dev.\nTest execution is the deployment blocker.\nSimilar-scale team cut 50%. Worth 60 seconds?'
+            },
+            {
+                id: 22,
+                name: 'Shanil Jain',
+                title: 'PM & Test Architect',
+                company: 'Sling TV',
+                priority: 3,
+                persona: 'architect',
+                vertical: 'other',
+                abGroup: 'A',
+                personalizationScore: 2,
+                linkedinUrl: 'https://www.linkedin.com/in/shaniljain',
+                email: 'shanil.jain@dish.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'ISTQB certified (97.5%), Employee of Month for ALM-automation, Career: EchoStar → Capital One → Infosys',
+                    company: 'Infrastructure outages, Disney lawsuit (ESPN loss risk), migrating to Kubernetes/microservices, cross-device streaming, 1,000+ job openings'
+                },
+                subject: 'Streaming reliability testing',
+                body: 'Cross-device streaming reliability testing - how much regression coverage are you getting before each release?\n\nThat\'s where most streaming platforms struggle to keep up, especially when infrastructure stability is critical. Nagra DTV built out 2,500 cross-platform tests in 8 months and reduced release friction by 4x.\n\nWhat\'s your current regression window looking like?',
+                wordCount: 77,
+                questions: 2,
+                proof: 'Nagra DTV',
+                objection: 'Timing - crisis mode',
+                objectionResponse: 'That\'s exactly why this matters now. You\'re already migrating to Kubernetes - ideal moment to offload test maintenance. Worth 15 minutes on how teams de-risk releases during transitions?',
+                callSnippet: 'Hey Shanil, this is Rob from Testsigma - Kubernetes migration plus cross-device streaming means regression coverage gaps appear first during infrastructure changes.\nTest maintenance usually derails migration timelines.\nNagra DTV built 2,500 in 8 months. Worth 60 seconds?'
+            },
+            {
+                id: 23,
+                name: 'Andre Maestas',
+                title: 'Sr SDET / XR QA Architect IC7',
+                company: 'Unity',
+                priority: 3,
+                persona: 'architect',
+                vertical: 'other',
+                abGroup: 'B',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/andre-maestas-051972b8',
+                email: 'andre.maestas@unity3d.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: '5+ years Unity, IC5→IC7, XR specialist, ASU Digital Culture graduate',
+                    company: '6 layoff rounds (3,200 employees), strategic pivot to live services/AI/ads, XR cross-platform extremely hard (touch vs hand tracking vs spatial)'
+                },
+                subject: 'XR cross-platform test matrix',
+                body: 'With XR testing spanning touch, hand tracking, and spatial gestures across devices, how are you managing test coverage velocity post-restructuring?\n\nThat\'s the complexity wall most XR teams hit - the test matrix explodes faster than execution can scale. A team working through similar cross-device challenges automated their regression coverage and cut test maintenance by 70%.\n\nAre you feeling that maintenance drag right now?',
+                wordCount: 78,
+                questions: 2,
+                proof: '70% maintenance reduction',
+                objection: 'No budget after layoffs',
+                objectionResponse: 'Most XR teams in your position use cost-per-regression as the metric. Manual XR testing on cross-device matrices is expensive per test run, ROI usually lands in Q1 even at lean budgets.',
+                callSnippet: 'Hey Andre, this is Rob from Testsigma - touch + hand tracking + spatial gesture testing across XR devices is a massive test matrix complexity.\nPost-restructuring, that maintenance drag is painful.\nSimilar team cut 70%. Worth 60 seconds?'
+            },
+            {
+                id: 24,
+                name: 'Animesh Patcha',
+                title: 'Test Architect & Eng Manager',
+                company: 'Arista Networks',
+                priority: 3,
+                persona: 'architect',
+                vertical: 'saas',
+                abGroup: 'A',
+                personalizationScore: 2,
+                linkedinUrl: 'https://www.linkedin.com/in/animesh-patcha-329737',
+                email: 'animesh.patcha@arista.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'Career: Cisco → Juniper → Big Switch → Arista, 12+ years networking QA, doctoral degree Computer Engineering (Virginia Tech), 3,590 citations',
+                    company: 'Q4 revenue $2.5B (+28.9% YoY), R4 Series 7800R4 with 3.2 Tbps HyperPorts, EOS platform expanding, Arista AVA agentic AI, uses Robot Framework'
+                },
+                subject: 'Network platform validation',
+                body: 'Testing the R4 platform at 3.2 Tbps scale - how is regression test maintenance scaling with platform complexity?\n\nThat\'s the challenge every infrastructure team faces as performance gets more extreme - test creation and upkeep become the bottleneck. A similar-scale enterprise cut regression cycles from 8 weeks to 5 weeks by automating maintenance overhead.\n\nWhat\'s your current regression timeline looking like?',
+                wordCount: 78,
+                questions: 2,
+                proof: 'Hansard',
+                objection: 'Robot Framework + custom tools too specialized',
+                objectionResponse: 'Teams with specialized stacks usually say the same thing. The gap is when new platforms launch (like R4) and they\'re scrambling to rebuild test cases. Worth comparing?',
+                callSnippet: 'Hey Animesh, this is Rob from Testsigma - R4 at 3.2 Tbps scale and Robot Framework means extreme platform complexity plus test maintenance.\nNew platform launches usually spike regression cycles.\nSimilar enterprise cut 8 to 5 weeks. Worth 60 seconds?'
+            },
+            {
+                id: 25,
+                name: 'Natalie Gitelman',
+                title: 'Test Architect, Sr Test Engineer',
+                company: 'Acentra Health',
+                priority: 4,
+                persona: 'architect',
+                vertical: 'healthcare',
+                abGroup: 'B',
+                personalizationScore: 3,
+                linkedinUrl: 'https://www.linkedin.com/in/natalie-gitelman-a77005172',
+                email: 'natalie.gitelman@cns-inc.com',
+                status: 'Not Started',
+                replyTag: 'Unknown',
+                research: {
+                    person: 'Test Architect managing testing bridge between legacy (UFT) and modern cloud systems',
+                    company: 'Utah PRISM modernized (replaced 35-year-old MMIS, 99.5% uptime), CMS certification, $27.5M California contract, evoBrix X platform, Wyoming modernization, Safe AI in Medicaid Alliance (36 states), uses Micro Focus UFT (expensive legacy!)'
+                },
+                subject: 'Healthcare compliance testing',
+                body: 'Managing UFT alongside multi-state cloud-native deployments and CMS certification requirements - how much time is test upkeep taking?\n\nThat\'s the trap most compliance-heavy platforms hit - legacy tools plus cloud splits create maintenance sprawl. Sanofi\'s team automated their healthcare regression suite and dropped testing time from 3 days to 80 minutes.\n\nHow much regression bloat are you seeing across your deployments?',
+                wordCount: 79,
+                questions: 2,
+                proof: 'Sanofi',
+                objection: 'UFT mandated by compliance/CMS',
+                objectionResponse: 'Not rip-and-replace. Parallel validation during modernization. As you scale evoBrix to more states, validate new systems faster while maintaining UFT for legacy stubs.',
+                callSnippet: 'Hey Natalie, this is Rob from Testsigma - UFT plus multi-state cloud-native deployments and CMS certification is legacy+modern testing complexity.\nRegression bloat hits hard with compliance sprawl.\nSanofi cut 3 days to 80 minutes. Worth 60 seconds?'
+            }
+        ];
+
+        // Initialize Page
+        let currentFilter = 'all';
+        let expandedProspectId = null;
+
+        function initPage() {
+            renderProspectsTable();
+            setupEventListeners();
+            loadFromLocalStorage();
+        }
+
+        function renderProspectsTable() {
+            const tbody = document.getElementById('prospectsBody');
+            tbody.innerHTML = '';
+
+            const filtered = filterProspects();
+
+            filtered.forEach(prospect => {
+                const row = createProspectRow(prospect);
+                tbody.appendChild(row);
+            });
+        }
+
+        function filterProspects() {
+            let filtered = prospects;
+
+            if (currentFilter === 'hot') {
+                filtered = filtered.filter(p => p.priority === 5);
+            } else if (currentFilter === 'warm') {
+                filtered = filtered.filter(p => p.priority >= 4);
+            }
+
+            const personaFilter = document.getElementById('personaFilter').value;
+            if (personaFilter) {
+                filtered = filtered.filter(p => p.persona === personaFilter);
+            }
+
+            const verticalFilter = document.getElementById('verticalFilter').value;
+            if (verticalFilter) {
+                filtered = filtered.filter(p => p.vertical === verticalFilter);
+            }
+
+            const abFilter = document.getElementById('abFilter').value;
+            if (abFilter) {
+                filtered = filtered.filter(p => p.abGroup === abFilter);
+            }
+
+            return filtered.sort((a, b) => b.priority - a.priority);
+        }
+
+        function createProspectRow(prospect) {
+            const personaLabel = {
+                'qa-director': 'QA Director',
+                'qa-manager': 'QA Manager',
+                'architect': 'Architect/Sr IC'
+            }[prospect.persona];
+
+            const verticalLabel = {
+                'fintech': 'FinTech',
+                'saas': 'SaaS/Enterprise',
+                'healthcare': 'Healthcare',
+                'other': 'Other'
+            }[prospect.vertical];
+
+            const verticalBadgeClass = {
+                'fintech': 'badge-fintech',
+                'saas': 'badge-saas',
+                'healthcare': 'badge-healthcare',
+                'other': 'badge-other'
+            }[prospect.vertical];
+
+            const personaBadgeClass = prospect.persona === 'architect' ? 'badge-architect' : 'badge-qa';
+
+            const priorityClass = `priority-${prospect.priority}`;
+            const priorityLabel = ['', 'Long Shot', 'Lower', 'Standard', 'Warm', 'Hot'][prospect.priority];
+
+            const container = document.createElement('tr');
+            container.className = 'prospect-row';
+            container.dataset.prospectId = prospect.id;
+
+            container.innerHTML = `
+                <td style="width: 40px; text-align: center; cursor: pointer;">
+                    <span class="expand-icon">▼</span>
+                </td>
+                <td>
+                    <span class="priority-badge ${priorityClass}">${priorityLabel}</span>
+                </td>
+                <td><strong>${prospect.name}</strong></td>
+                <td>${prospect.title}</td>
+                <td>${prospect.company}</td>
+                <td><span class="badge ${personaBadgeClass}">${personaLabel}</span></td>
+                <td><span class="badge ${verticalBadgeClass}">${verticalLabel}</span></td>
+                <td><span class="a-b-badge">Group ${prospect.abGroup}</span></td>
+                <td><span class="personalization-score">Score ${prospect.personalizationScore}</span></td>
+                <td>
+                    <select class="status-select" onchange="updateStatus(${prospect.id}, this.value)">
+                        <option value="Not Started" ${prospect.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
+                        <option value="Touch 1 Sent" ${prospect.status === 'Touch 1 Sent' ? 'selected' : ''}>Touch 1 Sent</option>
+                        <option value="Call 1 Made" ${prospect.status === 'Call 1 Made' ? 'selected' : ''}>Call 1 Made</option>
+                        <option value="Touch 3 Sent" ${prospect.status === 'Touch 3 Sent' ? 'selected' : ''}>Touch 3 Sent</option>
+                        <option value="Call 2 Made" ${prospect.status === 'Call 2 Made' ? 'selected' : ''}>Call 2 Made</option>
+                        <option value="Touch 5 Sent" ${prospect.status === 'Touch 5 Sent' ? 'selected' : ''}>Touch 5 Sent</option>
+                        <option value="Touch 6 Sent" ${prospect.status === 'Touch 6 Sent' ? 'selected' : ''}>Touch 6 Sent</option>
+                        <option value="Replied" ${prospect.status === 'Replied' ? 'selected' : ''}>Replied</option>
+                        <option value="Meeting Booked" ${prospect.status === 'Meeting Booked' ? 'selected' : ''}>Meeting Booked</option>
+                        <option value="Not Interested" ${prospect.status === 'Not Interested' ? 'selected' : ''}>Not Interested</option>
+                        <option value="Bounced" ${prospect.status === 'Bounced' ? 'selected' : ''}>Bounced</option>
+                        <option value="Dormant" ${prospect.status === 'Dormant' ? 'selected' : ''}>Dormant</option>
+                        <option value="Re-Engaged" ${prospect.status === 'Re-Engaged' ? 'selected' : ''}>Re-Engaged</option>
+                    </select>
+                </td>
+            `;
+
+            container.addEventListener('click', (e) => {
+                if (e.target.closest('.status-select')) return;
+                toggleProspectDetails(prospect.id, container);
+            });
+
+            const details = createProspectDetails(prospect);
+            container.appendChild(details);
+
+            return container;
+        }
+
+        function createProspectDetails(prospect) {
+            const detailsContainer = document.createElement('td');
+            detailsContainer.colSpan = 10;
+            detailsContainer.className = 'prospect-details';
+
+            detailsContainer.innerHTML = `
+                <div class="card-section">
+                    <div class="card-section-title">Touch 1 - InMail (Main Sequence)</div>
+                    <div class="message-box">
+                        <div class="subject-line">Subject: ${prospect.subject}</div>
+                        <div style="margin-top: 8px; white-space: pre-wrap;">${prospect.body}</div>
+                    </div>
+                    <button class="copy-btn" onclick="copyToClipboard('${escapeQuotes(prospect.subject)}', 'subject')">Copy Subject</button>
+                    <button class="copy-btn" onclick="copyToClipboard('${escapeQuotes(prospect.body)}', 'message')">Copy Message</button>
+                    <div style="font-size: 11px; color: #7a8293; margin-top: 8px;">
+                        ${prospect.wordCount} words | ${prospect.questions} questions | Proof: ${prospect.proof}
+                    </div>
+                </div>
+
+                <div class="card-section">
+                    <div class="card-section-title">Call Script - Touch 2 & 4</div>
+                    <div class="message-box">
+                        <div style="white-space: pre-wrap; font-size: 11px; line-height: 1.8;">${prospect.callSnippet}</div>
+                    </div>
+                    <button class="copy-btn" onclick="copyToClipboard('${escapeQuotes(prospect.callSnippet)}', 'message')">Copy Script</button>
+                </div>
+
+                <div class="card-section">
+                    <div class="card-section-title">Research</div>
+                    <div class="research-grid">
+                        <div class="research-box">
+                            <div class="research-label">Person</div>
+                            <div>${prospect.research.person}</div>
+                        </div>
+                        <div class="research-box">
+                            <div class="research-label">Company</div>
+                            <div>${prospect.research.company}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-section">
+                    <div class="card-section-title">Contact & Links</div>
+                    <div class="meta-row">
+                        <div class="meta-item-inline">
+                            <div class="meta-item-label">Email</div>
+                            <div class="meta-item-value"><a href="mailto:${prospect.email}">${prospect.email}</a></div>
+                        </div>
+                        <div class="meta-item-inline">
+                            <div class="meta-item-label">LinkedIn</div>
+                            <div class="meta-item-value"><a href="${prospect.linkedinUrl}" target="_blank">View Profile</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-section">
+                    <div class="card-section-title">Predicted Objection</div>
+                    <div class="objection-box" onclick="toggleObjection(this)">
+                        <div class="objection-title">
+                            <span class="objection-toggle">▶</span>
+                            ${prospect.objection}
+                        </div>
+                        <div class="objection-response">
+                            <strong>Response:</strong> ${prospect.objectionResponse}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-section">
+                    <div class="card-section-title">Reply Tags & Notes</div>
+                    <div class="dropdown-inline">
+                        <span class="dropdown-label">What triggered the reply?</span>
+                        <select class="reply-tag-select" onchange="updateReplyTag(${prospect.id}, this.value)">
+                            <option value="Unknown" ${prospect.replyTag === 'Unknown' ? 'selected' : ''}>Unknown</option>
+                            <option value="Opener" ${prospect.replyTag === 'Opener' ? 'selected' : ''}>Opener</option>
+                            <option value="Pain hook" ${prospect.replyTag === 'Pain hook' ? 'selected' : ''}>Pain hook</option>
+                            <option value="Proof point" ${prospect.replyTag === 'Proof point' ? 'selected' : ''}>Proof point</option>
+                            <option value="Timing" ${prospect.replyTag === 'Timing' ? 'selected' : ''}>Timing</option>
+                            <option value="Referral" ${prospect.replyTag === 'Referral' ? 'selected' : ''}>Referral</option>
+                            <option value="Not interested" ${prospect.replyTag === 'Not interested' ? 'selected' : ''}>Not interested</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+
+            return detailsContainer;
+        }
+
+        function toggleProspectDetails(prospectId, row) {
+            if (expandedProspectId === prospectId) {
+                row.classList.remove('expanded');
+                expandedProspectId = null;
+            } else {
+                if (expandedProspectId !== null) {
+                    const previousRow = document.querySelector(`[data-prospect-id="${expandedProspectId}"]`);
+                    if (previousRow) {
+                        previousRow.classList.remove('expanded');
+                    }
+                }
+                row.classList.add('expanded');
+                expandedProspectId = prospectId;
+            }
+        }
+
+        function toggleObjection(element) {
+            element.classList.toggle('expanded');
+        }
+
+        function copyToClipboard(text, type) {
+            const decoded = text
+                .replace(/\\n/g, '\n')
+                .replace(/\\'/g, "'")
+                .replace(/\\"/g, '"');
+
+            navigator.clipboard.writeText(decoded).then(() => {
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.classList.add('copied');
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        function escapeQuotes(str) {
+            return str
+                .replace(/'/g, "\\'")
+                .replace(/"/g, '\\"')
+                .replace(/\n/g, '\\n');
+        }
+
+        function applyFilters() {
+            renderProspectsTable();
+        }
+
+        function setupEventListeners() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentFilter = e.target.dataset.filter;
+                    applyFilters();
+                });
+            });
+        }
+
+        function updateStatus(prospectId, newStatus) {
+            const prospect = prospects.find(p => p.id === prospectId);
+            if (prospect) {
+                prospect.status = newStatus;
+                saveToLocalStorage();
+            }
+        }
+
+        function updateReplyTag(prospectId, newTag) {
+            const prospect = prospects.find(p => p.id === prospectId);
+            if (prospect) {
+                prospect.replyTag = newTag;
+                saveToLocalStorage();
+            }
+        }
+
+        function saveToLocalStorage() {
+            const data = prospects.map(p => ({
+                id: p.id,
+                status: p.status,
+                replyTag: p.replyTag
+            }));
+            localStorage.setItem('batch3-outreach-tracker', JSON.stringify(data));
+        }
+
+        function loadFromLocalStorage() {
+            const data = localStorage.getItem('batch3-outreach-tracker');
+            if (data) {
+                const saved = JSON.parse(data);
+                saved.forEach(item => {
+                    const prospect = prospects.find(p => p.id === item.id);
+                    if (prospect) {
+                        prospect.status = item.status;
+                        prospect.replyTag = item.replyTag;
+                    }
+                });
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>

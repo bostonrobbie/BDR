@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inbound Lead Follow-Up Tracker - Feb 23, 2026</title>
+<style>
+:root {
+  --hot: #ef4444;
+  --warm: #f59e0b;
+  --standard: #3b82f6;
+  --lower: #6b7280;
+  --qa-badge: #8b5cf6;
+  --vpeng-badge: #0ea5e9;
+  --fintech: #10b981;
+  --healthcare: #ec4899;
+  --telecom: #f97316;
+  --retail: #6366f1;
+  --existing: #22c55e;
+  --inbound: #a855f7;
+  --bg: #0f172a;
+  --card: #1e293b;
+  --card-hover: #334155;
+  --text: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border: #334155;
+  --accent: #3b82f6;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 24px; line-height: 1.5; }
+h1 { font-size: 24px; margin-bottom: 4px; }
+.subtitle { color: var(--text-muted); margin-bottom: 24px; font-size: 14px; }
+.summary-bar { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+.summary-stat { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 20px; min-width: 140px; }
+.summary-stat .label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.summary-stat .value { font-size: 22px; font-weight: 700; margin-top: 2px; }
+.summary-stat .value.hot { color: var(--hot); }
+.summary-stat .value.warn { color: var(--warm); }
+
+.tracker-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: 13px; }
+.tracker-table th { background: var(--card); padding: 10px 12px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); border-bottom: 2px solid var(--border); position: sticky; top: 0; }
+.tracker-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.tracker-table tr:hover { background: rgba(59,130,246,0.05); }
+
+.priority-badge { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; font-weight: 700; font-size: 13px; color: white; }
+.priority-5 { background: var(--hot); }
+.priority-4 { background: var(--warm); }
+.priority-3 { background: var(--standard); }
+.priority-2 { background: var(--lower); }
+
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin: 1px 2px; }
+.tag-qa { background: rgba(139,92,246,0.2); color: #a78bfa; }
+.tag-vpeng { background: rgba(14,165,233,0.2); color: #38bdf8; }
+.tag-fintech { background: rgba(16,185,129,0.2); color: #34d399; }
+.tag-healthcare { background: rgba(236,72,153,0.2); color: #f472b6; }
+.tag-telecom { background: rgba(249,115,22,0.2); color: #fb923c; }
+.tag-retail { background: rgba(99,102,241,0.2); color: #818cf8; }
+.tag-existing { background: rgba(34,197,94,0.2); color: #4ade80; }
+.tag-inbound { background: rgba(168,85,247,0.2); color: #c084fc; }
+.tag-nocontact { background: rgba(239,68,68,0.2); color: #f87171; }
+.tag-followup { background: rgba(245,158,11,0.2); color: #fbbf24; }
+
+.status-select { background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: 4px; padding: 4px 8px; font-size: 12px; }
+
+.prospect-cards { display: flex; flex-direction: column; gap: 24px; }
+.prospect-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.prospect-card.hot-border { border-left: 4px solid var(--hot); }
+.prospect-card.warm-border { border-left: 4px solid var(--warm); }
+.prospect-card.standard-border { border-left: 4px solid var(--standard); }
+
+.card-header { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+.card-header h2 { font-size: 18px; display: flex; align-items: center; gap: 10px; }
+.card-header .meta { font-size: 13px; color: var(--text-muted); text-align: right; }
+
+.card-body { padding: 20px; }
+.card-section { margin-bottom: 20px; }
+.card-section h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+
+.research-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 768px) { .research-grid { grid-template-columns: 1fr; } }
+.research-box { background: rgba(15,23,42,0.5); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-size: 13px; }
+.research-box h4 { font-size: 12px; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; }
+
+.touch-block { background: rgba(15,23,42,0.5); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 12px; position: relative; }
+.touch-label { display: inline-block; background: var(--accent); color: white; padding: 2px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; margin-bottom: 8px; }
+.touch-label.call { background: #f59e0b; }
+.touch-label.email { background: #10b981; }
+.touch-label.breakup { background: #6b7280; }
+.touch-label.followup { background: #8b5cf6; }
+
+.subject-line { font-weight: 600; margin-bottom: 6px; color: #e2e8f0; font-size: 14px; }
+.message-body { color: var(--text-muted); font-size: 13px; line-height: 1.7; white-space: pre-line; }
+.message-body p { margin-bottom: 8px; }
+
+.copy-btn { position: absolute; top: 12px; right: 12px; background: var(--accent); color: white; border: none; padding: 4px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: 600; }
+.copy-btn:hover { background: #2563eb; }
+.copy-btn.copied { background: #22c55e; }
+
+.call-snippet { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); border-radius: 8px; padding: 14px; margin-bottom: 12px; font-size: 13px; line-height: 1.8; position: relative; }
+
+.objection-box { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; padding: 14px; font-size: 13px; }
+.objection-box .trigger { color: #f87171; font-weight: 600; margin-bottom: 4px; }
+.objection-box .response { color: var(--text-muted); margin-top: 6px; }
+
+.context-banner { background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.3); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; }
+.context-banner strong { color: #c084fc; }
+
+.filter-bar { margin-bottom: 16px; display: flex; gap: 8px; align-items: center; }
+.filter-btn { background: var(--card); border: 1px solid var(--border); color: var(--text-muted); padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+.filter-btn:hover, .filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+.nav-link { color: var(--accent); text-decoration: none; font-size: 13px; }
+.nav-link:hover { text-decoration: underline; }
+
+.email-addr { color: #38bdf8; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<h1>Inbound Lead Follow-Up Tracker</h1>
+<p class="subtitle">Generated Feb 23, 2026 | 4 Leads Requiring Action | Sorted by Priority</p>
+
+<div class="summary-bar">
+  <div class="summary-stat">
+    <div class="label">Total Leads</div>
+    <div class="value">4</div>
+  </div>
+  <div class="summary-stat">
+    <div class="label">No Contact Yet</div>
+    <div class="value hot">1</div>
+  </div>
+  <div class="summary-stat">
+    <div class="label">Need Follow-Up</div>
+    <div class="value warn">3</div>
+  </div>
+  <div class="summary-stat">
+    <div class="label">Existing Customer</div>
+    <div class="value" style="color:#22c55e">2</div>
+  </div>
+  <div class="summary-stat">
+    <div class="label">Inbound Request</div>
+    <div class="value" style="color:#c084fc">2</div>
+  </div>
+</div>
+
+<!-- TRACKER TABLE -->
+<table class="tracker-table">
+<thead>
+<tr>
+  <th>Pri</th>
+  <th>Name</th>
+  <th>Title (Est.)</th>
+  <th>Company</th>
+  <th>Tags</th>
+  <th>Email</th>
+  <th>Outreach Status</th>
+  <th>Action Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><span class="priority-badge priority-5">5</span></td>
+  <td><a href="#jayaraj" class="nav-link">Jayaraj Anthraj</a></td>
+  <td>QA Lead / Manager</td>
+  <td>Nokia</td>
+  <td><span class="tag tag-telecom">Telecom</span> <span class="tag tag-existing">Existing Customer</span> <span class="tag tag-followup">Follow-Up</span></td>
+  <td class="email-addr">jayaraj.a@nokia.com</td>
+  <td>2 emails sent (Feb 11 + 12), no reply, missed meeting</td>
+  <td style="color:#f87171;font-weight:600">Re-engage with new angle (Infinera integration)</td>
+</tr>
+<tr>
+  <td><span class="priority-badge priority-5">5</span></td>
+  <td><a href="#theresa" class="nav-link">Theresa Lawrence</a></td>
+  <td>QA/Quality Engineering</td>
+  <td>CVS Health</td>
+  <td><span class="tag tag-healthcare">Healthcare</span> <span class="tag tag-inbound">Inbound Request</span> <span class="tag tag-followup">Follow-Up</span></td>
+  <td class="email-addr">lawrencet1@cvshealth.com</td>
+  <td>1 scheduling email (Feb 13), no reply 10 days</td>
+  <td style="color:#f87171;font-weight:600">Follow up with value, re-offer times</td>
+</tr>
+<tr>
+  <td><span class="priority-badge priority-4">4</span></td>
+  <td><a href="#peter" class="nav-link">Peter Chen</a></td>
+  <td>QA Automation Engineer</td>
+  <td>Walmart</td>
+  <td><span class="tag tag-retail">Retail</span> <span class="tag tag-nocontact">No Contact</span></td>
+  <td class="email-addr">TBD (need Apollo or SF)</td>
+  <td>Assigned Feb 5, ZERO outreach in 18 days</td>
+  <td style="color:#ef4444;font-weight:700">URGENT: First touch immediately</td>
+</tr>
+<tr>
+  <td><span class="priority-badge priority-4">4</span></td>
+  <td><a href="#shenbakesh" class="nav-link">Shenbakesh M</a></td>
+  <td>QA / Test Management</td>
+  <td>Razorpay</td>
+  <td><span class="tag tag-fintech">FinTech</span> <span class="tag tag-existing">Existing Customer</span> <span class="tag tag-inbound">TMS Expansion</span></td>
+  <td class="email-addr">shenbakesh.m@razorpay.com</td>
+  <td>1 email (Feb 17) about TMS, no reply 6 days</td>
+  <td style="color:#fbbf24;font-weight:600">Follow up with TMS value angle</td>
+</tr>
+</tbody>
+</table>
+
+<!-- ==================== JAYARAJ ANTHRAJ - NOKIA ==================== -->
+<div class="prospect-cards">
+
+<div class="prospect-card hot-border" id="jayaraj">
+<div class="card-header">
+  <h2><span class="priority-badge priority-5">5</span> Jayaraj Anthraj - Nokia</h2>
+  <div class="meta">
+    jayaraj.a@nokia.com<br>
+    Assigned: Feb 11 | Last Touch: Feb 12 (11 days ago)
+  </div>
+</div>
+<div class="card-body">
+
+<div class="context-banner">
+  <strong>CONTEXT:</strong> Jayaraj had a meeting scheduled with CEO Rukmangada Kandyala but Rob missed it (5:30 AM scheduling). Two follow-ups sent (Feb 11 apology + Feb 12 "still interested?"), zero reply in 11 days. Nokia is an EXISTING Testsigma customer. Nokia just completed the $2.3B Infinera acquisition in Feb 2025, creating massive QA consolidation needs.
+</div>
+
+<div class="card-section">
+<h3>Research Notes</h3>
+<div class="research-grid">
+  <div class="research-box">
+    <h4>Profile</h4>
+    QA Lead/Manager at Nokia. Limited public LinkedIn visibility. Email confirmed: jayaraj.a@nokia.com. Based on lead assignment pattern, likely in Nokia's QA/testing org working on telecom/optical network software.
+  </div>
+  <div class="research-box">
+    <h4>Company Intel</h4>
+    Nokia completed $2.3B Infinera acquisition Feb 2025. Massive integration underway: merging two QA stacks, EUR 200M+ synergies target by 2027. Nokia pivoting to AI/data center focus with new CTO. Already a Testsigma customer. Infinera QA staff transitioning to Nokia org. Testing 5G systems, optical networks, cloud infra.
+  </div>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Outreach Angle</h3>
+<p style="font-size:13px;color:var(--text-muted)">Lead with the Infinera integration as the hook. Don't reference the missed meeting awkwardness. Fresh start with a new, timely reason to connect. Position Testsigma as already helping Nokia, and now the acquisition creates expanded needs.</p>
+</div>
+
+<div class="card-section">
+<h3>Touch 1 - Email (Send Today)</h3>
+<div class="touch-block">
+  <span class="touch-label email">Email</span>
+  <button class="copy-btn" onclick="copyToClipboard(this, 'jayaraj-subject')">Copy Subject</button>
+  <div class="subject-line" id="jayaraj-subject">Quick question on the Infinera side</div>
+  <div class="message-body" id="jayaraj-body">Hi Jayaraj,
+
+With Infinera now under the Nokia umbrella, is the QA team consolidating testing across both platforms yet, or is that still on the roadmap?
+
+That integration usually doubles the regression surface overnight, and most teams don't realize how much maintenance spikes until they're already behind.
+
+Sanofi ran into something similar during a platform consolidation and went from 3 days of regression to 80 minutes using Testsigma's self-healing AI.
+
+Would 15 minutes to compare how Nokia's handling test consolidation post-acquisition be useful?
+
+Rob</div>
+  <button class="copy-btn" style="top:42px" onclick="copyToClipboard(this, 'jayaraj-body')">Copy Message</button>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 2 - Cold Call Snippet</h3>
+<div class="call-snippet" id="jayaraj-call1">
+  <button class="copy-btn" onclick="copyToClipboard(this, 'jayaraj-call1')">Copy Script</button>
+  <strong>Opener:</strong> "Hey Jayaraj, this is Rob from Testsigma - we actually work with Nokia already, and I wanted to connect about what's changing on the QA side with the Infinera integration."<br>
+  <strong>Pain:</strong> "Merging two testing stacks usually creates a maintenance nightmare, especially at the scale Nokia operates."<br>
+  <strong>Bridge:</strong> "Nagra DTV automated 2,500 tests in 8 months during a similar transition, 4X faster. Worth 60 seconds to see if it's relevant to what your team's dealing with?"
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 3 - LinkedIn InMail Follow-Up (Day 5)</h3>
+<div class="touch-block">
+  <span class="touch-label followup">InMail Follow-Up</span>
+  <button class="copy-btn" onclick="copyToClipboard(this, 'jayaraj-t3')">Copy Message</button>
+  <div class="message-body" id="jayaraj-t3">Circling back quick, Jayaraj.
+
+One thing I didn't mention - Nokia's already seeing value from Testsigma on the automation side. Curious if the Infinera integration is creating new test coverage gaps that the current setup doesn't handle yet.
+
+Hansard cut their regression cycle from 8 weeks to 5 weeks with AI auto-healing, which tends to matter most during platform consolidations.
+
+Worth a conversation?</div>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 4 - Cold Call #2 Snippet</h3>
+<div class="call-snippet" id="jayaraj-call2">
+  <button class="copy-btn" onclick="copyToClipboard(this, 'jayaraj-call2')">Copy Script</button>
+  <strong>Opener:</strong> "Hey Jayaraj, Rob from Testsigma again - quick one for you."<br>
+  <strong>Pain:</strong> "Teams merging QA stacks post-acquisition usually hit a wall where test maintenance doubles but headcount doesn't. Curious if that's what you're seeing."<br>
+  <strong>Bridge:</strong> "Hansard cut regression 8 weeks to 5 with self-healing. 60 seconds to see if it fits?"
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 5 - Email Follow-Up (Day 10)</h3>
+<div class="touch-block">
+  <span class="touch-label email">Email</span>
+  <button class="copy-btn" onclick="copyToClipboard(this, 'jayaraj-t5-subject')">Copy Subject</button>
+  <div class="subject-line" id="jayaraj-t5-subject">Nokia + Infinera QA</div>
+  <div class="message-body" id="jayaraj-t5-body">Hi Jayaraj,
+
+Wanted to share one more data point. A Fortune 100 company going through a similar platform integration saw a 3X productivity increase after consolidating their test automation onto Testsigma.
+
+The biggest win was plain English test creation, which meant teams from both legacy orgs could write tests without learning a new framework.
+
+Is QA consolidation something your team is tackling this quarter?
+
+Rob</div>
+  <button class="copy-btn" style="top:42px" onclick="copyToClipboard(this, 'jayaraj-t5-body')">Copy Message</button>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 6 - Break-Up (Day 15)</h3>
+<div class="touch-block">
+  <span class="touch-label breakup">Break-Up</span>
+  <button class="copy-btn" onclick="copyToClipboard(this, 'jayaraj-t6')">Copy Message</button>
+  <div class="message-body" id="jayaraj-t6">Hi Jayaraj,
+
+I've reached out a few times and want to be respectful of your time. If the timing isn't right for a conversation about QA consolidation, totally get it.
+
+If things change down the road, I'm easy to find. Wishing your team a smooth integration.
+
+Rob</div>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Predicted Objection</h3>
+<div class="objection-box">
+  <div class="trigger">Likely: "We already have a tool" (Nokia has established internal testing infra)</div>
+  <div class="response"><strong>Response:</strong> "Totally fair. Nokia's been using Testsigma for automation already, so this is more about whether the Infinera integration creates a gap your current setup doesn't cover. A lot of teams find self-healing becomes critical when two test suites merge and locators break constantly."</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- ==================== THERESA LAWRENCE - CVS HEALTH ==================== -->
+
+<div class="prospect-card hot-border" id="theresa">
+<div class="card-header">
+  <h2><span class="priority-badge priority-5">5</span> Theresa Lawrence - CVS Health</h2>
+  <div class="meta">
+    lawrencet1@cvshealth.com<br>
+    Assigned: Feb 13 | Last Touch: Feb 13 (10 days ago)
+  </div>
+</div>
+<div class="card-body">
+
+<div class="context-banner">
+  <strong>CONTEXT:</strong> INBOUND LEAD - Theresa requested an intro meeting to evaluate Testsigma. Rob sent a scheduling email same day (Feb 13) offering Tue 10 EST or Wed 11 EST. No reply in 10 days. Gmail flagged "Sent 10 days ago. Follow up?" This is a warm lead who went dark after initial contact.
+</div>
+
+<div class="card-section">
+<h3>Research Notes</h3>
+<div class="research-grid">
+  <div class="research-box">
+    <h4>Profile</h4>
+    QA/Quality Engineering role at CVS Health. Limited public LinkedIn visibility. Email: lawrencet1@cvshealth.com. Inbound lead who actively requested to evaluate Testsigma's platform, indicating she's in evaluation/buying mode.
+  </div>
+  <div class="research-box">
+    <h4>Company Intel</h4>
+    CVS Health investing $20B in tech over 10 years. Launched new all-in-one CVS Health app (Jan 2025) combining pharmacy, Aetna, Caremark. 2026 ecosystem integration roadmap. Tech stack includes Selenium, TestNG, Cucumber, Playwright. Testing across pharmacy, insurance, benefits, healthcare delivery divisions. Hiring for conversational AI QA. Massive cross-platform testing burden.
+  </div>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Outreach Angle</h3>
+<p style="font-size:13px;color:var(--text-muted)">She's inbound, so she already has interest. The follow-up should add VALUE (not just bump the thread), reference the CVS platform integration as context, and re-offer scheduling. Don't be needy. Don't reference the silence. Just bring something new.</p>
+</div>
+
+<div class="card-section">
+<h3>Touch 1 - Follow-Up Email (Send Today - Reply to Original Thread)</h3>
+<div class="touch-block">
+  <span class="touch-label email">Email Follow-Up</span>
+  <button class="copy-btn" onclick="copyToClipboard(this, 'theresa-subject')">Copy Subject</button>
+  <div class="subject-line" id="theresa-subject">Re: Schedule Intro to Testsigma</div>
+  <div class="message-body" id="theresa-body">Hi Theresa,
+
+Wanted to bump this up in case it got buried. Happy to work around your schedule if those times didn't work.
+
+One thing that might be relevant - with CVS rolling out the unified app platform across pharmacy, Aetna, and Caremark, teams in similar multi-system integrations have told us regression testing is where the bottleneck hits hardest.
+
+Sanofi went from 3 days of regression to 80 minutes after consolidating onto Testsigma. Happy to walk through how that maps to what you're evaluating.
+
+Would any time this week or early next work for a quick intro?
+
+Rob</div>
+  <button class="copy-btn" style="top:42px" onclick="copyToClipboard(this, 'theresa-body')">Copy Message</button>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 2 - Cold Call Snippet</h3>
+<div class="call-snippet" id="theresa-call1">
+  <button class="copy-btn" onclick="copyToClipboard(this, 'theresa-call1')">Copy Script</button>
+  <strong>Opener:</strong> "Hey Theresa, this is Rob from Testsigma - you had reached out about setting up an intro, and I just wanted to make sure we get that on the calendar for you."<br>
+  <strong>Pain:</strong> "I imagine with the new unified CVS app and the multi-system integration, your team's test coverage surface just got a lot bigger."<br>
+  <strong>Bridge:</strong> "Sanofi cut regression from 3 days to 80 minutes in a similar setup. Would 20 minutes this week work to walk through it?"
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 3 - LinkedIn InMail (Day 5)</h3>
+<div class="touch-block">
+  <span class="touch-label followup">InMail</span>
+  <button class="copy-btn" onclick="copyToClipboard(this, 'theresa-t3')">Copy Message</button>
+  <div class="message-body" id="theresa-t3">Hi Theresa,
+
+Reaching out here in case email's been hectic. You had requested an intro to Testsigma's platform, and I'd love to get that set up whenever timing works.
+
+One quick thing - Medibuddy (healthcare, similar compliance requirements) automated 2,500 tests and cut maintenance 50%. That tends to resonate with healthcare teams managing complex integration testing.
+
+Would a quick 20-minute walkthrough be helpful this week?</div>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 4 - Cold Call #2 Snippet</h3>
+<div class="call-snippet" id="theresa-call2">
+  <button class="copy-btn" onclick="copyToClipboard(this, 'theresa-call2')">Copy Script</button>
+  <strong>Opener:</strong> "Hey Theresa, Rob from Testsigma - following up on your request to evaluate our platform."<br>
+  <strong>Pain:</strong> "Healthcare teams testing across multiple integrated systems usually struggle with regression cycles eating into release timelines."<br>
+  <strong>Bridge:</strong> "Medibuddy automated 2,500 tests and cut maintenance in half. 60 seconds to see if it's worth exploring?"
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 5 - Email #2 (Day 10)</h3>
+<div class="touch-block">
+  <span class="touch-label email">Email</span>
+  <button class="copy-btn" onclick="copyToClipboard(this, 'theresa-t5-subject')">Copy Subject</button>
+  <div class="subject-line" id="theresa-t5-subject">Still interested in the Testsigma intro?</div>
+  <div class="message-body" id="theresa-t5-body">Hi Theresa,
+
+Quick check-in - are you still looking to evaluate test automation platforms? If timing shifted, no worries at all.
+
+If it's still on your radar, I can have a personalized walkthrough ready based on CVS's setup in under 20 minutes. We work with several healthcare companies (Oscar Health, Medibuddy, Sanofi) and can tailor the demo to your stack.
+
+Just let me know and I'll send over some times.
+
+Rob</div>
+  <button class="copy-btn" style="top:42px" onclick="copyToClipboard(this, 'theresa-t5-body')">Copy Message</button>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 6 - Break-Up (Day 15)</h3>
+<div class="touch-block">
+  <span class="touch-label breakup">Break-Up</span>
+  <button class="copy-btn" onclick="copyToClipboard(this, 'theresa-t6')">Copy Message</button>
+  <div class="message-body" id="theresa-t6">Hi Theresa,
+
+I've followed up a few times and want to be respectful of your inbox. If the timing isn't right, I completely understand.
+
+If things change and you'd like to revisit the evaluation, I'm an easy reply away.
+
+Rob</div>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Predicted Objection</h3>
+<div class="objection-box">
+  <div class="trigger">Likely: "Compliance requirements" (CVS Health = healthcare + financial data)</div>
+  <div class="response"><strong>Response:</strong> "We work with Sanofi, Oscar Health, and several banks. SOC2/ISO certified, and we offer on-prem and private cloud options. Happy to walk through our compliance story and get your security team involved early."</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- ==================== PETER CHEN - WALMART ==================== -->
+
+<div class="prospect-card warm-border" id="peter">
+<div class="card-header">
+  <h2><span class="priority-badge priority-4">4</span> Peter Chen - Walmart</h2>
+  <div class="meta">
+    Email: TBD (need Apollo/Salesforce)<br>
+    Assigned: Feb 5 | Last Touch: NONE (18 days)
+  </div>
+</div>
+<div class="card-body">
+
+<div class="context-banner">
+  <strong>URGENT:</strong> Peter was assigned on Feb 5 and has received ZERO outreach in 18 days. This is the most overdue lead. He's likely a QA Automation Engineer at Walmart Global Tech. No email found in the assignment - need to pull from Apollo or Salesforce. LinkedIn: likely linkedin.com/in/peter-chen2/. Start with LinkedIn InMail immediately while you source the email.
+</div>
+
+<div class="card-section">
+<h3>Research Notes</h3>
+<div class="research-grid">
+  <div class="research-box">
+    <h4>Profile</h4>
+    Likely QA Automation Engineer at Walmart Global Tech. Skills include Python, JavaScript/TypeScript, Selenium, Cypress, REST API testing, GraphQL testing. Works on test design across multiple services. Individual contributor level, potential technical champion/influencer.
+  </div>
+  <div class="research-box">
+    <h4>Company Intel</h4>
+    Walmart runs 50,000+ automated tests daily. 30K engineers. Uses Selenium, Appium, Cypress, Tosca, and proprietary "Test Armada" platform. Multiple daily deployments. Testing across web (React/Angular), mobile (React Native), APIs (GraphQL/REST). 100x traffic spikes during peak periods. Tool sprawl is a known challenge.
+  </div>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Outreach Angle</h3>
+<p style="font-size:13px;color:var(--text-muted)">Peter is likely an IC or mid-level engineer, not a decision-maker. But he's a technical validator who could champion Testsigma internally. Lead with a testing-specific pain that someone at his level feels daily (test maintenance, flaky tests, tool sprawl). Don't pitch to him like a VP. Talk to him like a fellow engineer.</p>
+</div>
+
+<div class="card-section">
+<h3>Touch 1 - LinkedIn InMail (Send TODAY - while sourcing email)</h3>
+<div class="touch-block">
+  <span class="touch-label">InMail</span>
+  <button class="copy-btn" onclick="copyToClipboard(this, 'peter-subject')">Copy Subject</button>
+  <div class="subject-line" id="peter-subject">Test maintenance at Walmart's scale</div>
+  <div class="message-body" id="peter-body">Hey Peter,
+
+At the scale Walmart runs test automation, how much of your week goes into fixing broken tests versus writing new ones?
+
+That ratio tends to get ugly fast when you're maintaining suites across React, React Native, and API layers simultaneously.
+
+CRED's automation team hit 90% regression coverage and 5x faster execution after switching to Testsigma's AI self-healing, which auto-fixes broken locators when the UI changes.
+
+Would 15 minutes to see how it handles cross-platform test maintenance be worth it?
+
+Rob</div>
+  <button class="copy-btn" style="top:42px" onclick="copyToClipboard(this, 'peter-body')">Copy Message</button>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 2 - Cold Call Snippet</h3>
+<div class="call-snippet" id="peter-call1">
+  <button class="copy-btn" onclick="copyToClipboard(this, 'peter-call1')">Copy Script</button>
+  <strong>Opener:</strong> "Hey Peter, this is Rob from Testsigma - we work with a few retail and e-commerce engineering teams, and I was curious about how Walmart handles test maintenance at your scale."<br>
+  <strong>Pain:</strong> "Teams running 50K tests daily usually spend more time fixing broken tests than writing new coverage. Wondering if that's what you're seeing."<br>
+  <strong>Bridge:</strong> "One fintech team cut maintenance 70% versus their Selenium setup. Worth 60 seconds to see if it's relevant?"
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 3 - InMail Follow-Up (Day 5)</h3>
+<div class="touch-block">
+  <span class="touch-label followup">InMail Follow-Up</span>
+  <button class="copy-btn" onclick="copyToClipboard(this, 'peter-t3')">Copy Message</button>
+  <div class="message-body" id="peter-t3">Circling back quick, Peter.
+
+One thing that's been resonating with teams using Selenium and Cypress together - Testsigma lets you write tests in plain English that run across both web and mobile without maintaining separate frameworks.
+
+Nagra DTV automated 2,500 tests in 8 months and hit 4X faster execution across their stack.
+
+Happy to share more if that's relevant to what you're working on.</div>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 4 - Cold Call #2 Snippet</h3>
+<div class="call-snippet" id="peter-call2">
+  <button class="copy-btn" onclick="copyToClipboard(this, 'peter-call2')">Copy Script</button>
+  <strong>Opener:</strong> "Hey Peter, Rob from Testsigma - quick follow-up."<br>
+  <strong>Pain:</strong> "Teams juggling Selenium, Cypress, and Appium usually tell us the maintenance overhead across frameworks is the real killer."<br>
+  <strong>Bridge:</strong> "Nagra DTV consolidated onto one platform and went 4X faster. 60 seconds - worth it?"
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 5 - Email (Day 10, once email is sourced)</h3>
+<div class="touch-block">
+  <span class="touch-label email">Email</span>
+  <button class="copy-btn" onclick="copyToClipboard(this, 'peter-t5-subject')">Copy Subject</button>
+  <div class="subject-line" id="peter-t5-subject">Selenium maintenance at scale</div>
+  <div class="message-body" id="peter-t5-body">Hey Peter,
+
+Quick question - with Walmart running tests across React, React Native, and your API layer, are you seeing test maintenance eat into new coverage work?
+
+Teams in similar setups have told us self-healing AI reduced their maintenance overhead by 90%, which freed up cycles to actually expand coverage instead of constantly patching broken locators.
+
+Spendflo (smaller scale, but similar multi-platform challenge) cut manual testing 50% in the first quarter.
+
+Would a quick demo focused on cross-platform maintenance be useful?
+
+Rob</div>
+  <button class="copy-btn" style="top:42px" onclick="copyToClipboard(this, 'peter-t5-body')">Copy Message</button>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 6 - Break-Up (Day 15)</h3>
+<div class="touch-block">
+  <span class="touch-label breakup">Break-Up</span>
+  <button class="copy-btn" onclick="copyToClipboard(this, 'peter-t6')">Copy Message</button>
+  <div class="message-body" id="peter-t6">Hey Peter,
+
+I've reached out a couple times and don't want to clog your inbox. If test automation isn't a priority right now, totally understand.
+
+If it comes back around, I'm easy to find.
+
+Rob</div>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Predicted Objection</h3>
+<div class="objection-box">
+  <div class="trigger">Likely: "We already have a tool" (Walmart uses Selenium, Cypress, Appium, Tosca, Test Armada)</div>
+  <div class="response"><strong>Response:</strong> "Totally fair. A lot of teams we work with had Selenium and Cypress too. The gap they kept hitting was maintenance - 20+ hours a week on script upkeep. Testsigma's self-healing cuts that 70-90%. Plus you can still use custom code, it's not either/or. Worth comparing?"</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- ==================== SHENBAKESH M - RAZORPAY ==================== -->
+
+<div class="prospect-card warm-border" id="shenbakesh">
+<div class="card-header">
+  <h2><span class="priority-badge priority-4">4</span> Shenbakesh M - Razorpay</h2>
+  <div class="meta">
+    shenbakesh.m@razorpay.com<br>
+    Assigned: Feb 10 | Last Touch: Feb 17 (6 days ago)
+  </div>
+</div>
+<div class="card-body">
+
+<div class="context-banner">
+  <strong>CONTEXT:</strong> EXISTING CUSTOMER EXPANSION - Razorpay already uses Testsigma for automation. Shenbakesh is exploring the TMS (Test Management System) side. Rob sent one email on Feb 17 about "TestSigma TMS Testing" with no reply in 6 days. This is a warm expansion opportunity, not a cold outreach.
+</div>
+
+<div class="card-section">
+<h3>Research Notes</h3>
+<div class="research-grid">
+  <div class="research-box">
+    <h4>Profile</h4>
+    QA/Test Management role at Razorpay. Email: shenbakesh.m@razorpay.com. Limited public LinkedIn visibility. Exploring TMS expansion for Razorpay's testing org. Likely managing test planning/tracking across Razorpay's payment platform.
+  </div>
+  <div class="research-box">
+    <h4>Company Intel</h4>
+    Major Indian fintech, ~5K+ employees. Extensive QA org with Staff QA Engineers, Lead QA Engineers, SDETs. Tech stack: Selenium, Cypress, Appium, REST Assured, JMeter. Testing payments, KYC, refunds, settlements across REST and GraphQL APIs. Already a Testsigma automation customer. High-volume transaction testing (millions of requests).
+  </div>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Outreach Angle</h3>
+<p style="font-size:13px;color:var(--text-muted)">This is a customer expansion play. Don't pitch Testsigma like they don't know it. Instead, connect the dots between their existing automation usage and why TMS becomes the natural next step. Reference what other fintech teams gain from unified automation + test management.</p>
+</div>
+
+<div class="card-section">
+<h3>Touch 1 - Follow-Up Email (Send Today - Reply to Original Thread)</h3>
+<div class="touch-block">
+  <span class="touch-label email">Email Follow-Up</span>
+  <button class="copy-btn" onclick="copyToClipboard(this, 'shen-subject')">Copy Subject</button>
+  <div class="subject-line" id="shen-subject">Re: TestSigma TMS Testing</div>
+  <div class="message-body" id="shen-body">Hi Shenbakesh,
+
+Following up on my note about TMS. Since Razorpay's already using Testsigma for automation, curious where the gap is on the test management side - is it visibility into coverage, test planning across sprints, or something else?
+
+A few fintech teams started with automation and added TMS once they needed a unified view of what's covered versus what's still manual across their payment flows.
+
+Would a quick call to walk through how TMS integrates with your existing automation setup be helpful?
+
+Rob</div>
+  <button class="copy-btn" style="top:42px" onclick="copyToClipboard(this, 'shen-body')">Copy Message</button>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 2 - Cold Call Snippet</h3>
+<div class="call-snippet" id="shen-call1">
+  <button class="copy-btn" onclick="copyToClipboard(this, 'shen-call1')">Copy Script</button>
+  <strong>Opener:</strong> "Hey Shenbakesh, this is Rob from Testsigma - I know Razorpay's already using us for automation, and I wanted to follow up on your TMS inquiry."<br>
+  <strong>Pain:</strong> "Most teams at your stage find the gap isn't automation itself, it's knowing what's covered and what's still manual across all your payment flows."<br>
+  <strong>Bridge:</strong> "Would 10 minutes to walk through how TMS plugs into your existing automation setup be useful?"
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 3 - LinkedIn InMail (Day 5)</h3>
+<div class="touch-block">
+  <span class="touch-label followup">InMail</span>
+  <button class="copy-btn" onclick="copyToClipboard(this, 'shen-t3')">Copy Message</button>
+  <div class="message-body" id="shen-t3">Hi Shenbakesh,
+
+Reaching out here since email can get buried. Following up on your interest in Testsigma's TMS side.
+
+One thing teams find valuable - Atto's coverage discovery feature maps what's tested versus what's not, which usually reveals blind spots in payment flow coverage that nobody realized existed.
+
+Worth a quick walkthrough?</div>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 4 - Cold Call #2 Snippet</h3>
+<div class="call-snippet" id="shen-call2">
+  <button class="copy-btn" onclick="copyToClipboard(this, 'shen-call2')">Copy Script</button>
+  <strong>Opener:</strong> "Hey Shenbakesh, Rob from Testsigma - circling back on TMS."<br>
+  <strong>Pain:</strong> "When teams scale automation without TMS, test planning and coverage visibility usually becomes the bottleneck."<br>
+  <strong>Bridge:</strong> "A few fintech QA leads told us unified automation + TMS was the unlock. 60 seconds to compare?"
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 5 - Email #2 (Day 10)</h3>
+<div class="touch-block">
+  <span class="touch-label email">Email</span>
+  <button class="copy-btn" onclick="copyToClipboard(this, 'shen-t5-subject')">Copy Subject</button>
+  <div class="subject-line" id="shen-t5-subject">TMS + Automation in one place</div>
+  <div class="message-body" id="shen-t5-body">Hi Shenbakesh,
+
+Quick thought - the teams getting the most out of Testsigma's TMS are the ones who were already using our automation (like Razorpay). The integration means test results, coverage maps, and sprint planning all live in one view instead of being stitched together from separate tools.
+
+Is that the gap you were looking to close, or is there a different TMS use case driving the evaluation?
+
+Either way, happy to tailor a quick walkthrough to whatever matters most.
+
+Rob</div>
+  <button class="copy-btn" style="top:42px" onclick="copyToClipboard(this, 'shen-t5-body')">Copy Message</button>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Touch 6 - Break-Up (Day 15)</h3>
+<div class="touch-block">
+  <span class="touch-label breakup">Break-Up</span>
+  <button class="copy-btn" onclick="copyToClipboard(this, 'shen-t6')">Copy Message</button>
+  <div class="message-body" id="shen-t6">Hi Shenbakesh,
+
+I've followed up a few times on TMS and don't want to be a pest. If the timing shifted or priorities changed, totally understand.
+
+Since Razorpay's already on Testsigma for automation, I'll be here whenever TMS comes back onto the radar.
+
+Rob</div>
+</div>
+</div>
+
+<div class="card-section">
+<h3>Predicted Objection</h3>
+<div class="objection-box">
+  <div class="trigger">Likely: "Too early, still assessing" (exploring TMS as an add-on, may not have urgency)</div>
+  <div class="response"><strong>Response:</strong> "Makes sense. A lot of teams start evaluating TMS once automation is humming. Since you're already on Testsigma, we can do a quick side-by-side showing what TMS adds to your existing setup - no commitment, just clarity on whether it solves the gap you're seeing."</div>
+</div>
+</div>
+
+</div>
+</div>
+
+</div><!-- end prospect-cards -->
+
+<script>
+function copyToClipboard(btn, elementId) {
+  const el = document.getElementById(elementId);
+  const text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text.trim()).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = btn.dataset.originalText || 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+// Store original button text
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.dataset.originalText = btn.textContent;
+});
+</script>
+
+</body>
+</html>
