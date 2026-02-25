@@ -1,0 +1,195 @@
+{
+  "version": "1.0",
+  "description": "Per-vertical pain library. Each vertical has curated pain hypotheses with higher confidence than generic fallbacks.",
+  "verticals": {
+    "FinTech": {
+      "pains": [
+        {
+          "pain": "Regression testing across payment checkout and transaction workflows after every release",
+          "confidence": 0.75,
+          "tags": ["compliance", "payments", "regression"]
+        },
+        {
+          "pain": "Maintaining API test coverage for third-party payment gateway integrations",
+          "confidence": 0.7,
+          "tags": ["api", "integrations", "payments"]
+        },
+        {
+          "pain": "Flaky end-to-end tests blocking CI/CD pipelines for time-sensitive financial features",
+          "confidence": 0.7,
+          "tags": ["flaky", "ci_cd", "velocity"]
+        }
+      ],
+      "typical_tools": ["selenium", "cypress", "playwright"],
+      "compliance_sensitive": true
+    },
+    "FinServ": {
+      "pains": [
+        {
+          "pain": "Full regression cycles required before every release due to regulatory audit requirements",
+          "confidence": 0.75,
+          "tags": ["compliance", "regression", "audit"]
+        },
+        {
+          "pain": "Testing across multiple browser and device combinations for customer-facing banking portals",
+          "confidence": 0.65,
+          "tags": ["cross_browser", "portals"]
+        },
+        {
+          "pain": "Maintaining test environments that mirror production for compliance-sensitive workflows",
+          "confidence": 0.6,
+          "tags": ["environments", "compliance"]
+        }
+      ],
+      "typical_tools": ["selenium", "tosca", "uft"],
+      "compliance_sensitive": true
+    },
+    "Healthcare": {
+      "pains": [
+        {
+          "pain": "Compliance-driven regression testing for HIPAA-sensitive patient data workflows",
+          "confidence": 0.75,
+          "tags": ["hipaa", "compliance", "patient_data"]
+        },
+        {
+          "pain": "Testing EHR integrations and HL7/FHIR data flows across system boundaries",
+          "confidence": 0.7,
+          "tags": ["ehr", "integrations", "interoperability"]
+        },
+        {
+          "pain": "Validating telehealth platform reliability across devices and connection qualities",
+          "confidence": 0.6,
+          "tags": ["telehealth", "devices", "reliability"]
+        }
+      ],
+      "typical_tools": ["selenium", "tosca"],
+      "compliance_sensitive": true
+    },
+    "SaaS": {
+      "pains": [
+        {
+          "pain": "Test maintenance overhead growing faster than the team as features ship weekly",
+          "confidence": 0.75,
+          "tags": ["maintenance", "velocity", "scaling"]
+        },
+        {
+          "pain": "Flaky UI tests breaking CI pipelines and slowing down deployment frequency",
+          "confidence": 0.75,
+          "tags": ["flaky", "ci_cd", "deployment"]
+        },
+        {
+          "pain": "Keeping test coverage high while onboarding new features without dedicated QA headcount",
+          "confidence": 0.65,
+          "tags": ["coverage", "headcount", "scaling"]
+        }
+      ],
+      "typical_tools": ["cypress", "playwright", "selenium"],
+      "compliance_sensitive": false
+    },
+    "E-Commerce": {
+      "pains": [
+        {
+          "pain": "Regression testing across catalog, cart, checkout, and payment flows after every deployment",
+          "confidence": 0.75,
+          "tags": ["checkout", "regression", "payments"]
+        },
+        {
+          "pain": "Cross-browser and mobile testing for customer-facing shopping experiences",
+          "confidence": 0.7,
+          "tags": ["cross_browser", "mobile", "ux"]
+        },
+        {
+          "pain": "Seasonal traffic spikes requiring rapid test validation of promotional features",
+          "confidence": 0.6,
+          "tags": ["seasonal", "performance", "promotions"]
+        }
+      ],
+      "typical_tools": ["selenium", "cypress"],
+      "compliance_sensitive": false
+    },
+    "Insurance": {
+      "pains": [
+        {
+          "pain": "Testing complex policy workflow permutations across underwriting, claims, and renewals",
+          "confidence": 0.75,
+          "tags": ["policy", "workflows", "permutations"]
+        },
+        {
+          "pain": "Regression cycles spanning days due to compliance requirements before each release",
+          "confidence": 0.7,
+          "tags": ["regression", "compliance", "velocity"]
+        },
+        {
+          "pain": "Maintaining legacy test suites for mainframe-to-web migration projects",
+          "confidence": 0.6,
+          "tags": ["legacy", "migration", "maintenance"]
+        }
+      ],
+      "typical_tools": ["tosca", "uft", "selenium"],
+      "compliance_sensitive": true
+    },
+    "Pharma": {
+      "pains": [
+        {
+          "pain": "GxP validation requirements adding weeks to every test cycle for regulated applications",
+          "confidence": 0.75,
+          "tags": ["gxp", "validation", "regulated"]
+        },
+        {
+          "pain": "Testing clinical trial management systems with strict audit trail requirements",
+          "confidence": 0.7,
+          "tags": ["clinical_trials", "audit", "ctms"]
+        },
+        {
+          "pain": "Maintaining validated test environments across multiple regulatory jurisdictions",
+          "confidence": 0.65,
+          "tags": ["environments", "jurisdictions", "validation"]
+        }
+      ],
+      "typical_tools": ["tosca", "tricentis", "uft"],
+      "compliance_sensitive": true
+    },
+    "Telecom": {
+      "pains": [
+        {
+          "pain": "Testing complex billing and subscription management workflows across plan types",
+          "confidence": 0.7,
+          "tags": ["billing", "subscriptions", "workflows"]
+        },
+        {
+          "pain": "Network management portal testing across multiple device types and OS versions",
+          "confidence": 0.65,
+          "tags": ["portals", "devices", "cross_platform"]
+        },
+        {
+          "pain": "Regression testing for self-service portals handling millions of customer interactions",
+          "confidence": 0.6,
+          "tags": ["self_service", "scale", "regression"]
+        }
+      ],
+      "typical_tools": ["selenium", "tosca"],
+      "compliance_sensitive": false
+    },
+    "Tech": {
+      "pains": [
+        {
+          "pain": "Test maintenance costs growing linearly with feature count while team size stays flat",
+          "confidence": 0.7,
+          "tags": ["maintenance", "scaling", "headcount"]
+        },
+        {
+          "pain": "Flaky tests eroding developer trust in the CI/CD pipeline",
+          "confidence": 0.7,
+          "tags": ["flaky", "ci_cd", "trust"]
+        },
+        {
+          "pain": "Keeping end-to-end test coverage meaningful as microservices multiply",
+          "confidence": 0.6,
+          "tags": ["e2e", "microservices", "coverage"]
+        }
+      ],
+      "typical_tools": ["playwright", "cypress", "selenium"],
+      "compliance_sensitive": false
+    }
+  }
+}

@@ -148,6 +148,7 @@ CREATE TABLE IF NOT EXISTS message_drafts (
     approval_status TEXT DEFAULT 'draft',
     ab_group TEXT,
     ab_variable TEXT,
+    subject_line_style TEXT,
     agent_run_id TEXT REFERENCES agent_runs(id),
     created_at TEXT DEFAULT (datetime('now')),
     updated_at TEXT DEFAULT (datetime('now'))
@@ -165,6 +166,7 @@ CREATE TABLE IF NOT EXISTS touchpoints (
     call_duration_seconds INTEGER,
     call_notes TEXT,
     confirmed_by_user INTEGER DEFAULT 1,
+    subject_line_style TEXT,
     created_at TEXT DEFAULT (datetime('now'))
 );
 

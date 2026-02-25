@@ -1698,6 +1698,56 @@ def get_feedback_report(days: int = Query(default=90, ge=1, le=365)):
     return {"report": generate_feedback_report(days)}
 
 
+# ─── D/F ENHANCEMENT ENDPOINTS ───────────────────────────────────
+
+@app.get("/api/feedback/attribution/{contact_id}")
+def get_contact_attribution(contact_id: str):
+    """Get full-funnel attribution chain for a contact."""
+    from src.agents.feedback_tracker import get_full_funnel_attribution
+    return get_full_funnel_attribution(contact_id)
+
+@app.get("/api/feedback/attribution-summary")
+def get_attribution_summary_endpoint(days: int = Query(default=90, ge=1, le=365)):
+    """Get aggregated attribution summary across all contacts."""
+    from src.agents.feedback_tracker import get_attribution_summary
+    return get_attribution_summary(days)
+
+class PainRefineRequest(BaseModel):
+    contact_id: str
+    reply_text: str
+    use_llm: Optional[bool] = False
+
+@app.post("/api/feedback/refine-pains")
+def refine_pains_endpoint(req: PainRefineRequest):
+    """Refine pain hypotheses based on reply content (F10)."""
+    from src.agents.feedback_tracker import refine_pains_from_reply
+    return refine_pains_from_reply(
+        contact_id=req.contact_id,
+        reply_text=req.reply_text,
+        use_llm=req.use_llm,
+    )
+
+@app.get("/api/vertical-pains/{vertical}")
+def get_vertical_pains_endpoint(vertical: str):
+    """Get curated pain hypotheses for a specific vertical (F7)."""
+    from src.agents.researcher import get_vertical_pains
+    pains = get_vertical_pains(vertical)
+    return {"vertical": vertical, "pains": pains}
+
+class RescoreRequest(BaseModel):
+    threshold: Optional[float] = 0.2
+    dry_run: Optional[bool] = True
+
+@app.post("/api/rescore/stale")
+def rescore_stale_endpoint(req: RescoreRequest):
+    """Find and optionally re-score contacts with decayed signals (F9)."""
+    from scripts.rescore_stale import find_stale_contacts, run_rescore
+    if req.dry_run:
+        stale = find_stale_contacts(req.threshold)
+        return {"stale_contacts": stale, "count": len(stale), "dry_run": True}
+    return run_rescore(threshold=req.threshold, dry_run=False)
+
+
 # ─── LLM POLISH ENDPOINT ──────────────────────────────────────
 
 class PolishRequest(BaseModel):

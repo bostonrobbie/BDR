@@ -1506,7 +1506,8 @@ def _pick_value_prop(product_config: dict, artifact: dict, tone: str) -> str:
 
 def generate_message_variants(artifact: dict, scoring_result: dict,
                                product_config: dict = None,
-                               channel: str = "linkedin") -> dict:
+                               channel: str = "linkedin",
+                               touch_number: int = 1) -> dict:
     """Generate 3 grounded message variants from ResearchArtifact + ScoringResult.
 
     Each variant uses:
@@ -1514,12 +1515,20 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
     - A seniority-aware pain framing (strategic for VPs, tactical for managers)
     - An integrated proof-and-ask paragraph where CTA flows from the proof point
     - Proof point rotation between variants where possible
+    - Sequence-aware structure adapting to the touch_number position
+
+    Sequence adaptation (F8):
+    - Touch 1: Full 6-element message structure (opener, company ref, pain, proof, CTA, soft ask)
+    - Touch 2-3: Shorter follow-up referencing earlier outreach, lighter structure
+    - Touch 4-5: Different angle, can escalate directness, reference prior touches
+    - Touch 6+: Break-up style, minimal pitch, respectful close-out
 
     Args:
         artifact: A validated ResearchArtifact.
         scoring_result: A ScoringResult from scorer.score_from_artifact().
         product_config: Product config dict (loaded from file if None).
         channel: "linkedin" or "email".
+        touch_number: Which touch in the sequence (1-6+). Defaults to 1.
 
     Returns:
         {"variants": [...], "qa_results": [...], "metadata": {...}}
@@ -1639,6 +1648,25 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
                 f"{func} challenge at {company_name}?",
             ]
 
+        # F8: Sequence-aware adaptation for later touches
+        if touch_number >= 6:
+            body = _adapt_for_breakup(first_name, company_name, tone, sender)
+            subjects = [
+                f"Closing the loop, {first_name}",
+                f"Last note from me",
+                f"All good, {first_name}",
+            ]
+        elif touch_number >= 3:
+            body = _adapt_for_followup(
+                body, first_name, company_name, tone, sender,
+                pp_text, bridge, cta, soft, signoff, touch_number
+            )
+            subjects = [
+                f"Following up, {first_name}",
+                f"Quick follow-up re: {pain_label}",
+                f"Circling back on {pain_label}",
+            ]
+
         variants.append({
             "tone": tone,
             "subject_lines": subjects,
@@ -1652,6 +1680,7 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
             "pain_hook": raw_pain,
             "predicted_objection": predicted_objection.get("objection", ""),
             "objection_key": predicted_objection.get("objection_key", ""),
+            "touch_number": touch_number,
             "char_count": len(body),
             "word_count": len(body.split()),
         })
@@ -1672,9 +1701,99 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
             "scoring_tier": scoring_result.get("tier", "unknown"),
             "total_score": scoring_result.get("total_score", 0),
             "proof_point_used": pp_primary.get("key", ""),
+            "touch_number": touch_number,
             "generated_at": datetime.utcnow().isoformat(),
         },
     }
+
+
+def _adapt_for_followup(original_body: str, first_name: str, company_name: str,
+                         tone: str, sender: str, pp_text: str, bridge: str,
+                         cta: str, soft: str, signoff: str,
+                         touch_number: int) -> str:
+    """Adapt a full Touch 1 body into a shorter follow-up for touches 3-5.
+
+    Follow-ups are shorter (40-70 words), reference prior outreach, use a
+    different angle, and have a softer CTA.
+    """
+    cta_line = f"{cta} {soft}".rstrip() if soft else cta
+
+    if tone == "friendly":
+        if touch_number <= 3:
+            return (
+                f"Hi {first_name},\n\n"
+                f"Circling back quick. {pp_text}{bridge}.\n\n"
+                f"{cta_line}\n\n"
+                f"{signoff}"
+            )
+        else:
+            return (
+                f"Hi {first_name},\n\n"
+                f"One more thought on {company_name}'s testing setup. "
+                f"{pp_text}{bridge}.\n\n"
+                f"Happy to share more if helpful.\n\n"
+                f"{signoff}"
+            )
+    elif tone == "direct":
+        if touch_number <= 3:
+            return (
+                f"Hi {first_name},\n\n"
+                f"Following up briefly. {pp_text}{bridge}. {cta}\n\n"
+                f"{signoff}"
+            )
+        else:
+            return (
+                f"Hi {first_name},\n\n"
+                f"Different angle for {company_name}: {pp_text}{bridge}. {cta}\n\n"
+                f"{signoff}"
+            )
+    else:  # curious
+        if touch_number <= 3:
+            return (
+                f"Hi {first_name},\n\n"
+                f"Wanted to circle back. {pp_text}{bridge}. "
+                f"{cta_line}\n\n"
+                f"{signoff}"
+            )
+        else:
+            return (
+                f"Hi {first_name},\n\n"
+                f"One last thought. {pp_text}{bridge}. "
+                f"{cta_line}\n\n"
+                f"{signoff}"
+            )
+
+
+def _adapt_for_breakup(first_name: str, company_name: str,
+                        tone: str, sender: str) -> str:
+    """Generate a break-up message for touch 6+.
+
+    No pitch, no product mention, no proof points. Just a respectful
+    close-out that leaves the door open.
+    """
+    if tone == "friendly":
+        return (
+            f"Hi {first_name},\n\n"
+            f"I've reached out a few times and want to be respectful of your inbox. "
+            f"If the timing isn't right, totally get it. "
+            f"Just wanted to close the loop so I'm not adding noise.\n\n"
+            f"If anything changes down the road, happy to chat.\n\n"
+            f"Cheers,\n{sender}"
+        )
+    elif tone == "direct":
+        return (
+            f"Hi {first_name},\n\n"
+            f"Closing the loop on my earlier messages. No worries if it's not a fit. "
+            f"If things change, my door's open.\n\n"
+            f"{sender}"
+        )
+    else:  # curious
+        return (
+            f"Hi {first_name},\n\n"
+            f"I'll keep this short. I've reached out a few times and don't want to be a pest. "
+            f"If this ever becomes relevant for {company_name}, I'm easy to find.\n\n"
+            f"Best,\n{sender}"
+        )
 
 
 # ─── MESSAGE QA CHECKS (v2) ─────────────────────────────────────

@@ -19,6 +19,72 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 from src.db import models
 
 
+# ─── VERTICAL PAIN LIBRARY ──────────────────────────────────────
+
+_VERTICAL_PAINS_PATH = os.path.join(os.path.dirname(__file__), "../../config/vertical_pains.json")
+_vertical_pains_cache = None
+
+
+def _load_vertical_pains(path: str = None) -> dict:
+    """Load the per-vertical pain library from config."""
+    global _vertical_pains_cache
+    if _vertical_pains_cache is not None and path is None:
+        return _vertical_pains_cache
+    p = path or _VERTICAL_PAINS_PATH
+    try:
+        with open(p, "r") as f:
+            _vertical_pains_cache = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        _vertical_pains_cache = {"verticals": {}}
+    return _vertical_pains_cache
+
+
+def get_vertical_pains(vertical: str, known_tools: list = None) -> list:
+    """Get curated pain hypotheses for a specific vertical.
+
+    Returns pain hypotheses from the vertical pain library with confidence
+    boosted if the prospect's known tools match the vertical's typical tools.
+
+    Args:
+        vertical: Industry vertical name (e.g., "FinTech", "Healthcare").
+        known_tools: List of tools the prospect uses (for confidence boosting).
+
+    Returns:
+        List of pain hypothesis dicts with pain, confidence, evidence, tags.
+    """
+    known_tools = known_tools or []
+    config = _load_vertical_pains()
+    verticals = config.get("verticals", {})
+
+    # Try exact match first, then case-insensitive match
+    vertical_data = verticals.get(vertical)
+    if not vertical_data:
+        for k, v in verticals.items():
+            if k.lower() == vertical.lower():
+                vertical_data = v
+                break
+    if not vertical_data:
+        return []
+
+    pains = []
+    typical_tools = [t.lower() for t in vertical_data.get("typical_tools", [])]
+    has_tool_overlap = any(t.lower() in typical_tools for t in known_tools)
+
+    for p in vertical_data.get("pains", []):
+        conf = p["confidence"]
+        # Boost confidence if prospect uses a typical tool for this vertical
+        if has_tool_overlap:
+            conf = min(1.0, conf + 0.1)
+        pains.append({
+            "pain": p["pain"],
+            "confidence": round(conf, 2),
+            "evidence": f"from vertical pain library: {vertical}",
+            "tags": p.get("tags", []),
+        })
+
+    return pains
+
+
 # ─── RESEARCH ARTIFACT SCHEMA ──────────────────────────────────
 
 # Default guardrails that must always be present
@@ -700,6 +766,17 @@ def build_research_artifact(contact: dict, account: dict = None,
                 0.5,
                 f"from CRM field: industry ({artifact['company']['industry']})"
             ))
+
+    # F7: Enrich with per-vertical pain library
+    vertical_pains = get_vertical_pains(vertical, all_tools)
+    existing_pain_texts = {p["pain"].lower() for p in artifact["pains"]["hypothesized_pains"]}
+    for vp in vertical_pains:
+        # Avoid duplicating pain hypotheses already added from CRM signals
+        if vp["pain"].lower() not in existing_pain_texts:
+            artifact["pains"]["hypothesized_pains"].append(
+                make_pain_hypothesis(vp["pain"], vp["confidence"], vp["evidence"])
+            )
+            existing_pain_texts.add(vp["pain"].lower())
 
     # Add a general fallback pain if none yet
     if not artifact["pains"]["hypothesized_pains"]:

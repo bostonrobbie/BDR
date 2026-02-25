@@ -37,6 +37,11 @@ def record_reply(contact_id: str, touchpoint_id: str = None,
                  raw_text: str = "") -> dict:
     """Record a prospect reply and link it to the message that triggered it.
 
+    Automatically runs:
+    - Sentiment scoring (D1): scores raw_text on -1.0 to +1.0 scale
+    - Contradiction detection (D2): checks reply against research artifact
+      for tech_stack and role_fit contradictions
+
     Args:
         contact_id: The contact who replied.
         touchpoint_id: The touchpoint this reply is responding to.
@@ -47,17 +52,26 @@ def record_reply(contact_id: str, touchpoint_id: str = None,
         raw_text: The actual reply text.
 
     Returns:
-        {"reply_id": str, "attribution": dict}
+        {"reply_id": str, "attribution": dict, "sentiment": dict,
+         "contradictions": list, "corrections_recorded": list}
     """
     conn = models.get_db()
     reply_id = models.gen_id("rep")
     now = datetime.utcnow().isoformat()
 
+    # D1: Auto-score sentiment from raw reply text
+    sentiment = score_reply_sentiment(raw_text, existing_intent=intent)
+
+    # Use sentiment-suggested intent if the caller passed "neutral" default
+    effective_intent = intent
+    if intent == "neutral" and sentiment.get("confidence", 0) >= 0.5:
+        effective_intent = sentiment.get("suggested_intent", intent)
+
     conn.execute("""
         INSERT INTO replies (id, contact_id, touchpoint_id, channel, intent,
             reply_tag, summary, raw_text, replied_at, created_at)
         VALUES (?,?,?,?,?,?,?,?,?,?)
-    """, (reply_id, contact_id, touchpoint_id, channel, intent,
+    """, (reply_id, contact_id, touchpoint_id, channel, effective_intent,
           reply_tag, summary, raw_text, now, now))
     conn.commit()
 
@@ -66,10 +80,54 @@ def record_reply(contact_id: str, touchpoint_id: str = None,
 
     conn.close()
 
+    # D2: Auto-detect contradictions against the research artifact
+    contradictions = []
+    corrections_recorded = []
+    if raw_text.strip():
+        try:
+            artifact = _get_latest_artifact(contact_id)
+            if artifact:
+                contradictions = detect_contradictions_in_reply(raw_text, artifact)
+                # Auto-record corrections for high-confidence contradictions
+                for c in contradictions:
+                    if c.get("confidence", 0) >= 0.7:
+                        correction = record_research_correction(
+                            contact_id=contact_id,
+                            field=c["field"],
+                            original_value=c.get("our_assumption", ""),
+                            corrected_value=c.get("reply_suggests", ""),
+                            source="reply",
+                            confidence=c["confidence"],
+                        )
+                        corrections_recorded.append(correction)
+        except Exception:
+            pass  # Don't let contradiction detection break reply recording
+
     return {
         "reply_id": reply_id,
         "attribution": attribution,
+        "sentiment": sentiment,
+        "contradictions": contradictions,
+        "corrections_recorded": corrections_recorded,
     }
+
+
+def _get_latest_artifact(contact_id: str) -> Optional[dict]:
+    """Build a research artifact for contradiction detection.
+
+    Uses cached contact/account data to build an artifact for
+    comparing reply content against our research assumptions.
+    """
+    try:
+        from src.agents.researcher import build_research_artifact
+        contact = models.get_contact(contact_id)
+        if not contact:
+            return None
+        account = models.get_account(contact.get("account_id", "")) if contact.get("account_id") else {}
+        result = build_research_artifact(contact, account or {})
+        return result.get("artifact")
+    except Exception:
+        return None
 
 
 def _build_attribution(conn, touchpoint_id: str = None,
@@ -86,6 +144,7 @@ def _build_attribution(conn, touchpoint_id: str = None,
         "ab_group": None,
         "ab_variable": None,
         "personalization_score": None,
+        "subject_line_style": None,
     }
 
     if touchpoint_id:
@@ -110,6 +169,7 @@ def _build_attribution(conn, touchpoint_id: str = None,
                     attribution["ab_group"] = draft.get("ab_group")
                     attribution["ab_variable"] = draft.get("ab_variable")
                     attribution["personalization_score"] = draft.get("personalization_score")
+                    attribution["subject_line_style"] = draft.get("subject_line_style")
 
     elif contact_id:
         # Fallback: find the most recent touchpoint for this contact
@@ -258,6 +318,7 @@ def get_conversion_stats(days: int = 90) -> dict:
         "by_touch_number": _breakdown(touchpoints, reply_by_tp, "touch_number"),
         "by_opener_style": _breakdown(touchpoints, reply_by_tp, "opener_style"),
         "by_ab_group": _breakdown(touchpoints, reply_by_tp, "ab_group"),
+        "by_subject_style": _breakdown(touchpoints, reply_by_tp, "subject_line_style"),
         "totals": {
             "touches_sent": len(touchpoints),
             "replies_received": len(replies),
@@ -1043,3 +1104,254 @@ def generate_feedback_report(days: int = 90) -> str:
         lines.append("")
 
     return "\n".join(lines)
+
+
+# ─── F10: LLM-ASSISTED PAIN REFINEMENT ──────────────────────────
+# When a reply reveals new information about the prospect's actual
+# pain points, we can use the LLM to refine the research artifact's
+# pain hypotheses rather than just flagging the correction.
+
+
+def refine_pains_from_reply(contact_id: str, reply_text: str,
+                             artifact: dict = None,
+                             use_llm: bool = False) -> dict:
+    """Refine pain hypotheses based on reply content.
+
+    Uses keyword extraction and optional LLM refinement to update
+    the artifact's pain hypotheses with information gleaned from
+    the prospect's reply.
+
+    Args:
+        contact_id: The contact who replied.
+        reply_text: The reply text to analyze.
+        artifact: Existing research artifact (loaded if None).
+        use_llm: Whether to use the LLM for deeper refinement.
+
+    Returns:
+        {"original_pains": list, "refined_pains": list,
+         "new_signals": list, "llm_used": bool}
+    """
+    if not reply_text.strip():
+        return {"original_pains": [], "refined_pains": [],
+                "new_signals": [], "llm_used": False}
+
+    # Load artifact if not provided
+    if artifact is None:
+        artifact = _get_latest_artifact(contact_id)
+    if not artifact:
+        return {"original_pains": [], "refined_pains": [],
+                "new_signals": [], "llm_used": False}
+
+    original_pains = artifact.get("pains", {}).get("hypothesized_pains", [])
+    text_lower = reply_text.lower()
+
+    # Extract new signals from reply text
+    new_signals = _extract_signals_from_reply(text_lower)
+
+    # Refine existing pains based on reply content
+    refined_pains = _rule_based_pain_refinement(original_pains, text_lower, new_signals)
+
+    # Optionally use LLM for deeper refinement
+    llm_used = False
+    if use_llm and reply_text.strip():
+        llm_refined = _llm_refine_pains(original_pains, reply_text, artifact)
+        if llm_refined:
+            refined_pains = llm_refined
+            llm_used = True
+
+    # Record the refined pains as a research correction if they changed
+    if refined_pains != original_pains:
+        for rp in refined_pains:
+            if rp not in original_pains:
+                record_research_correction(
+                    contact_id=contact_id,
+                    field="pain_hypothesis",
+                    original_value=json.dumps(original_pains[:1]) if original_pains else "[]",
+                    corrected_value=json.dumps(rp),
+                    source="reply_refinement",
+                    confidence=rp.get("confidence", 0.5),
+                )
+
+    return {
+        "original_pains": original_pains,
+        "refined_pains": refined_pains,
+        "new_signals": new_signals,
+        "llm_used": llm_used,
+    }
+
+
+def _extract_signals_from_reply(text_lower: str) -> list:
+    """Extract actionable signals from reply text.
+
+    Looks for mentions of tools, processes, pain points, team size,
+    and other contextual clues.
+    """
+    signals = []
+
+    # Tool mentions
+    tool_keywords = {
+        "selenium": "test_tool", "cypress": "test_tool", "playwright": "test_tool",
+        "tosca": "test_tool", "katalon": "test_tool", "testim": "test_tool",
+        "jest": "test_tool", "junit": "test_tool", "pytest": "test_tool",
+        "jenkins": "ci_tool", "github actions": "ci_tool", "gitlab ci": "ci_tool",
+        "circleci": "ci_tool", "azure devops": "ci_tool",
+    }
+    for tool, sig_type in tool_keywords.items():
+        if tool in text_lower:
+            signals.append({"type": sig_type, "value": tool, "source": "reply"})
+
+    # Pain-related keywords
+    pain_indicators = {
+        "flaky": "flaky_tests", "brittle": "flaky_tests", "unstable": "flaky_tests",
+        "maintenance": "maintenance_overhead", "maintaining": "maintenance_overhead",
+        "slow": "slow_cycles", "takes forever": "slow_cycles",
+        "manual": "manual_testing", "manually": "manual_testing",
+        "coverage": "coverage_gaps", "gaps in": "coverage_gaps",
+        "hiring": "team_scaling", "headcount": "team_scaling",
+    }
+    for keyword, pain_type in pain_indicators.items():
+        if keyword in text_lower:
+            signals.append({"type": "pain_signal", "value": pain_type, "source": "reply"})
+
+    # Process mentions
+    if any(w in text_lower for w in ["sprint", "agile", "scrum", "kanban"]):
+        signals.append({"type": "process", "value": "agile", "source": "reply"})
+    if any(w in text_lower for w in ["waterfall", "release train", "quarterly"]):
+        signals.append({"type": "process", "value": "structured_releases", "source": "reply"})
+
+    return signals
+
+
+def _rule_based_pain_refinement(original_pains: list, text_lower: str,
+                                 new_signals: list) -> list:
+    """Refine pain hypotheses using rule-based analysis of reply content.
+
+    - Confirms pains mentioned in the reply (boost confidence)
+    - Downgrades pains contradicted by the reply
+    - Adds new pains revealed in the reply
+    """
+    refined = []
+    pain_types_from_signals = {s["value"] for s in new_signals if s["type"] == "pain_signal"}
+
+    for pain in original_pains:
+        p = dict(pain)
+        pain_lower = p.get("pain", "").lower()
+
+        # Check if pain is confirmed by reply
+        confirmed = False
+        if "maintenance" in pain_lower and "maintenance_overhead" in pain_types_from_signals:
+            confirmed = True
+        elif "flaky" in pain_lower and "flaky_tests" in pain_types_from_signals:
+            confirmed = True
+        elif "scaling" in pain_lower and "team_scaling" in pain_types_from_signals:
+            confirmed = True
+        elif "manual" in pain_lower and "manual_testing" in pain_types_from_signals:
+            confirmed = True
+        elif "coverage" in pain_lower and "coverage_gaps" in pain_types_from_signals:
+            confirmed = True
+
+        if confirmed:
+            p["confidence"] = min(1.0, p.get("confidence", 0.5) + 0.2)
+            p["evidence"] = f"{p.get('evidence', '')}; confirmed by prospect reply"
+        elif any(neg in text_lower for neg in ["not a problem", "not an issue",
+                                                 "don't have that", "that's not"]):
+            # Check if this specific pain is being denied
+            pain_words = set(pain_lower.split())
+            denied_overlap = sum(1 for w in pain_words if w in text_lower and len(w) > 3)
+            if denied_overlap >= 2:
+                p["confidence"] = max(0.1, p.get("confidence", 0.5) - 0.3)
+                p["evidence"] = f"{p.get('evidence', '')}; contradicted by prospect reply"
+
+        refined.append(p)
+
+    # Add new pains from signals not already covered
+    existing_pain_types = set()
+    for p in refined:
+        pl = p.get("pain", "").lower()
+        if "maintenance" in pl:
+            existing_pain_types.add("maintenance_overhead")
+        if "flaky" in pl:
+            existing_pain_types.add("flaky_tests")
+        if "manual" in pl:
+            existing_pain_types.add("manual_testing")
+
+    new_pain_map = {
+        "flaky_tests": "Flaky tests impacting CI/CD reliability",
+        "maintenance_overhead": "Test maintenance overhead growing with the codebase",
+        "slow_cycles": "Slow test execution cycles bottlenecking releases",
+        "manual_testing": "Manual testing consuming too much team bandwidth",
+        "coverage_gaps": "Gaps in test coverage creating risk",
+        "team_scaling": "Scaling QA capacity without proportional headcount growth",
+    }
+
+    for sig in new_signals:
+        if sig["type"] == "pain_signal" and sig["value"] not in existing_pain_types:
+            pain_text = new_pain_map.get(sig["value"])
+            if pain_text:
+                refined.append({
+                    "pain": pain_text,
+                    "confidence": 0.7,
+                    "evidence": "from prospect reply",
+                })
+                existing_pain_types.add(sig["value"])
+
+    return refined
+
+
+def _llm_refine_pains(original_pains: list, reply_text: str,
+                       artifact: dict) -> Optional[list]:
+    """Use LLM to refine pain hypotheses from reply content.
+
+    Falls back to None if the LLM is unavailable, allowing the caller
+    to use rule-based refinement instead.
+    """
+    try:
+        from src.agents.llm_gateway import get_llm_client
+        client = get_llm_client()
+        if not client or not client.is_healthy():
+            return None
+
+        prospect = artifact.get("prospect", {})
+        company = prospect.get("company_name", "unknown")
+        title = prospect.get("title", "unknown")
+
+        prompt = f"""Analyze this prospect reply and refine the pain hypotheses.
+
+PROSPECT: {title} at {company}
+REPLY TEXT: {reply_text}
+
+CURRENT PAIN HYPOTHESES:
+{json.dumps(original_pains, indent=2)}
+
+INSTRUCTIONS:
+1. If the reply confirms any existing pain, boost its confidence to 0.8-0.9
+2. If the reply contradicts a pain, lower its confidence to 0.1-0.3
+3. If the reply reveals new pains not in the list, add them with confidence 0.7
+4. Keep the evidence field updated with "confirmed/contradicted/added from reply"
+
+Return ONLY a valid JSON array of pain hypothesis objects.
+Each object must have: "pain" (string), "confidence" (float 0-1), "evidence" (string)
+"""
+
+        response = client.generate(prompt, max_tokens=1000)
+        if not response:
+            return None
+
+        # Parse JSON from response
+        text = response.strip()
+        # Find JSON array in the response
+        start = text.find("[")
+        end = text.rfind("]") + 1
+        if start >= 0 and end > start:
+            parsed = json.loads(text[start:end])
+            # Validate structure
+            if isinstance(parsed, list) and all(
+                isinstance(p, dict) and "pain" in p and "confidence" in p
+                for p in parsed
+            ):
+                return parsed
+
+    except Exception:
+        pass
+
+    return None
