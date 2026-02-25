@@ -451,6 +451,549 @@ def get_proof_point_preference(vertical: str = "",
     return None
 
 
+# ─── FULL-FUNNEL ATTRIBUTION ─────────────────────────────────
+# Traces the complete chain: message_draft -> touchpoint -> reply -> opportunity
+# Answers: "which proof point actually books meetings?"
+
+def get_full_funnel_attribution(contact_id: str) -> dict:
+    """Build the complete attribution chain for a single contact.
+
+    Traces every touch, reply, and outcome to show exactly which
+    message attributes led to the result.
+
+    Args:
+        contact_id: The contact to trace.
+
+    Returns:
+        {"contact_id": str, "chain": [...], "outcome": str,
+         "winning_attributes": {...}}
+    """
+    conn = models.get_db()
+
+    # Get all touchpoints for this contact
+    touchpoints = conn.execute("""
+        SELECT t.*, md.proof_point_used, md.pain_hook, md.opener_style,
+               md.ask_style, md.touch_type, md.ab_group, md.ab_variable,
+               md.personalization_score
+        FROM touchpoints t
+        LEFT JOIN message_drafts md ON t.message_draft_id = md.id
+        WHERE t.contact_id = ?
+        ORDER BY t.sent_at ASC
+    """, (contact_id,)).fetchall()
+
+    # Get all replies
+    replies = conn.execute("""
+        SELECT * FROM replies WHERE contact_id = ? ORDER BY replied_at ASC
+    """, (contact_id,)).fetchall()
+
+    # Get opportunities
+    opportunities = conn.execute("""
+        SELECT * FROM opportunities WHERE contact_id = ? ORDER BY created_at ASC
+    """, (contact_id,)).fetchall()
+
+    conn.close()
+
+    # Build the chain
+    chain = []
+    reply_lookup = {r["touchpoint_id"]: dict(r) for r in replies if r["touchpoint_id"]}
+
+    for tp in touchpoints:
+        tp_dict = dict(tp)
+        link = {
+            "type": "touch",
+            "touch_number": tp_dict.get("touch_number"),
+            "channel": tp_dict.get("channel"),
+            "sent_at": tp_dict.get("sent_at"),
+            "proof_point": tp_dict.get("proof_point_used"),
+            "pain_hook": tp_dict.get("pain_hook"),
+            "opener_style": tp_dict.get("opener_style"),
+            "touch_type": tp_dict.get("touch_type"),
+        }
+        chain.append(link)
+
+        # Check if this touch got a reply
+        reply = reply_lookup.get(tp_dict["id"])
+        if reply:
+            chain.append({
+                "type": "reply",
+                "intent": reply.get("intent"),
+                "reply_tag": reply.get("reply_tag"),
+                "sentiment_score": reply.get("sentiment_score"),
+                "replied_at": reply.get("replied_at"),
+                "in_response_to_touch": tp_dict.get("touch_number"),
+            })
+
+    # Add opportunities
+    outcome = "no_outcome"
+    winning_touch = None
+    for opp in opportunities:
+        opp_dict = dict(opp)
+        chain.append({
+            "type": "outcome",
+            "status": opp_dict.get("status"),
+            "meeting_held": opp_dict.get("meeting_held"),
+            "pipeline_value": opp_dict.get("pipeline_value"),
+            "trigger_touch": opp_dict.get("attribution_touch_number"),
+            "trigger_proof_point": opp_dict.get("attribution_proof_point"),
+        })
+        outcome = opp_dict.get("status", "meeting_booked")
+        winning_touch = opp_dict.get("attribution_touch_number")
+
+    # Determine winning attributes (from the touch that triggered the meeting)
+    winning_attrs = {}
+    if winning_touch:
+        for tp in touchpoints:
+            tp_dict = dict(tp)
+            if tp_dict.get("touch_number") == winning_touch:
+                winning_attrs = {
+                    "proof_point": tp_dict.get("proof_point_used"),
+                    "pain_hook": tp_dict.get("pain_hook"),
+                    "opener_style": tp_dict.get("opener_style"),
+                    "channel": tp_dict.get("channel"),
+                    "touch_number": tp_dict.get("touch_number"),
+                }
+                break
+
+    return {
+        "contact_id": contact_id,
+        "chain": chain,
+        "chain_length": len(chain),
+        "outcome": outcome,
+        "winning_attributes": winning_attrs,
+    }
+
+
+def get_attribution_summary(days: int = 90) -> dict:
+    """Aggregate full-funnel attribution across all contacts with outcomes.
+
+    Returns which proof points, channels, and touch numbers actually
+    convert to meetings, not just replies.
+
+    Returns:
+        {"meeting_attribution": {...}, "sample_size": int}
+    """
+    conn = models.get_db()
+    cutoff = (datetime.utcnow() - timedelta(days=days)).isoformat()
+
+    # Get all opportunities with attribution
+    opps = conn.execute("""
+        SELECT * FROM opportunities WHERE created_at >= ?
+    """, (cutoff,)).fetchall()
+    conn.close()
+
+    by_proof_point = defaultdict(int)
+    by_channel = defaultdict(int)
+    by_touch_number = defaultdict(int)
+    by_pain_hook = defaultdict(int)
+
+    for opp in opps:
+        opp = dict(opp)
+        pp = opp.get("attribution_proof_point")
+        if pp:
+            by_proof_point[pp] += 1
+        ch = opp.get("attribution_channel")
+        if ch:
+            by_channel[ch] += 1
+        tn = opp.get("attribution_touch_number")
+        if tn:
+            by_touch_number[str(tn)] += 1
+        ph = opp.get("attribution_pain_hook")
+        if ph:
+            by_pain_hook[ph] += 1
+
+    return {
+        "meeting_attribution": {
+            "by_proof_point": dict(by_proof_point),
+            "by_channel": dict(by_channel),
+            "by_touch_number": dict(by_touch_number),
+            "by_pain_hook": dict(by_pain_hook),
+        },
+        "total_meetings": len(opps),
+        "period_days": days,
+    }
+
+
+# ─── REPLY SENTIMENT SCORING ────────────────────────────────────
+# Replace ternary intent (positive/neutral/negative) with a -1 to +1
+# continuous scale that distinguishes "let's schedule" from "interesting
+# but not now" from "unsubscribe me."
+
+SENTIMENT_KEYWORDS = {
+    # Strong positive (+0.8 to +1.0)
+    "strong_positive": {
+        "keywords": ["yes", "let's schedule", "let's chat", "let's connect",
+                     "interested", "love to", "sounds great", "book a time",
+                     "available", "set up a call", "looking forward"],
+        "score": 0.9,
+    },
+    # Mild positive (+0.3 to +0.7)
+    "mild_positive": {
+        "keywords": ["maybe", "could be", "tell me more", "send me more",
+                     "share more", "good timing", "open to", "curious",
+                     "worth exploring", "interesting"],
+        "score": 0.5,
+    },
+    # Neutral (0.0)
+    "neutral": {
+        "keywords": ["thanks for reaching out", "noted", "received",
+                     "will review", "let me think", "not sure"],
+        "score": 0.0,
+    },
+    # Mild negative (-0.3 to -0.7)
+    "mild_negative": {
+        "keywords": ["not right now", "not the right time", "maybe later",
+                     "busy right now", "check back", "not a priority",
+                     "already have", "we use", "happy with"],
+        "score": -0.5,
+    },
+    # Strong negative (-0.8 to -1.0)
+    "strong_negative": {
+        "keywords": ["not interested", "stop", "unsubscribe", "remove me",
+                     "do not contact", "don't contact", "no thanks",
+                     "please stop", "wrong person"],
+        "score": -0.9,
+    },
+    # Referral (special: +0.3 for intent signal)
+    "referral": {
+        "keywords": ["talk to", "reach out to", "contact my colleague",
+                     "try reaching", "better person", "connect you with"],
+        "score": 0.3,
+    },
+    # Out of office (neutral but informative)
+    "out_of_office": {
+        "keywords": ["out of office", "ooo", "on vacation", "on leave",
+                     "will be back", "return on", "away from"],
+        "score": 0.0,
+    },
+}
+
+
+def score_reply_sentiment(reply_text: str, existing_intent: str = "") -> dict:
+    """Score a reply on a -1.0 to +1.0 sentiment scale.
+
+    Goes beyond ternary intent to capture gradations:
+    - +1.0: "Yes, let's book a time this week"
+    - +0.5: "Interesting, tell me more"
+    -  0.0: "Thanks, noted"
+    - -0.5: "Not a priority right now"
+    - -1.0: "Please remove me from your list"
+
+    Args:
+        reply_text: The raw reply text.
+        existing_intent: The current ternary intent if already classified.
+
+    Returns:
+        {"sentiment_score": float, "sentiment_label": str,
+         "matched_category": str, "confidence": float,
+         "suggested_intent": str, "action": str}
+    """
+    text_lower = reply_text.lower().strip()
+
+    if not text_lower:
+        return {
+            "sentiment_score": 0.0,
+            "sentiment_label": "unknown",
+            "matched_category": "none",
+            "confidence": 0.0,
+            "suggested_intent": existing_intent or "neutral",
+            "action": "review_manually",
+        }
+
+    # Score against each category.
+    # Check categories in priority order: strong signals first, then mild.
+    # Within each category, check longer phrases first to avoid partial matches
+    # (e.g., "maybe later" should match mild_negative before "maybe" matches mild_positive).
+    best_match = None
+    best_score = 0
+    match_count = 0
+
+    priority_order = [
+        "strong_negative", "strong_positive", "out_of_office", "referral",
+        "mild_negative", "mild_positive", "neutral",
+    ]
+
+    for category in priority_order:
+        config = SENTIMENT_KEYWORDS.get(category, {})
+        # Sort keywords by length descending so longer phrases match first
+        keywords = sorted(config.get("keywords", []), key=len, reverse=True)
+        for keyword in keywords:
+            if keyword in text_lower:
+                match_count += 1
+                if best_match is None or abs(config["score"]) > abs(best_score):
+                    best_match = category
+                    best_score = config["score"]
+                break  # Only count one match per category
+
+    if best_match is None:
+        # No keyword match, use existing intent as fallback
+        intent_scores = {"positive": 0.5, "negative": -0.5, "neutral": 0.0,
+                         "referral": 0.3, "out_of_office": 0.0}
+        score = intent_scores.get(existing_intent, 0.0)
+        return {
+            "sentiment_score": score,
+            "sentiment_label": _sentiment_label(score),
+            "matched_category": "inferred_from_intent",
+            "confidence": 0.3,
+            "suggested_intent": existing_intent or "neutral",
+            "action": "review_manually",
+        }
+
+    # Determine confidence based on match count and text length
+    confidence = min(0.95, 0.5 + (match_count * 0.15))
+    if len(text_lower) < 10:
+        confidence = min(confidence, 0.6)  # Short replies are harder to classify
+
+    # Map sentiment to suggested intent
+    if best_score >= 0.3:
+        suggested_intent = "positive"
+    elif best_score <= -0.3:
+        suggested_intent = "negative"
+    elif best_match == "referral":
+        suggested_intent = "referral"
+    elif best_match == "out_of_office":
+        suggested_intent = "out_of_office"
+    else:
+        suggested_intent = "neutral"
+
+    # Determine recommended action
+    if best_score >= 0.7:
+        action = "schedule_meeting"
+    elif best_score >= 0.3:
+        action = "send_more_info"
+    elif best_score >= -0.3:
+        action = "follow_up_later"
+    elif best_score >= -0.7:
+        action = "pause_sequence"
+    else:
+        action = "mark_dnc"
+
+    return {
+        "sentiment_score": best_score,
+        "sentiment_label": _sentiment_label(best_score),
+        "matched_category": best_match,
+        "confidence": round(confidence, 2),
+        "suggested_intent": suggested_intent,
+        "action": action,
+    }
+
+
+def _sentiment_label(score: float) -> str:
+    """Convert numeric sentiment to human label."""
+    if score >= 0.7:
+        return "very_positive"
+    if score >= 0.3:
+        return "positive"
+    if score >= -0.3:
+        return "neutral"
+    if score >= -0.7:
+        return "negative"
+    return "very_negative"
+
+
+# ─── RESEARCH CONTRADICTION FEEDBACK ────────────────────────────
+# When a prospect replies with information that contradicts our research
+# (e.g., "we don't use Selenium"), this records the correction so future
+# research and scoring for similar prospects can be adjusted.
+
+def record_research_correction(contact_id: str, field: str, original_value: str,
+                                corrected_value: str, source: str = "reply",
+                                confidence: float = 0.9) -> dict:
+    """Record a research contradiction for feedback.
+
+    When a prospect says something that contradicts our research artifact
+    (e.g., "we actually use Playwright, not Selenium"), this records the
+    correction for future reference.
+
+    Args:
+        contact_id: The contact whose research needs correction.
+        field: The research field being corrected (e.g., "tech_stack", "pain", "industry").
+        original_value: What we thought was true.
+        corrected_value: What the prospect told us.
+        source: How we learned this ("reply", "call_notes", "manual").
+        confidence: How confident we are in the correction (0-1).
+
+    Returns:
+        {"correction_id": str, "impact": dict}
+    """
+    conn = models.get_db()
+    correction_id = models.gen_id("cor")
+    now = datetime.utcnow().isoformat()
+
+    # Store in audit_log as a structured correction
+    conn.execute("""
+        INSERT INTO audit_log (table_name, record_id, action, changed_by,
+            old_values, new_values, timestamp)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, (
+        "research_corrections",
+        contact_id,
+        "correction",
+        source,
+        json.dumps({"field": field, "value": original_value}),
+        json.dumps({"field": field, "value": corrected_value,
+                    "confidence": confidence}),
+        now,
+    ))
+    conn.commit()
+
+    # Assess impact: how many other contacts might be affected?
+    impact = _assess_correction_impact(conn, field, original_value)
+
+    conn.close()
+
+    return {
+        "correction_id": correction_id,
+        "contact_id": contact_id,
+        "field": field,
+        "original": original_value,
+        "corrected": corrected_value,
+        "source": source,
+        "impact": impact,
+    }
+
+
+def _assess_correction_impact(conn, field: str, original_value: str) -> dict:
+    """Assess how many other contacts might be affected by this correction."""
+    impact = {"affected_contacts": 0, "recommendation": ""}
+
+    if field == "tech_stack":
+        # How many other contacts at this company or with this tool?
+        rows = conn.execute("""
+            SELECT COUNT(*) FROM accounts
+            WHERE known_tools LIKE ?
+        """, (f"%{original_value}%",)).fetchone()
+        impact["affected_contacts"] = rows[0] if rows else 0
+        if impact["affected_contacts"] > 0:
+            impact["recommendation"] = (
+                f"Review {impact['affected_contacts']} other accounts with "
+                f"'{original_value}' in known_tools"
+            )
+
+    elif field == "pain":
+        impact["recommendation"] = "Consider adjusting pain hypothesis confidence for similar prospects"
+
+    elif field == "industry":
+        rows = conn.execute("""
+            SELECT COUNT(*) FROM accounts WHERE LOWER(industry) = LOWER(?)
+        """, (original_value,)).fetchone()
+        impact["affected_contacts"] = rows[0] if rows else 0
+        if impact["affected_contacts"] > 0:
+            impact["recommendation"] = (
+                f"Verify industry classification for {impact['affected_contacts']} "
+                f"accounts classified as '{original_value}'"
+            )
+
+    return impact
+
+
+def get_research_corrections(contact_id: str = None, days: int = 90) -> list:
+    """Get research corrections, optionally filtered by contact.
+
+    Returns:
+        List of correction dicts sorted by recency.
+    """
+    conn = models.get_db()
+    cutoff = (datetime.utcnow() - timedelta(days=days)).isoformat()
+
+    query = """
+        SELECT * FROM audit_log
+        WHERE table_name = 'research_corrections'
+        AND action = 'correction'
+        AND timestamp >= ?
+    """
+    params = [cutoff]
+
+    if contact_id:
+        query += " AND record_id = ?"
+        params.append(contact_id)
+
+    query += " ORDER BY timestamp DESC"
+    rows = conn.execute(query, params).fetchall()
+    conn.close()
+
+    corrections = []
+    for row in rows:
+        r = dict(row)
+        old = json.loads(r.get("old_values", "{}"))
+        new = json.loads(r.get("new_values", "{}"))
+        corrections.append({
+            "contact_id": r["record_id"],
+            "field": old.get("field", ""),
+            "original": old.get("value", ""),
+            "corrected": new.get("value", ""),
+            "confidence": new.get("confidence", 0),
+            "source": r.get("changed_by", ""),
+            "timestamp": r.get("timestamp", ""),
+        })
+
+    return corrections
+
+
+def detect_contradictions_in_reply(reply_text: str, artifact: dict) -> list:
+    """Detect potential research contradictions in a reply.
+
+    Scans the reply for statements that might contradict our research.
+    Returns potential contradictions for human review.
+
+    Args:
+        reply_text: The raw reply text.
+        artifact: The ResearchArtifact for this prospect.
+
+    Returns:
+        List of {"field": str, "our_assumption": str, "reply_suggests": str,
+                 "confidence": float}
+    """
+    contradictions = []
+    text_lower = reply_text.lower()
+
+    # Check tech stack contradictions
+    tech_stack = artifact.get("signals", {}).get("tech_stack", [])
+    for item in tech_stack:
+        tool = item.get("value", "") if isinstance(item, dict) else str(item)
+        tool_lower = tool.lower()
+
+        # "We don't use X" pattern
+        negation_patterns = [
+            f"don't use {tool_lower}", f"do not use {tool_lower}",
+            f"not using {tool_lower}", f"stopped using {tool_lower}",
+            f"moved away from {tool_lower}", f"migrated from {tool_lower}",
+            f"no longer use {tool_lower}",
+        ]
+        if any(pattern in text_lower for pattern in negation_patterns):
+            contradictions.append({
+                "field": "tech_stack",
+                "our_assumption": f"Uses {tool}",
+                "reply_suggests": f"Does not use {tool}",
+                "confidence": 0.8,
+            })
+
+        # "We actually use Y (not X)" pattern
+        competitor_tools = ["selenium", "cypress", "playwright", "tosca",
+                           "katalon", "testim", "mabl"]
+        for other_tool in competitor_tools:
+            if other_tool != tool_lower and other_tool in text_lower:
+                if f"we use {other_tool}" in text_lower or f"using {other_tool}" in text_lower:
+                    contradictions.append({
+                        "field": "tech_stack",
+                        "our_assumption": f"Uses {tool}",
+                        "reply_suggests": f"Actually uses {other_tool.title()}",
+                        "confidence": 0.7,
+                    })
+
+    # Check role/responsibility contradictions
+    if any(phrase in text_lower for phrase in ["wrong person", "not my area",
+                                                "don't handle", "not responsible",
+                                                "try reaching"]):
+        contradictions.append({
+            "field": "role_fit",
+            "our_assumption": f"Responsible for test automation decisions",
+            "reply_suggests": "May not be the right contact",
+            "confidence": 0.7,
+        })
+
+    return contradictions
+
+
 def generate_feedback_report(days: int = 90) -> str:
     """Generate a human-readable feedback report.
 

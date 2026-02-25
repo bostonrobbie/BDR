@@ -217,6 +217,292 @@ def map_objection(research_context: dict) -> dict:
     }
 
 
+# ─── DYNAMIC SUBJECT LINE GENERATION ────────────────────────
+# Generates multiple subject line styles per variant, each scored.
+# Styles: question, metric-led, curiosity, personalized, direct.
+
+SUBJECT_STYLES = {
+    "question": "Question about their specific challenge",
+    "metric_led": "Leads with a compelling number",
+    "curiosity": "Creates intrigue without giving away the ask",
+    "personalized": "References their name, company, or role",
+    "direct": "Straightforward value proposition",
+}
+
+
+def generate_subject_lines(artifact: dict, pain_label: str, pp: dict,
+                            tone: str = "friendly", max_chars: int = 80) -> list:
+    """Generate 5 scored subject line variants in different styles.
+
+    Each subject line is designed for a different psychological trigger:
+    - Question: invites mental engagement
+    - Metric-led: creates credibility
+    - Curiosity: creates information gap
+    - Personalized: signals relevance
+    - Direct: respects inbox scanning
+
+    Args:
+        artifact: ResearchArtifact dict.
+        pain_label: Short pain label (e.g. "test maintenance").
+        pp: Proof point dict.
+        tone: Message tone.
+        max_chars: Maximum subject line length.
+
+    Returns:
+        List of {"style": str, "subject": str, "score": float, "reasons": list}
+        sorted by score descending.
+    """
+    prospect = artifact.get("prospect", {})
+    first_name = prospect.get("full_name", "").split()[0] if prospect.get("full_name") else ""
+    company = prospect.get("company_name", "")
+    title = prospect.get("title", "")
+    func = _function_label(title)
+    metric = pp.get("metric", "")
+
+    subjects = []
+
+    # 1. Question style
+    q_options = [
+        f"How does {company} handle {pain_label}?",
+        f"Quick question for {first_name}",
+        f"{pain_label.capitalize()} at {company}?",
+    ]
+    q_subj = _pick_best_fit(q_options, max_chars)
+    q_score, q_reasons = _score_subject(q_subj, first_name, company, metric)
+    subjects.append({"style": "question", "subject": q_subj,
+                     "score": q_score, "reasons": q_reasons})
+
+    # 2. Metric-led style
+    if metric:
+        m_options = [
+            f"{metric} - relevant for {company}?",
+            f"{metric} (how {pp.get('short', '').split(',')[0]} did it)",
+        ]
+    else:
+        m_options = [f"A thought on {pain_label} at {company}"]
+    m_subj = _pick_best_fit(m_options, max_chars)
+    m_score, m_reasons = _score_subject(m_subj, first_name, company, metric)
+    subjects.append({"style": "metric_led", "subject": m_subj,
+                     "score": m_score, "reasons": m_reasons})
+
+    # 3. Curiosity style
+    c_options = [
+        f"Thought for {first_name} re: {pain_label}",
+        f"Something {company}'s {func} team might find useful",
+        f"An idea for {company}",
+    ]
+    c_subj = _pick_best_fit(c_options, max_chars)
+    c_score, c_reasons = _score_subject(c_subj, first_name, company, metric)
+    subjects.append({"style": "curiosity", "subject": c_subj,
+                     "score": c_score, "reasons": c_reasons})
+
+    # 4. Personalized style
+    p_options = [
+        f"{first_name} - {func} at {company}",
+        f"{company}'s {func} team",
+        f"For {first_name} at {company}",
+    ]
+    p_subj = _pick_best_fit(p_options, max_chars)
+    p_score, p_reasons = _score_subject(p_subj, first_name, company, metric)
+    subjects.append({"style": "personalized", "subject": p_subj,
+                     "score": p_score, "reasons": p_reasons})
+
+    # 5. Direct style
+    d_options = [
+        f"{pain_label.capitalize()} at {company}",
+        f"{func} challenge at {company}",
+    ]
+    d_subj = _pick_best_fit(d_options, max_chars)
+    d_score, d_reasons = _score_subject(d_subj, first_name, company, metric)
+    subjects.append({"style": "direct", "subject": d_subj,
+                     "score": d_score, "reasons": d_reasons})
+
+    # Sort by score descending
+    subjects.sort(key=lambda s: s["score"], reverse=True)
+    return subjects
+
+
+def _pick_best_fit(options: list, max_chars: int) -> str:
+    """Pick the longest option that fits within max_chars."""
+    fitting = [o for o in options if len(o) <= max_chars]
+    if fitting:
+        return max(fitting, key=len)
+    # Truncate the shortest option
+    return options[0][:max_chars]
+
+
+def _score_subject(subject: str, first_name: str, company: str,
+                    metric: str) -> tuple:
+    """Score a subject line on 0-1 scale.
+
+    Factors: length, personalization, metric presence, question mark.
+    Returns (score, reasons).
+    """
+    score = 0.5
+    reasons = []
+
+    # Length: 30-60 chars is ideal
+    length = len(subject)
+    if 30 <= length <= 60:
+        score += 0.1
+        reasons.append("Good length (30-60 chars)")
+    elif length > 80:
+        score -= 0.1
+        reasons.append("Too long for preview")
+    elif length < 15:
+        score -= 0.1
+        reasons.append("Too short")
+
+    # Personalization
+    if first_name and first_name in subject:
+        score += 0.15
+        reasons.append("Contains first name")
+    if company and company in subject:
+        score += 0.1
+        reasons.append("Contains company name")
+
+    # Metric
+    if metric and any(m in subject for m in metric.split(",")):
+        score += 0.1
+        reasons.append("Contains metric")
+
+    # Question mark (curiosity)
+    if "?" in subject:
+        score += 0.05
+        reasons.append("Question format")
+
+    return max(0.0, min(1.0, round(score, 2))), reasons
+
+
+# ─── OBJECTION-AWARE MESSAGING ───────────────────────────────
+# Predicts likely objections from the artifact and generates preemptive
+# phrases that can be woven into message bodies. This inoculates against
+# the prospect's gut reaction before they even raise it.
+
+def predict_objection_from_artifact(artifact: dict) -> dict:
+    """Predict the most likely objection based on research artifact signals.
+
+    Uses tech stack, seniority, company size, and industry to predict
+    what the prospect will think when they see an outreach message.
+
+    Returns:
+        {"objection_key": str, "objection": str, "preemptive_phrases": {...}}
+        where preemptive_phrases is keyed by tone.
+    """
+    tech_stack = artifact.get("signals", {}).get("tech_stack", [])
+    tools = [t.get("value", "").lower() if isinstance(t, dict) else str(t).lower()
+             for t in tech_stack]
+    seniority = artifact.get("prospect", {}).get("seniority", "").lower()
+    industry = artifact.get("company", {}).get("industry", "").lower()
+    size_band = artifact.get("company", {}).get("size_band", "")
+    company_name = artifact.get("prospect", {}).get("company_name", "")
+
+    competitor_tools = {"selenium", "cypress", "playwright", "tosca", "katalon", "testim", "mabl"}
+    has_competitor = any(t in competitor_tools for t in tools)
+    primary_tool = next((t for t in tools if t in competitor_tools), "")
+
+    # Priority order for objection prediction
+    if has_competitor and primary_tool:
+        return {
+            "objection_key": "existing_tool",
+            "objection": f"We already use {primary_tool.title()}",
+            "tool": primary_tool.title(),
+            "preemptive_phrases": {
+                "friendly": f"I know you've invested in {primary_tool.title()} already, which is actually why I'm reaching out",
+                "direct": f"Not suggesting you rip out {primary_tool.title()}",
+                "curious": f"Curious if {primary_tool.title()} handles everything you need at {company_name}'s scale",
+            },
+        }
+
+    if size_band in ("10001-50000", "50000+"):
+        return {
+            "objection_key": "large_enterprise",
+            "objection": "Security/procurement is complex",
+            "tool": "",
+            "preemptive_phrases": {
+                "friendly": "We run on-prem and private cloud for several Fortune 500 teams, so security shouldn't be a blocker",
+                "direct": "SOC2 and ISO certified, with on-prem deployment if needed",
+                "curious": "Curious how {company_name} handles vendor evaluation for dev tools".format(company_name=company_name),
+            },
+        }
+
+    if any(v in industry for v in ["pharma", "healthcare", "finance", "banking", "insurance"]):
+        return {
+            "objection_key": "compliance",
+            "objection": "Compliance requirements are strict",
+            "tool": "",
+            "preemptive_phrases": {
+                "friendly": "We already work with teams in regulated {ind} environments, so compliance isn't new territory for us".format(ind=industry.split("/")[0].strip()),
+                "direct": "Built for regulated environments with full audit trails",
+                "curious": "Curious how your compliance requirements shape your test automation decisions",
+            },
+        }
+
+    if seniority in ("individual", "senior") and "qa" not in artifact.get("prospect", {}).get("function", "").lower():
+        return {
+            "objection_key": "not_decision_maker",
+            "objection": "I'm not the right person",
+            "tool": "",
+            "preemptive_phrases": {
+                "friendly": "Even if this isn't your call directly, your perspective on the problem would be really valuable",
+                "direct": "Would love your technical take, even if someone else owns the budget",
+                "curious": "Not sure if this lands on your plate or someone else's",
+            },
+        }
+
+    # Default: budget/timing
+    return {
+        "objection_key": "budget_timing",
+        "objection": "Not the right time/budget",
+        "tool": "",
+        "preemptive_phrases": {
+            "friendly": "No rush on timing",
+            "direct": "Even if now isn't the right time, worth having the data point",
+            "curious": "Curious if this is even on your radar right now",
+        },
+    }
+
+
+def build_objection_aware_bridge(objection: dict, tone: str, pp_text: str) -> str:
+    """Build a bridge phrase that preemptively addresses the predicted objection.
+
+    Weaves the objection inoculation naturally into the proof-point-to-CTA
+    transition. Returns empty string if no natural integration is possible.
+
+    Args:
+        objection: Output from predict_objection_from_artifact().
+        tone: Message tone (friendly/direct/curious).
+        pp_text: The proof point text being used.
+
+    Returns:
+        A short clause to insert after the proof point.
+    """
+    key = objection.get("objection_key", "")
+    tool = objection.get("tool", "")
+
+    if key == "existing_tool" and tool:
+        if tone == "friendly":
+            return f" (they were on {tool} before, too)"
+        elif tone == "direct":
+            return f" after switching from {tool}"
+        else:
+            return f" - they had a similar {tool} setup"
+
+    if key == "compliance":
+        if tone == "friendly":
+            return " in a similarly regulated environment"
+        elif tone == "direct":
+            return " with full compliance requirements"
+        return ""
+
+    if key == "large_enterprise":
+        if tone == "direct":
+            return " at enterprise scale"
+        return ""
+
+    return ""
+
+
 # ─── MESSAGE GENERATION PROMPTS ───────────────────────────────
 
 def build_touch1_prompt(contact: dict, research: dict, proof_point: dict,
@@ -1259,6 +1545,9 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
     pp_secondary = _select_best_proof_point(artifact, product_config,
                                              exclude_keys=[pp_primary["key"]])
 
+    # Predict likely objection for this prospect
+    predicted_objection = predict_objection_from_artifact(artifact)
+
     tones = ["friendly", "direct", "curious"]
     variants = []
 
@@ -1277,7 +1566,9 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
 
         # Build integrated closing pieces
         pp_text = pp.get("text", "")
-        bridge = _bridge_phrase(pp_text, artifact, tools)
+        # Use objection-aware bridge when possible, fall back to standard
+        obj_bridge = build_objection_aware_bridge(predicted_objection, tone, pp_text)
+        bridge = obj_bridge if obj_bridge else _bridge_phrase(pp_text, artifact, tools)
         cta = _connected_cta(tier, tone, seniority, company_name, competitor)
         soft = _build_soft_ask(tier, tone)
         signoff = _build_signoff(tone, sender)
@@ -1359,6 +1650,8 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
             "proof_point_key": pp.get("key", ""),
             "cta": cta,
             "pain_hook": raw_pain,
+            "predicted_objection": predicted_objection.get("objection", ""),
+            "objection_key": predicted_objection.get("objection_key", ""),
             "char_count": len(body),
             "word_count": len(body.split()),
         })

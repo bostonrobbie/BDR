@@ -5,8 +5,10 @@ Feature-based scoring (0-100) from ResearchArtifact with explanation objects.
 """
 
 import json
+import math
 import sys
 import os
+from datetime import datetime, timedelta
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 from src.db import models
@@ -30,6 +32,84 @@ def load_scoring_config(path: str = None) -> dict:
     except (FileNotFoundError, json.JSONDecodeError):
         _cached_config = _default_config()
     return _cached_config
+
+
+def compute_decay_factor(signal_age_days: float, half_life_days: float,
+                          min_factor: float = 0.1) -> float:
+    """Compute exponential decay factor for a signal based on its age.
+
+    Uses half-life decay: factor = 0.5 ^ (age / half_life)
+    A 90-day-old signal with a 90-day half-life contributes 50%.
+    A 180-day-old signal with a 90-day half-life contributes 25%.
+
+    Args:
+        signal_age_days: How old the signal is in days.
+        half_life_days: Number of days until the signal is worth 50%.
+        min_factor: Floor so signals never fully vanish (default 0.1 = 10%).
+
+    Returns:
+        Float between min_factor and 1.0.
+    """
+    if half_life_days <= 0 or signal_age_days <= 0:
+        return 1.0
+    factor = math.pow(0.5, signal_age_days / half_life_days)
+    return max(min_factor, round(factor, 4))
+
+
+def get_signal_age_days(signal: dict, reference_date: str = None) -> float:
+    """Get the age of a signal in days.
+
+    Looks for 'detected_at', 'created_at', or 'timestamp' fields.
+    Returns 0 if no date found (treats as fresh).
+    """
+    ref = datetime.utcnow()
+    if reference_date:
+        try:
+            ref = datetime.fromisoformat(reference_date.replace("Z", "+00:00")).replace(tzinfo=None)
+        except (ValueError, TypeError):
+            pass
+
+    for date_field in ("detected_at", "created_at", "timestamp"):
+        date_str = signal.get(date_field, "")
+        if date_str:
+            try:
+                sig_date = datetime.fromisoformat(date_str.replace("Z", "+00:00")).replace(tzinfo=None)
+                return max(0, (ref - sig_date).total_seconds() / 86400)
+            except (ValueError, TypeError):
+                continue
+    return 0  # No date found, treat as fresh
+
+
+def apply_signal_decay(base_score: float, signal_type: str, signal: dict,
+                        decay_config: dict = None, reference_date: str = None) -> tuple:
+    """Apply decay to a signal's score contribution.
+
+    Args:
+        base_score: The raw score this signal would contribute.
+        signal_type: Type key matching decay_config half_lives.
+        signal: The signal dict (needs a date field for age calculation).
+        decay_config: Decay config from scoring_weights.json.
+        reference_date: Optional reference date (default: now).
+
+    Returns:
+        (decayed_score, decay_factor, age_days)
+    """
+    if not decay_config:
+        return base_score, 1.0, 0
+
+    half_lives = decay_config.get("half_lives", {})
+    min_factor = decay_config.get("min_factor", 0.1)
+    half_life = half_lives.get(signal_type, 0)
+
+    if half_life <= 0:
+        return base_score, 1.0, 0
+
+    age_days = get_signal_age_days(signal, reference_date)
+    if age_days <= 0:
+        return base_score, 1.0, 0
+
+    factor = compute_decay_factor(age_days, half_life, min_factor)
+    return round(base_score * factor, 2), factor, round(age_days, 1)
 
 
 def _default_config() -> dict:
@@ -64,11 +144,13 @@ def score_from_artifact(artifact: dict, config: dict = None) -> dict:
     config = config or load_scoring_config()
     features_cfg = config.get("features", {})
     thresholds = config.get("thresholds", {"hot": 70, "warm": 45, "cool": 25, "cold": 0})
+    decay_config = config.get("signal_decay", None)
 
     feature_scores = {}
     feature_weights = {}
     reasons = []
     missing_data = []
+    decay_applied = []
 
     prospect = artifact.get("prospect", {})
     company = artifact.get("company", {})
@@ -231,6 +313,12 @@ def score_from_artifact(artifact: dict, config: dict = None) -> dict:
         pc_score += pc_scoring.get("has_pain_hypothesis_medium_conf", 3)
         reasons.append(f"Medium-confidence pain hypothesis (+{pc_scoring.get('has_pain_hypothesis_medium_conf', 3)})")
 
+    # Pain specificity bonus: reward detailed, specific pains over generic ones
+    pain_specificity = score_pain_specificity(hypothesized)
+    if pain_specificity["specificity_bonus"] > 0:
+        pc_score += pain_specificity["specificity_bonus"]
+        reasons.append(f"Pain specificity bonus (+{pain_specificity['specificity_bonus']}, {pain_specificity['best_pain_label']})")
+
     # Check for hiring signal in triggers
     triggers = signals.get("triggers", [])
     has_hiring = any("hiring" in (t.get("value", "") if isinstance(t, dict) else str(t)).lower()
@@ -255,22 +343,42 @@ def score_from_artifact(artifact: dict, config: dict = None) -> dict:
         val = sig.get("value", "") if isinstance(sig, dict) else str(sig)
         val_lower = val.lower()
         if "buyer intent" in val_lower:
-            is_score += is_scoring.get("buyer_intent_flag", 8)
-            reasons.append(f"Buyer intent flag detected (+{is_scoring.get('buyer_intent_flag', 8)})")
+            raw = is_scoring.get("buyer_intent_flag", 8)
+            decayed, factor, age = apply_signal_decay(raw, "buyer_intent_flag", sig if isinstance(sig, dict) else {}, decay_config)
+            is_score += decayed
+            reasons.append(f"Buyer intent flag detected (+{decayed})")
+            if factor < 1.0:
+                decay_applied.append({"signal": "buyer_intent_flag", "factor": factor, "age_days": age})
         if "recently" in val_lower or "new to role" in val_lower:
-            is_score += is_scoring.get("recently_hired", 5)
-            reasons.append(f"Recently hired signal (+{is_scoring.get('recently_hired', 5)})")
+            raw = is_scoring.get("recently_hired", 5)
+            decayed, factor, age = apply_signal_decay(raw, "recently_hired", sig if isinstance(sig, dict) else {}, decay_config)
+            is_score += decayed
+            reasons.append(f"Recently hired signal (+{decayed})")
+            if factor < 1.0:
+                decay_applied.append({"signal": "recently_hired", "factor": factor, "age_days": age})
 
     for trig in triggers:
         val = trig.get("value", "") if isinstance(trig, dict) else str(trig)
         val_lower = val.lower()
         if "funding" in val_lower:
-            is_score += is_scoring.get("funding_event", 4)
-            reasons.append(f"Funding event trigger (+{is_scoring.get('funding_event', 4)})")
+            raw = is_scoring.get("funding_event", 4)
+            decayed, factor, age = apply_signal_decay(raw, "funding_event", trig if isinstance(trig, dict) else {}, decay_config)
+            is_score += decayed
+            reasons.append(f"Funding event trigger (+{decayed})")
+            if factor < 1.0:
+                decay_applied.append({"signal": "funding_event", "factor": factor, "age_days": age})
         if "digital transformation" in val_lower:
-            is_score += is_scoring.get("digital_transformation", 5)
+            raw = is_scoring.get("digital_transformation", 5)
+            decayed, factor, age = apply_signal_decay(raw, "digital_transformation", trig if isinstance(trig, dict) else {}, decay_config)
+            is_score += decayed
+            if factor < 1.0:
+                decay_applied.append({"signal": "digital_transformation", "factor": factor, "age_days": age})
         if "compliance" in val_lower:
-            is_score += is_scoring.get("compliance_trigger", 3)
+            raw = is_scoring.get("compliance_trigger", 3)
+            decayed, factor, age = apply_signal_decay(raw, "compliance_trigger", trig if isinstance(trig, dict) else {}, decay_config)
+            is_score += decayed
+            if factor < 1.0:
+                decay_applied.append({"signal": "compliance_trigger", "factor": factor, "age_days": age})
 
     is_score = min(is_score, is_max)
     feature_scores["intent_signal"] = is_score
@@ -336,10 +444,255 @@ def score_from_artifact(artifact: dict, config: dict = None) -> dict:
         "feature_weights": feature_weights,
         "reasons": reasons,
         "missing_data": missing_data,
+        "decay_applied": decay_applied,
     }
 
 
-# ─── ICP SCORING (0-12) — LEGACY ─────────────────────────────────
+# ─── PAIN SPECIFICITY SCORING ────────────────────────────────────
+
+# Specificity indicators: these signal the pain description is detailed
+# and grounded, not a generic placeholder
+SPECIFICITY_KEYWORDS = {
+    "tool_names": ["selenium", "cypress", "playwright", "tosca", "katalon",
+                   "testim", "mabl", "jenkins", "browserstack", "appium"],
+    "team_context": ["ui layer", "api layer", "mobile", "regression suite",
+                     "ci/cd", "pipeline", "sprint", "release cycle", "deploy"],
+    "quantified": ["hours", "minutes", "days", "weeks", "%", "percent",
+                   "x faster", "x slower"],
+    "workflow": ["checkout", "payment", "onboarding", "compliance",
+                 "policy", "claims", "enrollment", "billing"],
+}
+
+
+def score_pain_specificity(pains: list) -> dict:
+    """Score pain hypotheses for specificity and depth.
+
+    Generic: 'test maintenance overhead' -> 0 bonus
+    Specific: 'Flaky Selenium tests in the payment checkout flow' -> +2 bonus
+
+    Evaluates: tool name mentions, team/layer context, quantified terms,
+    workflow-specific references, and evidence backing.
+
+    Args:
+        pains: List of pain hypothesis dicts with 'pain', 'confidence', 'evidence'.
+
+    Returns:
+        {"specificity_bonus": 0-3, "best_pain_label": str,
+         "pain_scores": [...]}
+    """
+    if not pains:
+        return {"specificity_bonus": 0, "best_pain_label": "none",
+                "pain_scores": []}
+
+    pain_scores = []
+    for p in pains:
+        pain_text = p.get("pain", "").lower()
+        evidence = p.get("evidence", "").lower()
+        confidence = p.get("confidence", 0)
+        spec_score = 0
+        indicators = []
+
+        # Tool name specificity
+        for tool in SPECIFICITY_KEYWORDS["tool_names"]:
+            if tool in pain_text:
+                spec_score += 1
+                indicators.append(f"tool:{tool}")
+                break
+
+        # Team/layer context
+        for ctx in SPECIFICITY_KEYWORDS["team_context"]:
+            if ctx in pain_text:
+                spec_score += 1
+                indicators.append(f"context:{ctx}")
+                break
+
+        # Quantified impact
+        for q in SPECIFICITY_KEYWORDS["quantified"]:
+            if q in pain_text:
+                spec_score += 1
+                indicators.append(f"quantified:{q}")
+                break
+
+        # Workflow specificity
+        for wf in SPECIFICITY_KEYWORDS["workflow"]:
+            if wf in pain_text:
+                spec_score += 1
+                indicators.append(f"workflow:{wf}")
+                break
+
+        # Evidence-backed pains are more specific
+        has_real_evidence = evidence and evidence != "unknown - hypothesis only"
+        if has_real_evidence and confidence >= 0.7:
+            spec_score += 1
+            indicators.append("evidence_backed")
+
+        pain_scores.append({
+            "pain": p.get("pain", ""),
+            "specificity_score": spec_score,
+            "indicators": indicators,
+        })
+
+    # Best pain determines the bonus
+    best = max(pain_scores, key=lambda x: x["specificity_score"])
+    # Map specificity score to bonus: 3+ indicators = +3, 2 = +2, 1 = +1, 0 = 0
+    bonus = min(3, best["specificity_score"])
+
+    return {
+        "specificity_bonus": bonus,
+        "best_pain_label": best["pain"][:50] if best["pain"] else "generic",
+        "pain_scores": pain_scores,
+    }
+
+
+# ─── SCORING WEIGHT A/B TESTING ──────────────────────────────────
+
+def compare_weight_configs(artifacts: list, config_a: dict, config_b: dict,
+                            labels: tuple = ("config_A", "config_B")) -> dict:
+    """Compare two scoring weight configs by replaying artifacts through both.
+
+    Takes a list of ResearchArtifacts and scores each with both configs.
+    Returns tier distribution, score deltas, and which contacts switch tiers.
+
+    Args:
+        artifacts: List of ResearchArtifact dicts.
+        config_a: First scoring config dict.
+        config_b: Second scoring config dict.
+        labels: Names for the two configs (for readability).
+
+    Returns:
+        {"summary": {...}, "tier_shifts": [...], "score_deltas": [...],
+         "tier_distribution_a": {...}, "tier_distribution_b": {...}}
+    """
+    results_a = []
+    results_b = []
+    tier_shifts = []
+    score_deltas = []
+
+    for artifact in artifacts:
+        score_a = score_from_artifact(artifact, config_a)
+        score_b = score_from_artifact(artifact, config_b)
+        results_a.append(score_a)
+        results_b.append(score_b)
+
+        name = artifact.get("prospect", {}).get("full_name", "unknown")
+        delta = score_b["total_score"] - score_a["total_score"]
+        score_deltas.append({
+            "prospect": name,
+            "score_a": score_a["total_score"],
+            "score_b": score_b["total_score"],
+            "delta": delta,
+            "tier_a": score_a["tier"],
+            "tier_b": score_b["tier"],
+        })
+
+        if score_a["tier"] != score_b["tier"]:
+            tier_shifts.append({
+                "prospect": name,
+                "from_tier": score_a["tier"],
+                "to_tier": score_b["tier"],
+                "score_a": score_a["total_score"],
+                "score_b": score_b["total_score"],
+            })
+
+    # Tier distributions
+    dist_a = _tier_distribution(results_a)
+    dist_b = _tier_distribution(results_b)
+
+    # Score statistics
+    scores_a = [r["total_score"] for r in results_a]
+    scores_b = [r["total_score"] for r in results_b]
+
+    return {
+        "labels": labels,
+        "contact_count": len(artifacts),
+        "summary": {
+            "mean_score_a": round(sum(scores_a) / max(len(scores_a), 1), 1),
+            "mean_score_b": round(sum(scores_b) / max(len(scores_b), 1), 1),
+            "mean_delta": round(sum(d["delta"] for d in score_deltas) / max(len(score_deltas), 1), 1),
+            "tier_shift_count": len(tier_shifts),
+            "tier_shift_pct": round(len(tier_shifts) / max(len(artifacts), 1) * 100, 1),
+        },
+        "tier_distribution_a": dist_a,
+        "tier_distribution_b": dist_b,
+        "tier_shifts": tier_shifts,
+        "score_deltas": sorted(score_deltas, key=lambda d: abs(d["delta"]), reverse=True),
+    }
+
+
+def _tier_distribution(results: list) -> dict:
+    """Count contacts per tier."""
+    dist = {"hot": 0, "warm": 0, "cool": 0, "cold": 0}
+    for r in results:
+        tier = r.get("tier", "cold")
+        dist[tier] = dist.get(tier, 0) + 1
+    total = max(len(results), 1)
+    return {
+        tier: {"count": count, "pct": round(count / total * 100, 1)}
+        for tier, count in dist.items()
+    }
+
+
+def score_sensitivity(artifact: dict, config: dict = None) -> dict:
+    """Show how sensitive a score is to each feature.
+
+    For each feature, shows: 'if this feature were maxed out, the score
+    would increase by X and the tier would change to Y.'
+
+    Args:
+        artifact: A ResearchArtifact dict.
+        config: Scoring config.
+
+    Returns:
+        {"current": {...}, "sensitivities": [...]}
+    """
+    config = config or load_scoring_config()
+    baseline = score_from_artifact(artifact, config)
+    features_cfg = config.get("features", {})
+
+    sensitivities = []
+    for feature_name, feature_cfg in features_cfg.items():
+        max_pts = feature_cfg.get("max_points", 0)
+        current = baseline["feature_scores"].get(feature_name, 0)
+        gap = max_pts - current
+
+        if gap > 0:
+            # Score if this feature were maxed
+            hypothetical_total = baseline["total_score"] + gap
+            thresholds = config.get("thresholds", {"hot": 70, "warm": 45, "cool": 25})
+            if hypothetical_total >= thresholds.get("hot", 70):
+                hyp_tier = "hot"
+            elif hypothetical_total >= thresholds.get("warm", 45):
+                hyp_tier = "warm"
+            elif hypothetical_total >= thresholds.get("cool", 25):
+                hyp_tier = "cool"
+            else:
+                hyp_tier = "cold"
+
+            sensitivities.append({
+                "feature": feature_name,
+                "current_score": current,
+                "max_possible": max_pts,
+                "gap": gap,
+                "hypothetical_total": hypothetical_total,
+                "hypothetical_tier": hyp_tier,
+                "tier_would_change": hyp_tier != baseline["tier"],
+            })
+
+    sensitivities.sort(key=lambda s: s["gap"], reverse=True)
+
+    return {
+        "current": {
+            "total_score": baseline["total_score"],
+            "tier": baseline["tier"],
+        },
+        "sensitivities": sensitivities,
+    }
+
+
+# ─── ICP SCORING (0-12) — DEPRECATED ─────────────────────────────
+# This scoring system is superseded by score_from_artifact() (0-100 scale).
+# Kept only for backward compatibility with code that calls compute_icp_score().
+# New code should use score_from_artifact() exclusively.
 
 ICP_TITLE_MAP = {
     # Primary (3 points) - QA-titled leaders

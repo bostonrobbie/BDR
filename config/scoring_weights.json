@@ -100,5 +100,19 @@
     "warm": 45,
     "cool": 25,
     "cold": 0
+  },
+  "signal_decay": {
+    "description": "Half-life in days for each signal type. After half_life_days, a signal contributes 50% of its original score.",
+    "half_lives": {
+      "recently_hired": 90,
+      "funding_event": 365,
+      "hiring_qa": 120,
+      "digital_transformation": 180,
+      "buyer_intent_flag": 180,
+      "compliance_trigger": 365,
+      "tech_stack": 180,
+      "competitor_tool": 180
+    },
+    "min_factor": 0.1
   }
 }
