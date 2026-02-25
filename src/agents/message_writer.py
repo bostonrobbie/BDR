@@ -1254,7 +1254,8 @@ def generate_message_variants(artifact: dict, scoring_result: dict,
     tools, competitor = _get_tools_and_competitor(artifact)
 
     # Select primary + secondary proof points for variety across variants
-    pp_primary = _select_best_proof_point(artifact, product_config)
+    # Primary selection uses feedback data when available
+    pp_primary = _select_best_proof_point_with_feedback(artifact, product_config)
     pp_secondary = _select_best_proof_point(artifact, product_config,
                                              exclude_keys=[pp_primary["key"]])
 
@@ -1481,3 +1482,213 @@ def check_message_variant(variant: dict, artifact: dict,
         "passed_count": sum(1 for c in checks if c["passed"]),
         "total_checks": len(checks),
     }
+
+
+# ─── CHANNEL-SPECIFIC RENDERING ─────────────────────────────
+# LinkedIn and email have different norms. These adapters take the
+# standard variant output and reshape it for the target channel.
+
+
+# LinkedIn limits
+_LINKEDIN_INMAIL_LIMIT = 1900
+_LINKEDIN_CONNECTION_NOTE_LIMIT = 300
+_LINKEDIN_INMESSAGE_LIMIT = 600
+
+
+def render_for_channel(variant: dict, channel: str, artifact: dict = None,
+                        product_config: dict = None) -> dict:
+    """Adapt a message variant for a specific channel's norms.
+
+    LinkedIn: shorter, more casual, no "Hi Name," for connection notes,
+              subject line only for InMails, tighter char limits.
+    Email:    full treatment with subject lines, P.S. lines allowed,
+              can be longer, more formal structure.
+
+    Args:
+        variant: A variant dict from generate_message_variants().
+        channel: Target channel ("linkedin_inmail", "linkedin_connection",
+                 "linkedin_message", "email").
+        artifact: ResearchArtifact (optional, for context).
+        product_config: Product config (optional).
+
+    Returns:
+        New variant dict adapted for the channel, with channel_metadata.
+    """
+    adapted = dict(variant)  # shallow copy
+    body = variant.get("body", "")
+    first_name = ""
+    if artifact:
+        prospect = artifact.get("prospect", {})
+        first_name = prospect.get("full_name", "").split()[0] if prospect.get("full_name") else ""
+
+    if channel == "linkedin_connection":
+        adapted = _render_linkedin_connection(adapted, body, first_name)
+    elif channel == "linkedin_message":
+        adapted = _render_linkedin_message(adapted, body, first_name)
+    elif channel == "linkedin_inmail":
+        adapted = _render_linkedin_inmail(adapted, body)
+    elif channel == "email":
+        adapted = _render_email(adapted, body, product_config)
+    # Default: return as-is
+
+    adapted["channel"] = channel
+    adapted["char_count"] = len(adapted.get("body", ""))
+    adapted["word_count"] = len(adapted.get("body", "").split())
+
+    return adapted
+
+
+def _render_linkedin_connection(variant: dict, body: str, first_name: str) -> dict:
+    """Adapt for LinkedIn connection request note (300 char limit).
+
+    Connection notes are very short. Strip greeting, signoff, keep only
+    the opener + one sentence of value + soft ask.
+    """
+    # Strip greeting
+    lines = body.split("\n")
+    content_lines = []
+    past_greeting = False
+    for line in lines:
+        stripped = line.strip()
+        if not past_greeting:
+            if stripped.lower().startswith(("hi ", "hey ", "hello ")) or not stripped:
+                continue
+            past_greeting = True
+        content_lines.append(line)
+
+    content = "\n".join(content_lines).strip()
+
+    # Strip signoff (last paragraph if it's short)
+    paragraphs = [p.strip() for p in content.split("\n\n") if p.strip()]
+    if len(paragraphs) > 1:
+        last = paragraphs[-1]
+        # If last para is signoff (short, contains sender name pattern)
+        if len(last.split()) <= 5:
+            paragraphs = paragraphs[:-1]
+
+    # Take first 2 paragraphs max, join
+    short_body = "\n\n".join(paragraphs[:2])
+
+    # Truncate to limit
+    if len(short_body) > _LINKEDIN_CONNECTION_NOTE_LIMIT:
+        # Find a clean break point
+        short_body = _truncate_cleanly(short_body, _LINKEDIN_CONNECTION_NOTE_LIMIT)
+
+    variant["body"] = short_body
+    variant["subject_lines"] = []  # No subject line for connection requests
+    variant["channel_metadata"] = {
+        "format": "connection_note",
+        "char_limit": _LINKEDIN_CONNECTION_NOTE_LIMIT,
+        "greeting_stripped": True,
+        "signoff_stripped": True,
+    }
+    return variant
+
+
+def _render_linkedin_message(variant: dict, body: str, first_name: str) -> dict:
+    """Adapt for LinkedIn direct message (600 char limit, casual)."""
+    # Keep greeting but ensure it's casual
+    if body.startswith(f"Hi {first_name},"):
+        body = body.replace(f"Hi {first_name},", f"Hey {first_name},", 1)
+
+    # Strip P.S. lines
+    if "P.S." in body:
+        body = body[:body.index("P.S.")].rstrip()
+
+    # Truncate if over limit
+    if len(body) > _LINKEDIN_INMESSAGE_LIMIT:
+        body = _truncate_cleanly(body, _LINKEDIN_INMESSAGE_LIMIT)
+
+    variant["body"] = body
+    variant["subject_lines"] = []  # No subject line for DMs
+    variant["channel_metadata"] = {
+        "format": "direct_message",
+        "char_limit": _LINKEDIN_INMESSAGE_LIMIT,
+    }
+    return variant
+
+
+def _render_linkedin_inmail(variant: dict, body: str) -> dict:
+    """Adapt for LinkedIn InMail (1900 char limit, has subject line)."""
+    # InMail is the closest to the standard output, just enforce limit
+    if len(body) > _LINKEDIN_INMAIL_LIMIT:
+        body = _truncate_cleanly(body, _LINKEDIN_INMAIL_LIMIT)
+
+    variant["body"] = body
+    variant["channel_metadata"] = {
+        "format": "inmail",
+        "char_limit": _LINKEDIN_INMAIL_LIMIT,
+    }
+    return variant
+
+
+def _render_email(variant: dict, body: str, product_config: dict = None) -> dict:
+    """Adapt for email (1200 char limit, full formatting allowed)."""
+    product_config = product_config or _load_product_config()
+    max_chars = product_config.get("max_chars", {}).get("email", 1200)
+
+    if len(body) > max_chars:
+        body = _truncate_cleanly(body, max_chars)
+
+    variant["body"] = body
+    variant["channel_metadata"] = {
+        "format": "email",
+        "char_limit": max_chars,
+    }
+    return variant
+
+
+def _truncate_cleanly(text: str, limit: int) -> str:
+    """Truncate text to limit at a clean sentence or word boundary."""
+    if len(text) <= limit:
+        return text
+
+    # Try to break at last sentence boundary before limit
+    truncated = text[:limit]
+    for end_char in [".\n", ". ", ".\n\n"]:
+        last_period = truncated.rfind(end_char)
+        if last_period > limit * 0.6:  # At least 60% of content
+            return text[:last_period + 1].rstrip()
+
+    # Fall back to last space
+    last_space = truncated.rfind(" ")
+    if last_space > limit * 0.7:
+        return text[:last_space].rstrip()
+
+    return truncated.rstrip()
+
+
+# ─── FEEDBACK-INFORMED PROOF POINT SELECTION ──────────────────
+
+def _select_best_proof_point_with_feedback(artifact: dict, product_config: dict,
+                                             exclude_keys: list = None) -> dict:
+    """Select best proof point, biased by feedback data when available.
+
+    Checks the feedback tracker for winning proof points. If there's
+    enough data and a clear winner, biases toward it. Otherwise falls
+    back to the standard selection logic.
+
+    Args:
+        artifact: ResearchArtifact.
+        product_config: Product config with proof points.
+        exclude_keys: Proof point keys to exclude (for rotation).
+
+    Returns:
+        Proof point dict with key, text, short, etc.
+    """
+    exclude_keys = exclude_keys or []
+
+    # Try to get feedback-informed preference
+    try:
+        from src.agents.feedback_tracker import get_proof_point_preference
+        preferred = get_proof_point_preference(min_sample=5, days=90)
+
+        if preferred and preferred not in exclude_keys:
+            proof_points = product_config.get("proof_points", PROOF_POINTS)
+            if preferred in proof_points:
+                return {"key": preferred, **proof_points[preferred]}
+    except Exception:
+        pass  # Feedback system unavailable, fall through to standard logic
+
+    # Standard selection
+    return _select_best_proof_point(artifact, product_config, exclude_keys)

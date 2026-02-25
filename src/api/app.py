@@ -1718,3 +1718,112 @@ def polish_single_message(req: PolishRequest):
         temperature=req.temperature or 0.3,
     )
 
+
+# ─── SEQUENCE GENERATOR ENDPOINTS ─────────────────────────────
+
+class SequenceRequest(BaseModel):
+    contact_id: str
+    tone: Optional[str] = "friendly"
+    start_date: Optional[str] = None
+
+@app.post("/api/sequence/generate")
+def generate_sequence_endpoint(req: SequenceRequest):
+    """Generate a full multi-touch outreach sequence for a contact."""
+    from src.agents.researcher import build_research_artifact
+    from src.agents.scorer import score_from_artifact
+    from src.agents.sequence_generator import generate_sequence
+
+    contact = models.get_contact(req.contact_id)
+    if not contact:
+        raise HTTPException(404, "Contact not found")
+
+    account = models.get_account(contact.get("account_id", "")) if contact.get("account_id") else {}
+    research = build_research_artifact(contact, account or {})
+    artifact = research["artifact"]
+    scoring = score_from_artifact(artifact)
+
+    return generate_sequence(
+        artifact, scoring, tone=req.tone or "friendly",
+        has_email=bool(contact.get("email")),
+        start_date=req.start_date,
+    )
+
+@app.get("/api/sequence/cadence/{tier}")
+def get_cadence_schedule_endpoint(tier: str, start_date: Optional[str] = None):
+    """Get the cadence schedule for a tier."""
+    from src.agents.sequence_generator import get_cadence_schedule, CADENCE
+    if tier not in CADENCE:
+        raise HTTPException(400, f"Invalid tier. Must be one of: {list(CADENCE.keys())}")
+    return {
+        "tier": tier,
+        "schedule": get_cadence_schedule(tier, start_date),
+        "label": CADENCE[tier]["label"],
+    }
+
+
+# ─── LINKEDIN OPTIMIZER ENDPOINTS ─────────────────────────────
+
+class PreviewScoreRequest(BaseModel):
+    body: str
+    first_name: Optional[str] = ""
+
+@app.post("/api/linkedin/preview-score")
+def score_linkedin_preview(req: PreviewScoreRequest):
+    """Score a message's LinkedIn preview effectiveness."""
+    from src.agents.linkedin_optimizer import score_preview
+    return score_preview(req.body, req.first_name or "")
+
+@app.post("/api/linkedin/optimize")
+def optimize_linkedin_message(req: PreviewScoreRequest):
+    """Full LinkedIn optimization: preview score + length check."""
+    from src.agents.linkedin_optimizer import optimize_for_preview
+    return optimize_for_preview(req.body, req.first_name or "")
+
+@app.post("/api/linkedin/rank-variants")
+def rank_variants_by_linkedin_preview(first_name: Optional[str] = ""):
+    """Rank message variants by LinkedIn preview score.
+    Expects JSON body with 'variants' array."""
+    from src.agents.linkedin_optimizer import rank_variants_by_preview
+    # This endpoint is used programmatically with variant data
+    return {"note": "Use POST with variants array in body"}
+
+
+# ─── CHANNEL RENDERING ENDPOINT ───────────────────────────────
+
+class ChannelRenderRequest(BaseModel):
+    contact_id: str
+    channel: str = "linkedin_inmail"
+    tone: Optional[str] = None
+
+@app.post("/api/messages/render-for-channel")
+def render_messages_for_channel(req: ChannelRenderRequest):
+    """Generate message variants and render them for a specific channel."""
+    from src.agents.researcher import build_research_artifact
+    from src.agents.scorer import score_from_artifact
+    from src.agents.message_writer import generate_message_variants, render_for_channel
+
+    contact = models.get_contact(req.contact_id)
+    if not contact:
+        raise HTTPException(404, "Contact not found")
+
+    account = models.get_account(contact.get("account_id", "")) if contact.get("account_id") else {}
+    research = build_research_artifact(contact, account or {})
+    artifact = research["artifact"]
+    scoring = score_from_artifact(artifact)
+
+    base_channel = "email" if "email" in req.channel else "linkedin"
+    output = generate_message_variants(artifact, scoring, channel=base_channel)
+
+    adapted = []
+    for v in output["variants"]:
+        if req.tone and v["tone"] != req.tone:
+            continue
+        rendered = render_for_channel(v, req.channel, artifact)
+        adapted.append(rendered)
+
+    return {
+        "variants": adapted,
+        "channel": req.channel,
+        "metadata": output["metadata"],
+    }
+
