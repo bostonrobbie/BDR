@@ -1,0 +1,2784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDR Automation Pipeline - A-to-Z Dry Run Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1B4F72;
+            --primary-light: #2E7FA7;
+            --primary-dark: #0F2D43;
+            --success: #27AE60;
+            --warning: #E74C3C;
+            --info: #3498DB;
+            --light: #ECF0F1;
+            --dark: #2C3E50;
+            --text: #34495E;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F5F7FA;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 20px 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header-subtitle {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 10px;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-text-left {
+            font-weight: 600;
+        }
+
+        .progress-percentage {
+            background: rgba(255,255,255,0.3);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #27AE60;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 0;
+            min-height: calc(100vh - 120px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #E0E6ED;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+        }
+
+        .sidebar h3 {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #7F8C8D;
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
+
+        .sidebar h3:first-child {
+            margin-top: 0;
+        }
+
+        .sidebar-item {
+            padding: 12px 14px;
+            margin-bottom: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text);
+            user-select: none;
+        }
+
+        .sidebar-item:hover {
+            background: #F5F7FA;
+            color: var(--primary);
+        }
+
+        .sidebar-item.active {
+            background: var(--primary-light);
+            color: white;
+            font-weight: 600;
+        }
+
+        .sidebar-item-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #BDC3C7;
+            flex-shrink: 0;
+        }
+
+        .sidebar-item.completed .sidebar-item-status {
+            background: var(--success);
+        }
+
+        .sidebar-item.in-progress .sidebar-item-status {
+            background: var(--info);
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 40px;
+            background: white;
+            overflow-y: auto;
+        }
+
+        .batch-status {
+            background: #F8F9FA;
+            border: 1px solid #E0E6ED;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            font-size: 13px;
+        }
+
+        .batch-status-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .batch-status-label {
+            color: #7F8C8D;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .batch-status-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Step Content */
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .step-description {
+            font-size: 13px;
+            color: #7F8C8D;
+            margin-bottom: 25px;
+        }
+
+        .checklist {
+            background: #F8F9FA;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #E0E6ED;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #BDC3C7;
+            border-radius: 4px;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-top: 2px;
+            accent-color: var(--success);
+        }
+
+        .checklist-item input[type="checkbox"]:checked {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .checklist-item label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 13px;
+            padding-top: 2px;
+        }
+
+        .checklist-item input[type="checkbox"]:checked + label {
+            color: #95A5A6;
+            text-decoration: line-through;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: #2C3E50;
+            color: #ECF0F1;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block-header {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #95A5A6;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .code-block-content {
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-light);
+        }
+
+        /* Collapsible Sections */
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section-header {
+            background: white;
+            border: 1px solid #E0E6ED;
+            padding: 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .section-header:hover {
+            background: #F8F9FA;
+            border-color: var(--primary);
+        }
+
+        .section-header.open {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .section-toggle {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            font-size: 18px;
+        }
+
+        .section-header.open .section-toggle {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            display: none;
+            padding: 20px;
+            background: #F8F9FA;
+            border: 1px solid #E0E6ED;
+            border-top: none;
+            border-radius: 0 0 6px 6px;
+        }
+
+        .section-content.open {
+            display: block;
+        }
+
+        .section-content p {
+            margin-bottom: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .section-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+
+        .section-content li {
+            margin-bottom: 6px;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-info {
+            background: #D6EAF8;
+            color: var(--primary);
+        }
+
+        .badge-success {
+            background: #D5F4E6;
+            color: var(--success);
+        }
+
+        .badge-warning {
+            background: #FADBD8;
+            color: var(--warning);
+        }
+
+        /* Tables */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 12px;
+        }
+
+        .table th {
+            background: #F8F9FA;
+            padding: 10px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #E0E6ED;
+            color: var(--primary);
+        }
+
+        .table td {
+            padding: 10px;
+            border-bottom: 1px solid #E0E6ED;
+        }
+
+        .table tr:hover {
+            background: #F8F9FA;
+        }
+
+        /* Quick Reference Panel */
+        .quick-ref-panel {
+            background: #F0F7FF;
+            border: 1px solid #D6EAF8;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .quick-ref-panel h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .quick-ref-item {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 15px;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #D6EAF8;
+        }
+
+        .quick-ref-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .quick-ref-label {
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .quick-ref-value {
+            font-size: 13px;
+            color: var(--text);
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+        }
+
+        /* Alert Boxes */
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            display: flex;
+            gap: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .alert-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .alert-info {
+            background: #D6EAF8;
+            border: 1px solid #AED6F1;
+            color: #1B4F72;
+        }
+
+        .alert-warning {
+            background: #FADBD8;
+            border: 1px solid #F5B7B1;
+            color: #A93226;
+        }
+
+        .alert-success {
+            background: #D5F4E6;
+            border: 1px solid #A9DFBF;
+            color: #0B5345;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #E0E6ED;
+                display: flex;
+                overflow-x: auto;
+                padding: 15px;
+            }
+
+            .sidebar h3 {
+                margin-left: 15px;
+            }
+
+            .batch-status {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .main {
+                padding: 20px;
+            }
+
+            .step h2 {
+                font-size: 22px;
+            }
+
+            .quick-ref-item {
+                grid-template-columns: 1fr;
+            }
+
+            .batch-status {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .sidebar {
+                display: none;
+            }
+
+            .header {
+                position: static;
+            }
+
+            .step {
+                display: block !important;
+                page-break-inside: avoid;
+            }
+
+            .main {
+                padding: 0;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #F5F7FA;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #BDC3C7;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #95A5A6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <h1>🚀 BDR Automation Pipeline</h1>
+            <div class="header-subtitle">A-to-Z Dry Run Guide for Testsigma Prospecting</div>
+            <div class="progress-container">
+                <div class="progress-text">
+                    <span class="progress-text-left">Overall Progress</span>
+                    <span class="progress-percentage"><span id="progress-num">0</span>% Complete</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <h3>Pipeline Steps</h3>
+            <div class="sidebar-item active" data-step="0">
+                <span class="sidebar-item-status"></span>
+                <span>Overview</span>
+            </div>
+            <div class="sidebar-item" data-step="1">
+                <span class="sidebar-item-status"></span>
+                <span>Step 1: Session Setup</span>
+            </div>
+            <div class="sidebar-item" data-step="2">
+                <span class="sidebar-item-status"></span>
+                <span>Step 2: Pre-Brief</span>
+            </div>
+            <div class="sidebar-item" data-step="3">
+                <span class="sidebar-item-status"></span>
+                <span>Step 3: Prospect Sourcing</span>
+            </div>
+            <div class="sidebar-item" data-step="4">
+                <span class="sidebar-item-status"></span>
+                <span>Step 4: Research Pipeline</span>
+            </div>
+            <div class="sidebar-item" data-step="5">
+                <span class="sidebar-item-status"></span>
+                <span>Step 5: Message Drafting</span>
+            </div>
+            <div class="sidebar-item" data-step="6">
+                <span class="sidebar-item-status"></span>
+                <span>Step 6: QA Gate (14 Checks)</span>
+            </div>
+            <div class="sidebar-item" data-step="7">
+                <span class="sidebar-item-status"></span>
+                <span>Step 7: Batch Assembly</span>
+            </div>
+            <div class="sidebar-item" data-step="8">
+                <span class="sidebar-item-status"></span>
+                <span>Step 8: Apollo Integration</span>
+            </div>
+            <div class="sidebar-item" data-step="9">
+                <span class="sidebar-item-status"></span>
+                <span>Step 9: Send Session</span>
+            </div>
+            <div class="sidebar-item" data-step="10">
+                <span class="sidebar-item-status"></span>
+                <span>Step 10: Reply Tracking</span>
+            </div>
+            <div class="sidebar-item" data-step="11">
+                <span class="sidebar-item-status"></span>
+                <span>Step 11: Cycle Logging</span>
+            </div>
+            <div class="sidebar-item" data-step="12">
+                <span class="sidebar-item-status"></span>
+                <span>Step 12: Next Batch</span>
+            </div>
+
+            <h3>Quick Reference</h3>
+            <div class="sidebar-item" data-step="qr-apollo">
+                <span>Apollo Credentials</span>
+            </div>
+            <div class="sidebar-item" data-step="qr-proof">
+                <span>Proof Points</span>
+            </div>
+            <div class="sidebar-item" data-step="qr-toxic">
+                <span>Toxic Phrases</span>
+            </div>
+            <div class="sidebar-item" data-step="qr-timing">
+                <span>Timing Rules</span>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main">
+            <!-- OVERVIEW STEP -->
+            <div class="step active" id="step-0">
+                <h2>Welcome to the BDR Pipeline</h2>
+                <p class="step-description">Your complete A-to-Z guide for running the Testsigma automated prospecting pipeline. Follow each step in order, check off tasks as you complete them, and reference the Quick Reference panels as needed.</p>
+
+                <div class="batch-status">
+                    <div class="batch-status-item">
+                        <span class="batch-status-label">Current Batch</span>
+                        <span class="batch-status-value" id="batch-num">—</span>
+                    </div>
+                    <div class="batch-status-item">
+                        <span class="batch-status-label">Prospects</span>
+                        <span class="batch-status-value" id="prospect-count">—</span>
+                    </div>
+                    <div class="batch-status-item">
+                        <span class="batch-status-label">Current Step</span>
+                        <span class="batch-status-value" id="current-step">Overview</span>
+                    </div>
+                    <div class="batch-status-item">
+                        <span class="batch-status-label">Last Updated</span>
+                        <span class="batch-status-value" id="last-updated">—</span>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <div class="alert-icon">ℹ️</div>
+                    <div>
+                        <strong>How to Use This Guide:</strong> Progress through each step sequentially. Check off tasks as you complete them. The progress bar at the top tracks your overall completion. All your progress is saved automatically. You can reference the Quick Reference panels any time for credentials, proof points, and timing rules.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <span>What Is This Pipeline?</span>
+                        <div class="section-toggle">▼</div>
+                    </div>
+                    <div class="section-content">
+                        <p>The BDR Automation Pipeline is a 12-step end-to-end system for prospecting QA leaders at mid-to-large companies. It combines:</p>
+                        <ul>
+                            <li><strong>Sales Navigator</strong> for prospect sourcing and InMail sending</li>
+                            <li><strong>Apollo</strong> for contact enrichment and sequence enrollment</li>
+                            <li><strong>Gmail & Google Calendar</strong> for follow-up email and meeting scheduling</li>
+                            <li><strong>Data-driven messaging</strong> based on 1,326 LinkedIn conversations analyzed</li>
+                            <li><strong>3-touch multi-channel sequences</strong> across LinkedIn and email</li>
+                        </ul>
+                        <p>Each batch consists of 25 carefully researched prospects with personalized, 3-touch sequences. The pipeline ensures consistency, quality, and compounding results.</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <span>Before You Start</span>
+                        <div class="section-toggle">▼</div>
+                    </div>
+                    <div class="section-content">
+                        <p>Make sure you have all tools connected and ready:</p>
+                        <ul>
+                            <li>✅ Cowork browser automation (Claude Code)</li>
+                            <li>✅ Apollo MCP connected (lead credits: ~6,879)</li>
+                            <li>✅ Gmail MCP connected</li>
+                            <li>✅ Google Calendar MCP connected</li>
+                            <li>✅ Google Drive access (Work folder)</li>
+                            <li>✅ LinkedIn Sales Navigator (logged in, browser)</li>
+                            <li>✅ CLAUDE.md (memory file loaded in context)</li>
+                        </ul>
+                        <p>Once everything is set, head to <strong>Step 1: Session Setup</strong> to begin.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 1: SESSION SETUP -->
+            <div class="step" id="step-1">
+                <h2>Step 1: Session Setup</h2>
+                <p class="step-description">Initialize all tools and verify you have access to everything needed for this batch cycle.</p>
+
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-1-1">
+                        <label for="check-1-1">Open Cowork browser automation (Claude Code)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-1-2">
+                        <label for="check-1-2">Verify Apollo MCP is connected and accessible</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-1-3">
+                        <label for="check-1-3">Verify Gmail MCP is connected</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-1-4">
+                        <label for="check-1-4">Verify Google Calendar MCP is connected</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-1-5">
+                        <label for="check-1-5">Verify Google Drive access to Work folder</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-1-6">
+                        <label for="check-1-6">Log into LinkedIn Sales Navigator (browser)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-1-7">
+                        <label for="check-1-7">Check Apollo dashboard: verify lead credits (~6,879)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-1-8">
+                        <label for="check-1-8">Check Sales Navigator: verify InMail credits available</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-1-9">
+                        <label for="check-1-9">Open /Work folder in Google Drive (confirm access)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-1-10">
+                        <label for="check-1-10">Load CLAUDE.md memory file in Claude context</label>
+                    </div>
+                </div>
+
+                <div class="alert alert-success">
+                    <div class="alert-icon">✓</div>
+                    <div>Session setup complete. All tools are ready. Proceed to <strong>Step 2: Pre-Brief</strong>.</div>
+                </div>
+            </div>
+
+            <!-- STEP 2: PRE-BRIEF -->
+            <div class="step" id="step-2">
+                <h2>Step 2: Pre-Brief</h2>
+                <p class="step-description">Before building a new batch, analyze all previous batches to understand what's working. This feedback loop compounds results over time.</p>
+
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-2-1">
+                        <label for="check-2-1">List all previous batch files in /Work folder</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-2-2">
+                        <label for="check-2-2">Read reply rates, A/B test results, and reply tags from each batch</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-2-3">
+                        <label for="check-2-3">Identify best persona (title level with highest reply rate)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-2-4">
+                        <label for="check-2-4">Identify best proof point (customer story in most replies)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-2-5">
+                        <label for="check-2-5">Identify best vertical (warmest industry)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-2-6">
+                        <label for="check-2-6">Identify best pattern (opener/ask/length style)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-2-7">
+                        <label for="check-2-7">Identify one thing to stop doing</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-2-8">
+                        <label for="check-2-8">Define A/B test variable for this batch (only test ONE variable)</label>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-block-header">Claude Command</div>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+                    <div class="code-block-content">Read all previous prospect-outreach batch files from
+/Work folder and generate a Pre-Brief summary
+with 5 lines:
+
+1. Best persona (title/level with highest reply rate)
+2. Best proof point (customer story appearing in most replies)
+3. Best vertical (industry with warmest response)
+4. Best pattern (opener/ask/length style that's working)
+5. Stop doing (one thing to eliminate)
+
+Then define the A/B test variable for this batch.</div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <span>What Is A/B Testing Here?</span>
+                        <div class="section-toggle">▼</div>
+                    </div>
+                    <div class="section-content">
+                        <p>Split each 25-prospect batch into 2-3 sub-groups. Test ONE variable at a time across groups. Variables to rotate:</p>
+                        <ul>
+                            <li><strong>Pain hook:</strong> Group A gets "maintenance/flaky tests", Group B gets "release velocity/speed"</li>
+                            <li><strong>Proof point style:</strong> Group A gets named customer, Group B gets anonymous</li>
+                            <li><strong>Opener style:</strong> Group A gets career-reference openers, Group B gets company-metric openers</li>
+                            <li><strong>Ask intensity:</strong> Group A gets "Would 15 minutes make sense?", Group B gets "Happy to share more"</li>
+                            <li><strong>Message length:</strong> Group A gets 70-80 words, Group B gets 100-120 words</li>
+                        </ul>
+                        <p>Only test ONE variable per batch. Keep everything else constant. Track results and compare across 3+ batches before drawing conclusions.</p>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <div class="alert-icon">ℹ️</div>
+                    <div>
+                        <strong>No previous batches yet?</strong> That's fine. Use default settings: target Architects and Manager/Lead level, use Hansard/CRED/Sanofi proof points, send at lunch 12-1 PM, use "what day works" CTA. Define your A/B test variable and move forward.
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 3: PROSPECT SOURCING -->
+            <div class="step" id="step-3">
+                <h2>Step 3: Prospect Sourcing</h2>
+                <p class="step-description">Use Sales Navigator to identify 25 fresh, qualified prospects matching our ICP. Maintain the target mix: 10-12 Manager/Lead, 4-6 Director, 3-5 Architect, 2-3 Buyer Intent, max 2 VP.</p>
+
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-3-1">
+                        <label for="check-3-1">Open Sales Navigator in browser</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-3-2">
+                        <label for="check-3-2">Navigate to your saved searches</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-3-3">
+                        <label for="check-3-3">Click "Show X new results" to filter to never-contacted prospects</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-3-4">
+                        <label for="check-3-4">Apply filters: Manager level and above, US-based, QA/testing titles only</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-3-5">
+                        <label for="check-3-5">Check interaction status on each profile ("Messaged" or "Viewed" = exclude)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-3-6">
+                        <label for="check-3-6">Extract data for each prospect (name, title, company, Sales Nav URL)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-3-7">
+                        <label for="check-3-7">Run qualification checklist on each prospect</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-3-8">
+                        <label for="check-3-8">Maintain target mix (10-12 Manager, 4-6 Director, 3-5 Architect, 2-3 BI, max 2 VP)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-3-9">
+                        <label for="check-3-9">Limit: No more than 2 prospects from same company</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-3-10">
+                        <label for="check-3-10">Target vertical diversity (no more than ~8 from same vertical)</label>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-block-header">Claude Command</div>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+                    <div class="code-block-content">Source 25 new prospects from LinkedIn Sales Navigator
+for Batch [N] following ICP:
+
+Target Mix:
+- 10-12 QA Manager / QA Lead / Test Lead / Automation Lead
+- 4-6 Director of QA / Head of QA / Sr Director Quality
+- 3-5 Test Architect / QA Architect / Sr SDET / Principal QE
+- 2-3 prospects with Buyer Intent signals
+- Max 2 VP Eng / CTO (only with QA scope)
+
+Filters:
+- Manager level and above
+- US-based
+- Software QA/testing titles only
+- No prior interaction ("Messaged" or "Viewed" excluded)
+- No more than 2 from same company
+- Vertical diversity (~8 max per vertical)
+
+Extract: name, title, company, Sales Nav URL, Buyer Intent signal
+
+Return as structured list with counts by persona.</div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <span>Qualification Checklist (Use This for Each Prospect)</span>
+                        <div class="section-toggle">▼</div>
+                    </div>
+                    <div class="section-content">
+                        <p>Before including a prospect in the batch, verify all these boxes:</p>
+                        <ul>
+                            <li>☑ Manager+ seniority (not IC unless Sr SDET)</li>
+                            <li>☑ ICP title match (QA, testing, automation, QE-focused)</li>
+                            <li>☑ No prior interaction in Sales Navigator ("Messaged" or "Viewed" not shown)</li>
+                            <li>☑ US-based (unless otherwise specified)</li>
+                            <li>☑ Software QA/engineering (not pharma manufacturing, biotech lab, etc.)</li>
+                            <li>☑ Company has software products or digital platforms to test</li>
+                            <li>☑ Profile URL captured and logged</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning">
+                    <div class="alert-icon">⚠️</div>
+                    <div>
+                        <strong>Common sourcing mistakes:</strong> Including 50K+ employee VP Eng without QA scope (11.9% reply rate). Exceeding 2 prospects per company. Forgetting to check "Messaged" indicator (wastes InMail credits). Including non-software QA roles (manufacturing, lab). Fix these and sourcing quality improves dramatically.
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 4: RESEARCH PIPELINE -->
+            <div class="step" id="step-4">
+                <h2>Step 4: Research Pipeline</h2>
+                <p class="step-description">Deep research using 3 sources: LinkedIn profile, Apollo enrichment, and company external research. Tag each finding with which message element it feeds.</p>
+
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-4-1">
+                        <label for="check-4-1"><strong>Source 1:</strong> Read LinkedIn profile (Sales Navigator) - extract QA scope, team signals, tech stack, career trajectory, pain signals</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-4-2">
+                        <label for="check-4-2"><strong>Source 2:</strong> Apollo enrichment - person details (email, phone, title) + organization enrichment (tech stack, industry, company size)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-4-3">
+                        <label for="check-4-3"><strong>Source 3:</strong> Company external research - product pages, engineering blogs, job postings, news, press releases</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-4-4">
+                        <label for="check-4-4">Tag each research bullet with which message element it feeds (opener, context, proof, close)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-4-5">
+                        <label for="check-4-5">Check Apollo for duplicate contacts (avoid re-enriching)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-4-6">
+                        <label for="check-4-6">Run Module A1: Known Person check (past coworker, mutual connections, shared company)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-4-7">
+                        <label for="check-4-7">Run Module A2: Already Messaged check (prior outreach exists)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-4-8">
+                        <label for="check-4-8">Flag any prospects for "Do Not Contact" (known person, already contacted)</label>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-block-header">Claude Command</div>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+                    <div class="code-block-content">Research all 25 prospects using LinkedIn Sales Navigator,
+Apollo, and company external sources.
+
+For EACH prospect, extract and tag:
+
+SOURCE 1 - LINKEDIN (Sales Navigator profile):
+- QA scope (what products/platforms they test)
+- Team signals (hiring, scaling, layoffs, budget)
+- Tech stack clues (specific tools mentioned)
+- Career trajectory (recent promotion, new company)
+- Pain signals (posts/comments about testing challenges)
+[TAG: feeds opener/context]
+
+SOURCE 2 - APOLLO (enrichment):
+- Verified email, phone
+- Current title and department
+- Tech stack (technologies company uses)
+- Company size, growth, funding history
+- Industry classification
+[TAG: feeds proof selection, objection mapping]
+
+SOURCE 3 - COMPANY EXTERNAL (NOT LinkedIn company page):
+- Product pages, engineering blog
+- Job postings (QA/SDET roles, hiring signals)
+- Press releases, news (product launches, migrations)
+- Release process signals (frequency, stability focus)
+- QA org pressure (team scaling, hiring, layoffs)
+- Integration complexity (APIs, platform permutations)
+[TAG: feeds context, theme, close]
+
+Return: structured prospect cards with
+all research tagged by which message element it feeds.</div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <span>Research Quality Filter (QA-Relevant Only)</span>
+                        <div class="section-toggle">▼</div>
+                    </div>
+                    <div class="section-content">
+                        <p>Only extract research that affects QA outcomes. Ignore generic corporate trivia:</p>
+                        <ul>
+                            <li>✅ <strong>INCLUDE:</strong> Release frequency, platform migrations, hiring QA roles, compliance requirements, API/integration complexity</li>
+                            <li>✅ <strong>INCLUDE:</strong> Tech stack clues (Selenium, Cypress, Playwright, Appium, TOSCA, Katalon)</li>
+                            <li>✅ <strong>INCLUDE:</strong> Team scaling signals, major feature releases, product launches</li>
+                            <li>❌ <strong>EXCLUDE:</strong> General revenue stats, "AI strategy" announcements, funding rounds (unless causing integration sprawl)</li>
+                            <li>❌ <strong>EXCLUDE:</strong> Executive education, generic company awards, headcount that doesn't relate to QA</li>
+                            <li>❌ <strong>EXCLUDE:</strong> Years at company, certifications, education history (these kill reply rates, -13.4 pp)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <span>Module A1: Known Person Check</span>
+                        <div class="section-toggle">▼</div>
+                    </div>
+                    <div class="section-content">
+                        <p><strong>Run before every prospect:</strong></p>
+                        <ul>
+                            <li>Check connection degree on Sales Navigator profile (1st = already connected)</li>
+                            <li>If 1st-degree: check for shared work history. Did they work at mabl or your past employers?</li>
+                            <li>Look for mutual connections context: personal friends or professional acquaintances?</li>
+                            <li>If real-life relationship found → <strong>DO NOT CONTACT</strong> (status: Known Contact / Do Not Contact)</li>
+                            <li>2nd-degree with shared past company = likely safe, but flag it in pre-flight log</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <span>Module A2: Already Messaged Check</span>
+                        <div class="section-toggle">▼</div>
+                    </div>
+                    <div class="section-content">
+                        <p><strong>Run before every prospect:</strong></p>
+                        <ul>
+                            <li>Check Sales Navigator search results for "Messaged:" indicator (prior activity shown)</li>
+                            <li>When opening InMail composer, check if existing conversation thread appears</li>
+                            <li>If prior outreach found → <strong>DO NOT SEND MESSAGE 1 AGAIN</strong> (status: Existing Thread)</li>
+                            <li>If last message >60 days ago → propose re-engagement (new angle, per Re-Engagement Triggers)</li>
+                            <li>If last message <60 days ago → skip for now, revisit later</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="alert alert-success">
+                    <div class="alert-icon">✓</div>
+                    <div>Research complete. All prospects have data from 3 sources, tagged by which message element they feed. Known person and already-messaged checks complete. Proceed to <strong>Step 5: Message Drafting</strong>.</div>
+                </div>
+            </div>
+
+            <!-- STEP 5: MESSAGE DRAFTING -->
+            <div class="step" id="step-5">
+                <h2>Step 5: Message Drafting</h2>
+                <p class="step-description">Draft 3 personalized touches (Touch 1 InMail, Touch 2 InMail Follow-up, Touch 3 Email) per prospect using C2 style. Each touch uses a DIFFERENT proof point.</p>
+
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-5-1">
+                        <label for="check-5-1"><strong>Pre-Draft Step 1:</strong> Define Single Theme Rule (one sentence per prospect)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-5-2">
+                        <label for="check-5-2"><strong>Pre-Draft Step 2:</strong> Apply QA-Relevant Research Filter (only QA-impacting signals)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-5-3">
+                        <label for="check-5-3"><strong>Pre-Draft Step 3:</strong> Run Plain Language Pass (replace buzzwords, simplify)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-5-4">
+                        <label for="check-5-4"><strong>Pre-Draft Step 4:</strong> Answer 3 close construction questions</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-5-5">
+                        <label for="check-5-5"><strong>Touch 1 (InMail):</strong> Draft 80-120 words with all 5 elements (subject, opener, context, proof, close)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-5-6">
+                        <label for="check-5-6"><strong>Touch 2 (InMail Follow-up):</strong> Draft 40-70 words with new angle (different proof point)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-5-7">
+                        <label for="check-5-7"><strong>Touch 3 (Email):</strong> Draft 60-100 words (if email available) with third different proof point</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-5-8">
+                        <label for="check-5-8">Verify: Each touch uses DIFFERENT proof point than others</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-5-9">
+                        <label for="check-5-9">Verify: Close ties proof point outcome to prospect's specific situation</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-5-10">
+                        <label for="check-5-10">Verify: Every close uses "what day works" pattern for CTA</label>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-block-header">Claude Command</div>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+                    <div class="code-block-content">Draft all 3 touches for each of the 25 prospects
+following C2 style message framework.
+
+FOR EACH PROSPECT:
+
+PRE-DRAFT CHECKLIST:
+1. Single Theme Rule: State the message theme in ONE sentence
+2. QA-Relevant Research Filter: Use only research affecting QA outcomes
+3. Plain Language Pass: Replace buzzwords, simplify to simple words
+4. Close Construction: Answer these 3 questions:
+   a) What specific outcome did the proof point achieve?
+   b) What is the prospect's version of that problem?
+   c) How do I connect #a to #b and end with "what day works"?
+
+TOUCH 1 (INMAIL) - 80-120 words:
+Structure: Subject (3-6 words) + Opener (1-2 lines) + Context (1-2 lines)
+          + Proof Point (0-1 lines) + Close (1-2 lines)
+
+Requirements:
+- Exactly 2 question marks
+- No "I noticed/saw" phrasing
+- No em dashes (use commas only)
+- 4+ paragraph breaks (opener/context/proof/close separate)
+- Max 1 hyphen in body (only for true compound words)
+- Close must reference specific proof outcome + prospect's situation + "what day works"
+
+TOUCH 2 (INMAIL FOLLOW-UP) - 40-70 words:
+- Reference that you reached out before ("Circling back quick...")
+- NEW angle or NEW proof point (NOT same as Touch 1)
+- Lighter but still specific close with "what day works"
+
+TOUCH 3 (EMAIL) - 60-100 words (if email available):
+- Fresh approach with DIFFERENT proof point than Touches 1 and 2
+- Can be slightly more direct (email feels less intrusive than InMail)
+- Same formatting rules as InMail
+
+PROOF POINT ROTATION:
+- Use DIFFERENT proof points for each of 3 touches
+- Match proof point to prospect's pain and vertical
+- Available: Hansard (8wk→5wk), CRED (90% + 5X), Sanofi (3d→80m),
+  Medibuddy (2,500 tests + 50% maintenance), 70% vs Selenium,
+  Fortune 100 (3X productivity), Spendflo (50% manual cut), Nagra DTV (2,500 in 8mo)
+
+Return: All 3 touches for each prospect in copy-paste-ready format with
+message quality score breakdown (MQS must be ≥9/12 to proceed).</div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <span>5 Close Patterns (Rotate These)</span>
+                        <div class="section-toggle">▼</div>
+                    </div>
+                    <div class="section-content">
+                        <p>Use different close structures for different prospects. Rotate patterns across the batch:</p>
+                        <ol>
+                            <li><strong>"If [outcome] would help [their situation], what day works for a quick look at how they did it?"</strong><br/>Example: "If 3 fewer weeks of regression would help the OpenEdge schedule, what day works for a quick look at how they did it?"</li>
+                            <li><strong>"What day works to see how [customer] [achieved outcome] while [solving their version of the problem]?"</strong><br/>Example: "What day works to see how Medibuddy cut test upkeep in half while keeping coverage ahead of releases?"</li>
+                            <li><strong>"If [outcome] before [their event/deadline] sounds useful, what day works for a quick look?"</strong><br/>Example: "If 70% less Selenium maintenance before the refresh sounds useful, what day works for a quick look?"</li>
+                            <li><strong>"What day works to compare how [customer] [achieved outcome] without [their constraint]?"</strong><br/>Example: "What day works to compare how CRED hit 90% regression without hiring more QA?"</li>
+                            <li><strong>"If getting [specific number] back in your [their process] would help, what day works for a quick chat?"</strong><br/>Example: "If getting 3 fewer weeks back in your release cycle would help, what day works for a quick chat?"</li>
+                        </ol>
+                        <p><strong>Rule:</strong> No two prospects in the same batch should have structurally identical closes. Rotate patterns to add variety.</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <span>C2 Anti-Patterns (What NOT to Do)</span>
+                        <div class="section-toggle">▼</div>
+                    </div>
+                    <div class="section-content">
+                        <p><strong>The "Stitched Template" Problem:</strong> Messages that look like 3 AI blocks glued together. C2 fixes this. Detect and rewrite if you see:</p>
+                        <ul>
+                            <li>Opener contains 2+ company facts that don't connect to each other</li>
+                            <li>Context sentence uses "That's the [noun] most [type] teams hit/feel/face" (formulaic)</li>
+                            <li>Proof point could be swapped into any message and still make sense (not tied to theme)</li>
+                            <li>Close is generic ("Would exploring that be worth your time?" works for ANY message)</li>
+                            <li>Close doesn't reference the proof point's specific outcome</li>
+                            <li>Close doesn't connect to the prospect's specific situation</li>
+                            <li>Close uses open-ended question instead of "what day works" (14.0% vs 40.4% reply rate)</li>
+                            <li>Message contains 2+ hyphens used as mid-sentence dashes (AI signature)</li>
+                            <li>Message has no paragraph breaks between sections (wall of text on mobile)</li>
+                        </ul>
+                        <p>If ANY of these appear → REWRITE.</p>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning">
+                    <div class="alert-icon">⚠️</div>
+                    <div>
+                        <strong>Common drafting mistakes:</strong> Using "I noticed" (-13.4 pp). Leading with AI/self-healing feature (-9.2 pp). Over 120 words (every word costs you). 3+ question marks instead of 2 (14.3% vs 34.8%). Using bullet lists (-2.2 pp). Generic closes that fit any message. Hyphens as mid-sentence dashes (AI signature). Fix these first before QA Gate.
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 6: QA GATE -->
+            <div class="step" id="step-6">
+                <h2>Step 6: QA Gate (14 Critical Checks)</h2>
+                <p class="step-description">Before any message is presented to you, it must pass all 14 quality checks. Only messages scoring ≥9/12 on the Message Quality Score (MQS) may proceed.</p>
+
+                <div class="section">
+                    <div class="section-header">
+                        <span>The 14 QA Gate Checks</span>
+                        <div class="section-toggle">▼</div>
+                    </div>
+                    <div class="section-content">
+                        <table class="table">
+                            <tr>
+                                <th>#</th>
+                                <th>Check</th>
+                                <th>Requirement</th>
+                                <th>Fix If Fails</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Hard Constraint Scan</td>
+                                <td>All 10 hard constraints must be met</td>
+                                <td>Auto-rewrite message</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>MQS Score</td>
+                                <td>Must be ≥9/12 (scored 1-3 on 4 dimensions)</td>
+                                <td>Rewrite message or reject</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Word Count</td>
+                                <td>Touch 1: 80-120, Touch 2: 40-70, Touch 3: 60-100</td>
+                                <td>Trim or expand</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Question Marks</td>
+                                <td>Exactly 2 for Touch 1</td>
+                                <td>Add or remove questions</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Structural Dedup</td>
+                                <td>No two messages in batch are identical</td>
+                                <td>Vary structure or proof point</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Evidence Check</td>
+                                <td>Every claim has research source (LinkedIn/Apollo/Company)</td>
+                                <td>Remove claim or add research</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Angle Rotation</td>
+                                <td>No prospect receives same angle in multiple touches</td>
+                                <td>Change angle for Touch 2 or 3</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Phrase Toxicity</td>
+                                <td>No toxic phrases present (see Toxic Phrases list)</td>
+                                <td>Replace phrase with positive version</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>CTA Validation</td>
+                                <td>Close contains "what day works" + proof outcome + prospect situation</td>
+                                <td>Rewrite close using patterns</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>Hyphen Audit</td>
+                                <td>Max 1 hyphen in message body (only true compound words)</td>
+                                <td>Replace hyphens with commas</td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>Paragraph Spacing</td>
+                                <td>4+ paragraph breaks (opener/context/proof/close separate)</td>
+                                <td>Add line breaks between sections</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>Close Structure Dedup</td>
+                                <td>No two closes use same sentence structure within batch</td>
+                                <td>Vary close using 5 patterns</td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td>Research Depth</td>
+                                <td>All 3 sources present (LinkedIn, Apollo, Company external)</td>
+                                <td>Complete missing research</td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td>Threshold Enforcement</td>
+                                <td>Only present messages with MQS ≥9/12</td>
+                                <td>Reject or rewrite</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-6-1">
+                        <label for="check-6-1">Check 1: Hard Constraint Scan (all 10 constraints met)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-6-2">
+                        <label for="check-6-2">Check 2: Compute MQS for every message (must be ≥9/12)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-6-3">
+                        <label for="check-6-3">Check 3: Verify word counts (T1: 80-120, T2: 40-70, T3: 60-100)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-6-4">
+                        <label for="check-6-4">Check 4: Count question marks (exactly 2 for Touch 1)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-6-5">
+                        <label for="check-6-5">Check 5: Structural dedup (no identical messages in batch)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-6-6">
+                        <label for="check-6-6">Check 6: Evidence check (every claim has research source)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-6-7">
+                        <label for="check-6-7">Check 7: Angle rotation (no same angle across touches)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-6-8">
+                        <label for="check-6-8">Check 8: Phrase toxicity scan (no toxic phrases present)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-6-9">
+                        <label for="check-6-9">Check 9: CTA validation ("what day works" + outcome + situation)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-6-10">
+                        <label for="check-6-10">Check 10: Hyphen audit (max 1 in body)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-6-11">
+                        <label for="check-6-11">Check 11: Paragraph spacing (4+ breaks)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-6-12">
+                        <label for="check-6-12">Check 12: Close structure dedup (no identical close structures)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-6-13">
+                        <label for="check-6-13">Check 13: Research depth (all 3 sources for all prospects)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-6-14">
+                        <label for="check-6-14">Check 14: Threshold enforcement (only ≥9/12 presented)</label>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-block-header">Claude Command</div>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+                    <div class="code-block-content">Run QA Gate on all 75 drafted messages (25 prospects × 3 touches).
+
+FOR EACH MESSAGE:
+
+1. Hard Constraint Scan - Verify all 10:
+   - No "I noticed/saw" phrasing
+   - No leading with AI/ML/self-healing
+   - No messages over 120 words
+   - No evening sends after 6 PM
+   - No bullet-point feature dumps
+   - No "would it be unreasonable" as sole CTA
+   - No phone-number asks
+   - No "reaching out"/"wanted to connect"
+   - No "I figure"/"would you like to share"/"enough about me"
+   - No 3+ question marks
+
+2. MQS Score (1-3 on each of 4 dimensions):
+   - Opener Clarity: specific vs generic
+   - CTA Confidence: "what day works" tie-in
+   - Personalization Density: only-this-person vs template
+   - Friction: word count, structure, readability
+
+3. Word count check
+4. Question mark count
+5. Structural uniqueness
+6. Evidence backing every claim
+7. Angle rotation (different per touch)
+8. Phrase toxicity
+9. CTA structure and proof tie-in
+10. Hyphen count (max 1)
+11. Paragraph breaks (4+ required)
+12. Close structure variety
+13. All 3 research sources present
+14. Only present messages with MQS ≥9/12
+
+Output: MQS breakdown for each message,
+flag any that fail, auto-rewrite failures,
+present only ≥9/12 messages for Step 7.</div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <span>10 Hard Constraints (Non-Negotiable)</span>
+                        <div class="section-toggle">▼</div>
+                    </div>
+                    <div class="section-content">
+                        <p>Any message violating these is automatically rejected and rewritten:</p>
+                        <table class="table">
+                            <tr>
+                                <th>Constraint</th>
+                                <th>Impact (Data)</th>
+                            </tr>
+                            <tr>
+                                <td>No "I noticed" / "I saw"</td>
+                                <td>-13.4 pp (strongest negative signal)</td>
+                            </tr>
+                            <tr>
+                                <td>No leading with AI/ML features</td>
+                                <td>-9.2 pp</td>
+                            </tr>
+                            <tr>
+                                <td>Max 120 words</td>
+                                <td>75-99 words = 39.0%, 150+ = 21.2%</td>
+                            </tr>
+                            <tr>
+                                <td>No evening sends (after 6 PM)</td>
+                                <td>6-8 PM = 12.1% vs lunch = 56.5%</td>
+                            </tr>
+                            <tr>
+                                <td>No bullet-point lists</td>
+                                <td>-2.2 pp</td>
+                            </tr>
+                            <tr>
+                                <td>No "would it be unreasonable" CTA</td>
+                                <td>12.8% reply rate (half baseline)</td>
+                            </tr>
+                            <tr>
+                                <td>No phone-number asks</td>
+                                <td>5.0% reply rate (worst CTA)</td>
+                            </tr>
+                            <tr>
+                                <td>No "reaching out"/"wanted to connect"</td>
+                                <td>-2.4 pp</td>
+                            </tr>
+                            <tr>
+                                <td>No "I figure"/"would you like to share"</td>
+                                <td>-19.0 pp / -13.6 pp</td>
+                            </tr>
+                            <tr>
+                                <td>No 3+ question marks</td>
+                                <td>3 questions = 14.3%, 2 = 34.8%</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <span>Message Quality Score (MQS) - 12-Point System</span>
+                        <div class="section-toggle">▼</div>
+                    </div>
+                    <div class="section-content">
+                        <p>Every message scored 1-3 on 4 dimensions. Max = 12. Need ≥9/12 to send.</p>
+                        <p><strong>Dimension 1: Opener Clarity (1-3)</strong></p>
+                        <ul>
+                            <li>3 = Specific, insight-driven question about prospect's situation. No "I noticed."</li>
+                            <li>2 = Company-specific reference but generic frame</li>
+                            <li>1 = "I noticed", role-recap, "Are you looking for..." (template-visible)</li>
+                        </ul>
+                        <p><strong>Dimension 2: CTA Confidence (1-3)</strong></p>
+                        <ul>
+                            <li>3 = "What day works" with direct tie to proof outcome AND prospect situation. Can't be pasted elsewhere.</li>
+                            <li>2 = Uses "what day works" but tie to proof point is weak</li>
+                            <li>1 = "Would it be unreasonable", "happy to share if helpful", open-ended question close</li>
+                        </ul>
+                        <p><strong>Dimension 3: Personalization Density (1-3)</strong></p>
+                        <ul>
+                            <li>3 = References something only THIS person would recognize (project, career move, company event)</li>
+                            <li>2 = References company specifically but could apply to anyone in that role</li>
+                            <li>1 = Only swaps name/title/company (indistinguishable from template)</li>
+                        </ul>
+                        <p><strong>Dimension 4: Friction (1-3, inverted: 3=low friction)</strong></p>
+                        <ul>
+                            <li>3 = 80-110 words, one proof point, one CTA, 2 questions, 4+ breaks, max 1 hyphen, scannable on mobile</li>
+                            <li>2 = 110-120 words, may have 2 proof points, readable, proper spacing</li>
+                            <li>1 = Over 120 words, bullet lists, multiple CTAs, 3+ questions, wall-of-text, 2+ hyphens</li>
+                        </ul>
+                        <p><strong>Scoring:</strong> 10-12 = Ready to send. 7-9 = Acceptable but improve. <7 = MUST rewrite.</p>
+                    </div>
+                </div>
+
+                <div class="alert alert-success">
+                    <div class="alert-icon">✓</div>
+                    <div>QA Gate complete. All 75 messages pass all 14 checks. MQS ≥9/12 for all. Proceed to <strong>Step 7: Batch Assembly</strong>.</div>
+                </div>
+            </div>
+
+            <!-- STEP 7: BATCH ASSEMBLY -->
+            <div class="step" id="step-7">
+                <h2>Step 7: Batch Assembly</h2>
+                <p class="step-description">Build the HTML tracker file with all prospect cards, copy-paste-ready messages, priority scores, personalization scores, and predicted objections.</p>
+
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-7-1">
+                        <label for="check-7-1">Create prospect tracker table sorted by priority score (descending)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-7-2">
+                        <label for="check-7-2">Add all prospect data: name, title, company, Sales Nav URL, Apollo ID, email</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-7-3">
+                        <label for="check-7-3">Calculate Priority Score (1-5) for each prospect using scoring formula</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-7-4">
+                        <label for="check-7-4">Calculate Personalization Score (1-3) for each prospect</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-7-5">
+                        <label for="check-7-5">Add MQS score breakdown for all 3 touches per prospect</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-7-6">
+                        <label for="check-7-6">Create individual prospect cards with copy-paste-ready messages (all 3 touches)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-7-7">
+                        <label for="check-7-7">Add predicted objection + pre-loaded response for each prospect</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-7-8">
+                        <label for="check-7-8">Add status dropdown (Not Started, T1 Sent, T2 Sent, T3 Sent, Replied, Meeting, Not Int, Bounced, Dormant)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-7-9">
+                        <label for="check-7-9">Add reply tag dropdown (Opener, Pain, Proof, Timing, Referral, Not Int, Unknown)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-7-10">
+                        <label for="check-7-10">Add A/B group label (which test group each prospect is in)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-7-11">
+                        <label for="check-7-11">Add color-coded badges (persona type, vertical, signals like Buyer Intent, Recently Hired)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-7-12">
+                        <label for="check-7-12">Add Pre-Brief summary at top of file (5-line "What's Working" summary)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-7-13">
+                        <label for="check-7-13">Add filter for Hot (5) and Warm (4) prospects only</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-7-14">
+                        <label for="check-7-14">Save as prospect-outreach-[batch#]-[date].html to Work folder</label>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-block-header">Claude Command</div>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+                    <div class="code-block-content">Assemble the HTML batch tracker file for all 25 prospects.
+
+Structure:
+1. Pre-Brief summary (top) - 5 lines from Step 2
+2. Batch status box - batch number, prospect count, current step, last updated
+3. Prospect tracker table (sortable, filterable)
+   Columns: Priority, Name, Title, Company, Persona, Vertical,
+            Buyer Intent, Personalization Score, MQS, Status, Reply Tag, A/B Group
+4. Individual prospect cards (collapsible):
+   - Profile snapshot
+   - All 3 touches with Copy buttons
+   - Predicted objection + pre-loaded response
+   - Research notes (what we found)
+   - Proof point matched to pain
+
+Calculate for each prospect:
+PRIORITY SCORE (1-5):
++2: Buyer Intent signal
++1: QA-titled leader (Director/Head/VP)
++1: Top vertical (FinTech, SaaS, Healthcare)
++1: Recently hired <6 months
++1: Active transformation/migration
++1: Uses competitor tool (TOSCA, Katalon, Selenium)
+-1: VP Eng at 50K+ company (no QA scope)
+
+PERSONALIZATION SCORE (1-3):
+3 = References only-this-person detail (project, career move, company event)
+2 = Company-specific but could apply to any role there
+1 = Only swaps name/title/company
+
+Add MQS breakdown for all 3 touches.
+
+Features:
+- Sort by priority descending
+- Filter to show Hot (5) + Warm (4) only
+- Color-code badges (persona type: QA vs VP Eng;
+  vertical: FinServ, Tech, Healthcare, etc.;
+  signals: Buyer Intent, Recently Hired)
+- Status dropdowns per prospect
+- Reply tag dropdowns per prospect
+- A/B group label per prospect
+- "Copy Message" and "Copy Subject" buttons for each touch
+- Mobile-responsive design
+
+Save to: /Work/prospect-outreach-[batch#]-[date].html</div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <span>Priority Scoring Formula</span>
+                        <div class="section-toggle">▼</div>
+                    </div>
+                    <div class="section-content">
+                        <p>Scores 1-5 determine which prospects Rob works first. Higher = more likely to reply.</p>
+                        <table class="table">
+                            <tr>
+                                <th>Factor</th>
+                                <th>Points</th>
+                            </tr>
+                            <tr>
+                                <td>Buyer Intent signal (Sales Nav)</td>
+                                <td>+2</td>
+                            </tr>
+                            <tr>
+                                <td>QA-titled leader (Director/Head/VP QA)</td>
+                                <td>+1</td>
+                            </tr>
+                            <tr>
+                                <td>Top vertical (FinTech, SaaS, Healthcare)</td>
+                                <td>+1</td>
+                            </tr>
+                            <tr>
+                                <td>Recently hired (<6 months in role)</td>
+                                <td>+1</td>
+                            </tr>
+                            <tr>
+                                <td>Active transformation/migration</td>
+                                <td>+1</td>
+                            </tr>
+                            <tr>
+                                <td>Uses competitor tool (TOSCA, Katalon, Selenium)</td>
+                                <td>+1</td>
+                            </tr>
+                            <tr>
+                                <td>VP Eng at 50K+ company (no QA scope)</td>
+                                <td>-1</td>
+                            </tr>
+                        </table>
+                        <p><strong>Tiers:</strong> 5 (Hot - work first), 4 (Warm - high priority), 3 (Standard), 2 (Lower), 1 (Long shot)</p>
+                    </div>
+                </div>
+
+                <div class="alert alert-success">
+                    <div class="alert-icon">✓</div>
+                    <div>Batch assembly complete. HTML tracker saved to /Work/prospect-outreach-[batch#]-[date].html. All prospects have priority scores, personalization scores, and full 3-touch sequences ready. Proceed to <strong>Step 8: Apollo Integration</strong>.</div>
+                </div>
+            </div>
+
+            <!-- STEP 8: APOLLO INTEGRATION -->
+            <div class="step" id="step-8">
+                <h2>Step 8: Apollo Integration</h2>
+                <p class="step-description">Create Apollo contact records for all new prospects and enroll them in the outreach sequence for Touch 3 email follow-up.</p>
+
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-8-1">
+                        <label for="check-8-1">Search Apollo for existing contacts (check for duplicates before enriching)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-8-2">
+                        <label for="check-8-2">Enrich all new prospects: person enrichment (email, phone, title)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-8-3">
+                        <label for="check-8-3">Enrich organizations: tech stack, industry, company size, funding history</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-8-4">
+                        <label for="check-8-4">Create Apollo contact records for all 25 prospects (run_dedupe=true to avoid duplicates)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-8-5">
+                        <label for="check-8-5">Verify contact creation: check Apollo contacts list shows new records</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-8-6">
+                        <label for="check-8-6">Enroll all contacts into main outreach sequence (ID: 699f4089628b940011da7fb7)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-8-7">
+                        <label for="check-8-7">Use email account: 68f65bdf998c4c0015f3446a (robert.gorham@testsigma.net)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-8-8">
+                        <label for="check-8-8">Verify enrollment status: confirm all contacts added to sequence</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-8-9">
+                        <label for="check-8-9">Log Apollo contact IDs and enrollment status in batch tracker</label>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-block-header">Claude Command (Using Apollo MCP)</div>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+                    <div class="code-block-content">Create Apollo contacts and enroll in sequence:
+
+1. Search Apollo contacts to check for duplicates
+2. Enrich all new prospects:
+   - Person enrichment: email, phone, title, organization
+   - Organization enrichment: tech stack, industry, company size, funding
+3. Create Apollo contact records (run_dedupe=true):
+   - Email
+   - First name, Last name
+   - Title
+   - Organization name
+   - Add labels: "Testsigma Outreach - Batch [N]"
+4. Enroll into sequence:
+   - Sequence ID: 699f4089628b940011da7fb7
+   - Email account: 68f65bdf998c4c0015f3446a
+   - Status: active
+5. Verify enrollment and log contact IDs
+
+Credits used per batch: ~40-45
+(25 person enrichments + ~15-20 org enrichments)</div>
+                </div>
+
+                <div class="quick-ref-panel">
+                    <h3>Apollo Credentials & IDs</h3>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Lead Credits</span>
+                        <span class="quick-ref-value">~6,879 / 7,104</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Sequence ID</span>
+                        <span class="quick-ref-value">699f4089628b940011da7fb7</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Email Account ID</span>
+                        <span class="quick-ref-value">68f65bdf998c4c0015f3446a</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Email Address</span>
+                        <span class="quick-ref-value">robert.gorham@testsigma.net</span>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <div class="alert-icon">ℹ️</div>
+                    <div>
+                        <strong>Why Apollo for Touch 3 email?</strong> InMail is personal and higher-touch (Touches 1 and 2). Email is the fallback. The Apollo sequence handles Touch 3 delivery when you use gmail_create_draft + gmail_send, or can send directly from Apollo if you prefer. All 3 touches are personalized from your batch tracker—Apollo just delivers the email step.
+                    </div>
+                </div>
+
+                <div class="alert alert-success">
+                    <div class="alert-icon">✓</div>
+                    <div>Apollo integration complete. All contacts created and enrolled in sequence. Credit usage: ~40-45 per batch. Remaining credits: ~6,835. Ready for <strong>Step 9: Send Session</strong>.</div>
+                </div>
+            </div>
+
+            <!-- STEP 9: SEND SESSION -->
+            <div class="step" id="step-9">
+                <h2>Step 9: Send Session (LinkedIn InMail)</h2>
+                <p class="step-description">Use Cowork browser automation to send InMail messages through LinkedIn Sales Navigator. One prospect at a time. Pause for your approval before each send.</p>
+
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-9-1">
+                        <label for="check-9-1">Open prospect-outreach batch HTML file</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-9-2">
+                        <label for="check-9-2">Filter to Hot (5) and Warm (4) prospects first</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-9-3">
+                        <label for="check-9-3">Copy Touch 1 message from first prospect card</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-9-4">
+                        <label for="check-9-4">Navigate to Sales Navigator profile URL in browser</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-9-5">
+                        <label for="check-9-5">Run Pre-Flight Identity Check (name, title, company, target fit, InMail access, no prior contact)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-9-6">
+                        <label for="check-9-6">Open InMail composer (click Message button)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-9-7">
+                        <label for="check-9-7">Paste subject line (if subject field exists)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-9-8">
+                        <label for="check-9-8">Paste message body (preserve line breaks for mobile readability)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-9-9">
+                        <label for="check-9-9">Quality check message (no placeholders, correct spelling, CTA present, 2 questions)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-9-10">
+                        <label for="check-9-10">Present message to you with screenshot (wait for APPROVE SEND)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-9-11">
+                        <label for="check-9-11">Click Send only after you reply APPROVE SEND</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-9-12">
+                        <label for="check-9-12">Wait for sent confirmation, take screenshot</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-9-13">
+                        <label for="check-9-13">Update tracker: status = "Touch 1 Sent", log timestamp, thread URL</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-9-14">
+                        <label for="check-9-14">Pause 2-3 minutes before next send</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-9-15">
+                        <label for="check-9-15">Take 10-minute break every 10 sends</label>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-block-header">Claude Command (Start Send Loop)</div>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+                    <div class="code-block-content">Begin send session for prospect-outreach-[batch#]-[date].html:
+
+1. Load batch tracker HTML file
+2. Filter to Hot (5) + Warm (4) prospects
+3. FOR EACH PROSPECT in priority order:
+   a) Load prospect card (name, title, company, Sales Nav URL, Touch 1 message)
+   b) Navigate to Sales Nav profile
+   c) Run Pre-Flight Check: Name match, title match, company match,
+      target fit, InMail access, no prior contact
+   d) Open InMail composer
+   e) Paste subject (if field exists) + message body
+   f) Quality check: no placeholders, correct spelling, CTA present
+   g) Present message + screenshot to Rob
+   h) WAIT for "APPROVE SEND" reply in chat
+   i) Click Send button
+   j) Take screenshot of sent confirmation
+   k) Log: status = Touch 1 Sent, timestamp, thread URL
+   l) Close composer, navigate back to search
+   m) Pause 2-3 minutes before next prospect
+   n) After 10 sends, take 10-minute break
+
+Pacing: Max 8 InMails per day, 20 per week.
+Send during 12-1 PM local time (56.5% reply rate).
+Space sends by 2-3 minutes.
+
+Stop immediately if LinkedIn shows warning or unusual behavior.</div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <span>Pre-Flight Identity Check (6 Checks)</span>
+                        <div class="section-toggle">▼</div>
+                    </div>
+                    <div class="section-content">
+                        <p>Before opening the InMail composer, verify all 6 of these on the Sales Navigator profile:</p>
+                        <table class="table">
+                            <tr>
+                                <th>Check</th>
+                                <th>Requirement</th>
+                                <th>If Fails</th>
+                            </tr>
+                            <tr>
+                                <td>Name match</td>
+                                <td>Profile name matches tracker exactly (or obvious variant)</td>
+                                <td>Ask you to confirm, abort if mismatch</td>
+                            </tr>
+                            <tr>
+                                <td>Title match</td>
+                                <td>Title matches within reason (recent promotion allowed)</td>
+                                <td>Note the change, present for approval</td>
+                            </tr>
+                            <tr>
+                                <td>Company match</td>
+                                <td>Company matches tracker (recent change allowed)</td>
+                                <td>Note the change, present for approval</td>
+                            </tr>
+                            <tr>
+                                <td>Target fit</td>
+                                <td>Role plausibly owns/impacts QA/testing</td>
+                                <td>STOP, skip prospect</td>
+                            </tr>
+                            <tr>
+                                <td>InMail access</td>
+                                <td>"Message" button available and composer opens</td>
+                                <td>STOP, report no InMail access</td>
+                            </tr>
+                            <tr>
+                                <td>No prior contact</td>
+                                <td>No "Messaged:" or "Viewed:" indicator</td>
+                                <td>STOP, flag existing thread, ask for direction</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning">
+                    <div class="alert-icon">⚠️</div>
+                    <div>
+                        <strong>LinkedIn Safety Rules:</strong> Never send on back-to-back days at same time (varies timing). Never send after 6 PM (12.1% reply rate vs lunch's 56.5%). Max 8 per day. If LinkedIn shows "unusual activity" warning, STOP immediately, pause 72 hours, resume at 50% volume. Monitor InMail credit balance.
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <div class="alert-icon">ℹ️</div>
+                    <div>
+                        <strong>Why I pause for approval:</strong> This prevents mistakes. LinkedIn is where real relationships happen. Every message is a handshake. You review, approve, and send. I just help you prepare and handle the mechanics. This keeps you in control and ensures quality.
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 10: REPLY TRACKING -->
+            <div class="step" id="step-10">
+                <h2>Step 10: Reply Tracking & Warm Lead Response</h2>
+                <p class="step-description">As replies come in, update the batch tracker with reply data and tags. Respond to warm leads fast. Create Google Calendar reminders for follow-ups.</p>
+
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-10-1">
+                        <label for="check-10-1">Check LinkedIn InMail for replies daily</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-10-2">
+                        <label for="check-10-2">For each reply, update tracker: status = "Replied", note reply date</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-10-3">
+                        <label for="check-10-3">Tag each reply (Opener, Pain hook, Proof point, Timing, Referral, Not interested, Unknown)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-10-4">
+                        <label for="check-10-4">For positive replies: respond same day (1-2 lines, one proof point, "what day works")</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-10-5">
+                        <label for="check-10-5">For referrals: research referred person, draft outreach mentioning referrer</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-10-6">
+                        <label for="check-10-6">Create Google Calendar reminder for 2 business days out (follow up if no reply)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-10-7">
+                        <label for="check-10-7">If warm lead says yes to meeting: update status = "Meeting Booked"</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-10-8">
+                        <label for="check-10-8">Generate Meeting Prep Card (company snapshot, known tech stack, discovery questions)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-10-9">
+                        <label for="check-10-9">Draft Touch 2 (InMail follow-up) for non-replied prospects on day 5</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-10-10">
+                        <label for="check-10-10">Schedule Touch 2 sends (Thursday or Friday preferred)</label>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <span>Reply Tag Definitions</span>
+                        <div class="section-toggle">▼</div>
+                    </div>
+                    <div class="section-content">
+                        <p><strong>What triggered each reply?</strong> Use these tags to understand what resonates:</p>
+                        <ul>
+                            <li><strong>Opener:</strong> They referenced or reacted to the personalized opener question</li>
+                            <li><strong>Pain hook:</strong> They said "yeah, that's exactly our issue" or engaged with the problem</li>
+                            <li><strong>Proof point:</strong> They asked about the customer story or numbers</li>
+                            <li><strong>Timing:</strong> They said "good timing" or "we're evaluating now"</li>
+                            <li><strong>Referral:</strong> They forwarded to someone else or said "talk to [name]"</li>
+                            <li><strong>Not interested:</strong> Replied but declined (still valuable data)</li>
+                            <li><strong>Unknown:</strong> Can't tell what triggered it</li>
+                        </ul>
+                        <p>Even negative replies are data. "Not interested" tells you the pain hook missed. "Talk to [name]" tells you we hit the right company but wrong person.</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <span>Warm Lead Response Framework</span>
+                        <div class="section-toggle">▼</div>
+                    </div>
+                    <div class="section-content">
+                        <p><strong>Trigger Events & Response Time:</strong></p>
+                        <table class="table">
+                            <tr>
+                                <th>Source</th>
+                                <th>Response Target</th>
+                                <th>Action</th>
+                            </tr>
+                            <tr>
+                                <td>InMail reply (positive)</td>
+                                <td>Same day, within 2 hours</td>
+                                <td>Acknowledge, one proof point, bridge to meeting</td>
+                            </tr>
+                            <tr>
+                                <td>InMail reply (referral)</td>
+                                <td>Same day to referred person</td>
+                                <td>Thank referrer, research referred person, new outreach</td>
+                            </tr>
+                            <tr>
+                                <td>Website demo request</td>
+                                <td>Within 4 hours</td>
+                                <td>Welcome call, discovery, next steps</td>
+                            </tr>
+                            <tr>
+                                <td>Buyer Intent reactivates</td>
+                                <td>Next business day</td>
+                                <td>New sequence with fresh angle</td>
+                            </tr>
+                        </table>
+                        <p><strong>Response tone:</strong> Mirror their language. If they asked about self-healing, your response references self-healing. Pick ONE proof point matched to what they asked. Bridge to meeting: "What day works this week?"</p>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-block-header">Claude Command (Meeting Prep Card)</div>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+                    <div class="code-block-content">When status = "Meeting Booked", generate prep card:
+
+1. Company snapshot: What they do, how big, products, recent news
+2. Prospect snapshot: Title, tenure, responsibilities, career background
+3. Known tech stack: Tools mentioned in profile, job postings, blog
+4. Pain hypothesis: Specific testing problem we hypothesized
+5. What triggered reply: From reply tag (opener, pain, proof, timing, etc.)
+6. Discovery questions (3-5, tailored):
+   - "Walk me through how your team tests [specific product]"
+   - "What's your current automation stack?"
+   - "Where do regression cycles hit hardest?"
+   - "Is there a timeline or mandate driving this?"
+   - One question specific to their industry/situation
+7. Relevant proof points: 2-3 customer stories matched to vertical + pain
+8. Predicted objections: Pre-mapped objection + response from tracker
+
+Keep to one screen (2 minutes to read).
+Save to tracker or copy to notes before call.
+
+                </div>
+                </div>
+
+                <div class="alert alert-success">
+                    <div class="alert-icon">✓</div>
+                    <div>Reply tracking active. Warm leads responded same day. Calendar reminders set for follow-ups. Proceed to <strong>Step 11: Cycle Logging</strong>.</div>
+                </div>
+            </div>
+
+            <!-- STEP 11: CYCLE LOGGING -->
+            <div class="step" id="step-11">
+                <h2>Step 11: Cycle Logging</h2>
+                <p class="step-description">After each send session, document what happened: volume, timing, friction events, safety checks, and one improvement for next session.</p>
+
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-11-1">
+                        <label for="check-11-1">Generate cycle log: date, batch number, session type (Full/Partial/Research only)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-11-2">
+                        <label for="check-11-2">Log volume: batch size attempted, sent, skipped, InMail credits used/remaining</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-11-3">
+                        <label for="check-11-3">Log timing: session start/end, total duration, avg time per prospect, fastest/slowest send</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-11-4">
+                        <label for="check-11-4">Log friction: any errors, broken profiles, missing InMail, composer issues, network errors, session timeouts</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-11-5">
+                        <label for="check-11-5">Safety check: LinkedIn warnings? Pacing violations? Unusual behavior?</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-11-6">
+                        <label for="check-11-6">Compute weekly metrics: sends, success rate, time per prospect, friction rate, skip rate, credit consumption</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-11-7">
+                        <label for="check-11-7">Identify one specific improvement to implement next session</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-11-8">
+                        <label for="check-11-8">Save cycle log to /cycles folder for historical reference</label>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-block-header">Cycle Log Template</div>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+                    <div class="code-block-content">CYCLE LOG
+=========
+Cycle ID: [YYYYMMDD-HHMM]
+Date: [date]
+Operator: Rob
+Batch: [batch number]
+Session Type: Full Send / Partial Send / Research Only
+
+VOLUME
+------
+Batch size attempted: [N]
+Batch size sent: [N]
+Batch size skipped: [N]
+Skipped reasons: [list]
+InMail credits used: [N]
+InMail credits remaining: [N]
+
+TIMING
+------
+Session start: [HH:MM]
+Session end: [HH:MM]
+Total duration: [minutes]
+Avg time per prospect: [minutes]
+Fastest send: [minutes]
+Slowest send: [minutes]
+
+FRICTION LOG
+-----------
+Total friction events: [N]
+[List each with category, description, resolution, time lost]
+Categories: SEARCH_FAIL, PROFILE_MISMATCH, INMAIL_BLOCKED,
+           COMPOSER_ERROR, NETWORK_ERROR, SESSION_EXPIRED, OTHER
+
+TOOLS USED
+----------
+[List: Sales Navigator, Apollo, Gmail, Google Calendar, etc.]
+
+EFFICIENCY NOTES
+---------------
+[What went well, what was slow, what should change]
+
+SAFETY CHECK
+-----------
+LinkedIn warnings received: [Y/N]
+Pacing violations: [Y/N]
+Any unusual behavior: [description]
+
+PROCESS IMPROVEMENTS
+-------------------
+[One specific change to SOP based on this session]
+
+WEEKLY METRICS (if end of week)
+------------------------------
+Sends per week: [N]
+Send success rate: [%]
+Avg time per prospect: [minutes]
+Friction rate: [%]
+Skip rate (known person): [%]
+Skip rate (already messaged): [%]
+Skip rate (not found): [%]
+InMail block rate: [%]
+Reply rate (cumulative): [%]
+Positive reply rate: [%]
+Meeting book rate: [%]
+Credits consumed per batch: [N]
+LinkedIn safety incidents: [N]</div>
+                </div>
+
+                <div class="alert alert-success">
+                    <div class="alert-icon">✓</div>
+                    <div>Cycle log complete. Data saved. Metrics computed. One improvement identified for next session. Proceed to <strong>Step 12: Next Batch</strong>.</div>
+                </div>
+            </div>
+
+            <!-- STEP 12: NEXT BATCH -->
+            <div class="step" id="step-12">
+                <h2>Step 12: Next Batch Planning</h2>
+                <p class="step-description">After replies come in and patterns are clear, begin the feedback loop. Analyze results from this batch, update your understanding of what works, and start sourcing the next batch.</p>
+
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-12-1">
+                        <label for="check-12-1">Wait for replies to come in (typically 5-10 days after Touch 1)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-12-2">
+                        <label for="check-12-2">Update batch tracker with all reply data and tags</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-12-3">
+                        <label for="check-12-3">Send Touch 2 (InMail follow-up) on day 5 for non-replied prospects</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-12-4">
+                        <label for="check-12-4">Send Touch 3 (Email) on day 10 for still-unresponsive prospects (if email available)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-12-5">
+                        <label for="check-12-5">Analyze batch results: reply rates by persona, proof point, vertical, pattern</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-12-6">
+                        <label for="check-12-6">Compare A/B test results (if this batch had A/B variable)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-12-7">
+                        <label for="check-12-7">Identify re-engagement triggers (job postings, leadership changes, funding, product launches)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-12-8">
+                        <label for="check-12-8">Start Pre-Brief for next batch (read all previous batches, generate "What's Working" summary)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-12-9">
+                        <label for="check-12-9">Source prospects for next batch (jump back to Step 3)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check-12-10">
+                        <label for="check-12-10">Create new A/B test variable for next batch (rotate which variable you're testing)</label>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-block-header">Claude Command (Batch Analysis & Pre-Brief)</div>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+                    <div class="code-block-content">Analyze Batch [N] results and prepare Pre-Brief for Batch [N+1]:
+
+1. Read prospect-outreach-[N]-[date].html (completed batch)
+2. Extract metrics:
+   - Total replies
+   - Reply rate (%)
+   - Replies by persona type (Manager vs Director vs Architect)
+   - Replies by vertical (FinServ, SaaS, Healthcare, etc.)
+   - Which proof points appeared in replies (count by customer)
+   - Which opener styles got replies (count by type)
+   - A/B test results (if applicable)
+3. Generate 5-line "What's Working" summary:
+   1. Best persona (title with highest reply rate + n)
+   2. Best proof point (customer story in most replies + count)
+   3. Best vertical (industry with warmest response + rate)
+   4. Best pattern (opener/ask/length style working best)
+   5. Stop doing (one thing that underperformed or failed)
+4. Store Pre-Brief at top of next batch file
+5. Define A/B test variable for Batch [N+1]
+   (rotate: pain hook, proof point style, opener style, ask intensity, length)
+
+Use this Pre-Brief to inform all decisions in Batch [N+1]:
+prospect sourcing, proof point selection, message writing,
+and final QA gate pass/fail decisions.
+
+                </div>
+
+                <div class="alert alert-success">
+                    <div class="alert-icon">✓</div>
+                    <div>Batch cycle complete. All 3 touches sent. Replies tracked. Next batch planned. The feedback loop compounds over time. Each batch informs the next, and your results get better. Repeat the cycle to build momentum. Return to <strong>Step 2: Pre-Brief</strong> to start the next batch.</div>
+                </div>
+            </div>
+
+            <!-- QUICK REFERENCE: APOLLO -->
+            <div class="step" id="step-qr-apollo">
+                <h2>Quick Reference: Apollo Credentials</h2>
+                <p class="step-description">All Apollo connection IDs and account information at a glance.</p>
+                <div class="quick-ref-panel">
+                    <h3>Current Account Status</h3>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Lead Credits</span>
+                        <span class="quick-ref-value">~6,879 / 7,104 available</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Direct Dial Credits</span>
+                        <span class="quick-ref-value">600 available</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">AI Credits</span>
+                        <span class="quick-ref-value">50 million available</span>
+                    </div>
+                </div>
+                <div class="quick-ref-panel">
+                    <h3>Email Accounts</h3>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Primary Email</span>
+                        <span class="quick-ref-value">robert.gorham@testsigma.net (ID: 68f65bdf998c4c0015f3446a)</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Backup Emails</span>
+                        <span class="quick-ref-value">@testsigma.in, @testsigma.tech, @testsigma.web</span>
+                    </div>
+                </div>
+                <div class="quick-ref-panel">
+                    <h3>Sequences</h3>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Main Outreach Sequence</span>
+                        <span class="quick-ref-value">699f4089628b940011da7fb7 (Q1 QA Outreach - US)</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Sequence Type</span>
+                        <span class="quick-ref-value">3 steps: InMail 1 (Day 1) → InMail 2 (Day 5) → Email (Day 10)</span>
+                    </div>
+                </div>
+                <div class="quick-ref-panel">
+                    <h3>Credits Per Batch</h3>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Person Enrichment</span>
+                        <span class="quick-ref-value">1 credit × 25 prospects = 25 credits</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Organization Enrichment</span>
+                        <span class="quick-ref-value">1 credit × ~15-20 = 15-20 credits</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Total Per Batch</span>
+                        <span class="quick-ref-value">~40-45 credits consumed per 25-prospect batch</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QUICK REFERENCE: PROOF POINTS -->
+            <div class="step" id="step-qr-proof">
+                <h2>Quick Reference: Proof Points</h2>
+                <p class="step-description">Customer success stories matched to prospect pain and vertical.</p>
+                <table class="table">
+                    <tr>
+                        <th>Customer</th>
+                        <th>Outcome</th>
+                        <th>Best For</th>
+                        <th>Pain Hook</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Hansard</strong></td>
+                        <td>Regression: 8 weeks → 5 weeks (3 fewer weeks)</td>
+                        <td>Insurance, FinServ, long regression cycles</td>
+                        <td>Maintenance, test upkeep</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Medibuddy</strong></td>
+                        <td>2,500 tests automated, 50% maintenance reduction</td>
+                        <td>Healthcare, mid-size teams, scaling coverage</td>
+                        <td>Scale, test maintenance, team capacity</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CRED</strong></td>
+                        <td>90% regression automation, 5X faster execution</td>
+                        <td>FinTech, high-velocity teams</td>
+                        <td>Release velocity, coverage, speed</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sanofi</strong></td>
+                        <td>Regression: 3 days → 80 minutes</td>
+                        <td>Pharma, healthcare, compliance-heavy</td>
+                        <td>Compliance testing, regression speed</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Spendflo</strong></td>
+                        <td>50% manual testing reduction</td>
+                        <td>SaaS, startups, small teams, quick ROI</td>
+                        <td>Manual testing burden, team capacity</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nagra DTV</strong></td>
+                        <td>2,500 tests in 8 months, 4X faster</td>
+                        <td>Media, streaming, API + UI testing</td>
+                        <td>Test creation speed, API coverage</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fortune 100</strong></td>
+                        <td>3X productivity increase</td>
+                        <td>Enterprise, VP-level, big tech</td>
+                        <td>Team productivity, ROI</td>
+                    </tr>
+                    <tr>
+                        <td><strong>vs Selenium</strong></td>
+                        <td>70% maintenance reduction vs hand-written</td>
+                        <td>Teams on Selenium/Cypress/Playwright</td>
+                        <td>Test maintenance, brittle tests</td>
+                    </tr>
+                </table>
+                <div class="alert alert-info">
+                    <div class="alert-icon">ℹ️</div>
+                    <div><strong>Stat framing rule:</strong> Prefer reduction framing ("40% fewer bugs" = 39.2% reply rate) over multiplier framing ("300% faster" = 16.3% rate). Reductions are credible. Multipliers sound like hype. Always tie proof point to prospect's specific situation in the close.</div>
+                </div>
+            </div>
+
+            <!-- QUICK REFERENCE: TOXIC PHRASES -->
+            <div class="step" id="step-qr-toxic">
+                <h2>Quick Reference: Toxic Phrases & Hard Constraints</h2>
+                <p class="step-description">Phrases that kill reply rates. Never use these.</p>
+                <table class="table">
+                    <tr>
+                        <th>Phrase</th>
+                        <th>Reply Rate</th>
+                        <th>Baseline Diff</th>
+                        <th>Alternative</th>
+                    </tr>
+                    <tr>
+                        <td>"I noticed" / "I saw"</td>
+                        <td>10.9%</td>
+                        <td>-13.4 pp</td>
+                        <td>Start with a question ("Are flaky tests…?")</td>
+                    </tr>
+                    <tr>
+                        <td>"AI-powered" / "self-healing"</td>
+                        <td>11.1% / 10.3%</td>
+                        <td>-9.2 / -6.2 pp</td>
+                        <td>Lead with outcome ("70% maintenance cut")</td>
+                    </tr>
+                    <tr>
+                        <td>"I figure"</td>
+                        <td>9.8%</td>
+                        <td>-19.0 pp</td>
+                        <td>Direct statement: "Most teams hit this…"</td>
+                    </tr>
+                    <tr>
+                        <td>"Flaky tests"</td>
+                        <td>16.8%</td>
+                        <td>-11.9 pp</td>
+                        <td>Use "test maintenance" instead</td>
+                    </tr>
+                    <tr>
+                        <td>"Would it be unreasonable"</td>
+                        <td>12.8%</td>
+                        <td>-17.9 pp</td>
+                        <td>"What day works?" (40.4% reply rate)</td>
+                    </tr>
+                    <tr>
+                        <td>"Would you like to share"</td>
+                        <td>15.2%</td>
+                        <td>-13.6 pp</td>
+                        <td>Direct ask: "What day works…?"</td>
+                    </tr>
+                    <tr>
+                        <td>"CI/CD"</td>
+                        <td>23.6%</td>
+                        <td>-5.1 pp</td>
+                        <td>Say "release process" or "pipeline"</td>
+                    </tr>
+                    <tr>
+                        <td>"Low code"</td>
+                        <td>25.8%</td>
+                        <td>-2.9 pp</td>
+                        <td>"Plain English" or "no-code"</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- QUICK REFERENCE: TIMING -->
+            <div class="step" id="step-qr-timing">
+                <h2>Quick Reference: Timing & Pacing Rules</h2>
+                <p class="step-description">When and how fast to send for best results.</p>
+                <div class="quick-ref-panel">
+                    <h3>Best Send Times</h3>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Optimal Time</span>
+                        <span class="quick-ref-value">12-1 PM local (56.5% reply rate, 2.4X afternoon)</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Acceptable</span>
+                        <span class="quick-ref-value">2-5 PM (24.0% reply rate)</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">AVOID</span>
+                        <span class="quick-ref-value">After 6 PM (12.1% reply rate, -44.4 pp from lunch)</span>
+                    </div>
+                </div>
+                <div class="quick-ref-panel">
+                    <h3>Best Days</h3>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Best Day</span>
+                        <span class="quick-ref-value">Thursday (42.1% reply rate)</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Good Days</span>
+                        <span class="quick-ref-value">Tuesday, Friday (29.6% each)</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">AVOID</span>
+                        <span class="quick-ref-value">Monday (22.9%, worst weekday)</span>
+                    </div>
+                </div>
+                <div class="quick-ref-panel">
+                    <h3>Pacing Limits (Per Week)</h3>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">InMails Sent</span>
+                        <span class="quick-ref-value">Max 20 / week (danger: >25 triggers detection)</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Per Day</span>
+                        <span class="quick-ref-value">Max 8 / day (space by 2-3 min)</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Break Frequency</span>
+                        <span class="quick-ref-value">10-min break every 10 sends</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Between Touches</span>
+                        <span class="quick-ref-value">Minimum 3 days (T1 Day 1 → T2 Day 5)</span>
+                    </div>
+                </div>
+                <div class="quick-ref-panel">
+                    <h3>Message Word Count Sweet Spots</h3>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Touch 1 Optimal</span>
+                        <span class="quick-ref-value">75-99 words (39.0% reply rate)</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Touch 1 Acceptable</span>
+                        <span class="quick-ref-value">100-120 words (27.5% reply rate)</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Touch 1 Avoid</span>
+                        <span class="quick-ref-value">150+ words (21.2% reply rate, -17.8 pp)</span>
+                    </div>
+                    <div class="quick-ref-item">
+                        <span class="quick-ref-label">Touch 2</span>
+                        <span class="quick-ref-value">40-70 words (short, punchy follow-up)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        const steps = document.querySelectorAll('.step');
+        const sectionHeaders = document.querySelectorAll('.section-header');
+
+        // Initialize from localStorage
+        window.addEventListener('DOMContentLoaded', () => {
+            loadProgress();
+            setupEventListeners();
+            updateProgressBar();
+        });
+
+        function setupEventListeners() {
+            // Sidebar navigation
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', () => showStep(item.dataset.step));
+            });
+
+            // Checkboxes
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    saveProgress();
+                    updateProgressBar();
+                });
+            });
+
+            // Collapsible sections
+            sectionHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    header.classList.toggle('open');
+                    content.classList.toggle('open');
+                });
+            });
+
+            // Copy buttons
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const codeContent = this.nextElementSibling.textContent;
+                    navigator.clipboard.writeText(codeContent).then(() => {
+                        const original = this.textContent;
+                        this.textContent = 'Copied!';
+                        setTimeout(() => {
+                            this.textContent = original;
+                        }, 2000);
+                    });
+                });
+            });
+        }
+
+        function showStep(stepNum) {
+            // Hide all steps
+            steps.forEach(step => step.classList.remove('active'));
+
+            // Show selected step
+            const step = document.getElementById(`step-${stepNum}`);
+            if (step) {
+                step.classList.add('active');
+                updateSidebarActive(stepNum);
+                updateCurrentStep(stepNum);
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function updateSidebarActive(stepNum) {
+            sidebarItems.forEach(item => item.classList.remove('active'));
+            const active = document.querySelector(`[data-step="${stepNum}"]`);
+            if (active) active.classList.add('active');
+        }
+
+        function updateCurrentStep(stepNum) {
+            const stepNames = [
+                'Overview', 'Session Setup', 'Pre-Brief', 'Prospect Sourcing',
+                'Research Pipeline', 'Message Drafting', 'QA Gate', 'Batch Assembly',
+                'Apollo Integration', 'Send Session', 'Reply Tracking',
+                'Cycle Logging', 'Next Batch'
+            ];
+            document.getElementById('current-step').textContent = stepNames[stepNum] || 'Step ' + stepNum;
+        }
+
+        function saveProgress() {
+            const progress = {};
+            checkboxes.forEach((checkbox, index) => {
+                progress[index] = checkbox.checked;
+            });
+            localStorage.setItem('bdr-guide-progress', JSON.stringify(progress));
+            localStorage.setItem('bdr-guide-last-updated', new Date().toLocaleString());
+        }
+
+        function loadProgress() {
+            const progress = JSON.parse(localStorage.getItem('bdr-guide-progress') || '{}');
+            checkboxes.forEach((checkbox, index) => {
+                if (progress[index] !== undefined) {
+                    checkbox.checked = progress[index];
+                }
+            });
+            const lastUpdated = localStorage.getItem('bdr-guide-last-updated');
+            if (lastUpdated) {
+                document.getElementById('last-updated').textContent = lastUpdated.split(',')[0];
+            }
+        }
+
+        function updateProgressBar() {
+            const checkedCount = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked').length;
+            const totalCount = checkboxes.length;
+            const percentage = Math.round((checkedCount / totalCount) * 100);
+
+            document.getElementById('progress-num').textContent = percentage;
+            document.getElementById('progress-fill').style.width = percentage + '%';
+        }
+
+        function copyToClipboard(btn) {
+            const codeContent = btn.nextElementSibling.textContent;
+            navigator.clipboard.writeText(codeContent).then(() => {
+                const original = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(() => {
+                    btn.textContent = original;
+                }, 2000);
+            });
+        }
+
+        // Initialize
+        updateProgressBar();
+        updateCurrentStep(0);
+    </script>
+</body>
+</html></div>
+</div>

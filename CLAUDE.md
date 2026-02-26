@@ -65,7 +65,7 @@ Cisco, Samsung, Honeywell, Bosch, Nokia, Nestle, KFC, DHL, Zeiss, Axel Springer,
 |------|--------|-------|
 | LinkedIn Sales Navigator | Primary | Browser automation for prospecting + InMail |
 | Apollo | Connected (MCP) | Enrichment-first, not sequence-first. 6,879 lead credits. |
-| Gmail | Connected (MCP) | Email for Touch 5 and general comms |
+| Gmail | Connected (MCP) | Email for Touch 3 and general comms |
 | Google Calendar | Connected (MCP) | Meeting scheduling |
 | Google Drive | Connected (MCP) | File storage, batch trackers |
 | Salesforce | SKIP | Too much 2FA. Use Apollo for CRM-like functions instead. |
@@ -83,9 +83,37 @@ Cisco, Samsung, Honeywell, Bosch, Nokia, Nestle, KFC, DHL, Zeiss, Axel Springer,
 
 Rob's use of AI tools is private. All outreach is manually sent by Rob (copy/paste from our drafts). Claude drafts, Rob executes.
 
+### Hard Rule: Company Data Protection
+**NEVER modify, delete, alter, or overwrite any existing company data.** There are real-world consequences to touching data that belongs to current deals, clients, or team workflows. This includes:
+- Never delete or modify existing Apollo contacts, sequences, or records that Rob didn't create in this workflow
+- Never edit, archive, or delete emails in Gmail (read-only usage for context)
+- Never modify or delete Google Drive files that Rob didn't explicitly ask to change
+- Never alter calendar events that Rob didn't create or explicitly ask to change
+- Never touch any Salesforce data (even if access is restored in the future) without explicit per-record approval
+- Never enroll existing company contacts into new sequences without Rob's explicit approval
+- Never overwrite or merge duplicate records without Rob reviewing both records first
+
+**Default posture:** Read and enrich freely. Create new records (contacts, sequences, drafts) freely. But modifying or deleting ANYTHING that already exists requires Rob's explicit approval for that specific item.
+
+**If uncertain:** STOP and ask Rob. It is always better to pause and confirm than to risk altering business data. Err on the side of creating new records rather than modifying existing ones.
+
+### Hard Rule: Send Approval
+**NEVER send any outreach message, email, InMail, or communication to any prospect or person without Rob's explicit approval.** Claude drafts everything. Rob reviews, approves, and executes the send manually (copy/paste). The only exception is if Rob explicitly says "APPROVE SEND" for a specific message to a specific person in the chat.
+
 ---
 
 ## Outreach SOP (for Claude)
+
+### Competitive Quick-Reference
+| Competitor | Testsigma Advantage | When to Use |
+|------------|-------------------|-------------|
+| Provar | Fast no-code setup (1 day vs weeks), better CI/CD, auto-healing | Salesforce-heavy prospects |
+| Selenium | 70-90% maintenance reduction, auto-healing, cloud-ready | Any prospect on Selenium |
+| Cypress | Multi-browser + mobile + API + Salesforce shadow DOM | Web-focused teams |
+| Playwright | No-code simplicity + Salesforce-native + reporting built-in | Code-heavy QA teams |
+| Tricentis/TOSCA | Agile-friendly + faster deployment + modern UX + lower cost | Enterprise prospects on TOSCA |
+| AccelQ | Open extensibility + faster execution + flexible pricing | Mid-market prospects |
+| Copado | Test automation complement to DevOps layer (run alongside) | Salesforce DevOps users |
 
 This section tells Claude how to build prospect lists and write outreach messages for Rob. Follow these rules exactly.
 
@@ -189,37 +217,19 @@ Before sending, check for these signs the message was stitched together:
 - Message has no paragraph breaks between proof point and close (wall of text on mobile)
 If ANY of these are true, rewrite.
 
-### Multi-Channel Sequence (write all touches per prospect)
-Every prospect gets a multi-channel sequence. All written touches follow the same writing style rules. Rob decides exact timing/spacing manually.
+### 3-Touch Sequence (write all touches per prospect)
+Every prospect gets a 3-touch sequence across two channels: LinkedIn InMail and Email. No cold calls. All written touches follow the same writing style rules. Rob decides exact timing/spacing manually.
 
-**Day 1 - Touch 1 (InMail):** Full message with all 6 elements above. 70-120 words.
-**Day 3 - Touch 2 (Cold Call):** Use the personalized call snippet (see Cold Call Prep below). 30-second opener max.
-**Day 5 - Touch 3 (InMail Follow-up):** Shorter, 40-70 words. New angle or new proof point, NOT a rehash of Touch 1. Reference that you reached out before but keep it light ("Circling back quick..."). Add one new piece of value: a different customer story, a specific capability match, or a recent company event. End with a softer but still specific close that ties to the new proof point (e.g., "If cutting regression time in half sounds useful, what day works for a quick look?"). Follow-up closes can be lighter than Touch 1 but must still reference the proof point outcome.
-**Day 8 - Touch 4 (Cold Call #2):** Different angle than Call #1. Lead with the proof point from Touch 3.
-**Day 10 - Touch 5 (Email):** Short email (if email address is available). Same rules as InMail but can be slightly more direct since email feels less intrusive.
-**Day 15 - Touch 6 (InMail Break-up):** Shortest, 30-50 words. Acknowledge the silence without guilt-tripping. Offer to close the loop: "If the timing isn't right, totally get it. Just wanted to close the loop so I'm not clogging your inbox." Leave the door open but make it easy to say no.
+**Day 1 - Touch 1 (LinkedIn InMail):** Full message with all 5 elements (subject, opener, context, proof point, close). 80-120 words.
+**Day 5 - Touch 2 (LinkedIn InMail Follow-up):** Shorter, 40-70 words. New angle or new proof point, NOT a rehash of Touch 1. Reference that you reached out before but keep it light ("Circling back quick..."). Add one new piece of value: a different customer story, a specific capability match, or a recent company event. End with a softer but still specific close that ties to the new proof point (e.g., "If cutting regression time in half sounds useful, what day works for a quick look?"). Follow-up closes can be lighter than Touch 1 but must still reference the proof point outcome.
+**Day 10 - Touch 3 (Email):** Short email (if email address is available). 60-100 words. Same rules as InMail but can be slightly more direct since email feels less intrusive. Fresh approach with a different proof point than Touches 1 and 2.
 
 **Sequence rules:**
-- Each written touch must use a DIFFERENT proof point or angle than the previous touch.
-- Touches 3-6 do NOT need the full 6-element structure. They can be looser.
-- Touch 6 should never pitch. It's purely a respectful close-out.
-- If a prospect has Buyer Intent, Touch 3 can be more direct ("Noticed your team's been exploring options in this space...").
-- Not every prospect will have email addresses. If no email, skip Touch 5 and adjust spacing.
-- Rob manually executes calls. Claude provides the call script snippets, Rob makes the dial.
-
-### Cold Call Prep (per prospect)
-Every prospect card in the deliverable includes a personalized cold call snippet. This is NOT a full script, it's a 3-line cheat sheet Rob can glance at before dialing.
-
-**Call snippet structure:**
-1. **Opener** (1 line): "Hey [Name], this is Rob from Testsigma - [personalized hook referencing their role or company]."
-2. **Pain hypothesis** (1 line): "[Specific testing problem tied to their company context]."
-3. **Bridge to ask** (1 line): "We helped [proof point]. Worth 60 seconds to see if it's relevant?"
-
-**Rules:**
-- Total call snippet: 3 lines max. Rob needs to glance and dial, not read a paragraph.
-- The opener must reference something specific enough that it doesn't sound like a cold call script.
-- The pain hypothesis should be different from what was used in Touch 1 InMail (variety across channels).
-- Use a different proof point than Touch 1 to avoid sounding repetitive if they read the InMail.
+- Each touch must use a DIFFERENT proof point or angle than the previous touch.
+- Touch 2 does NOT need the full 5-element structure. It can be looser.
+- If a prospect has Buyer Intent, Touch 2 can be more direct ("Noticed your team's been exploring options in this space...").
+- Not every prospect will have email addresses. If no email, skip Touch 3 and the sequence ends after Touch 2.
+- The sequence ends after Touch 3 (or Touch 2 if no email). No break-up message.
 
 ### Objection Pre-Mapping (per prospect)
 Based on company research, predict the most likely objection for each prospect and pre-load the response in the tracker.
@@ -239,6 +249,18 @@ Based on company research, predict the most likely objection for each prospect a
 - Include the pre-loaded response in the tracker as a tooltip or expandable field.
 - If no clear signal, default to "We already have a tool" since that's the most common objection.
 
+**Additional Objection Responses (from Google Drive knowledge base):**
+| Research Signal | Likely Objection | Pre-loaded Response |
+|----------------|-----------------|-------------------|
+| Uses Provar | "We use Provar" | "Provar's Java-heavy and slow to adapt to DOM changes. Teams switch to us for faster setup (1 day vs weeks) and better CI/CD integration." |
+| Uses Tricentis/TOSCA | "We use Tricentis" | "Tricentis works well for broad enterprise. We're a better fit for agile teams, faster deployment, and modern UX. Happy to compare side by side." |
+| Uses Copado | "We use Copado" | "Copado handles deployments. We ensure what you're deploying actually works. Most teams run us alongside Copado." |
+| Uses Cypress | "We use Cypress" | "Cypress is Chrome-only and doesn't handle Salesforce shadow DOM well. We cover multi-browser, mobile, API, and Salesforce-native testing." |
+| Uses Playwright | "We use Playwright" | "Playwright requires coding and isn't optimized for Salesforce. We offer no-code simplicity plus Salesforce-specific features with built-in reporting." |
+| Asks about data privacy/AI | "How do you use our data?" | "We use OpenAI but your data is never stored for training. Only used during prompt generation. We can disable history entirely. SOC2 + GDPR compliant." |
+| Asks about deployment | "We need on-prem" | "We support on-prem, private cloud (managed or self-managed), and public cloud. SOC2 Type II, ISO 27001, HIPAA certified. Several Fortune 500s run us behind their firewall." |
+| Prospect mentions auto-healing skepticism | "Is auto-healing real?" | "Auto-healing continuously collects XPaths and element IDs. When the UI changes, it auto-remaps locators. No manual script fixes. That's how Hansard cut regression from 8 to 5 weeks." |
+
 ### Customer Proof Points (use these, match to pain)
 | Proof Point | Best For |
 |-------------|----------|
@@ -251,6 +273,9 @@ Based on company research, predict the most likely objection for each prospect a
 | Spendflo: 50% manual testing cut | SaaS, smaller teams, quick wins |
 | 70% maintenance reduction vs Selenium | Teams on Selenium/Cypress/Playwright |
 | 90% maintenance reduction with self-healing | Anyone complaining about flaky/brittle tests |
+| Cisco: 35% regression reduction | Enterprise, large-scale QA teams |
+| Meesho: 4X faster automation scaling | E-commerce, rapid growth |
+| Freshworks: Reduced flakiness at scale with codeless self-healing | SaaS, mid-to-large teams |
 
 ### Research Requirements (THREE sources per prospect)
 Every prospect requires research from all three sources below. The goal is to find QA-relevant insights that feed the Single Theme Rule, the proof point match, AND the close construction. Research that doesn't connect to one of those three outputs is wasted effort.
@@ -274,7 +299,7 @@ Every prospect requires research from all three sources below. The goal is to fi
   - Technology stack (Apollo tracks technologies used, which can reveal testing tools, CI/CD platforms, cloud providers)
   - Company size and growth trajectory (funding rounds signal scaling pressure on QA)
   - Industry classification (maps to proof point matching and vertical-specific pain hooks)
-  - Contact data for multi-channel sequence (email for Touch 5, phone for call touches)
+  - Contact data for multi-channel sequence (email for Touch 3)
 - **Apollo workflow:** Search contacts first (check for duplicates) → Enrich person → Enrich organization → Log all data in prospect card → Use tech stack and industry data to select proof point and construct close.
 
 **Source 3: Company Research (External)**
@@ -320,11 +345,10 @@ Aim for this composition in every 25-prospect batch (informed by reply rate data
 - Single HTML file with:
   - Prospect tracker table sorted by priority score (descending), with columns: priority score, name, title, company, tags, profile research notes, company research notes, outreach angle, LinkedIn URL, status, reply tag, A/B group, personalization score
   - Individual prospect cards containing:
-    - Copy-paste-ready messages for ALL written touches (Touch 1 InMail, Touch 3 Follow-up, Touch 5 Email if available, Touch 6 Break-up) with "Copy Message" and "Copy Subject" buttons
-    - Cold call snippet for Touch 2 and Touch 4 (3-line cheat sheet with "Copy Script" button)
+    - Copy-paste-ready messages for ALL written touches (Touch 1 InMail, Touch 2 InMail Follow-up, Touch 3 Email if available) with "Copy Message" and "Copy Subject" buttons
     - Predicted objection + pre-loaded response (expandable or tooltip)
     - Meeting prep card (auto-populated from research when status = Meeting Booked)
-  - Status dropdown per prospect: Not Started, Touch 1 Sent, Call 1 Made, Touch 3 Sent, Call 2 Made, Touch 5 Sent, Touch 6 Sent, Replied, Meeting Booked, Not Interested, Bounced, Dormant, Re-Engaged
+  - Status dropdown per prospect: Not Started, Touch 1 Sent, Touch 2 Sent, Touch 3 Sent, Replied, Meeting Booked, Not Interested, Bounced, Dormant, Re-Engaged
   - Reply tag dropdown per prospect (see Reply Tagging below)
   - A/B group label per prospect (see A/B Testing below)
   - Message personalization score (1-3) per prospect (see Message Scoring below)
@@ -434,7 +458,7 @@ Each prospect gets a priority score (1-5) that determines the order Rob works th
 **In the deliverable:** Show the priority score prominently next to each prospect name. Sort the tracker table by priority descending. Add a filter to show only Hot/Warm prospects.
 
 ### Re-Engagement Triggers
-After Touch 6 (break-up), a prospect goes dormant. But they should be re-engaged if any of these signals appear:
+After the sequence ends (Touch 3, or Touch 2 if no email), a prospect goes dormant if they haven't replied. They should be re-engaged if any of these signals appear:
 
 | Trigger | Action |
 |---------|--------|
@@ -446,9 +470,22 @@ After Touch 6 (break-up), a prospect goes dormant. But they should be re-engaged
 | **Testsigma ships a major feature** (e.g., new integration, Atto update) | Re-engage with the new capability as the hook. "Since we last talked, we launched [X]." |
 
 **Rules:**
-- Minimum 60 days between break-up and re-engagement (don't pester).
+- Minimum 60 days between last touch and re-engagement (don't pester).
 - Re-engagement messages must have a NEW reason for reaching out. Never just repeat the old sequence.
 - Log re-engagements in the tracker with a "Re-engaged" status and the trigger reason.
+
+### Trigger Event Detection (from Google Drive Playbook)
+When researching prospects, check for these trigger events and use the corresponding messaging angle:
+
+| Trigger Event | Detection Method | Messaging Angle |
+|--------------|-----------------|-----------------|
+| Platform migration | Job postings, press releases, engineering blog | "During platform overhauls, test maintenance usually spikes." |
+| Agentforce/AI rollout | News, product announcements | "AI rollouts need test coverage to validate workflows don't break." |
+| Hiring QA/SDET roles | Job postings on LinkedIn/company site | "Scaling QA usually means testing demand is outpacing capacity." |
+| DevOps/CI-CD initiative | Engineering blog, tech stack changes | "CI/CD without automated testing creates a bottleneck." |
+| Release delays mentioned | Glassdoor reviews, engineering posts | "Release delays often trace back to regression testing overhead." |
+| Competitor tool frustration | LinkedIn posts, community forums | "Teams hitting limits with [tool] often find our approach fills the gaps." |
+| Post-acquisition integration | News, press releases | "Post-acquisition, test suites usually need to cover multiple codebases." |
 
 ### Meeting Booked Handoff
 When a prospect says yes to a meeting, Rob needs to prep fast. The deliverable includes a "Prep" section per prospect that auto-generates when status changes to "Meeting Booked."
@@ -898,7 +935,7 @@ Update the prospect record in the HTML tracker with:
 | conversationUrl | (copy thread URL if visible) |
 | preFlightResult | PASS (or PASS with notes) |
 | discrepancies | (any title/company changes noted) |
-| nextStepDue | +3 business days for Touch 2 (call) |
+| nextStepDue | +5 days for Touch 2 (InMail follow-up) |
 
 Output a structured LOG PAYLOAD in chat so Rob can verify.
 
@@ -929,7 +966,7 @@ Pre-flight: PASS/FAIL
 Result: SENT / BLOCKED / ERROR
 Thread URL: [if available]
 Notes: [any discrepancies or issues]
-Next step: [Touch 2 call on YYYY-MM-DD]
+Next step: [Touch 2 InMail follow-up on YYYY-MM-DD]
 ```
 
 ### Version History
@@ -938,6 +975,7 @@ Next step: [Touch 2 call on YYYY-MM-DD]
 | 2026-02-25 | v1.0 - Initial SOP created for Batch 3 pilot send |
 | 2026-02-25 | v1.1 - Added Step 10: Close conversation window before moving to next prospect |
 | 2026-02-25 | v2.0 - Major update: Added SOP B (Research+Draft), SOP C (Batch Prepare), Safety modules, Cycle Logging, Apollo integration, LinkedIn compliance, plugin customization |
+| 2026-02-25 | v3.0 - Simplified to 3-touch cadence (2 InMails + 1 Email). Removed all cold call components. Created standalone A-to-Z SOP document (bdr-automation-pipeline-sop.docx) |
 
 ---
 
@@ -952,8 +990,7 @@ Next step: [Touch 2 call on YYYY-MM-DD]
 - Previous batch files (for Pre-Brief and feedback loop)
 
 ### Outputs Per Prospect
-- Approved Message 1 (Touch 1 InMail), Message 3 (Follow-up), Message 5 (Email), Message 6 (Break-up)
-- Cold call snippets for Touch 2 and Touch 4
+- Approved Touch 1 (InMail), Touch 2 (InMail Follow-up), Touch 3 (Email if address available)
 - Personalization hooks (minimum 2 per prospect)
 - Risk flags: known person, already contacted, missing InMail, low-priority persona
 - Predicted objection + pre-loaded response
@@ -1124,15 +1161,34 @@ Apollo's primary value for our workflow is **contact enrichment**, not sequence 
 
 **Apollo Workflow Per Batch:**
 1. **Before Research:** Search Apollo contacts to check for duplicates (avoid re-enriching known contacts)
-2. **During Research:** Enrich each prospect (person + organization) to get verified email, phone, tech stack, industry
+2. **During Research:** Enrich each prospect (person + organization) to get verified email, tech stack, industry
 3. **After InMail Sent:** Create Apollo contact records for all prospects (for CRM sync and future email follow-up)
-4. **For Touch 5 (Email):** If prospect has verified email, use Apollo to send email Touch 5 OR manually send from Gmail
-5. **For Call Touches:** Use Apollo phone data for Touches 2 and 4
+4. **For Touch 3 (Email):** If prospect has verified email, use Apollo to send email OR manually send from Gmail
+
+### Active Apollo Sequences (Rob-Created)
+| Sequence | ID | Steps | Purpose |
+|----------|-----|-------|---------|
+| Q1 QA Outreach - US | 699f4089628b940011da7fb7 | 3 | Primary 3-touch sequence: InMail 1 (Day 1) → InMail 2 (Day 5) → Email 1 (Day 10). Currently INACTIVE/Draft, needs activation. |
+| Rob Outbound | 68f2723ef174870019958d31 | 10 | Legacy sequence (10 steps). 397 delivered, 0.25% reply rate. FLAGGED as underperforming. Replace with Q1 QA Outreach. |
+| Eshwar - Rob Outbound | 6915ec4bac6f93000da91dab | 8 | Variant sequence (8 steps). 18.8% open rate, better performer. Reference for optimization. |
+
+**Sequence usage rules:**
+- This sequence handles all 3 written touches: Touch 1 (InMail, Day 1) → Touch 2 (InMail Follow-up, Day 5) → Touch 3 (Email, Day 10)
+- The sequence ends after Touch 3. No break-up message.
+- Enroll prospects AFTER Rob approves all messages in the batch HTML tracker
+- Each step uses personalized copy from the batch tracker (not Apollo templates)
+
+**Rob's Apollo Email Accounts:**
+| Email | ID | Default | 
+|-------|-----|---------|
+| robert.gorham@testsigma.in | 68f65ae5b705750019748b3e | No |
+| robert.gorham@testsigma.net | 68f65bdf998c4c0015f3446a | Yes |
+| robert.gorham@testsigmatech.in | 68f65c12ce7de000192da2e3 | No |
+| robert.gorham@testsigmaweb.com | 68f65c3af5fce700197d4f4c | No |
 
 ### Apollo Sequence Recommendations
-- **Don't replace InMail with Apollo email sequences** for Touches 1 and 3
-- **Do create a "Batch 3 Call Tasks" sequence** with manual call task steps for Touches 2 and 4
-- **Do use Apollo for Touch 5 email** when InMail follow-ups haven't gotten a reply
+- **Don't replace InMail with Apollo email sequences** for Touches 1 and 2
+- **Do use Apollo for Touch 3 email** when InMail follow-ups haven't gotten a reply
 - **Do create Apollo contacts for all prospects** for long-term tracking and CRM sync
 
 ### Apollo Credit Budget Per Batch
@@ -1243,7 +1299,7 @@ OUTCOME
 -------
 Status: SENT / SKIPPED_KNOWN_PERSON / SKIPPED_ALREADY_MESSAGED / BLOCKED_NO_INMAIL / ERROR / SKIPPED_NOT_FOUND
 Error details: [if applicable]
-Next step: [Touch 2 call on YYYY-MM-DD]
+Next step: [Touch 2 InMail follow-up on YYYY-MM-DD]
 ```
 
 #### C) Weekly Metrics (computed from cycle logs)
@@ -1316,3 +1372,104 @@ The following context should be available to all plugins:
 3. **Productivity plugins** (memory-management, task-management): Sync with CLAUDE.md memory and TASKS.md
 4. **Enterprise search plugins**: Configure to search across Google Drive, Gmail, and connected sources for Testsigma-related context
 5. **Apollo plugins** (enrich-lead, prospect, sequence-load): Pre-load ICP filters, enrichment preferences, sequence templates
+
+---
+
+## Warm / Inbound Lead SOP
+
+**Purpose:** When a prospect replies positively, gets referred, or comes inbound (website demo request, event lead, Buyer Intent signal), this SOP defines the response workflow. Warm leads get faster, more direct treatment than cold outreach.
+
+### Trigger Events
+| Source | Signal | Response Time Target |
+|--------|--------|---------------------|
+| InMail reply (positive) | "Interested," "tell me more," "good timing" | Same day, within 2 hours |
+| InMail reply (referral) | "Talk to [name]" | Same day to referred person |
+| Website demo request | Marketing passes lead | Within 4 hours |
+| Buyer Intent (Sales Nav) | Account shows research activity | Next business day (new sequence) |
+| Event/webinar attendee | Marketing list | Within 48 hours |
+| Re-engagement trigger | Job posting, funding, leadership change | Within 1 week |
+
+### Response Framework (Warm Leads)
+1. **Acknowledge fast.** Mirror their language. If they said "interested in the self-healing piece," your reply should reference self-healing specifically.
+2. **One proof point, matched to their stated interest.** Don't dump all proof points. Pick the ONE that matches what they asked about.
+3. **Bridge to meeting.** "What day works this week for a quick look?" Keep the momentum.
+4. **Prep the meeting card.** As soon as status = Meeting Booked, auto-generate the Prep Card (see Meeting Booked Handoff in main SOP).
+
+### Response Framework (Referrals)
+1. **Thank the referrer** in a short reply (1-2 lines, genuine).
+2. **Research the referred person** using the full 3-source pipeline (LinkedIn, Apollo, Company).
+3. **Draft outreach to the referred person** mentioning the referrer by name: "[Referrer name] suggested I reach out..."
+4. **Use a softer CTA** since the referral creates implicit trust: "Would a quick call make sense to see if it's relevant?"
+
+### Follow-Up Tracking (Gmail + Calendar)
+- When a warm lead replies, create a **Google Calendar reminder** 2 business days out titled "Follow up: [Name] @ [Company]" with notes on what they said and next action.
+- If no response to the follow-up within 3 business days, send a second nudge (shorter, lighter).
+- After 2 unanswered follow-ups on a warm lead, move to "Dormant - Was Warm" status. Re-engage only on new trigger event.
+- Track all warm lead interactions in the batch HTML tracker with "Replied" or "Meeting Booked" status and the appropriate reply tag.
+
+### Gmail Integration for Follow-Up
+- Use Gmail search to check for any existing email threads with the prospect before sending.
+- Draft follow-up emails in Gmail (Claude drafts, Rob sends).
+- Calendar reminders serve as the follow-up tickler system since we're not using Salesforce tasks.
+
+---
+
+## Google Drive Knowledge Base
+
+Documents indexed from Testsigma Google Drive (Feb 2026). Claude should reference these for objection handling, competitive positioning, and talk tracks.
+
+| Document | ID | Key Content |
+|----------|-----|-------------|
+| Objection Handling - Product & Features | 1EDmrZO9ZK1rpYTMlZD1oL2DxtZIYrJY3UO9B_MRQkJU | NLP vs record-playback, self-healing, custom scenarios, local/on-prem |
+| Competitor Comparisons | 1yFYzrb1FdCOzI9FoVcN2MyfI_vfLOqGy-79SLgjJ0Kc | Provar, AccelQ, Tricentis, Copado, Selenium, Cypress, Playwright |
+| Persona-Based Battle Cards | 1dqNe_q1RXuzXs4OD0TIEJwkplHk1UwabNQGIL3vpEOg | QA Lead, Program Manager, VP Engineering personas with pain/triggers/CTAs |
+| Simple Talk Tracks | 1lZhfvmxGfI12F64PCtejpHSdWOX_dI0gwr5MV3mGFgA | 15s/30s/60s openers by persona (Admin, QA, DevOps, Business) |
+| Trigger Event Playbook | 1e9DDmuOFtd9MgB1ol3MOJklzrq3vZn5oyevM6FAj_7I | 7 trigger events: SF migration, Agentforce, hiring, DevOps, delays, custom apps, competitor switch |
+| Onboarding Assignment | 1JQ3_CgEAGgaL9H-geaLhXfkImIFcRNBQVaLVGZLz-bA | AE best practices, cold call scripts, email templates, high-value verticals |
+| Objection Handling - AI | 1kGN-3bfmrFUclqIKCPky-eJ6ikqJYEBTApldxKiwCw4 | LLM model (OpenAI), data privacy, auto-healing details, AI roadmap |
+| Objection Handling - Security | 1NAZqKAYKKLvJSo11kGxflqhvORW0BWXp0f7xGP1h0YQ | SOC2, GDPR, ISO 27001, HIPAA, deployment options, SLA response times |
+| RFP Responses | 10l5kF9LtQwrax09BcOy_m3HhpjbXYdahSYliubiQvRQ | Test case management, execution scalability, reporting, defect management |
+| Full-Funnel BDR Scripts | 1yXGKZvy-7o78BxawYjng9H-F7DCBiQaudCZssgMlbjo | Voicemail, LinkedIn, cold call, mid-funnel, bottom-funnel, nurture scripts |
+| Salesforce Enablement v2 | 1bawvXns5ZSjWNvYkarikltH8aaNcUcSqw388Aks27CI | Salesforce messaging framework, positioning, key pillars |
+
+**How to use:** When drafting messages for prospects in specific verticals or facing specific objections, Claude should fetch the relevant Google Drive document using google_drive_fetch with the document ID to get the latest content.
+
+## Key Deliverables Index
+
+### Automation & Planning Documents
+| File | Purpose | Created |
+|------|---------|---------|
+| `automation-plan-v1.html` | Comprehensive BDR automation roadmap covering all SOPs, tools, and workflows | 2026-02-25 |
+| `bdr-automation-pipeline-sop.docx` | Complete A-to-Z SOP document for the automated BDR pipeline (3-touch cadence, v3.0) | 2026-02-25 |
+
+### Batch Tracker Files
+| File | Batch | Status |
+|------|-------|--------|
+| `prospect-outreach-1-2026-02-19.html` | Batch 1 (original) | Complete |
+| `prospect-outreach-1-2026-02-23.html` | Batch 1 (rebuild) | Complete |
+| `prospect-outreach-2-2026-02-22.html` | Batch 2 | Complete |
+| `prospect-outreach-2-2026-02-23.html` | Batch 2 (updated) | Complete |
+| `prospect-outreach-3-2026-02-25.html` | Batch 3 | Active |
+| `prospect-outreach-4-2026-02-25.html` | Batch 4 | Active |
+
+### Analytics & Intelligence
+| File | Purpose |
+|------|---------|
+| `outreach-intelligence.html` | Deep analysis of 1,326 LinkedIn conversations |
+| `message-analytics-dashboard.html` | Message performance metrics dashboard |
+| `outreach-intelligence-report.docx` | Written report of outreach data analysis |
+| `linkedin-outreach-analysis.docx` | LinkedIn-specific outreach analysis |
+
+### Research Banks
+| File | Purpose |
+|------|---------|
+| `testsigma-knowledge-bible.md` | Master Testsigma product knowledge reference |
+| `prospect-research-bank-2026-02-23.html` | Company research database for prospecting |
+| `company-research-*.md` | Individual company research files |
+
+### Send Infrastructure
+| File | Purpose |
+|------|---------|
+| `send-loop-data.json` | Structured prospect data for send sessions |
+| `cycle-logs/` | Directory of per-session send logs |
+| `EXECUTION-STATUS.md` | Current execution status tracker |
