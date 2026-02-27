@@ -1,0 +1,11 @@
+Rank,Name,Title,Company,Email,Batch,Group,Priority,Touch1_Status,Touch2_Due,Touch3_Due,Notes
+1,Lyle Landry,QA Manager,Availity,lyle.landry@availity.com,5B,A,5,touch1_sent,Mar 2,Mar 6,Highest priority - P5
+2,Iftikhar Hussain,Principal/Sr Test Architect,Sabre Corporation,iftikhar.hussain@sabre.com,5B,A,4,touch1_sent,Mar 2,Mar 6,Cloud migration angle
+3,Rahul Pandey,Sr. Quality Architect,CareFirst BCBS,rahul.pandey@carefirst.com,5B,A,4,touch1_sent,Mar 2,Mar 6,Healthcare vertical
+4,Christie Howard,Sr Director QA Engineering,LastPass,christie.howard@lastpass.com,5B,A,4,touch1_sent,Mar 2,Mar 6,Enterprise SaaS
+5,Edwin Gozun,Sr Principal Test Architect,Arm,edwin.gozun@arm.com,5B,A,3,touch1_sent,Mar 2,Mar 6,Hardware-software testing
+6,Sebren Green,Sr Director QA / Head of QA Eng,Riot Games,sgreen@riotgames.com,5B,B,4,touch1_sent,Mar 2,Mar 6,Gaming vertical
+7,Rachael Schroeder,QA Manager (LEGO Fortnite),Epic Games,rachael.thompson@epicgames.com,5B,B,4,touch1_sent,Mar 2,Mar 6,Gaming/media vertical
+8,Rich Kowalski,PS QA Lead Architect,Genesys,rich.kowalski@genesys.com,5B,B,3,touch1_sent,Mar 2,Mar 6,Communications platform
+9,Ryan Aspleaf,Sr Director QA Engineering,VIZIO,ryan.aspleaf@vizio.com,5B,B,3,touch1_sent,Mar 2,Mar 6,Consumer electronics
+10,Arun Bhatia,Sr Director QA,Aspen Technology,arun.bhatia@aspentech.com,5B,B,3,touch1_sent,Mar 2,Mar 6,Industrial software

@@ -118,13 +118,13 @@ h1 { font-size: 1.8rem; margin-bottom: 8px; color: #fff; }
 <div class="stat"><div class="stat-value">25</div><div class="stat-label">Total</div></div>
 <div class="stat"><div class="stat-value">1</div><div class="stat-label">Hot (P5)</div></div>
 <div class="stat"><div class="stat-value">10</div><div class="stat-label">Warm (P4)</div></div>
-<div class="stat"><div class="stat-value" id="stat-sent">0</div><div class="stat-label">Sent</div></div>
+<div class="stat"><div class="stat-value" id="stat-sent">23</div><div class="stat-label">Sent</div></div>
 <div class="stat"><div class="stat-value" id="stat-replied">0</div><div class="stat-label">Replied</div></div>
 </div>
 
 <div id="prospects-container">
 
-<div class="prospect-card" data-priority="5" data-ab="a" data-status="not_started" id="card-6">
+<div class="prospect-card" data-priority="5" data-ab="a" data-status="touch1_sent" id="card-6">
   <div class="card-header" onclick="toggleCard(6)">
     <div class="card-header-left">
       <div class="priority-badge priority-5">5</div>
@@ -223,7 +223,7 @@ Rob</div>
       <label>Status:</label>
       <select onchange="updateStatus(6, this.value)">
         <option value="not_started">Not Started</option>
-        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch1_sent" selected>Touch 1 Sent</option>
         <option value="touch2_sent">Touch 2 Sent</option>
         <option value="touch3_sent">Touch 3 Sent</option>
         <option value="replied">Replied</option>
@@ -247,7 +247,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="4" data-ab="a" data-status="not_started" id="card-0">
+<div class="prospect-card" data-priority="4" data-ab="a" data-status="touch1_sent" id="card-0">
   <div class="card-header" onclick="toggleCard(0)">
     <div class="card-header-left">
       <div class="priority-badge priority-4">4</div>
@@ -346,7 +346,7 @@ Rob</div>
       <label>Status:</label>
       <select onchange="updateStatus(0, this.value)">
         <option value="not_started">Not Started</option>
-        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch1_sent" selected>Touch 1 Sent</option>
         <option value="touch2_sent">Touch 2 Sent</option>
         <option value="touch3_sent">Touch 3 Sent</option>
         <option value="replied">Replied</option>
@@ -370,7 +370,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="4" data-ab="a" data-status="not_started" id="card-1">
+<div class="prospect-card" data-priority="4" data-ab="a" data-status="touch1_sent" id="card-1">
   <div class="card-header" onclick="toggleCard(1)">
     <div class="card-header-left">
       <div class="priority-badge priority-4">4</div>
@@ -469,7 +469,7 @@ Rob</div>
       <label>Status:</label>
       <select onchange="updateStatus(1, this.value)">
         <option value="not_started">Not Started</option>
-        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch1_sent" selected>Touch 1 Sent</option>
         <option value="touch2_sent">Touch 2 Sent</option>
         <option value="touch3_sent">Touch 3 Sent</option>
         <option value="replied">Replied</option>
@@ -493,7 +493,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="4" data-ab="a" data-status="not_started" id="card-5">
+<div class="prospect-card" data-priority="4" data-ab="a" data-status="touch1_sent" id="card-5">
   <div class="card-header" onclick="toggleCard(5)">
     <div class="card-header-left">
       <div class="priority-badge priority-4">4</div>
@@ -616,7 +616,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="4" data-ab="a" data-status="not_started" id="card-8">
+<div class="prospect-card" data-priority="4" data-ab="a" data-status="touch1_sent" id="card-8">
   <div class="card-header" onclick="toggleCard(8)">
     <div class="card-header-left">
       <div class="priority-badge priority-4">4</div>
@@ -715,7 +715,7 @@ Rob</div>
       <label>Status:</label>
       <select onchange="updateStatus(8, this.value)">
         <option value="not_started">Not Started</option>
-        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch1_sent" selected>Touch 1 Sent</option>
         <option value="touch2_sent">Touch 2 Sent</option>
         <option value="touch3_sent">Touch 3 Sent</option>
         <option value="replied">Replied</option>
@@ -739,7 +739,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="4" data-ab="a" data-status="not_started" id="card-10">
+<div class="prospect-card" data-priority="4" data-ab="a" data-status="touch1_sent" id="card-10">
   <div class="card-header" onclick="toggleCard(10)">
     <div class="card-header-left">
       <div class="priority-badge priority-4">4</div>
@@ -862,7 +862,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="4" data-ab="b" data-status="not_started" id="card-13">
+<div class="prospect-card" data-priority="4" data-ab="b" data-status="touch1_sent" id="card-13">
   <div class="card-header" onclick="toggleCard(13)">
     <div class="card-header-left">
       <div class="priority-badge priority-4">4</div>
@@ -961,7 +961,7 @@ Rob</div>
       <label>Status:</label>
       <select onchange="updateStatus(13, this.value)">
         <option value="not_started">Not Started</option>
-        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch1_sent" selected>Touch 1 Sent</option>
         <option value="touch2_sent">Touch 2 Sent</option>
         <option value="touch3_sent">Touch 3 Sent</option>
         <option value="replied">Replied</option>
@@ -985,7 +985,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="4" data-ab="b" data-status="not_started" id="card-15">
+<div class="prospect-card" data-priority="4" data-ab="b" data-status="touch1_sent" id="card-15">
   <div class="card-header" onclick="toggleCard(15)">
     <div class="card-header-left">
       <div class="priority-badge priority-4">4</div>
@@ -1108,12 +1108,12 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="4" data-ab="b" data-status="not_started" id="card-17">
+<div class="prospect-card" data-priority="4" data-ab="b" data-status="do_not_contact" id="card-17" style="opacity:0.5;border-left:4px solid #ef4444;">
   <div class="card-header" onclick="toggleCard(17)">
     <div class="card-header-left">
-      <div class="priority-badge priority-4">4</div>
+      <div class="priority-badge" style="background:#ef4444;">DNC</div>
       <div>
-        <div class="prospect-name">Sanjay Singh</div>
+        <div class="prospect-name" style="text-decoration:line-through;">Sanjay Singh</div>
         <div class="prospect-title">QA Lead Automation Engineer @ ServiceTitan</div>
         <div style="font-size:0.75rem;color:#71717a;">Austin, TX</div>
       </div>
@@ -1231,7 +1231,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="4" data-ab="b" data-status="not_started" id="card-21">
+<div class="prospect-card" data-priority="4" data-ab="b" data-status="touch1_sent" id="card-21">
   <div class="card-header" onclick="toggleCard(21)">
     <div class="card-header-left">
       <div class="priority-badge priority-4">4</div>
@@ -1330,7 +1330,7 @@ Rob</div>
       <label>Status:</label>
       <select onchange="updateStatus(21, this.value)">
         <option value="not_started">Not Started</option>
-        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch1_sent" selected>Touch 1 Sent</option>
         <option value="touch2_sent">Touch 2 Sent</option>
         <option value="touch3_sent">Touch 3 Sent</option>
         <option value="replied">Replied</option>
@@ -1354,7 +1354,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="4" data-ab="b" data-status="not_started" id="card-24">
+<div class="prospect-card" data-priority="4" data-ab="b" data-status="touch1_sent" id="card-24">
   <div class="card-header" onclick="toggleCard(24)">
     <div class="card-header-left">
       <div class="priority-badge priority-4">4</div>
@@ -1477,7 +1477,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="3" data-ab="a" data-status="not_started" id="card-2">
+<div class="prospect-card" data-priority="3" data-ab="a" data-status="touch1_sent" id="card-2">
   <div class="card-header" onclick="toggleCard(2)">
     <div class="card-header-left">
       <div class="priority-badge priority-3">3</div>
@@ -1574,7 +1574,7 @@ Rob</div>
       <label>Status:</label>
       <select onchange="updateStatus(2, this.value)">
         <option value="not_started">Not Started</option>
-        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch1_sent" selected>Touch 1 Sent</option>
         <option value="touch2_sent">Touch 2 Sent</option>
         <option value="touch3_sent">Touch 3 Sent</option>
         <option value="replied">Replied</option>
@@ -1598,7 +1598,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="3" data-ab="a" data-status="not_started" id="card-3">
+<div class="prospect-card" data-priority="3" data-ab="a" data-status="touch1_sent" id="card-3">
   <div class="card-header" onclick="toggleCard(3)">
     <div class="card-header-left">
       <div class="priority-badge priority-3">3</div>
@@ -1697,7 +1697,7 @@ Rob</div>
       <label>Status:</label>
       <select onchange="updateStatus(3, this.value)">
         <option value="not_started">Not Started</option>
-        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch1_sent" selected>Touch 1 Sent</option>
         <option value="touch2_sent">Touch 2 Sent</option>
         <option value="touch3_sent">Touch 3 Sent</option>
         <option value="replied">Replied</option>
@@ -1721,7 +1721,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="3" data-ab="a" data-status="not_started" id="card-4">
+<div class="prospect-card" data-priority="3" data-ab="a" data-status="touch1_sent" id="card-4">
   <div class="card-header" onclick="toggleCard(4)">
     <div class="card-header-left">
       <div class="priority-badge priority-3">3</div>
@@ -1844,7 +1844,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="3" data-ab="a" data-status="not_started" id="card-7">
+<div class="prospect-card" data-priority="3" data-ab="a" data-status="touch1_sent" id="card-7">
   <div class="card-header" onclick="toggleCard(7)">
     <div class="card-header-left">
       <div class="priority-badge priority-3">3</div>
@@ -1967,7 +1967,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="3" data-ab="a" data-status="not_started" id="card-9">
+<div class="prospect-card" data-priority="3" data-ab="a" data-status="touch1_sent" id="card-9">
   <div class="card-header" onclick="toggleCard(9)">
     <div class="card-header-left">
       <div class="priority-badge priority-3">3</div>
@@ -2066,7 +2066,7 @@ Rob</div>
       <label>Status:</label>
       <select onchange="updateStatus(9, this.value)">
         <option value="not_started">Not Started</option>
-        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch1_sent" selected>Touch 1 Sent</option>
         <option value="touch2_sent">Touch 2 Sent</option>
         <option value="touch3_sent">Touch 3 Sent</option>
         <option value="replied">Replied</option>
@@ -2090,7 +2090,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="3" data-ab="a" data-status="not_started" id="card-11">
+<div class="prospect-card" data-priority="3" data-ab="a" data-status="touch1_sent" id="card-11">
   <div class="card-header" onclick="toggleCard(11)">
     <div class="card-header-left">
       <div class="priority-badge priority-3">3</div>
@@ -2189,7 +2189,7 @@ Rob</div>
       <label>Status:</label>
       <select onchange="updateStatus(11, this.value)">
         <option value="not_started">Not Started</option>
-        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch1_sent" selected>Touch 1 Sent</option>
         <option value="touch2_sent">Touch 2 Sent</option>
         <option value="touch3_sent">Touch 3 Sent</option>
         <option value="replied">Replied</option>
@@ -2213,7 +2213,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="3" data-ab="b" data-status="not_started" id="card-12">
+<div class="prospect-card" data-priority="3" data-ab="b" data-status="touch1_sent" id="card-12">
   <div class="card-header" onclick="toggleCard(12)">
     <div class="card-header-left">
       <div class="priority-badge priority-3">3</div>
@@ -2336,7 +2336,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="3" data-ab="b" data-status="not_started" id="card-14">
+<div class="prospect-card" data-priority="3" data-ab="b" data-status="touch1_sent" id="card-14">
   <div class="card-header" onclick="toggleCard(14)">
     <div class="card-header-left">
       <div class="priority-badge priority-3">3</div>
@@ -2459,7 +2459,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="3" data-ab="b" data-status="not_started" id="card-16">
+<div class="prospect-card" data-priority="3" data-ab="b" data-status="touch1_sent" id="card-16">
   <div class="card-header" onclick="toggleCard(16)">
     <div class="card-header-left">
       <div class="priority-badge priority-3">3</div>
@@ -2582,7 +2582,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="3" data-ab="b" data-status="not_started" id="card-18">
+<div class="prospect-card" data-priority="3" data-ab="b" data-status="touch1_sent" id="card-18">
   <div class="card-header" onclick="toggleCard(18)">
     <div class="card-header-left">
       <div class="priority-badge priority-3">3</div>
@@ -2828,7 +2828,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="3" data-ab="b" data-status="not_started" id="card-20">
+<div class="prospect-card" data-priority="3" data-ab="b" data-status="touch1_sent" id="card-20">
   <div class="card-header" onclick="toggleCard(20)">
     <div class="card-header-left">
       <div class="priority-badge priority-3">3</div>
@@ -2951,7 +2951,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="3" data-ab="b" data-status="not_started" id="card-22">
+<div class="prospect-card" data-priority="3" data-ab="b" data-status="touch1_sent" id="card-22">
   <div class="card-header" onclick="toggleCard(22)">
     <div class="card-header-left">
       <div class="priority-badge priority-3">3</div>
@@ -3074,7 +3074,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="3" data-ab="b" data-status="not_started" id="card-23">
+<div class="prospect-card" data-priority="3" data-ab="b" data-status="touch1_sent" id="card-23">
   <div class="card-header" onclick="toggleCard(23)">
     <div class="card-header-left">
       <div class="priority-badge priority-3">3</div>
@@ -3197,6 +3197,58 @@ Rob</div>
   </div>
 </div>
 
+<div style="background:#1a1b23;border:1px solid #27272a;border-radius:12px;padding:20px;margin-top:24px;">
+<h2 style="font-size:1.1rem;color:#60a5fa;margin-bottom:12px;">Send Log - 2026-02-27</h2>
+<table style="width:100%;font-size:0.85rem;border-collapse:collapse;">
+<tr style="border-bottom:1px solid #27272a;color:#a1a1aa;">
+<th style="text-align:left;padding:8px 4px;">#</th>
+<th style="text-align:left;padding:8px 4px;">Prospect</th>
+<th style="text-align:left;padding:8px 4px;">Company</th>
+<th style="text-align:left;padding:8px 4px;">Time</th>
+<th style="text-align:left;padding:8px 4px;">Credits</th>
+<th style="text-align:left;padding:8px 4px;">Degree</th>
+<th style="text-align:left;padding:8px 4px;">Signals</th>
+<th style="text-align:left;padding:8px 4px;">Apollo ID</th>
+</tr>
+<tr style="border-bottom:1px solid #1f1f23;color:#d4d4d8;">
+<td style="padding:6px 4px;">1</td><td>Lyle Landry</td><td>Availity</td><td>6:30 AM</td><td>125&rarr;124</td><td>3rd</td><td>P5 Hot, FHIR deadline</td><td style="color:#71717a;">Pending</td>
+</tr>
+<tr style="border-bottom:1px solid #1f1f23;color:#d4d4d8;">
+<td style="padding:6px 4px;">2</td><td>Iftikhar Hussain</td><td>Progress Software</td><td>6:35 AM</td><td>124&rarr;123</td><td>3rd</td><td>P4, OpenEdge platform</td><td style="color:#71717a;">Pending</td>
+</tr>
+<tr style="border-bottom:1px solid #1f1f23;color:#d4d4d8;">
+<td style="padding:6px 4px;">3</td><td>Rahul Pandey</td><td>Signify Health</td><td>6:39 AM</td><td>123&rarr;122</td><td>3rd</td><td>P4, CVS Health integration</td><td style="color:#71717a;">Pending</td>
+</tr>
+<tr style="border-bottom:1px solid #1f1f23;color:#d4d4d8;">
+<td style="padding:6px 4px;">4</td><td>Christie Howard</td><td>Housecall Pro</td><td>6:43 AM</td><td>122&rarr;121</td><td>3rd</td><td>P4, platform refresh</td><td style="color:#71717a;">Pending</td>
+</tr>
+<tr style="border-bottom:1px solid #27272a;color:#fbbf24;">
+<td colspan="8" style="padding:10px 4px;font-weight:600;">Enhanced Batch (6 high-signal prospects)</td>
+</tr>
+<tr style="border-bottom:1px solid #1f1f23;color:#d4d4d8;">
+<td style="padding:6px 4px;">5</td><td>Edwin Gozun</td><td>Arm</td><td>6:52 AM</td><td>116&rarr;115</td><td>3rd</td><td>5mo in role, chip design QA</td><td style="font-size:0.7rem;color:#60a5fa;">69a18a20cc9bc6000d4cd995</td>
+</tr>
+<tr style="border-bottom:1px solid #1f1f23;color:#d4d4d8;">
+<td style="padding:6px 4px;">6</td><td>Rich Kowalski</td><td>Genesys</td><td>6:56 AM</td><td>115&rarr;114</td><td>3rd</td><td style="color:#f59e0b;">Buyer Intent, 8yr tenure</td><td style="font-size:0.7rem;color:#60a5fa;">69a18a224c6ddb001976d73b</td>
+</tr>
+<tr style="border-bottom:1px solid #1f1f23;color:#d4d4d8;">
+<td style="padding:6px 4px;">7</td><td>Sebren Green</td><td>Riot Games</td><td>6:58 AM</td><td>114&rarr;113</td><td>2nd</td><td>12yr tenure, gaming QA</td><td style="font-size:0.7rem;color:#60a5fa;">69a18a244c6ddb00114e221b</td>
+</tr>
+<tr style="border-bottom:1px solid #1f1f23;color:#d4d4d8;">
+<td style="padding:6px 4px;">8</td><td>Rachael Schroeder</td><td>Epic Games</td><td>7:05 AM</td><td>113&rarr;112</td><td>2nd</td><td style="color:#f59e0b;">Buyer Intent + Follows Testsigma</td><td style="font-size:0.7rem;color:#60a5fa;">69a18a264c6ddb00114e2223</td>
+</tr>
+<tr style="border-bottom:1px solid #1f1f23;color:#d4d4d8;">
+<td style="padding:6px 4px;">9</td><td>Arun Bhatia</td><td>Aspen Technology</td><td>7:08 AM</td><td style="color:#16a34a;">FREE (Open Profile)</td><td>2nd</td><td>15yr tenure, Sr. Director</td><td style="font-size:0.7rem;color:#60a5fa;">69a18a284c6ddb00114e222b</td>
+</tr>
+<tr style="border-bottom:1px solid #1f1f23;color:#d4d4d8;">
+<td style="padding:6px 4px;">10</td><td>Ryan Aspleaf</td><td>VIZIO</td><td>7:11 AM</td><td>112&rarr;111</td><td>3rd</td><td>15yr at company, Walmart acq.</td><td style="font-size:0.7rem;color:#60a5fa;">69a18a2a303df0000d0c8900</td>
+</tr>
+</table>
+<div style="margin-top:12px;font-size:0.8rem;color:#71717a;">
+<strong style="color:#a1a1aa;">Session Summary:</strong> 23 of 24 InMails sent on Feb 27, 2026 (5:54-8:41 AM ET). Terene Lee NOT sent. Sanjay Singh DNC. InMail credits: 99 remaining. Touch 2 follow-ups due ~2026-03-04.
+</div>
+</div>
+
 </div>
 </div>
 
@@ -3280,6 +3332,20 @@ function updateStats() {
   document.getElementById('stat-sent').textContent = sent;
   document.getElementById('stat-replied').textContent = replied;
 }
+
+// Sync dropdowns with data-status on page load
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.prospect-card').forEach(card => {
+    const status = card.dataset.status;
+    const select = card.querySelector('select');
+    if (select && status) {
+      for (let opt of select.options) {
+        if (opt.value === status) { opt.selected = true; break; }
+      }
+    }
+  });
+  updateStats();
+});
 </script>
 </body>
 </html>

@@ -119,13 +119,13 @@ h1 { font-size: 1.8rem; margin-bottom: 8px; color: #fff; }
 <div class="stat"><div class="stat-value" id="stat-total">25</div><div class="stat-label">Total</div></div>
 <div class="stat"><div class="stat-value" id="stat-hot">3</div><div class="stat-label">Hot (P5)</div></div>
 <div class="stat"><div class="stat-value" id="stat-warm">9</div><div class="stat-label">Warm (P4)</div></div>
-<div class="stat"><div class="stat-value" id="stat-sent">0</div><div class="stat-label">Sent</div></div>
+<div class="stat"><div class="stat-value" id="stat-sent">5</div><div class="stat-label">Sent</div></div>
 <div class="stat"><div class="stat-value" id="stat-replied">0</div><div class="stat-label">Replied</div></div>
 </div>
 
 <div id="prospects-container">
 
-<div class="prospect-card" data-priority="4" data-ab="a" data-status="not_started" id="card-0">
+<div class="prospect-card" data-priority="4" data-ab="a" data-status="touch1_sent" id="card-0">
   <div class="card-header" onclick="toggleCard(0)">
     <div class="card-header-left">
       <div class="priority-badge priority-4">4</div>
@@ -246,7 +246,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="4" data-ab="a" data-status="not_started" id="card-1">
+<div class="prospect-card" data-priority="4" data-ab="a" data-status="touch1_sent" id="card-1">
   <div class="card-header" onclick="toggleCard(1)">
     <div class="card-header-left">
       <div class="priority-badge priority-4">4</div>
@@ -367,7 +367,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="4" data-ab="a" data-status="not_started" id="card-2">
+<div class="prospect-card" data-priority="4" data-ab="a" data-status="touch1_sent" id="card-2">
   <div class="card-header" onclick="toggleCard(2)">
     <div class="card-header-left">
       <div class="priority-badge priority-4">4</div>
@@ -982,7 +982,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="5" data-ab="a" data-status="not_started" id="card-7">
+<div class="prospect-card" data-priority="5" data-ab="a" data-status="touch1_sent" id="card-7">
   <div class="card-header" onclick="toggleCard(7)">
     <div class="card-header-left">
       <div class="priority-badge priority-5">5</div>
@@ -1349,7 +1349,7 @@ Rob</div>
   </div>
 </div>
 
-<div class="prospect-card" data-priority="5" data-ab="a" data-status="not_started" id="card-10">
+<div class="prospect-card" data-priority="5" data-ab="a" data-status="touch1_sent" id="card-10">
   <div class="card-header" onclick="toggleCard(10)">
     <div class="card-header-left">
       <div class="priority-badge priority-5">5</div>
@@ -3275,6 +3275,20 @@ function updateStats() {
   document.getElementById('stat-sent').textContent = sent;
   document.getElementById('stat-replied').textContent = replied;
 }
+
+// Sync dropdowns with data-status on page load
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.prospect-card').forEach(card => {
+    const status = card.dataset.status;
+    const select = card.querySelector('select');
+    if (select && status) {
+      for (let opt of select.options) {
+        if (opt.value === status) { opt.selected = true; break; }
+      }
+    }
+  });
+  updateStats();
+});
 </script>
 </body>
 </html>

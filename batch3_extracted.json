@@ -1,0 +1,552 @@
+[
+  {
+    "id": 1,
+    "name": "Irfan Syed",
+    "title": "Director of QA",
+    "company": "Progress Software",
+    "priority": 3,
+    "email": "isyed@progress.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/irfanpashasyed",
+    "touch1": {
+      "subject": "Regression across legacy + cloud",
+      "body": "Hello Irfan,\n\nWhat's harder right now, keeping regression stable across OpenEdge and your cloud products, or keeping test coverage from falling behind as the portfolio grows?\n\nWith 12+ products on different stacks, test upkeep tends to double every time release cycles overlap. The older the codebase, the more brittle the tests get.\n\nOne insurance company running a similar legacy and cloud mix cut their regression window from 8 to 5 weeks using Testsigma.\n\nIf 3 fewer weeks of regression would help the OpenEdge schedule, what day works for a quick look at how they did it?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: regression across products",
+      "body": "Circling back quick on the regression question.\n\nMost teams managing your kind of portfolio hit the same wall: tests pass locally, break in staging. Usually costs 2-3 extra weeks of retesting per release.\n\nOne company cut their regression cycle from 3 days to 80 minutes with AI test healing. Curious if that timing pressure shows up across your releases?\n\nWhat day works for a quick look?"
+    },
+    "touch3": {
+      "subject": "Testing velocity across 12+ products",
+      "body": "Hi Irfan,\n\nWith 12+ products shipping on different stacks, keeping coverage from sliding is the real drain on engineering time. Most teams either slow releases or accept coverage gaps.\n\nMedibuddy hit that point and automated 2,500 tests while cutting maintenance in half with Testsigma. No more manual test triage between releases.\n\nIf halving your test upkeep would free up cycles for the portfolio, what day works for a quick comparison?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 2,
+    "name": "Katie Hotard",
+    "title": "Director of QA",
+    "company": "Lucid Software",
+    "priority": 4,
+    "email": "katieb@lucid.co",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/katie-hotard",
+    "touch1": {
+      "subject": "Coverage vs feature speed",
+      "body": "Hello Katie,\n\nWhen your team ships new features faster than QA can write tests for them, where do coverage gaps show up first, visual regression, cross browser, or somewhere else?\n\nScaling a QA org from 10 to 39 is impressive, but test suites don't usually grow at the same rate as the team. The gap shows up when a release ships and something breaks that should have been covered.\n\nMedibuddy hit that point and cut test upkeep in half after automating 2,500 tests with Testsigma.\n\nWhat day works to see how Medibuddy cut test upkeep in half while keeping coverage ahead of releases?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: coverage vs velocity",
+      "body": "Quick follow-up on Lucid's testing challenge.\n\nYou scaled QA from 10 to 39, but test suites rarely grow at that rate. One SaaS team kept coverage ahead of releases by cutting manual testing time in half.\n\nWhat day works to see how they did it without adding headcount?"
+    },
+    "touch3": {
+      "subject": "Keeping coverage ahead of releases",
+      "body": "Hi Katie,\n\nScaling QA is one thing. Keeping coverage from falling behind feature velocity is another.\n\nA financial services team hitting a similar scaling phase ran into flaky Selenium tests blocking their cycles. They switched to AI test repair and cut their Selenium upkeep by 70%. One refresh cycle instead of three.\n\nIf 70% less test maintenance before the next release cycle sounds useful, what day works for a quick look?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 3,
+    "name": "Rachana Jagetia",
+    "title": "Director, QA Eng",
+    "company": "Housecall Pro",
+    "priority": 4,
+    "email": "rachana.jagetia@housecallpro.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/rachana-jagetia-791343138",
+    "touch1": {
+      "subject": "Flaky tests before the refresh",
+      "body": "Hello Rachana,\n\nAre flaky Selenium tests already slowing your monthly releases, or is it more of a problem you're bracing for when the 2026 platform refresh hits?\n\nDuring mobile overhauls, brittle tests usually break faster than the team can fix them, especially on Selenium with iOS and Android both in play. Most of the sprint ends up going to test repairs instead of new coverage.\n\nOne company in a similar spot cut Selenium test upkeep by 70% after switching to Testsigma.\n\nIf 70% less Selenium maintenance before the refresh sounds useful, what day works for a quick look?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: platform refresh timeline",
+      "body": "Circling back on the platform refresh.\n\nMobile refreshes usually mean test rewrites across iOS and Android. When the UI shifts, how much time goes to fixing broken locators vs building new tests?\n\nOne company cut that repair work by 90% with AI test healing during their refresh. What day works to see how?"
+    },
+    "touch3": {
+      "subject": "Release timeline and test readiness",
+      "body": "Hi Rachana,\n\nThe 2026 platform refresh is a real inflection point. Most teams either accelerate the refresh and accept lower coverage, or slow down to keep tests stable.\n\nOne FinTech team did neither. They kept 90% regression coverage while hitting their refresh deadline. AI handled the test healing as the UI evolved with Testsigma.\n\nIf keeping full coverage through your timeline matters, what day works for a quick chat about how they pulled it off?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 4,
+    "name": "Giang Hoang",
+    "title": "Director of QA",
+    "company": "Employee Navigator",
+    "priority": 4,
+    "email": "ghoang@employeenavigator.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/giang-hoang-03304b19",
+    "touch1": {
+      "subject": "Testing 500+ integrations",
+      "body": "Hello Giang,\n\nWith 500+ carrier and payroll integrations, what breaks first when a new one ships, regression coverage or the team's ability to test all the combinations?\n\nEvery new integration adds permutations, and ACA compliance means you can't skip edge cases. That usually turns into a hiring conversation, but headcount alone doesn't fix the test math.\n\nSpendflo's QA team was in a similar spot and cut manual testing time in half with Testsigma instead of scaling the team.\n\nWhat day works to compare how Spendflo halved manual testing without growing the team?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: integration coverage",
+      "body": "Quick follow-up on integration testing at Employee Navigator.\n\nWith 500+ carrier integrations, breadth vs depth is the constant tradeoff. One healthcare team managing similar API complexity automated 2,500 tests and cut maintenance in half.\n\nWhat day works to see the playbook?"
+    },
+    "touch3": {
+      "subject": "Scaling coverage and compliance",
+      "body": "Hi Giang,\n\n500 integrations means 500 test scenarios. Add ACA compliance on top and most teams either regression test half the integrations or spend all quarter on test upkeep.\n\nOne fintech company kept full coverage and cut regression from 8 weeks to 5 with Testsigma. AI handled the test repair cycle so the team focused on new integrations.\n\nIf cutting 3 weeks off your regression cycles would help, what day works for a quick look?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 5,
+    "name": "Kevin Caulfield",
+    "title": "Director of QA",
+    "company": "Bottomline",
+    "priority": 4,
+    "email": "kcaulfield@bottomline.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/kevin-caulfield-6608bb2",
+    "touch1": {
+      "subject": "PCI regression cycles",
+      "body": "Hello Kevin,\n\nHow much of your regression cycle is PCI and AML compliance retesting versus actual new coverage?\n\nIn payment platforms, compliance requirements tend to eat most of the cycle, and the team ends up fixing old tests instead of validating new features. Every new payment corridor or rule change adds more tests to maintain, and the backlog compounds fast.\n\nOne financial services company with a similar compliance load cut their regression window from 8 to 5 weeks using Testsigma.\n\nIf getting 3 weeks back in your regression cycle would help, what day works for a quick chat?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: PCI regression load",
+      "body": "Circling back on Paymode's testing load.\n\nWith PCI/AML compliance on top of regression, every test cycle is auditable. One pharma company compressed regression from 3 days to 80 minutes without cutting compliance depth.\n\nWhat day works to see their approach?"
+    },
+    "touch3": {
+      "subject": "Compliance and release velocity",
+      "body": "Hi Kevin,\n\nMoving $450B through Paymode means every release gets scrutinized. Regression is not just QA's responsibility, it is the audit trail.\n\nOne fintech company automated 90% of regression and cut execution 5X with Testsigma. They kept compliance coverage intact while shipping faster than the previous quarter.\n\nIf cutting execution time 5X while keeping PCI audit depth sounds useful, what day works for a quick chat?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 6,
+    "name": "Rick Kowaleski",
+    "title": "Sr Principal SDET",
+    "company": "Alteryx",
+    "priority": 3,
+    "email": "rick.kowaleski@alteryx.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/rickkowaleski",
+    "touch1": {
+      "subject": "Alteryx One coverage expansion",
+      "body": "Hello Rick,\n\nWith the Alteryx One pivot, how is your team keeping regression coverage stable while validating Snowflake, BigQuery, and Databricks integrations simultaneously?\n\nEach new cloud integration adds test permutations faster than execution can keep up, and the integration layer is usually where flaky tests pile up fastest.\n\nA Fortune 100 company increased testing productivity 3X by redesigning their suite architecture during a similar multi-cloud consolidation with Testsigma.\n\nIf 3X faster testing across your cloud integrations would help, what day works for a quick look at how they structured it?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: multi-cloud test matrix",
+      "body": "Quick follow-up on the Alteryx One scope.\n\nSnowflake, BigQuery, and Databricks integrations multiply your test matrix fast. Most teams end up with either shallow coverage or runaway test maintenance.\n\nOne company cut maintenance in half without dropping breadth. What day works for a quick look?"
+    },
+    "touch3": {
+      "subject": "Test matrix and maintenance overhead",
+      "body": "Hi Rick,\n\nTesting Alteryx One across three data platforms is serious coverage complexity. Most teams either pick two platforms to test deeply or accept longer regression cycles.\n\nNagra DTV solved it differently. They automated 2,500 tests across APIs and platforms in 8 months with Testsigma and shipped 4X faster.\n\nIf cutting regression time 4X across your cloud integrations would help, what day works for a quick compare?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 7,
+    "name": "Tyler Hackett",
+    "title": "QA Engineering Manager",
+    "company": "Ava Labs",
+    "priority": 3,
+    "email": "tyler.hackett@avalabs.org",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/tyler-hackett-02517380",
+    "touch1": {
+      "subject": "Multi-chain test maintenance",
+      "body": "Hello Tyler,\n\nWith Bergen County's real estate tokenization on Avalanche plus AvaCloud enterprise deployments, how is test maintenance tracking across smart contract validation and environment setup?\n\nMulti-chain platforms create a specific problem, permutation testing across tokenization plus enterprise infrastructure multiplies test fixes faster than you can ship new coverage.\n\nNagra DTV automated 2,500 tests across API and UI in 8 months on a similar multi-environment stack with Testsigma.\n\nWhat day works to see how Nagra DTV handled test upkeep while keeping coverage ahead of releases?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: Avalanche test maintenance",
+      "body": "Quick question on Avalanche testing.\n\nBlockchain platforms have a unique test challenge: state changes and finality. Flaky tests compound because retesting state is expensive.\n\nOne company with similar complexity cut flaky test upkeep by 90% with AI healing. Curious if that resonates with your stack?"
+    },
+    "touch3": {
+      "subject": "Async and state testing complexity",
+      "body": "Hi Tyler,\n\nTesting AvaCloud with multiple blockchains adds complexity most teams don't face. State changes, finality, and async execution all break tests in ways traditional debugging can't handle.\n\nOne SaaS team hit the same wall and cut their manual testing time in half with Testsigma. AI handled the test repairs so the team focused on new coverage.\n\nIf cutting manual testing in half would help your release cadence, what day works for a quick look?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 8,
+    "name": "Abe Blanco",
+    "title": "QA Engineering Manager",
+    "company": "Kapitus",
+    "priority": 3,
+    "email": "ablanco@kapitus.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/abe-blanco-9223a61",
+    "touch1": {
+      "subject": "Lending products and compliance testing",
+      "body": "Hello Abe,\n\nWith the Ten Oaks acquisition and equipment financing launch underway, how is your QA team keeping SBA compliance testing aligned with your release schedule?\n\nMultiple lending products plus compliance requirements means testing more permutations while keeping the same team size. New products compound the workload fast.\n\nCRED automated 90% of their regression tests and cut execution time 5X with Testsigma while scaling products across markets.\n\nIf cutting execution time 5X would help your team ship equipment financing faster, what day works for a quick look at how CRED did it?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: lending product testing",
+      "body": "Circling back on the equipment financing launch.\n\nNew lending products compound test workload fast. One insurance company kept full regression coverage and cut their window from 8 to 5 weeks during a similar product expansion.\n\nWhat day works for a quick look at how?"
+    },
+    "touch3": {
+      "subject": "Coverage and release cadence",
+      "body": "Hi Abe,\n\nScaling from $6.1B to the Ten Oaks acquisition means testing two code bases simultaneously. Most teams pick speed or coverage, not both.\n\nOne SaaS team kept full coverage across both platforms while cutting manual testing time in half with Testsigma. AI handled the test creation and repair so the team focused on new features.\n\nIf maintaining coverage without slowing releases sounds useful, what day works for a quick chat?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 9,
+    "name": "Susan Lin",
+    "title": "Staff QA Engineer",
+    "company": "Robinhood",
+    "priority": 3,
+    "email": "susan.lin@robinhood.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/susan-lin-1a016947",
+    "touch1": {
+      "subject": "Trading, crypto, and derivatives coverage",
+      "body": "Hello Susan,\n\nWith Cortex AI autonomous trading, prediction markets, and the Bitstamp acquisition all shipping on a Server-Driven UI architecture, is regression coverage keeping up across trading, crypto, and derivatives?\n\nEvery product launch multiplies test permutations, and test fixes consume the time you need for new coverage. Three verticals on one architecture compounds that fast.\n\nCRED automated 90% of regression and cut execution 5X with Testsigma while scaling features across multiple product lines.\n\nWhat day works to compare how CRED kept coverage ahead of releases without growing the team?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: trading platform coverage",
+      "body": "Quick follow-up on Cortex and prediction markets.\n\nNew products usually mean test coverage falls behind. One insurance company cut regression from 8 weeks to 5 even while launching new product lines.\n\nWhat day works to compare approaches?"
+    },
+    "touch3": {
+      "subject": "Launch velocity and regression safety",
+      "body": "Hi Susan,\n\nPrediction markets are new surface area. Add Bitstamp integration and the test matrix explodes. Most teams regression test the core and hope the integrations hold.\n\nOne healthcare platform kept full regression coverage and cut their test cycle from 3 days to 80 minutes with Testsigma. AI healing meant they caught issues before launch instead of in production.\n\nIf shipping prediction markets with full coverage confidence matters, what day works for a quick look?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 10,
+    "name": "Aliaksei Ausianka",
+    "title": "Staff QA Engineer",
+    "company": "NerdWallet",
+    "priority": 3,
+    "email": "aausianka@nerdwallet.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/aliaksei-ausianka-48426b2a",
+    "touch1": {
+      "subject": "Device matrix regression scaling",
+      "body": "Hello Aliaksei,\n\nWith the Next Door Lending acquisition bringing bank API integrations across your 36 iOS and 38 Android device matrix, how is regression scaling across 74+ permutations?\n\nManaging that many device and API combinations creates a compounding problem, flaky tests multiply faster than fixes across a matrix that size.\n\nCRED automated 90% of regression tests and cut execution by 5X with Testsigma while managing a similar scale device and API footprint.\n\nIf getting half your maintenance time back would help coverage growth, what day works for a quick chat?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: device matrix coverage",
+      "body": "Circling back on the lending expansion.\n\nWith 36 iOS and 38 Android permutations, your test matrix is massive. One fintech company kept full device coverage by cutting test maintenance 70%.\n\nWhat day works for a quick look?"
+    },
+    "touch3": {
+      "subject": "Multi-platform test upkeep",
+      "body": "Hi Aliaksei,\n\nLoans up 66% means coverage scaling too. With 74 device permutations and bank API depth, keeping all of it tested is the real constraint.\n\nOne SaaS team cut test maintenance in half without dropping any platform coverage with Testsigma. They shipped faster with fewer regression escapes.\n\nIf cutting manual testing overhead across your device matrix sounds useful, what day works for a quick chat?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 11,
+    "name": "Susan Cohan-Lendzian",
+    "title": "QA Engineering Manager",
+    "company": "BHG Financial",
+    "priority": 3,
+    "email": "slendzian@bhg-inc.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/susan-cohan-lendzian-4735863",
+    "touch1": {
+      "subject": "Microservices coverage at record volume",
+      "body": "Hello Susan,\n\nWith record $6.1B loan originations and the $500M ABS transaction, how is test coverage scaling across your C# microservices while managing state compliance?\n\nRecord origination volume and compliance requirements create a specific challenge, coverage gaps hit hardest when you're processing peak volume and regulations tighten at the same time.\n\nMedibuddy automated 2,500 tests and cut maintenance by 50% with Testsigma at similar scale, which freed their team to focus on new coverage instead of fixes.\n\nIf 50% less test maintenance would help before your next origination cycle, what day works for a quick look at how they structured it?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: origination testing scale",
+      "body": "Quick follow-up on the originations side.\n\n$6.1B originations means high volume testing. One company with similar scale cut test maintenance in half while keeping coverage breadth. That freed up the team for new integrations.\n\nWhat day works to compare?"
+    },
+    "touch3": {
+      "subject": "Scale and test team capacity",
+      "body": "Hi Susan,\n\n$500M ABS means liquidity depends on quality. Every release gets stress tested. Most teams either add QA headcount or cut coverage scope.\n\nOne company scaled without either. They kept full regression coverage and cut maintenance by 70% with Testsigma, freeing the team for new integrations instead of test triage.\n\nIf keeping coverage without adding headcount matters, what day works for a quick look?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 12,
+    "name": "Jayati Srivastava",
+    "title": "Principal SDET",
+    "company": "Cvent",
+    "priority": 4,
+    "email": "jsrivastava@cvent.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/jayati-srivastava-92a8ba11b",
+    "touch1": {
+      "subject": "Three codebases, one integration",
+      "body": "Hello Jayati,\n\nWith the ON24 and Goldcast acquisitions adding three separate codebases to integrate, how is test maintenance tracking across the consolidation?\n\nIntegration projects spike regression overhead fast, and when stability matters as much as it does during a $700M consolidation, teams usually end up fixing old tests instead of writing new ones.\n\nA Fortune 100 company reduced test maintenance overhead by 3X during a similar platform consolidation using Testsigma.\n\nWhat day works to see how they kept regression stable while merging three codebases?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: acquisition integration",
+      "body": "Circling back on ON24 and Goldcast integration.\n\nTwo acquisitions plus existing Cvent platform equals a test matrix explosion. One media company kept regression stable across their acquisition while shipping 4X faster.\n\nWhat day works for a quick look at how?"
+    },
+    "touch3": {
+      "subject": "Acquisition testing velocity",
+      "body": "Hi Jayati,\n\n$700M in acquisitions means merging test suites, not just building new ones. Most teams spend the first quarter consolidating tests and fall behind on regression coverage.\n\nMedibuddy automated 2,500 tests and cut maintenance 50% at similar scale with Testsigma. Their team moved from upkeep to building new coverage.\n\nIf accelerating the testing consolidation without coverage gaps sounds useful, what day works for a quick chat?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 13,
+    "name": "Suraphel Amde",
+    "title": "Staff QA Engineer",
+    "company": "BILL",
+    "priority": 3,
+    "email": "samdeberhan@hq.bill.com",
+    "status": "Skipped",
+    "linkedinUrl": "https://www.linkedin.com/in/suraphel",
+    "touch1": {
+      "subject": "AI agents and regression speed",
+      "body": "Hello Suraphel,\n\nLaunching three AI agents in 90 days across 460K+ businesses while stopping 8M fraud attempts is a serious pace. How is regression keeping up?\n\nTesting AI accuracy while keeping regression stable creates a real conflict, you're validating new behavior and guarding against old breakage at the same time.\n\nSanofi compressed regression from 3 days to 80 minutes with Testsigma while maintaining accuracy validation across their product launches.\n\nIf cutting regression from days to minutes would help your AI launch pace, what day works for a quick look at how Sanofi did it?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: AI agent regression",
+      "body": "Quick follow-up on the AI agent sprint.\n\nThree AI agents in 90 days is ambitious. Most companies slow regression to ship features. One fintech kept 90% regression automation while cutting execution 5X.\n\nWhat day works to see how they balanced both?"
+    },
+    "touch3": {
+      "subject": "Feature velocity and regression depth",
+      "body": "Hi Suraphel,\n\n460K+ businesses means fraud detection testing is nontrivial at that scale. Add three new AI agents and most teams either accept lower coverage or slip the release.\n\nA Fortune 100 company solved it by increasing testing productivity 3X with Testsigma. AI handled the test creation and repair so the team focused on new capabilities.\n\nIf 3X faster testing for your AI launches matters, what day works for a quick look?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 14,
+    "name": "Steven Mays",
+    "title": "Staff QA Engineer",
+    "company": "Medallia",
+    "priority": 3,
+    "email": "smays@medallia.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/stevencmays",
+    "touch1": {
+      "subject": "100+ features and distributed maintenance",
+      "body": "Hello Steven,\n\nShipping 100+ features a year with 30% demand growth across distributed data pipelines, how is test maintenance scaling?\n\nAt that feature volume on distributed systems, regression maintenance compounds because flaky tests multiply faster than fixes across pipeline stages. The team ends up spending sprints on repairs.\n\nMedibuddy automated 2,500 tests and cut maintenance by 50% with Testsigma on a similar distributed stack.\n\nIf getting 50% of your maintenance time back would help your team focus on new feature coverage, what day works for a quick chat?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: distributed regression",
+      "body": "Circling back quick. Feature velocity is brutal at 100+ per year.\n\nOne thing that helped teams scaling like yours: automating the regression that usually eats 2-3 weeks per release. A pharma company went from 3-day regression to 80 minutes.\n\nWhat day works to see how they did it?"
+    },
+    "touch3": {
+      "subject": "Regression upkeep at 100+ features/year",
+      "body": "Hi Steven,\n\nMedallia's shipping cadence is probably keeping your QA team stretched. The trap most teams hit: regression testing scales linearly with features, which means it either blocks releases or ships incomplete.\n\nNagra DTV automated their entire test suite in 8 months, covering 2,500 tests without the usual upkeep tax with Testsigma.\n\nIf cutting 4-6 weeks of regression from your release cycle sounds useful, what day works for a quick look?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 15,
+    "name": "Christopher Edwards",
+    "title": "Staff QA Engineer",
+    "company": "Tanium",
+    "priority": 3,
+    "email": "chris.edwards@tanium.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/christopherhedwards",
+    "touch1": {
+      "subject": "Agentic AI and endpoint expansion",
+      "body": "Hello Christopher,\n\nWith Tanium Ask agentic AI across 34M endpoints plus expansion into OT and Intune mobile management, how is coverage scaling across those different platforms?\n\nPlatform expansion means coverage gaps grow faster than teams can close them, especially with agentic AI adding new behavior to test across every endpoint type.\n\nNagra DTV built 2,500 tests in 8 months across multiple device types and APIs with Testsigma, which let them ship 4X faster while expanding coverage.\n\nWhat day works to compare how Nagra DTV scaled coverage across platforms without slowing releases?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: endpoint coverage scaling",
+      "body": "Quick follow-up. Securing 34M endpoints is a different QA challenge than most teams tackle.\n\nA Fortune 100 company cut their automation effort by 3X while actually expanding coverage during a similar platform expansion.\n\nWhat day works to see how?"
+    },
+    "touch3": {
+      "subject": "Testing 34M endpoints at scale",
+      "body": "Hi Christopher,\n\nTanium's endpoint reach means your test matrix is probably exponential. Most teams hit the wall: coverage stays flat while testing costs spiral.\n\nCRED automated 90% of regression and cut execution time 5X with Testsigma. They handle payment complexity, not endpoints, but the pattern is the same: AI scales where manual testing hits capacity ceilings.\n\nIf cutting your regression cycle in half sounds useful, what day works for a quick look?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 16,
+    "name": "Max Iglehart",
+    "title": "Staff QA Engineer",
+    "company": "Amwell",
+    "priority": 3,
+    "email": "max.iglehart@americanwell.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/max-iglehart-a79b8446",
+    "touch1": {
+      "subject": "AI in patient workflows and test upkeep",
+      "body": "Hello Max,\n\nWhen you're adding AI to patient intake and clinical workflows while managing HIPAA compliance after the psychiatric care divestment, does test maintenance slow down your releases?\n\nHealthcare platforms see their regression cycles stretch when AI features and compliance requirements compete for the same testing time. The new workflows need validation, but the old tests still need fixing.\n\nSanofi shifted from 3-day regression cycles to 80 minutes with Testsigma while keeping audit trails intact.\n\nIf 80-minute regression cycles before your breakeven target would help, what day works for a quick look at how they structured it?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: telehealth regression",
+      "body": "Circling back. Telehealth adds a layer most QA teams don't see: HIPAA compliance plus test isolation.\n\nA fintech company automated 90% of their regression tests and cut execution time 5X. They faced similar isolation constraints with regulated data.\n\nWhat day works to see how they set it up?"
+    },
+    "touch3": {
+      "subject": "HIPAA regression and release speed",
+      "body": "Hi Max,\n\nYour team is probably balancing two pulls: patient intake testing that needs coverage and compliance testing that needs precision. That is where automation usually breaks, too rigid for healthcare workflows.\n\nMedibuddy automated 2,500 tests and cut maintenance 50% with Testsigma while managing similar regulatory transitions.\n\nIf halving test maintenance before your breakeven target would help, what day works for a quick chat?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 17,
+    "name": "Mazie Roxx",
+    "title": "QA Director, Payments",
+    "company": "Phreesia",
+    "priority": 4,
+    "email": "mroxx@phreesia.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/mazie-r-58614",
+    "touch1": {
+      "subject": "PCI DSS regression across two frameworks",
+      "body": "Hello Mazie,\n\nRunning Selenium and Playwright together while managing AccessOne integrations and PCI DSS Level 1 compliance, how much time is test maintenance consuming?\n\nPayment teams using two frameworks and validating every change against PCI regulations usually see regression windows grow fast. The compliance checks alone eat most of the cycle.\n\nHansard cut regression from 8 weeks to 5 across their integration suite with Testsigma without skipping PCI checks.\n\nWhat day works to see how Hansard cut 3 weeks off regression while keeping PCI audit trails clean?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: PCI testing with two frameworks",
+      "body": "Quick follow-up. PCI DSS Level 1 means every test has to be bulletproof, and that friction slows releases.\n\nA fintech platform automated 90% of regression and cut test execution 5X. Payment flows similar to what you're testing: high compliance, low room for flake.\n\nWhat day works to see how?"
+    },
+    "touch3": {
+      "subject": "PCI DSS regression without the drag",
+      "body": "Hi Mazie,\n\nPhreesia's payment tier means compliance testing is non-negotiable but also the biggest blocker. You can't skip tests for PCI, but you also can't afford long regression cycles.\n\nMedibuddy scaled from a small suite to 2,500 automated tests while cutting maintenance 50% with Testsigma. They used AI to keep compliance tests from breaking between releases.\n\nIf halving your test upkeep before the next certification cycle sounds useful, what day works for a quick look?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 18,
+    "name": "Ram Bulusu",
+    "title": "Head of QA",
+    "company": "LiveRamp",
+    "priority": 4,
+    "email": "ram.bulusu@liveramp.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/ram-bulusu-9a06496",
+    "touch1": {
+      "subject": "Identity testing across three clouds",
+      "body": "Hello Ram,\n\nTesting identity resolution across AWS, Snowflake, and GCP while mixing legacy WinRunner with newer tools, how are release windows holding?\n\nIdentity layers add complexity fast, especially when old and new tools live side by side in the same test suite. Every platform addition compounds the maintenance.\n\nHansard dropped regression from 8 to 5 weeks by cutting test maintenance in half with Testsigma.\n\nIf 3 fewer weeks in your regression cycle would help the Data Marketplace launch, what day works for a quick look?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: multi-cloud identity testing",
+      "body": "Circling back. The Identity Engine across AWS, Snowflake, and GCP probably means your regression matrix is huge.\n\nA company managing comparable stack complexity cut test upkeep 90% with AI test healing. Worth comparing approaches?\n\nWhat day works for a quick look?"
+    },
+    "touch3": {
+      "subject": "Identity platform regression at scale",
+      "body": "Hi Ram,\n\nLiveRamp's multi-cloud Identity Engine means your test suite maintains three different infrastructure flows. That is where regression usually breaks: one cloud changes, tests fail everywhere.\n\nCRED automated 90% of regression across their platforms and cut execution 5X with Testsigma. Zero manual test repair between releases.\n\nIf cutting test maintenance in half before your next Data Marketplace update sounds useful, what day works for a quick chat?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 19,
+    "name": "Dexter Alon",
+    "title": "Software QA Eng Manager",
+    "company": "Blackhawk Network",
+    "priority": 3,
+    "email": "dexter.alon2@bhnetwork.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/dexter-alon-b7b054315",
+    "touch1": {
+      "subject": "Tap to Pay and payment testing speed",
+      "body": "Hello Dexter,\n\nWith Tap to Pay Visa live and the Klarna partnership shipping, can your growing QA team keep regression testing ahead of payment releases?\n\nPCI DSS and ISO 27001 compliance plus speed expectations create real friction for payment teams. New payment products add test permutations that compound with every release.\n\nCRED automated 90% of their regression suite and cut execution 5X with Testsigma, which freed their QA team for new payment flows instead of test upkeep.\n\nWhat day works to compare how CRED hit 90% automation while keeping PCI compliance tight?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: payment testing velocity",
+      "body": "Quick follow-up. PCI DSS plus ISO 27001 means you're testing compliance pathways more than most teams.\n\nA pharma company went from 3-day regressions to 80 minutes by using AI to update tests when regulatory requirements shifted.\n\nWhat day works to see how they did it?"
+    },
+    "touch3": {
+      "subject": "Tap to Pay testing and compliance",
+      "body": "Hi Dexter,\n\nBlackhawk's Visa integration plus Klarna means payment routing is complex and compliance heavy. Most QA teams say test upkeep eats more time than new feature testing.\n\nAn insurance company cut regression from 8 weeks to 5 by automating the test repair cycle when integrations changed with Testsigma.\n\nIf cutting 3 weeks of regression before your next Visa certification audit sounds useful, what day works for a quick look?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 20,
+    "name": "Phil Jones",
+    "title": "Director, Quality Engineering",
+    "company": "Litera",
+    "priority": 4,
+    "email": "phil.jones@litera.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/philjones1111",
+    "touch1": {
+      "subject": "Test duplication after acquisitions",
+      "body": "Hello Phil,\n\nWith Lito AI hitting 10x user growth and the Office & Dragons acquisition live, how are you managing duplicate test suites across codebases?\n\nAcquired products always bring test debt. The real cost is redundant suites that nobody owns, and 18 acquisitions means that compounds across every product line.\n\nMedibuddy consolidated 2,500 tests and cut maintenance 50% with Testsigma, which freed their team to move from upkeep to building new coverage.\n\nIf cutting test maintenance in half before the next acquisition would help, what day works for a quick look?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: acquisition test consolidation",
+      "body": "Circling back. With 18 acquisitions stacked into one platform, your test suite is probably a patchwork of different tools and patterns.\n\nNagra DTV built 2,500 tests in 8 months without the usual months of framework cleanup. Worth comparing approaches?\n\nWhat day works for a quick look?"
+    },
+    "touch3": {
+      "subject": "Consolidating QA across acquisitions",
+      "body": "Hi Phil,\n\nLitera's M&A velocity means you're maintaining test suites across multiple codebases. The real cost is redundant suites that nobody owns, and 18 acquisitions means that compounds across every product line.\n\nOne company kept full coverage and cut maintenance by 70% with Testsigma. They freed the team for new coverage instead of test triage.\n\nIf cutting test maintenance by 70% before the next acquisition sounds useful, what day works for a quick chat?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 21,
+    "name": "Sebastien Pambu",
+    "title": "Sr SDET / Test Architect",
+    "company": "ecoATM Gazelle",
+    "priority": 3,
+    "email": "sebastien.pambu@ecoatm.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/sebastien-pambu-b9833a2b",
+    "touch1": {
+      "subject": "Kiosk testing across 7,000 locations",
+      "body": "Hello Sebastien,\n\nTesting 7,000+ kiosks across Walmart and Kroger with hardware and software integration while expanding to Canada, how much slower is testing compared to dev cycles?\n\nHardware and software platforms struggle when test execution becomes the release blocker. Five different test tools in the stack compounds that further.\n\nA peer team running similar cross-device complexity cut execution time 50% with Testsigma and sped up deployment cycles significantly.\n\nIf cutting execution time in half would help your release cadence, what day works for a quick look at how they did it?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: kiosk test execution",
+      "body": "Quick follow-up. Testing across 7,000+ kiosks probably means your test matrix is manual heavy and distributed.\n\nNagra DTV built 2,500 tests in 8 months and got execution time down 4X on similar complexity.\n\nWhat day works to see how they handled the scale?"
+    },
+    "touch3": {
+      "subject": "Kiosk testing without the manual drag",
+      "body": "Hi Sebastien,\n\nTesting 7,000+ kiosks with five different test tools means your team is probably 2-3X slower than dev cycles. That is the constraint most distributed hardware teams hit: coverage and speed are at odds.\n\nCRED automated 90% of regression and cut execution 5X with Testsigma on similar scale complexity.\n\nIf cutting your test cycle in half before the Canada rollout sounds useful, what day works for a quick look?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 22,
+    "name": "Shanil Jain",
+    "title": "PM & Test Architect",
+    "company": "Sling TV",
+    "priority": 3,
+    "email": "shanil.jain@dish.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/shaniljain",
+    "touch1": {
+      "subject": "Kubernetes migration and streaming regression",
+      "body": "Hello Shanil,\n\nWith Kubernetes migration underway and streaming stability critical after infrastructure outages, how much regression coverage can you run before each release?\n\nStreaming platforms struggle most during migrations, especially when rolling out across multiple device types. The infrastructure shift itself creates new test gaps that compound with every deployment.\n\nNagra DTV built 2,500 cross-device tests in 8 months and shipped 4X faster with Testsigma during their own platform transition.\n\nIf 4X faster release validation during the migration would help, what day works for a quick look?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: Kubernetes migration testing",
+      "body": "Circling back. Kubernetes migration probably means your test infrastructure shifted and old tests are breaking differently.\n\nMedibuddy cut test maintenance 50% with AI test healing when they went through a similar platform shift.\n\nWhat day works to see how they managed it?"
+    },
+    "touch3": {
+      "subject": "Cross-device streaming on new infra",
+      "body": "Hi Shanil,\n\nSling's Kubernetes shift means your test suite is hitting infrastructure differently than last quarter. Most streaming teams say cross-device regression is already hard. Throw in a platform migration and coverage drops fast.\n\nCRED maintained 90% regression automation while cutting execution time 5X with Testsigma. AI learned the new patterns faster than manual test updates.\n\nIf keeping coverage tight during your migration sounds useful, what day works for a quick chat?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 23,
+    "name": "Andre Maestas",
+    "title": "Sr SDET / XR QA Architect IC7",
+    "company": "Unity",
+    "priority": 3,
+    "email": "andre.maestas@unity3d.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/andre-maestas-051972b8",
+    "touch1": {
+      "subject": "XR device matrix and test coverage",
+      "body": "Hello Andre,\n\nTesting XR across touch, hand tracking, and spatial gesture interaction on multiple devices with a leaner team, how is test coverage scaling?\n\nThe XR device matrix explodes faster than execution can grow. Every new interaction type adds permutations that compound across the entire test suite.\n\nA team with similar cross-device complexity automated regression and cut maintenance 70% with Testsigma, which freed engineers for new gesture and spatial detection work.\n\nWhat day works to compare how they scaled XR coverage while cutting 70% of test maintenance?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: XR test maintenance",
+      "body": "Quick follow-up. XR plus a leaner team probably means test maintenance is eating cycles you don't have.\n\nA company cut test upkeep 90% with AI test healing when their team was stretched. They were on a legacy tool too.\n\nWhat day works to see how?"
+    },
+    "touch3": {
+      "subject": "XR testing with a smaller team",
+      "body": "Hi Andre,\n\nUnity's XR scope (touch, hand tracking, spatial) is complex testing that usually requires manual regression tuning. A leaner team post-restructuring means coverage usually suffers.\n\nSanofi compressed regression from 3 days to 80 minutes by automating test repairs with Testsigma when product inputs changed. Different domain, same pattern.\n\nIf cutting test maintenance so your team can focus on new XR coverage sounds useful, what day works for a quick look?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 24,
+    "name": "Animesh Patcha",
+    "title": "Test Architect & Eng Manager",
+    "company": "Arista Networks",
+    "priority": 3,
+    "email": "animesh.patcha@arista.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/animesh-patcha-329737",
+    "touch1": {
+      "subject": "HyperPorts regression at scale",
+      "body": "Hello Animesh,\n\nTesting the 7800R4 with 3.2 Tbps HyperPorts plus Arista AVA agentic AI, how is regression test maintenance scaling?\n\nAs hardware performance gets extreme, test creation and upkeep becomes the release constraint. New platform launches usually spike regression cycles just when speed matters most.\n\nA similar-scale enterprise cut regression from 8 to 5 weeks by automating test maintenance with Testsigma.\n\nIf getting 3 weeks back in your regression cycle would help your R4 release timeline, what day works for a quick chat?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: HyperPorts regression",
+      "body": "Circling back. 7800R4 plus HyperPorts means your test matrix is probably massive and Robot Framework is straining under the load.\n\nA Fortune 100 company increased testing productivity 3X during a similar platform expansion.\n\nWhat day works to see how they scaled without hiring more testers?"
+    },
+    "touch3": {
+      "subject": "Networking regression at HyperPort scale",
+      "body": "Hi Animesh,\n\nArista's 3.2 Tbps HyperPorts mean your regression suite needs to validate performance at extreme scale. Most networking teams say regression becomes the release blocker when throughput testing eats weeks.\n\nMedibuddy scaled to 2,500 automated tests while cutting maintenance 50% with Testsigma. Different domain but identical pattern: AI handles test upkeep so humans focus on edge cases.\n\nIf cutting your regression cycle before the next R4 release sounds useful, what day works for a quick chat?\n\nBest,\nRob"
+    }
+  },
+  {
+    "id": 25,
+    "name": "Natalie Gitelman",
+    "title": "Test Architect, Sr Test Engineer",
+    "company": "Acentra Health",
+    "priority": 4,
+    "email": "natalie.gitelman@cns-inc.com",
+    "status": "Touch 1 Sent",
+    "linkedinUrl": "https://www.linkedin.com/in/natalie-gitelman-a77005172",
+    "touch1": {
+      "subject": "UFT legacy plus cloud modernization",
+      "body": "Hello Natalie,\n\nBridging UFT legacy testing and cloud systems across Utah PRISM and 36 states in the Medicaid Alliance, how much time is dual-stack maintenance consuming?\n\nCompliance platforms hit a wall when old tools and cloud-native systems coexist, test upkeep grows because every change needs validation in both environments.\n\nSanofi automated their healthcare regression suite and dropped cycles from 3 days to 80 minutes with Testsigma while managing similar compliance transitions.\n\nWhat day works to see how Sanofi cut 3 days to 80 minutes while keeping compliance validation intact?\n\nBest,\nRob"
+    },
+    "touch2": {
+      "subject": "Follow-up: legacy plus cloud testing",
+      "body": "Quick follow-up. Legacy UFT plus cloud migration and 36-state Medicaid compliance means your regression testing is both heavy and fragile.\n\nOne insurance company cut regression from 8 weeks to 5 with AI test healing during a similar compliance transition.\n\nWhat day works to see how they managed that?"
+    },
+    "touch3": {
+      "subject": "UFT migration and Medicaid compliance",
+      "body": "Hi Natalie,\n\nAcentra's CMS certification plus 36-state Medicaid Alliance means your test suite has to be bulletproof and auditable. UFT to cloud migrations usually create a gap: old tests break faster than teams can fix them.\n\nCRED maintained 90% regression automation while cutting execution 5X with Testsigma. AI learns the regulatory patterns and keeps tests aligned when requirements shift.\n\nIf keeping compliance coverage tight during the UFT migration sounds useful, what day works for a quick look?\n\nBest,\nRob"
+    }
+  }
+]

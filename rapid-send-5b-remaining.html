@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rapid-Fire InMail Send Sheet - Batch 5B Remaining (15)</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f1117; color: #e4e4e7; line-height: 1.5; padding: 20px; }
+h1 { font-size: 1.5rem; color: #fff; margin-bottom: 4px; }
+.subtitle { color: #a1a1aa; font-size: 0.9rem; margin-bottom: 20px; }
+.instructions { background: #1a1b23; border: 1px solid #f59e0b; border-radius: 10px; padding: 16px; margin-bottom: 24px; }
+.instructions h2 { color: #f59e0b; font-size: 1rem; margin-bottom: 8px; }
+.instructions ol { padding-left: 20px; font-size: 0.85rem; color: #d4d4d8; }
+.instructions li { margin-bottom: 4px; }
+.instructions strong { color: #fff; }
+.progress-bar { background: #27272a; border-radius: 8px; height: 8px; margin-bottom: 20px; overflow: hidden; }
+.progress-fill { background: linear-gradient(90deg, #2563eb, #60a5fa); height: 100%; width: 0%; transition: width 0.3s; border-radius: 8px; }
+.progress-text { font-size: 0.8rem; color: #a1a1aa; margin-bottom: 8px; text-align: center; }
+.prospect { background: #1a1b23; border: 1px solid #27272a; border-radius: 10px; margin-bottom: 12px; overflow: hidden; transition: all 0.2s; }
+.prospect.sent { opacity: 0.4; border-color: #16a34a; }
+.prospect.active { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.3); }
+.prospect-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+.prospect-left { display: flex; align-items: center; gap: 10px; }
+.num { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; background: #2563eb; color: #fff; }
+.num.p4 { background: #f59e0b; color: #000; }
+.pname { font-weight: 600; color: #fff; font-size: 0.95rem; }
+.ptitle { font-size: 0.8rem; color: #a1a1aa; }
+.search-btn { padding: 6px 14px; border-radius: 6px; border: 1px solid #2563eb; background: #1e3a5f; color: #60a5fa; cursor: pointer; font-size: 0.8rem; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+.search-btn:hover { background: #2563eb; color: #fff; }
+.fields { padding: 0 16px 12px; display: none; }
+.fields.open { display: block; }
+.field-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: stretch; }
+.field-label { font-size: 0.7rem; color: #71717a; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+.field-box { background: #0f1117; border: 1px solid #27272a; border-radius: 6px; padding: 10px 12px; flex: 1; position: relative; }
+.field-box.subject { max-width: 300px; }
+.field-text { font-size: 0.85rem; color: #d4d4d8; white-space: pre-wrap; line-height: 1.5; }
+.copy-btn { padding: 5px 14px; border-radius: 6px; border: 1px solid #3f3f46; background: #27272a; color: #a1a1aa; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: all 0.2s; white-space: nowrap; align-self: flex-start; margin-top: 18px; }
+.copy-btn:hover { background: #2563eb; color: #fff; border-color: #2563eb; }
+.copy-btn.copied { background: #16a34a; color: #fff; border-color: #16a34a; }
+.mark-sent { padding: 8px 20px; border-radius: 6px; border: none; background: #16a34a; color: #fff; cursor: pointer; font-size: 0.85rem; font-weight: 600; margin-top: 8px; transition: all 0.2s; }
+.mark-sent:hover { background: #15803d; }
+.mark-sent:disabled { background: #27272a; color: #71717a; cursor: default; }
+.meta { font-size: 0.75rem; color: #71717a; margin-top: 4px; }
+.tags { display: flex; gap: 4px; margin-top: 4px; }
+.tag { padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: 500; }
+.tag-v { background: #1e3a5f; color: #60a5fa; }
+.tag-p { background: #1f3d1f; color: #4ade80; }
+.tag-mqs { background: #3b1f5e; color: #c084fc; }
+.expand-toggle { cursor: pointer; color: #71717a; font-size: 0.85rem; padding: 4px 8px; }
+.safety { background: #1c1917; border: 1px solid #dc2626; border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 0.85rem; color: #fca5a5; }
+.safety strong { color: #dc2626; }
+</style>
+</head>
+<body>
+
+<h1>Rapid-Fire InMail Send Sheet</h1>
+<p class="subtitle">Batch 5B Remaining &bull; 15 Prospects &bull; Sorted by Priority</p>
+
+<div class="safety">
+<strong>LinkedIn Pacing:</strong> You've sent 15 InMails today via automation. These 15 are for manual send. Space them 1-2 min apart. Take a 5-min break every 8 sends. Stop immediately if any LinkedIn warning appears.
+</div>
+
+<div class="instructions">
+<h2>Workflow (60 sec per prospect)</h2>
+<ol>
+<li><strong>Click "Open in Sales Nav"</strong> to search for the prospect</li>
+<li><strong>Click "Message"</strong> on their profile</li>
+<li><strong>Copy Subject</strong> → paste in subject field</li>
+<li><strong>Copy Message</strong> → paste in message body</li>
+<li><strong>Verify formatting</strong> (line breaks preserved, no placeholders)</li>
+<li><strong>Click Send</strong> → then click "Mark Sent" below to track</li>
+</ol>
+</div>
+
+<div class="progress-text" id="progress-text">0 of 15 sent</div>
+<div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+
+<div id="prospects">
+
+<!-- P4 PROSPECTS (5) -->
+
+<div class="prospect" id="p-1" data-priority="4">
+  <div class="prospect-header" onclick="toggleFields(1)">
+    <div class="prospect-left">
+      <div class="num p4">1</div>
+      <div>
+        <div class="pname">Konduru Srinivasulu</div>
+        <div class="ptitle">QA Mgr/Field Solution Architect @ Kaleris &bull; Austin, TX</div>
+        <div class="tags"><span class="tag tag-v">Supply Chain</span><span class="tag tag-p">Manager</span><span class="tag tag-mqs">MQS 11</span></div>
+      </div>
+    </div>
+    <a class="search-btn" href="https://www.linkedin.com/sales/search/people?query=(keywords:Konduru%20Srinivasulu%20Kaleris)" target="_blank" onclick="event.stopPropagation()">Open in Sales Nav</a>
+  </div>
+  <div class="fields" id="fields-1">
+    <div class="field-row">
+      <div class="field-box subject">
+        <div class="field-label">Subject</div>
+        <div class="field-text" id="subj-1">Post-acquisition testing</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('subj-1', this)">Copy Subject</button>
+    </div>
+    <div class="field-row">
+      <div class="field-box">
+        <div class="field-label">Message Body</div>
+        <div class="field-text" id="msg-1">Hey Konduru,
+
+With the Locus and CAMS acquisitions, what's harder on the QA side, merging the test suites from acquired codebases or keeping regression stable while feature velocity stays high?
+
+Post-acquisition teams usually see test maintenance double as they consolidate platforms.
+
+Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma during a similar multi-platform integration.
+
+If 4x faster execution would help the consolidation timeline, what day works for a quick look at how they did it?
+
+Rob</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('msg-1', this)">Copy Message</button>
+    </div>
+    <div class="meta">82 words &bull; Group A &bull; Personalization: 3/3 &bull; Email: skonduru@kaleris.com</div>
+    <button class="mark-sent" onclick="markSent(1)">Mark Sent</button>
+  </div>
+</div>
+
+<div class="prospect" id="p-2" data-priority="4">
+  <div class="prospect-header" onclick="toggleFields(2)">
+    <div class="prospect-left">
+      <div class="num p4">2</div>
+      <div>
+        <div class="pname">Mohan Gummadi</div>
+        <div class="ptitle">Sr Director QA @ Verisk &bull; Jersey City, NJ</div>
+        <div class="tags"><span class="tag tag-v">Data/Insurance</span><span class="tag tag-p">Director</span><span class="tag tag-mqs">MQS 10</span></div>
+      </div>
+    </div>
+    <a class="search-btn" href="https://www.linkedin.com/sales/search/people?query=(keywords:Mohan%20Gummadi%20Verisk)" target="_blank" onclick="event.stopPropagation()">Open in Sales Nav</a>
+  </div>
+  <div class="fields" id="fields-2">
+    <div class="field-row">
+      <div class="field-box subject">
+        <div class="field-label">Subject</div>
+        <div class="field-text" id="subj-2">AI platform validation</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('subj-2', this)">Copy Subject</button>
+    </div>
+    <div class="field-row">
+      <div class="field-box">
+        <div class="field-label">Message Body</div>
+        <div class="field-text" id="msg-2">Hey Mohan,
+
+With three new product launches this year, what's harder on the QA side, validating the outputs across all platforms or keeping regression stable on the core analytics platform?
+
+Teams rolling out AI features usually see test maintenance spike as models create new behavioral paths to validate.
+
+Sanofi cut regression from 3 days to 80 minutes using Testsigma while maintaining regulatory validation rigor.
+
+If 80-minute regression would help the AI launch cadence, what day works for a quick look at how they did it?
+
+Rob</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('msg-2', this)">Copy Message</button>
+    </div>
+    <div class="meta">83 words &bull; Group A &bull; Personalization: 3/3 &bull; Email: mgummadi@verisk.com</div>
+    <button class="mark-sent" onclick="markSent(2)">Mark Sent</button>
+  </div>
+</div>
+
+<div class="prospect" id="p-3" data-priority="4">
+  <div class="prospect-header" onclick="toggleFields(3)">
+    <div class="prospect-left">
+      <div class="num p4">3</div>
+      <div>
+        <div class="pname">Amanda Mao</div>
+        <div class="ptitle">QA Manager @ Veeva Systems &bull; Boston, MA</div>
+        <div class="tags"><span class="tag tag-v">Life Sciences</span><span class="tag tag-p">Manager</span><span class="tag tag-mqs">MQS 11</span></div>
+      </div>
+    </div>
+    <a class="search-btn" href="https://www.linkedin.com/sales/search/people?query=(keywords:Amanda%20Mao%20Veeva)" target="_blank" onclick="event.stopPropagation()">Open in Sales Nav</a>
+  </div>
+  <div class="fields" id="fields-3">
+    <div class="field-row">
+      <div class="field-box subject">
+        <div class="field-label">Subject</div>
+        <div class="field-text" id="subj-3">Vault CRM migrations</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('subj-3', this)">Copy Subject</button>
+    </div>
+    <div class="field-row">
+      <div class="field-box">
+        <div class="field-label">Message Body</div>
+        <div class="field-text" id="msg-3">Hey Amanda,
+
+With 7 of the top 20 pharmas migrating to Vault CRM and new agent features rolling out through next year, what takes more QA time, validating the migration paths or regression across the core Vault platform?
+
+Platform migration waves usually mean the QA team is testing old and new simultaneously, which doubles the regression surface.
+
+Sanofi cut regression from 3 days to 80 minutes using Testsigma while maintaining pharma compliance rigor.
+
+If 80-minute regression runs would help manage the migration wave, what day works for a quick look at how they did it?
+
+Rob</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('msg-3', this)">Copy Message</button>
+    </div>
+    <div class="meta">95 words &bull; Group B &bull; Personalization: 3/3 &bull; Email: amanda.mao@veeva.com</div>
+    <button class="mark-sent" onclick="markSent(3)">Mark Sent</button>
+  </div>
+</div>
+
+<div class="prospect" id="p-4" data-priority="4" style="opacity:0.4;pointer-events:none;border-left:4px solid #ef4444;">
+  <div class="prospect-header">
+    <div class="prospect-left">
+      <div class="num" style="background:#ef4444;">DNC</div>
+      <div>
+        <div class="pname" style="text-decoration:line-through;">Sanjay Singh</div>
+        <div class="ptitle">QA Lead Automation Engineer @ ServiceTitan &bull; Austin, TX</div>
+        <div class="tags"><span class="tag" style="background:#ef4444;color:white;">DO NOT CONTACT - Prior outreach 2022, hostile reply</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="fields" id="fields-4">
+    <div class="field-row">
+      <div class="field-box subject">
+        <div class="field-label">Subject</div>
+        <div class="field-text" id="subj-4">Post-IPO regression discipline</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('subj-4', this)">Copy Subject</button>
+    </div>
+    <div class="field-row">
+      <div class="field-box">
+        <div class="field-label">Message Body</div>
+        <div class="field-text" id="msg-4">Hey Sanjay,
+
+Now that ServiceTitan is public, what's putting more pressure on QA, keeping regression tight across the 5 core modules or testing the fintech expansion products?
+
+Post-IPO companies usually see regression standards tighten as customer-facing quality becomes investor-visible.
+
+Hansard cut regression from 8 weeks down to 5 with Testsigma's AI to auto-fix tests when product workflows changed.
+
+If 3 fewer weeks of regression would help the post-IPO release cadence, what day works for a quick look at how they did it?
+
+Rob</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('msg-4', this)">Copy Message</button>
+    </div>
+    <div class="meta">82 words &bull; Group B &bull; Personalization: 3/3 &bull; Email: ssingh@servicetitan.com</div>
+    <button class="mark-sent" onclick="markSent(4)">Mark Sent</button>
+  </div>
+</div>
+
+<div class="prospect" id="p-5" data-priority="4">
+  <div class="prospect-header" onclick="toggleFields(5)">
+    <div class="prospect-left">
+      <div class="num p4">5</div>
+      <div>
+        <div class="pname">Anthony Kent</div>
+        <div class="ptitle">QA Manager @ Apiture &bull; Austin, TX</div>
+        <div class="tags"><span class="tag tag-v">FinTech</span><span class="tag tag-p">Manager</span><span class="tag tag-mqs">MQS 11</span></div>
+      </div>
+    </div>
+    <a class="search-btn" href="https://www.linkedin.com/sales/search/people?query=(keywords:Anthony%20Kent%20Apiture)" target="_blank" onclick="event.stopPropagation()">Open in Sales Nav</a>
+  </div>
+  <div class="fields" id="fields-5">
+    <div class="field-row">
+      <div class="field-box subject">
+        <div class="field-label">Subject</div>
+        <div class="field-text" id="subj-5">Post-acquisition testing at Apiture</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('subj-5', this)">Copy Subject</button>
+    </div>
+    <div class="field-row">
+      <div class="field-box">
+        <div class="field-label">Message Body</div>
+        <div class="field-text" id="msg-5">Hey Anthony,
+
+After the CSI acquisition, what's harder on the QA side, integrating the Apiture cloud platform with CSI's core banking system or keeping regression stable across 200+ fintech partner integrations?
+
+Post-acquisition platform merges usually mean the QA team is validating two systems simultaneously while partners keep shipping updates.
+
+Sanofi cut regression from 3 days to 80 minutes using Testsigma while managing complex system integrations and compliance requirements.
+
+If 80-minute regression would help the post-acquisition integration timeline, what day works for a quick look at how they did it?
+
+Rob</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('msg-5', this)">Copy Message</button>
+    </div>
+    <div class="meta">91 words &bull; Group B &bull; Personalization: 3/3 &bull; Email: anthony.kent@apiture.com</div>
+    <button class="mark-sent" onclick="markSent(5)">Mark Sent</button>
+  </div>
+</div>
+
+<!-- P3 PROSPECTS (10) -->
+
+<div class="prospect" id="p-6" data-priority="3">
+  <div class="prospect-header" onclick="toggleFields(6)">
+    <div class="prospect-left">
+      <div class="num">6</div>
+      <div>
+        <div class="pname">Lance Silverman</div>
+        <div class="ptitle">Perf Test Architect & Manager @ Healthfirst &bull; Hillsborough, NJ</div>
+        <div class="tags"><span class="tag tag-v">Healthcare</span><span class="tag tag-p">Architect</span><span class="tag tag-mqs">MQS 10</span></div>
+      </div>
+    </div>
+    <a class="search-btn" href="https://www.linkedin.com/sales/search/people?query=(keywords:Lance%20Silverman%20Healthfirst)" target="_blank" onclick="event.stopPropagation()">Open in Sales Nav</a>
+  </div>
+  <div class="fields" id="fields-6">
+    <div class="field-row">
+      <div class="field-box subject">
+        <div class="field-label">Subject</div>
+        <div class="field-text" id="subj-6">Open enrollment load testing</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('subj-6', this)">Copy Subject</button>
+    </div>
+    <div class="field-row">
+      <div class="field-box">
+        <div class="field-label">Message Body</div>
+        <div class="field-text" id="msg-6">Hey Lance,
+
+With open enrollment driving seasonal load spikes every fall, what takes more QA time, performance testing for the enrollment surge or keeping regression stable across the member portal year-round?
+
+Healthcare teams usually need both locked down before enrollment, but test maintenance eats the prep time.
+
+Medibuddy automated 2,500 tests and cut maintenance in half while managing seasonal complexity in healthcare.
+
+If halving maintenance would give more time for enrollment readiness, what day works for a quick look at how they did it?
+
+Rob</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('msg-6', this)">Copy Message</button>
+    </div>
+    <div class="meta">85 words &bull; Group A &bull; Personalization: 3/3 &bull; Email: lsilverman@healthfirst.org</div>
+    <button class="mark-sent" onclick="markSent(6)">Mark Sent</button>
+  </div>
+</div>
+
+<div class="prospect" id="p-7" data-priority="3">
+  <div class="prospect-header" onclick="toggleFields(7)">
+    <div class="prospect-left">
+      <div class="num">7</div>
+      <div>
+        <div class="pname">Chuck Smith</div>
+        <div class="ptitle">Director Quality Engineering @ Aventiv Technologies &bull; Flemington, NJ</div>
+        <div class="tags"><span class="tag tag-v">GovTech</span><span class="tag tag-p">Director</span><span class="tag tag-mqs">MQS 10</span></div>
+      </div>
+    </div>
+    <a class="search-btn" href="https://www.linkedin.com/sales/search/people?query=(keywords:Chuck%20Smith%20Aventiv)" target="_blank" onclick="event.stopPropagation()">Open in Sales Nav</a>
+  </div>
+  <div class="fields" id="fields-7">
+    <div class="field-row">
+      <div class="field-box subject">
+        <div class="field-label">Subject</div>
+        <div class="field-text" id="subj-7">Multi-facility platform QA</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('subj-7', this)">Copy Subject</button>
+    </div>
+    <div class="field-row">
+      <div class="field-box">
+        <div class="field-label">Message Body</div>
+        <div class="field-text" id="msg-7">Hey Chuck,
+
+Across 1,800 facilities running on the platform, what creates more QA pressure, testing the tablet hardware integrations or keeping the Securus One platform regression stable?
+
+Multi-facility platforms usually see regression compound as each facility configuration adds test permutations. Each site variation creates different test requirements.
+
+Cisco cut regression by 35% using Testsigma across their enterprise platform, similar multi-site complexity.
+
+If 35% less regression would help the platform rollout, what day works for a quick look at how they did it?
+
+Rob</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('msg-7', this)">Copy Message</button>
+    </div>
+    <div class="meta">84 words &bull; Group A &bull; Personalization: 3/3 &bull; Email: chuck.smith@aventiv.com</div>
+    <button class="mark-sent" onclick="markSent(7)">Mark Sent</button>
+  </div>
+</div>
+
+<div class="prospect" id="p-8" data-priority="3">
+  <div class="prospect-header" onclick="toggleFields(8)">
+    <div class="prospect-left">
+      <div class="num">8</div>
+      <div>
+        <div class="pname">Gopinath Venu</div>
+        <div class="ptitle">Sr Software Test Lead/QA Manager @ Teradata &bull; San Diego, CA</div>
+        <div class="tags"><span class="tag tag-v">Enterprise Data</span><span class="tag tag-p">Manager</span><span class="tag tag-mqs">MQS 10</span></div>
+      </div>
+    </div>
+    <a class="search-btn" href="https://www.linkedin.com/sales/search/people?query=(keywords:Gopinath%20Venu%20Teradata)" target="_blank" onclick="event.stopPropagation()">Open in Sales Nav</a>
+  </div>
+  <div class="fields" id="fields-8">
+    <div class="field-row">
+      <div class="field-box subject">
+        <div class="field-label">Subject</div>
+        <div class="field-text" id="subj-8">Multi-cloud regression</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('subj-8', this)">Copy Subject</button>
+    </div>
+    <div class="field-row">
+      <div class="field-box">
+        <div class="field-label">Message Body</div>
+        <div class="field-text" id="msg-8">Hey Gopinath,
+
+With deployments across AWS, Azure, GCP, and on-prem, what takes more QA time, keeping regression stable across all four environments or testing the new ModelOps AI features?
+
+Platforms across multiple clouds usually see test maintenance multiply as each environment has different infrastructure behavior.
+
+Medibuddy automated 2,500 tests and cut maintenance in half while managing multi-platform complexity.
+
+If halving maintenance would help manage the multi-cloud testing load, what day works for a quick look at how they did it?
+
+Rob</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('msg-8', this)">Copy Message</button>
+    </div>
+    <div class="meta">81 words &bull; Group B &bull; Personalization: 2/3 &bull; Email: gopinath.venu@teradata.com</div>
+    <button class="mark-sent" onclick="markSent(8)">Mark Sent</button>
+  </div>
+</div>
+
+<div class="prospect" id="p-9" data-priority="3">
+  <div class="prospect-header" onclick="toggleFields(9)">
+    <div class="prospect-left">
+      <div class="num">9</div>
+      <div>
+        <div class="pname">Cherishma Perikala</div>
+        <div class="ptitle">QA Manager @ GoGuardian &bull; San Francisco, CA</div>
+        <div class="tags"><span class="tag tag-v">EdTech</span><span class="tag tag-p">Manager</span><span class="tag tag-mqs">MQS 10</span></div>
+      </div>
+    </div>
+    <a class="search-btn" href="https://www.linkedin.com/sales/search/people?query=(keywords:Cherishma%20Perikala%20GoGuardian)" target="_blank" onclick="event.stopPropagation()">Open in Sales Nav</a>
+  </div>
+  <div class="fields" id="fields-9">
+    <div class="field-row">
+      <div class="field-box subject">
+        <div class="field-label">Subject</div>
+        <div class="field-text" id="subj-9">Multi-platform EdTech QA</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('subj-9', this)">Copy Subject</button>
+    </div>
+    <div class="field-row">
+      <div class="field-box">
+        <div class="field-label">Message Body</div>
+        <div class="field-text" id="msg-9">Hey Cherishma,
+
+With 14+ product updates shipping across ChromeOS, Windows, macOS, iOS, and Android, what takes more QA time, keeping cross-platform regression stable or testing new features like Hall Pass and Pear Deck AI?
+
+EdTech teams shipping across 5 OS platforms usually find that each OS update breaks a chain of existing tests.
+
+Spendflo (similar team size) used Testsigma to cut manual testing by 50% and saw ROI in the first quarter.
+
+If cutting manual testing in half would buy breathing room for new product releases, what day works for a quick look at how they did it?
+
+Rob</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('msg-9', this)">Copy Message</button>
+    </div>
+    <div class="meta">99 words &bull; Group B &bull; Personalization: 3/3 &bull; Email: cperikala@goguardian.com</div>
+    <button class="mark-sent" onclick="markSent(9)">Mark Sent</button>
+  </div>
+</div>
+
+<div class="prospect" id="p-10" data-priority="3">
+  <div class="prospect-header" onclick="toggleFields(10)">
+    <div class="prospect-left">
+      <div class="num">10</div>
+      <div>
+        <div class="pname">Jamie Kurt</div>
+        <div class="ptitle">QA Manager @ Vertafore &bull; Denver, CO</div>
+        <div class="tags"><span class="tag tag-v">InsurTech</span><span class="tag tag-p">Manager</span><span class="tag tag-mqs">MQS 10</span></div>
+      </div>
+    </div>
+    <a class="search-btn" href="https://www.linkedin.com/sales/search/people?query=(keywords:Jamie%20Kurt%20Vertafore)" target="_blank" onclick="event.stopPropagation()">Open in Sales Nav</a>
+  </div>
+  <div class="fields" id="fields-10">
+    <div class="field-row">
+      <div class="field-box subject">
+        <div class="field-label">Subject</div>
+        <div class="field-text" id="subj-10">Carrier integration testing</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('subj-10', this)">Copy Subject</button>
+    </div>
+    <div class="field-row">
+      <div class="field-box">
+        <div class="field-label">Message Body</div>
+        <div class="field-text" id="msg-10">Hey Jamie,
+
+With 100+ carrier integrations on the platform and new efficiency features shipping continuously, what takes more QA time, keeping the carrier connectivity tests stable or regression on the agency management suite?
+
+Insurance SaaS platforms usually see test maintenance grow with every carrier API update.
+
+Hansard cut regression from 8 to 5 weeks using Testsigma's AI to auto-fix tests when insurance workflows changed.
+
+If 3 fewer weeks of regression would help the release cadence for agencies, what day works for a quick look at how they did it?
+
+Rob</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('msg-10', this)">Copy Message</button>
+    </div>
+    <div class="meta">90 words &bull; Group B &bull; Personalization: 2/3 &bull; Email: jkurt@vertafore.com</div>
+    <button class="mark-sent" onclick="markSent(10)">Mark Sent</button>
+  </div>
+</div>
+
+<div class="prospect" id="p-11" data-priority="3">
+  <div class="prospect-header" onclick="toggleFields(11)">
+    <div class="prospect-left">
+      <div class="num">11</div>
+      <div>
+        <div class="pname">Marcos Guerrero</div>
+        <div class="ptitle">QA Manager @ Plume &bull; Skokie, IL</div>
+        <div class="tags"><span class="tag tag-v">Telecom/IoT</span><span class="tag tag-p">Manager</span><span class="tag tag-mqs">MQS 10</span></div>
+      </div>
+    </div>
+    <a class="search-btn" href="https://www.linkedin.com/sales/search/people?query=(keywords:Marcos%20Guerrero%20Plume)" target="_blank" onclick="event.stopPropagation()">Open in Sales Nav</a>
+  </div>
+  <div class="fields" id="fields-11">
+    <div class="field-row">
+      <div class="field-box subject">
+        <div class="field-label">Subject</div>
+        <div class="field-text" id="subj-11">IoT device matrix testing</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('subj-11', this)">Copy Subject</button>
+    </div>
+    <div class="field-row">
+      <div class="field-box">
+        <div class="field-label">Message Body</div>
+        <div class="field-text" id="msg-11">Hey Marcos,
+
+With 200+ partner devices and apps running across iOS, Android, Windows, and Linux, what takes more QA time, keeping device compatibility tests current or regression on the cloud platform?
+
+IoT platforms usually see the test matrix explode with every new device partner and OS update.
+
+Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma across their multi-device streaming platform.
+
+If 4x faster execution would help manage the device partner matrix, what day works for a quick look at how they did it?
+
+Rob</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('msg-11', this)">Copy Message</button>
+    </div>
+    <div class="meta">90 words &bull; Group B &bull; Personalization: 2/3 &bull; Email: mguerrero@plume.com</div>
+    <button class="mark-sent" onclick="markSent(11)">Mark Sent</button>
+  </div>
+</div>
+
+<div class="prospect" id="p-12" data-priority="3">
+  <div class="prospect-header" onclick="toggleFields(12)">
+    <div class="prospect-left">
+      <div class="num">12</div>
+      <div>
+        <div class="pname">Terene Lee</div>
+        <div class="ptitle">QA Manager @ Impartner Software &bull; Riverton, UT</div>
+        <div class="tags"><span class="tag tag-v">PRM SaaS</span><span class="tag tag-p">Manager</span><span class="tag tag-mqs">MQS 10</span></div>
+      </div>
+    </div>
+    <a class="search-btn" href="https://www.linkedin.com/sales/search/people?query=(keywords:Terene%20Lee%20Impartner)" target="_blank" onclick="event.stopPropagation()">Open in Sales Nav</a>
+  </div>
+  <div class="fields" id="fields-12">
+    <div class="field-row">
+      <div class="field-box subject">
+        <div class="field-label">Subject</div>
+        <div class="field-text" id="subj-12">Post-migration regression</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('subj-12', this)">Copy Subject</button>
+    </div>
+    <div class="field-row">
+      <div class="field-box">
+        <div class="field-label">Message Body</div>
+        <div class="field-text" id="msg-12">Hey Terene,
+
+After the PX migration and Europe data center launch, what's putting more pressure on QA, stabilizing regression on the new infrastructure or keeping coverage tight across regions?
+
+Post-migration teams usually see test maintenance spike as the new platform surfaces unexpected behavior.
+
+Sanofi cut regression from 3 days to 80 minutes using Testsigma while maintaining compliance across regions.
+
+If 80-minute regression would help stabilize the post-migration release cadence, what day works for a quick look at how they did it?
+
+Rob</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('msg-12', this)">Copy Message</button>
+    </div>
+    <div class="meta">86 words &bull; Group B &bull; Personalization: 3/3 &bull; Email: terene.lee@impartner.com</div>
+    <button class="mark-sent" onclick="markSent(12)">Mark Sent</button>
+  </div>
+</div>
+
+<div class="prospect" id="p-13" data-priority="3">
+  <div class="prospect-header" onclick="toggleFields(13)">
+    <div class="prospect-left">
+      <div class="num">13</div>
+      <div>
+        <div class="pname">Federico Romano</div>
+        <div class="ptitle">QA Manager @ Legion Technologies &bull; Redwood City, CA</div>
+        <div class="tags"><span class="tag tag-v">Workforce SaaS</span><span class="tag tag-p">Manager</span><span class="tag tag-mqs">MQS 10</span></div>
+      </div>
+    </div>
+    <a class="search-btn" href="https://www.linkedin.com/sales/search/people?query=(keywords:Federico%20Romano%20Legion%20Technologies)" target="_blank" onclick="event.stopPropagation()">Open in Sales Nav</a>
+  </div>
+  <div class="fields" id="fields-13">
+    <div class="field-row">
+      <div class="field-box subject">
+        <div class="field-label">Subject</div>
+        <div class="field-text" id="subj-13">AI feature testing velocity</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('subj-13', this)">Copy Subject</button>
+    </div>
+    <div class="field-row">
+      <div class="field-box">
+        <div class="field-label">Message Body</div>
+        <div class="field-text" id="msg-13">Hey Federico,
+
+With 5 new features shipping this year plus real-time HRIS and POS integrations, what takes more QA time, validating the scheduling outputs across all integrations or keeping integration regression stable?
+
+Teams rolling out multiple AI features usually see testing complexity multiply as each model creates new behavioral paths.
+
+CRED hit 90% regression automation and 5x faster execution using Testsigma while managing complex platform integrations.
+
+What day works to see how they kept release confidence high while shipping that fast?
+
+Rob</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('msg-13', this)">Copy Message</button>
+    </div>
+    <div class="meta">81 words &bull; Group B &bull; Personalization: 3/3 &bull; Email: federico@legion.co</div>
+    <button class="mark-sent" onclick="markSent(13)">Mark Sent</button>
+  </div>
+</div>
+
+<div class="prospect" id="p-14" data-priority="3">
+  <div class="prospect-header" onclick="toggleFields(14)">
+    <div class="prospect-left">
+      <div class="num">14</div>
+      <div>
+        <div class="pname">Heleen Vs</div>
+        <div class="ptitle">QA Manager @ 10Pearls &bull; New York, NY</div>
+        <div class="tags"><span class="tag tag-v">IT Services</span><span class="tag tag-p">Manager</span><span class="tag tag-mqs">MQS 10</span></div>
+      </div>
+    </div>
+    <a class="search-btn" href="https://www.linkedin.com/sales/search/people?query=(keywords:Heleen%20Vs%2010Pearls)" target="_blank" onclick="event.stopPropagation()">Open in Sales Nav</a>
+  </div>
+  <div class="fields" id="fields-14">
+    <div class="field-row">
+      <div class="field-box subject">
+        <div class="field-label">Subject</div>
+        <div class="field-text" id="subj-14">Scaling QA delivery</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('subj-14', this)">Copy Subject</button>
+    </div>
+    <div class="field-row">
+      <div class="field-box">
+        <div class="field-label">Message Body</div>
+        <div class="field-text" id="msg-14">Hey Heleen,
+
+Your team tests across fintech, healthcare, and IoT clients simultaneously, right? That means juggling different security rules, compliance deadlines, and release cycles all at once.
+
+The challenge most services firms hit is that each client's tech stack requires a different test approach, which makes centralizing automation nearly impossible.
+
+Cisco manages massive platform testing complexity and cut regression by 35% using AI-powered self-healing, which works across any stack.
+
+If 35% less regression effort across your client teams would help, what day works for a quick look at how they did it?
+
+Rob</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('msg-14', this)">Copy Message</button>
+    </div>
+    <div class="meta">83 words &bull; Group B &bull; Personalization: 2/3 &bull; Email: heleen.vs@10pearls.com</div>
+    <button class="mark-sent" onclick="markSent(14)">Mark Sent</button>
+  </div>
+</div>
+
+<div class="prospect" id="p-15" data-priority="3">
+  <div class="prospect-header" onclick="toggleFields(15)">
+    <div class="prospect-left">
+      <div class="num">15</div>
+      <div>
+        <div class="pname">Shantel Gillette</div>
+        <div class="ptitle">QA Manager @ Lucid Software &bull; Salt Lake City, UT</div>
+        <div class="tags"><span class="tag tag-v">SaaS</span><span class="tag tag-p">Manager</span><span class="tag tag-mqs">MQS 10</span></div>
+      </div>
+    </div>
+    <a class="search-btn" href="https://www.linkedin.com/sales/search/people?query=(keywords:Shantel%20Gillette%20Lucid%20Software)" target="_blank" onclick="event.stopPropagation()">Open in Sales Nav</a>
+  </div>
+  <div class="fields" id="fields-15">
+    <div class="field-row">
+      <div class="field-box subject">
+        <div class="field-label">Subject</div>
+        <div class="field-text" id="subj-15">Integration regression at Lucid</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('subj-15', this)">Copy Subject</button>
+    </div>
+    <div class="field-row">
+      <div class="field-box">
+        <div class="field-label">Message Body</div>
+        <div class="field-text" id="msg-15">Hey Shantel,
+
+With 200+ integrations across Lucidchart, Lucidspark, and Lucidscale, what takes more QA time, keeping the integration tests stable or regression on the real-time collaboration features?
+
+Visual collaboration platforms usually see integration maintenance grow faster than the team as partners update their APIs. Each API change requires test rewrites.
+
+CRED hit 90% regression automation and 5x faster execution using Testsigma while managing dozens of third-party integrations.
+
+What day works to see how they kept integration coverage tight while cutting execution by 5x?
+
+Rob</div>
+      </div>
+      <button class="copy-btn" onclick="copyText('msg-15', this)">Copy Message</button>
+    </div>
+    <div class="meta">83 words &bull; Group B &bull; Personalization: 2/3 &bull; Email: sgillette@lucid.co</div>
+    <button class="mark-sent" onclick="markSent(15)">Mark Sent</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+let sentCount = 0;
+const total = 15;
+
+function toggleFields(n) {
+  const f = document.getElementById('fields-' + n);
+  f.classList.toggle('open');
+}
+
+function copyText(id, btn) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = btn.textContent.includes('Subject') ? 'Copy Subject' : 'Copy Message'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+function markSent(n) {
+  const p = document.getElementById('p-' + n);
+  if (p.classList.contains('sent')) return;
+  p.classList.add('sent');
+  p.querySelector('.mark-sent').disabled = true;
+  p.querySelector('.mark-sent').textContent = 'Sent ✓';
+  sentCount++;
+  document.getElementById('progress-text').textContent = sentCount + ' of ' + total + ' sent';
+  document.getElementById('progress-fill').style.width = (sentCount / total * 100) + '%';
+  // Auto-collapse sent card and open next
+  document.getElementById('fields-' + n).classList.remove('open');
+  if (n < total) {
+    document.getElementById('fields-' + (n + 1)).classList.add('open');
+    document.getElementById('p-' + (n + 1)).classList.add('active');
+    document.getElementById('p-' + (n + 1)).scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+// Auto-open first prospect
+document.getElementById('fields-1').classList.add('open');
+document.getElementById('p-1').classList.add('active');
+</script>
+</body>
+</html>

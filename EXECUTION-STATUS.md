@@ -1,5 +1,101 @@
 # Execution Status Report
-Updated: 2026-02-26 10:00 EST
+Updated: 2026-02-27 16:30 EST
+
+---
+
+## Sales Navigator Inbox Audit (2026-02-27) — VERIFIED
+
+Complete audit of Sales Navigator messaging tab. All data verified by DOM extraction.
+
+### InMail Credits: 99 remaining (of monthly allocation)
+
+### Send History (Verified from Sales Nav Inbox)
+
+#### Thursday Feb 27 — 28 sends (Batch 5B + Batch 5A)
+
+**Batch 5B (23 of 24 active sent, 5:54-8:41 AM ET):**
+
+| # | Name | Time | Card ID |
+|---|------|------|---------|
+| 1 | Lyle Landry | 6:24 AM | card-6 |
+| 2 | Iftikhar Hussain | 6:27 AM | card-0 |
+| 3 | Rahul Pandey | 6:30 AM | card-1 |
+| 4 | Christie Howard | 6:34 AM | card-5 |
+| 5 | Edwin Gozun | 6:52 AM | card-8 |
+| 6 | Rich Kowalski | 6:56 AM | card-10 |
+| 7 | Sebren Green | 6:59 AM | card-13 |
+| 8 | Rachael Thompson Schroeder | 7:05 AM | card-15 |
+| 9 | Arun Bhatia | 7:08 AM | card-21 |
+| 10 | Ryan Aspleaf | 7:11 AM | card-24 |
+| 11 | Konduru Srinivasulu | 7:44 AM | card-2 |
+| 12 | Mohan Gummadi | 7:44 AM | card-3 |
+| 13 | Amanda Mao | 7:45 AM | card-4 |
+| 14 | Anthony Kent | 7:49 AM | card-7 |
+| 15 | Lance Silverman | 8:18 AM | card-9 |
+| 16 | Chuck Smith | 8:19 AM | card-11 |
+| 17 | Gopinath Venu | 8:19 AM | card-12 |
+| 18 | Cherishma Perikala | 8:38 AM | card-14 |
+| 19 | Jamie Kurt | 8:39 AM | card-16 |
+| 20 | Marcos Guerrero | 8:39 AM | card-18 |
+| 21 | Federico Romano | 8:40 AM | card-20 |
+| 22 | Heleen VS | 8:40 AM | card-22 |
+| 23 | Shantel Gillette | 8:41 AM | card-23 |
+
+**NOT sent from 5B:** Terene Lee (card-19, not in inbox), Sanjay Singh (card-17, DNC)
+
+**Batch 5A (5 of 25 sent, 5:54-6:18 AM ET):**
+
+| # | Name | Time | Card ID |
+|---|------|------|---------|
+| 1 | Cindy Holsinger | 5:54 AM | card-10 |
+| 2 | Kerri McGee | 6:04 AM | card-7 |
+| 3 | Nisha Mathew | 6:10 AM | card-0 |
+| 4 | Diane Marrero | 6:14 AM | card-1 |
+| 5 | John Cunningham | 6:18 AM | card-2 |
+
+**Remaining unsent from 5A (20):** Alanna Klein, Stacy Wyatt, Pam Bice, Sundy Comer, Kevin Niekamp, Ramnath Jayakumar, Sara Gilliam, Derek Curtis, Michelle Stark, Chris O'Neill, Usha K, Calvin Fulgham, Kenneth Whitham, Marcy Vallee, Jeff Roberts, Mike Balderree, Jewetta Dobson, Angela Firari, Donald Burlingham, Sanchit Malhotra
+
+#### Wednesday Feb 26 — 24 sends (Batch 3)
+
+Natalie Gitelman, Animesh Patcha, Andre Maestas, Shanil J., Sebastien Pambu, Phil Jones, Dexter Alon, Ram Bulusu, Mazie R., Max Iglehart, Christopher Edwards, Steven Mays, Jayati Srivastava, Susan Cohan-Lendzian, Aliaksei Ausianka, Susan Lin, Abe Blanco, Tyler Hackett, Rick K., Kevin Caulfield, Giang Hoang, Rachana Jagetia, Katie Barlow Hotard, Irfan Pasha Syed
+
+Note: Irfan Syed and Katie Hotard were pilot sends on Feb 25 (Tue). Rest of Batch 3 sent Wed Feb 26. All 24 show "Wed" timestamp in Sales Nav.
+
+#### Feb 13 — 8 sends (Earlier Batches)
+
+Jeff Fried, Rebecca Miller-Webster, Tony Slokar, Wen Sun, Jim Ruirong Chen, Lukasz Romaniuk, Mansoor Shaikh, Abhishek Awale
+
+### Master Send Count
+
+| Batch | Total | Sent | Remaining | DNC |
+|-------|-------|------|-----------|-----|
+| Batch 3 | 25 | 24 | 0 | 0 |
+| Batch 5A | 25 | 5 | 20 | 0 |
+| Batch 5B | 25 | 23 | 1 (Terene Lee) | 1 (Sanjay Singh) |
+| Batch 6 | 27 | 0 | 27 | 0 |
+| Earlier (Feb 13) | 8 | 8 | 0 | 0 |
+| **TOTAL** | **110** | **60** | **48** | **1** |
+
+### Tracker File Status (renamed to sent-date convention Feb 27)
+Old files archived to `archive/` folder.
+
+| File | Last Updated | Accuracy |
+|------|-------------|----------|
+| outreach-sent-feb27-batch5b.html | Feb 27 16:30 | Verified — 23 sent, Terene Lee not_started, Sanjay DNC |
+| outreach-sent-feb27-batch5a.html | Feb 27 16:30 | Verified — 5 sent (Nisha, Diane, John, Kerri, Cindy) |
+| outreach-sent-feb26-batch3.html | Feb 25 (needs update) | 24 sent Wed, not yet updated in tracker |
+| outreach-batch6-unsent.html | Feb 27 15:47 | 27 prospects, none sent, ready for review |
+| outreach-sent-feb13-batch1.html | Feb 19 | Complete, 8 sends |
+| outreach-sent-feb13-batch1-v2.html | Feb 23 | Complete (rebuild) |
+
+### Next Actions
+
+- Touch 2 follow-ups for Batch 5B due ~Mar 4 (Day 5)
+- Touch 2 follow-ups for Batch 5A (5 sent) due ~Mar 4
+- 20 remaining 5A prospects available for Touch 1
+- 1 remaining 5B prospect (Terene Lee) available for Touch 1
+- 27 Batch 6 prospects ready for Touch 1
+- Total unsent prospects ready: 48
 
 ---
 

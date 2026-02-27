@@ -65,7 +65,7 @@ Cisco, Samsung, Honeywell, Bosch, Nokia, Nestle, KFC, DHL, Zeiss, Axel Springer,
 |------|--------|-------|
 | LinkedIn Sales Navigator | Primary | Browser automation for prospecting + InMail |
 | Apollo | Connected (MCP) | Enrichment-first, not sequence-first. 6,879 lead credits. |
-| Gmail | Connected (MCP) | Email for Touch 3 and general comms |
+| Gmail | Connected (MCP) | Email for Touch 3 and general comms. **ALWAYS send from robert.gorham@testsigma.com. NEVER use Rob's personal Gmail (rgorham369@gmail.com) for any work communication.** The MCP is connected to the Testsigma account. |
 | Google Calendar | Connected (MCP) | Meeting scheduling |
 | Google Drive | Connected (MCP) | File storage, batch trackers |
 | Salesforce | SKIP | Too much 2FA. Use Apollo for CRM-like functions instead. |
@@ -1082,12 +1082,14 @@ Next step: [Touch 2 InMail follow-up on YYYY-MM-DD]
 2. If "Messaged:" shows prior activity → This prospect has been contacted before
 3. When opening InMail composer, check if an existing conversation thread appears
 4. If prior outreach exists in the thread → DO NOT send Message 1 again
+5. **CRITICAL (added 2026-02-27): Check LinkedIn.com messaging history.** Sales Navigator's "Messaged:" indicator does NOT capture all prior outreach, especially messages sent from previous companies/accounts (e.g., Rob's mabl era 2021-2023). Navigate to linkedin.com/messaging and search the prospect's name to check for ANY prior conversation history. This catches messages that Sales Navigator misses.
 
 ### Actions If Prior Outreach Found
-- Set status = **EXISTING_THREAD**
-- Log: "Prior outreach detected - [date of last message if visible]"
+- Set status = **EXISTING_THREAD** (or **DO_NOT_CONTACT** if prior hostile/negative reply)
+- Log: "Prior outreach detected - [date of last message if visible] - [source: Sales Nav / LinkedIn.com messaging]"
 - Propose next best action to Rob:
-  - If last message was >60 days ago → Propose re-engagement (new angle, per Re-Engagement Triggers)
+  - If prior reply was hostile/negative → Mark DO NOT CONTACT permanently. No re-engagement ever.
+  - If last message was >60 days ago and no negative reply → Propose re-engagement (new angle, per Re-Engagement Triggers)
   - If last message was <60 days ago → Skip for now, revisit later
   - If there's an unanswered reply from the prospect → Propose response
 - STOP and wait for Rob's direction
@@ -1096,6 +1098,71 @@ Next step: [Touch 2 InMail follow-up on YYYY-MM-DD]
 - Sales Navigator "Messaged:" badge on search results
 - InMail composer shows existing thread when opened
 - "Viewed:" indicator (means Rob viewed their profile before, may or may not have messaged)
+- **LinkedIn.com Messaging search** (MANDATORY - catches messages Sales Nav misses, especially from prior employer accounts like mabl era)
+
+### Lesson Learned (2026-02-27 - Sanjay Singh Incident)
+Rob had messaged Sanjay Singh (ServiceTitan) in 2022 while at mabl. Sales Navigator did NOT show the "Messaged:" indicator for this prior outreach. When Rob sent a new InMail in 2026, Sanjay replied hostilely ("Stop bullying man"). The LinkedIn.com messaging search would have caught this. **Always check LinkedIn.com messaging in addition to Sales Navigator indicators.**
+
+### Do Not Contact List
+| Name | Company | Reason | Date Added |
+|------|---------|--------|------------|
+| Sanjay Singh | ServiceTitan | Hostile reply to prior outreach (2022 mabl era). Requested no further contact. | 2026-02-27 |
+
+---
+
+## Active Warm Leads / Account Tracker
+
+### Namita Jain — OverDrive
+| Field | Detail |
+|-------|--------|
+| **Name** | Namita Jain |
+| **Title** | Software Quality Assurance |
+| **Company** | OverDrive (overdrive.com) |
+| **Email** | njain@overdrive.com |
+| **Phone** | +1 216-573-6886 |
+| **LinkedIn** | linkedin.com/in/namita-jain-81b26b45 |
+| **Lead Type** | Warm inbound (webinar engagement x2) |
+| **Priority** | P1 — Intent signal, ICP title match |
+| **Salesforce ID** | 003OX00000TAK6XYAX |
+| **Apollo Org ID** | 54a11f0f69702d8cccc4bf01 |
+| **Transferred by** | Varun Prasath (2026-02-27) |
+
+**Intent Signals:**
+- Attended AUG 2025 Context Engineering Webinar
+- Registered for FEB 2026 "Green Pipeline Lies About Coverage" webinar (did not attend)
+- Two engagements = strong intent on test coverage topic
+
+**OverDrive Company Intel:**
+- ~540 employees, $420M revenue, owned by KKR, HQ Cleveland OH
+- 3 consumer apps: Libby (public libraries), Sora (K-12), Kanopy (video streaming)
+- All 3 run on web + iOS + Android = large cross-platform test matrix
+- 87,000+ libraries/schools in 115 countries, 820M checkouts in 2025
+- Killed legacy OverDrive app Jan 2025, migrated to Libby (migration testing)
+- Major Vega Discover integration with Clarivate (2025-2026, expanding test surface)
+- Kanopy saw 41% user growth in 2025 (scaling pressure)
+- Actively hiring QA Analyst (mid-level manual tester) in Cleveland = capacity pressure
+- Tech stack: Azure hosting, Salesforce, Atlassian Cloud, New Relic, no visible test automation tool
+- No known competitor tool detected
+
+**Proof Point Matches:**
+- Medibuddy (2,500 tests, 50% maintenance cut) — similar consumer platform scale
+- CRED (90% regression, 5X faster) — transaction volume, release cadence
+- Sanofi (3 days to 80 min) — if regression cycles are a bottleneck
+
+**Predicted Objection:** "QA isn't a priority / we're doing fine manually" (they're hiring a manual tester, no automation tool visible)
+**Pre-loaded Response:** "That's actually why teams like yours use us. Plain English means your existing QA team can automate without learning a new framework."
+
+**Outreach Log:**
+| Date | Channel | Touch | Status | Notes |
+|------|---------|-------|--------|-------|
+| 2026-02-27 | Email (testsigma.com) | Touch 1 | SENT | Warm webinar follow-up. Coverage angle. "See if your team was looking into anything specific." Rob sent manually. |
+
+**Next Steps:**
+- [ ] Monitor for reply (check daily for 5 business days)
+- [ ] If reply: Follow Warm Lead SOP — respond same day, match her language, bridge to meeting
+- [ ] If no reply by Day 5: Draft Touch 2 (LinkedIn InMail, new angle — Vega integration or QA hiring signal)
+- [ ] If meeting booked: Auto-generate prep card from research above
+- [ ] Create calendar reminder for follow-up (Day 5 = ~Mar 4)
 
 ---
 
@@ -1454,17 +1521,20 @@ Documents indexed from Testsigma Google Drive (Feb 2026). Claude should referenc
 | `email-sequence-sop.docx` | Word doc version of email SOP for team distribution and leadership review | 2026-02-27 |
 | `TEMPLATE_LIBRARY.md` | Master template library v2.0: all InMail + Email templates, HC-compliant, MQS >= 9/12 | 2026-02-27 |
 
-### Batch Tracker Files
+### Batch Tracker Files (renamed to sent-date convention Feb 27)
+Old files archived to `archive/` folder. New naming: `outreach-sent-[date]-[batch].html`
+
 | File | Batch | Status |
 |------|-------|--------|
-| `prospect-outreach-1-2026-02-19.html` | Batch 1 (original) | Complete |
-| `prospect-outreach-1-2026-02-23.html` | Batch 1 (rebuild) | Complete |
-| `prospect-outreach-2-2026-02-22.html` | Batch 2 | Complete |
-| `prospect-outreach-2-2026-02-23.html` | Batch 2 (updated) | Complete |
-| `prospect-outreach-3-2026-02-25.html` | Batch 3 | Active |
-| `prospect-outreach-4-2026-02-25.html` | Batch 4 (superseded by 5A) | Archived |
-| `prospect-outreach-5a-2026-02-26.html` | Batch 5A — 25 FinServ/Insurance, 3-touch cadence | Active |
-| `prospect-outreach-5b-2026-02-26.html` | Batch 5B — 25 Multi-vertical high-signal, 3-touch cadence | Active |
+| `outreach-sent-feb13-batch1.html` | Batch 1 (original, 8 sends) | Complete |
+| `outreach-sent-feb13-batch1-v2.html` | Batch 1 (rebuild) | Complete |
+| `outreach-batch2-unsent.html` | Batch 2 | Complete (never fully sent) |
+| `outreach-batch2-v2-unsent.html` | Batch 2 (updated) | Complete (never fully sent) |
+| `outreach-sent-feb26-batch3.html` | Batch 3 — 25 prospects. 24 sent Wed Feb 26 | Complete |
+| `outreach-sent-feb27-batch5a.html` | Batch 5A — 25 FinServ/Insurance. 5 sent Feb 27, 20 remaining | Active |
+| `outreach-sent-feb27-batch5b.html` | Batch 5B — 25 Multi-vertical. 23 sent Feb 27, Terene Lee unsent, Sanjay DNC | Active |
+| `outreach-batch6-unsent.html` | Batch 6 — 27 new prospects. 0 sent, ready for review | Active |
+| `archive/prospect-outreach-4-2026-02-25.html` | Batch 4 (superseded by 5A) | Archived |
 
 ### Execution Guides
 | File | Purpose |
@@ -1672,5 +1742,33 @@ This section defines the email-only outreach cadence for use in Apollo sequences
 
 ---
 
+## Master Send Log (Updated Feb 27)
+
+### Lifetime Send Totals
+| Date | Batch | Sends | Cumulative |
+|------|-------|-------|------------|
+| Feb 13 | Earlier batches | 8 | 8 |
+| Feb 25 | Batch 3 (pilot: Irfan, Katie) | 2 | 10 |
+| Feb 26 (Wed) | Batch 3 (remaining 22) | 22 | 32 |
+| Feb 27 (Thu) | Batch 5B | 23 | 55 |
+| Feb 27 (Thu) | Batch 5A (partial) | 5 | 60 |
+
+### Pipeline Status
+| Category | Count |
+|----------|-------|
+| Total sent (in Sales Nav inbox) | 60 |
+| Unsent Batch 5A | 20 |
+| Unsent Batch 5B (Terene Lee) | 1 |
+| Unsent Batch 6 | 27 |
+| **Total prospects ready to send** | **48** |
+| InMail credits remaining | 99 |
+
+### Do Not Contact List
+| Name | Company | Reason | Date Added |
+|------|---------|--------|------------|
+| Sanjay Singh | ServiceTitan | Hostile reply to prior outreach (2022 mabl era) | 2026-02-27 |
+
+---
+
 ## currentDate
-Today's date is 2026-02-26.
+Today's date is 2026-02-27.

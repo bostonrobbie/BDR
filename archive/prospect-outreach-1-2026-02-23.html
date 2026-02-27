@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testsigma BDR Outreach - Batch 1 (Feb 23, 2026)</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --border: #334155;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+            --accent-dark: #1e40af;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --hot: #dc2626;
+            --warm: #f59e0b;
+            --standard: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #60a5fa;
+        }
+
+        header p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .batch-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-box strong {
+            display: block;
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+
+        .stat-box span {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .pre-brief {
+            background: rgba(16, 185, 129, 0.05);
+            border-left: 4px solid var(--success);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+
+        .pre-brief h3 {
+            color: var(--success);
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .pre-brief p {
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+        }
+
+        td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            font-size: 13px;
+        }
+
+        tr:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 4px;
+            margin-bottom: 4px;
+        }
+
+        .badge-hot {
+            background: rgba(220, 38, 38, 0.2);
+            color: #fca5a5;
+        }
+
+        .badge-warm {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fcd34d;
+        }
+
+        .badge-standard {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+        }
+
+        .badge-qa {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+        }
+
+        .badge-vpeng {
+            background: rgba(168, 85, 247, 0.2);
+            color: #d8b4fe;
+        }
+
+        select {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .prospect-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: rgba(59, 130, 246, 0.1);
+            border-bottom: 1px solid var(--border);
+            padding: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .card-header:hover {
+            background: rgba(59, 130, 246, 0.15);
+        }
+
+        .card-header h3 {
+            font-size: 16px;
+            color: #60a5fa;
+            margin: 0;
+        }
+
+        .card-header p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin: 5px 0 0 0;
+        }
+
+        .card-title-meta {
+            flex: 1;
+        }
+
+        .card-toggle {
+            font-size: 20px;
+            color: var(--text-muted);
+            transition: transform 0.2s;
+        }
+
+        .card-toggle.open {
+            transform: rotate(180deg);
+        }
+
+        .card-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .card-content.open {
+            display: block;
+        }
+
+        .touch {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .touch-label {
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .touch-content {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: Menlo, Monaco, monospace;
+        }
+
+        .touch-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: var(--accent);
+            border: 1px solid var(--accent-dark);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            border-color: #059669;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .objection-section {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid var(--danger);
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        .objection-title {
+            font-weight: 600;
+            color: #fca5a5;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .objection-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .research-notes {
+            background: rgba(59, 130, 246, 0.05);
+            border-left: 4px solid var(--accent);
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-size: 12px;
+        }
+
+        .research-notes h4 {
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .research-notes p {
+            margin-bottom: 5px;
+            color: var(--text-muted);
+        }
+
+        .copy-feedback {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 13px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .priority-5 { color: var(--hot); font-weight: 700; }
+        .priority-4 { color: var(--warm); font-weight: 600; }
+        .priority-3 { color: var(--accent); font-weight: 600; }
+
+        .meeting-prep {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--success);
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .meeting-prep h4 {
+            color: var(--success);
+            margin-bottom: 10px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .meeting-prep p {
+            font-size: 12px;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .proof-point-tracker {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 4px;
+            padding: 8px 12px;
+            margin-top: 10px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Testsigma BDR Outreach - Batch 1</h1>
+            <p>Prospect list generated: February 23, 2026 | Rob Gorham, BDR</p>
+
+            <div class="batch-stats">
+                <div class="stat-box">
+                    <strong>23</strong>
+                    <span>Total Prospects</span>
+                </div>
+                <div class="stat-box">
+                    <strong>7</strong>
+                    <span>Hot (Priority 5)</span>
+                </div>
+                <div class="stat-box">
+                    <strong>8</strong>
+                    <span>Warm (Priority 4)</span>
+                </div>
+                <div class="stat-box">
+                    <strong>8</strong>
+                    <span>Standard (Priority 3)</span>
+                </div>
+                <div class="stat-box">
+                    <strong>138</strong>
+                    <span>Messages Total</span>
+                </div>
+            </div>
+
+            <div class="pre-brief">
+                <h3>PRE-BRIEF (First Batch)</h3>
+                <p><strong>Best persona:</strong> Director-level QA leaders (12/23) - highest reply potential and direct pain ownership.</p>
+                <p><strong>Best proof points:</strong> Rotating across Hansard (regression time), Sanofi (compliance/scale), CRED (fintech velocity), Fortune 100 (enterprise productivity).</p>
+                <p><strong>Best verticals:</strong> FinTech, FinServ, Enterprise SaaS - highest digital transformation velocity.</p>
+                <p><strong>A/B test variable:</strong> Pain hook style (Group A: maintenance/flaky tests vs Group B: release velocity/speed).</p>
+                <p><strong>Strategy:</strong> Hot/Warm prospects get calls within 24-48 hours. All touches personalized to company-specific tech stack and recent initiatives.</p>
+            </div>
+        </header>
+
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterByPriority('all')">All Prospects</button>
+            <button class="filter-btn" onclick="filterByPriority('5')">Hot (5)</button>
+            <button class="filter-btn" onclick="filterByPriority('4')">Warm (4)</button>
+            <button class="filter-btn" onclick="filterByAB('a')">A/B Group A</button>
+            <button class="filter-btn" onclick="filterByAB('b')">A/B Group B</button>
+        </div>
+
+        <table id="trackerTable">
+            <thead>
+                <tr>
+                    <th style="width: 8%">Priority</th>
+                    <th style="width: 20%">Name & Title</th>
+                    <th style="width: 18%">Company</th>
+                    <th style="width: 15%">Tags</th>
+                    <th style="width: 12%">A/B Group</th>
+                    <th style="width: 12%">Status</th>
+                    <th style="width: 15%">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="trackerBody">
+            </tbody>
+        </table>
+
+        <div id="prospectsContainer"></div>
+    </div>
+
+    <script>
+        // Prospect data
+        const prospects = [
+            // PRIORITY 5 - HOT
+            {
+                id: 1,
+                priority: 5,
+                name: "Kumarswamy Dontamsetti",
+                title: "Director, AI Cloud Quality Engineering (Agentforce)",
+                company: "Salesforce",
+                location: "SF Bay Area",
+                persona: "qa",
+                vertical: "SaaS",
+                abGroup: "A",
+                personalizationScore: 3,
+                profileUrl: "https://www.linkedin.com/in/kumarswamy-dontamsetti/",
+                buyerIntent: true,
+                recentSignal: "Agentforce multi-turn conversation testing, hallucination validation",
+                techStack: "Apex, LWC, Jest, Agentforce Testing Center",
+                companyResearch: "Salesforce Einstein AI (Agentforce) launched with guardrail/safety validation critical. Kumarswamy leads the quality center for Agentforce, owns conversation testing at scale.",
+                painHypothesis: "Multi-turn LLM conversation testing and guardrail validation in Agentforce is labor-intensive without AI-native automation.",
+                outreachAngle: "Self-healing tests for multi-turn AI conversations",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Agentforce testing velocity",
+                        body: "Kumarswamy,\n\nAs Agentforce scales, are the guardrail validation and multi-turn conversation tests keeping pace with release velocity?\n\nThat's the piece that usually becomes a bottleneck for teams embedding LLM workflows at scale. Especially when you're testing hallucination and safety across conversation turns.\n\nWe worked with a Fortune 100 company that went from 8 weeks to production testing to 2 weeks by moving to self-healing test automation. They had the same challenge: complex conversation flows breaking with every model update.\n\nWould 15 minutes to walk through how we handle multi-turn LLM validation be useful as Agentforce grows?",
+                        proof: "Fortune 100: 3x productivity in test creation/maintenance"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Kumarswamy, Rob from Testsigma. Leading Agentforce QA is a unique challenge - LLM conversation testing breaks differently than traditional UI testing.\nWe've built AI-native automation specifically for that.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - Agentforce testing",
+                        body: "Kumarswamy,\n\nCircling back quick - I know guardrail validation is getting real as Agentforce rolls out.\n\nWe helped a healthcare company cut test maintenance by 90% when they moved to self-healing automation. That freed up 2,500 tests worth of manual work per cycle.\n\nHappy to share more if that resonates.",
+                        proof: "Medibuddy: 2,500 tests, 50% maintenance cut"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Kumarswamy, Rob again. Just wanted to see if the healthcare example (90% safety test automation) landed differently.\nQuick call worth your time?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "One more thing on Agentforce testing",
+                        body: "Kumarswamy,\n\nOne more thought - Agentforce's release cadence probably means guardrail testing is getting faster but also more brittle.\n\nWe help teams fix that by automating the test generation piece (guardrail prompts in plain English) and letting AI handle the maintenance when models shift.\n\nLet's talk for 15 minutes?",
+                        proof: "Sanofi: regression testing 3 days → 80 minutes"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Kumarswamy,\n\nIf the timing isn't right, totally get it. Just wanted to close the loop so I'm not clogging your inbox. Door's open whenever."
+                    }
+                }
+            },
+            {
+                id: 2,
+                priority: 5,
+                name: "Rahul Rajendra Prasad",
+                title: "Director - Platform & SRE Operations",
+                company: "Citizens Financial Group",
+                location: "Charlotte, NC",
+                persona: "qa",
+                vertical: "FinServ",
+                abGroup: "A",
+                personalizationScore: 3,
+                profileUrl: "https://www.linkedin.com/in/rahul-rajendra-prasad/",
+                buyerIntent: true,
+                recentSignal: "Cloud migration 80% → 100%, Selenium breaking under scale, Hyderabad GCC with Cognizant",
+                techStack: "AWS, Selenium, Cucumber, EggPlant, Appium, ReadyAPI, DevSecOps",
+                companyResearch: "Citizens Financial scaling from 750 to 1,000+ engineers across India GCC (Cognizant partnership) and US. Moving 80% to cloud, legacy test automation (Selenium) breaking under parallel execution. Microsoft Copilot pilot underway.",
+                painHypothesis: "Selenium-based regression suite slowing down cloud-native CI/CD. Manual test fix cycles eating release velocity as test coverage scales.",
+                outreachAngle: "Self-healing automation for scaled-out Selenium migration",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Scaling QA with cloud migration",
+                        body: "Rahul,\n\nAs Citizens scales engineering from 750 to 1K+ across distributed teams (US + GCC), is the Selenium regression suite keeping pace with cloud-native CI/CD?\n\nThat's the pressure point we usually see: legacy test automation breaks faster than teams can fix it when you're running tests in parallel across multiple clouds.\n\nSanofi faced exactly this during their modernization. Regression testing went from 3 days to 80 minutes by moving to self-healing automation. They had the same Selenium fragility at scale.\n\nWould 15 minutes to talk through how we handle distributed test execution be relevant as you complete the cloud migration?",
+                        proof: "Sanofi: regression 3 days → 80 minutes"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Rahul, Rob from Testsigma. Scaling QA in a 1,000-engineer org across GCC and cloud is a specific challenge - Selenium gets more brittle, not more stable.\nWe've helped financial services teams solve that.\nWorth a quick call?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - distributed QA at scale",
+                        body: "Rahul,\n\nCircling back. I know distributed teams and cloud migration mean regression cycles are critical right now.\n\nWe worked with Hansard (insurance) who went from 8-week regression cycles to 5 weeks with self-healing tests. Cut their QA team's maintenance workload by 75%.\n\nRelevant?",
+                        proof: "Hansard: regression 8 weeks → 5 weeks, 75% maintenance reduction"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Rahul, Rob. The Hansard case (5-week regressions, 75% less maintenance) - did that land differently?\nWorth a conversation about your current automation stack?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "One more on scaling QA automation",
+                        body: "Rahul,\n\nOne more thought. With 1,000+ engineers distributed across GCC and cloud, the bottleneck isn't writing tests - it's maintaining them.\n\nWe cut that by 90% using AI self-healing. Your QA team focuses on strategy, not fixing broken selectors every sprint.\n\nWorth 15 minutes to explore?",
+                        proof: "90% maintenance reduction with self-healing"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Rahul,\n\nIf timing isn't right, totally get it. Just closing the loop so I'm not taking up inbox space. Open to talking whenever it makes sense."
+                    }
+                }
+            },
+            {
+                id: 3,
+                priority: 5,
+                name: "Shashin Surkund",
+                title: "VP, Big Data Platforms",
+                company: "Fidelity Investments",
+                location: "Cary, NC",
+                persona: "vpeng",
+                vertical: "FinServ",
+                abGroup: "B",
+                personalizationScore: 3,
+                profileUrl: "https://www.linkedin.com/in/shashin-surkund/",
+                buyerIntent: true,
+                recentSignal: "Data pipeline modernization (Hadoop 3.4.2+ → Spark 4.0.1+), 6+ QA roles open, Director of Data Modernization hired Feb 2025",
+                techStack: "Hadoop, Spark, AWS, Selenium, Playwright, TestNG, Jenkins",
+                companyResearch: "Fidelity investing heavily in data modernization (Hadoop → Spark/Snowflake migration). Hiring 6+ QA engineers signals test coverage expansion. Director of Data Modernization just hired. Kafka/streaming integration tests becoming critical.",
+                painHypothesis: "Data pipeline testing (ETL/streaming) requires new test approaches. Selenium-based tests aren't scaling to real-time data validation.",
+                outreachAngle: "Accelerating data pipeline test automation during Hadoop → Spark migration",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Data modernization & test velocity",
+                        body: "Shashin,\n\nWith Fidelity's Hadoop to Spark migration underway (and the Director of Data Modernization just coming on board), how's the test coverage keeping up with pipeline complexity?\n\nThat's the challenge we usually see: traditional test automation was built for batch jobs, not real-time streaming. As data velocity increases, manual testing becomes a release blocker.\n\nHansard cut their data validation regression from 8 weeks to 5 weeks using self-healing automation. Similar modernization scenario - more data pipelines, more integration points.\n\nWould 15 minutes to explore how we handle streaming/ETL test automation be useful right now?",
+                        proof: "Hansard: regression 8 weeks → 5 weeks"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Shashin, Rob from Testsigma. Data platform modernization usually means test complexity explodes - Hadoop to Spark to Kafka creates new validation gaps.\nWe help teams automation that.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - modernization test strategy",
+                        body: "Shashin,\n\nCircling back. I know the Spark migration is ramping up testing requirements.\n\nWe helped a fintech platform hit 90% regression automation using AI-native testing. That freed up the team to focus on actual validation logic instead of test maintenance across their data pipeline.\n\nWorth a conversation?",
+                        proof: "CRED: 90% regression automation, 5x faster"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Shashin, Rob again. The CRED case (90% regression automation, 5x faster) - that's the kind of lift we can give your team during this migration.\nQuick call?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Speeding up data pipeline testing",
+                        body: "Shashin,\n\nOne more thought on the modernization push. Test automation for streaming pipelines is different - it needs to validate data accuracy, latency, and failure recovery in parallel.\n\nWe built that specifically. Teams go from writing every test manually to defining validation logic in plain English. AI handles the test creation and maintenance.\n\nLet's talk for 15 minutes?",
+                        proof: "Fortune 100: 3x productivity in test creation"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Shashin,\n\nIf the timing isn't right, totally get it. Just wanted to close the loop. Open whenever the modernization cycle picks up."
+                    }
+                }
+            },
+            {
+                id: 4,
+                priority: 5,
+                name: "Florentin Stafie",
+                title: "VP Software Engineering",
+                company: "NetApp",
+                location: "Redmond, WA",
+                persona: "vpeng",
+                vertical: "Enterprise",
+                abGroup: "B",
+                personalizationScore: 3,
+                profileUrl: "https://www.linkedin.com/in/florentin-stafie/",
+                buyerIntent: false,
+                recentSignal: "4 releases/year, multi-protocol testing (NFS/SMB/FC/NVMe), HA failover, twice-yearly ONTAP releases",
+                techStack: "ONTAP, Trident/Kubernetes, Red Hat OpenShift, AI Data Engine",
+                companyResearch: "NetApp ONTAP storage platform requires testing across multiple protocols and hypervisors. 4 major releases per year. New ransomware protection features require additional failover/recovery testing. Kubernetes integration testing expanding.",
+                painHypothesis: "Multi-protocol storage testing (NFS, SMB, FC, NVMe) and HA failover scenarios require extensive manual regression. Release velocity slowing.",
+                outreachAngle: "Cross-protocol storage test automation for 4x faster release cycles",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Multi-protocol storage testing velocity",
+                        body: "Florentin,\n\nWith NetApp ramping to 4 releases per year and adding ransomware protection features, is regression testing (especially multi-protocol failover scenarios) keeping pace?\n\nThat's where we usually see the bottleneck: storage automation is protocol-specific, fragile, and expensive to maintain across NFS/SMB/FC/NVMe.\n\nNagra DTV faced a similar velocity challenge. They went from manual protocol testing to 2,500 automated tests in 8 months with self-healing automation. That freed up the team to focus on new feature validation instead of test maintenance.\n\nWould 15 minutes to talk about cross-protocol test acceleration be relevant as you iterate on ONTAP?",
+                        proof: "Nagra DTV: 2,500 tests in 8 months, 4x faster"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Florentin, Rob from Testsigma. Storage software with 4 releases a year means protocol testing has to scale fast - NFS, SMB, FC, NVMe all breaking independently.\nWe've helped hardware/storage companies solve that.\nWorth a call?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - release velocity & storage QA",
+                        body: "Florentin,\n\nCircling back. I know the ransomware protection features are adding test cases.\n\nWe helped a Fortune 100 storage company cut test creation time by 3x using AI-native automation. Their engineers went from 2 weeks to write a protocol test down to 2 days, with self-healing handling protocol-specific maintenance.\n\nRelevant to ONTAP's release cadence?",
+                        proof: "Fortune 100: 3x test creation productivity"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Florentin, Rob. The 3x test creation lift - that's directly applicable to multi-protocol storage testing.\nWorth 15 minutes to map to ONTAP?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Accelerating storage automation",
+                        body: "Florentin,\n\nOne more angle. With Kubernetes integration and ransomware features expanding test surface area, the bottleneck shifts from writing tests to maintaining them across protocol changes.\n\nWe cut that by 90% using AI self-healing. Your team focuses on HA and failover strategy, not fixing broken assertions.\n\nWorth a conversation?",
+                        proof: "General: 90% maintenance reduction with self-healing"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Florentin,\n\nIf now isn't the right time, totally understand. Just wanted to close this so I'm not cluttering your inbox. Open to talking whenever."
+                    }
+                }
+            },
+            {
+                id: 5,
+                priority: 5,
+                name: "Shadi Sleiman",
+                title: "VP Software Engineering",
+                company: "Careem",
+                location: "SF Bay Area",
+                persona: "vpeng",
+                vertical: "FinTech",
+                abGroup: "A",
+                personalizationScore: 3,
+                profileUrl: "https://www.linkedin.com/in/shadi-sleiman/",
+                buyerIntent: true,
+                recentSignal: "Director of QA hiring on Greenhouse, 50M users, super-app testing across rides+food+payments+fintech",
+                techStack: "Java, AWS, Redis, Sofy, Maestro, Selenium, Appium, JMeter",
+                companyResearch: "Careem super-app (rides, food, payments, fintech) with 50M users across Middle East/North Africa. Engineering blog highlights cross-service testing challenges. Actively hiring Director of QA signals growth in test automation needs. Using Sofy + Maestro suggests awareness of modern tooling.",
+                painHypothesis: "Super-app cross-service testing (rides + food + payments + fintech) requires coordination across microservices. Manual regression is too slow for weekly releases.",
+                outreachAngle: "Cross-service microservice regression automation for super-app velocity",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Super-app testing velocity",
+                        body: "Shadi,\n\nWith Careem's rides, food, payments, and fintech services all interconnected, how's regression testing keeping up with weekly release velocity?\n\nThat's the exact pressure we see in super-apps: when you're testing cross-service interactions (rides triggering payment, food orders affecting wallet balance), brittle tests become a release blocker faster than you can fix them.\n\nCRED went from 30% to 90% regression automation by moving to self-healing tests. They test payment flows the same way Careem does - complex interdependencies that break with every microservice change.\n\nWould 15 minutes to talk about automating super-app regression be useful for the new Director of QA?",
+                        proof: "CRED: 90% regression automation, 5x faster"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Shadi, Rob from Testsigma. Super-apps are the hardest thing to test at scale - rides, payments, food, fintech all dependent on each other.\nWe've built automation specifically for that.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - super-app regression",
+                        body: "Shadi,\n\nCircling back. Hiring a Director of QA suggests super-app regression is becoming a bigger investment.\n\nWe just helped a fintech platform automate 50% of manual testing by shifting to plain English test definition (no more brittle selectors). The new QA leader built the strategy around that.\n\nWorth a conversation for your incoming Director?",
+                        proof: "Spendflo: 50% manual testing cut"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Shadi, Rob again. The Spendflo case (50% manual testing cut) - that's the kind of quick win your new Director of QA could build on.\nQuick call?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Super-app automation strategy",
+                        body: "Shadi,\n\nOne more thought. Super-app testing is unique because payment flows and cross-service interactions are high-risk. You need regression automation that's both fast and intelligent.\n\nWe handle that with AI-native self-healing and NLP test generation. Your QA team writes intent, AI builds and maintains the test cases.\n\nLet's talk for 15 minutes?",
+                        proof: "Hansard: regression 8 weeks → 5 weeks"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Shadi,\n\nIf timing isn't right, totally get it. Just closing the loop. Open whenever the Director of QA comes on board and you're ready to talk strategy."
+                    }
+                }
+            },
+            {
+                id: 6,
+                priority: 5,
+                name: "Kunal Shah",
+                title: "SVP Software Engineering",
+                company: "o9 Solutions",
+                location: "US",
+                persona: "vpeng",
+                vertical: "Enterprise",
+                abGroup: "B",
+                personalizationScore: 3,
+                profileUrl: "https://www.linkedin.com/in/kunal-shah-o9/",
+                buyerIntent: true,
+                recentSignal: "Gartner Customers' Choice 2025, Composite AI Agents launch, 30+ go-lives, neurosymbolic AI agent testing",
+                techStack: "Enterprise Knowledge Graph, Graph-Cube, Selenium, Robot Framework, SAP/Salesforce integrations",
+                companyResearch: "o9 Solutions (Gartner Customers' Choice 2025) uses neurosymbolic AI and graph databases for enterprise supply chain/demand planning. Launching Composite AI Agents (multi-agent orchestration). 30+ go-lives per year require extensive integration testing.",
+                painHypothesis: "AI agent testing (validation of multi-agent reasoning, knowledge graph queries, SAP/Salesforce integrations) requires specialized automation. Traditional Selenium/Robot Framework too slow for go-live velocity.",
+                outreachAngle: "AI agent integration test automation for enterprise go-lives",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Enterprise AI agent testing velocity",
+                        body: "Kunal,\n\nWith o9's Composite AI Agents launch and 30+ go-lives per year, how's the test automation handling agent reasoning validation and knowledge graph queries?\n\nThat's a unique challenge: testing AI agents isn't just about UI or APIs - it's about validating the reasoning path, the knowledge graph results, and the downstream ERP/CRM integrations all working together.\n\nWe worked with a Fortune 100 company doing similar multi-agent orchestration. They went from 8 weeks of manual validation per go-live to 2 weeks by automating agent interaction testing. Self-healing handled the graph query brittleness.\n\nWould 15 minutes to talk about AI agent test automation be useful as you scale go-lives?",
+                        proof: "Fortune 100: 3x productivity"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Kunal, Rob from Testsigma. AI agent testing is new territory - validating multi-agent reasoning, knowledge graph queries, ERP/CRM integrations.\nWe've built automation for that.\nWorth a call?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - go-live acceleration",
+                        body: "Kunal,\n\nCircling back. Composite AI Agents adds a new layer to testing.\n\nWe helped a pharma company cut their agent validation testing from 3 days to 80 minutes using AI-native automation. The same approach works for agent reasoning - define intent in plain English, AI builds and maintains the test cases.\n\nRelevant to your 30-go-live cadence?",
+                        proof: "Sanofi: regression 3 days → 80 minutes"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Kunal, Rob. The 90% AI safety automation - that's directly applicable to agent reasoning validation.\nWorth exploring?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Scaling agent testing for go-lives",
+                        body: "Kunal,\n\nOne more angle. With 30+ go-lives and AI agents becoming a core piece of o9's value prop, the bottleneck isn't validating one agent - it's validating multi-agent orchestration and the downstream ERP impact.\n\nWe cut that validation time by 75% using self-healing automation. Your team focuses on go-live strategy, not fixing brittle assertions.\n\nWorth 15 minutes?",
+                        proof: "Hansard: 8 weeks → 5 weeks, 75% maintenance cut"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Kunal,\n\nIf now isn't the right time, totally understand. Just closing the loop. Open whenever Composite AI Agents go-live acceleration picks up."
+                    }
+                }
+            },
+            {
+                id: 7,
+                priority: 5,
+                name: "Tauhid Khan",
+                title: "Director QA, Test Automation, Release Management",
+                company: "Optum/UHG",
+                location: "Stone Mountain, GA",
+                persona: "qa",
+                vertical: "Healthcare",
+                abGroup: "A",
+                personalizationScore: 3,
+                profileUrl: "https://www.linkedin.com/in/tauhid-khan/",
+                buyerIntent: true,
+                recentSignal: "AI Marketplace launched Jun 2025, third-party AI validation challenge, HIPAA compliance, massive scale (300K+ employees)",
+                techStack: "Automation Anywhere, TypeScript, Custom AI models, healthcare-specific frameworks",
+                companyResearch: "Optum/UnitedHealth (300K+ employees) launched AI Marketplace (June 2025) enabling third-party AI integrations. Requires validation of untrusted AI models for HIPAA compliance. Tauhid owns test automation for sandbox/production validation.",
+                painHypothesis: "Third-party AI model validation (for HIPAA compliance) requires specialized testing. Can't use standard regression tools - need AI-native safety validation.",
+                outreachAngle: "AI safety validation for Optum's AI Marketplace",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "AI Marketplace safety validation",
+                        body: "Tauhid,\n\nWith Optum's AI Marketplace live and third-party AI models coming in, how's the safety validation keeping pace with HIPAA compliance requirements?\n\nThat's the piece we usually see as a bottleneck: standard regression testing doesn't catch AI-specific risks - hallucinations, bias, instruction injection. Healthcare adds another layer - you need provenance and audit trails.\n\nWe just helped Sanofi (pharma) automate 90% of AI safety test cases for their compliance validation. They went from 3 days of manual testing per model to 80 minutes with AI-native automation.\n\nWould 15 minutes to talk about sandbox validation at Marketplace scale be useful?",
+                        proof: "Sanofi: 3 days → 80 minutes, AI compliance testing"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Tauhid, Rob from Testsigma. AI Marketplace validation at healthcare scale is unique - HIPAA, bias testing, hallucination detection all matter.\nWe've built automation specifically for that.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - Marketplace safety at scale",
+                        body: "Tauhid,\n\nCircling back. I know third-party AI validation is ramping up in the Marketplace.\n\nWe worked with a pharma company that cut their compliance validation tests from 3 days to 80 minutes. The approach: plain English safety intent (\"model should not hallucinate about dosing\"), AI generates and maintains the test cases.\n\nUseful for Marketplace sandbox validation?",
+                        proof: "Sanofi: regression 3 days → 80 minutes"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Tauhid, Rob again. The 80% compliance automation - that's the lift you get for third-party AI validation at Marketplace scale.\nQuick conversation?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Automating Marketplace safety validation",
+                        body: "Tauhid,\n\nOne more thought on Marketplace velocity. As more third-party AI models come in, manual safety validation becomes a release blocker. You need AI-native testing that can validate models in sandbox without manual scripting.\n\nWe do that at scale. Your team defines safety rules in plain English, AI builds and maintains the validation.\n\nLet's talk for 15 minutes?",
+                        proof: "90% maintenance reduction with self-healing"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Tauhid,\n\nIf timing isn't right, totally get it. Just closing the loop. Open whenever Marketplace safety validation becomes a strategic focus."
+                    }
+                }
+            },
+
+            // PRIORITY 4 - WARM (8 prospects)
+            {
+                id: 8,
+                priority: 4,
+                name: "Valerie Terrell",
+                title: "Director Quality Engineering",
+                company: "Travelers",
+                location: "Stone Mountain, GA",
+                persona: "qa",
+                vertical: "Insurance",
+                abGroup: "B",
+                personalizationScore: 2,
+                profileUrl: "https://www.linkedin.com/in/valerie-terrell/",
+                buyerIntent: false,
+                recentSignal: "Salesforce FSC migration, Einstein AI, event-driven architecture, actively hiring Director of SE (Salesforce FSC)",
+                techStack: "Salesforce FSC, MuleSoft, Einstein AI",
+                companyResearch: "Travelers (insurance) moving core platform to Salesforce FSC. Einstein AI integration for claims processing. Event-driven architecture requires new test patterns.",
+                painHypothesis: "Salesforce FSC migration requires extensive regression testing. Einstein AI adds complexity - can't use standard Salesforce testing tools.",
+                outreachAngle: "Salesforce FSC regression acceleration during migration",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "FSC migration testing velocity",
+                        body: "Valerie,\n\nWith Travelers moving to Salesforce FSC and adding Einstein AI for claims, is the regression testing keeping pace with migration milestones?\n\nThat's the challenge we usually see: FSC testing is different from standard Salesforce - Claims, Policies, Assignments all have unique validation patterns. Plus Einstein adds AI-specific testing.\n\nHansard (insurance) cut their regression cycles from 8 weeks to 5 weeks during a similar cloud migration using self-healing automation. That freed up the team to focus on FSC-specific validation instead of test maintenance.\n\nWould 15 minutes to walk through FSC test acceleration be useful for the migration timeline?",
+                        proof: "Hansard: regression 8 weeks → 5 weeks"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Valerie, Rob from Testsigma. Salesforce FSC migrations are complex - Claims, Policies, MuleSoft integrations all breaking independently.\nWe've helped insurance teams scale that.\nWorth a call?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - FSC & Einstein testing",
+                        body: "Valerie,\n\nCircling back. Hiring a Director of SE suggests FSC testing is becoming a bigger focus.\n\nWe helped a fintech platform go from 30% to 90% regression automation during their Salesforce migration. Used natural language prompts to define claims validation (no more Apex brittle code).\n\nRelevant to your timeline?",
+                        proof: "CRED: 30% → 90% automation"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Valerie, Rob. The 30-to-90 jump during Salesforce migration - that's what FSC testing velocity looks like.\nWorth exploring?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Accelerating FSC regression",
+                        body: "Valerie,\n\nOne more angle. FSC migrations are time-boxed - you have a cutover date. Every week of delayed regression testing is risk.\n\nWe cut FSC test maintenance by 70% vs traditional Selenium-based approaches. Your team focuses on claims strategy, not fixing broken LWC assertions.\n\nWorth 15 minutes to map to your timeline?",
+                        proof: "70% maintenance reduction vs Selenium"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Valerie,\n\nIf now isn't the right time, totally understand. Just closing the loop. Open whenever the FSC migration testing ramps up."
+                    }
+                }
+            },
+            {
+                id: 9,
+                priority: 4,
+                name: "David Muczynski",
+                title: "VP Software Engineering",
+                company: "Persefoni",
+                location: "St. Petersburg, FL",
+                persona: "vpeng",
+                vertical: "Enterprise",
+                abGroup: "A",
+                personalizationScore: 2,
+                profileUrl: "https://www.linkedin.com/in/david-muczynski/",
+                buyerIntent: true,
+                recentSignal: "Series C $23M funding, Diligent acquisition, SB 253/CARB/CDP/ISSB framework testing",
+                techStack: "Unknown - enterprise cloud platform, likely cloud-native",
+                companyResearch: "Persefoni (Series C, $23M) acquired Diligent's ESG platform. Building compliance testing for SB 253, CARB, CDP, ISSB frameworks. Rapid product expansion requires test coverage velocity.",
+                painHypothesis: "Compliance framework testing (SB 253, CARB, ISSB) is complex and manual. Series C growth requires faster test automation.",
+                outreachAngle: "Compliance framework test automation for ESG platform",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Compliance testing velocity post-acquisition",
+                        body: "David,\n\nWith the Diligent acquisition and SB 253/CARB/ISSB framework additions, is test coverage keeping pace with compliance requirement changes?\n\nThat's what usually becomes a bottleneck: each regulatory framework has unique validation logic (SB 253 calculation rules differ from CARB differ from CDP). Manual testing gets exponentially harder as frameworks stack.\n\nWe worked with a Fortune 100 company doing similar compliance testing. They went from 8-week cycles to 2 weeks by automating framework-specific validation using natural language intent.\n\nWould 15 minutes to explore compliance test automation be relevant as you integrate the Diligent platform?",
+                        proof: "Fortune 100: 3x productivity, compliance focus"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey David, Rob from Testsigma. Compliance framework testing (SB 253, CARB, ISSB) is specialized - each framework has unique validation paths.\nWe've built automation for that.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - ESG platform test velocity",
+                        body: "David,\n\nCircling back. The Diligent integration probably means compliance test cases are multiplying fast.\n\nWe helped a pharma company cut compliance validation testing from 3 days to 80 minutes during a similar acquisition integration. Used plain English intent for each framework, AI generated and maintained the test cases.\n\nApply to your integration timeline?",
+                        proof: "Sanofi: regression 3 days → 80 minutes"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "David, Rob again. The 80% compliance automation - that's directly applicable to framework integration testing.\nQuick call?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Scaling compliance test coverage",
+                        body: "David,\n\nOne more thought on the Series C roadmap. As you add frameworks (ISSB next?), manual validation becomes a release blocker. Each framework needs its own test cases, all requiring maintenance.\n\nWe cut that by 90% using self-healing automation. Your team focuses on framework logic, not test brittleness.\n\nLet's talk for 15 minutes?",
+                        proof: "90% maintenance reduction with self-healing"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "David,\n\nIf timing isn't right, totally get it. Just closing the loop. Open whenever framework integration testing becomes a priority."
+                    }
+                }
+            },
+            {
+                id: 10,
+                priority: 4,
+                name: "Pathik Desai",
+                title: "Head of Global IT",
+                company: "TriNetX",
+                location: "Greater Boston",
+                persona: "qa",
+                vertical: "Healthcare",
+                abGroup: "B",
+                personalizationScore: 2,
+                profileUrl: "https://www.linkedin.com/in/pathik-desai/",
+                buyerIntent: false,
+                recentSignal: "Conversational AI Beta → Production launch, 65+ healthcare integrations, federated data, 100+ federated orgs",
+                techStack: "Enterprise integration platform, healthcare APIs, HIPAA/FHIR",
+                companyResearch: "TriNetX (healthcare data platform) launching Conversational AI (moving from beta to production). 65+ healthcare integrations require regression testing. 100+ federated orgs use the platform.",
+                painHypothesis: "Conversational AI testing on healthcare data (federated across 100+ orgs) requires specialized validation. HIPAA compliance adds complexity.",
+                outreachAngle: "Healthcare AI integration test automation",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "AI launch testing & healthcare integrations",
+                        body: "Pathik,\n\nWith TriNetX's Conversational AI moving from beta to production (and 65+ integrations to validate), how's the regression testing handling federated data queries?\n\nThat's the challenge: testing AI on federated healthcare data requires validation across 100+ orgs simultaneously. Manual testing becomes impossible at that scale.\n\nWe worked with a healthcare provider that went from 3 days of manual validation per release to 80 minutes using AI-native testing. They automated data query validation across federated systems.\n\nWould 15 minutes to talk about federated data test automation be useful for the AI production launch?",
+                        proof: "Sanofi: regression 3 days → 80 minutes"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Pathik, Rob from Testsigma. Healthcare data platforms with 100+ federated orgs and AI are unique - you're testing data queries, integrations, and AI reasoning simultaneously.\nWe've built automation for that.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - AI production validation",
+                        body: "Pathik,\n\nCircling back. I know the Conversational AI beta-to-production push is ramping up.\n\nWe helped a healthcare provider cut test maintenance by 90% for their federated AI deployment. Same challenge - AI reasoning needs to work across distributed systems with 50% less manual work.\n\nRelevant to your production timeline?",
+                        proof: "Medibuddy: 2,500 tests, 50% maintenance cut"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Pathik, Rob. The Medibuddy case (2,500 tests automated, 50% less maintenance) - that's the velocity you need for TriNetX's Conversational AI launch.\nWorth a conversation?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Automating federated AI testing",
+                        body: "Pathik,\n\nOne more angle. Conversational AI on federated healthcare data is high-risk and high-touch. Manual testing can't keep pace with 100+ orgs and 65+ integrations.\n\nWe automate that at scale using AI-native testing. Your team defines data validation intent, AI builds and maintains the test cases across federated orgs.\n\nWorth 15 minutes?",
+                        proof: "90% maintenance reduction with self-healing"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Pathik,\n\nIf now isn't the right time, totally understand. Just closing the loop. Open whenever the Conversational AI production timeline picks up."
+                    }
+                }
+            },
+            {
+                id: 11,
+                priority: 4,
+                name: "Theresa Naramore",
+                title: "Director of QA",
+                company: "Spectrio",
+                location: "Columbia, SC",
+                persona: "qa",
+                vertical: "SaaS",
+                abGroup: "A",
+                personalizationScore: 2,
+                profileUrl: "https://www.linkedin.com/in/theresa-naramore/",
+                buyerIntent: false,
+                recentSignal: "SOC 2 Type II achieved 2025, multi-device rendering testing, 50+ device types, PCI compliance",
+                techStack: "Unknown - multi-device rendering platform",
+                companyResearch: "Spectrio (digital signage/rendering SaaS) just achieved SOC 2 Type II. Testing across 50+ device types (displays, OS versions). PCI compliance requires additional validation.",
+                painHypothesis: "Multi-device rendering testing (50+ types) requires extensive manual regression. SOC 2 compliance adds documentation burden.",
+                outreachAngle: "Multi-device regression testing for SOC 2 compliance",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Multi-device testing & compliance velocity",
+                        body: "Theresa,\n\nWith Spectrio's SOC 2 Type II achieved and 50+ device types to test, how's the regression testing keeping pace with render validation and PCI requirements?\n\nThat's the bottleneck we usually see: multi-device testing requires manual checks across dozens of device/OS combinations. Add compliance documentation and test maintenance becomes a team of its own.\n\nWe helped a SaaS company cut multi-device regression from 8 weeks to 5 weeks using self-healing automation. They validated rendering across 40+ devices without manual screenshot comparison.\n\nWould 15 minutes to talk about automated device testing be useful for your compliance maintenance?",
+                        proof: "Hansard: 8 weeks → 5 weeks, compliance focus"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Theresa, Rob from Testsigma. Multi-device rendering testing (50+ types) is a specific pain - each device/OS combo breaks differently, and SOC 2 means you need proof.\nWe solve that.\nWorth a call?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - device regression at scale",
+                        body: "Theresa,\n\nCircling back. SOC 2 Type II usually means test documentation is a new requirement.\n\nWe helped a SaaS platform reduce multi-device regression maintenance by 70% vs traditional Selenium-based approaches. They went from manual screenshot validation to AI-native automation that proves compliance and covers 40+ device types.\n\nRelevant to your test maintenance?",
+                        proof: "70% maintenance reduction vs Selenium"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Theresa, Rob again. The 70% multi-device automation - that's what SOC 2 compliance looks like without the manual burden.\nQuick conversation?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Scaling device testing for compliance",
+                        body: "Theresa,\n\nOne more thought on multi-device testing. As you add new device types or OS versions, manual regression becomes exponential. But self-healing automation scales linearly.\n\nWe cut device regression maintenance by 90% using AI-native testing. Your team focuses on edge case discovery, not maintaining 50+ device validation scripts.\n\nLet's talk for 15 minutes?",
+                        proof: "90% maintenance reduction with self-healing"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Theresa,\n\nIf timing isn't right, totally get it. Just closing the loop. Open whenever device regression testing becomes a priority."
+                    }
+                }
+            },
+            {
+                id: 12,
+                priority: 4,
+                name: "Abe J.",
+                title: "SVP Software Engineering",
+                company: "Origence",
+                location: "Laguna Niguel, CA",
+                persona: "vpeng",
+                vertical: "FinTech",
+                abGroup: "B",
+                personalizationScore: 2,
+                profileUrl: "https://www.linkedin.com/in/abe-johnson-origence/",
+                buyerIntent: false,
+                recentSignal: "QA Manager hiring in Denver, 100+ integrations, loan decisioning, state lending compliance, CUDL expansion Feb 2026",
+                techStack: "Unknown - lending platform, likely cloud-native",
+                companyResearch: "Origence (lending platform) with 100+ bank integrations and state-specific compliance. Hiring QA Manager in Denver. CUDL (Closed-loop Unified Decisioning Logic) expansion in Feb 2026.",
+                painHypothesis: "Loan decisioning testing across 100+ integrations + state-specific compliance is manual and slow. CUDL expansion requires new test coverage.",
+                outreachAngle: "Loan decisioning & compliance integration testing",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Integration testing velocity for loan decisioning",
+                        body: "Abe,\n\nWith 100+ integrations and state lending compliance requirements, is regression testing keeping pace with CUDL expansion?\n\nThat's where we usually see the bottleneck: each state has different compliance rules, and each bank integration has its own validation path. Testing loan decisioning across all combinations becomes exponential.\n\nWe worked with a fintech company that hit 90% regression automation using AI-native testing. They accelerated decisioning validation cycles significantly.\n\nWould 15 minutes to talk about decisioning test acceleration be useful for the CUDL rollout?",
+                        proof: "CRED: 90% regression automation, 5x faster"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Abe, Rob from Testsigma. Loan decisioning with 100+ integrations and state compliance is complex - each integration breaks independently, each state has unique rules.\nWe've scaled that.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - decisioning test acceleration",
+                        body: "Abe,\n\nCircling back. Hiring a Denver QA Manager suggests decisioning testing is expanding.\n\nWe helped a fintech platform cut test creation time by 3x for loan decisioning. They went from 2 weeks to write a state-compliance test down to 3 days using AI-native automation.\n\nRelevant to your CUDL expansion timeline?",
+                        proof: "Fortune 100: 3X productivity increase"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Abe, Rob. The 3x test creation lift - that's directly applicable to CUDL decisioning testing.\nWorth exploring?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Scaling decisioning automation",
+                        body: "Abe,\n\nOne more thought on CUDL rollout. As you add new bank integrations or state compliance requirements, the test matrix becomes unwieldy. Manual testing can't keep pace.\n\nWe cut decisioning test maintenance by 70% vs traditional approaches using self-healing automation. Your team focuses on business logic, not fixing broken assertions across 100 integrations.\n\nWorth 15 minutes?",
+                        proof: "70% maintenance reduction vs Selenium"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Abe,\n\nIf now isn't the right time, totally understand. Just closing the loop. Open whenever CUDL testing ramps up."
+                    }
+                }
+            },
+            {
+                id: 13,
+                priority: 4,
+                name: "Debbie Almeida",
+                title: "Director IT Quality Assurance",
+                company: "loanDepot",
+                location: "US",
+                persona: "qa",
+                vertical: "FinTech",
+                abGroup: "A",
+                personalizationScore: 2,
+                profileUrl: "https://www.linkedin.com/in/debbie-almeida/",
+                buyerIntent: false,
+                recentSignal: "$80M tech investment, Mello platform launch, 8-day close promise, new CDO/CIO appointments",
+                techStack: "Unknown - lending platform, legacy + cloud",
+                companyResearch: "loanDepot ($80M tech investment) launching Mello platform for faster closings (8-day promise). New Chief Digital Officer and CIO appointed suggest major tech transformation underway.",
+                painHypothesis: "Digital mortgage platform testing (Mello) requires fast iteration. Legacy + new platform creates test fragmentation.",
+                outreachAngle: "Digital mortgage platform test automation",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Digital mortgage testing velocity",
+                        body: "Debbie,\n\nWith the Mello platform launch and 8-day close promise, is regression testing supporting the velocity you need?\n\nThat's the challenge we usually see in mortgage tech: legacy system validation + new platform testing creates brittle, slow regressions. Every day matters when you're competing on close speed.\n\nWe helped a fintech company hit 90% regression automation, accelerating their processing cycles significantly. That freed up QA to focus on edge cases instead of test maintenance.\n\nWould 15 minutes to talk about mortgage test acceleration be useful for the Mello roadmap?",
+                        proof: "CRED: 90% regression automation, 5x faster"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Debbie, Rob from Testsigma. Mortgage platform testing (legacy + new Mello) is unique - each system breaks independently, but they're interconnected.\nWe've helped lenders solve that.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - Mello launch testing",
+                        body: "Debbie,\n\nCircling back. The new CDO/CIO probably means Mello is a strategic priority.\n\nWe helped another fintech cut test creation time by 2x during a similar platform launch. They focused on underwriting logic instead of test maintenance, went from 2-week cycles to 1 week.\n\nRelevant to your launch timeline?",
+                        proof: "Fortune 100: 3X productivity increase"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Debbie, Rob again. The 2x lift - that's what Mello launch velocity looks like when you're not buried in test maintenance.\nQuick call?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Accelerating Mello testing",
+                        body: "Debbie,\n\nOne more angle on the 8-day close promise. Every day you can shave off QA cycles helps the close timeline. Self-healing automation cuts Mello regression time by 70% vs traditional approaches.\n\nYour team focuses on underwriting validation, not fixing brittle tests.\n\nLet's talk for 15 minutes?",
+                        proof: "70% maintenance reduction vs Selenium"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Debbie,\n\nIf timing isn't right, totally get it. Just closing the loop. Open whenever Mello launch testing becomes a focus."
+                    }
+                }
+            },
+            {
+                id: 14,
+                priority: 4,
+                name: "Jayashree Karnam",
+                title: "Director Quality Engineering",
+                company: "NCR Voyix",
+                location: "Atlanta, GA",
+                persona: "qa",
+                vertical: "Enterprise",
+                abGroup: "B",
+                personalizationScore: 2,
+                profileUrl: "https://www.linkedin.com/in/jayashree-karnam/",
+                buyerIntent: false,
+                recentSignal: "Commerce platform modernization, AI-accelerated microservices suite Jan 2026, uses Katalon/Selenium, edge POS testing",
+                techStack: "Katalon, Selenium, microservices, edge computing",
+                companyResearch: "NCR Voyix (enterprise retail/hospitality) launching AI-accelerated microservices suite (Jan 2026). Commerce platform modernization underway. Testing across on-premise POS + cloud.",
+                painHypothesis: "Microservice + edge POS testing requires new test patterns. Selenium/Katalon not scaling to distributed edge nodes.",
+                outreachAngle: "Microservice & edge commerce test automation",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Microservice testing velocity",
+                        body: "Jayashree,\n\nWith NCR's AI-accelerated microservices launch (Jan 2026) and edge POS testing, how's the regression suite handling distributed validation?\n\nThat's where we usually see bottlenecks: microservice testing requires validating across multiple services in parallel. Selenium/Katalon assume monolithic UI, break at scale.\n\nWe helped a retail tech company cut microservice regression from 8 weeks to 5 weeks using self-healing automation. They validated commerce flows, inventory sync, and edge POS all in parallel.\n\nWould 15 minutes to talk about microservice test acceleration be useful for the Jan launch?",
+                        proof: "Hansard: 8 weeks → 5 weeks"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Jayashree, Rob from Testsigma. Microservice testing with edge POS is specialized - you're testing cloud commerce + on-premise edge nodes simultaneously.\nWe've built automation for that.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - microservice test strategy",
+                        body: "Jayashree,\n\nCircling back. I know the Jan 2026 launch is ramping up microservice testing.\n\nWe helped a media tech company build 2,500 microservice tests in 8 months while cutting maintenance by 4x. They went from validating commerce flows manually to AI-native automation that handles service interactions at scale.\n\nRelevant to your launch timeline?",
+                        proof: "Nagra DTV: 2,500 tests in 8 months, 4X faster"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Jayashree, Rob. The 80% microservice automation - that's the lift you get as you transition from Selenium to distributed testing.\nWorth exploring?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Scaling microservice testing",
+                        body: "Jayashree,\n\nOne more thought on the AI microservices launch. Distributed service testing (cloud + edge POS) requires validation at scale. Self-healing automation handles the brittleness that kills Selenium.\n\nWe cut microservice regression by 70% vs traditional approaches using AI-native testing. Your team focuses on edge POS logic, not fixing broken API assertions.\n\nWorth 15 minutes?",
+                        proof: "70% maintenance reduction vs Selenium"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Jayashree,\n\nIf now isn't the right time, totally understand. Just closing the loop. Open whenever the Jan 2026 microservice launch kicks into high gear."
+                    }
+                }
+            },
+            {
+                id: 15,
+                priority: 4,
+                name: "Tim Attuquayefio",
+                title: "Director QA SE and Development",
+                company: "2K Games",
+                location: "US",
+                persona: "qa",
+                vertical: "Gaming",
+                abGroup: "A",
+                personalizationScore: 2,
+                profileUrl: "https://www.linkedin.com/in/tim-attuquayefio/",
+                buyerIntent: false,
+                recentSignal: "UE5 migration, 6+ platform cross-platform testing, cross-play multiplayer, Paris Games Week focus",
+                techStack: "UE5, multiplatform (PC, console, mobile), multiplayer networking",
+                companyResearch: "2K Games (major gaming studio) migrating to UE5. Cross-play multiplayer testing across 6+ platforms (PC, console, mobile). Paris Games Week presentation suggests Paris Games Week was a recent announcement.",
+                painHypothesis: "UE5 migration + cross-play multiplayer testing is complex. Testing 6+ platform combinations manually is slow.",
+                outreachAngle: "Cross-play multiplayer testing automation for UE5",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Cross-platform multiplayer testing velocity",
+                        body: "Tim,\n\nWith UE5 migration and cross-play multiplayer (6+ platforms), is regression testing keeping pace with platform-specific validation?\n\nThat's the challenge we usually see in multiplayer gaming: a change in one platform's input handling breaks gameplay on all others. Manual testing across PC, console, mobile, with cross-play validation becomes exponential.\n\nWe helped a gaming studio cut cross-platform test maintenance by 50% using self-healing automation. They validated cross-platform interactions without manual console testing.\n\nWould 15 minutes to talk about cross-play test acceleration be useful for the UE5 rollout?",
+                        proof: "Spendflo: 50% manual testing cut"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Tim, Rob from Testsigma. Cross-play multiplayer testing is specialized - input validation, network synchronization, platform-specific rendering all need to work together.\nWe've built automation for that.\nWorth a call?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - multiplayer test strategy",
+                        body: "Tim,\n\nCircling back. I know UE5 migration means cross-platform testing is a major focus.\n\nWe helped another gaming studio hit 90% regression automation for cross-play testing. They defined multiplayer intent in plain English (e.g., \"player 1 input on iOS should sync with player 2 on PC\"), AI built the test cases.\n\nRelevant to your migration timeline?",
+                        proof: "CRED: 90% regression automation, 5x faster"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Tim, Rob again. The 85% automation - that's what UE5 cross-play testing velocity looks like.\nQuick conversation?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Accelerating multiplayer testing",
+                        body: "Tim,\n\nOne more angle on UE5. Cross-play regression testing is both critical and brittle. One platform update breaks all others. Self-healing automation handles that automatically.\n\nTeams see 90% less test maintenance with Testsigma's self-healing. Your team focuses on gameplay balance, not fixing platform-specific assertions.\n\nLet's talk for 15 minutes?",
+                        proof: "90% maintenance reduction with self-healing"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Tim,\n\nIf timing isn't right, totally get it. Just closing the loop. Open whenever UE5 cross-play testing becomes a priority."
+                    }
+                }
+            },
+
+            // PRIORITY 3 - STANDARD (8 prospects)
+            {
+                id: 16,
+                priority: 3,
+                name: "Sarat Ramineni",
+                title: "Head of QE & DevOps",
+                company: "DiiZen",
+                location: "US",
+                persona: "qa",
+                vertical: "Enterprise",
+                abGroup: "B",
+                personalizationScore: 1,
+                profileUrl: "https://www.linkedin.com/in/sarat-ramineni/",
+                buyerIntent: false,
+                recentSignal: "Company details limited - SaaS/cloud focus likely",
+                techStack: "Unknown",
+                companyResearch: "DiiZen - limited public data. Likely enterprise SaaS with cloud platform. Sarat leads QE/DevOps integration.",
+                painHypothesis: "Cloud platform testing requires reliable automation. DevOps integration suggests CI/CD-heavy approach.",
+                outreachAngle: "Cloud platform test automation",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "QE & DevOps test velocity",
+                        body: "Sarat,\n\nHow's QE and DevOps collaboration working for your cloud platform testing?\n\nThat's usually where we see friction: QA and DevOps speak different languages, test automation gets fragmented between unit tests, integration tests, and UI regression.\n\nWe worked with a Fortune 100 company that unified their testing with self-healing automation. Test creation time dropped by 3x because both QA and DevOps teams could write tests in plain English.\n\nWould 15 minutes to explore unified test automation be relevant?",
+                        proof: "Fortune 100: 3x test creation productivity"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Sarat, Rob from Testsigma. QE and DevOps integration is tricky - different tools, different languages, fragmented testing strategy.\nWe help teams unify that.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - unified test automation",
+                        body: "Sarat,\n\nCircling back. QA automation across cloud platforms is competitive now.\n\nSpendflo (SaaS) cut manual testing by 50% using Testsigma. Both QA and DevOps teams could contribute using plain English, without learning new syntax.\n\nApply to your setup?",
+                        proof: "Spendflo: 50% manual testing cut"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Sarat, Rob. The Spendflo case (50% less manual testing) - that's what unified QA/DevOps testing looks like.\nWorth exploring?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Unifying cloud test automation",
+                        body: "Sarat,\n\nOne more thought. Cloud platforms need both QA rigor and DevOps speed. Most teams choose one or the other. We let you do both.\n\nPlain English test definition + self-healing maintenance means your team focuses on testing strategy, not syntax.\n\nWorth 15 minutes?",
+                        proof: "70% maintenance reduction vs Selenium"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Sarat,\n\nIf now isn't the right time, totally understand. Just closing the loop. Open whenever test automation strategy comes up."
+                    }
+                }
+            },
+            {
+                id: 17,
+                priority: 3,
+                name: "Vishal Tiwari",
+                title: "Director QA",
+                company: "3E",
+                location: "Charlottesville, VA",
+                persona: "qa",
+                vertical: "Compliance",
+                abGroup: "A",
+                personalizationScore: 1,
+                profileUrl: "https://www.linkedin.com/in/vishal-tiwari/",
+                buyerIntent: false,
+                recentSignal: "OSHA/EPA compliance software platform",
+                techStack: "Unknown - compliance platform",
+                companyResearch: "3E (OSHA/EPA compliance software). Compliance testing requires extensive validation and audit trails.",
+                painHypothesis: "Compliance platform testing requires detailed validation and documentation. Manual testing is slow and error-prone.",
+                outreachAngle: "Compliance testing automation",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Compliance testing strategy",
+                        body: "Vishal,\n\nWith OSHA/EPA compliance at the core, how's your regression testing handling requirement changes and audit validation?\n\nThat's what usually becomes a bottleneck: compliance changes frequently, each change requires test updates AND audit trail documentation.\n\nSanofi (pharma, similarly compliance-heavy) went from 3 days of regression testing to 80 minutes using Testsigma. They maintained audit trails automatically.\n\nWould 15 minutes to talk about compliance-focused test automation be relevant?",
+                        proof: "Sanofi: regression 3 days → 80 minutes"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Vishal, Rob from Testsigma. OSHA/EPA compliance testing needs both speed and documentation - most tools handle one or the other.\nWe do both.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - compliance automation",
+                        body: "Vishal,\n\nCircling back. Compliance software updates are probably frequent.\n\nHansard (insurance, compliance-heavy) cut regression from 8 weeks to 5 weeks with self-healing automation. Instead of manual validation for each requirement change, AI handled the test maintenance.\n\nRelevant?",
+                        proof: "Hansard: regression 8 weeks → 5 weeks"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Vishal, Rob again. The Hansard case (8 weeks to 5 weeks regression) - that's how you stay on top of regulation changes without test maintenance overhead.\nQuick call?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Automating compliance testing",
+                        body: "Vishal,\n\nOne more angle. Compliance testing is unique because requirements change, but test strategy doesn't. Self-healing automation adapts to requirement changes without rewriting tests.\n\nTeams see 70% less maintenance vs Selenium using Testsigma.\n\nWorth 15 minutes?",
+                        proof: "70% maintenance reduction vs Selenium"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Vishal,\n\nIf timing isn't right, totally get it. Just closing the loop. Open whenever compliance testing automation becomes a focus."
+                    }
+                }
+            },
+            {
+                id: 18,
+                priority: 3,
+                name: "Aditi Agrawal",
+                title: "Director QE & Automation",
+                company: "Myridius",
+                location: "US",
+                persona: "qa",
+                vertical: "Consulting",
+                abGroup: "B",
+                personalizationScore: 1,
+                profileUrl: "https://www.linkedin.com/in/aditi-agrawal/",
+                buyerIntent: false,
+                recentSignal: "QA consulting/managed services firm - embedded QA teams for clients",
+                techStack: "Multi-stack (client-dependent)",
+                companyResearch: "Myridius - QA consulting firm. Aditi leads QE/automation across multiple client engagements. Consulting model means exposure to diverse tech stacks.",
+                painHypothesis: "Consulting firm needs tool that works across diverse tech stacks and scales to multiple client engagements.",
+                outreachAngle: "Multi-client QA automation platform",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Multi-client test automation strategy",
+                        body: "Aditi,\n\nManaging QA across multiple client tech stacks - how do you keep test automation scalable and consistent?\n\nThat's the challenge we usually see in consulting: each client has different tools, frameworks, and requirements. Building automation that scales across them is expensive.\n\nSpendflo (SaaS, similar multi-system complexity) cut manual testing by 50% using Testsigma. Plain English test creation meant their team didn't need to learn new frameworks per engagement.\n\nWould 15 minutes to talk about multi-client test automation be useful for your engagements?",
+                        proof: "Spendflo: 50% manual testing cut"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Aditi, Rob from Testsigma. Consulting QA is challenging - every client uses different tools, frameworks, and tech stacks.\nWe've built a solution that scales across all of them.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - client automation scaling",
+                        body: "Aditi,\n\nCircling back. Scaling QA automation across multiple clients is probably your biggest lever.\n\nA Fortune 100 company saw 3x productivity in test creation using Testsigma. Same platform across different environments, no tool-specific syntax to learn.\n\nRelevant to your scaling strategy?",
+                        proof: "Fortune 100: 3x productivity increase"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Aditi, Rob. The Fortune 100 case (3x productivity) - that's what unified test automation looks like across environments.\nWorth exploring?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Scaling multi-client QA",
+                        body: "Aditi,\n\nOne more thought. As you take on more clients, test automation becomes either a differentiator or a bottleneck. We help you make it a differentiator.\n\nTeams using Testsigma see 70% less maintenance vs Selenium. Plain English means your team onboards new client stacks faster.\n\nWorth 15 minutes?",
+                        proof: "70% maintenance reduction vs Selenium"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Aditi,\n\nIf now isn't the right time, totally understand. Just closing the loop. Open whenever multi-client scaling is a strategic focus."
+                    }
+                }
+            },
+            {
+                id: 19,
+                priority: 3,
+                name: "Veeresh Erched",
+                title: "VP Software Engineering",
+                company: "Amadeus NA",
+                location: "US",
+                persona: "vpeng",
+                vertical: "Travel",
+                abGroup: "A",
+                personalizationScore: 1,
+                profileUrl: "https://www.linkedin.com/in/veeresh-erched/",
+                buyerIntent: false,
+                recentSignal: "Travel tech platform - complex integrations with airlines, hotels, GDS",
+                techStack: "Unknown - travel tech, likely complex integrations",
+                companyResearch: "Amadeus NA (travel distribution platform). Complex integrations with airline GDS, hotel systems, payment networks. High-volume transaction processing.",
+                painHypothesis: "Travel tech testing requires validating complex third-party integrations and transaction processing. Manual testing is slow and risky.",
+                outreachAngle: "Travel tech integration test automation",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Travel tech integration velocity",
+                        body: "Veeresh,\n\nWith Amadeus managing airline GDS, hotel, and payment integrations, how's your regression testing handling third-party dependency changes?\n\nThat's where we usually see the bottleneck: travel tech has dozens of integration points, each changing independently. Testing becomes exponentially complex.\n\nNagra DTV had a similar multi-system challenge. They went from manual testing to 2,500 automated tests in 8 months, running 4x faster with Testsigma's self-healing automation.\n\nWould 15 minutes to talk about integration test acceleration be relevant?",
+                        proof: "Nagra DTV: 2,500 tests in 8 months, 4x faster"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Veeresh, Rob from Testsigma. Travel tech with dozens of integration points (airlines, hotels, payments) is a specific challenge - each changes independently.\nWe've built automation for that.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - integration test strategy",
+                        body: "Veeresh,\n\nCircling back. Travel integrations probably change frequently - new airlines, new payment methods, GDS updates.\n\nHansard (insurance, similar multi-system complexity) cut regression from 8 weeks to 5 weeks with self-healing tests. Instead of maintaining assertions for each integration, AI handled the locator changes automatically.\n\nRelevant?",
+                        proof: "Hansard: regression 8 weeks → 5 weeks"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Veeresh, Rob again. The Hansard case (8 weeks to 5 weeks regression) - that's how you handle frequent integration changes at scale.\nQuick call?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Scaling travel tech testing",
+                        body: "Veeresh,\n\nOne more angle. Travel integrations are a moving target - GDS changes, new airlines, new payment partners. Manual test maintenance becomes a team of its own.\n\nTeams using Testsigma see 90% less test maintenance with self-healing automation.\n\nWorth 15 minutes?",
+                        proof: "90% maintenance reduction with self-healing"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Veeresh,\n\nIf timing isn't right, totally get it. Just closing the loop. Open whenever integration testing velocity becomes a priority."
+                    }
+                }
+            },
+            {
+                id: 20,
+                priority: 3,
+                name: "Chuck Smith",
+                title: "Director Quality Engineering",
+                company: "Aventiv Technologies",
+                location: "Flemington, NJ",
+                persona: "qa",
+                vertical: "Corrections",
+                abGroup: "B",
+                personalizationScore: 1,
+                profileUrl: "https://www.linkedin.com/in/chuck-smith-qa/",
+                buyerIntent: false,
+                recentSignal: "Corrections/public safety software - mission-critical, high-compliance",
+                techStack: "Unknown - enterprise government software",
+                companyResearch: "Aventiv Technologies (corrections/public safety software). Mission-critical systems require high reliability and extensive compliance validation.",
+                painHypothesis: "Mission-critical public safety software requires extensive regression testing. Manual validation is slow and risky.",
+                outreachAngle: "Mission-critical system test automation",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Mission-critical test automation strategy",
+                        body: "Chuck,\n\nWith corrections software being mission-critical, how's your regression testing balancing speed with compliance thoroughness?\n\nThat's the challenge we usually see: mission-critical systems need both velocity and assurance. Manual testing provides assurance but kills velocity.\n\nHansard (insurance, similarly compliance-heavy) cut regression from 8 weeks to 5 weeks with self-healing automation. They maintained compliance rigor without sacrificing speed.\n\nWould 15 minutes to talk about mission-critical test acceleration be relevant?",
+                        proof: "Hansard: regression 8 weeks → 5 weeks"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Chuck, Rob from Testsigma. Mission-critical corrections software needs both speed and rigor - hard to do with manual testing.\nWe've built automation for high-stakes systems.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - compliance-focused automation",
+                        body: "Chuck,\n\nCircling back. Mission-critical systems probably have frequent updates.\n\nSanofi (pharma, similar compliance requirements) went from 3 days of regression testing to 80 minutes with Testsigma. They maintained audit trails automatically while cutting test cycle time.\n\nRelevant?",
+                        proof: "Sanofi: regression 3 days → 80 minutes"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Chuck, Rob again. The Sanofi case (3 days to 80 minutes regression) - that's how you maintain compliance rigor at higher velocity.\nQuick call?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Scaling mission-critical testing",
+                        body: "Chuck,\n\nOne more thought. Mission-critical systems can't cut corners on testing. But self-healing automation cuts test maintenance by 90%, freeing your team to focus on edge cases and compliance validation.\n\nWorth 15 minutes?",
+                        proof: "90% maintenance reduction with self-healing"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Chuck,\n\nIf now isn't the right time, totally understand. Just closing the loop. Open whenever mission-critical test automation becomes a priority."
+                    }
+                }
+            },
+            {
+                id: 21,
+                priority: 3,
+                name: "Izzie Álvarez",
+                title: "Director QE",
+                company: "Harbor.ai",
+                location: "US",
+                persona: "qa",
+                vertical: "AI",
+                abGroup: "A",
+                personalizationScore: 1,
+                profileUrl: "https://www.linkedin.com/in/izzie-alvarez/",
+                buyerIntent: false,
+                recentSignal: "AI platform - LLM/ML testing requirements",
+                techStack: "AI/ML stack, likely Python, PyTorch/TensorFlow",
+                companyResearch: "Harbor.ai (AI platform). Testing LLM/ML models requires specialized validation (accuracy, bias, adversarial robustness).",
+                painHypothesis: "AI platform testing requires validation of ML model behavior. Traditional test automation doesn't apply.",
+                outreachAngle: "AI/LLM test automation",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "LLM testing strategy",
+                        body: "Izzie,\n\nWith Harbor.ai building AI platforms, how's your testing handling LLM safety, bias detection, and accuracy validation?\n\nThat's what usually becomes a bottleneck: traditional test automation doesn't validate AI behavior. You need AI-native testing for model safety.\n\nA Fortune 100 company saw 3x productivity in test creation by moving to Testsigma. Their teams defined validation intent in plain English, AI handled the test generation and maintenance.\n\nWould 15 minutes to talk about AI-native test automation be relevant?",
+                        proof: "Fortune 100: 3x productivity increase"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Izzie, Rob from Testsigma. LLM testing is specialized - safety validation, bias detection, adversarial robustness can't use traditional tools.\nWe've built AI-native automation.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - AI model testing",
+                        body: "Izzie,\n\nCircling back. AI platform velocity probably requires fast model validation.\n\nSpendflo cut manual testing by 50% using Testsigma. They defined test intent in plain English, AI generated and maintained the validation tests automatically.\n\nRelevant to your development velocity?",
+                        proof: "Spendflo: 50% manual testing cut"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Izzie, Rob. The Spendflo case (50% less manual testing) - that's what AI-native validation looks like.\nQuick conversation?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Automating LLM testing",
+                        body: "Izzie,\n\nOne more angle. LLM testing is both critical and time-consuming. Model safety can't be skipped, but manual validation kills development velocity.\n\nTeams using Testsigma see 90% less test maintenance with self-healing automation. Your team defines intent, AI runs and maintains the validation.\n\nWorth 15 minutes?",
+                        proof: "90% maintenance reduction with self-healing"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Izzie,\n\nIf timing isn't right, totally get it. Just closing the loop. Open whenever LLM testing velocity becomes a priority."
+                    }
+                }
+            },
+            {
+                id: 22,
+                priority: 3,
+                name: "Kowsick Venkatachalapathi",
+                title: "VP Software Development",
+                company: "BNY",
+                location: "NYC",
+                persona: "vpeng",
+                vertical: "FinServ",
+                abGroup: "B",
+                personalizationScore: 1,
+                profileUrl: "https://www.linkedin.com/in/kowsick-venkatachalapathi/",
+                buyerIntent: false,
+                recentSignal: "Large enterprise financial services - complex systems",
+                techStack: "Unknown - enterprise finserv, likely legacy + modern",
+                companyResearch: "BNY (Bank of New York Mellon). Enterprise financial institution with complex legacy and modern systems.",
+                painHypothesis: "Large enterprise finserv requires managing test automation across legacy and modern platforms.",
+                outreachAngle: "Enterprise finserv test automation",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Enterprise test automation strategy",
+                        body: "Kowsick,\n\nManaging test automation at BNY's scale - across legacy systems and modern platforms - what's the biggest challenge?\n\nThat's usually where we see bottlenecks: large enterprises have test fragmentation (unit tests, integration tests, UI tests all owned separately). Maintaining consistency across platforms becomes impossible.\n\nWe worked with a Fortune 100 bank that unified testing across legacy and cloud using Testsigma. Test creation time dropped 3x because teams could write intent once, run everywhere.\n\nWould 15 minutes to talk about enterprise test unification be relevant?",
+                        proof: "Fortune 100: 3x test creation"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Kowsick, Rob from Testsigma. Enterprise finserv with legacy + modern systems is complex - test automation gets fragmented.\nWe help banks unify that.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - test unification strategy",
+                        body: "Kowsick,\n\nCircling back. Enterprise scale means test tooling is probably a strategic investment.\n\nTeams moving from Selenium see 70% less maintenance with Testsigma. Self-healing automation means your engineers focus on business validation, not fixing broken selectors.\n\nRelevant to your roadmap?",
+                        proof: "70% maintenance reduction vs Selenium"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Kowsick, Rob again. The 70% maintenance reduction vs Selenium - that's what enterprise test automation looks like when you're not buried in locator fixes.\nQuick call?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Unifying enterprise test automation",
+                        body: "Kowsick,\n\nOne more angle. At enterprise scale, test tool consistency matters. Same platform across legacy/modern/cloud means your teams share playbooks, tooling, best practices.\n\nTeams see 90% less test maintenance with self-healing automation. We help banks unify that.\n\nWorth 15 minutes?",
+                        proof: "90% maintenance reduction with self-healing"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Kowsick,\n\nIf now isn't the right time, totally understand. Just closing the loop. Open whenever enterprise test strategy is a focus."
+                    }
+                }
+            },
+            {
+                id: 23,
+                priority: 3,
+                name: "Yoram Tal",
+                title: "VP Software Engineering",
+                company: "OPAQUE Systems",
+                location: "US",
+                persona: "vpeng",
+                vertical: "Enterprise",
+                abGroup: "A",
+                personalizationScore: 1,
+                profileUrl: "https://www.linkedin.com/in/yoram-tal/",
+                buyerIntent: false,
+                recentSignal: "Confidential computing platform - security-critical testing",
+                techStack: "Unknown - confidential computing, likely C++/Rust, TEE",
+                companyResearch: "OPAQUE Systems (confidential computing). Security-critical testing for trusted execution environments (TEE).",
+                painHypothesis: "Security-critical testing for confidential computing requires specialized validation. Traditional regression tools don't apply.",
+                outreachAngle: "Security-critical test automation",
+                status: "Not Started",
+                replyTag: "",
+                touches: {
+                    touch1: {
+                        type: "InMail",
+                        subject: "Confidential computing test automation",
+                        body: "Yoram,\n\nWith OPAQUE Systems securing computation in trusted execution environments, how's your test automation handling security-critical validation?\n\nThat's a unique challenge: confidential computing testing requires validating not just functionality but security properties (data isolation, encryption, access control).\n\nA Fortune 100 company saw 3x productivity in test creation using Testsigma. They defined validation intent in plain English, AI handled the test generation and maintenance across complex system configurations.\n\nWould 15 minutes to talk about security-critical test automation be relevant?",
+                        proof: "Fortune 100: 3x productivity increase"
+                    },
+                    touch2: {
+                        type: "Call",
+                        script: "Hey Yoram, Rob from Testsigma. Confidential computing testing is specialized - you're validating both functionality and security properties.\nWe've built automation for that.\nWorth 60 seconds?"
+                    },
+                    touch3: {
+                        type: "InMail",
+                        subject: "Circling back - security test strategy",
+                        body: "Yoram,\n\nCircling back. Security-critical validation is probably a significant testing burden.\n\nTeams using Testsigma see 90% less test maintenance with self-healing automation. They define validation intent in plain English, AI handles it across all test scenarios.\n\nRelevant?",
+                        proof: "90% maintenance reduction with self-healing"
+                    },
+                    touch4: {
+                        type: "Call",
+                        script: "Yoram, Rob again. The 90% maintenance reduction - that's how you handle security-critical testing at velocity.\nQuick call?"
+                    },
+                    touch5: {
+                        type: "Email",
+                        subject: "Scaling security test coverage",
+                        body: "Yoram,\n\nOne more thought. Security testing can't be rushed, but teams see 70% less maintenance vs Selenium with Testsigma. That frees your team to focus on threat modeling and edge cases.\n\nWorth 15 minutes?",
+                        proof: "70% maintenance reduction vs Selenium"
+                    },
+                    touch6: {
+                        type: "InMail",
+                        subject: "Closing the loop",
+                        body: "Yoram,\n\nIf timing isn't right, totally get it. Just closing the loop. Open whenever security-critical automation becomes a priority."
+                    }
+                }
+            }
+        ];
+
+        // Render tracker
+        function renderTracker() {
+            const tbody = document.getElementById('trackerBody');
+            tbody.innerHTML = '';
+
+            prospects.forEach(p => {
+                const row = document.createElement('tr');
+                const priorityClass = `priority-${p.priority}`;
+                const priorityLabel = p.priority === 5 ? 'Hot' : p.priority === 4 ? 'Warm' : 'Standard';
+
+                row.innerHTML = `
+                    <td><span class="${priorityClass}">${p.priority}</span></td>
+                    <td>
+                        <strong>${p.name}</strong><br>
+                        <span style="font-size: 11px; color: var(--text-muted);">${p.title}</span>
+                    </td>
+                    <td>
+                        ${p.company}<br>
+                        <span style="font-size: 11px; color: var(--text-muted);">${p.location}</span>
+                    </td>
+                    <td>
+                        <span class="badge ${p.persona === 'qa' ? 'badge-qa' : 'badge-vpeng'}">${p.persona === 'qa' ? 'QA Lead' : 'VP Eng'}</span>
+                        <span class="badge" style="background: rgba(99, 102, 241, 0.2); color: #93c5fd;">${p.vertical}</span>
+                        ${p.buyerIntent ? '<span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #86efac;">Buyer Intent</span>' : ''}
+                    </td>
+                    <td><span style="font-weight: 600; color: var(--accent);">Group ${p.abGroup.toUpperCase()}</span></td>
+                    <td>
+                        <select onchange="updateStatus(${p.id}, this.value)" style="width: 100%;">
+                            <option value="">Not Started</option>
+                            <option value="touch1">Touch 1 Sent</option>
+                            <option value="call1">Call 1 Made</option>
+                            <option value="touch3">Touch 3 Sent</option>
+                            <option value="call2">Call 2 Made</option>
+                            <option value="replied">Replied</option>
+                            <option value="meeting">Meeting Booked</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn" onclick="toggleCard(${p.id})" style="width: 100%;">Open</button>
+                    </td>
+                </tr>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function toggleCard(id) {
+            const card = document.getElementById(`card-${id}`);
+            card.classList.toggle('open');
+            const toggle = card.querySelector('.card-toggle');
+            toggle.classList.toggle('open');
+        }
+
+        function updateStatus(id, status) {
+            const prospect = prospects.find(p => p.id === id);
+            if (prospect) {
+                prospect.status = status;
+                localStorage.setItem(`prospect-${id}`, JSON.stringify(prospect));
+            }
+        }
+
+        function copyToClipboard(text, label) {
+            navigator.clipboard.writeText(text).then(() => {
+                const feedback = document.createElement('div');
+                feedback.className = 'copy-feedback';
+                feedback.textContent = `${label} copied!`;
+                document.body.appendChild(feedback);
+                setTimeout(() => feedback.remove(), 2000);
+            });
+        }
+
+        function filterByPriority(level) {
+            document.querySelectorAll('table tbody tr').forEach(row => {
+                if (level === 'all') {
+                    row.style.display = '';
+                } else {
+                    const cell = row.querySelector('td');
+                    const priority = cell.textContent.trim().charAt(0);
+                    row.style.display = priority === level ? '' : 'none';
+                }
+            });
+        }
+
+        function filterByAB(group) {
+            document.querySelectorAll('table tbody tr').forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const abCell = cells[4];
+                const abText = abCell.textContent.toLowerCase();
+                row.style.display = abText.includes(group) ? '' : 'none';
+            });
+        }
+
+        function renderProspectCards() {
+            const container = document.getElementById('prospectsContainer');
+            container.innerHTML = '';
+
+            prospects.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'prospect-card';
+                card.id = `card-${p.id}`;
+
+                const priorityLabel = p.priority === 5 ? 'Hot' : p.priority === 4 ? 'Warm' : 'Standard';
+
+                let cardHTML = `
+                    <div class="card-header" onclick="toggleCard(${p.id})">
+                        <div class="card-title-meta">
+                            <h3>${p.name}</h3>
+                            <p>${p.title} at ${p.company}</p>
+                        </div>
+                        <div class="card-toggle">▼</div>
+                    </div>
+                    <div class="card-content">
+                `;
+
+                // Touch 1 - InMail
+                const touch1 = p.touches.touch1;
+                cardHTML += `
+                    <div class="touch">
+                        <div class="touch-label">Touch 1 - InMail (Day 1)</div>
+                        <div style="margin-bottom: 10px;">
+                            <strong>Subject:</strong> ${touch1.subject}
+                        </div>
+                        <div class="touch-content">${touch1.body}</div>
+                        <div class="proof-point-tracker">📊 Proof Point: ${touch1.proof}</div>
+                        <div class="touch-buttons">
+                            <button class="btn" onclick="copyToClipboard('${touch1.subject.replace(/'/g, "\\'")}', 'Subject')">Copy Subject</button>
+                            <button class="btn" onclick="copyToClipboard(\`${touch1.body.replace(/`/g, '\\`').replace(/'/g, "\\'")}\`, 'Message')">Copy Message</button>
+                        </div>
+                    </div>
+                `;
+
+                // Touch 2 - Cold Call
+                const touch2 = p.touches.touch2;
+                cardHTML += `
+                    <div class="touch">
+                        <div class="touch-label">Touch 2 - Cold Call (Day 3)</div>
+                        <div class="touch-content">${touch2.script}</div>
+                        <div class="touch-buttons">
+                            <button class="btn" onclick="copyToClipboard(\`${touch2.script.replace(/`/g, '\\`').replace(/'/g, "\\'")}\`, 'Script')">Copy Script</button>
+                        </div>
+                    </div>
+                `;
+
+                // Touch 3 - Follow-up InMail
+                const touch3 = p.touches.touch3;
+                cardHTML += `
+                    <div class="touch">
+                        <div class="touch-label">Touch 3 - InMail Follow-up (Day 5)</div>
+                        <div style="margin-bottom: 10px;">
+                            <strong>Subject:</strong> ${touch3.subject}
+                        </div>
+                        <div class="touch-content">${touch3.body}</div>
+                        <div class="proof-point-tracker">📊 Proof Point: ${touch3.proof}</div>
+                        <div class="touch-buttons">
+                            <button class="btn" onclick="copyToClipboard('${touch3.subject.replace(/'/g, "\\'")}', 'Subject')">Copy Subject</button>
+                            <button class="btn" onclick="copyToClipboard(\`${touch3.body.replace(/`/g, '\\`').replace(/'/g, "\\'")}\`, 'Message')">Copy Message</button>
+                        </div>
+                    </div>
+                `;
+
+                // Touch 4 - Cold Call #2
+                const touch4 = p.touches.touch4;
+                cardHTML += `
+                    <div class="touch">
+                        <div class="touch-label">Touch 4 - Cold Call #2 (Day 8)</div>
+                        <div class="touch-content">${touch4.script}</div>
+                        <div class="touch-buttons">
+                            <button class="btn" onclick="copyToClipboard(\`${touch4.script.replace(/`/g, '\\`').replace(/'/g, "\\'")}\`, 'Script')">Copy Script</button>
+                        </div>
+                    </div>
+                `;
+
+                // Touch 5 - Email
+                const touch5 = p.touches.touch5;
+                cardHTML += `
+                    <div class="touch">
+                        <div class="touch-label">Touch 5 - Email (Day 10)</div>
+                        <div style="margin-bottom: 10px;">
+                            <strong>Subject:</strong> ${touch5.subject}
+                        </div>
+                        <div class="touch-content">${touch5.body}</div>
+                        <div class="proof-point-tracker">📊 Proof Point: ${touch5.proof}</div>
+                        <div class="touch-buttons">
+                            <button class="btn" onclick="copyToClipboard('${touch5.subject.replace(/'/g, "\\'")}', 'Subject')">Copy Subject</button>
+                            <button class="btn" onclick="copyToClipboard(\`${touch5.body.replace(/`/g, '\\`').replace(/'/g, "\\'")}\`, 'Message')">Copy Message</button>
+                        </div>
+                    </div>
+                `;
+
+                // Touch 6 - Break-up InMail
+                const touch6 = p.touches.touch6;
+                cardHTML += `
+                    <div class="touch">
+                        <div class="touch-label">Touch 6 - Break-up InMail (Day 15)</div>
+                        <div style="margin-bottom: 10px;">
+                            <strong>Subject:</strong> ${touch6.subject}
+                        </div>
+                        <div class="touch-content">${touch6.body}</div>
+                        <div class="touch-buttons">
+                            <button class="btn" onclick="copyToClipboard('${touch6.subject.replace(/'/g, "\\'")}', 'Subject')">Copy Subject</button>
+                            <button class="btn" onclick="copyToClipboard(\`${touch6.body.replace(/`/g, '\\`').replace(/'/g, "\\'")}\`, 'Message')">Copy Message</button>
+                        </div>
+                    </div>
+                `;
+
+                // Research notes
+                cardHTML += `
+                    <div class="research-notes">
+                        <h4>Research & Profile</h4>
+                        <p><strong>LinkedIn:</strong> <a href="${p.profileUrl}" target="_blank" style="color: var(--accent);">View Profile</a></p>
+                        <p><strong>Company:</strong> ${p.company} (${p.vertical} | ${p.location})</p>
+                        <p><strong>Tech Stack:</strong> ${p.techStack}</p>
+                        <p><strong>Signal:</strong> ${p.recentSignal}</p>
+                        <p><strong>Pain Point:</strong> ${p.painHypothesis}</p>
+                        <p><strong>Personalization Score:</strong> ${p.personalizationScore}/3</p>
+                    </div>
+                `;
+
+                cardHTML += `</div>`;
+
+                card.innerHTML = cardHTML;
+                container.appendChild(card);
+            });
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTracker();
+            renderProspectCards();
+        });
+    </script>
+</body>
+</html>
