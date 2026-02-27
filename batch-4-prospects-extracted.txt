@@ -1,0 +1,675 @@
+
+==========================================================================================
+PROSPECT #00: Nisha Mathew
+==========================================================================================
+Title:        Director of Quality Assurance
+Company:      Exeter Finance
+LinkedIn URL: http://www.linkedin.com/in/nisha-mathew-62064225
+Email:        
+Priority:     4
+Vertical:     financial services
+A/B Group:    a
+
+Touch 1 Subject:
+Loan origination QA
+
+Touch 1 Message:
+Hey Nisha,
+
+What's harder to keep stable right now, regression across the loan origination workflows or coverage as new dealer integrations come online?
+
+Most auto lending QA teams find that every new integration path adds tests faster than anyone can maintain them.
+
+Hansard (financial services) used Testsigma to cut their regression cycle from 8 weeks to 5 by letting AI handle the test maintenance.
+
+If shaving 3 weeks off regression would help the origination schedule, what day works for a quick look at how they did it?
+
+Rob
+
+==========================================================================================
+PROSPECT #01: Diane Marrero
+==========================================================================================
+Title:        Associate Director / QA Manager
+Company:      Fitch Ratings
+LinkedIn URL: http://www.linkedin.com/in/diane-marrero-38642583
+Email:        
+Priority:     4
+Vertical:     financial services
+A/B Group:    a
+
+Touch 1 Subject:
+Ratings platform testing
+
+Touch 1 Message:
+Hey Diane,
+
+With rating model changes shipping constantly, what takes more QA time, validating the analytical outputs or keeping regression stable across the platform?
+
+During cloud migrations, most data-intensive teams see their test maintenance double before anything stabilizes. Every model update tends to break a chain of dependent tests.
+
+CRED (fintech) used Testsigma to reach 90% regression automation and cut execution time by 5x while shipping daily.
+
+What day works to see how they maintained accuracy at that speed?
+
+Rob
+
+==========================================================================================
+PROSPECT #02: John Cunningham
+==========================================================================================
+Title:        Quality Assurance Director
+Company:      Great American Insurance Group
+LinkedIn URL: http://www.linkedin.com/in/johncunningham999
+Email:        
+Priority:     4
+Vertical:     insurance
+A/B Group:    a
+
+Touch 1 Subject:
+Specialty lines testing
+
+Touch 1 Message:
+Hey John,
+
+Across all the specialty insurance lines, what's harder, keeping each product's regression suite current or maintaining test coverage when underwriting rules change?
+
+Most multi-line carriers find that every new specialty product multiplies the test matrix faster than teams can keep up.
+
+Hansard cut their regression cycle from 8 weeks to 5 using Testsigma's AI to auto-maintain tests when workflows change.
+
+If getting 3 weeks back in the release cycle would help across your specialty lines, what day works for a quick look?
+
+Rob
+
+==========================================================================================
+PROSPECT #03: Alanna Klein
+==========================================================================================
+Title:        Quality Assurance Director
+Company:      CNA Insurance
+LinkedIn URL: http://www.linkedin.com/in/alanna-klein
+Email:        
+Priority:     4
+Vertical:     insurance
+A/B Group:    a
+
+Touch 1 Subject:
+Claims platform QA
+
+Touch 1 Message:
+Hey Alanna,
+
+During the claims platform work, what's been tougher on the QA side, keeping regression stable through the changes or maintaining coverage across all the product lines?
+
+Modernization projects tend to break existing tests faster than anyone budgets for.
+
+Hansard used Testsigma to cut regression from 8 weeks to 5, mostly by letting AI fix broken tests automatically when the UI changed.
+
+If cutting 3 weeks off regression would help the claims modernization timeline, what day works for a quick look at how they did it?
+
+Rob
+
+==========================================================================================
+PROSPECT #04: Stacy Wyatt
+==========================================================================================
+Title:        Director of Quality Assurance
+Company:      Beyond Finance
+LinkedIn URL: http://www.linkedin.com/in/stacymwyatt
+Email:        
+Priority:     3
+Vertical:     financial services
+A/B Group:    a
+
+Touch 1 Subject:
+Scaling QA at Beyond
+
+Touch 1 Message:
+Hey Stacy,
+
+As the user base grows, what's putting more pressure on QA, keeping up with feature releases or making sure nothing breaks in the existing debt resolution workflows?
+
+Fast-growing fintechs usually hit a point where manual testing can't keep pace with the release schedule.
+
+Spendflo (similar size, SaaS) used Testsigma to cut manual testing by 50% and saw ROI in the first quarter.
+
+If cutting manual testing in half would buy your team breathing room, what day works for a quick look at how they did it?
+
+Rob
+
+==========================================================================================
+PROSPECT #05: Pam Bice
+==========================================================================================
+Title:        Director of Quality Assurance
+Company:      Bread Financial
+LinkedIn URL: http://www.linkedin.com/in/pam-bice-2674584
+Email:        
+Priority:     5
+Vertical:     financial services
+A/B Group:    a
+
+Touch 1 Subject:
+Card program regression
+
+Touch 1 Message:
+Hey Pam,
+
+With multiple branded card programs running on the platform, what creates more QA pressure, PCI compliance testing or keeping regression stable across all the program variants?
+
+Most payment companies find that every new card program adds a layer of regression that compounds over time.
+
+CRED (fintech payments) used Testsigma to hit 90% regression automation and 5x faster execution while maintaining compliance.
+
+What day works to see how they kept compliance testing tight while cutting execution time by 5x?
+
+Rob
+
+==========================================================================================
+PROSPECT #06: Sundy Comer
+==========================================================================================
+Title:        Director of Quality Assurance
+Company:      Essent
+LinkedIn URL: http://www.linkedin.com/in/sundy-comer-b62ab515b
+Email:        
+Priority:     3
+Vertical:     insurance
+A/B Group:    a
+
+Touch 1 Subject:
+Mortgage insurance testing
+
+Touch 1 Message:
+Hey Sundy,
+
+With GSE requirements plus state insurance regs, what takes more QA time, compliance-driven testing or keeping the lender integration tests stable?
+
+Smaller QA teams in mortgage insurance usually spend more time maintaining tests than building new coverage.
+
+Spendflo (similar team size) used Testsigma to cut manual testing by 50% and saw ROI in the first quarter.
+
+If cutting manual testing in half would free your team to focus on compliance coverage, what day works for a quick look?
+
+Rob
+
+==========================================================================================
+PROSPECT #07: Kerri McGee
+==========================================================================================
+Title:        Director of Quality Assurance
+Company:      Sapiens
+LinkedIn URL: http://www.linkedin.com/in/kerri-mcgee-376ba514
+Email:        
+Priority:     5
+Vertical:     insurtech software
+A/B Group:    a
+
+Touch 1 Subject:
+Platform regression cycles
+
+Touch 1 Message:
+Hey Kerri,
+
+For a platform that insurance carriers depend on, what's the bigger QA challenge, keeping regression cycles short enough for release cadence or maintaining tests across all the carrier configurations?
+
+Multi-tenant insurance platforms usually see test maintenance multiply with every carrier customization.
+
+Hansard used Testsigma to cut regression from 8 weeks to 5 by letting AI auto-maintain tests when workflows changed.
+
+If shaving 3 weeks off regression would help the release schedule for carriers, what day works for a quick look at how they did it?
+
+Rob
+
+==========================================================================================
+PROSPECT #08: Kevin Niekamp
+==========================================================================================
+Title:        Director of Quality Assurance
+Company:      Lument
+LinkedIn URL: http://www.linkedin.com/in/kevin-niekamp-938137134
+Email:        
+Priority:     3
+Vertical:     financial services
+A/B Group:    a
+
+Touch 1 Subject:
+CRE lending QA
+
+Touch 1 Message:
+Hey Kevin,
+
+On the lending platform side, what takes more QA time, keeping loan origination workflows tested or maintaining regression as compliance rules change?
+
+Smaller QA teams in commercial lending usually hit a point where test maintenance takes over the sprint.
+
+Spendflo (similar team size) used Testsigma to cut manual testing by 50% and saw ROI in the first quarter.
+
+If cutting manual testing in half would free up time for the origination workflows, what day works for a quick look?
+
+Rob
+
+==========================================================================================
+PROSPECT #09: Ramnath Jayakumar
+==========================================================================================
+Title:        Director, Quality Assurance
+Company:      Envestnet
+LinkedIn URL: http://www.linkedin.com/in/ramnath-jayakumar-95342023
+Email:        
+Priority:     4
+Vertical:     financial services
+A/B Group:    a
+
+Touch 1 Subject:
+Wealth platform testing
+
+Touch 1 Message:
+Hey Ramnath,
+
+With 500+ integrations on the wealth platform, what creates more testing pressure, keeping API tests stable across custodians or regression coverage on the core platform?
+
+Integration-heavy platforms usually see test maintenance grow faster than the team, especially after acquisitions.
+
+CRED (fintech) used Testsigma to reach 90% regression automation and 5x faster execution while integrating with dozens of services.
+
+What day works to see how they kept test coverage tight across all those integrations?
+
+Rob
+
+==========================================================================================
+PROSPECT #10: Cindy Holsinger
+==========================================================================================
+Title:        Quality Assurance Director
+Company:      Early Warning
+LinkedIn URL: http://www.linkedin.com/in/cindy-holsinger-b12b643
+Email:        
+Priority:     5
+Vertical:     financial services
+A/B Group:    a
+
+Touch 1 Subject:
+Payment reliability testing
+
+Touch 1 Message:
+Hey Cindy,
+
+For a platform where payment failures aren't an option, what creates more QA pressure, regression coverage on Zelle transactions or keeping fraud detection tests current?
+
+Real-time payment platforms usually need exhaustive regression, but the maintenance burden grows with every bank integration.
+
+CRED (fintech payments) used Testsigma to hit 90% regression automation and 5x faster execution while maintaining zero tolerance for transaction errors.
+
+What day works to see how they kept that level of rigor while cutting execution time by 5x?
+
+Rob
+
+==========================================================================================
+PROSPECT #11: Sara Gilliam
+==========================================================================================
+Title:        Director of Quality Assurance
+Company:      Reinsurance Group of America
+LinkedIn URL: http://www.linkedin.com/in/saragilliam
+Email:        
+Priority:     4
+Vertical:     insurance
+A/B Group:    a
+
+Touch 1 Subject:
+Actuarial platform testing
+
+Touch 1 Message:
+Hey Sara,
+
+On the reinsurance side, what creates more QA pressure, keeping actuarial model tests current or regression coverage across the underwriting platform?
+
+Global reinsurers usually see test complexity multiply with every jurisdiction's regulatory requirements.
+
+Hansard (insurance) used Testsigma to cut regression from 8 weeks to 5 by letting AI auto-maintain tests when models and workflows changed.
+
+If cutting 3 weeks off regression would help the actuarial platform schedule, what day works for a quick look at how they did it?
+
+Rob
+
+==========================================================================================
+PROSPECT #12: Derek Curtis
+==========================================================================================
+Title:        Quality Assurance Director
+Company:      iPipeline
+LinkedIn URL: http://www.linkedin.com/in/derek-curtis-26796b5b
+Email:        
+Priority:     4
+Vertical:     insurtech
+A/B Group:    a
+
+Touch 1 Subject:
+Multi-carrier QA
+
+Touch 1 Message:
+Hey Derek,
+
+Across all the carrier integrations on the distribution platform, what's harder, keeping tests stable as carriers update their APIs or maintaining coverage across the e-application workflows?
+
+Insurance distribution platforms usually see test matrices grow with every carrier onboarded.
+
+Hansard (insurance) used Testsigma to cut regression from 8 weeks to 5 by letting AI handle test maintenance automatically.
+
+If shaving 3 weeks off regression would help the release cadence for carrier partners, what day works for a quick look?
+
+Rob
+
+==========================================================================================
+PROSPECT #13: Michelle Stark
+==========================================================================================
+Title:        Director of Quality Assurance
+Company:      Citizens Property Insurance
+LinkedIn URL: http://www.linkedin.com/in/michelle-stark-pmp-cpcu-cmq-oe-9a31b915
+Email:        
+Priority:     3
+Vertical:     insurance
+A/B Group:    b
+
+Touch 1 Subject:
+Claims system reliability
+
+Touch 1 Message:
+Hey Michelle,
+
+When hurricane season hits and claims volume spikes, what puts more pressure on QA, making sure the claims system handles the surge or keeping regression stable year-round?
+
+Catastrophe insurers usually need both speed and reliability, but test maintenance eats the time needed for either.
+
+An insurance company cut regression from 8 to 5 weeks using AI that auto-maintains tests when claims workflows change.
+
+If getting 3 weeks back in regression would help before the next storm season, what day works for a quick look?
+
+Rob
+
+==========================================================================================
+PROSPECT #14: Chris O&#x27;Neill
+==========================================================================================
+Title:        Senior SDET
+Company:      Jack Henry
+LinkedIn URL: http://www.linkedin.com/in/chris-o-neill-89812515
+Email:        
+Priority:     4
+Vertical:     financial services
+A/B Group:    b
+
+Touch 1 Subject:
+Banking platform testing
+
+Touch 1 Message:
+Hey Chris,
+
+With thousands of financial institutions running on the platform, what creates more testing pressure, keeping the Banno suite stable or regression across the core banking integrations?
+
+Banking platform teams usually find that every FI integration adds a test layer that compounds with each release.
+
+A fintech platform used Testsigma to reach 90% regression automation and cut execution time by 5x while maintaining banking compliance rigor.
+
+What day works to see how they kept release confidence high across that many integrations?
+
+Rob
+
+==========================================================================================
+PROSPECT #15: Usha K
+==========================================================================================
+Title:        Senior Quality Assurance Leader
+Company:      BigCommerce
+LinkedIn URL: http://www.linkedin.com/in/usha-k-1bab5116a
+Email:        
+Priority:     4
+Vertical:     e-commerce platform
+A/B Group:    b
+
+Touch 1 Subject:
+E-commerce platform QA
+
+Touch 1 Message:
+Hey Usha,
+
+With headless commerce, multi-storefront, and 600+ integration partners, what takes more QA time, keeping the API tests stable or regression across the storefront permutations?
+
+E-commerce platforms with heavy API footprints usually see test maintenance outpace the team as integrations grow.
+
+A platform team used Testsigma to automate 2,500 tests and cut maintenance time in half while expanding their integration coverage.
+
+If cutting test maintenance in half would help keep pace with the integration partners, what day works for a quick look?
+
+Rob
+
+==========================================================================================
+PROSPECT #16: Calvin Fulgham
+==========================================================================================
+Title:        Director Quality Assurance
+Company:      FTD
+LinkedIn URL: http://www.linkedin.com/in/calvin-fulgham-3b35b23b
+Email:        
+Priority:     3
+Vertical:     retail
+A/B Group:    b
+
+Touch 1 Subject:
+Peak season QA
+
+Touch 1 Message:
+Hey Calvin,
+
+With Valentine's and Mother's Day driving massive order spikes, what's harder to manage on the QA side, regression before peak season or testing the florist network integrations year-round?
+
+E-commerce teams with seasonal peaks usually need regression locked down well before the volume hits, but test maintenance eats that buffer.
+
+A marketplace platform used Testsigma to automate 2,500 tests and cut maintenance in half, freeing QA time for peak readiness.
+
+If halving test maintenance would give your team more prep time before peak, what day works for a quick look?
+
+Rob
+
+==========================================================================================
+PROSPECT #17: Kenneth Whitham
+==========================================================================================
+Title:        Director of Quality Assurance
+Company:      TreviPay
+LinkedIn URL: http://www.linkedin.com/in/kenneth-whitham-b422b310
+Email:        
+Priority:     3
+Vertical:     financial services
+A/B Group:    b
+
+Touch 1 Subject:
+B2B payment workflows
+
+Touch 1 Message:
+Hey Kenneth,
+
+As TreviPay expands internationally, what's putting more pressure on QA, testing payment workflows across new markets or keeping the ERP integration tests stable?
+
+B2B payment platforms growing globally usually find that each market adds compliance rules and integration paths that multiply the test burden.
+
+A fintech payment team used Testsigma to hit 90% regression automation and 5x faster execution while maintaining PCI compliance.
+
+If 5x faster regression would help keep pace with the international rollout, what day works for a quick look?
+
+Rob
+
+==========================================================================================
+PROSPECT #18: Marcy Vallee
+==========================================================================================
+Title:        QA Director
+Company:      Syndigo
+LinkedIn URL: http://www.linkedin.com/in/marcyvallee
+Email:        
+Priority:     4
+Vertical:     retail data/commerce
+A/B Group:    b
+
+Touch 1 Subject:
+Platform consolidation QA
+
+Touch 1 Message:
+Hey Marcy,
+
+After the acquisitions, what's been harder on the QA side, consolidating the test suites from different platforms or keeping regression stable as the data pipelines merge?
+
+Post-acquisition platform consolidation usually doubles the regression burden before it gets better.
+
+A platform team used Testsigma to automate 2,500 tests and cut maintenance in half during a similar consolidation.
+
+If halving test maintenance would help get through the consolidation faster, what day works for a quick look at how they did it?
+
+Rob
+
+==========================================================================================
+PROSPECT #19: Jeff Roberts
+==========================================================================================
+Title:        Director of Quality Assurance
+Company:      WebstaurantStore
+LinkedIn URL: http://www.linkedin.com/in/jeff-roberts-30b46566
+Email:        
+Priority:     3
+Vertical:     e-commerce
+A/B Group:    b
+
+Touch 1 Subject:
+Catalog testing at scale
+
+Touch 1 Message:
+Hey Jeff,
+
+With 400K+ products in the catalog, what creates more QA pressure, keeping search and browse paths tested or regression across the B2B and B2C checkout flows?
+
+High-volume e-commerce with massive catalogs usually means the test matrix grows faster than anyone can manually maintain.
+
+A platform team used Testsigma to automate 2,500 tests and cut maintenance in half while scaling coverage across their catalog.
+
+If cutting test maintenance in half would help manage the catalog scale, what day works for a quick look?
+
+Rob
+
+==========================================================================================
+PROSPECT #20: Mike Balderree
+==========================================================================================
+Title:        Director of Quality Assurance
+Company:      Cricut
+LinkedIn URL: http://www.linkedin.com/in/mike-balderree-726a263
+Email:        
+Priority:     3
+Vertical:     consumer tech/DTC
+A/B Group:    b
+
+Touch 1 Subject:
+Cross-platform testing
+
+Touch 1 Message:
+Hey Mike,
+
+Across web, mobile, desktop, and the connected machines, what takes the most QA time, keeping Design Space regression stable or testing the hardware integration layer?
+
+Cross-platform testing usually means every platform update multiplies the test burden across all the others.
+
+A team managing similar cross-platform complexity cut test maintenance by 70% using AI that auto-fixes broken tests when any surface changes.
+
+If 70% less cross-platform test maintenance sounds useful, what day works for a quick look at how they did it?
+
+Rob
+
+==========================================================================================
+PROSPECT #21: Jewetta Dobson
+==========================================================================================
+Title:        Director of Quality Assurance
+Company:      Reliance Matrix
+LinkedIn URL: http://www.linkedin.com/in/jewetta-dobson-5710289
+Email:        
+Priority:     3
+Vertical:     insurance
+A/B Group:    b
+
+Touch 1 Subject:
+Benefits platform QA
+
+Touch 1 Message:
+Hey Jewetta,
+
+With state-by-state compliance requirements for disability and leave management, what creates more QA pressure, keeping the claims workflows tested or regression across the enrollment platform?
+
+Benefits platforms with state-level regulatory variance usually see test maintenance grow with every compliance update.
+
+An insurance company cut regression from 8 to 5 weeks using AI that auto-maintains tests when claims workflows change.
+
+If getting 3 weeks back in regression would help manage the compliance load, what day works for a quick look?
+
+Rob
+
+==========================================================================================
+PROSPECT #22: Angela Firari
+==========================================================================================
+Title:        QA Director
+Company:      Trek Bicycle
+LinkedIn URL: http://www.linkedin.com/in/angela-firari-6353506
+Email:        
+Priority:     3
+Vertical:     retail/DTC
+A/B Group:    b
+
+Touch 1 Subject:
+DTC and retail QA
+
+Touch 1 Message:
+Hey Angela,
+
+Across the DTC e-commerce, wholesale, and retail channels, what takes more QA time, keeping the bike configurator tested or regression across all the storefront experiences?
+
+Multi-channel retail teams usually find that each channel adds its own regression burden that compounds with every release.
+
+A retail platform team used Testsigma to automate 2,500 tests and cut maintenance in half while scaling coverage across channels.
+
+If halving test maintenance would help manage the multi-channel complexity, what day works for a quick look at how they did it?
+
+Rob
+
+==========================================================================================
+PROSPECT #23: Donald Burlingham
+==========================================================================================
+Title:        AVP Quality Assurance
+Company:      Imperial PFS
+LinkedIn URL: http://www.linkedin.com/in/donald-burlingham-15025956
+Email:        
+Priority:     3
+Vertical:     financial services
+A/B Group:    b
+
+Touch 1 Subject:
+Premium finance testing
+
+Touch 1 Message:
+Hey Donald,
+
+On the premium finance platform, what creates more QA pressure, keeping the loan origination tests stable or maintaining carrier and agency integration tests?
+
+Smaller financial services QA teams usually hit a point where test maintenance takes over the sprint.
+
+A financial services team similar to yours used Testsigma to cut manual testing by 50% and saw ROI in the first quarter.
+
+If cutting manual testing in half would free up capacity on the premium finance workflows, what day works for a quick look?
+
+Rob
+
+==========================================================================================
+PROSPECT #24: Sanchit Malhotra
+==========================================================================================
+Title:        Director of Quality Assurance
+Company:      The NPD Group
+LinkedIn URL: http://www.linkedin.com/in/sanchit-malhotra-615342a
+Email:        
+Priority:     3
+Vertical:     market research
+A/B Group:    b
+
+Touch 1 Subject:
+Data pipeline testing
+
+Touch 1 Message:
+Hey Sanchit,
+
+With data coming in from thousands of retail sources, what takes more QA time, keeping the ingestion pipeline tests stable or regression across the analytics dashboards?
+
+Data-heavy platforms usually see test maintenance multiply as source feeds change and new data schemas get added.
+
+A data platform team used Testsigma to hit 90% regression automation and cut execution time by 5x while integrating with dozens of data sources.
+
+What day works to see how they maintained data accuracy while cutting regression by 5x?
+
+Rob

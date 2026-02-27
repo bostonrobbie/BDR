@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intent Batch 2026-02-26 | Testsigma BDR</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(22, 33, 62, 0.8);
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .batch-date {
+            font-size: 14px;
+            color: #a0a0a0;
+            font-family: 'Monaco', monospace;
+        }
+
+        .header-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            font-size: 13px;
+        }
+
+        .meta-item {
+            background: rgba(15, 52, 96, 0.5);
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 3px solid #e94560;
+        }
+
+        .meta-label {
+            color: #a0a0a0;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .meta-value {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .summary-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .summary-card {
+            background: rgba(15, 52, 96, 0.6);
+            padding: 16px;
+            border-radius: 4px;
+            border: 1px solid rgba(233, 69, 96, 0.2);
+            text-align: center;
+        }
+
+        .summary-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #e94560;
+            margin-bottom: 4px;
+        }
+
+        .summary-label {
+            font-size: 12px;
+            color: #a0a0a0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .prospects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .prospect-card {
+            background: rgba(22, 33, 62, 0.9);
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .prospect-card:hover {
+            border-color: #0f5490;
+            box-shadow: 0 12px 40px rgba(233, 69, 96, 0.15);
+        }
+
+        .prospect-header {
+            background: linear-gradient(90deg, rgba(15, 52, 96, 0.8) 0%, rgba(22, 33, 62, 0.8) 100%);
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid #0f3460;
+        }
+
+        .prospect-title-group {
+            flex: 1;
+        }
+
+        .prospect-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .prospect-role {
+            font-size: 13px;
+            color: #b0b0b0;
+            margin-bottom: 2px;
+        }
+
+        .prospect-company {
+            font-size: 12px;
+            color: #a0a0a0;
+        }
+
+        .prospect-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-left: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-priority-5 {
+            background: #e94560;
+            color: #ffffff;
+        }
+
+        .badge-priority-4 {
+            background: #ff9547;
+            color: #ffffff;
+        }
+
+        .badge-priority-3 {
+            background: #ffd93d;
+            color: #1a1a2e;
+        }
+
+        .badge-priority-2 {
+            background: #666;
+            color: #ffffff;
+        }
+
+        .badge-ab {
+            background: rgba(15, 52, 96, 0.8);
+            border: 1px solid #0f5490;
+            color: #a0a0a0;
+        }
+
+        .badge-meeting {
+            background: #2ecc71;
+            color: #ffffff;
+        }
+
+        .prospect-body {
+            padding: 16px;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 12px;
+        }
+
+        .contact-item {
+            background: rgba(15, 52, 96, 0.3);
+            padding: 10px;
+            border-radius: 3px;
+        }
+
+        .contact-label {
+            color: #a0a0a0;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+
+        .contact-value {
+            color: #e0e0e0;
+            word-break: break-all;
+        }
+
+        .contact-value a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+
+        .contact-value a:hover {
+            text-decoration: underline;
+        }
+
+        .status-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 11px;
+            color: #a0a0a0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        select {
+            background: rgba(15, 52, 96, 0.6);
+            border: 1px solid #0f3460;
+            color: #e0e0e0;
+            padding: 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        select:hover {
+            border-color: #0f5490;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #0f3460, transparent);
+            margin: 16px 0;
+        }
+
+        .collapsible-section {
+            margin-bottom: 12px;
+        }
+
+        .collapsible-header {
+            background: rgba(15, 52, 96, 0.4);
+            padding: 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            color: #b0b0b0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: all 0.2s ease;
+        }
+
+        .collapsible-header:hover {
+            background: rgba(15, 52, 96, 0.6);
+            color: #e0e0e0;
+        }
+
+        .collapsible-icon {
+            display: inline-block;
+            transition: transform 0.3s ease;
+            font-size: 12px;
+        }
+
+        .collapsible-section.active .collapsible-icon {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(15, 52, 96, 0.2);
+            border-radius: 3px;
+            margin-top: 1px;
+        }
+
+        .collapsible-section.active .collapsible-content {
+            max-height: 2000px;
+        }
+
+        .collapsible-body {
+            padding: 12px;
+            font-size: 12px;
+            color: #d0d0d0;
+            line-height: 1.5;
+        }
+
+        .research-note {
+            background: rgba(15, 52, 96, 0.3);
+            padding: 10px;
+            margin-bottom: 8px;
+            border-left: 3px solid #0f5490;
+            border-radius: 2px;
+            font-size: 11px;
+        }
+
+        .research-label {
+            color: #a0a0a0;
+            font-weight: 600;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+
+        .touch-section {
+            margin-bottom: 20px;
+        }
+
+        .touch-header {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            background: rgba(233, 69, 96, 0.15);
+            padding: 10px 12px;
+            border-left: 3px solid #e94560;
+            margin-bottom: 12px;
+            border-radius: 3px;
+        }
+
+        .touch-subject {
+            background: rgba(15, 52, 96, 0.3);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        .subject-label {
+            color: #a0a0a0;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+
+        .subject-text {
+            color: #e0e0e0;
+            font-weight: 500;
+        }
+
+        .touch-body {
+            background: rgba(15, 52, 96, 0.2);
+            padding: 12px;
+            border-radius: 3px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            color: #d0d0d0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Monaco', monospace;
+            line-height: 1.6;
+        }
+
+        .mqs-score {
+            font-size: 11px;
+            color: #a0a0a0;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: rgba(15, 52, 96, 0.3);
+            border-radius: 3px;
+        }
+
+        .mqs-breakdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            font-size: 10px;
+        }
+
+        .mqs-item {
+            background: rgba(15, 52, 96, 0.5);
+            padding: 4px 6px;
+            border-radius: 2px;
+            text-align: center;
+        }
+
+        .mqs-dimension {
+            color: #a0a0a0;
+        }
+
+        .mqs-points {
+            color: #58a6ff;
+            font-weight: 600;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .copy-btn {
+            background: rgba(233, 69, 96, 0.8);
+            border: 1px solid #e94560;
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .copy-btn:hover {
+            background: #e94560;
+            box-shadow: 0 4px 12px rgba(233, 69, 96, 0.3);
+        }
+
+        .copy-feedback {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2ecc71;
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .copy-feedback.show {
+            opacity: 1;
+        }
+
+        .objection-box {
+            background: rgba(233, 69, 96, 0.1);
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .objection-label {
+            font-size: 11px;
+            color: #a0a0a0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .objection-text {
+            font-size: 12px;
+            color: #e0e0e0;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .meeting-prep {
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+            padding: 16px;
+            border-radius: 4px;
+            margin-top: 16px;
+        }
+
+        .meeting-prep-header {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2ecc71;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .prep-item {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(46, 204, 113, 0.2);
+        }
+
+        .prep-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .prep-label {
+            font-size: 10px;
+            color: #a0a0a0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .prep-text {
+            font-size: 12px;
+            color: #d0d0d0;
+            line-height: 1.5;
+        }
+
+        .dedup-section {
+            background: rgba(22, 33, 62, 0.9);
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .dedup-header {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .dedup-item {
+            background: rgba(15, 52, 96, 0.3);
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            color: #d0d0d0;
+            border-left: 3px solid #2ecc71;
+        }
+
+        .dedup-item.safe {
+            border-left-color: #2ecc71;
+        }
+
+        .dedup-item.warning {
+            border-left-color: #ff9547;
+        }
+
+        .meeting-booked {
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+
+        .meeting-booked .prospect-header {
+            background: linear-gradient(90deg, rgba(46, 204, 113, 0.2) 0%, rgba(22, 33, 62, 0.8) 100%);
+        }
+
+        @media (max-width: 1200px) {
+            .prospects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 16px;
+            }
+
+            .header-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .header-meta {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .prospect-header {
+                flex-direction: column;
+            }
+
+            .prospect-badges {
+                margin-left: 0;
+                margin-top: 12px;
+            }
+
+            .summary-dashboard {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .mqs-breakdown {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <div>
+                    <h1>Intent Batch</h1>
+                    <div class="batch-date">2026-02-26</div>
+                </div>
+            </div>
+
+            <div class="header-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Batch Type</div>
+                    <div class="meta-value">Intent / Transferred Accounts</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Apollo Sequence</div>
+                    <div class="meta-value">Q1 Priority Accounts</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">A/B Test Variable</div>
+                    <div class="meta-value">Named vs Anonymous Proof</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Status</div>
+                    <div class="meta-value">Ready for Review</div>
+                </div>
+            </div>
+
+            <div class="summary-dashboard">
+                <div class="summary-card">
+                    <div class="summary-number">4</div>
+                    <div class="summary-label">Total Prospects</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number">3</div>
+                    <div class="summary-label">Not Started</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number">1</div>
+                    <div class="summary-label">Meeting Booked</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number">3</div>
+                    <div class="summary-label">Accounts</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dedup-section">
+            <div class="dedup-header">Dedup Status - All Clear</div>
+            <div class="dedup-item safe">✓ Ksenia Shchelkonogova (Mastercard) - SAFE. No prior contact in last 6 months.</div>
+            <div class="dedup-item safe">✓ Miri Baker (Mastercard) - SAFE. No prior contact in last 6 months.</div>
+            <div class="dedup-item safe">✓ Sachin Joshi (Veradigm) - SAFE. Contact to be created. Joined Veradigm July 2025.</div>
+            <div class="dedup-item safe">✓ Joe Casale (Lexia Learning) - MEETING BOOKED. Do not contact.</div>
+        </div>
+
+        <div class="prospects-grid">
+            <!-- PROSPECT 1: Ksenia Shchelkonogova -->
+            <div class="prospect-card">
+                <div class="prospect-header">
+                    <div class="prospect-title-group">
+                        <div class="prospect-name">Ksenia Shchelkonogova</div>
+                        <div class="prospect-role">Director of Quality Assurance</div>
+                        <div class="prospect-company">Mastercard | San Francisco, CA</div>
+                    </div>
+                    <div class="prospect-badges">
+                        <span class="badge badge-priority-4">Priority 4</span>
+                        <span class="badge badge-ab">Group A</span>
+                    </div>
+                </div>
+
+                <div class="prospect-body">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-label">Email</div>
+                            <div class="contact-value"><a href="mailto:ksenia.shchelkonogova@mastercard.com">ksenia.shchelkonogova@mastercard.com</a></div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-label">LinkedIn</div>
+                            <div class="contact-value"><a href="https://www.linkedin.com/in/ksenia-shchelkonogova-779073117" target="_blank">Profile</a></div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-label">Apollo ID</div>
+                            <div class="contact-value">5badd83bf874f7c7b518ca31</div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-label">Tenure</div>
+                            <div class="contact-value">March 2024 (11 months)</div>
+                        </div>
+                    </div>
+
+                    <div class="status-row">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select onchange="updateStatus(this)">
+                                <option value="not-started" selected>Not Started</option>
+                                <option value="touch-1">Touch 1 Sent</option>
+                                <option value="touch-2">Touch 2 Sent</option>
+                                <option value="touch-3">Touch 3 Sent</option>
+                                <option value="replied">Replied</option>
+                                <option value="meeting">Meeting Booked</option>
+                                <option value="not-interested">Not Interested</option>
+                                <option value="bounced">Bounced</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Reply Tag</label>
+                            <select>
+                                <option value="">-- Select Tag --</option>
+                                <option value="opener">Opener</option>
+                                <option value="pain">Pain Hook</option>
+                                <option value="proof">Proof Point</option>
+                                <option value="timing">Timing</option>
+                                <option value="referral">Referral</option>
+                                <option value="not-interested">Not Interested</option>
+                                <option value="unknown">Unknown</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="section-divider"></div>
+
+                    <!-- RESEARCH NOTES -->
+                    <div class="collapsible-section">
+                        <div class="collapsible-header">
+                            <span>Research Notes</span>
+                            <span class="collapsible-icon">▼</span>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="collapsible-body">
+                                <div class="research-note">
+                                    <div class="research-label">Profile (LinkedIn)</div>
+                                    <div>Director of QA at Mastercard since March 2024. Based in San Francisco. Oversees QA for Mastercard's payment infrastructure. Career progression: Deep institutional knowledge of payment systems.</div>
+                                </div>
+                                <div class="research-note">
+                                    <div class="research-label">Company - Tech Stack</div>
+                                    <div>Selenium, Cypress, Playwright, Postman, RestAssured, Jenkins CI/CD. Multi-rail infrastructure testing (cards, RTP, ACH, bank transfers).</div>
+                                </div>
+                                <div class="research-note">
+                                    <div class="research-label">Company - Platform Events</div>
+                                    <div>Merchant Cloud platform launched Oct 2025 (scheme-agnostic unified payments). Agentic Commerce initiative launching 2026 (AI agents autonomously transacting). 146+ test engineer openings = QA scaling pressure.</div>
+                                </div>
+                                <div class="research-note">
+                                    <div class="research-label">Company - Scale</div>
+                                    <div>36,000 employees. 125 billion transactions/year with <150ms SLA. 25+ APIs on developer platform. 1,600+ integrations managed.</div>
+                                </div>
+                                <div class="research-note">
+                                    <div class="research-label">Theme for Outreach</div>
+                                    <div>Regression coverage across multi-rail payment platforms during new platform launches. Test matrix growing faster than team can maintain.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OBJECTION HANDLING -->
+                    <div class="collapsible-section">
+                        <div class="collapsible-header">
+                            <span>Predicted Objection & Response</span>
+                            <span class="collapsible-icon">▼</span>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="collapsible-body">
+                                <div class="objection-box">
+                                    <div class="objection-label">Predicted Objection</div>
+                                    <div class="objection-text">Security/procurement is complex (50K+ company)</div>
+                                    <div class="objection-label" style="margin-top: 8px;">Pre-Loaded Response</div>
+                                    <div class="objection-text">We offer on-prem, private cloud, and hybrid. SOC2/ISO certified. A few Fortune 500s run us behind their firewall.</div>
+                                    <div class="button-group">
+                                        <button class="copy-btn" onclick="copyText('We offer on-prem, private cloud, and hybrid. SOC2/ISO certified. A few Fortune 500s run us behind their firewall.')">Copy Response</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TOUCH 1 -->
+                    <div class="touch-section">
+                        <div class="touch-header">Touch 1 - LinkedIn InMail (Day 1)</div>
+                        <div class="touch-subject">
+                            <div class="subject-label">Subject</div>
+                            <div class="subject-text">Regression across payment rails</div>
+                        </div>
+                        <div class="mqs-score">
+                            <strong>MQS: 11/12</strong>
+                            <div class="mqs-breakdown">
+                                <div class="mqs-item">
+                                    <div class="mqs-dimension">Opener</div>
+                                    <div class="mqs-points">3</div>
+                                </div>
+                                <div class="mqs-item">
+                                    <div class="mqs-dimension">CTA</div>
+                                    <div class="mqs-points">3</div>
+                                </div>
+                                <div class="mqs-item">
+                                    <div class="mqs-dimension">Personal</div>
+                                    <div class="mqs-points">2</div>
+                                </div>
+                                <div class="mqs-item">
+                                    <div class="mqs-dimension">Friction</div>
+                                    <div class="mqs-points">3</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="touch-body">What's harder right now, keeping regression stable across the payment rails or keeping coverage ahead of new platform launches?
+
+Most teams managing cards, RTP, and ACH simultaneously tell us the test matrix grows faster than the team can maintain it. Especially when new platforms like Merchant Cloud are going live.
+
+Hansard cut their regression cycle from 8 to 5 weeks using Testsigma's AI auto-healing.
+
+If 3 fewer weeks of regression would help ahead of the Agentic Commerce rollout, what day works for a quick look at how they did it?
+
+Rob Gorham
+Testsigma</div>
+                        <div class="button-group">
+                            <button class="copy-btn" onclick="copyText('Regression across payment rails')">Copy Subject</button>
+                            <button class="copy-btn" onclick="copyText(`What's harder right now, keeping regression stable across the payment rails or keeping coverage ahead of new platform launches?\n\nMost teams managing cards, RTP, and ACH simultaneously tell us the test matrix grows faster than the team can maintain it. Especially when new platforms like Merchant Cloud are going live.\n\nHansard cut their regression cycle from 8 to 5 weeks using Testsigma's AI auto-healing.\n\nIf 3 fewer weeks of regression would help ahead of the Agentic Commerce rollout, what day works for a quick look at how they did it?\n\nRob Gorham\nTestsigma`)">Copy Message</button>
+                        </div>
+                    </div>
+
+                    <!-- TOUCH 2 -->
+                    <div class="touch-section">
+                        <div class="touch-header">Touch 2 - LinkedIn Follow-Up (Day 5)</div>
+                        <div class="touch-subject">
+                            <div class="subject-label">Subject</div>
+                            <div class="subject-text">Quick follow-up</div>
+                        </div>
+                        <div class="mqs-score">
+                            <strong>MQS: 10/12</strong>
+                        </div>
+                        <div class="touch-body">Circling back quick. Separate from the regression piece, one thing teams managing payment platform launches tell us is the AI model validation side creates a new testing layer most QA orgs didn't budget for.
+
+Testsigma's AI test creation handles that kind of net-new coverage without adding headcount. What day works for a quick chat about how it maps to your setup?
+
+Rob</div>
+                        <div class="button-group">
+                            <button class="copy-btn" onclick="copyText('Quick follow-up')">Copy Subject</button>
+                            <button class="copy-btn" onclick="copyText(`Circling back quick. Separate from the regression piece, one thing teams managing payment platform launches tell us is the AI model validation side creates a new testing layer most QA orgs didn't budget for.\n\nTestsigma's AI test creation handles that kind of net-new coverage without adding headcount. What day works for a quick chat about how it maps to your setup?\n\nRob`)">Copy Message</button>
+                        </div>
+                    </div>
+
+                    <!-- TOUCH 3 -->
+                    <div class="touch-section">
+                        <div class="touch-header">Touch 3 - Email (Day 10)</div>
+                        <div class="touch-subject">
+                            <div class="subject-label">Subject</div>
+                            <div class="subject-text">Test upkeep at scale</div>
+                        </div>
+                        <div class="mqs-score">
+                            <strong>MQS: 11/12</strong>
+                        </div>
+                        <div class="touch-body">Hi Ksenia,
+
+Quick one. Teams running Selenium and Cypress at enterprise scale tell us test maintenance eats 40%+ of their sprint time. Testsigma's auto-healing cuts that by 90%, which is how CRED hit 90% regression automation while shipping 5x faster.
+
+If that kind of result would move the needle for your team, what day works for a quick call?
+
+Rob Gorham
+BDR, Testsigma</div>
+                        <div class="button-group">
+                            <button class="copy-btn" onclick="copyText('Test upkeep at scale')">Copy Subject</button>
+                            <button class="copy-btn" onclick="copyText(`Hi Ksenia,\n\nQuick one. Teams running Selenium and Cypress at enterprise scale tell us test maintenance eats 40%+ of their sprint time. Testsigma's auto-healing cuts that by 90%, which is how CRED hit 90% regression automation while shipping 5x faster.\n\nIf that kind of result would move the needle for your team, what day works for a quick call?\n\nRob Gorham\nBDR, Testsigma`)">Copy Message</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROSPECT 2: Miri Baker -->
+            <div class="prospect-card">
+                <div class="prospect-header">
+                    <div class="prospect-title-group">
+                        <div class="prospect-name">Miri Baker</div>
+                        <div class="prospect-role">Director, Software Quality Engineering</div>
+                        <div class="prospect-company">Mastercard | Arlington, VA</div>
+                    </div>
+                    <div class="prospect-badges">
+                        <span class="badge badge-priority-4">Priority 4</span>
+                        <span class="badge badge-ab">Group B</span>
+                    </div>
+                </div>
+
+                <div class="prospect-body">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-label">Email</div>
+                            <div class="contact-value"><a href="mailto:miri.baker@mastercard.com">miri.baker@mastercard.com</a></div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-label">Phone</div>
+                            <div class="contact-value">+1 478-397-0392</div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-label">LinkedIn</div>
+                            <div class="contact-value"><a href="https://www.linkedin.com/in/miri-baker-95380869" target="_blank">Profile</a></div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-label">Tenure</div>
+                            <div class="contact-value">February 2021 (5+ years)</div>
+                        </div>
+                    </div>
+
+                    <div class="status-row">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select onchange="updateStatus(this)">
+                                <option value="not-started" selected>Not Started</option>
+                                <option value="touch-1">Touch 1 Sent</option>
+                                <option value="touch-2">Touch 2 Sent</option>
+                                <option value="touch-3">Touch 3 Sent</option>
+                                <option value="replied">Replied</option>
+                                <option value="meeting">Meeting Booked</option>
+                                <option value="not-interested">Not Interested</option>
+                                <option value="bounced">Bounced</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Reply Tag</label>
+                            <select>
+                                <option value="">-- Select Tag --</option>
+                                <option value="opener">Opener</option>
+                                <option value="pain">Pain Hook</option>
+                                <option value="proof">Proof Point</option>
+                                <option value="timing">Timing</option>
+                                <option value="referral">Referral</option>
+                                <option value="not-interested">Not Interested</option>
+                                <option value="unknown">Unknown</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="section-divider"></div>
+
+                    <!-- RESEARCH NOTES -->
+                    <div class="collapsible-section">
+                        <div class="collapsible-header">
+                            <span>Research Notes</span>
+                            <span class="collapsible-icon">▼</span>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="collapsible-body">
+                                <div class="research-note">
+                                    <div class="research-label">Profile (LinkedIn)</div>
+                                    <div>Director, Software Quality Engineering at Mastercard since Feb 2021. Based in Arlington, VA. 5+ years tenure = deep institutional knowledge. Likely owns developer API platform testing given her SW Quality Engineering title.</div>
+                                </div>
+                                <div class="research-note">
+                                    <div class="research-label">Company - Tech Stack</div>
+                                    <div>Selenium, Cypress, Playwright, Postman, RestAssured, Jenkins CI/CD. Running three frameworks in parallel creates maintenance overhead.</div>
+                                </div>
+                                <div class="research-note">
+                                    <div class="research-label">Company - Platform Scope</div>
+                                    <div>25+ APIs on developer platform expanding. New partnerships expanding integration surface. Likely testing for all integrations.</div>
+                                </div>
+                                <div class="research-note">
+                                    <div class="research-label">Theme for Outreach</div>
+                                    <div>Test framework maintenance overhead as Mastercard's API platform expands. Three frameworks breaking when integrations grow. Different angle from Ksenia (who focuses on payment rails).</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OBJECTION HANDLING -->
+                    <div class="collapsible-section">
+                        <div class="collapsible-header">
+                            <span>Predicted Objection & Response</span>
+                            <span class="collapsible-icon">▼</span>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="collapsible-body">
+                                <div class="objection-box">
+                                    <div class="objection-label">Predicted Objection</div>
+                                    <div class="objection-text">We already have a tool (uses Selenium + Cypress + Playwright)</div>
+                                    <div class="objection-label" style="margin-top: 8px;">Pre-Loaded Response</div>
+                                    <div class="objection-text">Totally fair. A lot of teams we work with had multiple frameworks too. The gap they kept hitting was maintenance overhead across all of them. Worth comparing?</div>
+                                    <div class="button-group">
+                                        <button class="copy-btn" onclick="copyText('Totally fair. A lot of teams we work with had multiple frameworks too. The gap they kept hitting was maintenance overhead across all of them. Worth comparing?')">Copy Response</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TOUCH 1 -->
+                    <div class="touch-section">
+                        <div class="touch-header">Touch 1 - LinkedIn InMail (Day 1)</div>
+                        <div class="touch-subject">
+                            <div class="subject-label">Subject</div>
+                            <div class="subject-text">Three test frameworks at once</div>
+                        </div>
+                        <div class="mqs-score">
+                            <strong>MQS: 11/12</strong>
+                            <div class="mqs-breakdown">
+                                <div class="mqs-item">
+                                    <div class="mqs-dimension">Opener</div>
+                                    <div class="mqs-points">3</div>
+                                </div>
+                                <div class="mqs-item">
+                                    <div class="mqs-dimension">CTA</div>
+                                    <div class="mqs-points">3</div>
+                                </div>
+                                <div class="mqs-item">
+                                    <div class="mqs-dimension">Personal</div>
+                                    <div class="mqs-points">2</div>
+                                </div>
+                                <div class="mqs-item">
+                                    <div class="mqs-dimension">Friction</div>
+                                    <div class="mqs-points">3</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="touch-body">Running Selenium, Cypress, and Playwright in parallel, which one breaks first when the API catalog grows?
+
+With 25+ APIs on the developer platform and new partnerships expanding the integration surface, keeping three frameworks stable is a lot of maintenance hours.
+
+One FinServ team cut their Selenium upkeep by 70% with Testsigma while consolidating to a single platform.
+
+If 70% less maintenance across your test stack sounds useful, what day works for a quick look at how they did it?
+
+Rob Gorham
+Testsigma</div>
+                        <div class="button-group">
+                            <button class="copy-btn" onclick="copyText('Three test frameworks at once')">Copy Subject</button>
+                            <button class="copy-btn" onclick="copyText(`Running Selenium, Cypress, and Playwright in parallel, which one breaks first when the API catalog grows?\n\nWith 25+ APIs on the developer platform and new partnerships expanding the integration surface, keeping three frameworks stable is a lot of maintenance hours.\n\nOne FinServ team cut their Selenium upkeep by 70% with Testsigma while consolidating to a single platform.\n\nIf 70% less maintenance across your test stack sounds useful, what day works for a quick look at how they did it?\n\nRob Gorham\nTestsigma`)">Copy Message</button>
+                        </div>
+                    </div>
+
+                    <!-- TOUCH 2 -->
+                    <div class="touch-section">
+                        <div class="touch-header">Touch 2 - LinkedIn Follow-Up (Day 5)</div>
+                        <div class="touch-subject">
+                            <div class="subject-label">Subject</div>
+                            <div class="subject-text">Quick thought</div>
+                        </div>
+                        <div class="mqs-score">
+                            <strong>MQS: 10/12</strong>
+                        </div>
+                        <div class="touch-body">Circling back quick. Beyond the test framework maintenance, I was curious, with the developer API platform expanding, how is your team keeping integration test coverage ahead of new partner onboarding?
+
+A Fortune 100 company saw 3X productivity increase by consolidating their test stack with Testsigma. What day works for a quick compare?
+
+Rob</div>
+                        <div class="button-group">
+                            <button class="copy-btn" onclick="copyText('Quick thought')">Copy Subject</button>
+                            <button class="copy-btn" onclick="copyText(`Circling back quick. Beyond the test framework maintenance, I was curious, with the developer API platform expanding, how is your team keeping integration test coverage ahead of new partner onboarding?\n\nA Fortune 100 company saw 3X productivity increase by consolidating their test stack with Testsigma. What day works for a quick compare?\n\nRob`)">Copy Message</button>
+                        </div>
+                    </div>
+
+                    <!-- TOUCH 3 -->
+                    <div class="touch-section">
+                        <div class="touch-header">Touch 3 - Email (Day 10)</div>
+                        <div class="touch-subject">
+                            <div class="subject-label">Subject</div>
+                            <div class="subject-text">Quick question on test coverage</div>
+                        </div>
+                        <div class="mqs-score">
+                            <strong>MQS: 11/12</strong>
+                        </div>
+                        <div class="touch-body">Hi Miri,
+
+Most QA directors managing multi-framework stacks spend more time debugging the test infrastructure than the product itself. Sanofi was in a similar spot and cut regression from 3 days to 80 minutes after switching to Testsigma.
+
+If that compression would free your team up for the work that actually matters, what day works for a quick chat?
+
+Rob Gorham
+BDR, Testsigma</div>
+                        <div class="button-group">
+                            <button class="copy-btn" onclick="copyText('Quick question on test coverage')">Copy Subject</button>
+                            <button class="copy-btn" onclick="copyText(`Hi Miri,\n\nMost QA directors managing multi-framework stacks spend more time debugging the test infrastructure than the product itself. Sanofi was in a similar spot and cut regression from 3 days to 80 minutes after switching to Testsigma.\n\nIf that compression would free your team up for the work that actually matters, what day works for a quick chat?\n\nRob Gorham\nBDR, Testsigma`)">Copy Message</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROSPECT 3: Sachin Joshi -->
+            <div class="prospect-card">
+                <div class="prospect-header">
+                    <div class="prospect-title-group">
+                        <div class="prospect-name">Sachin Joshi</div>
+                        <div class="prospect-role">Sr Quality Engineering Manager</div>
+                        <div class="prospect-company">Veradigm (formerly Allscripts) | Antioch, TN</div>
+                    </div>
+                    <div class="prospect-badges">
+                        <span class="badge badge-priority-4">Priority 4</span>
+                        <span class="badge badge-ab">Group A</span>
+                    </div>
+                </div>
+
+                <div class="prospect-body">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-label">Email</div>
+                            <div class="contact-value"><a href="mailto:sachin.joshi@veradigm.com">sachin.joshi@veradigm.com</a></div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-label">LinkedIn</div>
+                            <div class="contact-value"><a href="https://www.linkedin.com/in/sachinsjoshi" target="_blank">Profile</a></div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-label">Tenure</div>
+                            <div class="contact-value">July 2025 (8 months, recently hired)</div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-label">Previous Role</div>
+                            <div class="contact-value">Director of QA, Groups360</div>
+                        </div>
+                    </div>
+
+                    <div class="status-row">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select onchange="updateStatus(this)">
+                                <option value="not-started" selected>Not Started</option>
+                                <option value="touch-1">Touch 1 Sent</option>
+                                <option value="touch-2">Touch 2 Sent</option>
+                                <option value="touch-3">Touch 3 Sent</option>
+                                <option value="replied">Replied</option>
+                                <option value="meeting">Meeting Booked</option>
+                                <option value="not-interested">Not Interested</option>
+                                <option value="bounced">Bounced</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Reply Tag</label>
+                            <select>
+                                <option value="">-- Select Tag --</option>
+                                <option value="opener">Opener</option>
+                                <option value="pain">Pain Hook</option>
+                                <option value="proof">Proof Point</option>
+                                <option value="timing">Timing</option>
+                                <option value="referral">Referral</option>
+                                <option value="not-interested">Not Interested</option>
+                                <option value="unknown">Unknown</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="section-divider"></div>
+
+                    <!-- RESEARCH NOTES -->
+                    <div class="collapsible-section">
+                        <div class="collapsible-header">
+                            <span>Research Notes</span>
+                            <span class="collapsible-icon">▼</span>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="collapsible-body">
+                                <div class="research-note">
+                                    <div class="research-label">Profile (LinkedIn)</div>
+                                    <div>Sr Quality Engineering Manager at Veradigm since July 2025. Recently hired (8 months). Previously Director of QA at Groups360 (hotel group booking platform). Career move from hospitality tech to healthcare IT. Based in Antioch, TN (Nashville area). In first 90 days = high receptivity to benchmarking tools.</div>
+                                </div>
+                                <div class="research-note">
+                                    <div class="research-label">Company - Overview</div>
+                                    <div>Veradigm: 2,500 employees, $588M revenue, NASDAQ: MDRX, Hospital & Health Care. Rebranded from Allscripts January 2023. HQ: Chicago, IL.</div>
+                                </div>
+                                <div class="research-note">
+                                    <div class="research-label">Company - Tech Stack</div>
+                                    <div>.NET, ASP.NET, C#, Jenkins, Azure DevOps, Jira, Docker, Kubernetes, Postman, PostgreSQL, MongoDB, Salesforce. Multiple legacy EHR codebases: Sunrise, Professional EHR, TouchWorks, Practice Fusion.</div>
+                                </div>
+                                <div class="research-note">
+                                    <div class="research-label">Company - Scale & Complexity</div>
+                                    <div>8,000+ registered developers, 1,600+ third-party integrations, 2+ billion data exchange transactions per year. ONC-certified, HIPAA-compliant. ONC Real World Testing certification cycles = regulatory testing pressure. 340 engineering staff, 35+ QA/SDET openings.</div>
+                                </div>
+                                <div class="research-note">
+                                    <div class="research-label">Company - Acquisitions & Growth</div>
+                                    <div>Subsidiaries: ZappRx, Practice Fusion, ScienceIO (AI, acquired for $140M). Post-consolidation platform complexity = multiple EHR codebases to maintain test coverage for.</div>
+                                </div>
+                                <div class="research-note">
+                                    <div class="research-label">Theme for Outreach</div>
+                                    <div>Regression testing burden across 1,600+ EHR integrations during platform consolidation. ONC certification cycles + new integrations = coverage scaling faster than team capacity.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OBJECTION HANDLING -->
+                    <div class="collapsible-section">
+                        <div class="collapsible-header">
+                            <span>Predicted Objection & Response</span>
+                            <span class="collapsible-icon">▼</span>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="collapsible-body">
+                                <div class="objection-box">
+                                    <div class="objection-label">Predicted Objection</div>
+                                    <div class="objection-text">Compliance requirements (healthcare, HIPAA)</div>
+                                    <div class="objection-label" style="margin-top: 8px;">Pre-Loaded Response</div>
+                                    <div class="objection-text">We work with Sanofi, Oscar Health, and several banks. Happy to walk through our compliance story. SOC2 Type II, ISO 27001, HIPAA certified. Several Fortune 500s run us behind their firewall.</div>
+                                    <div class="button-group">
+                                        <button class="copy-btn" onclick="copyText('We work with Sanofi, Oscar Health, and several banks. Happy to walk through our compliance story. SOC2 Type II, ISO 27001, HIPAA certified. Several Fortune 500s run us behind their firewall.')">Copy Response</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TOUCH 1 -->
+                    <div class="touch-section">
+                        <div class="touch-header">Touch 1 - LinkedIn InMail (Day 1)</div>
+                        <div class="touch-subject">
+                            <div class="subject-label">Subject</div>
+                            <div class="subject-text">Regression across 1,600 integrations</div>
+                        </div>
+                        <div class="mqs-score">
+                            <strong>MQS: 11/12</strong>
+                            <div class="mqs-breakdown">
+                                <div class="mqs-item">
+                                    <div class="mqs-dimension">Opener</div>
+                                    <div class="mqs-points">3</div>
+                                </div>
+                                <div class="mqs-item">
+                                    <div class="mqs-dimension">CTA</div>
+                                    <div class="mqs-points">3</div>
+                                </div>
+                                <div class="mqs-item">
+                                    <div class="mqs-dimension">Personal</div>
+                                    <div class="mqs-points">2</div>
+                                </div>
+                                <div class="mqs-item">
+                                    <div class="mqs-dimension">Friction</div>
+                                    <div class="mqs-points">3</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="touch-body">With 1,600+ integration partners and ONC certification cycles, what breaks first, regression coverage or the team's capacity to maintain it?
+
+Post-consolidation, keeping test suites stable across multiple EHR codebases while new integrations keep getting added is a grind most healthcare QA teams know too well.
+
+Sanofi cut their regression cycle from 3 days to 80 minutes with Testsigma.
+
+If that kind of compression before your next ONC cycle would help, what day works for a quick look at how they pulled it off?
+
+Rob Gorham
+Testsigma</div>
+                        <div class="button-group">
+                            <button class="copy-btn" onclick="copyText('Regression across 1,600 integrations')">Copy Subject</button>
+                            <button class="copy-btn" onclick="copyText(`With 1,600+ integration partners and ONC certification cycles, what breaks first, regression coverage or the team's capacity to maintain it?\n\nPost-consolidation, keeping test suites stable across multiple EHR codebases while new integrations keep getting added is a grind most healthcare QA teams know too well.\n\nSanofi cut their regression cycle from 3 days to 80 minutes with Testsigma.\n\nIf that kind of compression before your next ONC cycle would help, what day works for a quick look at how they pulled it off?\n\nRob Gorham\nTestsigma`)">Copy Message</button>
+                        </div>
+                    </div>
+
+                    <!-- TOUCH 2 -->
+                    <div class="touch-section">
+                        <div class="touch-header">Touch 2 - LinkedIn Follow-Up (Day 5)</div>
+                        <div class="touch-subject">
+                            <div class="subject-label">Subject</div>
+                            <div class="subject-text">One more thought</div>
+                        </div>
+                        <div class="mqs-score">
+                            <strong>MQS: 10/12</strong>
+                        </div>
+                        <div class="touch-body">Circling back quick. Beyond regression speed, one thing QA leads at health IT companies keep telling us is that every new FHIR endpoint or data standard adds test cases faster than the team can write them.
+
+Medibuddy automated 2,500 tests and cut maintenance in half with Testsigma. If scaling coverage faster would help, what day works for a quick look?
+
+Rob</div>
+                        <div class="button-group">
+                            <button class="copy-btn" onclick="copyText('One more thought')">Copy Subject</button>
+                            <button class="copy-btn" onclick="copyText(`Circling back quick. Beyond regression speed, one thing QA leads at health IT companies keep telling us is that every new FHIR endpoint or data standard adds test cases faster than the team can write them.\n\nMedibuddy automated 2,500 tests and cut maintenance in half with Testsigma. If scaling coverage faster would help, what day works for a quick look?\n\nRob`)">Copy Message</button>
+                        </div>
+                    </div>
+
+                    <!-- TOUCH 3 -->
+                    <div class="touch-section">
+                        <div class="touch-header">Touch 3 - Email (Day 10)</div>
+                        <div class="touch-subject">
+                            <div class="subject-label">Subject</div>
+                            <div class="subject-text">Coverage scaling at Veradigm</div>
+                        </div>
+                        <div class="mqs-score">
+                            <strong>MQS: 11/12</strong>
+                        </div>
+                        <div class="touch-body">Hi Sachin,
+
+With 8,000+ developers building on your platform, I imagine the integration testing backlog grows faster than the team. CRED was dealing with similar scale pressure and hit 90% regression automation running 5x faster with Testsigma.
+
+If scaling coverage without adding headcount sounds useful, what day works for a quick look?
+
+Rob Gorham
+BDR, Testsigma</div>
+                        <div class="button-group">
+                            <button class="copy-btn" onclick="copyText('Coverage scaling at Veradigm')">Copy Subject</button>
+                            <button class="copy-btn" onclick="copyText(`Hi Sachin,\n\nWith 8,000+ developers building on your platform, I imagine the integration testing backlog grows faster than the team. CRED was dealing with similar scale pressure and hit 90% regression automation running 5x faster with Testsigma.\n\nIf scaling coverage without adding headcount sounds useful, what day works for a quick look?\n\nRob Gorham\nBDR, Testsigma`)">Copy Message</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROSPECT 4: Joe Casale - MEETING BOOKED -->
+            <div class="prospect-card meeting-booked">
+                <div class="prospect-header">
+                    <div class="prospect-title-group">
+                        <div class="prospect-name">Joe Casale</div>
+                        <div class="prospect-role">Sr. Director of QA</div>
+                        <div class="prospect-company">Lexia Learning (Cambium)</div>
+                    </div>
+                    <div class="prospect-badges">
+                        <span class="badge badge-meeting">Meeting Booked</span>
+                    </div>
+                </div>
+
+                <div class="prospect-body">
+                    <div class="meeting-prep">
+                        <div class="meeting-prep-header">Meeting Prep Card</div>
+
+                        <div class="prep-item">
+                            <div class="prep-label">Meeting Details</div>
+                            <div class="prep-text">
+                                <strong>Time:</strong> 11:30 AM PT, 2026-02-26 (Today)<br>
+                                <strong>Status:</strong> DO NOT CONTACT — Meeting already scheduled
+                            </div>
+                        </div>
+
+                        <div class="prep-item">
+                            <div class="prep-label">Company Snapshot</div>
+                            <div class="prep-text">
+                                Lexia Learning (subsidiary of Cambium Learning Group). K-12 and post-secondary digital learning platform. $200M+ annual revenue. Nasdaq-listed parent. Products: Lexia PowerUp Literacy, Lexia Core5, Lexia RAPID. Rapid digital adoption post-COVID = aggressive product roadmap and platform expansion. Multiple digital products = significant test matrix growth.
+                            </div>
+                        </div>
+
+                        <div class="prep-item">
+                            <div class="prep-label">Prospect Snapshot</div>
+                            <div class="prep-text">
+                                <strong>Title:</strong> Sr. Director of QA<br>
+                                <strong>Tenure:</strong> Leadership role at Lexia (timeline TBD from call)<br>
+                                <strong>Scope:</strong> Oversees QA for digital learning platform products across K-12 and post-secondary<br>
+                                <strong>Signal:</strong> Transferred account (leadership-assigned). High buyer intent likely given meeting acceptance.
+                            </div>
+                        </div>
+
+                        <div class="prep-item">
+                            <div class="prep-label">Tech Stack (Expected)</div>
+                            <div class="prep-text">
+                                Web (likely Selenium/Cypress/Playwright), mobile (iOS/Android native or Flutter/React Native). Learning platform testing requires integration with SCORM/LMS standards. Likely using CI/CD (Jenkins, GitHub Actions, or similar).
+                            </div>
+                        </div>
+
+                        <div class="prep-item">
+                            <div class="prep-label">Pain Hypothesis</div>
+                            <div class="prep-text">
+                                EdTech platforms in rapid growth phase face accelerating test coverage needs without proportional team scaling. Digital product refresh cycles create regression risk. Multi-product matrix (PowerUp, Core5, RAPID) = complex test suite maintenance. Test upkeep likely eating significant sprint capacity.
+                            </div>
+                        </div>
+
+                        <div class="prep-item">
+                            <div class="prep-label">Discovery Questions (Suggested)</div>
+                            <div class="prep-text">
+                                1. "Walk me through how your QA team covers the full Lexia product portfolio (PowerUp, Core5, RAPID). Where does regression testing fit?"<br><br>
+                                2. "What's your test automation stack look like across web and mobile?"<br><br>
+                                3. "As you're expanding features, where is test maintenance eating the most time?"<br><br>
+                                4. "Are there specific compliance or learning standard requirements (SCORM, FERPA) that complicate your test strategy?"<br><br>
+                                5. "What would moving regression cycles faster do for your roadmap?"
+                            </div>
+                        </div>
+
+                        <div class="prep-item">
+                            <div class="prep-label">Relevant Proof Points</div>
+                            <div class="prep-text">
+                                <strong>Medibuddy (Healthcare, similar scale):</strong> Automated 2,500 tests, cut maintenance 50%, scaled coverage without adding headcount<br><br>
+                                <strong>Nagra DTV (Media platform, multi-product):</strong> 2,500 tests automated in 8 months, 4x faster execution<br><br>
+                                <strong>CRED (FinTech, rapid growth):</strong> 90% regression automation, 5x faster execution during scaling phase
+                            </div>
+                        </div>
+
+                        <div class="prep-item">
+                            <div class="prep-label">Potential Objections & Responses</div>
+                            <div class="prep-text">
+                                <strong>"Learning platform testing is specialized"</strong> → Our platform supports all web/mobile frameworks and integrates with any CI/CD. We work with Sanofi, Oscar Health, and major edtech companies. Happy to show how Medibuddy handled similar complexity.<br><br>
+                                <strong>"We're already using [tool]"</strong> → Where are you hitting walls with it? Maintenance overhead, CI/CD integration, multi-product coverage? That's the gap most teams find.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(46, 204, 113, 0.1); border: 1px solid rgba(46, 204, 113, 0.3); padding: 12px; border-radius: 4px; margin-top: 16px; font-size: 12px; color: #2ecc71;">
+                        ✓ This prospect has a confirmed meeting. Do not send any messages. Update notes after the call with outcome and next steps.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEPRIORITIZED ACCOUNTS SECTION -->
+        <div style="background: rgba(22, 33, 62, 0.9); border: 1px solid #0f3460; border-radius: 8px; padding: 20px;">
+            <h2 style="font-size: 16px; font-weight: 600; color: #ffffff; margin-bottom: 12px;">Deprioritized Accounts (Not in This Batch)</h2>
+
+            <div style="font-size: 12px; color: #d0d0d0; line-height: 1.6;">
+                <div style="background: rgba(15, 52, 96, 0.3); padding: 12px; margin-bottom: 12px; border-radius: 3px;">
+                    <strong>Infinera</strong> — Optical networking, firmware + software testing needs. QA leadership is India-based (Bangalore office). No US-based software QA directors/managers found in Sales Navigator. Held for later when we identify US-based QA stakeholder.
+                </div>
+
+                <div style="background: rgba(15, 52, 96, 0.3); padding: 12px; margin-bottom: 12px; border-radius: 3px;">
+                    <strong>Charlie Health</strong> — Digital health platform. "Quality" roles identified in enrichment are clinical care quality (not software QA). No QA/SDET titles found. Held until we can identify software QA leadership.
+                </div>
+
+                <div style="background: rgba(15, 52, 96, 0.3); padding: 12px; margin-bottom: 12px; border-radius: 3px;">
+                    <strong>Daniel Wiegard (Mastercard)</strong> — Held for next batch. Rule: Max 2 prospects per company per batch. Ksenia and Miri selected for this batch; Daniel queued for Batch 5.
+                </div>
+
+                <div style="background: rgba(15, 52, 96, 0.3); padding: 12px; border-radius: 3px;">
+                    <strong>Glen Hudson (Mastercard)</strong> — No verified email or location data available. Apollo enrichment incomplete. Deprioritized pending better data. Can revisit if enrichment improves or LinkedIn research surfaces new signals.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="copy-feedback" id="copyFeedback">Copied to clipboard!</div>
+
+    <script>
+        // Toggle collapsible sections
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                this.parentElement.classList.toggle('active');
+            });
+        });
+
+        // Copy to clipboard function
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const feedback = document.getElementById('copyFeedback');
+                feedback.classList.add('show');
+                setTimeout(() => {
+                    feedback.classList.remove('show');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+
+        // Status change handler
+        function updateStatus(select) {
+            // This is a placeholder for status tracking
+            // In production, this would update a backend or local storage
+            console.log('Status changed to:', select.value);
+        }
+
+        // Initialize collapsible sections
+        document.querySelectorAll('.collapsible-section').forEach((section, index) => {
+            // Open first research section by default on each card
+            if (section.querySelector('.collapsible-header').textContent.includes('Research')) {
+                section.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

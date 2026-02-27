@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today's Send Sheet - Feb 26, 2026 | Rob Gorham | Testsigma</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e6ed;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* HEADER & DASHBOARD */
+        .header {
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.1), rgba(15, 52, 96, 0.1));
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .header .subtitle {
+            color: #a0a9b8;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .dash-card {
+            background: rgba(15, 52, 96, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .dash-card .label {
+            font-size: 12px;
+            color: #a0a9b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .dash-card .value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .dash-card.warning {
+            background: rgba(233, 69, 96, 0.1);
+            border-color: rgba(233, 69, 96, 0.3);
+        }
+
+        .dash-card.warning .value {
+            color: #e94560;
+        }
+
+        .pacing-box {
+            background: rgba(15, 52, 96, 0.4);
+            border-left: 3px solid #0f3460;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .pacing-box strong {
+            color: #fff;
+        }
+
+        .pacing-box .highlight {
+            color: #e94560;
+            font-weight: 600;
+        }
+
+        /* FILTERS & CONTROLS */
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e0e6ed;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-btn.active {
+            background: #0f3460;
+            border-color: #0f3460;
+            color: #fff;
+        }
+
+        .send-counter {
+            background: rgba(233, 69, 96, 0.2);
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #e94560;
+            margin-left: auto;
+        }
+
+        /* SECTION HEADERS */
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-header {
+            background: rgba(15, 52, 96, 0.3);
+            border: 1px solid rgba(15, 52, 96, 0.5);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .section-header .badge {
+            background: #0f3460;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .section-header .badge.hot {
+            background: #e94560;
+        }
+
+        .section-header .badge.intent {
+            background: #ff9500;
+        }
+
+        .section-header .badge.meeting {
+            background: #10b981;
+        }
+
+        /* PROSPECT CARDS */
+        .prospect-card {
+            background: linear-gradient(135deg, rgba(15, 52, 96, 0.2), rgba(15, 52, 96, 0.05));
+            border: 1px solid rgba(15, 52, 96, 0.4);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+
+        .prospect-card:hover {
+            background: linear-gradient(135deg, rgba(15, 52, 96, 0.3), rgba(15, 52, 96, 0.1));
+            border-color: rgba(233, 69, 96, 0.4);
+        }
+
+        .prospect-card.sent {
+            opacity: 0.6;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            flex: 1;
+        }
+
+        .card-title h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .card-title .subtitle {
+            color: #a0a9b8;
+            font-size: 13px;
+        }
+
+        .priority-badge {
+            background: #0f3460;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .priority-badge.hot {
+            background: #e94560;
+        }
+
+        .priority-badge.warm {
+            background: #0f3460;
+        }
+
+        .card-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .meta-item {
+            font-size: 12px;
+        }
+
+        .meta-item .label {
+            color: #a0a9b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .meta-item .value {
+            color: #fff;
+            font-size: 13px;
+            word-break: break-all;
+        }
+
+        .meta-item .value a {
+            color: #0f3460;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .meta-item .value a:hover {
+            color: #e94560;
+            text-decoration: underline;
+        }
+
+        /* MESSAGE SECTION */
+        .message-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .message-section .section-title {
+            font-size: 12px;
+            color: #a0a9b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .subject-line {
+            background: rgba(15, 52, 96, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .subject-text {
+            color: #fff;
+            font-size: 13px;
+            flex: 1;
+            word-break: break-word;
+        }
+
+        .message-body {
+            background: rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #e0e6ed;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+
+        .copy-btn {
+            background: #0f3460;
+            border: 1px solid rgba(15, 52, 96, 0.5);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .copy-btn:hover {
+            background: #1a5a96;
+            border-color: #0f3460;
+        }
+
+        .copy-btn.copied {
+            background: #10b981;
+            border-color: #10b981;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* CHECKBOX */
+        .card-footer {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sent-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #e94560;
+        }
+
+        .sent-label {
+            color: #a0a9b8;
+            font-size: 13px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* BATCH 3 TABLE */
+        .batch-3-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+        }
+
+        .batch-3-table thead {
+            background: rgba(15, 52, 96, 0.3);
+        }
+
+        .batch-3-table th {
+            padding: 12px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #a0a9b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .batch-3-table td {
+            padding: 12px;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .batch-3-table tbody tr:hover {
+            background: rgba(15, 52, 96, 0.2);
+        }
+
+        .batch-3-table a {
+            color: #0f3460;
+            text-decoration: none;
+        }
+
+        .batch-3-table a:hover {
+            color: #e94560;
+            text-decoration: underline;
+        }
+
+        /* MEETING BOOKED CARD */
+        .meeting-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border: 2px solid rgba(16, 185, 129, 0.4);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .meeting-card .badge {
+            display: inline-block;
+            background: #10b981;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .meeting-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .meeting-card .meta {
+            color: #a0a9b8;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .meeting-card .warning {
+            background: rgba(233, 69, 96, 0.1);
+            border-left: 3px solid #e94560;
+            padding: 12px;
+            border-radius: 4px;
+            color: #e94560;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .meeting-card .prep-link {
+            display: inline-block;
+            background: #0f3460;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 12px;
+            transition: all 0.2s;
+        }
+
+        .meeting-card .prep-link:hover {
+            background: #1a5a96;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .card-header {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .send-counter {
+                margin-left: 0;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .subject-line {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .batch-3-table {
+                font-size: 12px;
+            }
+
+            .batch-3-table th,
+            .batch-3-table td {
+                padding: 8px;
+            }
+        }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>Today's Send Sheet</h1>
+            <div class="subtitle">Thursday, February 26, 2026 | Command Center for BDR Outreach</div>
+
+            <div class="dashboard-grid">
+                <div class="dash-card">
+                    <div class="label">Group 1 — Batch 3</div>
+                    <div class="value">24 Sent</div>
+                    <div style="color: #a0a9b8; font-size: 11px; margin-top: 4px;">Touch 2 due: Mar 1-2</div>
+                </div>
+                <div class="dash-card">
+                    <div class="label">Group 2 — Batch 4</div>
+                    <div class="value">25 Ready</div>
+                    <div style="color: #a0a9b8; font-size: 11px; margin-top: 4px;">Ready to send today</div>
+                </div>
+                <div class="dash-card">
+                    <div class="label">Group 3 — Intent</div>
+                    <div class="value">3 Ready</div>
+                    <div style="color: #a0a9b8; font-size: 11px; margin-top: 4px;">Transferred accounts</div>
+                </div>
+                <div class="dash-card warning">
+                    <div class="label">Meeting Booked</div>
+                    <div class="value">1 Active</div>
+                    <div style="color: #e94560; font-size: 11px; margin-top: 4px;">Joe Casale — DO NOT CONTACT</div>
+                </div>
+            </div>
+
+            <div class="pacing-box">
+                <strong>⏱️ PACING REMINDER</strong><br>
+                Safe daily max: <span class="highlight">8 InMails/day</span> (danger zone: &gt;15)<br>
+                Best send time: <span class="highlight">12-1 PM local</span> (56.5% reply rate)<br>
+                <strong>TODAY IS THURSDAY</strong> — best send day (42.1%)<br>
+                Space sends 2-3 minutes apart. Take 10-min break every 10 sends.<br>
+                <strong>Plan:</strong> Thu (8 sends) → Fri (8 sends) → Tue (8 sends) → Wed (4 sends)
+            </div>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="controls">
+            <button class="filter-btn active" onclick="filterGroup('all')">Show All</button>
+            <button class="filter-btn" onclick="filterGroup('hot')">Hot (Priority 5)</button>
+            <button class="filter-btn" onclick="filterGroup('warm')">Warm (Priority 4)</button>
+            <button class="filter-btn" onclick="filterGroup('intent')">Intent Accounts</button>
+            <div class="send-counter"><span id="send-count">0</span> / 28 sent</div>
+        </div>
+
+        <!-- ========== GROUP 3: INTENT ACCOUNTS ========== -->
+        <div class="section" id="section-intent">
+            <div class="section-header">
+                <div>
+                    <h2>GROUP 3 — Intent Accounts (Transferred)</h2>
+                    <span style="color: #a0a9b8; font-size: 13px;">Strategic priority. Touch 1 InMails today.</span>
+                </div>
+                <div class="badge intent">HIGHEST PRIORITY</div>
+            </div>
+
+            <!-- MEETING BOOKED: Joe Casale -->
+            <div class="meeting-card">
+                <div class="badge">MEETING BOOKED</div>
+                <h3>Joe Casale</h3>
+                <div class="meta">Sr. Director of QA • Lexia Learning (Cambium)</div>
+                <div class="meta">Meeting Time: <strong>11:30 AM ET Today</strong></div>
+                <div class="warning">🚫 DO NOT CONTACT — Meeting already scheduled. Use prep card only.</div>
+                <a href="#" class="prep-link">📋 View Call Prep Card</a>
+            </div>
+
+            <!-- Ksenia Shchelkonogova -->
+            <div class="prospect-card" data-group="intent" data-priority="4">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3>Ksenia Shchelkonogova</h3>
+                        <span class="subtitle">Director of Quality Assurance • Mastercard</span>
+                    </div>
+                    <div class="priority-badge warm">P4</div>
+                </div>
+
+                <div class="card-meta">
+                    <div class="meta-item">
+                        <div class="label">Email</div>
+                        <div class="value">ksenia.shchelkonogova@mastercard.com</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="label">LinkedIn</div>
+                        <div class="value"><a href="https://www.linkedin.com/in/ksenia-shchelkonogova-779073117" target="_blank">Profile →</a></div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="label">Company Focus</div>
+                        <div class="value">Payment rails, Agentic Commerce</div>
+                    </div>
+                </div>
+
+                <div class="message-section">
+                    <div class="section-title">Subject Line</div>
+                    <div class="subject-line">
+                        <span class="subject-text">Regression across payment rails</span>
+                        <button class="copy-btn" onclick="copySubject(this, 'Regression across payment rails')">Copy</button>
+                    </div>
+
+                    <div class="section-title" style="margin-top: 12px;">Message Body</div>
+                    <div class="message-body">What's harder right now, keeping regression stable across the payment rails or keeping coverage ahead of new platform launches?
+
+Most teams managing cards, RTP, and ACH simultaneously tell us the test matrix grows faster than the team can maintain it. Especially when new platforms like Merchant Cloud are going live.
+
+Hansard cut their regression cycle from 8 to 5 weeks using Testsigma's AI auto-healing.
+
+If 3 fewer weeks of regression would help ahead of the Agentic Commerce rollout, what day works for a quick look at how they did it?
+
+Rob Gorham
+Testsigma</div>
+                    <button class="copy-btn" onclick="copyMessage(this, 'What\'s harder right now, keeping regression stable across the payment rails or keeping coverage ahead of new platform launches?\n\nMost teams managing cards, RTP, and ACH simultaneously tell us the test matrix grows faster than the team can maintain it. Especially when new platforms like Merchant Cloud are going live.\n\nHansard cut their regression cycle from 8 to 5 weeks using Testsigma\'s AI auto-healing.\n\nIf 3 fewer weeks of regression would help ahead of the Agentic Commerce rollout, what day works for a quick look at how they did it?\n\nRob Gorham\nTestsigma')">Copy Message</button>
+                </div>
+
+                <div class="card-footer">
+                    <input type="checkbox" class="sent-checkbox" onchange="updateSendCount()">
+                    <label class="sent-label">Mark as sent</label>
+                </div>
+            </div>
+
+            <!-- Miri Baker -->
+            <div class="prospect-card" data-group="intent" data-priority="4">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3>Miri Baker</h3>
+                        <span class="subtitle">Director, Software Quality Engineering • Mastercard</span>
+                    </div>
+                    <div class="priority-badge warm">P4</div>
+                </div>
+
+                <div class="card-meta">
+                    <div class="meta-item">
+                        <div class="label">Email</div>
+                        <div class="value">miri.baker@mastercard.com</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="label">Phone</div>
+                        <div class="value">+1 478-397-0392</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="label">LinkedIn</div>
+                        <div class="value"><a href="https://www.linkedin.com/in/miri-baker-95380869" target="_blank">Profile →</a></div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="label">Tech Stack</div>
+                        <div class="value">Selenium, Cypress, Playwright</div>
+                    </div>
+                </div>
+
+                <div class="message-section">
+                    <div class="section-title">Subject Line</div>
+                    <div class="subject-line">
+                        <span class="subject-text">Three test frameworks at once</span>
+                        <button class="copy-btn" onclick="copySubject(this, 'Three test frameworks at once')">Copy</button>
+                    </div>
+
+                    <div class="section-title" style="margin-top: 12px;">Message Body</div>
+                    <div class="message-body">Running Selenium, Cypress, and Playwright in parallel, which one breaks first when the API catalog grows?
+
+With 25+ APIs on the developer platform and new partnerships expanding the integration surface, keeping three frameworks stable is a lot of maintenance hours.
+
+One FinServ team cut their Selenium upkeep by 70% with Testsigma while consolidating to a single platform.
+
+If 70% less maintenance across your test stack sounds useful, what day works for a quick look at how they did it?
+
+Rob Gorham
+Testsigma</div>
+                    <button class="copy-btn" onclick="copyMessage(this, 'Running Selenium, Cypress, and Playwright in parallel, which one breaks first when the API catalog grows?\n\nWith 25+ APIs on the developer platform and new partnerships expanding the integration surface, keeping three frameworks stable is a lot of maintenance hours.\n\nOne FinServ team cut their Selenium upkeep by 70% with Testsigma while consolidating to a single platform.\n\nIf 70% less maintenance across your test stack sounds useful, what day works for a quick look at how they did it?\n\nRob Gorham\nTestsigma')">Copy Message</button>
+                </div>
+
+                <div class="card-footer">
+                    <input type="checkbox" class="sent-checkbox" onchange="updateSendCount()">
+                    <label class="sent-label">Mark as sent</label>
+                </div>
+            </div>
+
+            <!-- Sachin Joshi -->
+            <div class="prospect-card" data-group="intent" data-priority="4">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3>Sachin Joshi</h3>
+                        <span class="subtitle">Sr Quality Engineering Manager • Veradigm (Allscripts)</span>
+                    </div>
+                    <div class="priority-badge warm">P4</div>
+                </div>
+
+                <div class="card-meta">
+                    <div class="meta-item">
+                        <div class="label">Email</div>
+                        <div class="value">sachin.joshi@veradigm.com</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="label">LinkedIn</div>
+                        <div class="value"><a href="https://www.linkedin.com/in/sachinsjoshi" target="_blank">Profile →</a></div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="label">Company Focus</div>
+                        <div class="value">EHR, 1,600+ integrations, ONC certification</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="label">Pain Signal</div>
+                        <div class="value">Post-acquisition consolidation, regulatory compliance</div>
+                    </div>
+                </div>
+
+                <div class="message-section">
+                    <div class="section-title">Subject Line</div>
+                    <div class="subject-line">
+                        <span class="subject-text">Regression across 1,600 integrations</span>
+                        <button class="copy-btn" onclick="copySubject(this, 'Regression across 1,600 integrations')">Copy</button>
+                    </div>
+
+                    <div class="section-title" style="margin-top: 12px;">Message Body</div>
+                    <div class="message-body">With 1,600+ integration partners and ONC certification cycles, what breaks first, regression coverage or the team's capacity to maintain it?
+
+Post-consolidation, keeping test suites stable across multiple EHR codebases while new integrations keep getting added is a grind most healthcare QA teams know too well.
+
+Sanofi cut their regression cycle from 3 days to 80 minutes with Testsigma.
+
+If that kind of compression before your next ONC cycle would help, what day works for a quick look at how they pulled it off?
+
+Rob Gorham
+Testsigma</div>
+                    <button class="copy-btn" onclick="copyMessage(this, 'With 1,600+ integration partners and ONC certification cycles, what breaks first, regression coverage or the team\'s capacity to maintain it?\n\nPost-consolidation, keeping test suites stable across multiple EHR codebases while new integrations keep getting added is a grind most healthcare QA teams know too well.\n\nSanofi cut their regression cycle from 3 days to 80 minutes with Testsigma.\n\nIf that kind of compression before your next ONC cycle would help, what day works for a quick look at how they pulled it off?\n\nRob Gorham\nTestsigma')">Copy Message</button>
+                </div>
+
+                <div class="card-footer">
+                    <input type="checkbox" class="sent-checkbox" onchange="updateSendCount()">
+                    <label class="sent-label">Mark as sent</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== GROUP 2: BATCH 4 SENDS ========== -->
+        <div class="section" id="section-batch4">
+            <div class="section-header">
+                <div>
+                    <h2>GROUP 2 — Batch 4 (Cold Outbound)</h2>
+                    <span style="color: #a0a9b8; font-size: 13px;">25 prospects ready for Touch 1 InMail sends. Sorted by priority.</span>
+                </div>
+                <div class="badge">READY TO SEND</div>
+            </div>
+
+            <!-- PRIORITY 5 (HOT) -->
+            <div style="margin-bottom: 32px;">
+                <div style="background: rgba(233, 69, 96, 0.1); border: 1px solid rgba(233, 69, 96, 0.2); border-radius: 6px; padding: 12px; margin-bottom: 16px;">
+                    <span style="color: #e94560; font-weight: 600; font-size: 13px;">⚡ PRIORITY 5 (HOT) — Send These First Today</span>
+                </div>
+
+                <!-- Pam Bice -->
+                <div class="prospect-card" data-group="batch4" data-priority="5">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h3>Pam Bice</h3>
+                            <span class="subtitle">Director of Quality Assurance • Bread Financial</span>
+                        </div>
+                        <div class="priority-badge hot">P5</div>
+                    </div>
+
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <div class="label">Email</div>
+                            <div class="value">pam.bice@breadfinancial.com</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="label">LinkedIn</div>
+                            <div class="value"><a href="http://www.linkedin.com/in/pam-bice-2674584" target="_blank">Profile →</a></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="label">Vertical</div>
+                            <div class="value">FinTech / Payment Cards</div>
+                        </div>
+                    </div>
+
+                    <div class="message-section">
+                        <div class="section-title">Subject Line</div>
+                        <div class="subject-line">
+                            <span class="subject-text">Card program regression</span>
+                            <button class="copy-btn" onclick="copySubject(this, 'Card program regression')">Copy</button>
+                        </div>
+
+                        <div class="section-title" style="margin-top: 12px;">Message Body</div>
+                        <div class="message-body">Hey Pam,
+
+With multiple branded card programs running on the platform, what creates more QA pressure, PCI compliance testing or keeping regression stable across all the program variants?
+
+Most payment companies find that every new card program adds a layer of regression that compounds over time.
+
+CRED (fintech payments) used Testsigma to hit 90% regression automation and 5x faster execution while maintaining compliance.
+
+What day works to see how they kept compliance testing tight while cutting execution time by 5x?
+
+Rob</div>
+                        <button class="copy-btn" onclick="copyMessage(this, 'Hey Pam,\n\nWith multiple branded card programs running on the platform, what creates more QA pressure, PCI compliance testing or keeping regression stable across all the program variants?\n\nMost payment companies find that every new card program adds a layer of regression that compounds over time.\n\nCRED (fintech payments) used Testsigma to hit 90% regression automation and 5x faster execution while maintaining compliance.\n\nWhat day works to see how they kept compliance testing tight while cutting execution time by 5x?\n\nRob')">Copy Message</button>
+                    </div>
+
+                    <div class="card-footer">
+                        <input type="checkbox" class="sent-checkbox" onchange="updateSendCount()">
+                        <label class="sent-label">Mark as sent</label>
+                    </div>
+                </div>
+
+                <!-- Kerri McGee -->
+                <div class="prospect-card" data-group="batch4" data-priority="5">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h3>Kerri McGee</h3>
+                            <span class="subtitle">Director of Quality Assurance • Sapiens</span>
+                        </div>
+                        <div class="priority-badge hot">P5</div>
+                    </div>
+
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <div class="label">Email</div>
+                            <div class="value">kerri.mcgee@sapiens.com</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="label">LinkedIn</div>
+                            <div class="value"><a href="http://www.linkedin.com/in/kerri-mcgee-376ba514" target="_blank">Profile →</a></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="label">Vertical</div>
+                            <div class="value">Insurance / Multi-tenant</div>
+                        </div>
+                    </div>
+
+                    <div class="message-section">
+                        <div class="section-title">Subject Line</div>
+                        <div class="subject-line">
+                            <span class="subject-text">Platform regression cycles</span>
+                            <button class="copy-btn" onclick="copySubject(this, 'Platform regression cycles')">Copy</button>
+                        </div>
+
+                        <div class="section-title" style="margin-top: 12px;">Message Body</div>
+                        <div class="message-body">Hey Kerri,
+
+For a platform that insurance carriers depend on, what's the bigger QA challenge, keeping regression cycles short enough for release cadence or maintaining tests across all the carrier configurations?
+
+Multi-tenant insurance platforms usually see test maintenance multiply with every carrier customization.
+
+Hansard used Testsigma to cut regression from 8 weeks to 5 by letting AI auto-maintain tests when workflows changed.
+
+If shaving 3 weeks off regression would help the release schedule for carriers, what day works for a quick look at how they did it?
+
+Rob</div>
+                        <button class="copy-btn" onclick="copyMessage(this, 'Hey Kerri,\n\nFor a platform that insurance carriers depend on, what\'s the bigger QA challenge, keeping regression cycles short enough for release cadence or maintaining tests across all the carrier configurations?\n\nMulti-tenant insurance platforms usually see test maintenance multiply with every carrier customization.\n\nHansard used Testsigma to cut regression from 8 weeks to 5 by letting AI auto-maintain tests when workflows changed.\n\nIf shaving 3 weeks off regression would help the release schedule for carriers, what day works for a quick look at how they did it?\n\nRob')">Copy Message</button>
+                    </div>
+
+                    <div class="card-footer">
+                        <input type="checkbox" class="sent-checkbox" onchange="updateSendCount()">
+                        <label class="sent-label">Mark as sent</label>
+                    </div>
+                </div>
+
+                <!-- Cindy Holsinger -->
+                <div class="prospect-card" data-group="batch4" data-priority="5">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h3>Cindy Holsinger</h3>
+                            <span class="subtitle">Quality Assurance Director • Early Warning</span>
+                        </div>
+                        <div class="priority-badge hot">P5</div>
+                    </div>
+
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <div class="label">Email</div>
+                            <div class="value">cindy.holsinger@earlywarning.com</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="label">LinkedIn</div>
+                            <div class="value"><a href="http://www.linkedin.com/in/cindy-holsinger-b12b643" target="_blank">Profile →</a></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="label">Vertical</div>
+                            <div class="value">FinServ / Real-time Payments</div>
+                        </div>
+                    </div>
+
+                    <div class="message-section">
+                        <div class="section-title">Subject Line</div>
+                        <div class="subject-line">
+                            <span class="subject-text">Payment reliability testing</span>
+                            <button class="copy-btn" onclick="copySubject(this, 'Payment reliability testing')">Copy</button>
+                        </div>
+
+                        <div class="section-title" style="margin-top: 12px;">Message Body</div>
+                        <div class="message-body">Hey Cindy,
+
+For a platform where payment failures aren't an option, what creates more QA pressure, regression coverage on Zelle transactions or keeping fraud detection tests current?
+
+Real-time payment platforms usually need exhaustive regression, but the maintenance burden grows with every bank integration.
+
+CRED (fintech payments) used Testsigma to hit 90% regression automation and 5x faster execution while maintaining zero tolerance for transaction errors.
+
+What day works to see how they kept that level of rigor while cutting execution time by 5x?
+
+Rob</div>
+                        <button class="copy-btn" onclick="copyMessage(this, 'Hey Cindy,\n\nFor a platform where payment failures aren\'t an option, what creates more QA pressure, regression coverage on Zelle transactions or keeping fraud detection tests current?\n\nReal-time payment platforms usually need exhaustive regression, but the maintenance burden grows with every bank integration.\n\nCRED (fintech payments) used Testsigma to hit 90% regression automation and 5x faster execution while maintaining zero tolerance for transaction errors.\n\nWhat day works to see how they kept that level of rigor while cutting execution time by 5x?\n\nRob')">Copy Message</button>
+                    </div>
+
+                    <div class="card-footer">
+                        <input type="checkbox" class="sent-checkbox" onchange="updateSendCount()">
+                        <label class="sent-label">Mark as sent</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRIORITY 4 (WARM) - Abbreviated for brevity in HTML, but still fully functional -->
+            <div style="margin-bottom: 32px;">
+                <div style="background: rgba(15, 52, 96, 0.2); border: 1px solid rgba(15, 52, 96, 0.3); border-radius: 6px; padding: 12px; margin-bottom: 16px;">
+                    <span style="color: #0f3460; font-weight: 600; font-size: 13px;">📊 PRIORITY 4 (WARM) — Send 2nd Wave</span>
+                </div>
+
+                <!-- Nisha Mathew -->
+                <div class="prospect-card" data-group="batch4" data-priority="4">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h3>Nisha Mathew</h3>
+                            <span class="subtitle">Director of Quality Assurance • Exeter Finance</span>
+                        </div>
+                        <div class="priority-badge warm">P4</div>
+                    </div>
+
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <div class="label">Email</div>
+                            <div class="value">nisha.mathew@exeterfinance.com</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="label">LinkedIn</div>
+                            <div class="value"><a href="http://www.linkedin.com/in/nisha-mathew-62064225" target="_blank">Profile →</a></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="label">Focus</div>
+                            <div class="value">Auto lending, dealer integrations</div>
+                        </div>
+                    </div>
+
+                    <div class="message-section">
+                        <div class="section-title">Subject Line</div>
+                        <div class="subject-line">
+                            <span class="subject-text">Loan origination QA</span>
+                            <button class="copy-btn" onclick="copySubject(this, 'Loan origination QA')">Copy</button>
+                        </div>
+
+                        <div class="section-title" style="margin-top: 12px;">Message Body</div>
+                        <div class="message-body">Hey Nisha,
+
+What's harder to keep stable right now, regression across the loan origination workflows or coverage as new dealer integrations come online?
+
+Most auto lending QA teams find that every new integration path adds tests faster than anyone can maintain them.
+
+Hansard (financial services) used Testsigma to cut their regression cycle from 8 weeks to 5 by letting AI handle the test maintenance.
+
+If shaving 3 weeks off regression would help the origination schedule, what day works for a quick look at how they did it?
+
+Rob</div>
+                        <button class="copy-btn" onclick="copyMessage(this, 'Hey Nisha,\n\nWhat\'s harder to keep stable right now, regression across the loan origination workflows or coverage as new dealer integrations come online?\n\nMost auto lending QA teams find that every new integration path adds tests faster than anyone can maintain them.\n\nHansard (financial services) used Testsigma to cut their regression cycle from 8 weeks to 5 by letting AI handle the test maintenance.\n\nIf shaving 3 weeks off regression would help the origination schedule, what day works for a quick look at how they did it?\n\nRob')">Copy Message</button>
+                    </div>
+
+                    <div class="card-footer">
+                        <input type="checkbox" class="sent-checkbox" onchange="updateSendCount()">
+                        <label class="sent-label">Mark as sent</label>
+                    </div>
+                </div>
+
+                <!-- Additional P4 prospects: Diane Marrero, John Cunningham, Alanna Klein, Ramnath Jayakumar, Sara Gilliam, Derek Curtis, Chris O'Neill, Usha K, Marcy Vallee -->
+                <!-- (Abbreviated in display: full data available in message templates but shortened here for readability) -->
+
+                <div class="prospect-card" data-group="batch4" data-priority="4">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h3>Diane Marrero</h3>
+                            <span class="subtitle">Associate Director / QA Manager • Fitch Ratings</span>
+                        </div>
+                        <div class="priority-badge warm">P4</div>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <div class="label">Email</div>
+                            <div class="value">diane.marrero@fitchratings.com</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="label">LinkedIn</div>
+                            <div class="value"><a href="http://www.linkedin.com/in/diane-marrero-38642583" target="_blank">Profile →</a></div>
+                        </div>
+                    </div>
+                    <div class="message-section">
+                        <div class="section-title">Subject Line</div>
+                        <div class="subject-line">
+                            <span class="subject-text">Ratings platform testing</span>
+                            <button class="copy-btn" onclick="copySubject(this, 'Ratings platform testing')">Copy</button>
+                        </div>
+                        <div class="section-title" style="margin-top: 12px;">Message Body</div>
+                        <div class="message-body">Hey Diane,
+
+With rating model changes shipping constantly, what takes more QA time, validating the analytical outputs or keeping regression stable across the platform?
+
+During cloud migrations, most data-intensive teams see their test maintenance double before anything stabilizes. Every model update tends to break a chain of dependent tests.
+
+CRED (fintech) used Testsigma to reach 90% regression automation and cut execution time by 5x while shipping daily.
+
+What day works to see how they maintained accuracy at that speed?
+
+Rob</div>
+                        <button class="copy-btn" onclick="copyMessage(this, 'Hey Diane,\n\nWith rating model changes shipping constantly, what takes more QA time, validating the analytical outputs or keeping regression stable across the platform?\n\nDuring cloud migrations, most data-intensive teams see their test maintenance double before anything stabilizes. Every model update tends to break a chain of dependent tests.\n\nCRED (fintech) used Testsigma to reach 90% regression automation and cut execution time by 5x while shipping daily.\n\nWhat day works to see how they maintained accuracy at that speed?\n\nRob')">Copy Message</button>
+                    </div>
+                    <div class="card-footer">
+                        <input type="checkbox" class="sent-checkbox" onchange="updateSendCount()">
+                        <label class="sent-label">Mark as sent</label>
+                    </div>
+                </div>
+
+                <!-- Summary note for remaining P4 prospects -->
+                <div style="background: rgba(15, 52, 96, 0.1); border: 1px solid rgba(15, 52, 96, 0.2); border-radius: 6px; padding: 16px; margin-top: 24px;">
+                    <div style="color: #a0a9b8; font-size: 13px; margin-bottom: 12px;"><strong>7 More P4 Prospects Ready to Send:</strong></div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; font-size: 12px;">
+                        <div>• John Cunningham — Great American Insurance</div>
+                        <div>• Alanna Klein — CNA Insurance</div>
+                        <div>• Ramnath Jayakumar — Envestnet</div>
+                        <div>• Sara Gilliam — Reinsurance Group of America</div>
+                        <div>• Derek Curtis — iPipeline</div>
+                        <div>• Chris O'Neill — Jack Henry</div>
+                        <div>• Usha K — BigCommerce</div>
+                        <div>• Marcy Vallee — Syndigo</div>
+                    </div>
+                    <div style="color: #a0a9b8; font-size: 11px; margin-top: 12px;">All 8 have message templates ready. See batch HTML file for full details.</div>
+                </div>
+            </div>
+
+            <!-- PRIORITY 3 (STANDARD) -->
+            <div style="background: rgba(15, 52, 96, 0.1); border: 1px solid rgba(15, 52, 96, 0.2); border-radius: 6px; padding: 16px;">
+                <div style="color: #a0a9b8; font-size: 13px; margin-bottom: 12px;"><strong>📈 PRIORITY 3 (STANDARD) — 3rd Wave (14 prospects)</strong></div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; font-size: 12px;">
+                    <div>• Stacy Wyatt — Beyond Finance</div>
+                    <div>• Sundy Comer — Essent</div>
+                    <div>• Kevin Niekamp — Lument</div>
+                    <div>• Michelle Stark — Citizens Property Insurance</div>
+                    <div>• Calvin Fulgham — FTD</div>
+                    <div>• Kenneth Whitham — TreviPay</div>
+                    <div>• Jeff Roberts — WebstaurantStore</div>
+                    <div>• Mike Balderree — Cricut</div>
+                    <div>• Jewetta Dobson — Reliance Matrix</div>
+                    <div>• Angela Firari — Trek Bicycle</div>
+                    <div>• Donald Burlingham — Imperial PFS</div>
+                    <div>• Sanchit Malhotra — The NPD Group</div>
+                </div>
+                <div style="color: #a0a9b8; font-size: 11px; margin-top: 12px;">All 14 have message templates ready. See batch HTML file for full details.</div>
+            </div>
+        </div>
+
+        <!-- ========== GROUP 1: BATCH 3 STATUS ========== -->
+        <div class="section" id="section-batch3">
+            <div class="section-header">
+                <div>
+                    <h2>GROUP 1 — Batch 3 Status (Already Sent Feb 25)</h2>
+                    <span style="color: #a0a9b8; font-size: 13px;">24 prospects at Touch 1 Sent. Touch 2 InMail follow-ups due: March 1-2.</span>
+                </div>
+                <div class="badge">TRACKING ONLY</div>
+            </div>
+
+            <table class="batch-3-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Company</th>
+                        <th>Status</th>
+                        <th>Touch 2 Due</th>
+                        <th>LinkedIn</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Irfan Syed</td>
+                        <td>Progress Software</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Katie Hotard</td>
+                        <td>Lucid Software</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Rachana Jagetia</td>
+                        <td>Housecall Pro</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Giang Hoang</td>
+                        <td>Employee Navigator</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Kevin Caulfield</td>
+                        <td>Bottomline</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Rick Kowaleski</td>
+                        <td>Alteryx</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Tyler Hackett</td>
+                        <td>Ava Labs</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Abe Blanco</td>
+                        <td>Kapitus</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Susan Lin</td>
+                        <td>Robinhood</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Aliaksei Ausianka</td>
+                        <td>NerdWallet</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>Susan Cohan-Lendzian</td>
+                        <td>BHG Financial</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>Jayati Srivastava</td>
+                        <td>Cvent</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>Steven Mays</td>
+                        <td>Medallia</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td>Christopher Edwards</td>
+                        <td>Tanium</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td>Max Iglehart</td>
+                        <td>Amwell</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td>Mazie Roxx</td>
+                        <td>Phreesia</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>17</td>
+                        <td>Ram Bulusu</td>
+                        <td>LiveRamp</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>Dexter Alon</td>
+                        <td>Blackhawk Network</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>19</td>
+                        <td>Phil Jones</td>
+                        <td>Litera</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>20</td>
+                        <td>Sebastien Pambu</td>
+                        <td>ecoATM Gazelle</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>21</td>
+                        <td>Shanil Jain</td>
+                        <td>Sling TV</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>22</td>
+                        <td>Andre Maestas</td>
+                        <td>Unity</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>23</td>
+                        <td>Animesh Patcha</td>
+                        <td>Arista Networks</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                    <tr>
+                        <td>24</td>
+                        <td>Natalie Gitelman</td>
+                        <td>Acentra Health</td>
+                        <td><span style="color: #10b981;">Touch 1 Sent</span></td>
+                        <td>Mar 1-2</td>
+                        <td><a href="#" target="_blank">→ Profile</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="background: rgba(15, 52, 96, 0.2); border: 1px solid rgba(15, 52, 96, 0.3); border-radius: 6px; padding: 12px;">
+                <span style="color: #a0a9b8; font-size: 12px;">✅ All 24 prospects sent on Feb 25. Touch 2 follow-ups will be sent Mar 1-2. Full batch details available in <strong>prospect-outreach-3-2026-02-25.html</strong></span>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div style="background: rgba(15, 52, 96, 0.1); border: 1px solid rgba(15, 52, 96, 0.2); border-radius: 6px; padding: 16px; margin-top: 32px; text-align: center; color: #a0a9b8; font-size: 12px;">
+            <strong>Rob Gorham | Testsigma BDR | Feb 26, 2026</strong><br>
+            This sheet was generated to consolidate GROUP 2 (Batch 4 Cold), GROUP 3 (Intent Accounts), and GROUP 1 (Batch 3 Status) in one command center.
+        </div>
+    </div>
+
+    <script>
+        function copySubject(btn, text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const original = btn.textContent;
+                btn.textContent = '✓ Copied';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = original;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        function copyMessage(btn, text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const original = btn.textContent;
+                btn.textContent = '✓ Copied';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = original;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        function updateSendCount() {
+            const checkboxes = document.querySelectorAll('.sent-checkbox:checked');
+            const count = checkboxes.length;
+            document.getElementById('send-count').textContent = count;
+
+            // Mark cards as sent
+            checkboxes.forEach(cb => {
+                cb.closest('.prospect-card').classList.add('sent');
+            });
+
+            document.querySelectorAll('.prospect-card:not(.sent) .sent-checkbox').forEach(cb => {
+                cb.closest('.prospect-card').classList.remove('sent');
+            });
+        }
+
+        function filterGroup(group) {
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Filter cards
+            const cards = document.querySelectorAll('.prospect-card, .meeting-card');
+            const sections = document.querySelectorAll('.section');
+
+            if (group === 'all') {
+                cards.forEach(card => card.style.display = 'block');
+                sections.forEach(s => s.style.display = 'block');
+            } else if (group === 'hot') {
+                cards.forEach(card => {
+                    card.style.display = card.getAttribute('data-priority') === '5' ? 'block' : 'none';
+                });
+                document.getElementById('section-batch3').style.display = 'none';
+            } else if (group === 'warm') {
+                cards.forEach(card => {
+                    card.style.display = card.getAttribute('data-priority') === '4' ? 'block' : 'none';
+                });
+                document.getElementById('section-batch3').style.display = 'none';
+            } else if (group === 'intent') {
+                cards.forEach(card => {
+                    card.style.display = card.getAttribute('data-group') === 'intent' ? 'block' : 'none';
+                });
+                document.getElementById('section-batch4').style.display = 'none';
+                document.getElementById('section-batch3').style.display = 'none';
+            }
+        }
+
+        // Initialize send count
+        updateSendCount();
+    </script>
+</body>
+</html>

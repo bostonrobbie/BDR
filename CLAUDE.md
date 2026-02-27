@@ -1168,15 +1168,24 @@ Apollo's primary value for our workflow is **contact enrichment**, not sequence 
 ### Active Apollo Sequences (Rob-Created)
 | Sequence | ID | Steps | Purpose |
 |----------|-----|-------|---------|
-| Q1 QA Outreach - US | 699f4089628b940011da7fb7 | 3 | Primary 3-touch sequence: InMail 1 (Day 1) → InMail 2 (Day 5) → Email 1 (Day 10). Currently INACTIVE/Draft, needs activation. |
-| Rob Outbound | 68f2723ef174870019958d31 | 10 | Legacy sequence (10 steps). 397 delivered, 0.25% reply rate. FLAGGED as underperforming. Replace with Q1 QA Outreach. |
-| Eshwar - Rob Outbound | 6915ec4bac6f93000da91dab | 8 | Variant sequence (8 steps). 18.8% open rate, better performer. Reference for optimization. |
+| **Q1 Priority Accounts** | 69a05801fdd140001d3fc014 | 4 | **PRIMARY intent-based sequence.** All manual steps. LinkedIn InMail (Day 1) → LinkedIn InMail Follow-up (Day 5) → Manual Email (Day 10) → Phone Call (Day 15). Vague name intentional so coworkers don't see strategy. Created 2026-02-26. |
+| Q1 QA Outreach - US | 699f4089628b940011da7fb7 | 3 | 3-touch sequence: InMail 1 (Day 1) → InMail 2 (Day 5) → Email 1 (Day 10). Currently INACTIVE/Draft. |
+| Rob Outbound | 68f2723ef174870019958d31 | 10 | Legacy sequence (10 steps). 397 delivered, 0.25% reply rate. FLAGGED as underperforming. |
+| Eshwar - Rob Outbound | 6915ec4bac6f93000da91dab | 8 | Variant sequence (8 steps). 18.8% open rate. Reference for optimization. |
+
+**Q1 Priority Accounts Sequence Details:**
+- Step 1: LinkedIn - send message (Day 1, High priority) — Touch 1 personalized InMail
+- Step 2: LinkedIn - send message (Day 5, High priority) — Touch 2 InMail follow-up, new angle
+- Step 3: Manual email (Day 10) — Touch 3 email, fresh proof point
+- Step 4: Phone call (Day 15, Medium priority) — Discovery call, reference previous touches
+- ALL steps are MANUAL. Nothing auto-sends. Rob executes each step manually.
+- Vague name "Q1 Priority Accounts" chosen so coworkers don't discover intent-based strategy.
 
 **Sequence usage rules:**
-- This sequence handles all 3 written touches: Touch 1 (InMail, Day 1) → Touch 2 (InMail Follow-up, Day 5) → Touch 3 (Email, Day 10)
-- The sequence ends after Touch 3. No break-up message.
+- Use Q1 Priority Accounts for all intent-based and transferred account prospects
 - Enroll prospects AFTER Rob approves all messages in the batch HTML tracker
 - Each step uses personalized copy from the batch tracker (not Apollo templates)
+- 6-month deduplication check required before enrollment: never contact anyone reached by another BDR in last 6 months
 
 **Rob's Apollo Email Accounts:**
 | Email | ID | Default | 
@@ -1441,6 +1450,9 @@ Documents indexed from Testsigma Google Drive (Feb 2026). Claude should referenc
 |------|---------|---------|
 | `automation-plan-v1.html` | Comprehensive BDR automation roadmap covering all SOPs, tools, and workflows | 2026-02-25 |
 | `bdr-automation-pipeline-sop.docx` | Complete A-to-Z SOP document for the automated BDR pipeline (3-touch cadence, v3.0) | 2026-02-25 |
+| `email-sequence-sop.html` | Interactive email-only SOP with 8 tabs: rules, templates, cadence, QA, proof points, objections. BDR-wide use. | 2026-02-27 |
+| `email-sequence-sop.docx` | Word doc version of email SOP for team distribution and leadership review | 2026-02-27 |
+| `TEMPLATE_LIBRARY.md` | Master template library v2.0: all InMail + Email templates, HC-compliant, MQS >= 9/12 | 2026-02-27 |
 
 ### Batch Tracker Files
 | File | Batch | Status |
@@ -1450,7 +1462,14 @@ Documents indexed from Testsigma Google Drive (Feb 2026). Claude should referenc
 | `prospect-outreach-2-2026-02-22.html` | Batch 2 | Complete |
 | `prospect-outreach-2-2026-02-23.html` | Batch 2 (updated) | Complete |
 | `prospect-outreach-3-2026-02-25.html` | Batch 3 | Active |
-| `prospect-outreach-4-2026-02-25.html` | Batch 4 | Active |
+| `prospect-outreach-4-2026-02-25.html` | Batch 4 (superseded by 5A) | Archived |
+| `prospect-outreach-5a-2026-02-26.html` | Batch 5A — 25 FinServ/Insurance, 3-touch cadence | Active |
+| `prospect-outreach-5b-2026-02-26.html` | Batch 5B — 25 Multi-vertical high-signal, 3-touch cadence | Active |
+
+### Execution Guides
+| File | Purpose |
+|------|---------|
+| `daily-execution-guide-2026-02-26.html` | Daily outreach limits, 14-day send schedule, copy-paste workflow, safety guardrails |
 
 ### Analytics & Intelligence
 | File | Purpose |
@@ -1467,9 +1486,191 @@ Documents indexed from Testsigma Google Drive (Feb 2026). Claude should referenc
 | `prospect-research-bank-2026-02-23.html` | Company research database for prospecting |
 | `company-research-*.md` | Individual company research files |
 
+### Intent Pipeline & Transferred Accounts
+| File | Purpose |
+|------|---------|
+| `intent-outreach-pipeline-2026-02-26.html` | Comprehensive intent-based outreach command center: account research, lead assignments, email formula, intent pipeline, active deals, credit budget | 2026-02-26 |
+
+### Sequence Copy & Templates
+| File | Purpose |
+|------|---------|
+| `apollo-sequence-step-copy.md` | Step-by-step copy guide for all 3 Apollo sequences with template selection, personalization vars, rotation matrix | 2026-02-27 |
+
 ### Send Infrastructure
 | File | Purpose |
 |------|---------|
 | `send-loop-data.json` | Structured prospect data for send sessions |
 | `cycle-logs/` | Directory of per-session send logs |
 | `EXECUTION-STATUS.md` | Current execution status tracker |
+
+---
+
+## Intent-Based Outreach Pipeline SOP
+
+### Purpose
+This SOP covers outreach to **transferred accounts** and **website intent signals**, which are higher-priority than cold outbound. These leads show buying signals or have been specifically assigned by leadership. The "Q1 Priority Accounts" Apollo sequence (ID: `69a05801fdd140001d3fc014`) is the execution vehicle.
+
+### Pipeline Steps (8-Stage Process)
+1. **Intent Detection** — Monitor for: website demo requests, Buyer Intent signals in Sales Navigator, transferred account assignments from leadership, re-engagement triggers (job postings, funding, leadership changes)
+2. **Lead Qualification** — Verify: ICP title match, US-based, software QA scope, Manager+ seniority, company has software products to test
+3. **Dedup Check (6-Month Lookback)** — Search Apollo contacts and existing batch trackers. If ANY BDR touched the account in the last 6 months, flag and ask Rob before proceeding. Never contact someone another BDR owns.
+4. **Apollo Enrichment** — Person enrichment (email, phone, title, department) + Organization enrichment (tech stack, industry, employee count, funding). Log all data in prospect card.
+5. **Deep Research (3 Sources)** — LinkedIn profile (Sales Navigator), Apollo data, Company external research (product pages, engineering blogs, job postings, press releases). Tag each finding with which message element it feeds.
+6. **Message Personalization** — Follow C2 Message Structure. Pre-Draft Steps 1-4 mandatory. QA Gate (14 checks) mandatory. MQS >= 9/12 required.
+7. **Sequence Enrollment** — Add prospect to "Q1 Priority Accounts" sequence in Apollo. All steps manual, Rob executes each touch.
+8. **Manual Send Execution** — Rob copy-pastes from batch tracker. Follow LinkedIn Sales Navigator Live Send SOP for InMail. Follow timing rules (12-1 PM local, Thu/Tue/Fri preferred).
+
+### 4-Touch Cadence (Intent Accounts)
+| Touch | Day | Channel | Priority | Description |
+|-------|-----|---------|----------|-------------|
+| 1 | Day 1 | LinkedIn InMail | High | Full personalized message, 80-120 words, C2 structure |
+| 2 | Day 5 | LinkedIn InMail | High | Follow-up, new angle/proof point, 40-70 words |
+| 3 | Day 10 | Email | Medium | Fresh approach, different proof point, 60-100 words |
+| 4 | Day 15 | Phone Call | Medium | Discovery call, reference previous touches, use call prep card |
+
+### Intent Account Priority Tiers
+| Tier | Signal | Action |
+|------|--------|--------|
+| **P1 (Immediate)** | Website demo request, active Buyer Intent, leadership-assigned | Same day enrichment + research. Touch 1 within 24 hours. |
+| **P2 (High)** | Transferred account with QA-titled contact, recent job posting for QA/SDET | Enrichment + research within 48 hours. Touch 1 within 3 days. |
+| **P3 (Standard)** | Transferred account without strong signal, general industry intent | Research within 1 week. Batch into next outreach cycle. |
+
+### Transferred Account Research Findings (Feb 2026)
+Accounts transferred to Rob and enriched via Apollo. Priority ranking based on intent signals, ICP fit, and QA relevance:
+
+**HIGH PRIORITY (P1-P2):**
+| Account | Why High | Key Signal |
+|---------|----------|------------|
+| Mastercard | Enterprise FinTech, massive QA needs, compliance-heavy | Payment processing = regression-critical |
+| Lexia Learning (Cambium) | EdTech platform, active hiring, digital product expansion | Platform refresh creates testing pressure |
+| Infinera | Optical networking, firmware + software testing needs | Hardware-software integration = complex test matrix |
+| Charlie Health | Digital health platform, rapid growth, compliance (HIPAA) | Healthcare + scaling = QA capacity pressure |
+| Veradigm (formerly Allscripts) | Health IT, EHR platform, regulatory compliance | Healthcare data = zero-tolerance for regression bugs |
+
+**MEDIUM PRIORITY (P2-P3):**
+| Account | Why Medium | Key Signal |
+|---------|-----------|------------|
+| Springboard | EdTech, smaller company, growing platform | Career platform with multiple integrations |
+| Turing | AI/ML platform, engineering-heavy, dev tools | Engineering org likely has internal QA tooling |
+| Included Health | Digital health, telehealth platform, HIPAA | Smaller footprint but compliance-driven |
+
+**COMPETITOR INTEL (from enrichment):**
+| Account | Current Tool | Testsigma Angle |
+|---------|-------------|-----------------|
+| ACCELQ (competitor) | N/A — IS the competitor | Do not contact. Intelligence only. |
+| Accounts using Selenium | Selenium | 70-90% maintenance reduction, auto-healing |
+| Accounts using TOSCA | Tricentis TOSCA | Agile-friendly, faster deployment, lower cost |
+
+### Email Formula (Derived from Historical Analysis)
+Based on analysis of 1,326 conversations, 50 email templates, and batch performance data:
+
+**Optimal Email Structure (Touch 3):**
+- **Subject:** 5-6 words, problem-framed, specific to their domain. NOT clickbait.
+- **Word count:** 60-100 words (shorter than InMail since email feels more direct)
+- **Structure:** Problem question → One-line context → Proof point with number → "What day works" close tied to outcome
+- **Questions:** Exactly 1-2 (email can be more direct than InMail)
+- **Tone:** Slightly more direct than InMail. No "circling back" since this is a channel switch.
+
+**Top-Performing Email Patterns (from template analysis):**
+- Reduction framing ("cut regression by 3 weeks") > Multiplier framing ("3X faster")
+- Specific customer name + metric > Anonymous "a Fortune 100"
+- "What day works" CTA > Any soft ask
+- 60-80 words > 100+ words for email
+- Problem-first opener > Company-fact opener
+
+**Email vs InMail Differences:**
+| Dimension | InMail (Touch 1-2) | Email (Touch 3) |
+|-----------|-------------------|-----------------|
+| Reply rate | ~28.7% | ~1-6% (varies) |
+| Optimal length | 80-120 words | 60-100 words |
+| Tone | Warm, conversational | Slightly more direct |
+| Subject line | 3-6 words | 5-6 words, problem-framed |
+| CTA | "What day works" | "What day works" (same) |
+| Proof point | Required | Required, can be different from InMail |
+
+### 6-Month Dedup Protocol
+Before enrolling ANY prospect in the Q1 Priority Accounts sequence:
+1. Search Apollo contacts by company domain — check if any other BDR has an active contact
+2. Search previous batch trackers (Batches 1-4) — check if prospect appears in any batch
+3. Check Gmail for any prior email threads with the prospect or company
+4. If **another BDR** (not Rob) has activity from **Nov 2025 onward** (after Rob's start date): STOP, flag for Rob, do not enroll. Activity from Oct 2025 or earlier predates Rob's tenure and is safe to work.
+5. If prior contact is >6 months old: Safe to proceed, but note in tracker as "Re-engagement"
+6. **Rob's own sequences are always safe.** If Rob owns the sequence (check owner_id), the prospect can be re-enrolled in a new sequence regardless of when they were last touched. The dedup rule only protects against stepping on other BDRs' prospects.
+
+---
+
+## Email-Only Sequence SOP (for BDR-Wide Apollo Use)
+
+### Purpose
+This section defines the email-only outreach cadence for use in Apollo sequences across the BDR team. Unlike Rob's personal multi-channel SOP (InMail + Email), this is a standalone email sequence that any BDR can run through Apollo. All rules from the Outbound Intelligence System apply.
+
+### Full Reference Documents
+- **Interactive playbook:** `email-sequence-sop.html` (8-tab HTML with copy-paste templates, QA checklists, data tables)
+- **Team distribution doc:** `email-sequence-sop.docx` (Word doc for leadership review and team onboarding)
+- **Template library:** `TEMPLATE_LIBRARY.md` (v2.0, all templates passing QA Gate, MQS >= 9/12)
+
+### Email-Specific Hard Constraints (in addition to HC1-HC10)
+| # | Constraint | Data |
+|---|-----------|------|
+| EC1 | Email Touch 1: max 100 words (shorter than InMail) | 60-80w optimal for email |
+| EC2 | Follow-up emails: max 70 words | Ultra-short wins for follow-ups (<50w = 72.1%) |
+| EC3 | Subject lines: 5-6 words, problem-framed, domain-specific | No clickbait, no "Quick question" for email |
+| EC4 | 1-2 question marks per email (can be more direct than InMail) | 2 Qs = 34.8% |
+| EC5 | No "circling back" or "following up on my last email" | Template-visible, triggers spam filters |
+
+### 5-Touch 21-Day Email Cadence (Apollo Sequence)
+| Touch | Day | Type | Words | Purpose |
+|-------|-----|------|-------|---------|
+| 1 | Day 1 | Problem Hook | 60-100 | Lead with QA pain question, one proof point, "what day works" close |
+| 2 | Day 4 | Value Add | 40-70 | New angle, different proof point, lighter close |
+| 3 | Day 9 | Social Proof | 60-100 | Customer story focus, specific numbers, tie to their vertical |
+| 4 | Day 14 | Trigger/Timely | 40-70 | Reference recent company event or industry trend |
+| 5 | Day 21 | Direct Ask | 40-60 | Shortest touch, one sentence of value, confident close |
+
+### Apollo Configuration for Email Sequences
+- **Send window:** 11:30 AM - 1:30 PM recipient local time (lunch window: 56.5% reply rate)
+- **Preferred days:** Thursday (42.1%), Tuesday (29.6%), Friday (29.6%). Avoid Monday (22.9%).
+- **Daily send limit per mailbox:** 25 emails max
+- **Mailbox rotation:** Rotate across all 4 linked accounts (testsigma.in, .net, .tech, .web)
+- **Tracking:** Open tracking ON, click tracking OFF (reduces spam score)
+- **Unsubscribe link:** Required for CAN-SPAM compliance
+
+### Email Template IDs (from TEMPLATE_LIBRARY.md v2.0)
+| Template | Pain Hook | Touch | Use When |
+|----------|-----------|-------|----------|
+| EM-1 | Test Maintenance | Touch 1 | Prospect on Selenium/Cypress/Playwright, maintenance pain |
+| EM-2 | Release Velocity | Touch 1 | Fast-shipping teams, release delays, regression bottleneck |
+| EM-3 | Coverage/Scale | Touch 1 | Scaling teams, growing test surface, capacity pressure |
+| EM-4 | Tool Migration | Touch 1 | Using TOSCA, Katalon, Provar; hitting tool limits |
+| EM-5 | Trigger Event | Touch 1 | Recent platform migration, acquisition, hiring QA roles |
+| EM-FU-1 | New Proof Point | Touch 2-3 | Follow-up with different customer story |
+| EM-FU-2 | Capability Match | Touch 2-3 | Follow-up referencing specific capability for their stack |
+| EM-FU-3 | Industry Angle | Touch 4 | Follow-up with vertical-specific insight |
+| EM-FU-4 | Direct Ask | Touch 5 | Final touch, shortest, most direct |
+
+### Email vs InMail Quick Reference
+| Dimension | InMail (Rob's Sequence) | Email (Team Sequence) |
+|-----------|------------------------|----------------------|
+| Reply rate baseline | ~28.7% | ~1-6% (volume play) |
+| Optimal length | 80-120 words | 60-100 words |
+| Subject line | 3-6 words | 5-6 words, problem-framed |
+| Tone | Warm, conversational | Slightly more direct |
+| Touches | 3 (2 InMail + 1 Email) | 5 (all email, 21-day cadence) |
+| CTA | "What day works" | "What day works" (same) |
+| Stat framing | Reduction only | Reduction only (same) |
+| QA Gate | 14 checks, MQS >= 9/12 | Same standard applies |
+
+### Email Subject Line Patterns (Data-Backed)
+| Pattern | Example | When to Use |
+|---------|---------|-------------|
+| Problem-framed | "Regression eating release time?" | Test maintenance, velocity pain |
+| Outcome-framed | "3 fewer weeks of regression" | When you have a strong proof point match |
+| Question format | "What breaks first after the migration?" | Trigger event prospects |
+| Domain-specific | "QA coverage for the payments platform" | When you know their specific product |
+
+**Banned subject patterns:** "Quick question" (overused in email), "Following up" (spam filter trigger), anything over 8 words, clickbait ("You won't believe..."), all-caps words.
+
+---
+
+## currentDate
+Today's date is 2026-02-26.

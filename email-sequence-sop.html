@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Testsigma BDR Email Sequence SOP &amp; Templates</title>
+<style>
+:root {
+  --primary: #1a56db;
+  --primary-light: #e8f0fe;
+  --success: #059669;
+  --success-light: #d1fae5;
+  --warning: #d97706;
+  --warning-light: #fef3c7;
+  --danger: #dc2626;
+  --danger-light: #fee2e2;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-500: #6b7280;
+  --gray-700: #374151;
+  --gray-900: #111827;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--gray-50);
+  color: var(--gray-900);
+  line-height: 1.6;
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; color: var(--gray-900); }
+h2 { font-size: 22px; font-weight: 600; margin: 32px 0 16px; color: var(--gray-900); border-bottom: 2px solid var(--primary); padding-bottom: 8px; }
+h3 { font-size: 18px; font-weight: 600; margin: 24px 0 12px; color: var(--gray-700); }
+h4 { font-size: 15px; font-weight: 600; margin: 16px 0 8px; color: var(--gray-700); }
+
+.subtitle { color: var(--gray-500); font-size: 15px; margin-bottom: 24px; }
+
+/* Navigation */
+.nav-tabs {
+  display: flex; gap: 4px; background: var(--gray-100); border-radius: 10px; padding: 4px; margin-bottom: 24px; flex-wrap: wrap;
+}
+.nav-tab {
+  padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;
+  border: none; background: transparent; color: var(--gray-500); transition: all 0.2s;
+}
+.nav-tab.active { background: white; color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.nav-tab:hover:not(.active) { color: var(--gray-700); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Cards */
+.card {
+  background: white; border-radius: 12px; border: 1px solid var(--gray-200);
+  padding: 24px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+/* Data callouts */
+.data-callout {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--primary-light); color: var(--primary); padding: 3px 10px;
+  border-radius: 6px; font-size: 13px; font-weight: 600;
+}
+.data-callout.green { background: var(--success-light); color: var(--success); }
+.data-callout.red { background: var(--danger-light); color: var(--danger); }
+.data-callout.yellow { background: var(--warning-light); color: var(--warning); }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+th { background: var(--gray-100); padding: 10px 14px; text-align: left; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-500); border-bottom: 2px solid var(--gray-200); }
+td { padding: 10px 14px; border-bottom: 1px solid var(--gray-100); }
+tr:hover td { background: var(--gray-50); }
+
+/* Template cards */
+.template-card {
+  background: white; border: 2px solid var(--gray-200); border-radius: 12px; padding: 0; margin-bottom: 20px; overflow: hidden;
+}
+.template-header {
+  background: var(--gray-100); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--gray-200);
+}
+.template-header h4 { margin: 0; font-size: 16px; }
+.template-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.badge {
+  padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;
+}
+.badge-pain { background: #fce4ec; color: #c62828; }
+.badge-persona { background: #e8eaf6; color: #283593; }
+.badge-vertical { background: #e0f2f1; color: #00695c; }
+.badge-touch { background: #fff3e0; color: #e65100; }
+
+.template-body { padding: 20px; }
+.template-field { margin-bottom: 16px; }
+.template-field label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-500); margin-bottom: 6px; }
+.template-content {
+  background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 14px 16px;
+  font-size: 14px; line-height: 1.7; white-space: pre-wrap; position: relative;
+}
+.template-content .variable { background: #fff3e0; color: #e65100; padding: 1px 4px; border-radius: 3px; font-weight: 500; }
+
+.copy-btn {
+  padding: 6px 14px; border-radius: 6px; border: 1px solid var(--gray-300); background: white;
+  font-size: 13px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 4px;
+}
+.copy-btn:hover { background: var(--gray-100); border-color: var(--primary); color: var(--primary); }
+.copy-btn.copied { background: var(--success-light); border-color: var(--success); color: var(--success); }
+
+/* Rules */
+.rule-list { list-style: none; padding: 0; }
+.rule-list li { padding: 10px 14px; border-left: 3px solid var(--primary); margin-bottom: 8px; background: var(--gray-50); border-radius: 0 8px 8px 0; font-size: 14px; }
+.rule-list li.must { border-left-color: var(--success); }
+.rule-list li.never { border-left-color: var(--danger); }
+.rule-list li.prefer { border-left-color: var(--warning); }
+
+/* Scoring */
+.score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.score-box { background: var(--gray-50); border-radius: 8px; padding: 16px; text-align: center; }
+.score-box .number { font-size: 32px; font-weight: 700; color: var(--primary); }
+.score-box .label { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
+
+/* Sequence timeline */
+.timeline { position: relative; padding-left: 30px; }
+.timeline::before { content: ''; position: absolute; left: 12px; top: 0; bottom: 0; width: 2px; background: var(--gray-200); }
+.timeline-item { position: relative; margin-bottom: 24px; }
+.timeline-item::before {
+  content: ''; position: absolute; left: -24px; top: 6px; width: 12px; height: 12px;
+  border-radius: 50%; background: var(--primary); border: 2px solid white; box-shadow: 0 0 0 2px var(--primary);
+}
+.timeline-item h4 { margin: 0 0 6px; }
+.timeline-item p { font-size: 14px; color: var(--gray-500); margin: 0; }
+
+/* Checklist */
+.checklist { list-style: none; padding: 0; }
+.checklist li { padding: 8px 0; display: flex; align-items: flex-start; gap: 8px; font-size: 14px; }
+.checklist li::before { content: '☐'; font-size: 16px; color: var(--gray-300); flex-shrink: 0; }
+
+/* Print */
+@media print {
+  .nav-tabs, .copy-btn { display: none; }
+  .tab-content { display: block !important; page-break-inside: avoid; }
+  .container { max-width: 100%; padding: 12px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Testsigma BDR Email Sequence SOP</h1>
+<p class="subtitle">Data-driven email playbook for Apollo sequences. Built from analysis of 1,326 conversations, 381 replies, and 4,786 messages. Updated February 2026.</p>
+
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="showTab('overview')">Overview &amp; Data</button>
+  <button class="nav-tab" onclick="showTab('rules')">Writing Rules</button>
+  <button class="nav-tab" onclick="showTab('structure')">Email Structure</button>
+  <button class="nav-tab" onclick="showTab('templates')">Templates</button>
+  <button class="nav-tab" onclick="showTab('cadence')">Sequence Cadence</button>
+  <button class="nav-tab" onclick="showTab('qa')">QA Checklist</button>
+  <button class="nav-tab" onclick="showTab('proof')">Proof Points</button>
+  <button class="nav-tab" onclick="showTab('objections')">Objections</button>
+</div>
+
+<!-- OVERVIEW TAB -->
+<div id="overview" class="tab-content active">
+<h2>Why This SOP Exists</h2>
+<div class="card">
+<p>Cold email for test automation has a low baseline reply rate (~1-6%). But message structure, word count, CTA choice, and stat framing create massive variance in outcomes. The rules in this SOP are derived from real performance data, not theory. When data conflicts with intuition, the data wins.</p>
+
+<h3 style="margin-top:20px;">Key Performance Benchmarks (from 1,326 LinkedIn conversations)</h3>
+<p style="font-size:14px; color:var(--gray-500); margin-bottom:12px;">These benchmarks come from LinkedIn InMail analysis. Cold email rates are lower, but the <em>relative</em> performance of different patterns transfers directly.</p>
+
+<div class="score-grid" style="margin-top:16px;">
+  <div class="score-box"><div class="number">39.0%</div><div class="label">Reply rate at 75-99 words</div></div>
+  <div class="score-box"><div class="number">40.4%</div><div class="label">"What day works" CTA</div></div>
+  <div class="score-box"><div class="number">34.8%</div><div class="label">Exactly 2 questions</div></div>
+  <div class="score-box"><div class="number">56.5%</div><div class="label">Lunch send (12-1 PM)</div></div>
+</div>
+</div>
+
+<h3>What Makes Email Different from InMail</h3>
+<div class="card">
+<table>
+<tr><th>Dimension</th><th>InMail</th><th>Email</th></tr>
+<tr><td>Typical reply rate</td><td>~28.7%</td><td>~1-6% (cold)</td></tr>
+<tr><td>Optimal word count</td><td>80-120 words</td><td><strong>60-100 words</strong> (shorter)</td></tr>
+<tr><td>Tone</td><td>Warm, conversational</td><td>Slightly more direct</td></tr>
+<tr><td>Subject line</td><td>3-6 words</td><td><strong>5-6 words, problem-framed</strong></td></tr>
+<tr><td>CTA</td><td>"What day works"</td><td>"What day works" (same)</td></tr>
+<tr><td>Proof points</td><td>Required</td><td>Required, specific number</td></tr>
+<tr><td>Personalization bar</td><td>High (1:1 feel)</td><td>Medium (can be slightly more scalable)</td></tr>
+<tr><td>Mobile reading</td><td>~70% on mobile</td><td>~50-60% on mobile</td></tr>
+</table>
+</div>
+
+<h3>Stat Framing Performance</h3>
+<div class="card">
+<table>
+<tr><th>Stat Used</th><th>Reply Rate</th><th>n</th><th>Verdict</th></tr>
+<tr><td>"40% fewer bugs"</td><td><span class="data-callout green">39.2%</span></td><td>836</td><td>Best-performing stat. Use reduction framing.</td></tr>
+<tr><td>Any percentage claim</td><td><span class="data-callout green">32.8%</span></td><td>1,157</td><td>Stats help overall.</td></tr>
+<tr><td>"85% maintenance reduction"</td><td><span class="data-callout">32.6%</span></td><td>1,112</td><td>Good but overused.</td></tr>
+<tr><td>"90% coverage"</td><td><span class="data-callout yellow">21.4%</span></td><td>42</td><td>Below baseline.</td></tr>
+<tr><td>"300% test creation speed"</td><td><span class="data-callout red">16.3%</span></td><td>264</td><td>Sounds unbelievable. Never use multipliers.</td></tr>
+</table>
+<p style="font-size:13px; color:var(--gray-500); margin-top:8px;"><strong>Rule:</strong> Always use reduction framing ("cut by 50%", "3 fewer weeks") over multiplier framing ("3X faster", "300% improvement"). Reductions are believable. Multipliers sound like hype.</p>
+</div>
+
+<h3>Persona Reply Rates</h3>
+<div class="card">
+<table>
+<tr><th>Seniority</th><th>Reply Rate</th><th>n</th><th>Outreach Priority</th></tr>
+<tr><td>Architect / Test Architect</td><td><span class="data-callout green">39.3%</span></td><td>56</td><td>HIGH. Most undervalued persona.</td></tr>
+<tr><td>Manager / Lead</td><td><span class="data-callout green">26.8%</span></td><td>471</td><td>HIGH. Best volume + rate combo.</td></tr>
+<tr><td>Director</td><td><span class="data-callout">26.0%</span></td><td>208</td><td>HIGH. Has budget authority.</td></tr>
+<tr><td>Senior IC</td><td><span class="data-callout">30.0%</span></td><td>70</td><td>MEDIUM. Good if QA/SDET titled.</td></tr>
+<tr><td>VP</td><td><span class="data-callout red">11.9%</span></td><td>42</td><td>LOW. Only with Buyer Intent.</td></tr>
+<tr><td>C-Level</td><td><span class="data-callout red">9.1%</span></td><td>11</td><td>VERY LOW. Almost never worth cold email.</td></tr>
+</table>
+</div>
+</div>
+
+<!-- RULES TAB -->
+<div id="rules" class="tab-content">
+<h2>Email Writing Rules</h2>
+
+<h3>Hard Constraints (NEVER violate, auto-reject if broken)</h3>
+<div class="card">
+<ul class="rule-list">
+  <li class="never"><strong>HC1:</strong> No "I noticed" / "I saw" / "I see" phrasing. <span class="data-callout red">-13.4 pp</span> Strongest negative signal.</li>
+  <li class="never"><strong>HC2:</strong> No leading with AI/ML/self-healing as the headline. <span class="data-callout red">-9.2 pp</span> Features repel.</li>
+  <li class="never"><strong>HC3:</strong> No emails over 100 words (Touch 1). Follow-ups max 80 words. <span class="data-callout green">75-99 words = 39.0%</span></li>
+  <li class="never"><strong>HC4:</strong> No evening sends (after 6 PM). <span class="data-callout red">12.1% vs 56.5% at lunch</span></li>
+  <li class="never"><strong>HC5:</strong> No bullet-point or numbered-list feature dumps. <span class="data-callout red">-2.2 pp</span></li>
+  <li class="never"><strong>HC6:</strong> No "would it be unreasonable" as CTA. <span class="data-callout red">12.8% reply rate</span></li>
+  <li class="never"><strong>HC7:</strong> No phone-number asks. <span class="data-callout red">5.0% reply rate</span> Worst CTA.</li>
+  <li class="never"><strong>HC8:</strong> No "reaching out" / "wanted to connect." <span class="data-callout red">-2.4 pp</span></li>
+  <li class="never"><strong>HC9:</strong> No "I figure" / "would you like to share" / "enough about me." <span class="data-callout red">9.8% to 18.2% rates</span></li>
+  <li class="never"><strong>HC10:</strong> No 3+ question marks per email. <span class="data-callout red">14.3%</span> Optimal = exactly 2 questions.</li>
+</ul>
+</div>
+
+<h3>Strong Preferences (optimize for)</h3>
+<div class="card">
+<ul class="rule-list">
+  <li class="must"><strong>SP1:</strong> 60-100 words for email (sweet spot: 70-90). <span class="data-callout green">39.0% at 75-99</span></li>
+  <li class="must"><strong>SP2:</strong> Schedule sends between 12-1 PM prospect's local time. <span class="data-callout green">56.5%</span></li>
+  <li class="must"><strong>SP3:</strong> Send on Thursdays or Tuesdays. Avoid Mondays. <span class="data-callout green">Thu: 42.1%</span> <span class="data-callout red">Mon: 22.9%</span></li>
+  <li class="must"><strong>SP4:</strong> Exactly 2 question marks per email. <span class="data-callout green">34.8%</span></li>
+  <li class="must"><strong>SP5:</strong> "What day works" CTA tied to the proof point outcome. <span class="data-callout green">40.4%</span></li>
+  <li class="must"><strong>SP6:</strong> Include at least one stat with a specific number. <span class="data-callout green">32.8%</span></li>
+  <li class="must"><strong>SP7:</strong> Use reduction framing, never multiplier framing. <span class="data-callout green">"40% fewer" = 39.2%</span> <span class="data-callout red">"300% faster" = 16.3%</span></li>
+  <li class="must"><strong>SP8:</strong> Minimum 3 emails in a sequence. 31.1% of replies come after 3+ touches.</li>
+  <li class="must"><strong>SP9:</strong> Target Architects and QA Manager/Leads first. Best reply rate personas.</li>
+  <li class="must"><strong>SP10:</strong> Vary the angle and proof point across every touch. Same angle = diminishing returns.</li>
+</ul>
+</div>
+
+<h3>Style Rules</h3>
+<div class="card">
+<ul class="rule-list">
+  <li class="prefer"><strong>No em dashes (—).</strong> Use commas. Hyphens only for true compound words (e.g., "self-healing"). Max 1 hyphen per email body.</li>
+  <li class="prefer"><strong>No resume recaps.</strong> Never reference LinkedIn, profiles, years at company, or "based on your profile."</li>
+  <li class="prefer"><strong>No feature dumping.</strong> Focus on one specific pain and one proof point per email.</li>
+  <li class="prefer"><strong>Mobile-friendly.</strong> Short paragraphs (max 2-3 sentences each). Blank line between every paragraph.</li>
+  <li class="prefer"><strong>Simple language.</strong> Short sentences, no corporate buzzwords. Read it out loud: if you wouldn't say it in a real conversation, rewrite.</li>
+  <li class="prefer"><strong>No easy-out lines.</strong> Never say "no worries," "if not, all good," "feel free to ignore."</li>
+  <li class="prefer"><strong>No generic closes.</strong> "Worth comparing notes?" and "Worth a quick chat?" are BANNED. Close must tie proof point to their situation.</li>
+  <li class="prefer"><strong>Don't "show your work."</strong> Research happens in the backend. The email synthesizes it into a sharp insight, no citations.</li>
+</ul>
+</div>
+
+<h3>Toxic Phrases (NEVER use)</h3>
+<div class="card">
+<table>
+<tr><th>Phrase</th><th>Reply Rate</th><th>vs Baseline</th><th>Why It Fails</th></tr>
+<tr><td>"I noticed" / "I saw"</td><td>10.9%</td><td><span class="data-callout red">-13.4 pp</span></td><td>Screams template. Strongest negative signal.</td></tr>
+<tr><td>"I figure"</td><td>9.8%</td><td><span class="data-callout red">-19.0 pp</span></td><td>Presumptuous and formulaic.</td></tr>
+<tr><td>"would you like to share"</td><td>15.2%</td><td><span class="data-callout red">-13.6 pp</span></td><td>Soft, non-committal, no value offered.</td></tr>
+<tr><td>"flaky tests"</td><td>16.8%</td><td><span class="data-callout red">-11.9 pp</span></td><td>Overused in our space. Use "test maintenance" instead.</td></tr>
+<tr><td>"enough about me"</td><td>18.2%</td><td><span class="data-callout red">-10.6 pp</span></td><td>Self-aware but still template-visible.</td></tr>
+<tr><td>"CI/CD"</td><td>23.6%</td><td><span class="data-callout red">-5.1 pp</span></td><td>Too jargony for email. Talk about "release speed" instead.</td></tr>
+<tr><td>"low code"</td><td>25.8%</td><td><span class="data-callout red">-2.9 pp</span></td><td>Feature label, not a pain hook.</td></tr>
+</table>
+</div>
+
+<h3>High-Performing Phrases (USE these)</h3>
+<div class="card">
+<table>
+<tr><th>Phrase</th><th>Reply Rate</th><th>vs Baseline</th><th>When to Use</th></tr>
+<tr><td>"have you heard of"</td><td>81.8%</td><td><span class="data-callout green">+53.1 pp</span></td><td>Awareness check, niche use but powerful.</td></tr>
+<tr><td>"increase testing efficiency"</td><td>41.4%</td><td><span class="data-callout green">+12.7 pp</span></td><td>Outcome framing. Use freely.</td></tr>
+<tr><td>"thought it would be worth"</td><td>41.3%</td><td><span class="data-callout green">+12.6 pp</span></td><td>Casual bridge to CTA.</td></tr>
+<tr><td>"exploring your options"</td><td>39.7%</td><td><span class="data-callout green">+10.9 pp</span></td><td>When there's a tool-switch signal.</td></tr>
+<tr><td>"test maintenance"</td><td>37.8%</td><td><span class="data-callout green">+9.0 pp</span></td><td>Use instead of "flaky tests."</td></tr>
+<tr><td>"release cycles"</td><td>36.1%</td><td><span class="data-callout green">+7.4 pp</span></td><td>Universal QA pain hook.</td></tr>
+</table>
+</div>
+</div>
+
+<!-- STRUCTURE TAB -->
+<div id="structure" class="tab-content">
+<h2>Email Structure (4 Elements)</h2>
+<div class="card">
+<p>Every email has 4 elements. They should be invisible as structure. The email reads like one coherent idea from someone who understands the prospect's world, not 4 blocks stitched together.</p>
+
+<h4>Element 1: Subject Line (5-6 words)</h4>
+<p>Problem-framed, specific to their domain. Not clickbaity. Must reference their world.</p>
+<p style="margin-top:8px;"><strong>Good:</strong> "Regression after the platform refresh" / "Test maintenance eating your sprint" / "Coverage gap before the release"</p>
+<p><strong>Bad:</strong> "Quick question" (too vague for email) / "AI-powered testing solution" (feature-led) / "Touching base" (zero value)</p>
+
+<h4 style="margin-top:20px;">Element 2: Opener (1-2 lines)</h4>
+<p>Start with a QA situation the prospect would recognize, then ask a real question. Do NOT start with who you are or what Testsigma does.</p>
+<p style="margin-top:8px;"><strong>Good:</strong> "What's harder right now, keeping regression stable during the migration, or keeping coverage from falling behind?"</p>
+<p><strong>Bad:</strong> "Hi, I'm [Name] from Testsigma and we help QA teams..." (pitch-first = delete)</p>
+
+<h4 style="margin-top:20px;">Element 3: Context + Proof Point (2-3 lines)</h4>
+<p>One sentence on why this matters. One proof point with a specific number matched to their pain. Mention Testsigma once here. Frame as what the customer achieved, not what Testsigma does.</p>
+<p style="margin-top:8px;"><strong>Good:</strong> "During platform overhauls, test maintenance usually spikes faster than the team can keep up. Hansard cut their regression cycle from 8 weeks to 5 after switching to Testsigma's auto-healing."</p>
+
+<h4 style="margin-top:20px;">Element 4: Close (1-2 lines)</h4>
+<p>Must do TWO things: (a) reference the specific outcome from the proof point, (b) use a "what day works" meeting ask tied to their situation.</p>
+<p style="margin-top:8px;"><strong>Good:</strong> "If 3 fewer weeks of regression would help the platform refresh timeline, what day works for a quick look at how they did it?"</p>
+<p><strong>Bad:</strong> "Would a quick call make sense?" (generic, no proof point tie-in)</p>
+</div>
+
+<h3>Pre-Draft Checklist (complete BEFORE writing)</h3>
+<div class="card">
+<ul class="checklist">
+  <li><strong>Single Theme:</strong> State the email's theme in one sentence. "This email is about ______." Every sentence must support this theme.</li>
+  <li><strong>Research Filter:</strong> Only use QA-relevant research (release process, testing stack, QA org pressure, integration complexity). NOT revenue, funding, or generic company facts.</li>
+  <li><strong>Proof Point Match:</strong> Select one proof point matched to their pain and vertical. Must include a specific number.</li>
+  <li><strong>Close Construction:</strong> Answer: (1) What outcome did the proof point achieve? (2) What's the prospect's version of that problem? (3) How do I connect them with "what day works"?</li>
+  <li><strong>Plain Language Pass:</strong> Replace all buzzwords. Read it out loud. If it sounds like AI wrote it, rewrite.</li>
+</ul>
+</div>
+
+<h3>Close Construction Formula</h3>
+<div class="card">
+<p style="margin-bottom:12px;">Rotate these 5 patterns across prospects. No two prospects in the same batch get the same close structure.</p>
+<table>
+<tr><th>#</th><th>Pattern</th><th>Example</th></tr>
+<tr><td>1</td><td>"If [outcome] would help [their situation], what day works for a quick look at how they did it?"</td><td>"If 3 fewer weeks of regression would help the OpenEdge schedule, what day works for a quick look at how they did it?"</td></tr>
+<tr><td>2</td><td>"What day works to see how [customer] [achieved outcome] while [solving their version]?"</td><td>"What day works to see how Medibuddy cut test upkeep in half while keeping coverage ahead of releases?"</td></tr>
+<tr><td>3</td><td>"If [outcome] before [their event/deadline] sounds useful, what day works for a quick look?"</td><td>"If 70% less Selenium maintenance before the refresh sounds useful, what day works for a quick look?"</td></tr>
+<tr><td>4</td><td>"What day works to compare how [customer] [achieved outcome] without [their constraint]?"</td><td>"What day works to compare how Sanofi cut regression from 3 days to 80 minutes without adding headcount?"</td></tr>
+<tr><td>5</td><td>"If getting [specific number] back in your [their process] would help, what day works?"</td><td>"If getting 50% of your manual testing time back would help during the scale-up, what day works?"</td></tr>
+</table>
+</div>
+
+<h3>Anti-Pattern Detection ("Stitched Template" Check)</h3>
+<div class="card">
+<p style="margin-bottom:12px;">Before sending, check for these signs the email was stitched together. If ANY are true, rewrite.</p>
+<ul class="rule-list">
+  <li class="never">Opener contains 2+ company facts that don't connect to each other</li>
+  <li class="never">Context uses "That's the [noun] most [type] teams hit/feel/face" (formulaic connector)</li>
+  <li class="never">Proof point could be swapped into any email (not tied to theme)</li>
+  <li class="never">Close is generic ("Worth comparing notes?" works for any email)</li>
+  <li class="never">Close doesn't reference the proof point's specific outcome</li>
+  <li class="never">Close doesn't connect to the prospect's specific situation</li>
+  <li class="never">Close uses an open-ended question instead of "what day works" <span class="data-callout red">14.0% vs 40.4%</span></li>
+  <li class="never">Email contains 2+ hyphens used as mid-sentence dashes (AI signature)</li>
+  <li class="never">Email has no paragraph breaks between sections (wall of text on mobile)</li>
+</ul>
+</div>
+</div>
+
+<!-- TEMPLATES TAB -->
+<div id="templates" class="tab-content">
+<h2>Email Templates (5 Templates by Pain Hook)</h2>
+<p style="color:var(--gray-500); margin-bottom:20px;">Each template targets a different pain hook. Customize the <span style="background:#fff3e0; color:#e65100; padding:1px 4px; border-radius:3px;">{{variables}}</span> for each prospect. All templates are pre-validated against the QA Gate.</p>
+
+<!-- Template 1: Test Maintenance -->
+<div class="template-card">
+<div class="template-header">
+  <h4>Template 1: Test Maintenance Pain</h4>
+  <div class="template-badges">
+    <span class="badge badge-pain">Maintenance</span>
+    <span class="badge badge-persona">QA Manager / Lead</span>
+    <span class="badge badge-vertical">All Verticals</span>
+    <span class="badge badge-touch">Touch 1</span>
+  </div>
+</div>
+<div class="template-body">
+  <div class="template-field">
+    <label>Subject Line</label>
+    <div class="template-content" id="t1-subject"><span class="variable">{{pain_specific_subject}}</span> slowing <span class="variable">{{their_process}}</span></div>
+    <button class="copy-btn" onclick="copyText('t1-subject', this)">Copy Subject</button>
+  </div>
+  <div class="template-field">
+    <label>Examples: "Test upkeep slowing releases" / "Regression maintenance after the migration" / "Selenium upkeep eating sprint capacity"</label>
+  </div>
+  <div class="template-field">
+    <label>Email Body (target: 70-90 words)</label>
+    <div class="template-content" id="t1-body">Hi <span class="variable">{{FirstName}}</span>,
+
+What's taking more time right now, keeping tests stable through <span class="variable">{{their_change_event}}</span>, or building new coverage to keep up?
+
+Most teams we talk to hit a wall where test maintenance eats the capacity they need for new work. <span class="variable">{{Customer}}</span> was in the same spot and cut their <span class="variable">{{metric_description}}</span> by <span class="variable">{{reduction_stat}}</span> after moving to Testsigma's auto-healing.
+
+If <span class="variable">{{outcome_reframed_for_them}}</span> would help <span class="variable">{{their_situation}}</span>, what day works for a quick look at how they did it?
+
+<span class="variable">{{SenderFirstName}}</span></div>
+    <button class="copy-btn" onclick="copyText('t1-body', this)">Copy Body</button>
+  </div>
+  <div class="template-field">
+    <label>Filled Example (Hansard proof point, insurance vertical)</label>
+    <div class="template-content" id="t1-example">Hi Sarah,
+
+What's taking more time right now, keeping tests stable through the platform refresh, or building new coverage to keep up?
+
+Most teams we talk to hit a wall where test maintenance eats the capacity they need for new work. Hansard was in the same spot and cut their regression cycle from 8 weeks to 5 after moving to Testsigma's auto-healing.
+
+If 3 fewer weeks of regression would help the release schedule, what day works for a quick look at how they did it?
+
+Rob</div>
+    <button class="copy-btn" onclick="copyText('t1-example', this)">Copy Example</button>
+  </div>
+</div>
+</div>
+
+<!-- Template 2: Release Velocity -->
+<div class="template-card">
+<div class="template-header">
+  <h4>Template 2: Release Velocity Pain</h4>
+  <div class="template-badges">
+    <span class="badge badge-pain">Velocity</span>
+    <span class="badge badge-persona">Director / QA Lead</span>
+    <span class="badge badge-vertical">FinTech / SaaS</span>
+    <span class="badge badge-touch">Touch 1</span>
+  </div>
+</div>
+<div class="template-body">
+  <div class="template-field">
+    <label>Subject Line</label>
+    <div class="template-content" id="t2-subject">Regression blocking <span class="variable">{{their_release_goal}}</span></div>
+    <button class="copy-btn" onclick="copyText('t2-subject', this)">Copy Subject</button>
+  </div>
+  <div class="template-field">
+    <label>Email Body (target: 70-90 words)</label>
+    <div class="template-content" id="t2-body">Hi <span class="variable">{{FirstName}}</span>,
+
+Are release cycles getting longer as <span class="variable">{{their_platform_or_product}}</span> grows, or has the team found a way to keep regression from becoming the bottleneck?
+
+<span class="variable">{{Customer}}</span> was running into the same thing. They cut regression from <span class="variable">{{before_metric}}</span> to <span class="variable">{{after_metric}}</span> once they moved their suite to Testsigma.
+
+What day works to see how they did it without adding headcount?
+
+<span class="variable">{{SenderFirstName}}</span></div>
+    <button class="copy-btn" onclick="copyText('t2-body', this)">Copy Body</button>
+  </div>
+  <div class="template-field">
+    <label>Filled Example (Sanofi proof point, healthcare vertical)</label>
+    <div class="template-content" id="t2-example">Hi James,
+
+Are release cycles getting longer as the digital health platform grows, or has the team found a way to keep regression from becoming the bottleneck?
+
+Sanofi was running into the same thing. They cut regression from 3 days to 80 minutes once they moved their suite to Testsigma.
+
+What day works to see how they did it without adding headcount?
+
+Rob</div>
+    <button class="copy-btn" onclick="copyText('t2-example', this)">Copy Example</button>
+  </div>
+</div>
+</div>
+
+<!-- Template 3: Coverage / Scale -->
+<div class="template-card">
+<div class="template-header">
+  <h4>Template 3: Coverage / Scale Pain</h4>
+  <div class="template-badges">
+    <span class="badge badge-pain">Coverage</span>
+    <span class="badge badge-persona">Architect / Sr SDET</span>
+    <span class="badge badge-vertical">E-Commerce / Healthcare</span>
+    <span class="badge badge-touch">Touch 1</span>
+  </div>
+</div>
+<div class="template-body">
+  <div class="template-field">
+    <label>Subject Line</label>
+    <div class="template-content" id="t3-subject">Coverage gap across <span class="variable">{{their_platforms}}</span></div>
+    <button class="copy-btn" onclick="copyText('t3-subject', this)">Copy Subject</button>
+  </div>
+  <div class="template-field">
+    <label>Email Body (target: 70-90 words)</label>
+    <div class="template-content" id="t3-body">Hi <span class="variable">{{FirstName}}</span>,
+
+How much of <span class="variable">{{their_product_or_platform}}</span> has automated test coverage right now, and is the team keeping up as the product scales?
+
+That gap is usually where things start breaking in production. <span class="variable">{{Customer}}</span> automated <span class="variable">{{test_count_or_coverage}}</span> and cut manual testing time by <span class="variable">{{reduction_stat}}</span> using Testsigma's plain English approach.
+
+If <span class="variable">{{outcome_for_them}}</span> before <span class="variable">{{their_deadline_or_event}}</span> sounds useful, what day works for a quick look?
+
+<span class="variable">{{SenderFirstName}}</span></div>
+    <button class="copy-btn" onclick="copyText('t3-body', this)">Copy Body</button>
+  </div>
+  <div class="template-field">
+    <label>Filled Example (Medibuddy proof point, healthcare)</label>
+    <div class="template-content" id="t3-example">Hi Priya,
+
+How much of the telehealth platform has automated test coverage right now, and is the team keeping up as the product scales?
+
+That gap is usually where things start breaking in production. Medibuddy automated 2,500 tests and cut manual testing time by 50% using Testsigma's plain English approach.
+
+If halving your manual testing effort before the Q2 launch sounds useful, what day works for a quick look?
+
+Rob</div>
+    <button class="copy-btn" onclick="copyText('t3-example', this)">Copy Example</button>
+  </div>
+</div>
+</div>
+
+<!-- Template 4: Tool Migration -->
+<div class="template-card">
+<div class="template-header">
+  <h4>Template 4: Tool Migration Pain (Selenium / Competitor)</h4>
+  <div class="template-badges">
+    <span class="badge badge-pain">Tool Switch</span>
+    <span class="badge badge-persona">All QA Personas</span>
+    <span class="badge badge-vertical">All Verticals</span>
+    <span class="badge badge-touch">Touch 1</span>
+  </div>
+</div>
+<div class="template-body">
+  <div class="template-field">
+    <label>Subject Line</label>
+    <div class="template-content" id="t4-subject"><span class="variable">{{CurrentTool}}</span> upkeep vs. <span class="variable">{{their_priority}}</span></div>
+    <button class="copy-btn" onclick="copyText('t4-subject', this)">Copy Subject</button>
+  </div>
+  <div class="template-field">
+    <label>Email Body (target: 70-90 words)</label>
+    <div class="template-content" id="t4-body">Hi <span class="variable">{{FirstName}}</span>,
+
+Is <span class="variable">{{CurrentTool}}</span> still working for the team, or is test maintenance starting to outpace the value?
+
+Teams exploring their options usually find the biggest gap is upkeep. Every UI change means broken locators and manual fixes. Testsigma's auto-healing handles that automatically, which is how teams using <span class="variable">{{CurrentTool}}</span> have cut maintenance by 70% after switching.
+
+If 70% less <span class="variable">{{CurrentTool}}</span> upkeep would free your team for <span class="variable">{{their_priority}}</span>, what day works for a quick compare?
+
+<span class="variable">{{SenderFirstName}}</span></div>
+    <button class="copy-btn" onclick="copyText('t4-body', this)">Copy Body</button>
+  </div>
+  <div class="template-field">
+    <label>Filled Example (Selenium migration)</label>
+    <div class="template-content" id="t4-example">Hi Marcus,
+
+Is Selenium still working for the team, or is test maintenance starting to outpace the value?
+
+Teams exploring their options usually find the biggest gap is upkeep. Every UI change means broken locators and manual fixes. Testsigma's auto-healing handles that automatically, which is how teams using Selenium have cut maintenance by 70% after switching.
+
+If 70% less Selenium upkeep would free your team for the product rebuild, what day works for a quick compare?
+
+Rob</div>
+    <button class="copy-btn" onclick="copyText('t4-example', this)">Copy Example</button>
+  </div>
+</div>
+</div>
+
+<!-- Template 5: Trigger Event -->
+<div class="template-card">
+<div class="template-header">
+  <h4>Template 5: Trigger Event (Hiring / Migration / Funding)</h4>
+  <div class="template-badges">
+    <span class="badge badge-pain">Trigger</span>
+    <span class="badge badge-persona">Director / VP</span>
+    <span class="badge badge-vertical">All Verticals</span>
+    <span class="badge badge-touch">Touch 1</span>
+  </div>
+</div>
+<div class="template-body">
+  <div class="template-field">
+    <label>Subject Line</label>
+    <div class="template-content" id="t5-subject">QA during <span class="variable">{{their_trigger_event}}</span></div>
+    <button class="copy-btn" onclick="copyText('t5-subject', this)">Copy Subject</button>
+  </div>
+  <div class="template-field">
+    <label>Email Body (target: 70-90 words)</label>
+    <div class="template-content" id="t5-body">Hi <span class="variable">{{FirstName}}</span>,
+
+<span class="variable">{{trigger_event_question}}</span>
+
+<span class="variable">{{one_line_context_why_trigger_affects_qa}}</span>. <span class="variable">{{Customer}}</span> went through something similar and <span class="variable">{{specific_outcome_with_number}}</span> using Testsigma.
+
+<span class="variable">{{close_tying_outcome_to_their_trigger}}</span>
+
+<span class="variable">{{SenderFirstName}}</span></div>
+    <button class="copy-btn" onclick="copyText('t5-body', this)">Copy Body</button>
+  </div>
+  <div class="template-field">
+    <label>Filled Example (Hiring trigger, SaaS)</label>
+    <div class="template-content" id="t5-example">Hi David,
+
+With the QA team growing, is the plan to scale testing with headcount, or is automation part of the roadmap?
+
+Scaling QA usually means test demand outpaces capacity faster than you can hire. Spendflo went through something similar and cut manual testing by 50% in one quarter using Testsigma.
+
+If cutting manual testing in half would help the team scale without doubling headcount, what day works for a quick look?
+
+Rob</div>
+    <button class="copy-btn" onclick="copyText('t5-example', this)">Copy Example</button>
+  </div>
+</div>
+</div>
+
+<h3>Follow-Up Templates (Touch 2 and 3)</h3>
+
+<div class="template-card">
+<div class="template-header">
+  <h4>Follow-Up Template: Touch 2 (Day 5)</h4>
+  <div class="template-badges"><span class="badge badge-touch">Touch 2</span></div>
+</div>
+<div class="template-body">
+  <div class="template-field">
+    <label>Subject Line</label>
+    <div class="template-content" id="t6-subject">Re: <span class="variable">{{original_subject}}</span></div>
+    <button class="copy-btn" onclick="copyText('t6-subject', this)">Copy Subject</button>
+  </div>
+  <div class="template-field">
+    <label>Email Body (target: 40-70 words, DIFFERENT angle from Touch 1)</label>
+    <div class="template-content" id="t6-body">Hi <span class="variable">{{FirstName}}</span>,
+
+Quick follow-up. <span class="variable">{{new_angle_one_sentence}}</span>
+
+<span class="variable">{{different_customer}}</span> <span class="variable">{{different_outcome_with_number}}</span> after making the switch.
+
+If <span class="variable">{{new_outcome_for_them}}</span> sounds useful, what day works for a quick look?
+
+<span class="variable">{{SenderFirstName}}</span></div>
+    <button class="copy-btn" onclick="copyText('t6-body', this)">Copy Body</button>
+  </div>
+  <div class="template-field">
+    <label>Filled Example</label>
+    <div class="template-content" id="t6-example">Hi Sarah,
+
+Quick follow-up. Thought it would be worth mentioning a different angle.
+
+CRED hit 90% regression automation coverage and 5x faster execution after consolidating their test suite on Testsigma.
+
+If getting that kind of coverage before the next release sounds useful, what day works for a quick look?
+
+Rob</div>
+    <button class="copy-btn" onclick="copyText('t6-example', this)">Copy Example</button>
+  </div>
+</div>
+</div>
+
+<div class="template-card">
+<div class="template-header">
+  <h4>Follow-Up Template: Touch 3 (Day 10, "Break Pattern")</h4>
+  <div class="template-badges"><span class="badge badge-touch">Touch 3</span></div>
+</div>
+<div class="template-body">
+  <div class="template-field">
+    <label>Subject Line (fresh, not "Re:")</label>
+    <div class="template-content" id="t7-subject"><span class="variable">{{fresh_subject_new_angle}}</span></div>
+    <button class="copy-btn" onclick="copyText('t7-subject', this)">Copy Subject</button>
+  </div>
+  <div class="template-field">
+    <label>Email Body (target: 50-70 words, completely fresh angle)</label>
+    <div class="template-content" id="t7-body">Hi <span class="variable">{{FirstName}}</span>,
+
+Different angle. <span class="variable">{{new_insight_or_question_about_their_world}}</span>
+
+<span class="variable">{{third_proof_point_one_line}}</span>
+
+If that would help <span class="variable">{{their_specific_situation}}</span>, what day works this week?
+
+<span class="variable">{{SenderFirstName}}</span></div>
+    <button class="copy-btn" onclick="copyText('t7-body', this)">Copy Body</button>
+  </div>
+  <div class="template-field">
+    <label>Filled Example</label>
+    <div class="template-content" id="t7-example">Hi Sarah,
+
+Different angle. Are your devs writing tests, or is that still on the QA team alone?
+
+A Fortune 100 company tripled their testing productivity by letting both devs and QA write tests in plain English through Testsigma.
+
+If 3x more testing throughput would help before the next major release, what day works this week?
+
+Rob</div>
+    <button class="copy-btn" onclick="copyText('t7-example', this)">Copy Example</button>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- CADENCE TAB -->
+<div id="cadence" class="tab-content">
+<h2>Email Sequence Cadence (3-5 Touches)</h2>
+
+<div class="card">
+<h3>Recommended Apollo Sequence: 5-Touch, 21-Day</h3>
+<div class="timeline">
+  <div class="timeline-item">
+    <h4>Touch 1 — Day 1 (Tuesday or Thursday, 12-1 PM local)</h4>
+    <p>Full email. Pain-hook opener + proof point + "what day works" close. 70-90 words. Use Template 1-5 based on research.</p>
+  </div>
+  <div class="timeline-item">
+    <h4>Touch 2 — Day 5 (reply thread, "Re:" subject)</h4>
+    <p>Follow-up. NEW angle, different proof point. 40-70 words. Lighter but still specific close.</p>
+  </div>
+  <div class="timeline-item">
+    <h4>Touch 3 — Day 10 (fresh subject line, break pattern)</h4>
+    <p>Completely fresh angle. Different proof point. New subject line (not "Re:"). 50-70 words.</p>
+  </div>
+  <div class="timeline-item">
+    <h4>Touch 4 — Day 15 (optional, value-add)</h4>
+    <p>Share something useful: relevant case study, industry stat, or competitive insight. 40-60 words. Soft close.</p>
+  </div>
+  <div class="timeline-item">
+    <h4>Touch 5 — Day 21 (final touch, direct)</h4>
+    <p>Short and direct. "Wanted to give this one more try." One line of value. "What day works" close. 30-50 words. No breakup email. Just ask one more time.</p>
+  </div>
+</div>
+</div>
+
+<h3>Cadence Rules</h3>
+<div class="card">
+<ul class="rule-list">
+  <li class="must"><strong>Every touch uses a DIFFERENT proof point and angle.</strong> Repeating = diminishing returns.</li>
+  <li class="must"><strong>Send at 12-1 PM prospect's local time.</strong> Schedule in Apollo accordingly. <span class="data-callout green">56.5% reply rate</span></li>
+  <li class="must"><strong>Preferred send days: Thursday, Tuesday, Friday.</strong> Avoid Monday for Touch 1. <span class="data-callout red">Mon: 22.9%</span></li>
+  <li class="must"><strong>Never send back-to-back days at identical times.</strong> Vary by 1-2 hours.</li>
+  <li class="prefer"><strong>Touch 1 and 2 use "Re:" thread.</strong> Touch 3+ use fresh subjects to break inbox pattern.</li>
+  <li class="prefer"><strong>Touch 4 is optional.</strong> Use for high-priority prospects. Skip for lower-priority to save volume.</li>
+  <li class="never"><strong>No breakup emails.</strong> "Should I close the file?" has near-zero conversion and wastes the final touch.</li>
+  <li class="never"><strong>No "just checking in" follow-ups.</strong> Every touch must add new value or a new angle.</li>
+</ul>
+</div>
+
+<h3>Apollo Sequence Setup</h3>
+<div class="card">
+<table>
+<tr><th>Setting</th><th>Recommended Value</th><th>Rationale</th></tr>
+<tr><td>Sequence type</td><td>Manual steps (all)</td><td>Allows personalization review before send. Auto-send = template detection risk.</td></tr>
+<tr><td>Send window</td><td>11:30 AM - 1:30 PM prospect local</td><td>Centers on 12-1 PM optimal window.</td></tr>
+<tr><td>Send days</td><td>Tue, Thu, Fri</td><td>Best-performing days. Avoid Mon.</td></tr>
+<tr><td>Daily send limit</td><td>50/day per mailbox</td><td>Stay under deliverability thresholds.</td></tr>
+<tr><td>Delay between sends</td><td>60-90 seconds</td><td>Avoid spam triggers from rapid sends.</td></tr>
+<tr><td>From address</td><td>Rotate across 4 mailboxes</td><td>Distributes reputation risk.</td></tr>
+<tr><td>Unsubscribe link</td><td>Required (CAN-SPAM)</td><td>Apollo adds automatically.</td></tr>
+<tr><td>Open tracking</td><td>On (but don't optimize for opens)</td><td>Open rates are unreliable. Focus on reply rate.</td></tr>
+<tr><td>Reply detection</td><td>On, auto-pause on reply</td><td>Prevents sending follow-up after a reply.</td></tr>
+</table>
+</div>
+
+<h3>Timing Optimization Matrix</h3>
+<div class="card">
+<table>
+<tr><th>Time Slot</th><th>Reply Rate</th><th>Verdict</th></tr>
+<tr><td>Lunch (12-1 PM)</td><td><span class="data-callout green">56.5%</span></td><td>DEFAULT. Schedule all sends here.</td></tr>
+<tr><td>Afternoon (2-5 PM)</td><td><span class="data-callout">24.0%</span></td><td>Acceptable overflow if lunch is full.</td></tr>
+<tr><td>Morning (9-11 AM)</td><td><span class="data-callout yellow">Untested</span></td><td>Small sample. Worth A/B testing.</td></tr>
+<tr><td>Evening (6-8 PM)</td><td><span class="data-callout red">12.1%</span></td><td>NEVER. Nearly 5x worse than lunch.</td></tr>
+</table>
+<table style="margin-top:16px;">
+<tr><th>Day</th><th>Reply Rate</th><th>Verdict</th></tr>
+<tr><td>Thursday</td><td><span class="data-callout green">42.1%</span></td><td>BEST. Default Touch 1 day.</td></tr>
+<tr><td>Tuesday</td><td><span class="data-callout green">29.6%</span></td><td>Good. Second choice.</td></tr>
+<tr><td>Friday</td><td><span class="data-callout green">29.6%</span></td><td>Good for follow-ups.</td></tr>
+<tr><td>Wednesday</td><td><span class="data-callout">28.3%</span></td><td>Average.</td></tr>
+<tr><td>Monday</td><td><span class="data-callout red">22.9%</span></td><td>WORST. Avoid for Touch 1.</td></tr>
+</table>
+</div>
+</div>
+
+<!-- QA TAB -->
+<div id="qa" class="tab-content">
+<h2>QA Checklist (Run Before Every Send)</h2>
+<div class="card">
+<p style="margin-bottom:16px;">Every email must pass ALL checks before it enters an Apollo sequence. Any failure = rewrite.</p>
+<ul class="checklist">
+  <li><strong>HC Scan:</strong> Check against all 10 Hard Constraints. Any violation = auto-reject.</li>
+  <li><strong>Word Count:</strong> Touch 1 = 60-100 words. Follow-ups = 40-70 words. Count excludes greeting and sign-off.</li>
+  <li><strong>Question Count:</strong> Exactly 2 question marks for Touch 1. 1-2 for follow-ups.</li>
+  <li><strong>CTA Validation:</strong> Contains "what day works" (or close variant). References proof point outcome. Ties to prospect's situation. NOT generic.</li>
+  <li><strong>Proof Point Present:</strong> At least one customer story or stat with a specific number.</li>
+  <li><strong>Reduction Framing:</strong> Stats use "cut by X%" or "X fewer," never "X times faster" or "X00% improvement."</li>
+  <li><strong>Subject Line:</strong> 5-6 words. Problem-framed. No clickbait.</li>
+  <li><strong>Paragraph Spacing:</strong> Minimum 3 paragraph breaks. No paragraph over 3 sentences. Scannable on mobile.</li>
+  <li><strong>Hyphen Audit:</strong> Max 1 hyphen in body (compound words only). No mid-sentence dashes.</li>
+  <li><strong>Toxic Phrase Scan:</strong> No "I noticed," "I saw," "flaky tests," "I figure," "enough about me," etc.</li>
+  <li><strong>Angle Rotation:</strong> Each touch in the sequence uses a DIFFERENT proof point and angle.</li>
+  <li><strong>Close Dedup:</strong> No two emails in the same batch share the same close structure.</li>
+  <li><strong>Personalization Check:</strong> At least one element is specific to THIS prospect (not just name/title/company swap).</li>
+  <li><strong>Plain Language:</strong> No buzzwords (velocity, leverage, scalability, bandwidth). Simple words only.</li>
+</ul>
+</div>
+
+<h3>Message Quality Score (MQS) — 12-Point System</h3>
+<div class="card">
+<table>
+<tr><th>Dimension</th><th>Score 3</th><th>Score 2</th><th>Score 1</th></tr>
+<tr>
+  <td><strong>Opener Clarity</strong></td>
+  <td>Specific, insight-driven question about their situation. No "I noticed."</td>
+  <td>Company-specific but generic frame.</td>
+  <td>"I noticed," role-recap, or "Are you looking for..."</td>
+</tr>
+<tr>
+  <td><strong>CTA Confidence</strong></td>
+  <td>"What day works" with direct tie to proof point + prospect's situation. Can't be pasted into another email.</td>
+  <td>"What day works" but weak tie to proof point.</td>
+  <td>Generic close, open-ended question, "happy to share."</td>
+</tr>
+<tr>
+  <td><strong>Personalization Density</strong></td>
+  <td>References something only THIS person would recognize.</td>
+  <td>References their company specifically.</td>
+  <td>Only swaps name/title/company.</td>
+</tr>
+<tr>
+  <td><strong>Friction (inverted)</strong></td>
+  <td>70-90 words, one proof point, one CTA, 2 questions, no bullets, clean spacing.</td>
+  <td>90-100 words, still readable.</td>
+  <td>Over 100 words, bullets, multiple CTAs, 3+ questions.</td>
+</tr>
+</table>
+<p style="margin-top:12px; font-size:14px;"><strong>Threshold:</strong> Only emails scoring <strong>9/12 or higher</strong> may be sent. Below 9 = rewrite.</p>
+</div>
+</div>
+
+<!-- PROOF POINTS TAB -->
+<div id="proof" class="tab-content">
+<h2>Proof Points &amp; Matching Guide</h2>
+<div class="card">
+<table>
+<tr><th>Proof Point</th><th>Stat</th><th>Best Verticals</th><th>Best Pain Hook</th></tr>
+<tr><td>Hansard</td><td>Regression 8 weeks → 5 weeks with AI auto-heal</td><td>Insurance, Financial Services</td><td>Maintenance, long regression</td></tr>
+<tr><td>Sanofi</td><td>Regression 3 days → 80 minutes</td><td>Pharma, Healthcare, Compliance-heavy</td><td>Velocity, release speed</td></tr>
+<tr><td>CRED</td><td>90% regression automation, 5x faster execution</td><td>FinTech, high-velocity teams</td><td>Coverage, velocity</td></tr>
+<tr><td>Medibuddy</td><td>2,500 tests automated, 50% maintenance cut</td><td>Healthcare, mid-size scaling</td><td>Coverage, scale</td></tr>
+<tr><td>Spendflo</td><td>50% manual testing cut</td><td>SaaS, smaller teams</td><td>Quick wins, efficiency</td></tr>
+<tr><td>Nagra DTV</td><td>2,500 tests in 8 months, 4X faster</td><td>Media, streaming, API + UI</td><td>Scale, coverage</td></tr>
+<tr><td>Cisco</td><td>35% regression reduction</td><td>Enterprise, large-scale QA</td><td>Enterprise maintenance</td></tr>
+<tr><td>Fortune 100</td><td>3X productivity increase</td><td>Enterprise VP-level</td><td>Productivity, headcount</td></tr>
+<tr><td>Freshworks</td><td>Reduced flakiness at scale with codeless self-healing</td><td>SaaS, mid-to-large</td><td>Maintenance at scale</td></tr>
+<tr><td>Meesho</td><td>4X faster automation scaling</td><td>E-commerce, rapid growth</td><td>Scale, speed</td></tr>
+<tr><td>Generic (Selenium)</td><td>70% maintenance reduction vs Selenium</td><td>Any team on Selenium</td><td>Tool migration</td></tr>
+<tr><td>Generic (self-healing)</td><td>90% maintenance reduction with self-healing</td><td>Any team with maintenance pain</td><td>Maintenance</td></tr>
+</table>
+</div>
+
+<h3>Stat Framing Rules</h3>
+<div class="card">
+<ul class="rule-list">
+  <li class="must"><strong>Use reduction framing:</strong> "cut by 50%", "3 fewer weeks", "halved their manual testing." <span class="data-callout green">39.2%</span></li>
+  <li class="never"><strong>Never use multiplier framing:</strong> "3X faster", "300% improvement." <span class="data-callout red">16.3%</span></li>
+  <li class="must"><strong>Use specific numbers:</strong> "from 8 weeks to 5 weeks" beats "significantly reduced." <span class="data-callout green">32.8% with any stat</span></li>
+  <li class="prefer"><strong>Frame from the customer's perspective:</strong> "Hansard cut regression from 8 to 5 weeks" not "Testsigma reduced Hansard's regression by 37.5%."</li>
+</ul>
+</div>
+</div>
+
+<!-- OBJECTIONS TAB -->
+<div id="objections" class="tab-content">
+<h2>Objection Handling (for Email Replies)</h2>
+<div class="card">
+<p style="margin-bottom:16px;">When a prospect replies with an objection, respond the same day. Keep responses under 80 words. Acknowledge, reframe, bridge to meeting.</p>
+<table>
+<tr><th>Objection</th><th>Response Framework</th></tr>
+<tr><td>"We already have a tool"</td><td>"Totally fair. A lot of teams we work with had [tool] too. The gap they kept hitting was [specific limitation]. Worth comparing? What day works for a quick side-by-side?"</td></tr>
+<tr><td>"Not a priority right now"</td><td>"Makes sense. A lot of QA leaders in evaluation mode use our free trial to benchmark what's possible before committing. Happy to share if timing opens up."</td></tr>
+<tr><td>"Budget is tight"</td><td>"Totally get it. One company your size ([Customer]) cut manual testing 50% and saw ROI in the first quarter. If that math would help make the case, happy to walk through it."</td></tr>
+<tr><td>"Security/procurement is complex"</td><td>"We support on-prem, private cloud, and hybrid. SOC2/ISO certified. A few Fortune 500s run us behind their firewall. Happy to loop in our solutions engineer if helpful."</td></tr>
+<tr><td>"We use Selenium"</td><td>"Teams on Selenium usually find the biggest pain is locator maintenance. Our auto-healing handles that automatically, which is how teams have cut Selenium upkeep by 70%. Worth a quick compare?"</td></tr>
+<tr><td>"We use Provar"</td><td>"Provar's Java-heavy and slow to adapt to DOM changes. Teams switch to us for faster setup (1 day vs weeks) and better CI/CD integration. Happy to show a side-by-side."</td></tr>
+<tr><td>"Send me some info"</td><td>"Happy to. But honestly, a 2-minute walkthrough usually answers more than a PDF. What day works for a quick look, and I'll send a summary after?"</td></tr>
+<tr><td>"How do you use our data?"</td><td>"We use OpenAI but your data is never stored for training. Only used during prompt generation. We can disable history entirely. SOC2 + GDPR compliant. Happy to share our security whitepaper."</td></tr>
+</table>
+</div>
+
+<h3>Reply Type Distribution (what to expect)</h3>
+<div class="card">
+<table>
+<tr><th>Reply Type</th><th>% of Replies</th><th>Action</th></tr>
+<tr><td>Polite ("thanks")</td><td>34.5%</td><td>Follow up with value. Not a commitment yet.</td></tr>
+<tr><td>Negative ("not interested")</td><td>14.5%</td><td>Log objection reason. Re-engage 60+ days.</td></tr>
+<tr><td>Positive ("interested")</td><td>11.3%</td><td>Book meeting immediately. Don't over-explain.</td></tr>
+<tr><td>Referral ("talk to [name]")</td><td>8.2%</td><td>High value. Reach out to referred person same day.</td></tr>
+<tr><td>Has tool ("we use [X]")</td><td>2.6%</td><td>Objection handle: ask about gaps.</td></tr>
+<tr><td>Timing ("not right now")</td><td>2.4%</td><td>Set calendar reminder. Re-engage on trigger.</td></tr>
+</table>
+</div>
+</div>
+
+</div>
+
+<script>
+function showTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function copyText(elementId, btn) {
+  const el = document.getElementById(elementId);
+  const text = el.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    btn.textContent = 'Copied!';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.textContent = btn.textContent.includes('Subject') ? 'Copy Subject' : (btn.textContent.includes('Example') ? 'Copy Example' : 'Copy Body');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>

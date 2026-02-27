@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testsigma Outreach Stats Engine v2 — Company-Wide Intelligence</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --bg: #0f1117; --surface: #1a1d27; --surface2: #232736; --border: #2e3347;
+            --text: #e4e6ed; --text2: #9498ab; --accent: #6c5ce7; --green: #00b894;
+            --red: #ff6b6b; --orange: #fdcb6e; --blue: #74b9ff; --pink: #fd79a8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+        .dashboard { max-width: 1440px; margin: 0 auto; padding: 24px; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+        header h1 { font-size: 24px; font-weight: 700; }
+        header h1 span { color: var(--accent); }
+        .subtitle { font-size: 13px; color: var(--text2); }
+        .tabs { display: flex; gap: 4px; background: var(--surface); border-radius: 10px; padding: 4px; flex-wrap: wrap; }
+        .tab { padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text2); transition: all 0.2s; border: none; background: none; white-space: nowrap; }
+        .tab.active { background: var(--accent); color: #fff; }
+        .tab:hover:not(.active) { color: var(--text); background: var(--surface2); }
+        .view { display: none; }
+        .view.active { display: block; }
+        .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .kpi { background: var(--surface); border-radius: 12px; padding: 20px; border: 1px solid var(--border); }
+        .kpi-label { font-size: 12px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .kpi-value { font-size: 28px; font-weight: 700; }
+        .kpi-sub { font-size: 12px; color: var(--text2); margin-top: 4px; }
+        .kpi-value.green { color: var(--green); }
+        .kpi-value.red { color: var(--red); }
+        .kpi-value.orange { color: var(--orange); }
+        .kpi-value.blue { color: var(--blue); }
+        .kpi-value.accent { color: var(--accent); }
+        .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+        @media (max-width: 768px) { .charts { grid-template-columns: 1fr; } }
+        .chart-card { background: var(--surface); border-radius: 12px; padding: 20px; border: 1px solid var(--border); }
+        .chart-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 16px; color: var(--text2); }
+        .chart-card.full { grid-column: 1 / -1; }
+        canvas { max-height: 300px; }
+        .stat-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .stat-table th { text-align: left; padding: 10px 12px; color: var(--text2); font-weight: 500; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+        .stat-table tr:hover { background: var(--surface2); }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+        .badge-green { background: rgba(0,184,148,0.15); color: var(--green); }
+        .badge-red { background: rgba(255,107,107,0.15); color: var(--red); }
+        .badge-orange { background: rgba(253,203,110,0.15); color: var(--orange); }
+        .badge-blue { background: rgba(116,185,255,0.15); color: var(--blue); }
+        .badge-accent { background: rgba(108,92,231,0.15); color: var(--accent); }
+        .section { background: var(--surface); border-radius: 12px; padding: 24px; border: 1px solid var(--border); margin-bottom: 16px; }
+        .section h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+        .section h3 { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--text2); }
+        .insight { background: var(--surface2); border-radius: 8px; padding: 16px; margin-bottom: 12px; border-left: 3px solid var(--accent); }
+        .insight-title { font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+        .insight-text { font-size: 13px; color: var(--text2); }
+        .progress-bar { height: 8px; background: var(--surface2); border-radius: 4px; overflow: hidden; margin-top: 8px; }
+        .progress-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+        .template-card { background: var(--surface2); border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+        .template-card h4 { font-size: 14px; margin-bottom: 8px; }
+        .template-body { background: var(--bg); border-radius: 6px; padding: 12px; font-size: 13px; white-space: pre-wrap; margin: 8px 0; color: var(--text2); }
+        .copy-btn { padding: 6px 12px; background: var(--accent); color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        .copy-btn:hover { opacity: 0.9; }
+        .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+        .filter-btn { padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text2); }
+        .filter-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(108,92,231,0.1); }
+        .gmail-row { display: flex; gap: 12px; padding: 10px; border-bottom: 1px solid var(--border); align-items: center; }
+        .gmail-row:hover { background: var(--surface2); }
+        .gmail-to { color: var(--blue); font-weight: 500; min-width: 200px; font-size: 13px; }
+        .gmail-subject { color: var(--text); font-size: 13px; flex: 1; }
+        .gmail-date { color: var(--text2); font-size: 12px; min-width: 100px; text-align: right; }
+        .gmail-type { min-width: 120px; }
+        .rob-highlight { background: rgba(255,107,107,0.08); border: 1px solid rgba(255,107,107,0.2); }
+        .top-performer { background: rgba(0,184,148,0.08); border: 1px solid rgba(0,184,148,0.2); }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <header>
+        <div>
+            <h1>Testsigma <span>Outreach Stats Engine</span> v2</h1>
+            <div class="subtitle">Company-wide Apollo data + LinkedIn intelligence + Gmail activity | Updated Feb 27, 2026</div>
+        </div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab active" onclick="showView('company')">Company-Wide</button>
+        <button class="tab" onclick="showView('bdr')">BDR Comparison</button>
+        <button class="tab" onclick="showView('sequences')">Sequences</button>
+        <button class="tab" onclick="showView('linkedin')">LinkedIn Intel</button>
+        <button class="tab" onclick="showView('templates')">Template Library</button>
+        <button class="tab" onclick="showView('timing')">Timing</button>
+        <button class="tab" onclick="showView('gmail')">Gmail Activity</button>
+        <button class="tab" onclick="showView('action')">Action Plan</button>
+    </div>
+
+    <div id="view-company" class="view active">
+        <div class="kpis">
+            <div class="kpi">
+                <div class="kpi-label">Total Emails Delivered</div>
+                <div class="kpi-value blue">3,430</div>
+                <div class="kpi-sub">Across all 50 sequences</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">Company Open Rate</div>
+                <div class="kpi-value green">28.3%</div>
+                <div class="kpi-sub">970 opens</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">Company Reply Rate</div>
+                <div class="kpi-value orange">3.9%</div>
+                <div class="kpi-sub">133 replies</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">Company Click Rate</div>
+                <div class="kpi-value accent">4.9%</div>
+                <div class="kpi-sub">167 clicks</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">Bounce Rate</div>
+                <div class="kpi-value red">16.1%</div>
+                <div class="kpi-sub">553 bounced</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">Active BDRs</div>
+                <div class="kpi-value blue">16</div>
+                <div class="kpi-sub">With email sequences</div>
+            </div>
+        </div>
+
+        <div class="charts">
+            <div class="chart-card">
+                <h3>Reply Rate by BDR (Top Performers)</h3>
+                <canvas id="bdr-reply-chart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Volume vs Reply Rate (Bubble = Replies)</h3>
+                <canvas id="volume-vs-rate-chart"></canvas>
+            </div>
+            <div class="chart-card full">
+                <h3>Inbound vs Outbound Performance</h3>
+                <canvas id="inbound-outbound-chart"></canvas>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Key Findings</h2>
+            <div class="insight">
+                <div class="insight-title">Inbound sequences massively outperform outbound</div>
+                <div class="insight-text">Archi's IB sequence: 19.5% reply rate (308 delivered). Meini's IB: 22.8% (57 delivered). Compare to typical outbound: 0.3-2.1%. Inbound leads are 10-50x more likely to reply.</div>
+            </div>
+            <div class="insight">
+                <div class="insight-title">Archi is the top performer with 63 replies (19.0% rate)</div>
+                <div class="insight-text">332 emails delivered, 72.9% open rate, 19.0% reply rate. This is the benchmark. Archi's templates and approach should be studied and replicated.</div>
+            </div>
+            <div class="insight">
+                <div class="insight-title">Rob's email sequences need a reset</div>
+                <div class="insight-text">611 delivered, 1 reply (0.2%). The legacy "Rob Outbound" sequence accounts for most volume (397 delivered) with 0.25% reply rate. However, Rob's LinkedIn InMail performance (28.7%) dramatically outperforms email. The new Q1 Priority Accounts sequence should improve email performance.</div>
+            </div>
+            <div class="insight">
+                <div class="insight-title">High bounce rates signal list quality issues</div>
+                <div class="insight-text">553 bounced (16.1% company-wide). Shreyas/Subha: 21.5% bounce, Hemant: 28.5% bounce, Satya: 28.0% bounce. Pre-verifying emails before sending would save credits and protect domain reputation.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-bdr" class="view">
+        <div class="section">
+            <h2>BDR Performance Comparison (All Apollo Email Sequences)</h2>
+            <p style="color:var(--text2);font-size:13px;margin-bottom:16px">Sorted by reply rate. Rob's row highlighted in red. Top performers (10%+ reply) highlighted in green.</p>
+            <div style="overflow-x:auto">
+            <table class="stat-table">
+                <thead>
+                    <tr>
+                        <th>BDR</th>
+                        <th>Delivered</th>
+                        <th>Open Rate</th>
+                        <th>Reply Rate</th>
+                        <th>Replies</th>
+                        <th>Clicks</th>
+                        <th>Bounce Rate</th>
+                        <th>Sequences</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class=" top-performer">
+        <td><strong>Meini</strong></td>
+        <td>57</td>
+        <td><span class="badge badge-green">54.4%</span></td>
+        <td><span class="badge badge-green">22.8%</span></td>
+        <td>13</td>
+        <td>0</td>
+        <td><span class="badge badge-green">7.0%</span></td>
+        <td style="font-size:11px;color:var(--text2)">Meini IB Sequence , Old Inbounds Meini </td>
+    </tr><tr class=" top-performer">
+        <td><strong>Archi</strong></td>
+        <td>332</td>
+        <td><span class="badge badge-green">72.9%</span></td>
+        <td><span class="badge badge-green">19.0%</span></td>
+        <td>63</td>
+        <td>55</td>
+        <td><span class="badge badge-green">9.9%</span></td>
+        <td style="font-size:11px;color:var(--text2)">Archi OB, Archi IB</td>
+    </tr><tr class=" top-performer">
+        <td><strong>Aniket</strong></td>
+        <td>129</td>
+        <td><span class="badge badge-red">14.7%</span></td>
+        <td><span class="badge badge-green">14.0%</span></td>
+        <td>18</td>
+        <td>0</td>
+        <td><span class="badge badge-orange">10.1%</span></td>
+        <td style="font-size:11px;color:var(--text2)">AI testing tools - Aniket</td>
+    </tr><tr class=" ">
+        <td><strong>Zu</strong></td>
+        <td>117</td>
+        <td><span class="badge badge-green">49.6%</span></td>
+        <td><span class="badge badge-orange">5.1%</span></td>
+        <td>6</td>
+        <td>0</td>
+        <td><span class="badge badge-orange">13.7%</span></td>
+        <td style="font-size:11px;color:var(--text2)">Zu - 1</td>
+    </tr><tr class=" ">
+        <td><strong>Shreyas/Subha</strong></td>
+        <td>638</td>
+        <td><span class="badge badge-blue">37.6%</span></td>
+        <td><span class="badge badge-orange">3.4%</span></td>
+        <td>22</td>
+        <td>23</td>
+        <td><span class="badge badge-red">21.5%</span></td>
+        <td style="font-size:11px;color:var(--text2)">Navigo Sequence, Qonfx - Sequence +7</td>
+    </tr><tr class=" ">
+        <td><strong>Vishwa</strong></td>
+        <td>215</td>
+        <td><span class="badge badge-red">14.9%</span></td>
+        <td><span class="badge badge-red">1.9%</span></td>
+        <td>4</td>
+        <td>11</td>
+        <td><span class="badge badge-green">7.9%</span></td>
+        <td style="font-size:11px;color:var(--text2)">TrueNorth Dreamin Canada 2025_Version_VV_2025, Vishwa_London_Dinner_Event_2025_05_23</td>
+    </tr><tr class=" ">
+        <td><strong>G2 Campaign</strong></td>
+        <td>58</td>
+        <td><span class="badge badge-red">1.7%</span></td>
+        <td><span class="badge badge-red">1.7%</span></td>
+        <td>1</td>
+        <td>0</td>
+        <td><span class="badge badge-green">1.7%</span></td>
+        <td style="font-size:11px;color:var(--text2)">Campaign Free plan to G2 Review</td>
+    </tr><tr class=" ">
+        <td><strong>Hemant</strong></td>
+        <td>256</td>
+        <td><span class="badge badge-red">2.3%</span></td>
+        <td><span class="badge badge-red">1.2%</span></td>
+        <td>3</td>
+        <td>0</td>
+        <td><span class="badge badge-red">28.5%</span></td>
+        <td style="font-size:11px;color:var(--text2)">AI Maturity Audit Campaign for QA_Hemant</td>
+    </tr><tr class=" ">
+        <td><strong>Satya</strong></td>
+        <td>329</td>
+        <td><span class="badge badge-blue">25.5%</span></td>
+        <td><span class="badge badge-red">0.3%</span></td>
+        <td>1</td>
+        <td>18</td>
+        <td><span class="badge badge-red">28.0%</span></td>
+        <td style="font-size:11px;color:var(--text2)">Satya OB Budget left over sequence , Past event Campaign- Oct +2</td>
+    </tr><tr class=" ">
+        <td><strong>Morvika</strong></td>
+        <td>319</td>
+        <td><span class="badge badge-blue">39.2%</span></td>
+        <td><span class="badge badge-red">0.3%</span></td>
+        <td>1</td>
+        <td>23</td>
+        <td><span class="badge badge-red">22.3%</span></td>
+        <td style="font-size:11px;color:var(--text2)">Roundtable dinner invite - Gurugram 2025, MT - Engagment Demo Campaign +3</td>
+    </tr><tr class="rob-highlight ">
+        <td><strong>Rob</strong></td>
+        <td>611</td>
+        <td><span class="badge badge-red">8.0%</span></td>
+        <td><span class="badge badge-red">0.2%</span></td>
+        <td>1</td>
+        <td>22</td>
+        <td><span class="badge badge-green">8.0%</span></td>
+        <td style="font-size:11px;color:var(--text2)">Q1 Priority Accounts, Q1 QA Outreach - US +9</td>
+    </tr><tr class=" ">
+        <td><strong>Prasidh</strong></td>
+        <td>117</td>
+        <td><span class="badge badge-red">16.2%</span></td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>5</td>
+        <td><span class="badge badge-red">21.4%</span></td>
+        <td style="font-size:11px;color:var(--text2)">Copy - AI Maturity Audit Campaign for QA, TAM OCT 2025</td>
+    </tr><tr class=" ">
+        <td><strong>Ranjana</strong></td>
+        <td>13</td>
+        <td><span class="badge badge-green">53.8%</span></td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>0</td>
+        <td><span class="badge badge-green">7.7%</span></td>
+        <td style="font-size:11px;color:var(--text2)">Ranjana - OB </td>
+    </tr><tr class=" ">
+        <td><strong>Pune Event</strong></td>
+        <td>74</td>
+        <td><span class="badge badge-red">2.7%</span></td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>1</td>
+        <td><span class="badge badge-green">0.0%</span></td>
+        <td style="font-size:11px;color:var(--text2)">Pune Event</td>
+    </tr><tr class=" ">
+        <td><strong>Bala</strong></td>
+        <td>64</td>
+        <td><span class="badge badge-green">50.0%</span></td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>0</td>
+        <td><span class="badge badge-orange">12.5%</span></td>
+        <td style="font-size:11px;color:var(--text2)">Target companies researching your category, Bala Accessibility Sequence</td>
+    </tr><tr class=" ">
+        <td><strong>DD</strong></td>
+        <td>101</td>
+        <td><span class="badge badge-blue">22.8%</span></td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>9</td>
+        <td><span class="badge badge-orange">12.9%</span></td>
+        <td style="font-size:11px;color:var(--text2)">DD OB Sequence</td>
+    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+        <div class="charts">
+            <div class="chart-card">
+                <h3>Reply Rate Comparison</h3>
+                <canvas id="bdr-compare-chart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Open Rate vs Reply Rate Correlation</h3>
+                <canvas id="or-rr-chart"></canvas>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>What Top Performers Do Differently</h2>
+            <div class="insight">
+                <div class="insight-title">Archi: 72.9% open rate, 19.0% reply rate (332 delivered)</div>
+                <div class="insight-text">Best combination of volume + quality. Inbound sequence drives most replies (60 of 63). Subject lines and email copy clearly optimized. Worth requesting template access.</div>
+            </div>
+            <div class="insight">
+                <div class="insight-title">Meini: 54.4% open rate, 22.8% reply rate (57 delivered)</div>
+                <div class="insight-text">Highest reply rate on the team but lower volume. All inbound leads. Proves that well-handled inbound leads convert at 20%+ on email.</div>
+            </div>
+            <div class="insight">
+                <div class="insight-title">Aniket: 14.7% open rate, 14.0% reply rate (129 delivered)</div>
+                <div class="insight-text">Interesting anomaly: low open rate but high reply rate. Suggests that when people DO open, the message converts well. Possible: subject lines need work but email body is strong.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-sequences" class="view">
+        <div class="section">
+            <h2>All Sequences with Email Data (37 sequences)</h2>
+            <div style="overflow-x:auto">
+            <table class="stat-table">
+                <thead>
+                    <tr><th>Sequence</th><th>Status</th><th>Delivered</th><th>Open Rate</th><th>Reply Rate</th><th>Replies</th><th>Clicks</th><th>Bounce Rate</th></tr>
+                </thead>
+                <tbody><tr>
+        <td><strong>Archi IB</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>308</td>
+        <td>71.1%</td>
+        <td><span class="badge badge-green">19.5%</span></td>
+        <td>60</td>
+        <td>52</td>
+        <td>9.1%</td>
+    </tr><tr>
+        <td><strong>AI testing tools - Aniket</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>129</td>
+        <td>14.7%</td>
+        <td><span class="badge badge-green">14.0%</span></td>
+        <td>18</td>
+        <td>0</td>
+        <td>10.1%</td>
+    </tr><tr>
+        <td><strong>Meini IB Sequence </strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>57</td>
+        <td>54.4%</td>
+        <td><span class="badge badge-green">22.8%</span></td>
+        <td>13</td>
+        <td>0</td>
+        <td>7.0%</td>
+    </tr><tr>
+        <td><strong>Shreyas OB sequence</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>380</td>
+        <td>38.2%</td>
+        <td><span class="badge badge-red">2.1%</span></td>
+        <td>8</td>
+        <td>13</td>
+        <td>18.9%</td>
+    </tr><tr>
+        <td><strong>Subha- Closed Lost.</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>115</td>
+        <td>38.3%</td>
+        <td><span class="badge badge-orange">5.2%</span></td>
+        <td>6</td>
+        <td>0</td>
+        <td>36.5%</td>
+    </tr><tr>
+        <td><strong>Zu - 1</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>117</td>
+        <td>49.6%</td>
+        <td><span class="badge badge-orange">5.1%</span></td>
+        <td>6</td>
+        <td>0</td>
+        <td>13.7%</td>
+    </tr><tr>
+        <td><strong>AI Maturity Audit Campaign for QA_Hemant</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>256</td>
+        <td>2.3%</td>
+        <td><span class="badge badge-red">1.2%</span></td>
+        <td>3</td>
+        <td>0</td>
+        <td>28.5%</td>
+    </tr><tr>
+        <td><strong>Archi OB</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>24</td>
+        <td>95.8%</td>
+        <td><span class="badge badge-green">12.5%</span></td>
+        <td>3</td>
+        <td>3</td>
+        <td>20.8%</td>
+    </tr><tr>
+        <td><strong>TrueNorth Dreamin Canada 2025_Version_VV</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>32</td>
+        <td>40.6%</td>
+        <td><span class="badge badge-orange">6.2%</span></td>
+        <td>2</td>
+        <td>1</td>
+        <td>9.4%</td>
+    </tr><tr>
+        <td><strong>Vishwa_London_Dinner_Event_2025_05_23</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>183</td>
+        <td>10.4%</td>
+        <td><span class="badge badge-red">1.1%</span></td>
+        <td>2</td>
+        <td>10</td>
+        <td>7.7%</td>
+    </tr><tr>
+        <td><strong>Navigo Sequence</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>31</td>
+        <td>32.3%</td>
+        <td><span class="badge badge-orange">6.5%</span></td>
+        <td>2</td>
+        <td>2</td>
+        <td>25.8%</td>
+    </tr><tr>
+        <td><strong>Campaign Free plan to G2 Review</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>58</td>
+        <td>1.7%</td>
+        <td><span class="badge badge-red">1.7%</span></td>
+        <td>1</td>
+        <td>0</td>
+        <td>1.7%</td>
+    </tr><tr>
+        <td><strong>Past event Campaign- Oct</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>55</td>
+        <td>14.5%</td>
+        <td><span class="badge badge-red">1.8%</span></td>
+        <td>1</td>
+        <td>0</td>
+        <td>9.1%</td>
+    </tr><tr>
+        <td><strong>Rob Outbound </strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>397</td>
+        <td>6.8%</td>
+        <td><span class="badge badge-red">0.3%</span></td>
+        <td>1</td>
+        <td>12</td>
+        <td>11.3%</td>
+    </tr><tr>
+        <td><strong>Qonfx - Sequence</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>15</td>
+        <td>33.3%</td>
+        <td><span class="badge badge-orange">6.7%</span></td>
+        <td>1</td>
+        <td>0</td>
+        <td>6.7%</td>
+    </tr><tr>
+        <td><strong>Prompt Engineering- Webinar</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>18</td>
+        <td>50.0%</td>
+        <td><span class="badge badge-orange">5.6%</span></td>
+        <td>1</td>
+        <td>1</td>
+        <td>0.0%</td>
+    </tr><tr>
+        <td><strong>Copy - Roundtable dinner invite - Gurugr</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>11</td>
+        <td>36.4%</td>
+        <td><span class="badge badge-orange">9.1%</span></td>
+        <td>1</td>
+        <td>2</td>
+        <td>36.4%</td>
+    </tr><tr>
+        <td><strong>Shreyas -Copy - Re-Engagment Demo Campai</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>21</td>
+        <td>42.9%</td>
+        <td><span class="badge badge-orange">4.8%</span></td>
+        <td>1</td>
+        <td>1</td>
+        <td>14.3%</td>
+    </tr><tr>
+        <td><strong>Shreyas- Inbound Previous Lisr</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>18</td>
+        <td>50.0%</td>
+        <td><span class="badge badge-orange">5.6%</span></td>
+        <td>1</td>
+        <td>2</td>
+        <td>38.9%</td>
+    </tr><tr>
+        <td><strong>Event</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>29</td>
+        <td>17.2%</td>
+        <td><span class="badge badge-orange">3.4%</span></td>
+        <td>1</td>
+        <td>2</td>
+        <td>0.0%</td>
+    </tr><tr>
+        <td><strong>Roundtable dinner invite - Pune 2025</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>137</td>
+        <td>33.6%</td>
+        <td><span class="badge badge-red">0.7%</span></td>
+        <td>1</td>
+        <td>8</td>
+        <td>16.1%</td>
+    </tr><tr>
+        <td><strong>Eshwar - Rob Outbound </strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>117</td>
+        <td>18.8%</td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>10</td>
+        <td>2.6%</td>
+    </tr><tr>
+        <td><strong>Copy - AI Maturity Audit Campaign for QA</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>117</td>
+        <td>16.2%</td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>5</td>
+        <td>21.4%</td>
+    </tr><tr>
+        <td><strong>Satya OB Budget left over sequence </strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>141</td>
+        <td>20.6%</td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>4</td>
+        <td>41.8%</td>
+    </tr><tr>
+        <td><strong>JP Morgan</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>65</td>
+        <td>0.0%</td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>0</td>
+        <td>0.0%</td>
+    </tr><tr>
+        <td><strong>Kaiser Permanente </strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>32</td>
+        <td>0.0%</td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>0</td>
+        <td>3.1%</td>
+    </tr><tr>
+        <td><strong>Post Event Connect Satya</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>67</td>
+        <td>26.9%</td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>3</td>
+        <td>23.9%</td>
+    </tr><tr>
+        <td><strong>Bangalore QA Event, Satya</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>66</td>
+        <td>43.9%</td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>11</td>
+        <td>18.2%</td>
+    </tr><tr>
+        <td><strong>Roundtable dinner invite - Gurugram 2025</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>28</td>
+        <td>67.9%</td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>6</td>
+        <td>21.4%</td>
+    </tr><tr>
+        <td><strong>MT - Engagment Demo Campaign</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>35</td>
+        <td>40.0%</td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>2</td>
+        <td>2.9%</td>
+    </tr><tr>
+        <td><strong>Ranjana - OB </strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>13</td>
+        <td>53.8%</td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>0</td>
+        <td>7.7%</td>
+    </tr><tr>
+        <td><strong>Morvika OB BFSI + NBFS</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>52</td>
+        <td>32.7%</td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>5</td>
+        <td>42.3%</td>
+    </tr><tr>
+        <td><strong>Pune Event</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>74</td>
+        <td>2.7%</td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>1</td>
+        <td>0.0%</td>
+    </tr><tr>
+        <td><strong>Target companies researching your catego</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>10</td>
+        <td>60.0%</td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>0</td>
+        <td>10.0%</td>
+    </tr><tr>
+        <td><strong>Morvika ANZ</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>67</td>
+        <td>43.3%</td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>2</td>
+        <td>29.9%</td>
+    </tr><tr>
+        <td><strong>Bala Accessibility Sequence</strong></td>
+        <td><span class="badge badge-green">Active</span></td>
+        <td>54</td>
+        <td>48.1%</td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>0</td>
+        <td>13.0%</td>
+    </tr><tr>
+        <td><strong>DD OB Sequence</strong></td>
+        <td><span class="badge badge-red">Inactive</span></td>
+        <td>101</td>
+        <td>22.8%</td>
+        <td><span class="badge badge-red">0.0%</span></td>
+        <td>0</td>
+        <td>9</td>
+        <td>12.9%</td>
+    </tr></tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-linkedin" class="view">
+        <div class="kpis">
+            <div class="kpi">
+                <div class="kpi-label">LinkedIn InMail Reply Rate</div>
+                <div class="kpi-value green">28.7%</div>
+                <div class="kpi-sub">381 replies / 1,326 conversations</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">Apollo Email Reply Rate</div>
+                <div class="kpi-value red">3.9%</div>
+                <div class="kpi-sub">133 replies / 3,430 delivered</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">InMail vs Email Multiplier</div>
+                <div class="kpi-value orange">7.4x</div>
+                <div class="kpi-sub">InMail replies at 7.4x the email rate</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">Best CTA (Email + InMail)</div>
+                <div class="kpi-value accent">What day works</div>
+                <div class="kpi-sub">40.4% reply rate on InMail</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Channel Comparison: LinkedIn InMail vs Apollo Email</h2>
+            <table class="stat-table">
+                <thead><tr><th>Metric</th><th>LinkedIn InMail (Rob)</th><th>Apollo Email (Company)</th><th>Apollo Email (Rob)</th></tr></thead>
+                <tbody>
+                    <tr><td>Total Sent</td><td>1,326 conversations</td><td>3,430 delivered</td><td>611 delivered</td></tr>
+                    <tr><td>Reply Rate</td><td><span class="badge badge-green">28.7%</span></td><td><span class="badge badge-orange">3.9%</span></td><td><span class="badge badge-red">0.2%</span></td></tr>
+                    <tr><td>Open Rate</td><td>N/A (InMail)</td><td>28.3%</td><td>8.0%</td></tr>
+                    <tr><td>Best Time</td><td>Thu 12-1 PM (56.5%)</td><td>TBD (insufficient data)</td><td>TBD</td></tr>
+                    <tr><td>Optimal Length</td><td>75-99 words (39.0%)</td><td>60-100 words (est.)</td><td>TBD</td></tr>
+                    <tr><td>Top Persona</td><td>Architect (39.3%)</td><td>N/A</td><td>N/A</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>LinkedIn Statistical Rules (from 1,326 conversations)</h2>
+            <div class="charts" style="margin-bottom:0">
+                <div class="chart-card">
+                    <h3>Word Count vs Reply Rate</h3>
+                    <canvas id="wordcount-chart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>CTA Performance</h3>
+                    <canvas id="cta-chart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Hard Constraints (NEVER violate)</h2>
+            <table class="stat-table">
+                <thead><tr><th>#</th><th>Constraint</th><th>Impact</th></tr></thead>
+                <tbody>
+                    <tr><td>HC1</td><td>No "I noticed" / "I saw"</td><td><span class="badge badge-red">-13.4 pp</span></td></tr>
+                    <tr><td>HC2</td><td>No leading with AI/ML/self-healing</td><td><span class="badge badge-red">-9.2 pp</span></td></tr>
+                    <tr><td>HC3</td><td>No messages over 120 words</td><td><span class="badge badge-red">-17.8 pp vs optimal</span></td></tr>
+                    <tr><td>HC4</td><td>No evening sends (after 6 PM)</td><td><span class="badge badge-red">-44.4 pp vs lunch</span></td></tr>
+                    <tr><td>HC5</td><td>No bullet-point feature dumps</td><td><span class="badge badge-red">-2.2 pp</span></td></tr>
+                    <tr><td>HC6</td><td>No "would it be unreasonable" CTA</td><td><span class="badge badge-red">12.8% rate</span></td></tr>
+                    <tr><td>HC7</td><td>No phone number asks</td><td><span class="badge badge-red">5.0% rate (worst)</span></td></tr>
+                    <tr><td>HC8</td><td>No "reaching out" / "wanted to connect"</td><td><span class="badge badge-red">-2.4 pp</span></td></tr>
+                    <tr><td>HC9</td><td>No "I figure" / "enough about me"</td><td><span class="badge badge-red">-19.0 pp</span></td></tr>
+                    <tr><td>HC10</td><td>No 3+ question marks per message</td><td><span class="badge badge-red">14.3% rate</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="view-templates" class="view">
+        <div class="section">
+            <h2>Optimized Email Templates (Based on Data)</h2>
+            <p style="color:var(--text2);font-size:13px;margin-bottom:16px">These templates follow all statistical rules: 75-99 words, 2 questions, "what day works" CTA, no toxic phrases, reduction framing.</p>
+
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterTemplates('all',this)">All</button>
+                <button class="filter-btn" onclick="filterTemplates('qa-manager',this)">QA Manager</button>
+                <button class="filter-btn" onclick="filterTemplates('director',this)">Director</button>
+                <button class="filter-btn" onclick="filterTemplates('architect',this)">Architect</button>
+                <button class="filter-btn" onclick="filterTemplates('fintech',this)">FinTech</button>
+                <button class="filter-btn" onclick="filterTemplates('healthcare',this)">Healthcare</button>
+                <button class="filter-btn" onclick="filterTemplates('saas',this)">SaaS</button>
+            </div>
+
+            <div class="template-card" data-tags="qa-manager saas">
+                <h4>Touch 1 InMail — QA Manager @ SaaS</h4>
+                <div style="font-size:12px;color:var(--text2);margin-bottom:8px">Persona: QA Manager | Vertical: SaaS | Proof: Medibuddy | 92 words</div>
+                <div class="template-body">Subject: test upkeep vs releases
+
+What breaks first when release cadence picks up, regression stability or coverage gaps?
+
+Most QA leads scaling alongside product tell us maintenance eats 60%+ of their sprint capacity. That was Medibuddy's problem before they automated 2,500 tests and cut upkeep in half with Testsigma.
+
+If cutting test maintenance by 50% would free your team to keep pace with releases, what day works for a quick look at how they did it?
+
+Rob</div>
+                <button class="copy-btn" onclick="copyTemplate(this)">Copy Message</button>
+            </div>
+
+            <div class="template-card" data-tags="director fintech">
+                <h4>Touch 1 InMail — Director of QA @ FinTech</h4>
+                <div style="font-size:12px;color:var(--text2);margin-bottom:8px">Persona: Director | Vertical: FinTech | Proof: CRED | 88 words</div>
+                <div class="template-body">Subject: regression before the next release
+
+Are regression cycles getting longer as your platform grows, or is coverage falling behind instead?
+
+FinTech teams shipping fast usually hit a wall where adding test coverage creates more maintenance than the team can absorb. CRED automated 90% of regression and ran 5x faster with Testsigma's plain English approach.
+
+If getting to 90% automation without slowing releases sounds useful, what day works for a quick look at how CRED pulled it off?
+
+Rob</div>
+                <button class="copy-btn" onclick="copyTemplate(this)">Copy Message</button>
+            </div>
+
+            <div class="template-card" data-tags="architect saas">
+                <h4>Touch 1 InMail — Test Architect @ Enterprise</h4>
+                <div style="font-size:12px;color:var(--text2);margin-bottom:8px">Persona: Architect (39.3% reply rate) | Proof: Hansard | 85 words</div>
+                <div class="template-body">Subject: regression after the migration
+
+When a platform overhaul hits, what breaks first in your test suite, the locators or the test logic?
+
+During major migrations, test maintenance usually spikes before the team can adapt. Hansard was stuck in an 8 week regression cycle until Testsigma's AI auto-healing cut it to 5 weeks by fixing broken locators automatically.
+
+If saving 3 weeks on regression would help your migration timeline, what day works for a quick look?
+
+Rob</div>
+                <button class="copy-btn" onclick="copyTemplate(this)">Copy Message</button>
+            </div>
+
+            <div class="template-card" data-tags="qa-manager healthcare">
+                <h4>Touch 1 InMail — QA Manager @ Healthcare</h4>
+                <div style="font-size:12px;color:var(--text2);margin-bottom:8px">Persona: QA Manager | Vertical: Healthcare | Proof: Sanofi | 90 words</div>
+                <div class="template-body">Subject: regression in regulated releases
+
+How much of your sprint goes to keeping regression stable versus expanding coverage for compliance?
+
+In regulated environments, every release needs full regression, and that cycle tends to grow with each new requirement. Sanofi was running 3 day regression cycles before Testsigma compressed them to 80 minutes with automated plain English tests.
+
+If cutting regression from days to under 2 hours would help your release cadence, what day works for a quick look at how Sanofi did it?
+
+Rob</div>
+                <button class="copy-btn" onclick="copyTemplate(this)">Copy Message</button>
+            </div>
+
+            <div class="template-card" data-tags="director saas">
+                <h4>Touch 2 InMail Follow-up — Any Persona</h4>
+                <div style="font-size:12px;color:var(--text2);margin-bottom:8px">Follow-up template | 52 words | New angle from Touch 1</div>
+                <div class="template-body">Subject: quick follow up
+
+Circling back quick. Wanted to share one thing since my last note.
+
+A Fortune 100 team tripled their testing productivity after switching to plain English test creation. No scripting, no Selenium maintenance.
+
+If 3x productivity sounds worth exploring, what day works for 15 minutes?
+
+Rob</div>
+                <button class="copy-btn" onclick="copyTemplate(this)">Copy Message</button>
+            </div>
+
+            <div class="template-card" data-tags="qa-manager director architect fintech healthcare saas">
+                <h4>Touch 3 Email — Fresh Angle</h4>
+                <div style="font-size:12px;color:var(--text2);margin-bottom:8px">Email template | 68 words | Different proof point from Touches 1-2</div>
+                <div class="template-body">Subject: test maintenance eating your sprints?
+
+Quick question. Is test maintenance taking more sprint capacity than you planned for this quarter?
+
+Spendflo cut their manual testing by 50% in the first quarter using Testsigma. Their team went from fixing broken scripts to actually expanding coverage.
+
+If halving maintenance time would free your team up, what day works for a quick chat?
+
+Rob</div>
+                <button class="copy-btn" onclick="copyTemplate(this)">Copy Message</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-timing" class="view">
+        <div class="kpis">
+            <div class="kpi">
+                <div class="kpi-label">Best Send Time</div>
+                <div class="kpi-value green">12-1 PM</div>
+                <div class="kpi-sub">56.5% reply rate (lunch window)</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">Best Send Day</div>
+                <div class="kpi-value green">Thursday</div>
+                <div class="kpi-sub">42.1% reply rate</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">Worst Time</div>
+                <div class="kpi-value red">After 6 PM</div>
+                <div class="kpi-sub">12.1% reply rate (-44.4 pp)</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">Worst Day</div>
+                <div class="kpi-value red">Monday</div>
+                <div class="kpi-sub">22.9% reply rate</div>
+            </div>
+        </div>
+        <div class="charts">
+            <div class="chart-card">
+                <h3>Reply Rate by Time of Day</h3>
+                <canvas id="time-chart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Reply Rate by Day of Week</h3>
+                <canvas id="day-chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-gmail" class="view">
+        <div class="section">
+            <h2>Rob's Gmail Prospect Activity</h2>
+            <p style="color:var(--text2);font-size:13px;margin-bottom:16px">Emails sent from robert.gorham@testsigma.com to prospects (Oct 2025 - Feb 2026). These are reply/follow-up threads, showing active deal nurturing.</p>
+            <div class="gmail-row">
+        <div class="gmail-to">lfernandes@infinera.com</div>
+        <div class="gmail-subject">re: your Testsigma request</div>
+        <div class="gmail-type"><span class="badge badge-green">inbound followup</span></div>
+        <div class="gmail-date">2026-02-23</div>
+    </div><div class="gmail-row">
+        <div class="gmail-to">maryjean@qne.com.ph</div>
+        <div class="gmail-subject">Reschedule</div>
+        <div class="gmail-type"><span class="badge badge-blue">meeting reschedule</span></div>
+        <div class="gmail-date">2026-02-13</div>
+    </div><div class="gmail-row">
+        <div class="gmail-to">jayaraj.a@nokia.com</div>
+        <div class="gmail-subject">Intro Call with Testsigma</div>
+        <div class="gmail-type"><span class="badge badge-orange">followup</span></div>
+        <div class="gmail-date">2026-02-12</div>
+    </div><div class="gmail-row">
+        <div class="gmail-to">divesh.puri@blackrock.com</div>
+        <div class="gmail-subject">Testsigma Communication</div>
+        <div class="gmail-type"><span class="badge badge-accent">demo prep</span></div>
+        <div class="gmail-date">2026-01-26</div>
+    </div><div class="gmail-row">
+        <div class="gmail-to">anuradha.venkatesh@salesforce.com</div>
+        <div class="gmail-subject">Testsigma x Salesforce</div>
+        <div class="gmail-type"><span class="badge badge-blue">meeting reschedule</span></div>
+        <div class="gmail-date">2026-01-12</div>
+    </div><div class="gmail-row">
+        <div class="gmail-to">andrew.post@dfinsolutions.com</div>
+        <div class="gmail-subject">Testsigma Overview for Finance</div>
+        <div class="gmail-type"><span class="badge badge-orange">followup</span></div>
+        <div class="gmail-date">2026-01-09</div>
+    </div><div class="gmail-row">
+        <div class="gmail-to">ralife@sandia.gov</div>
+        <div class="gmail-subject">Testsigma x Sandia</div>
+        <div class="gmail-type"><span class="badge badge-green">meeting confirm</span></div>
+        <div class="gmail-date">2025-12-15</div>
+    </div><div class="gmail-row">
+        <div class="gmail-to">ScullD@aetna.com</div>
+        <div class="gmail-subject">Testsigma Communication</div>
+        <div class="gmail-type"><span class="badge badge-accent">demo prep</span></div>
+        <div class="gmail-date">2025-12-02</div>
+    </div><div class="gmail-row">
+        <div class="gmail-to">Pranati.Thankala@aetna.com</div>
+        <div class="gmail-subject">Testsigma x Pranati</div>
+        <div class="gmail-type"><span class="badge badge-accent">demo prep</span></div>
+        <div class="gmail-date">2025-12-02</div>
+    </div><div class="gmail-row">
+        <div class="gmail-to">camilla.damiani@softplan.com.br</div>
+        <div class="gmail-subject">Schedule your demo</div>
+        <div class="gmail-type"><span class="badge badge-orange">followup</span></div>
+        <div class="gmail-date">2025-11-24</div>
+    </div>
+        </div>
+        <div class="section">
+            <h2>Gmail Insights</h2>
+            <div class="insight">
+                <div class="insight-title">Active prospects identified: 10 unique companies</div>
+                <div class="insight-text">Infinera, QNE, Nokia, BlackRock, Salesforce, DFin Solutions, Sandia National Labs, Aetna (CVS Health), Softplan. Mix of enterprise and mid-market across multiple verticals.</div>
+            </div>
+            <div class="insight">
+                <div class="insight-title">Most active: Aetna/CVS Health (4 threads)</div>
+                <div class="insight-text">Multiple contacts at Aetna (Dwight Scull, Pranati Thankala, Richard Gabriel, Christopher Rees). Demo prep and technical discussions. This is an active pipeline deal.</div>
+            </div>
+            <div class="insight">
+                <div class="insight-title">Recent inbound: Infinera (Feb 23, 2026)</div>
+                <div class="insight-text">Pedro from Infinera submitted a pricing form. Rob followed up same day. This is a warm inbound lead in the pipeline.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-action" class="view">
+        <div class="section">
+            <h2>Immediate Action Plan (This Week)</h2>
+
+            <div class="insight" style="border-left-color: var(--red)">
+                <div class="insight-title">1. Archive Legacy "Rob Outbound" Sequence</div>
+                <div class="insight-text">397 delivered, 0.25% reply rate. This sequence is dragging down metrics. Archive it and consolidate any salvageable contacts into Q1 Priority Accounts with fresh messaging.</div>
+            </div>
+
+            <div class="insight" style="border-left-color: var(--green)">
+                <div class="insight-title">2. Request Archi's Email Templates</div>
+                <div class="insight-text">Archi has 63 replies at 19.0% rate (72.9% open rate). This is the team's gold standard. Ask to review the Archi IB and Archi OB email templates to understand subject line and body patterns.</div>
+            </div>
+
+            <div class="insight" style="border-left-color: var(--green)">
+                <div class="insight-title">3. Study the Eshwar Template Structure</div>
+                <div class="insight-text">The "Eshwar - Rob Outbound" sequence has 18.8% open rate but 0% replies. The subject lines are working (people open) but the CTA isn't converting. Fix the CTA to "what day works" pattern and test.</div>
+            </div>
+
+            <div class="insight" style="border-left-color: var(--blue)">
+                <div class="insight-title">4. Prioritize InMail Over Email for Cold Outreach</div>
+                <div class="insight-text">LinkedIn InMail: 28.7% reply rate. Apollo email (company avg): 3.9%. Rob email: 0.2%. The data is clear: InMail is 7x more effective. Reserve email for Touch 3 (after 2 InMails) and for inbound follow-up.</div>
+            </div>
+
+            <div class="insight" style="border-left-color: var(--orange)">
+                <div class="insight-title">5. Fix Bounce Rates Before Next Email Campaign</div>
+                <div class="insight-text">16.1% company bounce rate is high. Rob's is 8.0%. Pre-verify all email addresses through Apollo before adding to sequences. Target &lt;5% bounce rate.</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>30-Day Strategy</h2>
+            <div class="insight">
+                <div class="insight-title">A. Build Inbound Response Playbook</div>
+                <div class="insight-text">Inbound sequences (Archi IB: 19.5%, Meini IB: 22.8%) dramatically outperform outbound. Work with management to get more inbound leads routed to Rob. Even 10 inbound leads/month at 20% conversion = 2 meetings.</div>
+            </div>
+            <div class="insight">
+                <div class="insight-title">B. A/B Test Email Templates Against Archi's Patterns</div>
+                <div class="insight-text">Once Archi's templates are analyzed, create 2-3 variants for the Q1 Priority Accounts email step. Test: subject line style, opening question, proof point placement, CTA wording.</div>
+            </div>
+            <div class="insight">
+                <div class="insight-title">C. Domain Rotation for Deliverability</div>
+                <div class="insight-text">Rob has 4 Apollo email domains. Rotate sending across testsigma.net, testsigma.in, testsigmatech.in, and testsigmaweb.com to avoid domain reputation decay. Max 50 sends per domain per week.</div>
+            </div>
+        </div>
+    </div>
+
+<script>
+function showView(id) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('view-'+id).classList.add('active');
+    event.target.classList.add('active');
+}
+
+function copyTemplate(btn) {
+    const body = btn.previousElementSibling.textContent.trim();
+    navigator.clipboard.writeText(body);
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy Message', 1500);
+}
+
+function filterTemplates(tag, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.template-card').forEach(card => {
+        if (tag === 'all' || card.dataset.tags.includes(tag)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+const chartDefaults = {
+    responsive: true,
+    plugins: { legend: { labels: { color: '#9498ab' } } },
+    scales: {
+        x: { ticks: { color: '#9498ab' }, grid: { color: '#2e3347' } },
+        y: { ticks: { color: '#9498ab' }, grid: { color: '#2e3347' } }
+    }
+};
+
+// BDR Reply Rate Chart
+new Chart(document.getElementById('bdr-reply-chart'), {
+    type: 'bar',
+    data: {
+        labels: ["Meini", "Archi", "Aniket", "Zu", "Shreyas/Subha", "Vishwa", "G2 Campaign", "Hemant", "Satya", "Morvika", "Rob", "Prasidh", "Pune Event", "Bala", "DD"],
+        datasets: [{
+            label: 'Reply Rate %',
+            data: [22.8, 19.0, 14.0, 5.1, 3.4, 1.9, 1.7, 1.2, 0.3, 0.3, 0.2, 0.0, 0.0, 0.0, 0.0],
+            backgroundColor: ["#00b894", "#00b894", "#00b894", "#fdcb6e", "#fdcb6e", "#ff6b6b", "#ff6b6b", "#ff6b6b", "#ff6b6b", "#ff6b6b", "#ff6b6b", "#ff6b6b", "#ff6b6b", "#ff6b6b", "#ff6b6b"]
+        }]
+    },
+    options: { ...chartDefaults, indexAxis: 'y', plugins: { legend: { display: false } } }
+});
+
+// Volume vs Rate bubble chart
+new Chart(document.getElementById('volume-vs-rate-chart'), {
+    type: 'scatter',
+    data: {
+        datasets: [{
+            label: 'BDRs',
+            data: [{"x": 57, "y": 22.8, "r": 13}, {"x": 332, "y": 19.0, "r": 63}, {"x": 129, "y": 14.0, "r": 18}, {"x": 117, "y": 5.1, "r": 6}, {"x": 638, "y": 3.4, "r": 22}, {"x": 215, "y": 1.9, "r": 4}, {"x": 58, "y": 1.7, "r": 3}, {"x": 256, "y": 1.2, "r": 3}, {"x": 329, "y": 0.3, "r": 3}, {"x": 319, "y": 0.3, "r": 3}, {"x": 611, "y": 0.2, "r": 3}, {"x": 117, "y": 0.0, "r": 3}, {"x": 74, "y": 0.0, "r": 3}, {"x": 64, "y": 0.0, "r": 3}, {"x": 101, "y": 0.0, "r": 3}],
+            backgroundColor: 'rgba(108,92,231,0.5)',
+            borderColor: '#6c5ce7'
+        }]
+    },
+    options: { ...chartDefaults, scales: {
+        x: { title: { display: true, text: 'Emails Delivered', color: '#9498ab' }, ticks: { color: '#9498ab' }, grid: { color: '#2e3347' } },
+        y: { title: { display: true, text: 'Reply Rate %', color: '#9498ab' }, ticks: { color: '#9498ab' }, grid: { color: '#2e3347' } }
+    } }
+});
+
+// Inbound vs Outbound
+new Chart(document.getElementById('inbound-outbound-chart'), {
+    type: 'bar',
+    data: {
+        labels: ['Archi IB', 'Meini IB', 'Aniket', 'Zu', 'Shreyas OB', 'Satya OB', 'Morvika OB', 'Rob OB', 'Hemant'],
+        datasets: [
+            { label: 'Reply Rate %', data: [19.5, 22.8, 14.0, 5.1, 2.1, 0.3, 0.3, 0.2, 1.2], backgroundColor: '#6c5ce7' },
+            { label: 'Open Rate %', data: [71.1, 54.4, 14.7, 49.6, 38.2, 25.5, 39.2, 8.0, 2.3], backgroundColor: '#74b9ff' }
+        ]
+    },
+    options: chartDefaults
+});
+
+// BDR Comparison
+new Chart(document.getElementById('bdr-compare-chart'), {
+    type: 'bar',
+    data: {
+        labels: ["Meini", "Archi", "Aniket", "Zu", "Shreyas/Subha", "Vishwa", "G2 Campaign", "Hemant", "Satya", "Morvika", "Rob", "Prasidh", "Pune Event", "Bala", "DD"],
+        datasets: [
+            { label: 'Reply Rate %', data: [22.8, 19.0, 14.0, 5.1, 3.4, 1.9, 1.7, 1.2, 0.3, 0.3, 0.2, 0.0, 0.0, 0.0, 0.0], backgroundColor: '#6c5ce7' },
+            { label: 'Open Rate %', data: [54.4, 72.9, 14.7, 49.6, 37.6, 14.9, 1.7, 2.3, 25.5, 39.2, 8.0, 16.2, 2.7, 50.0, 22.8], backgroundColor: '#74b9ff' }
+        ]
+    },
+    options: chartDefaults
+});
+
+// Open Rate vs Reply Rate scatter
+new Chart(document.getElementById('or-rr-chart'), {
+    type: 'scatter',
+    data: {
+        datasets: [{
+            label: 'BDRs',
+            data: [{"x": 54.4, "y": 22.8}, {"x": 72.9, "y": 19.0}, {"x": 14.7, "y": 14.0}, {"x": 49.6, "y": 5.1}, {"x": 37.6, "y": 3.4}, {"x": 14.9, "y": 1.9}, {"x": 1.7, "y": 1.7}, {"x": 2.3, "y": 1.2}, {"x": 25.5, "y": 0.3}, {"x": 39.2, "y": 0.3}, {"x": 8.0, "y": 0.2}, {"x": 16.2, "y": 0.0}, {"x": 2.7, "y": 0.0}, {"x": 50.0, "y": 0.0}, {"x": 22.8, "y": 0.0}],
+            backgroundColor: '#fd79a8',
+            pointRadius: 8
+        }]
+    },
+    options: { ...chartDefaults, scales: {
+        x: { title: { display: true, text: 'Open Rate %', color: '#9498ab' }, ticks: { color: '#9498ab' }, grid: { color: '#2e3347' } },
+        y: { title: { display: true, text: 'Reply Rate %', color: '#9498ab' }, ticks: { color: '#9498ab' }, grid: { color: '#2e3347' } }
+    } }
+});
+
+// Word count chart
+new Chart(document.getElementById('wordcount-chart'), {
+    type: 'bar',
+    data: {
+        labels: ['<50', '50-74', '75-99', '100-124', '125-149', '150+'],
+        datasets: [{ label: 'Reply Rate %', data: [72.1, 28.2, 39.0, 27.5, 23.4, 21.2], backgroundColor: ['#74b9ff','#74b9ff','#00b894','#fdcb6e','#ff6b6b','#ff6b6b'] }]
+    },
+    options: { ...chartDefaults, plugins: { legend: { display: false } } }
+});
+
+// CTA chart
+new Chart(document.getElementById('cta-chart'), {
+    type: 'bar',
+    data: {
+        labels: ['Heard of us?', 'What day works', 'Question close', 'Mixed/Other', 'Open-ended Q', 'Unreasonable', 'Phone ask'],
+        datasets: [{ label: 'Reply Rate %', data: [52.4, 40.4, 31.7, 23.8, 14.0, 12.8, 5.0], backgroundColor: ['#00b894','#00b894','#74b9ff','#fdcb6e','#ff6b6b','#ff6b6b','#ff6b6b'] }]
+    },
+    options: { ...chartDefaults, indexAxis: 'y', plugins: { legend: { display: false } } }
+});
+
+// Time of day chart
+new Chart(document.getElementById('time-chart'), {
+    type: 'bar',
+    data: {
+        labels: ['Morning 9-11', 'Lunch 12-1', 'Afternoon 2-5', 'Evening 6-8', 'Late 9-11'],
+        datasets: [{ label: 'Reply Rate %', data: [100, 56.5, 24.0, 12.1, 23.5], backgroundColor: ['#74b9ff','#00b894','#fdcb6e','#ff6b6b','#fdcb6e'] }]
+    },
+    options: { ...chartDefaults, plugins: { legend: { display: false } } }
+});
+
+// Day of week chart
+new Chart(document.getElementById('day-chart'), {
+    type: 'bar',
+    data: {
+        labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        datasets: [{ label: 'Reply Rate %', data: [22.9, 29.6, 28.3, 42.1, 29.6], backgroundColor: ['#ff6b6b','#74b9ff','#fdcb6e','#00b894','#74b9ff'] }]
+    },
+    options: { ...chartDefaults, plugins: { legend: { display: false } } }
+});
+</script>
+</div>
+</body>
+</html>
