@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batch 8 — Prospect Outreach Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #1a1a2e;
+            --primary-light: #ffffff;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --border-gray: #e5e7eb;
+            --bg-light: #f9fafb;
+            --text-dark: #111827;
+            --text-gray: #6b7280;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: var(--primary-dark);
+            color: var(--primary-light);
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            opacity: 0.8;
+            text-transform: uppercase;
+        }
+
+        .stat-card .value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            background: var(--primary-light);
+            color: var(--text-dark);
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background: var(--bg-light);
+            border-color: var(--accent-blue);
+        }
+
+        button.active {
+            background: var(--accent-blue);
+            color: var(--primary-light);
+            border-color: var(--accent-blue);
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+            padding: 8px 12px;
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .table-wrapper {
+            background: var(--primary-light);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--bg-light);
+            border-bottom: 2px solid var(--border-gray);
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-gray);
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-gray);
+        }
+
+        tbody tr:hover {
+            background: var(--bg-light);
+            cursor: pointer;
+        }
+
+        tbody tr.hidden {
+            display: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .priority-high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .priority-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .persona-architect {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        .persona-director {
+            background: #dbeafe;
+            color: #0c4a6e;
+        }
+
+        .persona-manager {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .vertical-saas {
+            background: #f3e8ff;
+            color: #6b21a8;
+        }
+
+        .vertical-fintech {
+            background: #fce7f3;
+            color: #9d174d;
+        }
+
+        .vertical-healthcare {
+            background: #dbeafe;
+            color: #0c4a6e;
+        }
+
+        .vertical-insurance {
+            background: #fed7aa;
+            color: #92400e;
+        }
+
+        .vertical-other {
+            background: #f0fdf4;
+            color: #166534;
+        }
+
+        .prospect-card {
+            display: none;
+            background: var(--bg-light);
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .prospect-card.expanded {
+            display: block;
+        }
+
+        .card-header {
+            background: var(--primary-dark);
+            color: var(--primary-light);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .card-header p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .card-close {
+            cursor: pointer;
+            font-size: 20px;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .card-close:hover {
+            opacity: 1;
+        }
+
+        .card-content {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-section h4 {
+            font-size: 13px;
+            text-transform: uppercase;
+            color: var(--text-gray);
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .contact-info {
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .contact-info strong {
+            color: var(--text-gray);
+        }
+
+        .contact-info a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            word-break: break-word;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        .objection-section {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .objection-section strong {
+            color: #92400e;
+        }
+
+        .objection-response {
+            margin-top: 8px;
+            font-style: italic;
+            color: #78350f;
+        }
+
+        .message-section {
+            grid-column: 1 / -1;
+            border-top: 2px solid var(--border-gray);
+            padding-top: 20px;
+        }
+
+        .message-field {
+            margin-bottom: 15px;
+        }
+
+        .message-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-gray);
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .message-text {
+            background: var(--primary-light);
+            border: 1px solid var(--border-gray);
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .copy-btn {
+            padding: 6px 12px;
+            font-size: 12px;
+            background: var(--accent-blue);
+            color: var(--primary-light);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #2563eb;
+        }
+
+        .copy-btn.copied {
+            background: var(--accent-green);
+        }
+
+        .personalization-score {
+            display: inline-block;
+            padding: 4px 8px;
+            background: var(--accent-blue);
+            color: var(--primary-light);
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        select {
+            padding: 6px 10px;
+            border: 1px solid var(--border-gray);
+            border-radius: 4px;
+            font-size: 13px;
+            background: var(--primary-light);
+            cursor: pointer;
+            min-width: 100px;
+        }
+
+        @media (max-width: 768px) {
+            .card-content {
+                grid-template-columns: 1fr;
+            }
+
+            .message-section {
+                grid-column: 1;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .filter-group {
+                flex-direction: column;
+            }
+
+            th, td {
+                padding: 8px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Batch 8 — Outreach Tracker</h1>
+            <p>Generated Feb 27, 2026 | 25 Prospects Ready to Send</p>
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="label">Total Prospects</div>
+                    <div class="value">25</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Architects</div>
+                    <div class="value">8</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Directors</div>
+                    <div class="value">4</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Managers</div>
+                    <div class="value">13</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Status</div>
+                    <div class="value">Ready</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="filter-group">
+                <button class="filter-btn active" data-filter="all">All Prospects</button>
+                <button class="filter-btn" data-filter="HIGH">HIGH Priority</button>
+                <button class="filter-btn" data-filter="architect">Architects</button>
+                <button class="filter-btn" data-filter="director">Directors</button>
+                <button class="filter-btn" data-filter="manager">Managers</button>
+            </div>
+            <input type="text" class="search-box" id="searchBox" placeholder="Search by name, company, or vertical...">
+            <button id="expandAll">Expand All</button>
+            <button id="collapseAll">Collapse All</button>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="prospectsTable">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">Priority</th>
+                        <th style="width: 120px;">Name</th>
+                        <th style="width: 100px;">Title</th>
+                        <th style="width: 130px;">Company</th>
+                        <th style="width: 80px;">Persona</th>
+                        <th style="width: 80px;">Vertical</th>
+                        <th style="width: 90px;">Location</th>
+                        <th style="width: 100px;">Status</th>
+                        <th style="width: 100px;">Reply Tag</th>
+                    </tr>
+                </thead>
+                <tbody id="prospectsBody"></tbody>
+            </table>
+        </div>
+
+        <div id="cardsContainer"></div>
+    </div>
+
+    <script>
+        const prospectData = [
+            {"id": 13, "persona": "Architect", "priority": "HIGH", "name": "Alexander Boyle", "title": "Lead QA Architect", "company": "NICE", "city": "Bolingbrook", "state": "IL", "email": "alexander.boyle@nice.com", "linkedin": "http://www.linkedin.com/in/alexander-boyle-a963045a", "industry": "Enterprise CX software", "employees": 8800, "vertical": "SaaS", "subject": "Regression after the contact center refresh", "body": "Managing regression across 100+ integrations in CXone is probably eating release cycles, right?\n\nWhen contact center modules change, test maintenance spikes because the integration surface is so large. The more integrations you add, the more test scenarios need coverage.\n\nCisco cut regression time by 35% with AI auto-healing across their enterprise platform. That gave their release team weeks back each cycle.\n\nIf that kind of reduction would help NICE's quarterly releases, what day works for a quick look at how they managed it?\n\nRob"},
+            {"id": 4, "persona": "Architect", "priority": "MEDIUM", "name": "Ganesh Sapkota", "title": "QA Architect, QA Team Lead", "company": "Farm Bureau Insurance of Idaho", "city": "Pocatello", "state": "ID", "email": null, "linkedin": "http://www.linkedin.com/in/ganeshsapkota", "industry": "Insurance", "employees": 420, "vertical": "Insurance", "subject": "Policy regression during your Guidewire migration", "body": "With the Guidewire Cloud migration underway, how's your team managing regression testing across the transition?\n\nPlatform migrations create a squeeze: legacy test suites need refactoring for cloud infrastructure, and new Guidewire-specific regression testing adds urgency. That's when test maintenance often blocks releases.\n\nHansard, another regional insurer, cut regression from 8 weeks to 5 weeks with auto-healing—that freed their team during a major systems transition. They used that time to expand coverage.\n\nIf shaving 3 weeks off regression during your Guidewire rollout would help, what day works for a quick look at how they managed it?\n\nRob"},
+            {"id": 7, "persona": "Architect", "priority": "MEDIUM", "name": "Vusal Azizaliyev", "title": "Sr Automation Engineer / QA Architect", "company": "Xtime by Cox Automotive", "city": "Redwood City", "state": "CA", "email": null, "linkedin": "http://www.linkedin.com/in/vusal-azizaliyev-b8194726", "industry": "Automotive SaaS", "employees": 270, "vertical": "SaaS", "subject": "Test maintenance before the next release", "body": "How much time is your team spending on test upkeep versus new test coverage for dealer features?\n\nDuring integrations with multiple dealer platforms, inherited test suites usually break faster than the team can fix them. Each new dealer integration adds test complexity.\n\nSpendflo, a similar-sized SaaS platform, cut manual testing effort in half while maintaining coverage. That let their small team focus on features instead of test maintenance.\n\nIf cutting test maintenance 50% sounds useful, what day works to see how they did it?\n\nRob"},
+            {"id": 10, "persona": "Architect", "priority": "MEDIUM", "name": "Tien Tran", "title": "QA Automation Engineer Lead/Architect", "company": "Cadent", "city": "San Jose", "state": "CA", "email": "ttran@cadent.tv", "linkedin": "http://www.linkedin.com/in/tientran1", "industry": "Ad tech", "employees": 740, "vertical": "SaaS", "subject": "Regression during your AdTheorent integration", "body": "With the AdTheorent acquisition, how's your team planning to handle regression testing across the platform merge?\n\nAd tech integrations are tough: ML model updates, auction logic changes, and feature flag rollouts all create regression pressure. Each model change or channel integration needs validation before going live.\n\nCRED's trading platform achieved 90% automated regression and runs cycles 5X faster, which gave them the agility to deploy safely during high-velocity changes. That's the speed critical for your auction logic.\n\nIf that kind of cycle compression would help your integration testing, what day works for a quick look at how they structured it?\n\nRob"},
+            {"id": 12, "persona": "Architect", "priority": "MEDIUM", "name": "Harish Appannagari", "title": "Sr QA Automation Architect", "company": "Federal Reserve Bank of SF", "city": "San Francisco", "state": "CA", "email": "harish.appannagari@sf.frb.org", "linkedin": "http://www.linkedin.com/in/harish-appannagari", "industry": "Financial services (government)", "employees": 2000, "vertical": "FinServ", "subject": "Compliance testing before the quarterly release", "body": "With compliance-critical systems, how's your team managing regression cycles without manual bottlenecks?\n\nBanking infrastructure teams often face the squeeze between compliance requirements and fast releases. Regulatory testing requires broad coverage, which creates manual upkeep headaches.\n\nSanofi cut their regulatory testing cycle from 3 days to 80 minutes with AI auto-healing. That freed their compliance team to validate business logic instead of running test suites.\n\nIf faster compliance validation before your releases sounds useful, what day works for a quick look?\n\nRob"},
+            {"id": 36, "persona": "Architect", "priority": "MEDIUM", "name": "Rhummel Banayat", "title": "Senior QA Architect", "company": "ReSound (Beltone)", "city": "Chicago", "state": "IL", "email": "banayatr@beltone.com", "linkedin": "http://www.linkedin.com/in/rhummel-banayat-643534197", "industry": "Medical devices (hearing aids)", "employees": 1100, "vertical": "Healthcare", "subject": "Testing the companion app before the device release", "body": "Are you testing the companion app regression separately from the device firmware releases?\n\nHealthcare app teams covering multiple device models usually end up with test maintenance that blocks releases. Each device variant needs app regression testing, which multiplies effort.\n\nMedibuddy automated 2,500 tests across multiple device configurations and cut maintenance 50%, which let them scale coverage faster. That gave them capacity to test new device features without hiring.\n\nIf reducing test upkeep while growing coverage would help, what day works for a quick look?\n\nRob"},
+            {"id": 55, "persona": "Architect", "priority": "MEDIUM", "name": "Bill Corsar", "title": "Sr .QA Architect", "company": "HealthPlan Services", "city": "Tarpon Springs", "state": "Florida", "email": null, "linkedin": "http://www.linkedin.com/in/billcorsar", "industry": "insurance", "employees": 560, "vertical": "Insurance", "subject": "Regression during the open enrollment rush", "body": "How is your team managing regression testing during open enrollment when release pressure spikes?\n\nHealth insurance platforms hit the hardest regression challenges during annual enrollment because the release schedule is fixed and non-negotiable. Every feature change needs validation across member workflows.\n\nHansard reduced regression cycles from 8 weeks to 5 weeks with auto-healing, freeing up weeks before critical deadlines. That gave their team breathing room for quality testing.\n\nIf cutting regression time before your next enrollment season sounds useful, what day works for a quick look?\n\nRob"},
+            {"id": 42, "persona": "Director", "priority": "HIGH", "name": "Scott Carruth", "title": "Senior Director QA", "company": "Abrigo", "city": "Raleigh", "state": "North Carolina", "email": "scott.carruth@abrigo.com", "linkedin": "http://www.linkedin.com/in/scarruth", "industry": "financial services", "employees": 930, "vertical": "FinTech", "subject": "Compliance regression eating your quarterly window", "body": "With formal UAT and compliance gates, how much time is regression consuming in your quarterly cycle?\n\nBanking platforms with AML and fraud detection usually see regression test maintenance consume half their release window. Compliance validation requires exhaustive testing across transaction scenarios.\n\nSanofi's regulatory workflow went from 3 days to 80 minutes with auto-healing, freeing their team for higher-value work. That reduced their gate-to-deployment time significantly.\n\nIf reclaiming time in your quarterly gates would help, what day works to compare how they did it?\n\nRob"},
+            {"id": 31, "persona": "Director", "priority": "MEDIUM", "name": "Kunal Patel", "title": "Sr Director of QA", "company": "aPriori Technologies", "city": "Boston", "state": "MA", "email": "kpatel@apriori.com", "linkedin": "http://www.linkedin.com/in/kunal-patel108", "industry": "Manufacturing SaaS", "employees": 310, "vertical": "SaaS", "subject": "Simulation platform regression keeping releases stuck", "body": "How much test maintenance is your team doing relative to new simulation scenario testing?\n\nManufacturing simulation platforms usually grow test suites faster than teams can keep them maintainable. Each new simulation variant needs regression coverage, creating test debt.\n\nSpendflo cut manual testing 50% across their SaaS platform, which let smaller teams focus on complex scenarios. That freed capacity for new feature testing without adding headcount.\n\nIf getting that kind of capacity back would help, what day works for a quick chat?\n\nRob"},
+            {"id": 37, "persona": "Director", "priority": "MEDIUM", "name": "Joe Casale", "title": "Sr. Director Quality Assurance", "company": "Lexia Learning", "city": "Framingham", "state": "Massachusetts", "email": "jcasale@lexialearning.com", "linkedin": "http://www.linkedin.com/in/joe-casale-6938ba7", "industry": "e-learning", "employees": 870, "vertical": "EdTech", "subject": "Algorithm testing across Core5 and PowerUp", "body": "Are you testing the adaptive algorithm changes separately across PreK-5 and 6-12, or is that one test suite?\n\nEdTech platforms covering multiple grade levels usually struggle to test algorithm variants without test maintenance exploding. Each grade-band variant creates separate test paths.\n\nMedibuddy automated 2,500 tests across multiple modules and cut upkeep 50%, which freed the team to focus on coverage expansion. That let them move faster on adaptive algorithm testing.\n\nIf scaling your algorithm testing without doubling maintenance would help, what day works for a quick look?\n\nRob"},
+            {"id": 40, "persona": "Director", "priority": "MEDIUM", "name": "Alexander Tuaev", "title": "Senior Director of Quality Assurance", "company": "Convoso", "city": "Los Angeles", "state": "California", "email": "atuaev@convoso.com", "linkedin": "http://www.linkedin.com/in/alexander-tuaev-3a7323103", "industry": "information technology & services", "employees": 230, "vertical": "SaaS", "subject": "Dialing mode regression before the rollout", "body": "How are you testing dialing mode changes without regression hitting every other feature?\n\nContact center platforms with multiple dialing modes and APIs usually see regression sprawl because the test surface is large. Each dialing variant affects call routing and integrations.\n\nCRED handles high-complexity transaction testing at 5X faster execution with 90% coverage automation. That speed lets them roll out features faster without regression risk.\n\nIf speed and coverage would help your platform releases, what day works to see how they structured it?\n\nRob"},
+            {"id": 49, "persona": "Manager", "priority": "HIGH", "name": "Mark Waldinger", "title": "Quality Assurance Manager", "company": "Agilysys", "city": "Santa Barbara", "state": "California", "email": "mark.waldinger@agilysys.com", "linkedin": "http://www.linkedin.com/in/mark-waldinger-628b5b4", "industry": "information technology & services", "employees": 1900, "vertical": "SaaS", "subject": "PMS regression during your Marriott rollout", "body": "With the Marriott deployment ahead, how's your team planning regression testing across each brand before they go live?\n\nBrand-specific rollouts create a regression challenge: each Marriott brand—Ritz, Westin, Hilton—needs separate PMS validation before approval. One broken brand feature breaks that entire revenue stream.\n\nHansard cut regression from 8 weeks to 5 weeks with auto-healing, which gave their compliance team the window they needed for multi-brand deployments. That freed capacity for brand-specific validation cycles.\n\nIf faster turnaround across your Marriott brands would help the rollout schedule, what day works for a quick look at how they managed parallel approvals?\n\nRob"},
+            {"id": 50, "persona": "Manager", "priority": "HIGH", "name": "Sue Massaro", "title": "QA Manager", "company": "TriZetto Healthcare Products", "city": "Naperville", "state": "Illinois", "email": "susan.massaro@cognizant.com", "linkedin": "http://www.linkedin.com/in/sue-massaro-ctfl-63679213", "industry": "information technology & services", "employees": 1200, "vertical": "SaaS", "subject": "Claims engine regression across integration partners", "body": "With 650+ EMR integrations, how's your team managing regression without it becoming the release blocker?\n\nHealthcare claims platforms with massive integration surfaces usually see test maintenance consume most of the release cycle. Each EMR integration needs claims validation testing.\n\nNagra DTV automated 2,500 tests in 8 months and cut execution 4X faster across their integration matrix. That speed let them release features without regression risk.\n\nIf managing that scale of coverage without test explosions sounds useful, what day works for a quick look?\n\nRob"},
+            {"id": 17, "persona": "Manager", "priority": "MEDIUM", "name": "Keith Schofield", "title": "QA Manager", "company": "Fullsteam", "city": "Brookline", "state": "NH", "email": "keith.schofield@fullsteam.com", "linkedin": "http://www.linkedin.com/in/keith-schofield-0635651", "industry": "SaaS platform", "employees": 1700, "vertical": "SaaS", "subject": "Testing across the acquired product suites", "body": "How are you managing regression now that you're integrating multiple acquired products into one platform?\n\nPost-acquisition teams usually find inherited test suites break faster than they can consolidate and fix them. Each acquired product adds test maintenance overhead.\n\nMedibuddy integrated 2,500 tests across platforms and cut maintenance 50%, which let them focus on unified coverage. That gave them a baseline to build new integration tests.\n\nIf consolidating your test base without losing coverage would help, what day works for a quick look?\n\nRob"},
+            {"id": 18, "persona": "Manager", "priority": "MEDIUM", "name": "Terry Mack", "title": "QA Manager and Lead", "company": "Wright Flood", "city": "Lutz", "state": "FL", "email": "terry.mack@weareflood.com", "linkedin": "http://www.linkedin.com/in/terry-mack-6473864", "industry": "Insurance (flood)", "employees": 360, "vertical": "Insurance", "subject": "Policy regression before hurricane season", "body": "As hurricane season approaches, how's your team preparing regression testing without it becoming a release blocker?\n\nFlood insurance creates a seasonal squeeze: pre-season, you need to lock down releases safely before the storms hit. Regression testing can't slip—it's the gate that keeps policy and claims changes from breaking mid-season.\n\nHansard cut regression from 8 weeks to 5 weeks with auto-healing, which gave their team weeks back before critical deadlines. That's the kind of breathing room you need before hurricane season.\n\nIf shaving weeks off your cycles before your peak season would help, what day works for a quick look at how they managed the timeline?\n\nRob"},
+            {"id": 19, "persona": "Manager", "priority": "MEDIUM", "name": "Miranda Jensen", "title": "QA Manager", "company": "OMRON Healthcare", "city": "Elgin", "state": "IL", "email": "miranda.jensen@omron.com", "linkedin": "http://www.linkedin.com/in/miranda-jensen-62257274", "industry": "Medical devices / digital health", "employees": 360, "vertical": "Healthcare", "subject": "Device model regression as your portfolio grows", "body": "As your device portfolio expands, how's test regression keeping pace with new device variants?\n\nConnected health platforms hit a complexity wall as device models multiply: each new device variant (different Bluetooth stacks, different form factors) creates a separate regression test path. Test matrix explodes faster than teams can maintain it.\n\nMedibuddy automated 2,500 tests across multiple device configurations and cut maintenance 50%, which freed capacity to support new device releases without hiring. That's the scaling you need as portfolio grows.\n\nIf reducing test upkeep while scaling device coverage would help, what day works for a quick chat about their approach?\n\nRob"},
+            {"id": 23, "persona": "Manager", "priority": "MEDIUM", "name": "Wes Cassady", "title": "QA Manager", "company": "EverCommerce", "city": "Knoxville", "state": "TN", "email": null, "linkedin": "http://www.linkedin.com/in/wes-cassady-03b71484", "industry": "SaaS", "employees": 2000, "vertical": "SaaS", "subject": "Regression across wellness, fitness, and home services", "body": "How is your team handling regression testing now that you're maintaining multiple acquired verticals under one platform?\n\nService commerce platforms with multiple product lines usually see test maintenance explode because each vertical needs different coverage paths. Cross-vertical feature changes create complex test dependencies.\n\nHansard reduced regression time by 3 weeks, which freed capacity to focus on strategic coverage for new verticals. That gave them the speed to integrate acquisitions faster.\n\nIf reclaiming time across your product portfolio would help, what day works for a quick look?\n\nRob"},
+            {"id": 27, "persona": "Manager", "priority": "MEDIUM", "name": "Cindy Phillips", "title": "QA Manager", "company": "Xplor Technologies", "city": "Westminster", "state": "SC", "email": null, "linkedin": "http://www.linkedin.com/in/qaqueen59", "industry": "SaaS", "employees": 2100, "vertical": "SaaS", "subject": "Platform regression during your Clubessential merger", "body": "With Clubessential integration ahead, how's your team planning regression testing across the merger window?\n\nMulti-vertical mergers layer test complexity: Clubessential + your childcare, fitness, and field service platforms = cascading test dependencies. Each vertical has unique workflows, and integration points multiply regression scenarios across all three.\n\nMedibuddy scaled to 2,500 tests and cut maintenance 50%, which gave them capacity to absorb new verticals without losing coverage. That's critical during a 12-18 month integration.\n\nIf getting capacity back to handle merger testing would help, what day works for a quick look at how they managed multi-vertical scaling?\n\nRob"},
+            {"id": 28, "persona": "Manager", "priority": "MEDIUM", "name": "Avinash Vyas", "title": "QA Manager/Lead", "company": "Generac", "city": "Cypress", "state": "TX", "email": "avinash.vyas@generac.com", "linkedin": "http://www.linkedin.com/in/avinashvyas", "industry": "Power/energy (IoT)", "employees": 5400, "vertical": "SaaS", "subject": "Regression across your device, cloud, and app stack", "body": "As you expand your device portfolio, how's regression testing keeping pace with device, cloud, and app sync complexity?\n\nIoT platforms hit a wall with test maintenance because firmware changes cascade: firmware updates require validation across cloud APIs and mobile apps. Each new device model multiplies the test matrix. That's where test sprawl starts.\n\nNagra DTV automated 2,500 tests across device and cloud infrastructure and cut execution 4X faster in 8 months. That speed let them keep pace with firmware release cycles without regression risk.\n\nIf managing that complexity without test sprawl would help, what day works to see how they structured the cross-platform approach?\n\nRob"},
+            {"id": 46, "persona": "Manager", "priority": "MEDIUM", "name": "Arpan Mehta", "title": "QA Manager", "company": "IDeaS Revenue Solutions", "city": "Eden Prairie", "state": "Minnesota", "email": "arpan.mehta@ideas.com", "linkedin": "http://www.linkedin.com/in/arpan-mehta-1473a0126", "industry": "hospitality", "employees": 1100, "vertical": "Hospitality", "subject": "Regression across your 107+ hotel integrations", "body": "With 107+ integrations powering your pricing engine, how much of your release cycle goes to regression testing?\n\nHospitality platforms with massive integration matrices usually find test maintenance becomes the release gate. Each integration needs pricing validation testing.\n\nNagra DTV handled 2,500 tests across an integration matrix and cut execution 4X faster, freeing their team for new features. That speed enabled them to release pricing updates safely.\n\nIf managing regression at that scale without test overhead would help, what day works for a quick look?\n\nRob"},
+            {"id": 48, "persona": "Manager", "priority": "MEDIUM", "name": "Tanveer Kaur", "title": "QA Manager", "company": "Cast & Crew", "city": "Simi Valley", "state": "California", "email": "tanveer.kaur@theteamcompanies.com", "linkedin": "http://www.linkedin.com/in/tanveer-kaur-b5523b55", "industry": "entertainment", "employees": 1100, "vertical": "Entertainment", "subject": "Payroll regression across state compliance rules", "body": "How is your team managing regression testing across different state payroll rules without the test matrix exploding?\n\nEntertainment payroll platforms usually hit test maintenance walls because compliance rules create test variants across states. Each state's payroll rules need independent testing.\n\nMedibuddy automated 2,500 tests and cut maintenance 50%, which freed time to handle compliance variants better. That gave them capacity to support new state requirements.\n\nIf getting capacity back to manage state-level compliance testing would help, what day works for a quick chat?\n\nRob"},
+            {"id": 51, "persona": "Manager", "priority": "MEDIUM", "name": "Charles Rutland", "title": "QA Manager", "company": "Rewards Network", "city": "Pompano Beach", "state": "Florida", "email": "charles.rutland@rewardsnetwork.com", "linkedin": "http://www.linkedin.com/in/charles-rutland-a0716229", "industry": "financial services", "employees": 740, "vertical": "FinTech", "subject": "Loyalty platform regression across Amex, United, Hilton", "body": "Are you testing loyalty platform changes separately for each partner integration, or is regression one cycle?\n\nRestaurant loyalty platforms with partner dependencies usually find regression testing locks down releases because breakage is partner-facing. Each partner integration needs independent regression coverage.\n\nCRED achieved 90% regression automation and runs tests 5X faster across their partnership matrix, freeing their team for new partner integrations. That speed lets them roll out features faster.\n\nIf faster turnaround with that level of coverage would help your releases, what day works for a quick look?\n\nRob"},
+            {"id": 52, "persona": "Manager", "priority": "MEDIUM", "name": "Reshmitha Ravula", "title": "QA Manager", "company": "Fortis", "city": "Mount Pleasant", "state": "Michigan", "email": "reshmitha.ravula@fortispay.com", "linkedin": "http://www.linkedin.com/in/reshmitha-ravula-72a913111", "industry": "financial services", "employees": 650, "vertical": "FinTech", "subject": "Payment API regression before the release", "body": "How much test maintenance is your team doing on payment API changes versus new gateway integrations?\n\nFinTech payment platforms usually see regression spiral because API changes ripple across gateway integrations and ERP systems. Each new gateway adds test scenarios.\n\nCRED cut transaction test execution 5X faster with 90% automation across their payment infrastructure. That speed gave them the agility to roll out new gateways safely.\n\nIf that kind of speed on your API regression would help releases, what day works to compare how they structured it?\n\nRob"},
+            {"id": 53, "persona": "Manager", "priority": "MEDIUM", "name": "Gilyn Abordo", "title": "Quality Assurance Manager", "company": "Inside Real Estate", "city": "Abilene", "state": "Texas", "email": "gabordo@insiderealestate.com", "linkedin": "http://www.linkedin.com/in/gilyn-abordo-49ba32249", "industry": "real estate", "employees": 530, "vertical": "Real Estate", "subject": "Platform regression slowing your agent and broker releases", "body": "Are agent and broker portal testing running separately, or are they one regression suite?\n\nReal estate platforms usually find regression becomes the constraint because agent and broker workflows need different coverage. Portal changes affect both user types differently.\n\nSpendflo cut manual testing 50%, which freed a smaller team to add coverage without adding headcount. That gave them the speed to release portal features faster.\n\nIf getting that efficiency would help your test roadmap, what day works for a quick look?\n\nRob"},
+            {"id": 54, "persona": "Manager", "priority": "MEDIUM", "name": "Manir Ahmed", "title": "Quality Assurance Manager", "company": "SumTotal Systems, LLC", "city": "Upper Darby", "state": "Pennsylvania", "email": "manir.ahmed@sumtotalsystems.com", "linkedin": "http://www.linkedin.com/in/manir-ahmed-480ab2255", "industry": "information technology & services", "employees": 520, "vertical": "SaaS", "subject": "Regression across your learning, performance, and recruiting modules", "body": "With learning, performance, recruiting, and onboarding modules, how's regression testing keeping pace with the feature matrix?\n\nLMS platforms with that many modules usually see regression maintenance consume weeks because test dependencies are complex. Cross-module integrations create cascading test scenarios.\n\nMedibuddy automated 2,500 tests across multiple modules and cut upkeep 50%, which let them expand coverage fast across all verticals. That gave them speed to release features weekly.\n\nIf cutting test maintenance while growing coverage across your modules would help, what day works for a quick look?\n\nRob"}
+        ];
+
+        const objectionMap = {
+            "Insurance": {"obj": "We already have a tool", "resp": "Totally fair. The gap most teams hit is auto-healing when UIs change, which saves weeks of manual fixes."},
+            "Healthcare": {"obj": "Compliance requirements", "resp": "We work with Oscar Health and several HIPAA-regulated companies. SOC2/HIPAA/ISO certified, on-prem available."},
+            "FinServ": {"obj": "Security/procurement is complex", "resp": "We're SOC2 Type II and ISO 27001 certified. On-prem, private cloud, and hybrid options. Several Fortune 500s use us."},
+            "FinTech": {"obj": "We already have a tool", "resp": "Fair point. Most teams had something before. The gap is usually auto-healing without manual script fixes."},
+            "SaaS": {"obj": "We already have a tool", "resp": "Totally fair. Most teams had something before. The difference is usually no-code + auto-healing."},
+            "EdTech": {"obj": "We already have a tool", "resp": "Totally fair. The gap most teams hit is scaling coverage without hiring more QA."},
+            "Hospitality": {"obj": "Budget is tight", "resp": "Totally get it. Most companies your size cut manual testing 50% and see ROI in Q1."},
+            "Entertainment": {"obj": "Budget is tight", "resp": "Totally get it. One company your size cut manual testing 50% with fast payback."},
+            "Real Estate": {"obj": "We already have a tool", "resp": "Fair. The gap is usually auto-healing + no-code simplicity."}
+        };
+
+        function getObjection(vertical) {
+            const def = objectionMap[vertical] || {"obj": "We already have a tool", "resp": "Totally fair. Most teams had tools before. The gap is usually auto-healing when UIs change."};
+            return def;
+        }
+
+        function getPriorityClass(p) { return p === "HIGH" ? "priority-high" : "priority-medium"; }
+        function getPersonaClass(p) { const m = {"Architect": "persona-architect", "Director": "persona-director", "Manager": "persona-manager"}; return m[p] || "persona-manager"; }
+        function getVerticalClass(v) { const m = {"SaaS": "vertical-saas", "FinTech": "vertical-fintech", "FinServ": "vertical-fintech", "Healthcare": "vertical-healthcare", "Insurance": "vertical-insurance", "EdTech": "vertical-insurance", "Hospitality": "vertical-other", "Entertainment": "vertical-other", "Real Estate": "vertical-other"}; return m[v] || "vertical-other"; }
+
+        function renderTable() {
+            const tbody = document.getElementById('prospectsBody');
+            tbody.innerHTML = '';
+            prospectData.forEach((p, i) => {
+                const row = document.createElement('tr');
+                row.dataset.filter = p.priority;
+                row.dataset.persona = p.persona.toLowerCase();
+                row.dataset.vertical = p.vertical.toLowerCase();
+                row.dataset.name = p.name.toLowerCase();
+                row.dataset.company = p.company.toLowerCase();
+                row.dataset.index = i;
+                row.onclick = () => toggleCard(i);
+                row.innerHTML = `
+                    <td><span class="badge ${getPriorityClass(p.priority)}">${p.priority}</span></td>
+                    <td>${p.name}</td>
+                    <td style="font-size: 12px;">${p.title}</td>
+                    <td>${p.company}</td>
+                    <td><span class="badge ${getPersonaClass(p.persona)}">${p.persona}</span></td>
+                    <td><span class="badge ${getVerticalClass(p.vertical)}">${p.vertical}</span></td>
+                    <td>${p.city}, ${p.state}</td>
+                    <td><select class="status-select" data-index="${i}" onchange="event.stopPropagation();saveStatus()">
+                        <option value="Not Started">Not Started</option>
+                        <option value="Touch 1 Sent">Touch 1 Sent</option>
+                        <option value="Replied">Replied</option>
+                        <option value="Meeting Booked">Meeting Booked</option>
+                    </select></td>
+                    <td><select class="reply-select" data-index="${i}" onchange="event.stopPropagation();saveStatus()">
+                        <option value="">Select...</option>
+                        <option value="Opener">Opener</option>
+                        <option value="Pain hook">Pain hook</option>
+                        <option value="Proof point">Proof point</option>
+                        <option value="Timing">Timing</option>
+                    </select></td>
+                `;
+                tbody.appendChild(row);
+            });
+            loadStatus();
+        }
+
+        function renderCards() {
+            const c = document.getElementById('cardsContainer');
+            c.innerHTML = '';
+            prospectData.forEach((p, i) => {
+                const obj = getObjection(p.vertical);
+                const card = document.createElement('div');
+                card.className = 'prospect-card';
+                card.id = `card-${i}`;
+                card.dataset.index = i;
+                card.dataset.filter = p.priority;
+                card.dataset.persona = p.persona.toLowerCase();
+                card.dataset.vertical = p.vertical.toLowerCase();
+                card.dataset.name = p.name.toLowerCase();
+                card.dataset.company = p.company.toLowerCase();
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div><h3>${p.name}</h3><p>${p.title} | ${p.company}</p></div>
+                        <div class="card-close" onclick="toggleCard(${i})">×</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-section">
+                            <h4>Contact Info</h4>
+                            <div class="contact-info">
+                                <div><strong>Title:</strong> ${p.title}</div>
+                                <div><strong>Company:</strong> ${p.company}</div>
+                                <div><strong>Location:</strong> ${p.city}, ${p.state}</div>
+                                <div><strong>Employees:</strong> ${p.employees.toLocaleString()}</div>
+                                <div><strong>Industry:</strong> ${p.industry}</div>
+                                ${p.email ? `<div><strong>Email:</strong> ${p.email}</div>` : ''}
+                                <div><strong>LinkedIn:</strong> <a href="${p.linkedin}" target="_blank">View Profile</a></div>
+                            </div>
+                            <div class="personalization-score">Personalization: ${p.priority === "HIGH" ? 3 : 2}/3</div>
+                        </div>
+                        <div class="card-section">
+                            <h4>Company Profile</h4>
+                            <ul style="margin-left: 20px; font-size: 13px;">
+                                <li>${p.employees >= 1000 ? 'Enterprise-scale' : p.employees >= 500 ? 'Mid-market' : 'Small-to-mid'} organization (${p.employees} employees)</li>
+                                <li>Vertical: ${p.vertical}</li>
+                                <li>Industry: ${p.industry}</li>
+                                <li>QA Focus: ${p.title.includes('Architect') ? 'Architecture & Scalability' : p.title.includes('Director') ? 'Team Leadership & Cycles' : 'Day-to-Day Execution'}</li>
+                            </ul>
+                            <div class="objection-section">
+                                <strong>Predicted Objection:</strong> "${obj.obj}"
+                                <div class="objection-response">"${obj.resp}"</div>
+                            </div>
+                        </div>
+                        <div class="card-section message-section">
+                            <h4>Touch 1 InMail - Subject & Body</h4>
+                            <div class="message-field">
+                                <div class="message-label">Subject</div>
+                                <div class="message-text">${p.subject}</div>
+                                <button class="copy-btn" onclick="copy('${i}', 'subject')">Copy Subject</button>
+                            </div>
+                            <div class="message-field">
+                                <div class="message-label">Message Body</div>
+                                <div class="message-text">${p.body}</div>
+                                <button class="copy-btn" onclick="copy('${i}', 'body')">Copy Message</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                c.appendChild(card);
+            });
+        }
+
+        function toggleCard(i) { const el = document.getElementById(`card-${i}`); el.classList.toggle('expanded'); }
+        function copy(i, t) {
+            const p = prospectData[i];
+            const text = t === 'subject' ? p.subject : p.body;
+            navigator.clipboard.writeText(text).then(() => {
+                event.target.textContent = 'Copied!';
+                event.target.classList.add('copied');
+                setTimeout(() => {
+                    event.target.textContent = t === 'subject' ? 'Copy Subject' : 'Copy Message';
+                    event.target.classList.remove('copied');
+                }, 1500);
+            });
+        }
+
+        function filter() {
+            const s = document.getElementById('searchBox').value.toLowerCase();
+            const f = document.querySelector('.filter-btn.active').dataset.filter;
+            document.querySelectorAll('#prospectsBody tr').forEach(r => {
+                let show = (f === 'all' || f === r.dataset.filter || (f === 'architect' && r.dataset.persona === 'architect') || (f === 'director' && r.dataset.persona === 'director') || (f === 'manager' && r.dataset.persona === 'manager'));
+                if (show && s) show = r.dataset.name.includes(s) || r.dataset.company.includes(s) || r.dataset.vertical.includes(s);
+                r.classList.toggle('hidden', !show);
+            });
+            document.querySelectorAll('.prospect-card').forEach(c => {
+                let show = (f === 'all' || f === c.dataset.filter || (f === 'architect' && c.dataset.persona === 'architect') || (f === 'director' && c.dataset.persona === 'director') || (f === 'manager' && c.dataset.persona === 'manager'));
+                if (show && s) show = c.dataset.name.includes(s) || c.dataset.company.includes(s) || c.dataset.vertical.includes(s);
+                c.classList.toggle('hidden', !show);
+            });
+        }
+
+        function saveStatus() { const s = {}; document.querySelectorAll('.status-select').forEach(el => { s[el.dataset.index] = el.value; }); localStorage.setItem('batch8-status', JSON.stringify(s)); }
+        function loadStatus() { const st = localStorage.getItem('batch8-status'); if (st) { const s = JSON.parse(st); Object.entries(s).forEach(([i, v]) => { const el = document.querySelector(`.status-select[data-index="${i}"]`); if (el) el.value = v; }); } }
+
+        document.querySelectorAll('.filter-btn').forEach(b => { b.addEventListener('click', () => { document.querySelectorAll('.filter-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); filter(); }); });
+        document.getElementById('searchBox').addEventListener('input', filter);
+        document.getElementById('expandAll').addEventListener('click', () => { document.querySelectorAll('.prospect-card:not(.hidden)').forEach(c => c.classList.add('expanded')); });
+        document.getElementById('collapseAll').addEventListener('click', () => { document.querySelectorAll('.prospect-card').forEach(c => c.classList.remove('expanded')); });
+
+        renderTable();
+        renderCards();
+    </script>
+</body>
+</html>
