@@ -1,5 +1,5 @@
 # Execution Status Report
-Updated: 2026-02-27 16:30 EST
+Updated: 2026-02-28 11:15 EST
 
 ---
 
@@ -7,9 +7,50 @@ Updated: 2026-02-27 16:30 EST
 
 Complete audit of Sales Navigator messaging tab. All data verified by DOM extraction.
 
-### InMail Credits: 99 remaining (of monthly allocation)
+### InMail Credits: ~61 remaining (of monthly allocation)
 
 ### Send History (Verified from Sales Nav Inbox)
+
+#### Saturday Feb 28 — 47 sends (Batch 5A remaining + Batch 6)
+
+**Batch 5A (20 remaining, sent ~8:00-9:30 AM ET):**
+All 20 unsent Batch 5A prospects sent via Sales Navigator InMail.
+Alanna Klein, Stacy Wyatt, Pam Bice, Sundy Comer, Kevin Niekamp, Ramnath Jayakumar, Sara Gilliam, Derek Curtis, Michelle Stark, Chris O'Neill, Usha K, Calvin Fulgham, Kenneth Whitham, Marcy Vallee, Jeff Roberts, Mike Balderree, Jewetta Dobson, Angela Firari, Donald Burlingham, Sanchit Malhotra
+
+**Batch 5B (1 remaining — BLOCKED):**
+Terene Lee — messaging disabled on her profile, could not send. Status: BLOCKED.
+
+**Batch 6 (27 of 27 sent, ~9:30 AM - 11:10 AM ET):**
+
+| # | Name | Company | Credits After |
+|---|------|---------|---------------|
+| 1 | Deirdre Gerhardt | Fidelity Investments | 82 |
+| 2 | Yassi Dastan | Cvent | 81 |
+| 3 | Sudhakar Srinivasan | BNY Pershing | 80 |
+| 4 | Mayank Pandya | ICE Mortgage Technology | 79 |
+| 5 | Muhammad Ali | DTEX Systems | 78 |
+| 6 | Satish Chandrasekaran | Duo Security | 77 |
+| 7 | Marcus Gavin | Cirrus Logic | 77 (Free) |
+| 8 | Chris Hughes | Giant Skull | 76 |
+| 9 | Gianna di Franco | Advarra | 75 |
+| 10 | Olga Lytvynova | ESP Logistics | 74 |
+| 11 | Elias Yousef | JPMorgan Chase | 74 (Free) |
+| 12 | Yong Zu | Goldman Sachs | 74 (Free) |
+| 13 | Amita Prabhu | Thomson Reuters | 73 |
+| 14 | Karthiga Puthianayagam | Synchrony | 72 |
+| 15 | Temi Sulaimon | JP Morgan AM | 71 |
+| 16 | Stephen Weber | LPL Financial | 70 |
+| 17 | Joe Cannon | Regions Bank | 69 |
+| 18 | Robert Catalano | Open Lending | 68 |
+| 19 | Scott Paliani | Honeywell | 67 |
+| 20 | Varun Soni | Mediaocean | 66 |
+| 21 | Francisco Trindade | Braze | ~65 (Free?) |
+| 22 | Bazil D'Souza | CoStar Group | 65 |
+| 23 | Vandy Lee | Vector Solutions | 64 |
+| 24 | Harvindar Pinglia | NexaQ | ~63 |
+| 25 | Juan Gomez | Idea Financial | 63 |
+| 26 | Brenden Gibbons | Square Robot | 62 |
+| 27 | Jason Baron | Thirty Capital | ~61 |
 
 #### Thursday Feb 27 — 28 sends (Batch 5B + Batch 5A)
 
@@ -70,11 +111,11 @@ Jeff Fried, Rebecca Miller-Webster, Tony Slokar, Wen Sun, Jim Ruirong Chen, Luka
 | Batch | Total | Sent | Remaining | DNC |
 |-------|-------|------|-----------|-----|
 | Batch 3 | 25 | 24 | 0 | 0 |
-| Batch 5A | 25 | 5 | 20 | 0 |
-| Batch 5B | 25 | 23 | 1 (Terene Lee) | 1 (Sanjay Singh) |
-| Batch 6 | 27 | 0 | 27 | 0 |
+| Batch 5A | 25 | 25 | 0 | 0 |
+| Batch 5B | 25 | 23 | 1 (Terene Lee — BLOCKED) | 1 (Sanjay Singh) |
+| Batch 6 | 27 | 27 | 0 | 0 |
 | Earlier (Feb 13) | 8 | 8 | 0 | 0 |
-| **TOTAL** | **110** | **60** | **48** | **1** |
+| **TOTAL** | **110** | **107** | **1** | **1** |
 
 ### Tracker File Status (renamed to sent-date convention Feb 27)
 Old files archived to `archive/` folder.
@@ -88,14 +129,67 @@ Old files archived to `archive/` folder.
 | outreach-sent-feb13-batch1.html | Feb 19 | Complete, 8 sends |
 | outreach-sent-feb13-batch1-v2.html | Feb 23 | Complete (rebuild) |
 
+### Apollo Sequence Status — Q1 Priority Accounts (Updated 2026-02-28)
+
+**Sequence ID:** `69a05801fdd140001d3fc014`
+**Status:** ACTIVE (activated in Apollo new builder)
+**Total contacts enrolled:** 102 (75 from Batches 3/5A/5B + 27 from Batch 6)
+
+**Enrollment History:**
+| Date | Action | Contacts | Result |
+|------|--------|----------|--------|
+| Feb 28 | Removed all 97 "finished" contacts | -97 | Sequence cleared |
+| Feb 28 | Enrolled Batches 3, 5A, 5B | +75 | 75 active on Step 1 |
+| Feb 28 | Created 27 Batch 6 contacts in Apollo | +27 new contacts | All created successfully |
+| Feb 28 | Enrolled Batch 6 contacts | +27 | 27 active on Step 1 |
+
+**Batch 6 Apollo Contact IDs (newly created):**
+| Name | Contact ID | Company |
+|------|-----------|---------|
+| Deirdre Gerhardt | 69a2d650185c6700199b5094 | Fidelity Investments |
+| Yassi Dastan | 69a2d652ea994e0011dc4885 | Cvent |
+| Sudhakar Srinivasan | 69a2d6541633f00019e21d84 | BNY Pershing |
+| Mayank Pandya | 69a2d656ea994e000d5fe4a4 | ICE Mortgage Technology |
+| Muhammad Ali | 69a2d658ea994e000d5fe4ac | DTEX Systems |
+| Satish Chandrasekaran | 69a2d65aea994e000d5fe4b4 | Duo Security |
+| Marcus Gavin | 69a2d65cea994e0019438fdb | Cirrus Logic |
+| Chris Hughes | 69a2d65e1633f00019e21d8b | Giant Skull |
+| Gianna di Franco | 69a2d6601633f00019e21d92 | Advarra |
+| Olga Lytvynova | 69a2d6611633f00019e21d96 | ESP Logistics Technology |
+| Elias Yousef | 69a2d66a1633f00019e21d9e | JPMorgan Chase |
+| Yong Zu | 69a2d66c1633f00019e21da6 | Goldman Sachs |
+| Amita Prabhu | 69a2d67fa348910019335f8b | Thomson Reuters |
+| Karthiga Puthianayagam | 69a2d681ea994e0019438fe3 | Synchrony Financial |
+| Temi Sulaimon | 69a2d6831633f00019e21dae | JP Morgan Asset Management |
+| Stephen Weber | 69a2d6841633f00019e21db6 | LPL Financial |
+| Joe Cannon | 69a2d6861633f00019e21dbe | Regions Bank |
+| Robert Catalano | 69a2d68e1633f00019e21dc6 | Open Lending |
+| Scott Paliani | 69a2d6901633f00019e21dcf | Honeywell |
+| Varun Soni | 69a2d691ea994e0019438fec | Mediaocean |
+| Francisco Trindade | 69a2d693ea994e000d5fe4bb | Braze |
+| Bazil D'Souza | 69a2d695ea994e000d5fe4c3 | CoStar Group |
+| Vandy Lee | 69a2d697ea994e000d5fe4cb | Vector Solutions |
+| Harvindar Pinglia | 69a2d699ea994e000d5fe4d3 | NexaQ |
+| Juan Gomez | 69a2d6a0a348910019335f93 | Idea Financial |
+| Brenden Gibbons | 69a2d6a2ea994e0019438ff4 | Square Robot |
+| Jason Baron | 69a2d6a5ea994e0015a50cf2 | Thirty Capital |
+
+**Known limitations:**
+- All 102 contacts are on Step 1. Apollo API cannot advance manual sequence steps.
+- As Rob sends each touch manually, he should mark the step complete in Apollo UI.
+- 2 Batch 6 contacts (Sudhakar Srinivasan, Satish Chandrasekaran) have no email in Apollo. Touch 3 (email) will need to be skipped or email found elsewhere.
+- Gianna di Franco did not match to a person in Apollo's global DB (person_id: null). Enrichment data may be limited.
+
 ### Next Actions
 
-- Touch 2 follow-ups for Batch 5B due ~Mar 4 (Day 5)
-- Touch 2 follow-ups for Batch 5A (5 sent) due ~Mar 4
-- 20 remaining 5A prospects available for Touch 1
-- 1 remaining 5B prospect (Terene Lee) available for Touch 1
-- 27 Batch 6 prospects ready for Touch 1
-- Total unsent prospects ready: 48
+- **ALL TOUCH 1 SENDS COMPLETE** (107 of 110 sent, 1 DNC, 1 BLOCKED, 1 not applicable)
+- Touch 2 follow-ups for Batch 5B (23 sent Feb 27) due ~Mar 4 (Day 5)
+- Touch 2 follow-ups for Batch 5A (5 sent Feb 27, 20 sent Feb 28) due ~Mar 4-5
+- Touch 2 follow-ups for Batch 6 (27 sent Feb 28) due ~Mar 5
+- Touch 2 follow-ups for Batch 3 (24 sent Feb 26) due ~Mar 3
+- Terene Lee (Batch 5B) — messaging blocked, monitor for status change
+- Monitor for replies across all batches
+- All 102 contacts enrolled in Q1 Priority Accounts sequence
 
 ---
 

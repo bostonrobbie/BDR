@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Batch 7 Send Tracker — Feb 28, 2026</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background:#0f172a; color:#e2e8f0; padding:20px; }
+.header { background:linear-gradient(135deg,#1e293b,#334155); border-radius:12px; padding:24px; margin-bottom:20px; border:1px solid #475569; }
+.header h1 { font-size:24px; color:#f8fafc; margin-bottom:4px; }
+.header .sub { font-size:14px; color:#94a3b8; }
+.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin:20px 0; }
+.stat { background:#1e293b; border-radius:8px; padding:16px; text-align:center; border:1px solid #334155; }
+.stat .num { font-size:28px; font-weight:700; color:#38bdf8; }
+.stat .label { font-size:11px; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px; margin-top:4px; }
+.stat.green .num { color:#4ade80; }
+.stat.yellow .num { color:#fbbf24; }
+.stat.red .num { color:#f87171; }
+.filters { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+.filters button { background:#1e293b; border:1px solid #475569; color:#e2e8f0; padding:6px 14px; border-radius:6px; cursor:pointer; font-size:13px; transition:all 0.2s; }
+.filters button:hover, .filters button.active { background:#38bdf8; color:#0f172a; border-color:#38bdf8; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+thead th { background:#1e293b; color:#94a3b8; padding:10px 8px; text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; position:sticky; top:0; border-bottom:2px solid #475569; cursor:pointer; }
+thead th:hover { color:#38bdf8; }
+tbody tr { border-bottom:1px solid #1e293b; transition:background 0.15s; }
+tbody tr:hover { background:#1e293b; }
+tbody td { padding:8px; vertical-align:top; }
+.badge { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; }
+.badge-sent { background:#065f46; color:#6ee7b7; }
+.badge-skipped { background:#7c2d12; color:#fdba74; }
+.badge-pending { background:#1e3a5f; color:#93c5fd; }
+.badge-na { background:#374151; color:#9ca3af; }
+.priority { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; font-size:12px; font-weight:700; }
+.p5 { background:#ef4444; color:white; }
+.p4 { background:#f97316; color:white; }
+.p3 { background:#eab308; color:#1e293b; }
+.p2 { background:#6b7280; color:white; }
+.email-icon { font-size:14px; }
+.copy-btn { background:none; border:1px solid #475569; color:#94a3b8; padding:2px 6px; border-radius:4px; cursor:pointer; font-size:11px; }
+.copy-btn:hover { color:#38bdf8; border-color:#38bdf8; }
+.search-box { background:#1e293b; border:1px solid #475569; color:#e2e8f0; padding:8px 12px; border-radius:6px; width:250px; font-size:13px; }
+.search-box::placeholder { color:#64748b; }
+.toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px; }
+.export-btn { background:#1e293b; border:1px solid #475569; color:#38bdf8; padding:6px 14px; border-radius:6px; cursor:pointer; font-size:13px; }
+.export-btn:hover { background:#38bdf8; color:#0f172a; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Batch 7 — Touch 1 Send Tracker</h1>
+  <div class="sub">LinkedIn Sales Navigator InMail · Feb 28, 2026 · Apollo Label: "Batch 7 - Feb 28"</div>
+</div>
+
+<div class="stats">
+  <div class="stat green"><div class="num">41</div><div class="label">InMails Sent</div></div>
+  <div class="stat yellow"><div class="num">1</div><div class="label">Skipped</div></div>
+  <div class="stat"><div class="num">42</div><div class="label">Total Prospects</div></div>
+  <div class="stat"><div class="num">30</div><div class="label">With Email</div></div>
+  <div class="stat"><div class="num">12</div><div class="label">InMail Only</div></div>
+  <div class="stat green"><div class="num">41</div><div class="label">Apollo Contacts</div></div>
+  <div class="stat red"><div class="num">24</div><div class="label">Credits Left</div></div>
+</div>
+
+<div class="toolbar">
+  <div class="filters">
+    <button class="active" onclick="filterTable('all')">All (42)</button>
+    <button onclick="filterTable('sent')">Sent (41)</button>
+    <button onclick="filterTable('skipped')">Skipped (1)</button>
+    <button onclick="filterTable('has-email')">Has Email (30)</button>
+    <button onclick="filterTable('no-email')">No Email (12)</button>
+  </div>
+  <div style="display:flex;gap:8px;">
+    <input type="text" class="search-box" placeholder="Search name, company..." oninput="searchTable(this.value)">
+    <button class="export-btn" onclick="exportCSV()">Export CSV</button>
+  </div>
+</div>
+
+<table id="tracker">
+<thead>
+<tr>
+  <th>#</th>
+  <th>Pri</th>
+  <th>Name</th>
+  <th>Title</th>
+  <th>Company</th>
+  <th>Vertical</th>
+  <th>Email</th>
+  <th>T1 Status</th>
+  <th>T2 Due</th>
+  <th>T3 Status</th>
+  <th>Apollo ID</th>
+  <th>A/B</th>
+  <th>Subject</th>
+</tr>
+</thead>
+<tbody>
+<tr data-status="sent" data-email="has-email">
+  <td>1</td>
+  <td><span class="priority p5">5</span></td>
+  <td><strong>Kirtiraj Sardesai</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director Head QA & Test Engineering</td>
+  <td>DTCC</td>
+  <td style="font-size:11px;color:#64748b;">FinServ/Infrastructure</td>
+  <td class="email-icon" title="ksardesai@dtcc.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34c1d86ba7b0011322da7">69a34c1d...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="T+1 settlement and regression scope">T+1 settlement and regression scope</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>2</td>
+  <td><span class="priority p4">4</span></td>
+  <td><strong>Sowmya Kandula</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">AVP Software Engineering</td>
+  <td>Saks Global</td>
+  <td style="font-size:11px;color:#64748b;">Retail/E-Commerce</td>
+  <td class="email-icon" title="sowmya.kandula@saks.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34c1fbbefd8000d1c87f3">69a34c1f...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Post-merger platform consolidation">Post-merger platform consolidation</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>3</td>
+  <td><span class="priority p4">4</span></td>
+  <td><strong>Sandy Paray</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">AVP QA Technology</td>
+  <td>Saks Global</td>
+  <td style="font-size:11px;color:#64748b;">Retail/E-Commerce</td>
+  <td class="email-icon" title="sandy.paray@saks.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34c2186ba7b0011322db3">69a34c21...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Consolidating acquired test suites">Consolidating acquired test suites</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>4</td>
+  <td><span class="priority p4">4</span></td>
+  <td><strong>Drew Davis</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">VP Software Engineering</td>
+  <td>Greenway Health</td>
+  <td style="font-size:11px;color:#64748b;">Healthcare</td>
+  <td class="email-icon" title="drew.davis@greenwayhealth.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34c2392a70c00193f6de3">69a34c23...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="HIPAA compliance testing in AWS">HIPAA compliance testing in AWS</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>5</td>
+  <td><span class="priority p4">4</span></td>
+  <td><strong>Mike Dombrowski</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director QE</td>
+  <td>Verint</td>
+  <td style="font-size:11px;color:#64748b;">Enterprise/CCaaS</td>
+  <td class="email-icon" title="mike.dombrowski@verint.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34c259f200c000dce2ffc">69a34c25...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Post-Calabrio merger regression strategy">Post-Calabrio merger regression strategy</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>6</td>
+  <td><span class="priority p4">4</span></td>
+  <td><strong>Daniel Chesla</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Sr Director QE</td>
+  <td>ProfitSolv</td>
+  <td style="font-size:11px;color:#64748b;">SaaS/FinTech</td>
+  <td class="email-icon" title="daniel.chesla@profitsolv.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34c5d9f200c000dce3017">69a34c5d...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Scaling QA across 8 products">Scaling QA across 8 products</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>7</td>
+  <td><span class="priority p4">4</span></td>
+  <td><strong>Mrudula Kalive</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director QA</td>
+  <td>Fusable</td>
+  <td style="font-size:11px;color:#64748b;">SaaS/DataCore</td>
+  <td class="email-icon" title="mrudulakalive@fusable.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34c5fbbefd8000d1c881d">69a34c5f...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Data consistency testing across products">Data consistency testing across products</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>8</td>
+  <td><span class="priority p4">4</span></td>
+  <td><strong>Sandhya Nekkanti</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director QA</td>
+  <td>Tapestry</td>
+  <td style="font-size:11px;color:#64748b;">Retail/Luxury</td>
+  <td class="email-icon" title="snekkanti@tapestry.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34c6186ba7b0011322dd1">69a34c61...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Omnichannel test automation at scale">Omnichannel test automation at scale</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>9</td>
+  <td><span class="priority p4">4</span></td>
+  <td><strong>Zenta Pakulis</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director Engineering QA Cinema</td>
+  <td>Dolby</td>
+  <td style="font-size:11px;color:#64748b;">Media/Entertainment</td>
+  <td class="email-icon" title="zenta.pakulis@dolby.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34c639f200c000dce3023">69a34c63...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Expanding regression coverage beyond 40%">Expanding regression coverage beyond 40%</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>10</td>
+  <td><span class="priority p4">4</span></td>
+  <td><strong>Olga Lisnichenko</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director QA</td>
+  <td>Qrvey</td>
+  <td style="font-size:11px;color:#64748b;">SaaS/Analytics</td>
+  <td class="email-icon" title="olga@qrvey.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34c9d9f200c000dce3046">69a34c9d...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Rapid release cycle regression coverage">Rapid release cycle regression coverage</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>11</td>
+  <td><span class="priority p4">4</span></td>
+  <td><strong>Osama Rifat</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director QA</td>
+  <td>ASI</td>
+  <td style="font-size:11px;color:#64748b;">Marketplace/B2B</td>
+  <td class="email-icon" title="orifat@asicentral.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34c9f86ba7b0011322df4">69a34c9f...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Selenium maintenance on marketplace scale">Selenium maintenance on marketplace scale</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>12</td>
+  <td><span class="priority p4">4</span></td>
+  <td><strong>Michelle Ortiz</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director Technology QE</td>
+  <td>DIRECTV</td>
+  <td style="font-size:11px;color:#64748b;">Media/Streaming</td>
+  <td class="email-icon" title="mortiz@directv.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34ca192a70c00193f6e78">69a34ca1...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Cross-device streaming test coverage">Cross-device streaming test coverage</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>13</td>
+  <td><span class="priority p4">4</span></td>
+  <td><strong>Nadia Korolkova</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director QA & Delivery</td>
+  <td>TripArc</td>
+  <td style="font-size:11px;color:#64748b;">SaaS/Travel</td>
+  <td class="email-icon" title="nadia.korolkova@trip-arc.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34ca3bbefd8000d1c884d">69a34ca3...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Integration testing for 200+ partners">Integration testing for 200+ partners</td>
+</tr>
+<tr data-status="sent" data-email="no-email">
+  <td>14</td>
+  <td><span class="priority p4">4</span></td>
+  <td><strong>Danielle Herzog</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director QA</td>
+  <td>Epic Games</td>
+  <td style="font-size:11px;color:#64748b;">Gaming</td>
+  <td class="email-icon" title="">—</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-na">N/A_NO_EMAIL</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34cc686ba7b0011322e9d">69a34cc6...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Fortnite release velocity and QA scaling">Fortnite release velocity and QA scaling</td>
+</tr>
+<tr data-status="sent" data-email="no-email">
+  <td>15</td>
+  <td><span class="priority p4">4</span></td>
+  <td><strong>Venkat Nayanala</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">QA Leadership</td>
+  <td>MarketAxess</td>
+  <td style="font-size:11px;color:#64748b;">FinServ/Trading</td>
+  <td class="email-icon" title="">—</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-na">N/A_NO_EMAIL</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34cce9f200c000dce30a2">69a34cce...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Selenium maintenance during bond platform scaling">Selenium maintenance during bond platform scaling</td>
+</tr>
+<tr data-status="skipped_not_found" data-email="no-email">
+  <td>16</td>
+  <td><span class="priority p4">4</span></td>
+  <td><strong>Jonathan Lavoie</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">QA Leadership</td>
+  <td>KRAFTON Montréal</td>
+  <td style="font-size:11px;color:#64748b;">Gaming</td>
+  <td class="email-icon" title="">—</td>
+  <td><span class="badge badge-skipped">SKIPPED_NOT_FOUND</span></td>
+  <td style="font-size:12px;color:#94a3b8;">—</td>
+  <td><span class="badge badge-na">N/A_NO_EMAIL</span></td>
+  <td style="font-size:11px;color:#64748b;" title="None">—</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Test execution speed during PUBG releases">Test execution speed during PUBG releases</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>17</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Benjamin Schaefer</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">VP Software Engineering</td>
+  <td>Optimizely</td>
+  <td style="font-size:11px;color:#64748b;">SaaS/CMS</td>
+  <td class="email-icon" title="benjamin.schaefer@optimizely.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34ca59f200c000dce304e">69a34ca5...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="CMS 12 migration test coverage">CMS 12 migration test coverage</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>18</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Imran Yousuf</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">VP Software Engineering</td>
+  <td>Optimizely</td>
+  <td style="font-size:11px;color:#64748b;">SaaS/CMS</td>
+  <td class="email-icon" title="imran.yousuf@optimizely.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34ca792a70c00193f6e82">69a34ca7...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Regression stability across migration phases">Regression stability across migration phases</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>19</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Josie Hernandez</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">EVP Digital Innovation</td>
+  <td>Programming.com</td>
+  <td style="font-size:11px;color:#64748b;">Tech/SaaS</td>
+  <td class="email-icon" title="josie.hernandez@programming.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34cbdbbefd8000d1c88cd">69a34cbd...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Test maintenance across 2,200 apps">Test maintenance across 2,200 apps</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>20</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Bhavani Neerathilingam</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director QA</td>
+  <td>Automation Anywhere</td>
+  <td style="font-size:11px;color:#64748b;">Enterprise RPA</td>
+  <td class="email-icon" title="linga.neerathilingam@automationanywhere.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34cbf86ba7b0011322e94">69a34cbf...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Control Room regression testing complexity">Control Room regression testing complexity</td>
+</tr>
+<tr data-status="sent" data-email="no-email">
+  <td>21</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Ramon Fernandez-Marina</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director Release Engineering</td>
+  <td>MongoDB</td>
+  <td style="font-size:11px;color:#64748b;">Database/DevTools</td>
+  <td class="email-icon" title="">—</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-na">N/A_NO_EMAIL</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34ccf92a70c00193f6ecf">69a34ccf...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Multi-version backward compatibility regression">Multi-version backward compatibility regression</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>22</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Arun Chinnapalaniyappan</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">VP Sr Software Eng Mgr</td>
+  <td>JPMorgan Chase</td>
+  <td style="font-size:11px;color:#64748b;">FinServ/Banking</td>
+  <td class="email-icon" title="arun.chinnapalaniyappan@jpmchase.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34cc29f200c000dce3099">69a34cc2...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Scaling test coverage across microservices">Scaling test coverage across microservices</td>
+</tr>
+<tr data-status="sent" data-email="no-email">
+  <td>23</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Galina Bokov</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director QA/Cyber/Portfolio</td>
+  <td>PwC</td>
+  <td style="font-size:11px;color:#64748b;">Professional Services</td>
+  <td class="email-icon" title="">—</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-na">N/A_NO_EMAIL</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34cd192a70c00193f6ed7">69a34cd1...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Client testing services at enterprise scale">Client testing services at enterprise scale</td>
+</tr>
+<tr data-status="sent" data-email="no-email">
+  <td>24</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Bob Jones</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Studio Director QA</td>
+  <td>Schell Games</td>
+  <td style="font-size:11px;color:#64748b;">Gaming</td>
+  <td class="email-icon" title="">—</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-na">N/A_NO_EMAIL</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34cd386ba7b0015f1ebd3">69a34cd3...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Multi-platform game testing automation">Multi-platform game testing automation</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>25</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Sam Townsend</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Sr Director Software Engineering</td>
+  <td>Greenway Health</td>
+  <td style="font-size:11px;color:#64748b;">Healthcare</td>
+  <td class="email-icon" title="sam.townsend@greenwayhealth.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34cc4bbefd8000d1c88de">69a34cc4...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="AWS migration testing at healthcare scale">AWS migration testing at healthcare scale</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>26</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Angela Carter</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director QA & Compliance</td>
+  <td>Elios Vision</td>
+  <td style="font-size:11px;color:#64748b;">Healthcare/MedTech</td>
+  <td class="email-icon" title="angela@eliosvision.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34cd5bbefd8000d1c88f0">69a34cd5...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="FDA clinical trial validation testing">FDA clinical trial validation testing</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>27</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Kalpana Medhipalli</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director QA</td>
+  <td>SERVPRO</td>
+  <td style="font-size:11px;color:#64748b;">SaaS/Services</td>
+  <td class="email-icon" title="kxmedhipalli@servpro.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34cdd86ba7b0011322ece">69a34cdd...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="DryBook platform stability for franchisees">DryBook platform stability for franchisees</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>28</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Bill St. Ores</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director SW Eng & Solutions QA</td>
+  <td>Spectra Logic</td>
+  <td style="font-size:11px;color:#64748b;">Hardware/Storage</td>
+  <td class="email-icon" title="billo@spectralogic.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34cdfbbefd8000d1c8900">69a34cdf...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Backward compatibility across tape products">Backward compatibility across tape products</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>29</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Cristina Eftimita</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director QA</td>
+  <td>JAKALA</td>
+  <td style="font-size:11px;color:#64748b;">Professional Services</td>
+  <td class="email-icon" title="cristina.eftimita@jakala.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34ce192a70c0011ac6ce3">69a34ce1...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Multi-client QA at scale">Multi-client QA at scale</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>30</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Siva Nagireddy</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director Computer Systems QA</td>
+  <td>Glaukos Corp</td>
+  <td style="font-size:11px;color:#64748b;">Healthcare/MedTech</td>
+  <td class="email-icon" title="snagireddy@glaukos.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34ce386ba7b0011322ed8">69a34ce3...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="FDA validation on your timeline">FDA validation on your timeline</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>31</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Lori Riggs</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Sr QA Manager</td>
+  <td>Octane</td>
+  <td style="font-size:11px;color:#64748b;">FinTech</td>
+  <td class="email-icon" title="lori.mcgrath@octane.co">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34ce592a70c00193f6edf">69a34ce5...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Dealer Portal 2.0 launch readiness">Dealer Portal 2.0 launch readiness</td>
+</tr>
+<tr data-status="sent" data-email="no-email">
+  <td>32</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Cary Chan</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">VP Engineering Health Data & Analytics</td>
+  <td>Cerner/Oracle Health</td>
+  <td style="font-size:11px;color:#64748b;">Healthcare/EHR</td>
+  <td class="email-icon" title="">—</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-na">N/A_NO_EMAIL</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34ced92a70c0011ac6cec">69a34ced...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="EHR consolidation testing">EHR consolidation testing</td>
+</tr>
+<tr data-status="sent" data-email="no-email">
+  <td>33</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Bode Lee</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Head of Engineering & QA</td>
+  <td>Accenture</td>
+  <td style="font-size:11px;color:#64748b;">Professional Services</td>
+  <td class="email-icon" title="">—</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-na">N/A_NO_EMAIL</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34cef92a70c0011ac6cf1">69a34cef...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="AI-powered testing at scale">AI-powered testing at scale</td>
+</tr>
+<tr data-status="sent" data-email="no-email">
+  <td>34</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Aline Warren</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">QA Leadership</td>
+  <td>Quantcast</td>
+  <td style="font-size:11px;color:#64748b;">Adtech</td>
+  <td class="email-icon" title="">—</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-na">N/A_NO_EMAIL</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34d0d86ba7b0011322f07">69a34d0d...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Cookieless validation at speed">Cookieless validation at speed</td>
+</tr>
+<tr data-status="sent" data-email="no-email">
+  <td>35</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Joseph Mitchell</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">SDET/QA Leadership</td>
+  <td>ampliFI Loyalty</td>
+  <td style="font-size:11px;color:#64748b;">FinServ</td>
+  <td class="email-icon" title="">—</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-na">N/A_NO_EMAIL</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34d0f9f200c00113f5590">69a34d0f...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Microservices testing efficiency">Microservices testing efficiency</td>
+</tr>
+<tr data-status="sent" data-email="no-email">
+  <td>36</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Paul Cucinotta</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">QA Leadership</td>
+  <td>Atombeam</td>
+  <td style="font-size:11px;color:#64748b;">Aerospace/Defense</td>
+  <td class="email-icon" title="">—</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-na">N/A_NO_EMAIL</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34d1186ba7b0011322f0c">69a34d11...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="AI validation for classified systems">AI validation for classified systems</td>
+</tr>
+<tr data-status="sent" data-email="no-email">
+  <td>37</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Spencer Vigil</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">QA Leadership</td>
+  <td>Jabra/GN Audio</td>
+  <td style="font-size:11px;color:#64748b;">Hardware/Audio</td>
+  <td class="email-icon" title="">—</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-na">N/A_NO_EMAIL</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34d179f200c00113f5595">69a34d17...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="80+ product variants, one test strategy">80+ product variants, one test strategy</td>
+</tr>
+<tr data-status="sent" data-email="no-email">
+  <td>38</td>
+  <td><span class="priority p3">3</span></td>
+  <td><strong>Swapnil Shirke</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">QA Leadership</td>
+  <td>Persistent Systems</td>
+  <td style="font-size:11px;color:#64748b;">IT Services</td>
+  <td class="email-icon" title="">—</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-na">N/A_NO_EMAIL</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34d199f200c00113f559a">69a34d19...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Selenium maintenance at enterprise scale">Selenium maintenance at enterprise scale</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>39</td>
+  <td><span class="priority p2">2</span></td>
+  <td><strong>Matt King</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">VP Software Engineering</td>
+  <td>Integrate</td>
+  <td style="font-size:11px;color:#64748b;">SaaS/Marketing</td>
+  <td class="email-icon" title="matt.king@integrate.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34d1bbbefd80011d3b689">69a34d1b...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Marketing platform test upkeep">Marketing platform test upkeep</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>40</td>
+  <td><span class="priority p2">2</span></td>
+  <td><strong>Jennifer Tune</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director QA & PM</td>
+  <td>Fossil Group</td>
+  <td style="font-size:11px;color:#64748b;">Hardware/Consumer</td>
+  <td class="email-icon" title="jtune@fossil.com">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34d1d86ba7b0011322f14">69a34d1d...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Legacy platform maintenance strategy">Legacy platform maintenance strategy</td>
+</tr>
+<tr data-status="sent" data-email="has-email">
+  <td>41</td>
+  <td><span class="priority p2">2</span></td>
+  <td><strong>Shweta Singh</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">Director QA</td>
+  <td>micro1</td>
+  <td style="font-size:11px;color:#64748b;">Startup/AI</td>
+  <td class="email-icon" title="shweta@micro1.ai">✉️</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-pending">PENDING</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34d1f86ba7b0011322f1d">69a34d1f...</td>
+  <td style="text-align:center;">B</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Candidate eval platform, fast cycles">Candidate eval platform, fast cycles</td>
+</tr>
+<tr data-status="sent" data-email="no-email">
+  <td>42</td>
+  <td><span class="priority p2">2</span></td>
+  <td><strong>Prashant Patel</strong></td>
+  <td style="font-size:12px;color:#94a3b8;">QA Testing Professional</td>
+  <td>CCG Marketing</td>
+  <td style="font-size:11px;color:#64748b;">Marketing/Web</td>
+  <td class="email-icon" title="">—</td>
+  <td><span class="badge badge-sent">SENT</span></td>
+  <td style="font-size:12px;color:#94a3b8;">2026-03-05</td>
+  <td><span class="badge badge-na">N/A_NO_EMAIL</span></td>
+  <td style="font-size:11px;color:#64748b;" title="69a34da0bbefd80011d3b69c">69a34da0...</td>
+  <td style="text-align:center;">A</td>
+  <td style="font-size:11px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Web systems test efficiency">Web systems test efficiency</td>
+</tr>
+</tbody></table>
+
+<script>
+function filterTable(type) {
+  document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('#tracker tbody tr').forEach(row => {
+    if (type === 'all') { row.style.display = ''; return; }
+    const status = row.dataset.status;
+    const email = row.dataset.email;
+    if (type === 'sent') row.style.display = status === 'sent' ? '' : 'none';
+    else if (type === 'skipped') row.style.display = status !== 'sent' ? '' : 'none';
+    else if (type === 'has-email') row.style.display = email === 'has-email' ? '' : 'none';
+    else if (type === 'no-email') row.style.display = email === 'no-email' ? '' : 'none';
+  });
+}
+
+function searchTable(query) {
+  const q = query.toLowerCase();
+  document.querySelectorAll('#tracker tbody tr').forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+function exportCSV() {
+  const rows = [['#','Priority','Name','Title','Company','Vertical','Email','T1 Status','T2 Due','T3 Status','Apollo ID','A/B','Subject']];
+  document.querySelectorAll('#tracker tbody tr').forEach(row => {
+    const cells = [...row.querySelectorAll('td')].map(c => '"' + c.textContent.trim().replace(/"/g,'""') + '"');
+    rows.push(cells);
+  });
+  const csv = rows.map(r => r.join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'batch7-send-tracker.csv';
+  a.click();
+}
+</script>
+</body></html>

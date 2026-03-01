@@ -72,6 +72,13 @@ Cisco, Samsung, Honeywell, Bosch, Nokia, Nestle, KFC, DHL, Zeiss, Axel Springer,
 | Slack | DO NOT CONNECT | Rob does NOT want Claude to interact with Slack in any way. Never send messages, react with emojis, reply to threads, or take any visible action that coworkers could see. If Slack read-only access becomes available in the future, revisit. |
 | Stripe | Connected (MCP) | Not relevant to BDR workflow |
 | Vercel | Connected (MCP) | Not relevant to BDR workflow |
+| Chrome (Work/Blue) | Primary browser | **ALWAYS use the blue/work Testsigma Chrome profile for all Cowork tasks.** Never use the red/personal Chrome for work tasks. Reuse the same tab across browser sessions when possible. |
+
+### Hard Rule: Chrome Browser Selection
+**ALWAYS use Rob's blue/work Chrome browser (Testsigma profile) for all Cowork browser automation tasks.** Rob has two Chrome browsers:
+- **Blue = Work (Testsigma)** — Use this for ALL Cowork tasks including Sales Navigator, LinkedIn, and any browser automation
+- **Red = Personal** — NEVER use for work tasks
+When the Chrome extension shows multiple browsers, always select the blue/work one. Reuse the same browser tab across sessions to avoid tab proliferation. If the browser gets reset, wait for Rob to reconnect and confirm the correct browser before proceeding.
 
 ### Hard Rule: Coworker Visibility
 **NEVER take any action that would be visible to Rob's coworkers.** This includes:
@@ -1533,7 +1540,9 @@ Old files archived to `archive/` folder. New naming: `outreach-sent-[date]-[batc
 | `outreach-sent-feb26-batch3.html` | Batch 3 — 25 prospects. 24 sent Wed Feb 26 | Complete |
 | `outreach-sent-feb27-batch5a.html` | Batch 5A — 25 FinServ/Insurance. 5 sent Feb 27, 20 remaining | Active |
 | `outreach-sent-feb27-batch5b.html` | Batch 5B — 25 Multi-vertical. 23 sent Feb 27, Terene Lee unsent, Sanjay DNC | Active |
-| `outreach-batch6-unsent.html` | Batch 6 — 27 new prospects. 0 sent, ready for review | Active |
+| `outreach-batch6-unsent.html` | Batch 6 — 27 new prospects. 27 sent Feb 28 | Complete |
+| `batch7-send-tracker.json` | Batch 7 — 42 prospects. 41 sent Feb 28, 1 NOT FOUND. Structured JSON tracker | Complete |
+| `batch7-send-tracker.html` | Batch 7 — Interactive HTML send tracker with filters and CSV export | Complete |
 | `archive/prospect-outreach-4-2026-02-25.html` | Batch 4 (superseded by 5A) | Archived |
 
 ### Execution Guides
@@ -1742,7 +1751,7 @@ This section defines the email-only outreach cadence for use in Apollo sequences
 
 ---
 
-## Master Send Log (Updated Feb 27)
+## Master Send Log (Updated Feb 28)
 
 ### Lifetime Send Totals
 | Date | Batch | Sends | Cumulative |
@@ -1751,17 +1760,21 @@ This section defines the email-only outreach cadence for use in Apollo sequences
 | Feb 25 | Batch 3 (pilot: Irfan, Katie) | 2 | 10 |
 | Feb 26 (Wed) | Batch 3 (remaining 22) | 22 | 32 |
 | Feb 27 (Thu) | Batch 5B | 23 | 55 |
-| Feb 27 (Thu) | Batch 5A (partial) | 5 | 60 |
+| Feb 27 (Thu) | Batch 5A (partial: 5) | 5 | 60 |
+| Feb 28 (Sat) | Batch 5A (remaining 20) | 20 | 80 |
+| Feb 28 (Sat) | Batch 6 (all 27) | 27 | 107 |
+| Feb 28 (Sat) | Batch 7 (41 sent, 1 NOT FOUND) | 41 | 148 |
 
 ### Pipeline Status
 | Category | Count |
 |----------|-------|
-| Total sent (in Sales Nav inbox) | 60 |
-| Unsent Batch 5A | 20 |
-| Unsent Batch 5B (Terene Lee) | 1 |
-| Unsent Batch 6 | 27 |
-| **Total prospects ready to send** | **48** |
-| InMail credits remaining | 99 |
+| Total sent (all time) | 148 |
+| Blocked (Terene Lee, messaging disabled) | 1 |
+| DNC (Sanjay Singh) | 1 |
+| Not applicable (Batch 3 unused slot) | 1 |
+| Skipped NOT FOUND (Jonathan Lavoie, Batch 7) | 1 |
+| **Unsent prospects remaining** | **0** |
+| InMail credits remaining | ~24 |
 
 ### Do Not Contact List
 | Name | Company | Reason | Date Added |
@@ -1770,5 +1783,79 @@ This section defines the email-only outreach cadence for use in Apollo sequences
 
 ---
 
+## "Run the Daily" — Automated Daily Outreach Workflow
+
+**Trigger phrases:** "run the daily", "daily run", "morning run", "start outreach", "run outreach"
+
+When Rob says any trigger phrase, Claude executes the full 5-phase daily outreach workflow autonomously. No further questions needed — read the pipeline state and adapt.
+
+### Phase 1: Intel Scan (~5 min)
+1. Read CLAUDE.md for pipeline state, DNC list, warm leads, send totals, credit count
+2. Read latest batch tracker files (all `outreach-sent-*.html` and `outreach-batch*-unsent.html`) for send dates and statuses
+3. Search Gmail for replies from prospects (filter: recent, to robert.gorham@testsigma.com addresses)
+4. Check Google Calendar for today's meetings (flag any prospect meetings for prep)
+5. Calculate follow-up queue: prospects hitting Day 5 (Touch 2 InMail due) or Day 10 (Touch 3 Email due)
+6. Check InMail credit budget (report remaining, flag if <10)
+**Output:** Intel summary with reply count, follow-up queue, calendar, credit budget.
+
+### Phase 2: Reply Processing (~10-20 min)
+*Skip if zero replies found.*
+1. Classify each reply: Positive / Negative / Referral / Timing / Has Tool / Polite / Curiosity / Other
+2. Draft responses per Reply Handling Playbook: Positive → bridge to meeting with calendar times. Referral → thank referrer + research + draft outreach to referred person. Negative → log reason, check re-engagement. Polite → follow up with value. Curiosity → answer + one proof point + bridge to meeting.
+3. If meeting booked: generate Meeting Prep Card from existing research
+4. Present all reply drafts to Rob for approval. **Never send without APPROVE SEND.**
+5. Tag replies in batch tracker
+**Output:** Reply drafts (copy-paste ready), meeting prep cards, referral research.
+
+### Phase 3: Follow-Up Queue (~20-30 min)
+*Skip if no Day 5 or Day 10 prospects.*
+1. Day 5 prospects → Draft Touch 2 InMails: different angle + proof point from Touch 1, 40-70 words, lighter close tied to new proof point, QA Gate validated
+2. Day 10 prospects → Draft Touch 3 Emails: fresh approach, different proof point from Touches 1 and 2, 60-100 words, subject 5-6 words problem-framed, QA Gate validated
+3. Credit budget decision: if <10 credits, only Touch 2 for Hot/Warm. All Touch 3 emails proceed regardless.
+4. Present follow-ups sorted by priority. **Never send without approval.**
+**Output:** Follow-up messages copy-paste ready, sorted by priority.
+
+### Phase 4: New Pipeline (~60-90 min)
+*Gate check: Run only if follow-up queue is light (<10), credits >10, no unsent batches pending, and not a weekend/Monday.*
+1. Pre-Brief: read all previous batch files, generate "What's Working" 5-line summary
+2. Source 20-25 prospects from Sales Navigator saved searches (Prospect Mix Ratio)
+3. Apollo enrichment (person + organization) for each prospect
+4. 3-source research using parallel Task agents (LinkedIn, Apollo, Company external)
+5. C2 message drafting with Pre-Draft Steps 1-4 for all 3 touches
+6. QA Gate (14 checks, MQS >= 9/12, auto-rewrite failures)
+7. Build HTML batch tracker, save to Work folder
+**Output:** New batch HTML tracker, ready for Rob's review.
+
+### Phase 5: Daily Deliverable (~10 min)
+1. Generate daily briefing summary (replies, follow-ups, new prospects, credits, pipeline totals)
+2. Update daily-work-log.html with all entries from this session
+3. Tomorrow preview: which follow-ups are due, suggested send timing, any warm lead deadlines
+4. Numbered action items for Rob: what to approve, what to send, what to review
+**Output:** One consolidated message with everything Rob needs to execute the day.
+
+### Adaptive Logic
+| Condition | Adaptation |
+|-----------|------------|
+| Credits < 5 | Skip new Touch 1s. Focus on Touch 3 emails (free) + reply processing. |
+| Credits < 10 | Touch 2 only for Hot/Warm prospects. |
+| 5+ replies | Extend Phase 2, shorten/defer Phase 4. |
+| No replies, light queue | Skip Phase 2, minimize Phase 3, maximize Phase 4. |
+| Unsent batch exists | Phase 4 = fix unsent batch, not source new. |
+| Monday | No Touch 1 sends (22.9% rate). Research + batch build + schedule for Tue/Thu. |
+| Thursday | Peak send day (42.1%). Maximize send volume. |
+| Weekend | Research + batch build only. No sends. Queue for next business day. |
+| Warm lead reply | Priority override: process FIRST, same-day response target. |
+
+### Weekly Targets
+| Metric | Weekly | Monthly |
+|--------|--------|---------|
+| New Touch 1 Sends | 20-25 | 80-100 |
+| Touch 2 Follow-Ups | 15-20 | 60-80 |
+| Touch 3 Emails | 10-15 | 40-60 |
+| Replies Processed | 5-7 | 20-30 |
+| Meetings Booked | 1-2 | 4-8 |
+
+---
+
 ## currentDate
-Today's date is 2026-02-27.
+Today's date is 2026-03-01.
