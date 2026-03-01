@@ -461,3 +461,54 @@ Never use the same proof point twice for the same prospect across their sequence
 | Referral ("talk to [name]") | 7.4% | High value. Reach out to referred person immediately. |
 | Has tool ("we use [X]") | 2.3% | Objection handle: ask about gaps. |
 | Timing ("not right now") | 2.1% | Set calendar reminder. Re-engage per triggers. |
+
+---
+
+## Memory Layer (BDR Second Brain)
+
+The `memory/` directory is the persistent knowledge base. Every file here makes future outreach smarter. Agents automatically query this layer for competitive intel, prior interactions, and market context.
+
+### Structure
+```
+memory/
+├── competitors/       # Battle cards per tool (Selenium, Cypress, Playwright, Katalon, TOSCA, mabl, Testim, UFT)
+├── wins/              # Structured win reports (what worked, what resonated, why they bought)
+├── losses/            # Structured loss reports (why they didn't convert, what we learn)
+├── call-notes/        # Post-call capture (what the prospect said about stack, pain, timeline)
+├── market-intel/      # Industry trends, analyst coverage, competitor moves
+└── context/           # Sales playbook, persona guides, evergreen reference
+```
+
+### How Agents Use Memory
+- **Researcher agent**: Enriches research context with battle card data, displacement angles, and prior call notes for the account. The `build_research_context()` function now includes a `memory` key with all relevant competitive intel.
+- **Message writer**: When `map_objection()` detects a known tool, it checks the battle card for tool-specific objection responses instead of using generic fallbacks. This means objection responses are tailored to Selenium vs. Cypress vs. TOSCA instead of "a lot of teams had [tool] too."
+- **Pre-brief agent**: Reads `wins/` and `losses/` to identify patterns across deals.
+- **Call prep agent**: Reads `call-notes/` for prior conversations with the same account.
+
+### How to Add Data
+After a call: `cp memory/call-notes/_template.md memory/call-notes/YYYY-MM-DD-firstname-lastname.md`
+After a win: `cp memory/wins/_template.md memory/wins/YYYY-MM-DD-company-name.md`
+After a loss: `cp memory/losses/_template.md memory/losses/YYYY-MM-DD-company-name.md`
+
+### Competitor Battle Cards Available
+- `memory/competitors/selenium.md` - Most common incumbent. Lead with maintenance pain.
+- `memory/competitors/cypress.md` - Popular with JS teams. Lead with coverage gap (mobile, cross-browser).
+- `memory/competitors/playwright.md` - Fastest growing. Lead with team scale and platform vs. framework.
+- `memory/competitors/katalon.md` - Most similar competitor. Differentiate on AI depth.
+- `memory/competitors/tosca.md` - Enterprise incumbent. Lead with cost and speed to value.
+- `memory/competitors/mabl.md` - Closest AI positioning. Differentiate on mobile and NLP depth.
+- `memory/competitors/testim.md` - Declining post-acquisition. Lead with uncertainty.
+- `memory/competitors/uft.md` - Legacy, easiest displacement. Lead with cost and modernization.
+
+### Python API
+```python
+from src.memory.loader import get_memory
+
+mem = get_memory()
+card = mem.get_battle_card("selenium")           # Full battle card
+angles = mem.get_displacement_angles("cypress")   # Why they should switch
+obj = mem.get_objection_response("playwright")    # Pre-loaded response
+ctx = mem.get_prospect_context(                   # All relevant memory for a prospect
+    known_tools=["selenium"], vertical="FinTech", account_name="Acme Corp"
+)
+```

@@ -11,7 +11,11 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 
-DB_PATH = os.environ.get("OCC_DB_PATH", os.path.join(os.path.dirname(__file__), "../../outreach.db"))
+try:
+    from src.config import DB_PATH, DB_JOURNAL_MODE
+except ImportError:
+    DB_PATH = os.environ.get("OCC_DB_PATH", os.path.join(os.path.dirname(__file__), "../../outreach.db"))
+    DB_JOURNAL_MODE = os.environ.get("OCC_JOURNAL_MODE", "WAL")
 
 
 def get_db():
@@ -19,8 +23,7 @@ def get_db():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     # Use DELETE journal mode in test environment to avoid WAL locking
-    journal_mode = os.environ.get("OCC_JOURNAL_MODE", "WAL")
-    conn.execute(f"PRAGMA journal_mode={journal_mode}")
+    conn.execute(f"PRAGMA journal_mode={DB_JOURNAL_MODE}")
     conn.execute("PRAGMA foreign_keys=ON")
     return conn
 

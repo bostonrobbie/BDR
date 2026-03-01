@@ -1,0 +1,10 @@
+.git
+__pycache__
+*.pyc
+.env
+outreach.db
+node_modules
+.pytest_cache
+memory/.audit/processed/*
+memory/.audit/log.jsonl
+memory/.audit/hash_index.json

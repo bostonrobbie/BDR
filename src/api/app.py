@@ -21,6 +21,13 @@ from pydantic import BaseModel
 from typing import Optional, List
 
 from src.db import models
+from src.logging_config import setup_logging
+
+# Initialize logging before anything else
+setup_logging()
+
+import logging
+logger = logging.getLogger("bdr.api")
 
 app = FastAPI(title="Outreach Command Center", version="2.0.0")
 
@@ -31,6 +38,24 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Start inbox watcher on startup if enabled
+_watcher_stop = None
+
+@app.on_event("startup")
+def startup_event():
+    global _watcher_stop
+    if os.environ.get("BDR_WATCH_INBOX", "").lower() in ("1", "true", "yes"):
+        from src.memory.watcher import start_watcher
+        interval = float(os.environ.get("BDR_WATCH_INTERVAL", "10"))
+        _watcher_stop = start_watcher(poll_interval=interval)
+        logger.info("Inbox watcher enabled (interval=%ss)", interval)
+
+@app.on_event("shutdown")
+def shutdown_event():
+    if _watcher_stop:
+        _watcher_stop.set()
+        logger.info("Inbox watcher stopped")
 
 
 # ─── PYDANTIC MODELS ────────────────────────────────────────────
@@ -590,6 +615,16 @@ def top_messages():
     """).fetchall()
     conn.close()
     return [dict(r) for r in rows]
+
+
+@app.get("/api/analytics/dashboard")
+def analytics_dashboard():
+    """Unified analytics dashboard - aggregates all metrics for the outreach dashboard."""
+    from src.agents.analytics import get_analytics_summary
+    from src.agents.ab_assigner import compute_ab_results
+    summary = get_analytics_summary()
+    summary["ab_results"] = compute_ab_results()
+    return summary
 
 
 @app.get("/api/analytics/token-costs")
