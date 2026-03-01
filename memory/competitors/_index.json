@@ -1,0 +1,63 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-02-28",
+  "description": "Quick lookup for competitor battle cards. Maps tool names and aliases to battle card files.",
+  "tools": {
+    "selenium": {
+      "file": "selenium.md",
+      "aliases": ["selenium", "webdriver", "selenium webdriver", "selenium grid"],
+      "category": "open_source",
+      "threat_level": "high",
+      "prevalence": "most_common"
+    },
+    "cypress": {
+      "file": "cypress.md",
+      "aliases": ["cypress", "cypress.io"],
+      "category": "open_source",
+      "threat_level": "high",
+      "prevalence": "common"
+    },
+    "playwright": {
+      "file": "playwright.md",
+      "aliases": ["playwright", "microsoft playwright"],
+      "category": "open_source",
+      "threat_level": "high",
+      "prevalence": "growing_fast"
+    },
+    "katalon": {
+      "file": "katalon.md",
+      "aliases": ["katalon", "katalon studio", "katalon platform"],
+      "category": "commercial",
+      "threat_level": "medium",
+      "prevalence": "common"
+    },
+    "tosca": {
+      "file": "tosca.md",
+      "aliases": ["tosca", "tricentis", "tricentis tosca"],
+      "category": "enterprise",
+      "threat_level": "medium",
+      "prevalence": "enterprise_only"
+    },
+    "mabl": {
+      "file": "mabl.md",
+      "aliases": ["mabl"],
+      "category": "ai_native",
+      "threat_level": "medium",
+      "prevalence": "niche"
+    },
+    "testim": {
+      "file": "testim.md",
+      "aliases": ["testim", "testim.io"],
+      "category": "ai_native",
+      "threat_level": "low",
+      "prevalence": "niche"
+    },
+    "uft": {
+      "file": "uft.md",
+      "aliases": ["uft", "uft one", "unified functional testing", "qtp", "quicktest professional", "micro focus", "opentext"],
+      "category": "legacy_enterprise",
+      "threat_level": "low",
+      "prevalence": "declining"
+    }
+  }
+}

@@ -2,6 +2,11 @@
 Vercel Serverless Function - Outreach Command Center API
 Wraps the FastAPI app for Vercel deployment with /tmp SQLite.
 Includes flow management, activity timeline, drafts, sender health, and contact identities.
+
+NOTE: This file is intentionally self-contained for Vercel serverless.
+The modular version for local development lives at src/api/app.py.
+New features should be implemented in src/ modules and imported here.
+Shared logic: src/db/models.py, src/agents/*, src/memory/*
 """
 import os
 import sys
