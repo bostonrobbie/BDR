@@ -17,6 +17,7 @@ from typing import Optional, List
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 from src.db import models
+from src.memory.loader import get_memory
 
 
 # ─── VERTICAL PAIN LIBRARY ──────────────────────────────────────
@@ -874,6 +875,18 @@ def build_research_context(contact_id: str) -> dict:
     conn.close()
     signals = [dict(r) for r in signal_rows]
 
+    known_tools = (company or {}).get("known_tools", [])
+    vertical = (company or {}).get("vertical", account.get("industry", "Tech"))
+    account_name = account.get("name", "") if account else ""
+
+    # Enrich with memory layer (competitive intel, prior interactions)
+    mem = get_memory()
+    memory_context = mem.get_prospect_context(
+        known_tools=known_tools,
+        vertical=vertical,
+        account_name=account_name,
+    )
+
     return {
         "contact": contact,
         "account": account or {},
@@ -881,7 +894,8 @@ def build_research_context(contact_id: str) -> dict:
         "company_research": company or {},
         "signals": signals,
         "has_buyer_intent": any(s.get("signal_type") == "buyer_intent" for s in signals),
-        "known_tools": (company or {}).get("known_tools", []),
-        "vertical": (company or {}).get("vertical", account.get("industry", "Tech")),
+        "known_tools": known_tools,
+        "vertical": vertical,
         "recently_hired": person.get("recently_hired", contact.get("recently_hired", False)),
+        "memory": memory_context,
     }

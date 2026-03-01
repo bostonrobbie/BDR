@@ -20,6 +20,7 @@ from datetime import datetime
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 from src.db import models
+from src.memory.loader import get_memory
 
 
 # ─── PROOF POINT LIBRARY ─────────────────────────────────────
@@ -190,11 +191,22 @@ def map_objection(research_context: dict) -> dict:
         return {"objection": obj["objection"], "response": obj["response"]}
 
     if known_tools:
+        # Try memory layer for tool-specific objection response
+        mem = get_memory()
+        tool_name = known_tools[0]
+        battle_obj = mem.get_objection_response(tool_name)
+        if battle_obj:
+            return {
+                "objection": battle_obj["objection"],
+                "response": battle_obj["response"],
+                "source": "battle_card",
+                "tool": tool_name,
+            }
+        # Fallback to generic objection map
         obj = OBJECTION_MAP["existing_tool"]
-        tool_name = known_tools[0].title()
         return {
             "objection": obj["objection"],
-            "response": obj["response"].format(tool=tool_name)
+            "response": obj["response"].format(tool=tool_name.title())
         }
 
     if emp_count and emp_count >= 50000 or emp_band == "50000+":
