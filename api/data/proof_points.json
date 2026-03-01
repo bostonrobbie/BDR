@@ -1,0 +1,74 @@
+{
+  "hansard_regression": {
+    "text": "Hansard cut regression from 8 weeks to 5 weeks with AI auto-heal",
+    "short": "regression 8 weeks to 5 weeks",
+    "metric": "8 weeks to 5 weeks",
+    "best_for": ["insurance", "financial services", "finserv", "long regression cycles"],
+    "customer": "Hansard",
+    "vertical": "Insurance/FinServ"
+  },
+  "medibuddy_scale": {
+    "text": "Medibuddy automated 2,500 tests and cut maintenance 50%",
+    "short": "2,500 tests automated, 50% maintenance cut",
+    "metric": "2,500 tests, 50% maintenance cut",
+    "best_for": ["healthcare", "digital health", "mid-size teams", "scaling"],
+    "customer": "Medibuddy",
+    "vertical": "Healthcare"
+  },
+  "cred_coverage": {
+    "text": "CRED hit 90% regression automation and 5x faster execution",
+    "short": "90% regression coverage, 5x faster",
+    "metric": "90% coverage, 5x faster",
+    "best_for": ["fintech", "high-velocity", "fast release cycles"],
+    "customer": "CRED",
+    "vertical": "FinTech"
+  },
+  "sanofi_speed": {
+    "text": "Sanofi went from 3-day regression to 80 minutes",
+    "short": "3 days to 80 minutes",
+    "metric": "3 days to 80 minutes",
+    "best_for": ["pharma", "healthcare", "compliance-heavy", "large regression"],
+    "customer": "Sanofi",
+    "vertical": "Pharma"
+  },
+  "fortune100_productivity": {
+    "text": "A Fortune 100 company saw 3X productivity increase",
+    "short": "3X productivity increase",
+    "metric": "3X productivity",
+    "best_for": ["enterprise", "vp-level", "big tech"],
+    "customer": "Fortune 100 (unnamed)",
+    "vertical": "Enterprise"
+  },
+  "nagra_api": {
+    "text": "Nagra DTV built 2,500 tests in 8 months, 4X faster",
+    "short": "2,500 tests in 8 months, 4X faster",
+    "metric": "2,500 tests, 4X faster",
+    "best_for": ["media", "streaming", "api testing", "telecom"],
+    "customer": "Nagra DTV",
+    "vertical": "Media/Telecom"
+  },
+  "spendflo_roi": {
+    "text": "Spendflo cut 50% of manual testing with ROI in first quarter",
+    "short": "50% manual testing cut, ROI in Q1",
+    "metric": "50% manual testing cut",
+    "best_for": ["saas", "small teams", "startup", "budget-conscious"],
+    "customer": "Spendflo",
+    "vertical": "SaaS"
+  },
+  "selenium_maintenance": {
+    "text": "70% maintenance reduction vs Selenium",
+    "short": "70% less maintenance than Selenium",
+    "metric": "70% maintenance reduction",
+    "best_for": ["selenium users", "cypress users", "playwright users"],
+    "customer": "Multiple",
+    "vertical": "Cross-vertical"
+  },
+  "self_healing": {
+    "text": "90% maintenance reduction with AI self-healing",
+    "short": "90% maintenance reduction",
+    "metric": "90% maintenance reduction",
+    "best_for": ["flaky tests", "brittle tests", "frequent ui changes"],
+    "customer": "Multiple",
+    "vertical": "Cross-vertical"
+  }
+}

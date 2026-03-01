@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outreach Command Center</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
+<style>
+:root {
+    --bg: #0f1117;
+    --bg2: #1a1d27;
+    --bg3: #242833;
+    --bd: #2d3140;
+    --tx: #e4e6ed;
+    --tx2: #8b90a0;
+    --tx3: #5c6070;
+    --ac: #6366f1;
+    --ac2: #818cf8;
+    --gn: #22c55e;
+    --gn2: #16a34a;
+    --rd: #ef4444;
+    --yl: #eab308;
+    --or: #f97316;
+    --cy: #06b6d4;
+    --r: 8px;
+    --g: 12px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg); color:var(--tx); line-height:1.5; }
+a { color:var(--ac2); text-decoration:none; }
+
+/* Layout */
+.shell { display:flex; height:100vh; }
+.sidebar { width:220px; background:var(--bg2); border-right:1px solid var(--bd); display:flex; flex-direction:column; flex-shrink:0; }
+.sidebar-logo { padding:16px 20px; font-size:14px; font-weight:700; color:var(--ac2); border-bottom:1px solid var(--bd); }
+.sidebar-logo span { color:var(--tx2); font-weight:400; font-size:11px; display:block; margin-top:2px; }
+.nav { flex:1; padding:8px; }
+.nav-item { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:6px; cursor:pointer; font-size:13px; color:var(--tx2); transition:all .15s; }
+.nav-item:hover { background:var(--bg3); color:var(--tx); }
+.nav-item.active { background:var(--ac); color:#fff; }
+.nav-item .badge { margin-left:auto; background:var(--rd); color:#fff; font-size:10px; padding:1px 6px; border-radius:10px; font-weight:600; }
+.nav-sep { height:1px; background:var(--bd); margin:6px 8px; }
+.main { flex:1; overflow-y:auto; }
+.page { display:none; padding:20px; }
+.page.active { display:block; }
+.page-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.page-hdr h1 { font-size:18px; font-weight:600; }
+
+/* KPI Cards */
+.kpi-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:var(--g); margin-bottom:16px; }
+.kpi { background:var(--bg2); border:1px solid var(--bd); border-radius:var(--r); padding:14px 16px; }
+.kpi-label { font-size:11px; color:var(--tx2); text-transform:uppercase; letter-spacing:.5px; }
+.kpi-val { font-size:24px; font-weight:700; margin:2px 0; }
+.kpi-sub { font-size:11px; }
+.kpi-sub.up { color:var(--gn); }
+.kpi-sub.dn { color:var(--rd); }
+
+/* Cards */
+.card { background:var(--bg2); border:1px solid var(--bd); border-radius:var(--r); padding:16px; margin-bottom:var(--g); }
+.card h3 { font-size:13px; font-weight:600; margin-bottom:10px; color:var(--tx2); text-transform:uppercase; letter-spacing:.5px; }
+.card canvas { max-height:280px; }
+
+/* Grid */
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:var(--g); }
+.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:var(--g); }
+
+/* Table */
+.tbl { width:100%; border-collapse:collapse; font-size:13px; }
+.tbl thead th { text-align:left; padding:8px 10px; border-bottom:2px solid var(--bd); color:var(--tx2); font-size:11px; text-transform:uppercase; letter-spacing:.5px; cursor:pointer; white-space:nowrap; user-select:none; }
+.tbl thead th:hover { color:var(--tx); }
+.tbl tbody td { padding:8px 10px; border-bottom:1px solid var(--bd); }
+.tbl tbody tr:hover { background:var(--bg3); }
+
+/* Tags */
+.tag { display:inline-block; padding:1px 8px; border-radius:4px; font-size:11px; font-weight:600; }
+.tag-hot { background:rgba(239,68,68,.15); color:var(--rd); }
+.tag-warm { background:rgba(249,115,22,.15); color:var(--or); }
+.tag-std { background:rgba(99,102,241,.15); color:var(--ac2); }
+.tag-qa { background:rgba(34,197,94,.15); color:var(--gn); }
+.tag-vp { background:rgba(6,182,212,.15); color:var(--cy); }
+.tag-intent { background:rgba(234,179,8,.15); color:var(--yl); }
+
+/* Buttons */
+.btn { padding:6px 14px; border-radius:6px; border:1px solid var(--bd); background:var(--bg3); color:var(--tx); font-size:12px; cursor:pointer; transition:all .15s; }
+.btn:hover { border-color:var(--ac); color:var(--ac2); }
+.btn-primary { background:var(--ac); border-color:var(--ac); color:#fff; }
+.btn-primary:hover { background:var(--ac2); }
+.btn-sm { padding:3px 8px; font-size:11px; }
+.btn-copy { background:none; border:1px solid var(--bd); color:var(--tx2); padding:2px 8px; font-size:11px; border-radius:4px; cursor:pointer; }
+.btn-copy:hover { border-color:var(--ac); color:var(--ac2); }
+.btn-copy.copied { border-color:var(--gn); color:var(--gn); }
+
+/* Status dropdown */
+select.status-select { background:var(--bg3); border:1px solid var(--bd); color:var(--tx); padding:3px 6px; border-radius:4px; font-size:11px; }
+
+/* Action queue */
+.action-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--bd); }
+.action-item:last-child { border-bottom:none; }
+.action-pri { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.action-pri.hot { background:var(--rd); }
+.action-pri.high { background:var(--or); }
+.action-info { flex:1; }
+.action-info strong { font-size:13px; }
+.action-info .sub { font-size:11px; color:var(--tx2); }
+
+/* Detail panel */
+.detail-panel { position:fixed; right:0; top:0; width:480px; height:100vh; background:var(--bg2); border-left:1px solid var(--bd); transform:translateX(100%); transition:transform .2s; z-index:100; overflow-y:auto; padding:20px; }
+.detail-panel.open { transform:translateX(0); }
+.detail-close { position:absolute; top:12px; right:12px; background:none; border:none; color:var(--tx2); cursor:pointer; font-size:18px; }
+
+/* Message card */
+.msg-card { background:var(--bg3); border:1px solid var(--bd); border-radius:var(--r); padding:12px; margin-bottom:10px; }
+.msg-card .msg-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.msg-card .msg-hdr .ch { font-size:11px; font-weight:600; text-transform:uppercase; color:var(--ac2); }
+.msg-card .msg-hdr .qc { font-size:11px; }
+.msg-card .msg-subj { font-size:12px; font-weight:600; color:var(--yl); margin-bottom:4px; }
+.msg-card .msg-body { font-size:12px; color:var(--tx2); line-height:1.6; white-space:pre-wrap; }
+.msg-card .msg-meta { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+.msg-card .msg-meta .tag { font-size:10px; }
+
+/* Call snippet */
+.call-card { background:var(--bg3); border-left:3px solid var(--cy); border-radius:0 var(--r) var(--r) 0; padding:10px 12px; margin-bottom:10px; font-size:12px; }
+.call-card strong { color:var(--cy); }
+.call-card p { margin:3px 0; color:var(--tx2); }
+
+/* Objection */
+.obj-card { background:var(--bg3); border-left:3px solid var(--yl); border-radius:0 var(--r) var(--r) 0; padding:10px 12px; margin-bottom:10px; }
+.obj-card .obj-q { font-size:12px; font-weight:600; color:var(--yl); margin-bottom:4px; }
+.obj-card .obj-a { font-size:12px; color:var(--tx2); }
+
+/* Filters bar */
+.filters-bar { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }
+.filters-bar select, .filters-bar input { background:var(--bg3); border:1px solid var(--bd); color:var(--tx); padding:5px 8px; border-radius:4px; font-size:12px; }
+.filters-bar label { font-size:11px; color:var(--tx2); }
+
+/* Tabs */
+.tabs { display:flex; gap:4px; margin-bottom:12px; }
+.tab { padding:6px 14px; border-radius:6px; font-size:12px; color:var(--tx2); cursor:pointer; border:1px solid transparent; }
+.tab:hover { color:var(--tx); background:var(--bg3); }
+.tab.active { background:var(--ac); color:#fff; border-color:var(--ac); }
+
+/* Responsive */
+@media(max-width:900px) {
+    .sidebar { width:60px; }
+    .sidebar-logo span, .nav-item span { display:none; }
+    .grid2, .grid3 { grid-template-columns:1fr; }
+    .detail-panel { width:100%; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="sidebar-logo">OCC<span>Outreach Command Center</span></div>
+    <nav class="nav">
+        <div class="nav-item active" data-page="home" onclick="showPage('home')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M2 6h12"/></svg>
+            <span>Home</span>
+            <span class="badge" id="badge-actions">0</span>
+        </div>
+        <div class="nav-item" data-page="pipeline" onclick="showPage('pipeline')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h10M5 8h6M7 13h2"/></svg>
+            <span>Pipeline</span>
+        </div>
+        <div class="nav-sep"></div>
+        <div class="nav-item" data-page="linkedin" onclick="showPage('linkedin')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 7v4M5 5v.01M8 11V8.5a1.5 1.5 0 013 0V11"/></svg>
+            <span>LinkedIn</span>
+        </div>
+        <div class="nav-item" data-page="email" onclick="showPage('email')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="14" height="10" rx="2"/><path d="M1 5l7 4 7-4"/></svg>
+            <span>Email</span>
+        </div>
+        <div class="nav-item" data-page="calls" onclick="showPage('calls')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 2l2 4-1.5 1.5a11 11 0 005 5L10 11l4 2-1 2a2 2 0 01-2 1C5.5 16 0 10.5 0 5a2 2 0 011-2z"/></svg>
+            <span>Calls</span>
+        </div>
+        <div class="nav-sep"></div>
+        <div class="nav-item" data-page="intelligence" onclick="showPage('intelligence')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 13V8M7 13V5M11 13V2"/></svg>
+            <span>Intelligence</span>
+        </div>
+        <div class="nav-item" data-page="experiments" onclick="showPage('experiments')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v6M5 8h6"/></svg>
+            <span>Experiments</span>
+        </div>
+        <div class="nav-item" data-page="agents" onclick="showPage('agents')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+            <span>Agent Logs</span>
+        </div>
+    </nav>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+    <div class="page-hdr">
+        <h1>Good morning, Rob</h1>
+        <button class="btn btn-primary" onclick="refreshData()">Refresh</button>
+    </div>
+    <div class="kpi-row" id="home-kpis"></div>
+    <div class="grid2">
+        <div class="card">
+            <h3>Action Queue</h3>
+            <div id="action-queue"></div>
+        </div>
+        <div class="card">
+            <h3>Pipeline Funnel</h3>
+            <canvas id="chart-funnel"></canvas>
+        </div>
+    </div>
+    <div class="grid2">
+        <div class="card">
+            <h3>Reply Rate by Channel</h3>
+            <canvas id="chart-reply-channel"></canvas>
+        </div>
+        <div class="card">
+            <h3>This Week's Activity</h3>
+            <canvas id="chart-weekly"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- PIPELINE PAGE -->
+<div class="page" id="page-pipeline">
+    <div class="page-hdr">
+        <h1>Pipeline</h1>
+        <div style="display:flex;gap:8px">
+            <button class="btn" onclick="exportPipeline()">Export CSV</button>
+        </div>
+    </div>
+    <div class="filters-bar">
+        <label>Priority:</label>
+        <select id="f-priority" onchange="filterPipeline()">
+            <option value="all">All</option>
+            <option value="5">Hot (5)</option>
+            <option value="4">Warm (4+)</option>
+            <option value="3">Standard (3+)</option>
+        </select>
+        <label>Stage:</label>
+        <select id="f-stage" onchange="filterPipeline()">
+            <option value="all">All Stages</option>
+            <option value="new">New</option>
+            <option value="touched">Touched</option>
+            <option value="sequencing">Sequencing</option>
+            <option value="replied_positive">Replied +</option>
+            <option value="replied_negative">Replied -</option>
+            <option value="meeting_booked">Meeting Booked</option>
+            <option value="break_up_sent">Break-up Sent</option>
+        </select>
+        <label>Persona:</label>
+        <select id="f-persona" onchange="filterPipeline()">
+            <option value="all">All</option>
+            <option value="QA">QA Leaders</option>
+            <option value="VP Eng">VP Engineering</option>
+        </select>
+    </div>
+    <div class="card" style="padding:0;overflow-x:auto">
+        <table class="tbl" id="pipeline-table">
+            <thead>
+                <tr>
+                    <th onclick="sortPipeline('priority_score')">Pri</th>
+                    <th onclick="sortPipeline('last_name')">Name</th>
+                    <th onclick="sortPipeline('title')">Title</th>
+                    <th onclick="sortPipeline('company_name')">Company</th>
+                    <th onclick="sortPipeline('persona_type')">Persona</th>
+                    <th onclick="sortPipeline('stage')">Stage</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="pipeline-body"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- LINKEDIN PAGE -->
+<div class="page" id="page-linkedin">
+    <div class="page-hdr">
+        <h1>LinkedIn Workspace</h1>
+    </div>
+    <div class="tabs">
+        <div class="tab active" onclick="showLinkedinTab('queue')">Queue</div>
+        <div class="tab" onclick="showLinkedinTab('sent')">Sent</div>
+        <div class="tab" onclick="showLinkedinTab('replies')">Replies</div>
+    </div>
+    <div id="linkedin-queue"></div>
+    <div id="linkedin-sent" style="display:none"></div>
+    <div id="linkedin-replies" style="display:none"></div>
+</div>
+
+<!-- EMAIL PAGE -->
+<div class="page" id="page-email">
+    <div class="page-hdr">
+        <h1>Email Workspace</h1>
+    </div>
+    <div class="tabs">
+        <div class="tab active" onclick="showEmailTab('queue')">Queue</div>
+        <div class="tab" onclick="showEmailTab('sent')">Sent</div>
+    </div>
+    <div id="email-queue"></div>
+    <div id="email-sent" style="display:none"></div>
+</div>
+
+<!-- CALLS PAGE -->
+<div class="page" id="page-calls">
+    <div class="page-hdr">
+        <h1>Call Workspace</h1>
+    </div>
+    <div class="tabs">
+        <div class="tab active" onclick="showCallTab('queue')">Call Queue</div>
+        <div class="tab" onclick="showCallTab('log')">Call Log</div>
+    </div>
+    <div id="calls-queue"></div>
+    <div id="calls-log" style="display:none"></div>
+</div>
+
+<!-- INTELLIGENCE PAGE -->
+<div class="page" id="page-intelligence">
+    <div class="page-hdr">
+        <h1>Intelligence</h1>
+    </div>
+    <div class="grid2">
+        <div class="card">
+            <h3>Reply Rate by Persona</h3>
+            <canvas id="chart-persona"></canvas>
+        </div>
+        <div class="card">
+            <h3>Reply Rate by Vertical</h3>
+            <canvas id="chart-vertical"></canvas>
+        </div>
+    </div>
+    <div class="grid2">
+        <div class="card">
+            <h3>Best Proof Points</h3>
+            <canvas id="chart-proofs"></canvas>
+        </div>
+        <div class="card">
+            <h3>Reply Rate by Personalization Score</h3>
+            <canvas id="chart-pscore"></canvas>
+        </div>
+    </div>
+    <div class="card">
+        <h3>Pre-Brief (Latest Insights)</h3>
+        <div id="pre-brief-content" style="font-size:13px;color:var(--tx2)">Loading...</div>
+    </div>
+</div>
+
+<!-- EXPERIMENTS PAGE -->
+<div class="page" id="page-experiments">
+    <div class="page-hdr">
+        <h1>Experiments</h1>
+        <button class="btn btn-primary" onclick="showNewExperiment()">New Experiment</button>
+    </div>
+    <div id="experiments-list"></div>
+</div>
+
+<!-- AGENT LOGS PAGE -->
+<div class="page" id="page-agents">
+    <div class="page-hdr">
+        <h1>Agent Logs</h1>
+    </div>
+    <div class="filters-bar">
+        <label>Agent:</label>
+        <select id="f-agent" onchange="filterAgentLogs()">
+            <option value="all">All Agents</option>
+            <option value="research">Research</option>
+            <option value="draft">Draft Writer</option>
+            <option value="quality_gate">Quality Gate</option>
+            <option value="scorer">Scorer</option>
+            <option value="pre_brief">Pre-Brief</option>
+        </select>
+    </div>
+    <div class="card" style="padding:0;overflow-x:auto">
+        <table class="tbl" id="agent-table">
+            <thead>
+                <tr>
+                    <th>Agent</th>
+                    <th>Type</th>
+                    <th>Contact</th>
+                    <th>Status</th>
+                    <th>Tokens</th>
+                    <th>Duration</th>
+                    <th>Started</th>
+                </tr>
+            </thead>
+            <tbody id="agent-body"></tbody>
+        </table>
+    </div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<!-- Detail Panel (slides in from right) -->
+<div class="detail-panel" id="detail-panel">
+    <button class="detail-close" onclick="closeDetail()">&times;</button>
+    <div id="detail-content"></div>
+</div>
+
+<script>
+// ─── API CONFIG ──────────────────────────────────────────
+const API = window.location.origin + '/api';
+
+// ─── STATE ───────────────────────────────────────────────
+let state = {
+    contacts: [],
+    messages: [],
+    stats: {},
+    pipeline: { sortCol: 'priority_score', sortDir: 'desc' },
+    charts: {}
+};
+
+const COLORS = ['#6366f1','#22c55e','#f97316','#06b6d4','#ef4444','#eab308','#ec4899','#8b5cf6'];
+
+// ─── NAVIGATION ──────────────────────────────────────────
+function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    document.querySelector(`[data-page="${name}"]`).classList.add('active');
+    closeDetail();
+    // Load page-specific data
+    if (name === 'intelligence') loadIntelligence();
+    if (name === 'experiments') loadExperiments();
+    if (name === 'agents') loadAgentLogs();
+}
+
+// ─── DATA FETCHING ───────────────────────────────────────
+async function api(path) {
+    try {
+        const res = await fetch(API + path);
+        if (!res.ok) throw new Error(`${res.status}`);
+        return await res.json();
+    } catch(e) {
+        console.warn('API call failed:', path, e.message);
+        return null;
+    }
+}
+
+async function refreshData() {
+    state.stats = await api('/stats') || {};
+    state.contacts = await api('/contacts?limit=500') || [];
+    state.messages = await api('/messages?limit=500') || [];
+    const queue = await api('/action-queue') || [];
+    renderHome(state.stats, queue);
+    renderPipeline(state.contacts);
+    renderWorkspaces();
+}
+
+// ─── HOME PAGE ───────────────────────────────────────────
+function renderHome(stats, queue) {
+    const kpis = document.getElementById('home-kpis');
+    kpis.innerHTML = `
+        <div class="kpi"><div class="kpi-label">Prospects</div><div class="kpi-val">${stats.total_contacts||0}</div></div>
+        <div class="kpi"><div class="kpi-label">Touches Sent</div><div class="kpi-val">${stats.touches_sent||0}</div></div>
+        <div class="kpi"><div class="kpi-label">Replies</div><div class="kpi-val">${stats.total_replies||0}</div><div class="kpi-sub ${(stats.reply_rate||0)>2?'up':'dn'}">${stats.reply_rate||0}% rate</div></div>
+        <div class="kpi"><div class="kpi-label">Meetings</div><div class="kpi-val">${stats.meetings_booked||0}</div></div>
+        <div class="kpi"><div class="kpi-label">Opportunities</div><div class="kpi-val">${stats.opportunities_created||0}</div><div class="kpi-sub" style="color:var(--gn)">North Star</div></div>
+        <div class="kpi"><div class="kpi-label">Due Followups</div><div class="kpi-val" style="color:${(stats.pending_followups||0)>0?'var(--or)':'var(--tx)'}">${stats.pending_followups||0}</div></div>
+    `;
+    document.getElementById('badge-actions').textContent = queue.length;
+
+    // Action queue
+    const aq = document.getElementById('action-queue');
+    if (queue.length === 0) {
+        aq.innerHTML = '<div style="padding:20px;text-align:center;color:var(--tx3)">No actions due. You\'re all caught up.</div>';
+    } else {
+        aq.innerHTML = queue.slice(0, 10).map(a => `
+            <div class="action-item">
+                <div class="action-pri ${a.priority}"></div>
+                <div class="action-info">
+                    <strong>${a.contact_name}</strong> at ${a.company}
+                    <div class="sub">${a.action}</div>
+                </div>
+                <button class="btn btn-sm" onclick="openDetail('${a.contact_id}')">View</button>
+            </div>
+        `).join('');
+    }
+
+    // Funnel chart
+    renderFunnelChart(stats);
+}
+
+function renderFunnelChart(stats) {
+    const ctx = document.getElementById('chart-funnel');
+    if (!ctx) return;
+    if (state.charts.funnel) state.charts.funnel.destroy();
+    state.charts.funnel = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Prospects', 'Touched', 'Replied', 'Meetings', 'Opportunities'],
+            datasets: [{
+                data: [stats.total_contacts||0, stats.touches_sent||0, stats.total_replies||0, stats.meetings_booked||0, stats.opportunities_created||0],
+                backgroundColor: ['#6366f1cc','#818cf8cc','#06b6d4cc','#22c55ecc','#eab308cc'],
+                borderRadius: 4,
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { x: { grid: { display: false }, ticks: { color: '#8b90a0' } }, y: { grid: { color: '#2d3140' }, ticks: { color: '#8b90a0' } } }
+        }
+    });
+}
+
+// ─── PIPELINE ────────────────────────────────────────────
+function renderPipeline(contacts) {
+    const body = document.getElementById('pipeline-body');
+    if (!contacts || contacts.length === 0) {
+        body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--tx3)">No contacts yet. Run a batch build to populate.</td></tr>';
+        return;
+    }
+    // Sort
+    const sc = state.pipeline.sortCol;
+    const sd = state.pipeline.sortDir;
+    const sorted = [...contacts].sort((a,b) => {
+        const av = a[sc]||'', bv = b[sc]||'';
+        const cmp = typeof av==='number' ? av-bv : String(av).localeCompare(String(bv));
+        return sd === 'asc' ? cmp : -cmp;
+    });
+
+    body.innerHTML = sorted.map(c => {
+        const pri = c.priority_score||3;
+        const priClass = pri>=5?'hot':pri>=4?'warm':'std';
+        const persona = (c.persona_type||'').includes('QA')?'qa':'vp';
+        return `<tr>
+            <td><span class="tag tag-${priClass}">${pri}</span></td>
+            <td><a href="#" onclick="openDetail('${c.id}');return false">${c.first_name} ${c.last_name}</a></td>
+            <td style="font-size:12px;color:var(--tx2)">${c.title||''}</td>
+            <td>${c.company_name||''}</td>
+            <td><span class="tag tag-${persona}">${c.persona_type||'--'}</span></td>
+            <td><span class="tag tag-std">${(c.stage||'new').replace(/_/g,' ')}</span></td>
+            <td>
+                <button class="btn btn-sm" onclick="openDetail('${c.id}')">View</button>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+function sortPipeline(col) {
+    if (state.pipeline.sortCol === col) {
+        state.pipeline.sortDir = state.pipeline.sortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+        state.pipeline.sortCol = col;
+        state.pipeline.sortDir = 'desc';
+    }
+    filterPipeline();
+}
+
+function filterPipeline() {
+    let filtered = [...state.contacts];
+    const pri = document.getElementById('f-priority').value;
+    const stg = document.getElementById('f-stage').value;
+    const per = document.getElementById('f-persona').value;
+    if (pri !== 'all') filtered = filtered.filter(c => (c.priority_score||0) >= parseInt(pri));
+    if (stg !== 'all') filtered = filtered.filter(c => c.stage === stg);
+    if (per !== 'all') filtered = filtered.filter(c => (c.persona_type||'').includes(per));
+    renderPipeline(filtered);
+}
+
+function exportPipeline() {
+    const rows = [['Priority','Name','Title','Company','Persona','Stage','LinkedIn URL']];
+    state.contacts.forEach(c => {
+        rows.push([c.priority_score, `${c.first_name} ${c.last_name}`, c.title, c.company_name, c.persona_type, c.stage, c.linkedin_url]);
+    });
+    const csv = rows.map(r => r.map(v => `"${(v||'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], {type:'text/csv'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'pipeline-export.csv';
+    a.click();
+}
+
+// ─── WORKSPACES ──────────────────────────────────────────
+function renderWorkspaces() {
+    // LinkedIn queue - messages ready to send via LinkedIn
+    const liQueue = state.messages.filter(m => m.channel === 'linkedin' && m.approval_status === 'approved');
+    const liSent = state.messages.filter(m => m.channel === 'linkedin' && m.approval_status === 'sent');
+    renderMessageQueue('linkedin-queue', liQueue.length ? liQueue : state.messages.filter(m => m.channel === 'linkedin'));
+    renderMessageQueue('linkedin-sent', liSent);
+
+    // Email queue
+    const emQueue = state.messages.filter(m => m.channel === 'email' && m.approval_status !== 'sent');
+    renderMessageQueue('email-queue', emQueue);
+
+    // Call queue - contacts due for calls
+    renderCallQueue();
+}
+
+function renderMessageQueue(containerId, messages) {
+    const el = document.getElementById(containerId);
+    if (!messages || messages.length === 0) {
+        el.innerHTML = '<div style="padding:30px;text-align:center;color:var(--tx3)">No messages in this queue.</div>';
+        return;
+    }
+    el.innerHTML = messages.map(m => `
+        <div class="msg-card">
+            <div class="msg-hdr">
+                <span class="ch">${m.channel} - Touch ${m.touch_number||'?'} (${m.touch_type||''})</span>
+                <span class="qc" style="color:${m.qc_passed?'var(--gn)':'var(--yl)'}">${m.qc_passed?'QC Pass':'Pending QC'}</span>
+            </div>
+            <div class="msg-subj">${m.subject_line||'(no subject)'}</div>
+            <div class="msg-body">${m.body||''}</div>
+            <div class="msg-meta">
+                <span class="tag tag-std">${m.first_name||''} ${m.last_name||''}</span>
+                <span class="tag tag-qa">${m.company_name||''}</span>
+                ${m.proof_point_used?`<span class="tag tag-warm">${m.proof_point_used}</span>`:''}
+                <span class="tag" style="background:rgba(99,102,241,.1);color:var(--ac2)">${m.word_count||0}w</span>
+            </div>
+            <div style="margin-top:8px;display:flex;gap:6px">
+                <button class="btn-copy" onclick="copyMsg(this,'${m.id}','subject')">Copy Subject</button>
+                <button class="btn-copy" onclick="copyMsg(this,'${m.id}','body')">Copy Message</button>
+                <button class="btn-copy" onclick="markSent('${m.id}')">Mark Sent</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderCallQueue() {
+    const el = document.getElementById('calls-queue');
+    // Show contacts in sequence who need a call (Touch 2 or Touch 4)
+    const callDue = state.contacts.filter(c =>
+        c.stage === 'touched' || c.stage === 'sequencing'
+    ).slice(0, 20);
+
+    if (callDue.length === 0) {
+        el.innerHTML = '<div style="padding:30px;text-align:center;color:var(--tx3)">No calls due right now.</div>';
+        return;
+    }
+    el.innerHTML = callDue.map(c => `
+        <div class="call-card">
+            <strong>${c.first_name} ${c.last_name}</strong> - ${c.title||''} at ${c.company_name||''}
+            <p>Stage: ${(c.stage||'').replace(/_/g,' ')} | Priority: ${c.priority_score||3}</p>
+            <div style="margin-top:6px;display:flex;gap:6px">
+                <button class="btn btn-sm" onclick="openDetail('${c.id}')">View Prep</button>
+                <button class="btn btn-sm" onclick="logCallOutcome('${c.id}')">Log Outcome</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ─── DETAIL PANEL ────────────────────────────────────────
+async function openDetail(contactId) {
+    const panel = document.getElementById('detail-panel');
+    const content = document.getElementById('detail-content');
+    content.innerHTML = '<div style="padding:40px;text-align:center;color:var(--tx3)">Loading...</div>';
+    panel.classList.add('open');
+
+    const contact = await api(`/contacts/${contactId}`);
+    const messages = await api(`/contacts/${contactId}/messages`);
+
+    if (!contact) {
+        content.innerHTML = '<div style="color:var(--rd)">Contact not found</div>';
+        return;
+    }
+
+    const pri = contact.priority_score||3;
+    const priClass = pri>=5?'hot':pri>=4?'warm':'std';
+
+    content.innerHTML = `
+        <div style="margin-bottom:16px">
+            <span class="tag tag-${priClass}" style="font-size:13px">Priority ${pri}</span>
+            <span class="tag tag-${(contact.persona_type||'').includes('QA')?'qa':'vp'}" style="margin-left:4px">${contact.persona_type||''}</span>
+        </div>
+        <h2 style="font-size:18px;margin-bottom:2px">${contact.first_name} ${contact.last_name}</h2>
+        <div style="font-size:13px;color:var(--tx2);margin-bottom:4px">${contact.title||''}</div>
+        <div style="font-size:13px;color:var(--tx2);margin-bottom:12px">${contact.company_name||''} ${contact.company_industry?'('+contact.company_industry+')':''}</div>
+        ${contact.linkedin_url?`<a href="${contact.linkedin_url}" target="_blank" style="font-size:12px">LinkedIn Profile</a>`:''}
+
+        <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--bd)">
+            <div style="font-size:12px;color:var(--tx2);display:grid;grid-template-columns:1fr 1fr;gap:6px">
+                <div>Stage: <strong style="color:var(--tx)">${(contact.stage||'new').replace(/_/g,' ')}</strong></div>
+                <div>Source: <strong style="color:var(--tx)">${contact.source||'sales_nav'}</strong></div>
+                <div>Tenure: <strong style="color:var(--tx)">${contact.tenure_months?contact.tenure_months+' months':'--'}</strong></div>
+                <div>Location: <strong style="color:var(--tx)">${contact.location||'--'}</strong></div>
+            </div>
+        </div>
+
+        ${contact.predicted_objection?`
+        <div class="obj-card" style="margin-top:12px">
+            <div class="obj-q">Predicted: ${contact.predicted_objection}</div>
+            <div class="obj-a">${contact.objection_response||''}</div>
+        </div>`:''}
+
+        <h3 style="font-size:13px;color:var(--tx2);text-transform:uppercase;margin-top:16px;margin-bottom:8px">Messages (${(messages||[]).length})</h3>
+        ${(messages||[]).map(m => `
+            <div class="msg-card">
+                <div class="msg-hdr">
+                    <span class="ch">${m.channel} Touch ${m.touch_number||'?'}</span>
+                    <span class="qc" style="color:${m.qc_passed?'var(--gn)':'var(--yl)'}">${m.qc_passed?'Pass':'--'}</span>
+                </div>
+                ${m.subject_line?`<div class="msg-subj">${m.subject_line}</div>`:''}
+                <div class="msg-body">${m.body}</div>
+                <div style="margin-top:6px;display:flex;gap:4px">
+                    <button class="btn-copy" onclick="copyText(this,'${escape(m.subject_line||'')}')">Copy Subject</button>
+                    <button class="btn-copy" onclick="copyText(this,'${escape(m.body)}')">Copy Message</button>
+                </div>
+            </div>
+        `).join('')}
+
+        <div style="margin-top:16px;display:flex;gap:6px">
+            <select class="status-select" onchange="updateStage('${contact.id}',this.value)">
+                <option value="">Update Stage...</option>
+                <option value="new">New</option>
+                <option value="touched">Touched</option>
+                <option value="sequencing">Sequencing</option>
+                <option value="replied_positive">Replied +</option>
+                <option value="replied_negative">Replied -</option>
+                <option value="meeting_booked">Meeting Booked</option>
+                <option value="break_up_sent">Break-up Sent</option>
+                <option value="dormant">Dormant</option>
+            </select>
+        </div>
+    `;
+}
+
+function closeDetail() {
+    document.getElementById('detail-panel').classList.remove('open');
+}
+
+// ─── COPY HELPERS ────────────────────────────────────────
+function copyText(btn, text) {
+    navigator.clipboard.writeText(unescape(text)).then(() => {
+        btn.classList.add('copied');
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.classList.remove('copied'); btn.textContent = btn.textContent.replace('Copied!','Copy'); }, 1500);
+    });
+}
+
+function copyMsg(btn, msgId, field) {
+    const msg = state.messages.find(m => m.id === msgId);
+    if (!msg) return;
+    const text = field === 'subject' ? msg.subject_line : msg.body;
+    navigator.clipboard.writeText(text||'').then(() => {
+        btn.classList.add('copied');
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.classList.remove('copied'); btn.textContent = orig; }, 1500);
+    });
+}
+
+async function markSent(msgId) {
+    await fetch(API + `/messages/${msgId}`, {method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({approval_status:'sent'})}).catch(()=>{});
+    refreshData();
+}
+
+async function updateStage(contactId, stage) {
+    if (!stage) return;
+    await fetch(API + `/contacts/${contactId}`, {method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({stage})}).catch(()=>{});
+    refreshData();
+}
+
+// ─── INTELLIGENCE ────────────────────────────────────────
+async function loadIntelligence() {
+    const analytics = await api('/analytics/replies');
+    if (!analytics) return;
+
+    // Persona chart
+    if (analytics.by_persona && analytics.by_persona.length) {
+        if (state.charts.persona) state.charts.persona.destroy();
+        state.charts.persona = new Chart(document.getElementById('chart-persona'), {
+            type:'bar', data:{labels:analytics.by_persona.map(p=>p.persona_type), datasets:[{data:analytics.by_persona.map(p=>p.cnt),backgroundColor:COLORS.map(c=>c+'cc'),borderRadius:4}]},
+            options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#8b90a0'}},y:{grid:{color:'#2d3140'},ticks:{color:'#8b90a0'}}}}
+        });
+    }
+
+    // Proof points chart
+    if (analytics.by_proof_point && analytics.by_proof_point.length) {
+        if (state.charts.proofs) state.charts.proofs.destroy();
+        state.charts.proofs = new Chart(document.getElementById('chart-proofs'), {
+            type:'bar', data:{labels:analytics.by_proof_point.map(p=>p.proof_point_used), datasets:[{data:analytics.by_proof_point.map(p=>p.cnt),backgroundColor:COLORS.map(c=>c+'cc'),borderRadius:4}]},
+            options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'#2d3140'},ticks:{color:'#8b90a0'}},y:{grid:{display:false},ticks:{color:'#8b90a0'}}}}
+        });
+    }
+
+    // Load pre-brief
+    const pb = document.getElementById('pre-brief-content');
+    pb.innerHTML = '<em>Pre-brief will populate after first batch results are tracked.</em>';
+}
+
+// ─── EXPERIMENTS ─────────────────────────────────────────
+async function loadExperiments() {
+    const exps = await api('/analytics/experiments');
+    const el = document.getElementById('experiments-list');
+    if (!exps || exps.length === 0) {
+        el.innerHTML = '<div class="card" style="text-align:center;padding:40px;color:var(--tx3)">No experiments yet. Start one to test message variables.</div>';
+        return;
+    }
+    el.innerHTML = exps.map(e => `
+        <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                <h3 style="margin:0">${e.name}</h3>
+                <span class="tag ${e.status==='active'?'tag-qa':'tag-std'}">${e.status}</span>
+            </div>
+            <div style="font-size:12px;color:var(--tx2);margin-bottom:8px">Variable: ${e.variable||'--'}</div>
+            <div class="grid2" style="font-size:12px">
+                <div>
+                    <strong style="color:var(--ac2)">Group A:</strong> ${e.group_a_desc||'--'}<br>
+                    Sent: ${e.group_a_sent} | Replies: ${e.group_a_replies} | Meetings: ${e.group_a_meetings} | Opps: ${e.group_a_opps}
+                </div>
+                <div>
+                    <strong style="color:var(--or)">Group B:</strong> ${e.group_b_desc||'--'}<br>
+                    Sent: ${e.group_b_sent} | Replies: ${e.group_b_replies} | Meetings: ${e.group_b_meetings} | Opps: ${e.group_b_opps}
+                </div>
+            </div>
+            ${e.winner?`<div style="margin-top:8px;font-size:12px;color:var(--gn)">Winner: ${e.winner} - ${e.conclusion||''}</div>`:''}
+        </div>
+    `).join('');
+}
+
+// ─── AGENT LOGS ──────────────────────────────────────────
+async function loadAgentLogs() {
+    const runs = await api('/agent-runs?limit=50');
+    const body = document.getElementById('agent-body');
+    if (!runs || runs.length === 0) {
+        body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--tx3)">No agent runs yet.</td></tr>';
+        return;
+    }
+    body.innerHTML = runs.map(r => `
+        <tr>
+            <td style="font-weight:600">${r.agent_name||'--'}</td>
+            <td>${r.run_type||''}</td>
+            <td>${r.contact_id||'--'}</td>
+            <td><span class="tag ${r.status==='completed'?'tag-qa':r.status==='error'?'tag-hot':'tag-warm'}">${r.status}</span></td>
+            <td>${(r.tokens_used||0).toLocaleString()}</td>
+            <td>${r.duration_ms?r.duration_ms+'ms':'--'}</td>
+            <td style="font-size:11px;color:var(--tx2)">${r.started_at||''}</td>
+        </tr>
+    `).join('');
+}
+
+// ─── TAB HELPERS ─────────────────────────────────────────
+function showLinkedinTab(tab) {
+    ['queue','sent','replies'].forEach(t => {
+        document.getElementById('linkedin-'+t).style.display = t===tab?'block':'none';
+    });
+    document.querySelectorAll('#page-linkedin .tab').forEach((el,i) => {
+        el.classList.toggle('active', ['queue','sent','replies'][i]===tab);
+    });
+}
+
+function showEmailTab(tab) {
+    ['queue','sent'].forEach(t => {
+        document.getElementById('email-'+t).style.display = t===tab?'block':'none';
+    });
+    document.querySelectorAll('#page-email .tab').forEach((el,i) => {
+        el.classList.toggle('active', ['queue','sent'][i]===tab);
+    });
+}
+
+function showCallTab(tab) {
+    ['queue','log'].forEach(t => {
+        document.getElementById('calls-'+t).style.display = t===tab?'block':'none';
+    });
+    document.querySelectorAll('#page-calls .tab').forEach((el,i) => {
+        el.classList.toggle('active', ['queue','log'][i]===tab);
+    });
+}
+
+// ─── INIT ────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    // Set greeting based on time
+    const hour = new Date().getHours();
+    const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+    const h1 = document.querySelector('#page-home .page-hdr h1');
+    if (h1) h1.textContent = greeting + ', Rob';
+
+    refreshData();
+});
+</script>
+</body>
+</html>
