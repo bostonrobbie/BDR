@@ -118,3 +118,71 @@ def get_ab_group_for_contact(contact_id: str, batch_id: str) -> Optional[str]:
     ).fetchone()
     conn.close()
     return row["ab_group"] if row else None
+
+
+def compute_ab_results(variable: str = None, batch_ids: list = None) -> dict:
+    """Compute reply rates by A/B group across batches.
+
+    Args:
+        variable: Filter to a specific A/B variable (optional).
+        batch_ids: Filter to specific batches (optional).
+
+    Returns:
+        Dict with group stats including reply rates and statistical summary.
+    """
+    conn = models.get_db()
+    query = """
+        SELECT bp.ab_group, bp.batch_id, bp.contact_id, bp.status,
+               md.ab_variable
+        FROM batch_prospects bp
+        LEFT JOIN message_drafts md
+            ON md.contact_id = bp.contact_id AND md.batch_id = bp.batch_id
+            AND md.touch_number = 1
+        WHERE bp.ab_group IS NOT NULL
+    """
+    params = []
+    if variable:
+        query += " AND md.ab_variable = ?"
+        params.append(variable)
+    if batch_ids:
+        placeholders = ",".join("?" * len(batch_ids))
+        query += f" AND bp.batch_id IN ({placeholders})"
+        params.extend(batch_ids)
+
+    rows = conn.execute(query, params).fetchall()
+    conn.close()
+
+    # Deduplicate by contact (a contact may appear in multiple message rows)
+    seen = set()
+    groups = {"A": {"total": 0, "replied": 0}, "B": {"total": 0, "replied": 0}}
+    for row in rows:
+        key = (row["contact_id"], row["batch_id"])
+        if key in seen:
+            continue
+        seen.add(key)
+
+        group = row["ab_group"]
+        if group not in groups:
+            continue
+        groups[group]["total"] += 1
+        status = (row["status"] or "").lower()
+        if status in ("replied", "meeting_booked", "re-engaged"):
+            groups[group]["replied"] += 1
+
+    # Compute rates
+    for g in groups.values():
+        g["reply_rate"] = round(g["replied"] / g["total"], 4) if g["total"] else 0.0
+
+    winner = None
+    if groups["A"]["reply_rate"] > groups["B"]["reply_rate"] and groups["A"]["total"] >= 5:
+        winner = "A"
+    elif groups["B"]["reply_rate"] > groups["A"]["reply_rate"] and groups["B"]["total"] >= 5:
+        winner = "B"
+
+    return {
+        "variable": variable,
+        "groups": groups,
+        "winner": winner,
+        "sample_size": groups["A"]["total"] + groups["B"]["total"],
+        "sufficient_data": groups["A"]["total"] >= 10 and groups["B"]["total"] >= 10,
+    }

@@ -18,15 +18,15 @@ from typing import Optional
 from urllib.request import urlopen, Request
 from urllib.error import URLError, HTTPError
 
-logger = logging.getLogger("llm_gateway")
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(name)s] %(levelname)s: %(message)s")
+try:
+    from src.config import OLLAMA_HOST, OLLAMA_MODEL, OLLAMA_TIMEOUT, LLM_FALLBACK_PROVIDER as FALLBACK_PROVIDER
+except ImportError:
+    OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://127.0.0.1:11434")
+    OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen2.5:7b")
+    OLLAMA_TIMEOUT = int(os.environ.get("OLLAMA_TIMEOUT_SECONDS", "120"))
+    FALLBACK_PROVIDER = os.environ.get("LLM_FALLBACK_PROVIDER", "")
 
-# ─── CONFIGURATION ─────────────────────────────────────────────
-
-OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://127.0.0.1:11434")
-OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen2.5:7b")
-OLLAMA_TIMEOUT = int(os.environ.get("OLLAMA_TIMEOUT_SECONDS", "120"))
-FALLBACK_PROVIDER = os.environ.get("LLM_FALLBACK_PROVIDER", "")  # e.g., "openai" if configured
+logger = logging.getLogger("bdr.agents.llm_gateway")
 
 # Retry config
 MAX_RETRIES = 3
