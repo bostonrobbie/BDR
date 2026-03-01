@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batch 8 — Buyer Intent Touch 1 InMails — March 1, 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f7fa;
+            color: #1a1a1a;
+            line-height: 1.5;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-number {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            opacity: 0.8;
+        }
+
+        .controls {
+            padding: 20px;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            border: 1px solid #d0d0d0;
+            background: white;
+            color: #1a1a1a;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #f0f0f0;
+            border-color: #999;
+        }
+
+        .btn.active {
+            background: #0f172a;
+            color: white;
+            border-color: #0f172a;
+        }
+
+        .btn-export {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+            margin-left: auto;
+        }
+
+        .btn-export:hover {
+            background: #059669;
+            border-color: #059669;
+        }
+
+        .search-box {
+            padding: 8px 12px;
+            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+            font-size: 13px;
+            min-width: 200px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .prospects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 20px;
+        }
+
+        .prospect-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .prospect-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .prospect-header {
+            padding: 16px;
+            background: #f9fafb;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .prospect-header:hover {
+            background: #f3f4f6;
+        }
+
+        .prospect-info {
+            flex: 1;
+        }
+
+        .prospect-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #0f172a;
+        }
+
+        .prospect-meta {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .prospect-badges {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-left: 12px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-tier-a {
+            background: #d1f3e4;
+            color: #065f46;
+        }
+
+        .badge-tier-b {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-tier-c {
+            background: #e5e7eb;
+            color: #4b5563;
+        }
+
+        .badge-email {
+            background: #fce7f3;
+            color: #831843;
+        }
+
+        .expand-icon {
+            font-size: 20px;
+            color: #666;
+            transition: transform 0.2s;
+        }
+
+        .prospect-card.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .prospect-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 16px;
+        }
+
+        .prospect-card.expanded .prospect-content {
+            max-height: 2000px;
+            overflow: visible;
+            padding: 16px;
+        }
+
+        .field-group {
+            margin-bottom: 14px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .field-group:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .field-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .field-value {
+            font-size: 13px;
+            color: #1a1a1a;
+            word-break: break-word;
+        }
+
+        .field-value a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .field-value a:hover {
+            text-decoration: underline;
+        }
+
+        .message-section {
+            margin-top: 16px;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 6px;
+        }
+
+        .message-field {
+            margin-bottom: 12px;
+        }
+
+        .message-field:last-child {
+            margin-bottom: 0;
+        }
+
+        .copy-button {
+            padding: 6px 10px;
+            background: #0f172a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
+        .copy-button:hover {
+            background: #1e293b;
+        }
+
+        .copy-button.copied {
+            background: #10b981;
+        }
+
+        .message-text {
+            font-size: 13px;
+            color: #1a1a1a;
+            line-height: 1.6;
+            font-family: 'Monaco', 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .status-select {
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid #d0d0d0;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            background: white;
+        }
+
+        .qa-gate {
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .qa-gate.pass {
+            background: #d1f3e4;
+            color: #065f46;
+        }
+
+        .qa-gate.fail {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .qa-notes {
+            font-size: 12px;
+            color: #666;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .mqs-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #f0f9ff;
+            color: #0369a1;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .prospects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .stats {
+                gap: 15px;
+            }
+
+            .controls-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-box {
+                min-width: 100%;
+            }
+
+            .btn-export {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Batch 8 — Buyer Intent Touch 1 InMails</h1>
+        <div class="subtitle">March 1, 2026 • 24 Prospects • Tier A/B/C Mix</div>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">24</div>
+                <div class="stat-label">Total Prospects</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">12</div>
+                <div class="stat-label">With Email</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">12</div>
+                <div class="stat-label">InMail Only</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">10.5</div>
+                <div class="stat-label">Avg MQS</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="controls-row">
+            <div class="filter-group">
+                <button class="btn active" onclick="filterTier('all')">All</button>
+                <button class="btn" onclick="filterTier('a')">Tier A</button>
+                <button class="btn" onclick="filterTier('b')">Tier B</button>
+                <button class="btn" onclick="filterTier('c')">Tier C</button>
+                <button class="btn" onclick="filterEmail('all')">All Channels</button>
+                <button class="btn" onclick="filterEmail('email')">Has Email</button>
+                <button class="btn" onclick="filterEmail('inmail')">InMail Only</button>
+            </div>
+            <button class="btn btn-export" onclick="exportCSV()">Export CSV</button>
+        </div>
+        <div class="controls-row">
+            <input type="text" class="search-box" id="searchBox" placeholder="Search by name or company..." onkeyup="filterSearch()">
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="prospects-grid" id="prospectsGrid"></div>
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <p>No prospects match your filters.</p>
+        </div>
+    </div>
+
+    <script>
+        const prospects = [
+            {
+                id: 1,
+                name: "Kanda Kaliappan",
+                title: "VP Eng (Head of Quality)",
+                company: "Automation Anywhere",
+                tier: "a",
+                email: null,
+                apollo: "57df4fbba6da980b65889e1b",
+                linkedin: "http://www.linkedin.com/in/kandasamysk",
+                industry: "IT",
+                employees: 3800,
+                city: "Cupertino, CA",
+                subject: "Mobile app testing at scale",
+                message: "Hi Kanda,\n\nWhen you're testing intelligent automation across mobile, do your regression cycles feel like they're keeping pace with releases?\n\nMobile platforms at scale usually see regression slow down while the product keeps shipping faster. Tests pile up and the gap widens every sprint.\n\nCRED automated 90% of their regression and cut execution time by 80%, getting releases out faster.\n\nIf cutting regression time by 80% before your next mobile release sounds useful, what day works for a quick look at how they did it?",
+                proof: "CRED",
+                closePattern: "A",
+                wordCount: 85,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 2,
+                name: "Lakshmi S.",
+                title: "Director of QA",
+                company: "Smart IMS Inc.",
+                tier: "a",
+                email: null,
+                apollo: "69a425f0e2e2160015901971",
+                linkedin: null,
+                industry: "IT Services",
+                employees: 830,
+                city: "McLean, VA",
+                subject: "Regression during Guidewire rollouts",
+                message: "Hi Lakshmi,\n\nAre regression cycles getting longer as you roll out Guidewire and Salesforce implementations across more insurance clients?\n\nPlatform rollouts usually mean the test suite grows faster than the team can maintain it, especially when each client runs different configurations and workflows.\n\nHansard cut their regression cycle from 8 weeks to 5 weeks after switching to AI-powered self-healing. That freed 3 weeks per release.\n\nWhat day works to see how Hansard kept regression tight while scaling across multiple client implementations?",
+                proof: "Hansard",
+                closePattern: "B",
+                wordCount: 81,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 3,
+                name: "Jennifer Tune",
+                title: "Director QA & PM",
+                company: "Fossil Group",
+                tier: "a",
+                email: "jtune@fossil.com",
+                apollo: "54a4361d7468693442615a35",
+                linkedin: "http://www.linkedin.com/in/jennifer-tune-b1435410",
+                industry: "Retail",
+                employees: 5200,
+                city: "Grapevine, TX",
+                subject: "Testing e-commerce across 19 markets",
+                message: "Hi Jennifer,\n\nWith 19 markets running different locales, how do you keep test coverage consistent without doubling your QA team?\n\nMulti-market e-commerce usually means regression maintenance explodes as fast as the footprint grows. Each locale adds another layer of test cases.\n\nMedibuddy automated 2,500 tests and cut maintenance work in half while keeping coverage ahead of releases.\n\nIf cutting test upkeep in half before the next market expansion sounds useful, what day works for a quick look at how they did it?",
+                proof: "Medibuddy",
+                closePattern: "C",
+                wordCount: 82,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 4,
+                name: "Mike Dombrowski",
+                title: "Director Quality Engineering",
+                company: "Verint",
+                tier: "a",
+                email: "mike.dombrowski@verint.com",
+                apollo: "618d3a22b74ac700011c8834",
+                linkedin: "http://www.linkedin.com/in/mike-dombrowski-8435943",
+                industry: "IT",
+                employees: 4300,
+                city: "Marietta, GA",
+                subject: "Post-merger test consolidation",
+                message: "Hi Mike,\n\nAfter bringing Cognyte back in, are you consolidating test suites across Verint codebases or keeping them separate?\n\nMerger integrations usually force QA to cover more surface area with the same headcount. Test suites get duplicated, and maintaining both while shipping on time gets hard fast.\n\nCRED consolidated their test base, automated 90% of regression, and cut release cycle time significantly. Same team, much faster output.\n\nWhat day works to see how CRED merged their automation without slowing down releases?",
+                proof: "CRED",
+                closePattern: "D",
+                wordCount: 81,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 5,
+                name: "Aline Warren",
+                title: "Head of Ops, Process Excellence & QA",
+                company: "Quantcast",
+                tier: "a",
+                email: "awarren@quantcast.com",
+                apollo: "69a424b16cec72000d4a8ea6",
+                linkedin: null,
+                industry: "IT/Ad Tech",
+                employees: 640,
+                city: "San Francisco, CA",
+                subject: "Testing 800 vendor integrations",
+                message: "Hi Aline,\n\nWith 800+ vendor integrations in your platform, how are regression tests keeping up with the integration matrix?\n\nAd tech integrations usually mean test maintenance eats more capacity than building new coverage. Every vendor update can break something downstream.\n\nHansard cut regression from 8 weeks down to 5 by automating the repetitive parts, freeing engineers for deeper testing.\n\nIf getting 3 weeks back in your release cadence would help, what day works for a quick chat about how they did it?",
+                proof: "Hansard",
+                closePattern: "E",
+                wordCount: 82,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 6,
+                name: "Sandy Paray",
+                title: "AVP QA Tech",
+                company: "Saks Global",
+                tier: "a",
+                email: "sandy.paray@saks.com",
+                apollo: "6299601a5c857d0001222bfe",
+                linkedin: "http://www.linkedin.com/in/sandy-paray-b4104746",
+                industry: "Apparel & Fashion",
+                employees: 18000,
+                city: "Baldwin, NY",
+                subject: "Agentforce testing across channels",
+                message: "Hi Sandy,\n\nAs you roll out Agentforce across your e-commerce and in-store platforms, what's the testing strategy for the AI workflows?\n\nAI feature rollouts usually create new test surfaces that manual processes can't keep pace with.\n\nCRED automated their test base, now runs 90% regression coverage, and cut execution time by 80%, staying ahead of feature releases.\n\nIf automating your regression before Agentforce scales across more markets sounds useful, what day works for a quick look at how they did it?",
+                proof: "CRED",
+                closePattern: "A",
+                wordCount: 81,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 7,
+                name: "Karikalan V",
+                title: "Assoc Director QE",
+                company: "Tavant",
+                tier: "a",
+                email: null,
+                apollo: "not found",
+                linkedin: null,
+                industry: "IT Services",
+                employees: null,
+                city: "San Diego, CA",
+                subject: "Test maintenance across client codebases",
+                message: "Hi Karikalan,\n\nWhen you're maintaining test suites across multiple client codebases, does test upkeep consume more capacity than new test creation?\n\nMulti-client QE usually means more time fixing broken tests than building new ones. Each client update cascades through the suite.\n\nTeams using Selenium report 70% less maintenance overhead when they switch to AI-powered automation, freeing capacity for more coverage.\n\nIf cutting maintenance by 70% would free your team for new coverage, what day works for a quick look at how they did it?",
+                proof: "70% Selenium",
+                closePattern: "D",
+                wordCount: 84,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 8,
+                name: "Sarah Kluivert",
+                title: "Head of QE & Test Operations",
+                company: "Bugasura",
+                tier: "a",
+                email: null,
+                apollo: "61277545f6a0590001851e85",
+                linkedin: "http://www.linkedin.com/in/sarah-kluivert-a49266207",
+                industry: "IT",
+                employees: 14,
+                city: "Hawthorne, CA",
+                subject: "QA at a scrappy startup",
+                message: "Hi Sarah,\n\nAs a one-person QA department at Bugasura, how much time goes to manual test execution vs building out coverage?\n\nSmall QA teams usually get stuck on manual testing repetition instead of focusing on what actually breaks.\n\nSpendflo cut manual testing work in half with automated regression, and ROI came in the first quarter.\n\nIf freeing up more of your time for coverage instead of manual regression runs would help, what day works for a quick chat about how they did it?",
+                proof: "Spendflo",
+                closePattern: "E",
+                wordCount: 83,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 9,
+                name: "Nihal Elsayed",
+                title: "Test Manager",
+                company: "Oracle Cerner",
+                tier: "b",
+                email: "nihal.elsayed@cerner.com",
+                apollo: "54a438c77468692cf05c0f36",
+                linkedin: "http://www.linkedin.com/in/nihal-elsayed-5a79156b",
+                industry: "Healthcare",
+                employees: 26000,
+                city: "Anaheim, CA",
+                subject: "Regression testing in healthcare",
+                message: "Hi Nihal,\n\nWith HIPAA compliance and critical patient workflows, how much of your QE capacity gets eaten up by test maintenance when the EHR needs updates?\n\nIn healthcare IT, regression testing usually becomes the release blocker, especially when you're validating across multiple integrations.\n\nSanofi cut their regression cycle from 3 days to 80 minutes with AI-powered test automation. That's 2.25 days back in the sprint.\n\nIf freeing up that much capacity would help your release schedule, what day works for a quick look at how they did it?",
+                proof: "Sanofi",
+                closePattern: "A",
+                wordCount: 88,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 10,
+                name: "Lisa DeSiero",
+                title: "Engineering Director",
+                company: "Freshworks",
+                tier: "b",
+                email: "lisa.desiero@freshworks.com",
+                apollo: "609a60c61e913900014380de",
+                linkedin: "http://www.linkedin.com/in/lisadesiero",
+                industry: "IT/SaaS",
+                employees: 4400,
+                city: "United States",
+                subject: "Atto 2.0 - self-healing updates",
+                message: "Hi Lisa,\n\nQuick check in - how's the team using Testsigma across your platform testing? Wanted to share what shipped in Atto 2.0.\n\nWe built intent-based self-healing and coverage discovery into the agent suite. It now catches 90% of locator breaks without manual fixes.\n\nYour team's already seeing the benefit with flakiness reduction at scale. The new coverage discovery might surface gaps before QA finds them in production.\n\nWhat day works to walk through the new capabilities and see if coverage discovery helps your team?",
+                proof: "Freshworks + Atto 2.0",
+                closePattern: "B",
+                wordCount: 85,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS",
+                note: "EXISTING CUSTOMER - expansion angle"
+            },
+            {
+                id: 11,
+                name: "Ramon Fernandez-Marina",
+                title: "Director, Release Engineering",
+                company: "MongoDB",
+                tier: "b",
+                email: "ramon@mongodb.com",
+                apollo: "re-enriched",
+                linkedin: null,
+                industry: "IT",
+                employees: 5600,
+                city: "New York, NY",
+                subject: "SDK conformance test coverage",
+                message: "Hi Ramon,\n\nWith SDKs across Java, Python, Node, and more, how does your team keep conformance testing in sync across all the drivers without regression?\n\nMulti-language SDK testing usually means test suites get out of step when you deploy updates. One driver regresses while another is fine.\n\nNagra DTV automated 2,500 tests across APIs and UIs in 8 months, kept them in sync across environments. That's how they scale without hiring 10 more QE.\n\nWhat day works to see how they structured cross-platform coverage without the manual overhead?",
+                proof: "Nagra DTV",
+                closePattern: "B",
+                wordCount: 88,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 12,
+                name: "Kathy Gryta",
+                title: "DevOps Manager",
+                company: "Planview",
+                tier: "b",
+                email: "kgryta@planview.com",
+                apollo: "re-enriched",
+                linkedin: null,
+                industry: "IT",
+                employees: 1500,
+                city: "Austin, TX",
+                subject: "Post-acquisition test consolidation",
+                message: "Hi Kathy,\n\nAfter consolidating Clarizen, Changepoint, Projectplace, and Spigit, how's your QE team keeping regression stable across the merged codebases?\n\nPost-acquisition testing usually spikes fast. Test suites get duplicated and regression cycles stretch.\n\nHansard cut their regression cycle from 8 weeks to 5 weeks after a major platform consolidation by shifting to AI-powered automation. That freed 3 weeks per cycle.\n\nIf getting 3 weeks of regression time back before your next release would help, what day works for a quick look?",
+                proof: "Hansard",
+                closePattern: "C",
+                wordCount: 81,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS",
+                note: "Enhanced: removed redundant sentence, self-healing→automation"
+            },
+            {
+                id: 13,
+                name: "Derek Stanley",
+                title: "Sr. Manager, Devops",
+                company: "Kaseya",
+                tier: "b",
+                email: "derek.stanley@kaseya.com",
+                apollo: "54a73fe67468696220471423",
+                linkedin: "http://www.linkedin.com/in/dstanley23",
+                industry: "IT",
+                employees: 5600,
+                city: "Albany, NY",
+                subject: "Multi-product test suite alignment",
+                message: "Hi Derek,\n\nWith 17+ acquisitions under Kaseya, are your QE teams trying to keep test coverage aligned across Datto, IT Glue, Unitrends, and the rest, or does each product maintain its own automation?\n\nEnterprise acquisitions usually create fragmented test stacks. One product uses Selenium, another uses Cypress, nobody's running in parallel. Releases slow down waiting on the weakest link.\n\nA Fortune 100 company consolidated across 4 major products and got far more output by unifying test automation. Same engineers, same schedule.\n\nIf getting that kind of output boost across your product teams would help, what day works for a quick chat?",
+                proof: "Fortune 100",
+                closePattern: "E",
+                wordCount: 101,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 14,
+                name: "Alan Gutherz",
+                title: "Director of IT and Operations",
+                company: "Algonomy",
+                tier: "b",
+                email: null,
+                apollo: "57d4d8cea6da9853a663d19b",
+                linkedin: "http://www.linkedin.com/in/alan-gutherz-9124542",
+                industry: "Retail Analytics",
+                employees: null,
+                city: "Oakland, CA",
+                subject: "Scaling test coverage for AI launches",
+                message: "Hi Alan,\n\nWith 3 AI product launches in the past year, how's your QE team keeping test coverage from falling behind feature releases?\n\nRapid launches usually mean test automation gets built in a sprint and never maintained. Coverage gets thin fast or QE cycles stretch.\n\nMedibuddy launched 2,500 automated tests and cut test maintenance in half while keeping coverage ahead of releases.\n\nIf cutting your manual testing load in half would free capacity for the next launch cycle, what day works for a quick look at how they did it?",
+                proof: "Medibuddy",
+                closePattern: "A",
+                wordCount: 90,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS",
+                note: "Enhanced: fixed Medibuddy typo, trimmed context, removed buzzword"
+            },
+            {
+                id: 15,
+                name: "Sam Townsend",
+                title: "Sr Director Software Eng",
+                company: "Greenway Health",
+                tier: "b",
+                email: "sam.townsend@greenwayhealth.com",
+                apollo: "61122fffe9e6e00001f6a96e",
+                linkedin: "http://www.linkedin.com/in/sam-townsend-b01853147",
+                industry: "IT/Healthcare",
+                employees: 1800,
+                city: "Alachua, FL",
+                subject: "EHR testing across AWS migration",
+                message: "Hi Sam,\n\nAs you're migrating to AWS HealthLake, how much of your QE effort is going to retesting the same workflows on the new cloud infrastructure?\n\nHealthcare migrations mean test suites get rewritten, regression cycles get longer, and HIPAA validation can't be shortcut. That usually stretches release timelines by weeks.\n\nSanofi's healthcare regression went from 3 days to 80 minutes by using AI-powered self-healing. When locators break during UI changes, the tests auto-adapt.\n\nWhat day works to see how they kept compliance validation tight while cutting 2+ days off the cycle?",
+                proof: "Sanofi",
+                closePattern: "B",
+                wordCount: 91,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 16,
+                name: "Shiji John",
+                title: "Assoc Director QE",
+                company: "Tavant",
+                tier: "b",
+                email: "shiji.john@tavant.com",
+                apollo: "re-enriched",
+                linkedin: null,
+                industry: "IT Services",
+                employees: null,
+                city: "United States",
+                subject: "QE across multiple client codebases",
+                message: "Hi Shiji,\n\nMaintaining QE across different client projects, how do you keep test suites from becoming brittle when each client's codebase evolves on its own schedule?\n\nMulti-client QE teams usually end up with parallel test maintenance across codebases. One client updates their platform and test suites break everywhere.\n\nMedibuddy manages 2,500 tests and cut maintenance by 50% while keeping coverage solid. Self-healing means one locator change doesn't cascade into rewrites across all tests.\n\nIf cutting test maintenance in half before the next client push would help, what day works for a quick look?",
+                proof: "Medibuddy",
+                closePattern: "C",
+                wordCount: 93,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 17,
+                name: "Laurie Nielsen",
+                title: "Release Manager",
+                company: "Cerner Corporation",
+                tier: "b",
+                email: null,
+                apollo: "55704824736964290c9f0b00",
+                linkedin: "http://www.linkedin.com/in/laurie-nielsen-243a73a",
+                industry: "IT/Healthcare",
+                employees: 26000,
+                city: "Prior Lake, MN",
+                subject: "Regression gate blocking releases",
+                message: "Hi Laurie,\n\nHow much is regression testing stretching your release gates right now, to a point where test cycles are the limiting factor on deployment frequency?\n\nWhen you're supporting multiple customer versions and critical healthcare workflows, regression usually becomes what blocks the release, not the code.\n\nHansard cut regression from 8 weeks to 5 weeks using AI automation. That freed 3 weeks per release cycle without hiring more QE.\n\nWhat day works to see how they shrunk the cycle without cutting corners on validation?",
+                proof: "Hansard",
+                closePattern: "D",
+                wordCount: 84,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 18,
+                name: "Ron Trachman",
+                title: "Release Manager Team Lead",
+                company: "Verint",
+                tier: "b",
+                email: "ron.trachman@verint.com",
+                apollo: "54c2179e7468697af7de3f79",
+                linkedin: "http://www.linkedin.com/in/ron-trachman-23908789",
+                industry: "IT",
+                employees: 4300,
+                city: "San Jose, CA",
+                subject: "Release sync across product lines",
+                message: "Hi Ron,\n\nCoordinating release cycles across multiple products at Verint, is test automation the thing that keeps product teams out of sync, or does regression testing fit the schedule?\n\nTrying to sync releases means regression testing delays one product while another ships.\n\nHansard cut their regression window to 5 weeks from 8. Teams shipped on the same cycle without waiting on test blockers. That's 3 weeks back per release.\n\nIf getting 3 weeks of test time back per cycle would help your release coordination, what day works for a quick chat?",
+                proof: "Hansard",
+                closePattern: "E",
+                wordCount: 91,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 19,
+                name: "Benjamin Schaefer",
+                title: "VP Software Engineering",
+                company: "Optimizely",
+                tier: "c",
+                email: "benjamin.schaefer@optimizely.com",
+                apollo: "5fce8f6fab4a93000179d6fa",
+                linkedin: "http://www.linkedin.com/in/benjamin-schaefer-34a13731",
+                industry: "IT",
+                employees: 1700,
+                city: "Boston, MA",
+                subject: "Regression after the Welcome merge",
+                message: "Hi Benjamin,\n\nWhen you're consolidating platforms, test coverage either stays tight or falls apart pretty fast. How are you keeping regression stable across the merged product surfaces?\n\nPost-acquisition, most teams see test debt spike because they're suddenly testing more code paths with the same capacity.\n\nCRED automated 90% of their regression suite and cut execution from weeks to days, even with expanding test scope. That kind of speed helped them scale coverage without hiring.\n\nIf cutting regression cycle time in half before the next major release sounds useful, what day works for a quick look at how they did it?",
+                proof: "CRED",
+                closePattern: "A",
+                wordCount: 100,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 20,
+                name: "Swapnil Shirke",
+                title: "VP Software Engineering",
+                company: "Persistent Systems",
+                tier: "c",
+                email: "swapnil_shirke@persistent.com",
+                apollo: "69a424af6cec72000d4a8ea1",
+                linkedin: null,
+                industry: "IT Services",
+                employees: 22000,
+                city: "Portland, OR",
+                subject: "Standardizing QA across client engagements",
+                message: "Hi Swapnil,\n\nWith multiple clients and tech stacks, test maintenance usually eats most of your QA capacity. Are you looking for a way to unify how teams approach automation?\n\nWhen you're supporting 20+ clients, Selenium upkeep alone can eat half your QA capacity.\n\nOne team cut Selenium maintenance by 70% while keeping coverage consistent across all their client projects. That freed capacity to focus on new features instead of script fixes.\n\nWhat day works to see how they standardized automation without adding complexity for your delivery teams?",
+                proof: "70% Selenium",
+                closePattern: "B",
+                wordCount: 87,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 21,
+                name: "Matt King",
+                title: "VP Software Engineering",
+                company: "Integrate",
+                tier: "c",
+                email: "matt.king@integrate.com",
+                apollo: "5f6da6c5c0fca80001a18b6e",
+                linkedin: "http://www.linkedin.com/in/kyrrigle",
+                industry: "IT",
+                employees: 340,
+                city: "Milton, MA",
+                subject: "Testing during platform transitions",
+                message: "Hi Matt,\n\nWhen you're retiring old platforms and spinning up new ones simultaneously, what's your testing strategy for keeping regression stable during the transition?\n\nThe overlap creates a messy QA problem: you're supporting legacy systems while validating new functionality, all with the same team.\n\nSpendflo cut their manual testing workload in half while launching new platform capabilities. That gave them headroom to test both old and new without staffing up.\n\nIf getting 50% of your testing time back before the sunset date sounds useful, what day works for a quick look?",
+                proof: "Spendflo",
+                closePattern: "C",
+                wordCount: 91,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 22,
+                name: "Imran M Yousuf",
+                title: "VP Software Engineering",
+                company: "Optimizely",
+                tier: "c",
+                email: "imran.yousuf@optimizely.com",
+                apollo: "re-enriched",
+                linkedin: null,
+                industry: "IT",
+                employees: 1700,
+                city: "New York, NY",
+                subject: "Testing coverage across Welcome and Zaius",
+                message: "Hi Imran,\n\nWith test coverage spread across Welcome, Zaius, and the core platform, are you keeping regression consistent across all three codebases?\n\nAcquired platforms usually mean acquired test debt. Maintaining separate test suites gets expensive fast.\n\nMedibuddy automated 2,500 tests and cut test maintenance by half while scaling coverage across multiple products. They went from reactive to proactive testing without hiring extra QA.\n\nWhat day works to see how they managed test scaling across multiple acquired platforms without tripling their test team?",
+                proof: "Medibuddy",
+                closePattern: "D",
+                wordCount: 82,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            },
+            {
+                id: 23,
+                name: "Drew Davis",
+                title: "VP Software Engineering",
+                company: "Greenway Health",
+                tier: "c",
+                email: "drew.davis@greenwayhealth.com",
+                apollo: "6475b2818705060001f6ad30",
+                linkedin: "http://www.linkedin.com/in/drew-davis-658a8488",
+                industry: "IT/Healthcare",
+                employees: 1800,
+                city: "Tampa, FL",
+                subject: "Release speed in healthcare IT",
+                message: "Hi Drew,\n\nIn healthcare, you need regression coverage you can trust, but also speed to release updates. How are you balancing compliance testing with release velocity?\n\nEHR platforms with HIPAA requirements usually mean longer regression cycles because the test surface is massive and the stakes are high.\n\nMedibuddy cut test upkeep in half while maintaining 2,500 critical tests across their platform. That meant they could release faster without sacrificing compliance coverage.\n\nIf getting weeks back in your release cycle would help your roadmap, what day works for a quick chat about how they did it?",
+                proof: "Medibuddy",
+                closePattern: "E",
+                wordCount: 95,
+                questions: 2,
+                mqs: 10,
+                qaGate: "PASS"
+            },
+            {
+                id: 24,
+                name: "Josie Hernandez",
+                title: "EVP Digital Innovation & Software Dev",
+                company: "Programming.com",
+                tier: "c",
+                email: "josie.hernandez@programming.com",
+                apollo: "5877faedf651252a983af561",
+                linkedin: "http://www.linkedin.com/in/josie-hernandez-21365012",
+                industry: "IT Services",
+                employees: 1400,
+                city: "Los Angeles, CA",
+                subject: "Scaling QA across diverse tech stacks",
+                message: "Hi Josie,\n\nWhen your clients run everything from legacy .NET to modern microservices, how are you keeping QA consistent across 30+ different client environments?\n\nCustomizing tests for each client burns QA capacity. But one approach for every stack doesn't work either.\n\nA Fortune 100 company cut test creation time by 67% by moving from custom scripts to a unified automation approach. They kept capability per client but built tests way faster.\n\nIf cutting test creation time that much across your client base sounds useful, what day works for a quick look at how they scaled?",
+                proof: "Fortune 100",
+                closePattern: "A",
+                wordCount: 95,
+                questions: 2,
+                mqs: 11,
+                qaGate: "PASS"
+            }
+        ];
+
+        let currentFilter = { tier: 'all', email: 'all', search: '' };
+
+        function renderProspects() {
+            const grid = document.getElementById('prospectsGrid');
+            const empty = document.getElementById('emptyState');
+            grid.innerHTML = '';
+
+            const filtered = prospects.filter(p => {
+                if (currentFilter.tier !== 'all' && p.tier !== currentFilter.tier) return false;
+                if (currentFilter.email === 'email' && !p.email) return false;
+                if (currentFilter.email === 'inmail' && p.email) return false;
+                if (currentFilter.search) {
+                    const search = currentFilter.search.toLowerCase();
+                    if (!p.name.toLowerCase().includes(search) && !p.company.toLowerCase().includes(search)) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+
+            filtered.forEach(p => {
+                const tierBadge = p.tier === 'a' ? 'badge-tier-a' : p.tier === 'b' ? 'badge-tier-b' : 'badge-tier-c';
+                const emailBadge = p.email ? '<span class="badge badge-email">Has Email</span>' : '';
+
+                const card = document.createElement('div');
+                card.className = 'prospect-card';
+                card.innerHTML = `
+                    <div class="prospect-header" onclick="toggleCard(this.parentElement)">
+                        <div class="prospect-info">
+                            <div class="prospect-name">${p.name}</div>
+                            <div class="prospect-meta">${p.title} @ ${p.company}</div>
+                        </div>
+                        <div class="prospect-badges">
+                            <span class="badge ${tierBadge}">Tier ${p.tier.toUpperCase()}</span>
+                            ${emailBadge}
+                            <span class="expand-icon">▼</span>
+                        </div>
+                    </div>
+                    <div class="prospect-content">
+                        <div class="field-group">
+                            <div class="field-label">LinkedIn</div>
+                            <div class="field-value">${p.linkedin ? `<a href="${p.linkedin}" target="_blank">View Profile</a>` : 'Not found'}</div>
+                        </div>
+                        ${p.email ? `<div class="field-group">
+                            <div class="field-label">Email</div>
+                            <div class="field-value">${p.email}</div>
+                        </div>` : ''}
+                        <div class="field-group">
+                            <div class="field-label">Apollo ID</div>
+                            <div class="field-value">${p.apollo}</div>
+                        </div>
+                        <div class="field-group">
+                            <div class="field-label">Company Info</div>
+                            <div class="field-value">${p.industry}${p.employees ? ' • ' + p.employees + ' employees' : ''} • ${p.city}</div>
+                        </div>
+                        ${p.note ? `<div class="field-group">
+                            <div class="field-label">Notes</div>
+                            <div class="field-value">${p.note}</div>
+                        </div>` : ''}
+                        <div class="field-group">
+                            <div class="field-label">Status</div>
+                            <select class="status-select" onchange="updateStatus(${p.id}, this.value)">
+                                <option value="not-started">Not Started</option>
+                                <option value="touch1-sent">Touch 1 Sent</option>
+                                <option value="touch2-sent">Touch 2 Sent</option>
+                                <option value="touch3-sent">Touch 3 Sent</option>
+                                <option value="replied">Replied</option>
+                                <option value="meeting-booked">Meeting Booked</option>
+                                <option value="not-interested">Not Interested</option>
+                                <option value="bounced">Bounced</option>
+                                <option value="dormant">Dormant</option>
+                            </select>
+                        </div>
+                        <div class="message-section">
+                            <div class="field-label">Subject Line</div>
+                            <div class="field-value">${p.subject}</div>
+                            <button class="copy-button" onclick="copyText('${p.subject}', this)">Copy Subject</button>
+                        </div>
+                        <div class="message-section">
+                            <div class="field-label">Message Body</div>
+                            <div class="message-text">${p.message.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+                            <button class="copy-button" onclick="copyText(\`${p.message.replace(/`/g, '\\`')}\`, this)">Copy Message</button>
+                        </div>
+                        <div class="field-group">
+                            <div class="field-label">Proof Point</div>
+                            <div class="field-value">${p.proof}</div>
+                        </div>
+                        <div class="field-group">
+                            <div class="field-label">Close Pattern</div>
+                            <div class="field-value">${p.closePattern}</div>
+                        </div>
+                        <div class="field-group">
+                            <div class="field-label">QA Gate</div>
+                            <div class="qa-gate ${p.qaGate === 'PASS' ? 'pass' : 'fail'}">${p.qaGate}</div>
+                            <div class="mqs-badge">MQS: ${p.mqs}/12</div>
+                            <div class="qa-notes">Word Count: ${p.wordCount} | Questions: ${p.questions} | Hyphens: ≤1 | Paragraph Breaks: 4+</div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+        }
+
+        function filterTier(tier) {
+            currentFilter.tier = tier;
+            document.querySelectorAll('.filter-group .btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderProspects();
+        }
+
+        function filterEmail(type) {
+            currentFilter.email = type;
+            document.querySelectorAll('.filter-group .btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderProspects();
+        }
+
+        function filterSearch() {
+            currentFilter.search = document.getElementById('searchBox').value;
+            renderProspects();
+        }
+
+        function copyText(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                btn.classList.add('copied');
+                btn.textContent = 'Copied!';
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.textContent = btn.textContent.includes('Subject') ? 'Copy Subject' : 'Copy Message';
+                }, 2000);
+            });
+        }
+
+        function updateStatus(id, status) {
+            localStorage.setItem(`prospect-${id}-status`, status);
+        }
+
+        function exportCSV() {
+            let csv = 'Name,Company,Email,Title,Tier,Status,Subject\n';
+            const filtered = prospects.filter(p => {
+                if (currentFilter.tier !== 'all' && p.tier !== currentFilter.tier) return false;
+                if (currentFilter.email === 'email' && !p.email) return false;
+                if (currentFilter.email === 'inmail' && p.email) return false;
+                return true;
+            });
+            filtered.forEach(p => {
+                const status = localStorage.getItem(`prospect-${p.id}-status`) || 'not-started';
+                csv += `"${p.name}","${p.company}","${p.email || ''}","${p.title}","${p.tier}","${status}","${p.subject}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'batch8-prospects.csv';
+            a.click();
+        }
+
+        renderProspects();
+    </script>
+</body>
+</html>

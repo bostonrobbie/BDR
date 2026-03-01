@@ -1072,6 +1072,29 @@ Next step: [Touch 2 InMail follow-up on YYYY-MM-DD]
 | 2026-02-25 | v1.1 - Added Step 10: Close conversation window before moving to next prospect |
 | 2026-02-25 | v2.0 - Major update: Added SOP B (Research+Draft), SOP C (Batch Prepare), Safety modules, Cycle Logging, Apollo integration, LinkedIn compliance, plugin customization |
 | 2026-02-25 | v3.0 - Simplified to 3-touch cadence (2 InMails + 1 Email). Removed all cold call components. Created standalone A-to-Z SOP document (bdr-automation-pipeline-sop.docx) |
+| 2026-03-01 | v3.1 - End-to-end process consolidation. Updated daily-prospecting-sop-v2.docx (Phases 8-11) and bdr-automation-pipeline-sop-v2.docx (expanded Step 7). Added consolidated process map below. |
+
+---
+
+## End-to-End Process Map (Prospect to Send)
+
+This is the consolidated reference for the full LinkedIn Touch 1 InMail workflow, from sourcing through post-send. Each phase references its authoritative SOP document.
+
+| Phase | What Happens | Document Reference |
+|-------|-------------|-------------------|
+| 1. Pre-Brief | Read prior batches, generate "What's Working" summary, check pipeline state | daily-prospecting-sop-v2.docx Phase 1 |
+| 2. Prospect Sourcing | Sales Navigator saved searches, mix ratio, qualification checklist, Buyer Intent detection | daily-prospecting-sop-v2.docx Phase 2 |
+| 3. Apollo Enrichment | Person + org enrichment, tech stack, email, dedup check, credit tracking | daily-prospecting-sop-v2.docx Phase 3 |
+| 4. Company Research | 3-source research (LinkedIn, Apollo, external), QA-relevant signals, research tagging | daily-prospecting-sop-v2.docx Phase 4 |
+| 5. Message Drafting | C2 structure, Pre-Draft Steps 1-4, proof point matching, close construction | daily-prospecting-sop-v2.docx Phase 5 |
+| 6. QA Gate | 14-point check, MQS >= 9/12, HC scan, phrase toxicity, close dedup, hyphen audit | daily-prospecting-sop-v2.docx Phase 6 |
+| 7. Batch Assembly | HTML tracker build, send_queue.json creation, A/B group assignment, priority scoring | daily-prospecting-sop-v2.docx Phase 7 |
+| 8. Send Queue Prep | Validate send_queue.json, staleness check, credit budget, browser setup, DNC check | daily-prospecting-sop-v2.docx Phase 8, pipeline-sop-v2.docx 8.0 |
+| 9. LinkedIn Send Session | 10-step per-prospect loop: load, navigate, pre-flight, compose, QA, present, APPROVE SEND, send, log, close | daily-prospecting-sop-v2.docx Phase 9, pipeline-sop-v2.docx 8.1-8.4, CLAUDE.md Send SOP |
+| 10. Post-Send Processing | Apollo contact creation, sequence enrollment (Q1 Priority Accounts), 6-month dedup protocol | daily-prospecting-sop-v2.docx Phase 10, pipeline-sop-v2.docx 8.5 |
+| 11. Tracker Updates | HTML tracker status updates, CLAUDE.md master send log, follow-up date computation, draft safety rules | daily-prospecting-sop-v2.docx Phase 11, pipeline-sop-v2.docx 8.6 |
+
+**Key rule:** No phase can be skipped. The output of each phase is the input to the next. The send_queue.json bridges Phase 7 (batch assembly) and Phase 8 (send queue prep).
 
 ---
 
@@ -1203,6 +1226,91 @@ Rob had messaged Sanjay Singh (ServiceTitan) in 2022 while at mabl. Sales Naviga
 | Name | Company | Reason | Date Added |
 |------|---------|--------|------------|
 | Sanjay Singh | ServiceTitan | Hostile reply to prior outreach (2022 mabl era). Requested no further contact. | 2026-02-27 |
+| Lance Silverman | (Batch 5B) | Polite decline: "Thanks for reaching out, but I'm not interested." Replied Sat Mar 1 to Touch 1 InMail. No follow-up. Re-engage only after 60+ days with new trigger. | 2026-03-01 |
+
+---
+
+## SOP D - Batch Sourcing Decision Framework
+
+**Purpose:** Codify how Claude automatically decides WHERE to source prospects for each new batch. Claude NEVER asks Rob which sourcing method to use. Follow this priority waterfall autonomously.
+
+**Key principle:** Intent signals and warm accounts always beat cold outbound. Buyer Intent gets sourced first. Cold prospects only when intent/re-engagement accounts are exhausted.
+
+### Priority Waterfall (Follow in Order)
+
+#### Tier 1: Buyer Intent Accounts (Highest Priority)
+**When:** Every session during Phase 1 Intel Scan.
+
+| Signal | Action |
+|--------|--------|
+| Buyer Intent in Sales Navigator | Flag immediately. Research (3 sources) + draft all touches. Highest priority. |
+| Website demo request | Same-day enrichment + research. Target send within 24 hours. |
+| Webinar/event attendee (<48 hrs) | Prioritize warm follow-up. If 3+ days old, batch into next cycle. |
+
+#### Tier 2: Re-Engagement Triggers (High Priority)
+**When:** During Phase 1, after Buyer Intent check. Only if last outreach >60 days ago.
+
+| Trigger | Action |
+|---------|--------|
+| QA/SDET job posting at prospect company | Draft re-engagement: "Saw [Company] is hiring for QA..." |
+| Funding announcement | Draft re-engagement: "Congrats on the round, scaling usually means scaling QA too." |
+| Leadership change (new CTO/VP Eng/QA Dir) | Reach out to NEW person, not old contact. Fresh sequence. |
+| Testsigma major feature release | Re-engage dormant: "Since we last talked, we launched..." |
+| Prospect company ships major product | Draft: "Saw the launch of [product]. Curious if the testing effort was painful." |
+
+**Gate:** Must have new angle that differs from prior sequence. Prospect must NOT be on DNC list.
+
+#### Tier 3: Saved Search Backfill (Standard Priority)
+**When:** Phase 4 (New Pipeline), ONLY after Tiers 1-2 are processed.
+
+- Use Sales Navigator saved searches with "Show X new results" filter for fresh, never-contacted prospects
+- Apply Prospect Mix Ratio (10-12 Manager/Lead, 4-6 Director, 3-5 Architect, 2-3 Buyer Intent, max 2 VP)
+- Vertical diversity: no more than 8 from same vertical per batch
+- Rotate across saved searches (don't exhaust one before moving to next)
+
+#### Tier 4: Specific Account Targeting (Only When Rob Directs)
+**When:** ONLY when Rob explicitly says "source from [companies]" or "focus on [vertical]."
+
+Claude NEVER assumes which accounts to target. If Rob doesn't specify, default to Tier 3.
+
+### Batch Size Calculation
+
+```
+MAX_BATCH = (CREDITS_REMAINING - FOLLOWUP_RESERVE - 5) / 1
+  Where FOLLOWUP_RESERVE = Touch 2 InMails due in next 7 days (Hot/Warm only)
+  5 = safety buffer
+  /1 = 1 InMail credit per Touch 1 send
+```
+
+If MAX_BATCH is negative or <5: **PAUSE new sourcing.** Focus on email-only Touch 3s (free) and reply processing.
+
+### Timing Rules
+
+| Day | Sourcing Rule |
+|-----|--------------|
+| Monday | Research + batch build only. No sends (22.9% rate). |
+| Tue-Wed | Source freely. Build batches for Thu/Fri sends. |
+| Thursday | Minimize sourcing. Maximize sends (42.1% rate). |
+| Friday | Small fill-in batches (5-10) only. |
+| Weekend | Research only. No sourcing, no sends. |
+
+| Condition | Rule |
+|-----------|------|
+| Follow-up queue >20 | Reduce batch to 5-10 or skip sourcing entirely |
+| Follow-up queue <5 | Full 20-25 prospect batch |
+| Credits <10 | PAUSE sourcing. Email-only mode. |
+| Credits <5 | Emergency. No new Touch 1s at all. |
+
+### Claude's Autonomous Decision Rule
+
+**Claude follows this waterfall WITHOUT ASKING ROB.** When "Run the Daily" triggers:
+1. Phase 1: Detect Buyer Intent, re-engagement triggers, queue size, credit budget
+2. Automatically select correct Tier based on conditions
+3. Calculate batch size from credits
+4. Build batch and present to Rob as READY_FOR_REVIEW
+5. Report which Tier was selected and why
+
+**Rob then approves or redirects.** But Claude NEVER asks "where should I source from?"
 
 ---
 
@@ -1317,7 +1425,7 @@ Track these metrics in every cycle log:
 - **Direct Dial Credits:** 600 available
 - **AI Credits:** 50 million available
 - **Email Accounts Linked:** 4 (robert.gorham@testsigma.in, .tech, .net, .web)
-- **Existing Sequences:** 52 team-wide, 4 Rob-specific
+- **Existing Sequences:** 52 team-wide, 2 active Rob-specific (Q1 Priority Accounts + Q1 Website Visitor), 3 retired/legacy
 
 ### How We Use Apollo (Enrichment-First, Not Sequence-First)
 Apollo's primary value for our workflow is **contact enrichment**, not sequence management. Our InMail-first model outperforms email-first (28.7% vs ~6-8% cold email reply rates).
@@ -1328,27 +1436,58 @@ Apollo's primary value for our workflow is **contact enrichment**, not sequence 
 3. **After InMail Sent:** Create Apollo contact records for all prospects (for CRM sync and future email follow-up)
 4. **For Touch 3 (Email):** If prospect has verified email, use Apollo to send email OR manually send from Gmail
 
+### Consolidated Apollo Sequence Strategy (Updated 2026-03-01)
+
+**Decision (Mar 1, 2026):** Consolidated from 3 sequences down to 2. Q1 QA Outreach - US was retired (0 contacts, redundant with Q1 Priority Accounts). All cold outbound, intent-based, and transferred account prospects now go into Q1 Priority Accounts. Website visitor intent prospects use the dedicated intent sequence.
+
 ### Active Apollo Sequences (Rob-Created)
-| Sequence | ID | Steps | Purpose |
-|----------|-----|-------|---------|
-| **Q1 Priority Accounts** | 69a05801fdd140001d3fc014 | 4 | **PRIMARY intent-based sequence.** All manual steps. LinkedIn InMail (Day 1) → LinkedIn InMail Follow-up (Day 5) → Manual Email (Day 10) → Phone Call (Day 15). Vague name intentional so coworkers don't see strategy. Created 2026-02-26. |
-| Q1 QA Outreach - US | 699f4089628b940011da7fb7 | 3 | 3-touch sequence: InMail 1 (Day 1) → InMail 2 (Day 5) → Email 1 (Day 10). Currently INACTIVE/Draft. |
-| Rob Outbound | 68f2723ef174870019958d31 | 10 | Legacy sequence (10 steps). 397 delivered, 0.25% reply rate. FLAGGED as underperforming. |
-| Eshwar - Rob Outbound | 6915ec4bac6f93000da91dab | 8 | Variant sequence (8 steps). 18.8% open rate. Reference for optimization. |
+| Sequence | ID | Steps | Purpose | Contacts (Mar 1) |
+|----------|-----|-------|---------|-------------------|
+| **Q1 Priority Accounts** | 69a05801fdd140001d3fc014 | 4 | **PRIMARY sequence for ALL outbound.** All manual steps. LinkedIn InMail (Day 1) → LinkedIn InMail Follow-up (Day 5) → Manual Email (Day 10) → Phone Call (Day 15). Used for cold outbound batches, intent accounts, and transferred accounts. | 144 active at Step 1 |
+| **Q1 Website Visitor - Tier 1 Intent** | 69a1b3564fa5fa001152eb66 | 3 | **Email-only buyer intent sequence.** For website demo requests and high-intent inbound signals. Auto Email (Day 1) → Auto Email (Day 3) → Manual Email (Day 7). | 9 active |
+
+### Retired/Legacy Sequences (DO NOT USE)
+| Sequence | ID | Status | Reason |
+|----------|-----|--------|--------|
+| Q1 QA Outreach - US | 699f4089628b940011da7fb7 | RETIRED (Mar 1, 2026) | Redundant with Q1 Priority Accounts. Had 0 contacts. |
+| Rob Outbound | 68f2723ef174870019958d31 | LEGACY | 10-step sequence. 397 delivered, 0.25% reply rate. Do not enroll new contacts. |
+| Eshwar - Rob Outbound | 6915ec4bac6f93000da91dab | LEGACY | 8-step variant. Reference only for optimization data. |
 
 **Q1 Priority Accounts Sequence Details:**
-- Step 1: LinkedIn - send message (Day 1, High priority) — Touch 1 personalized InMail
-- Step 2: LinkedIn - send message (Day 5, High priority) — Touch 2 InMail follow-up, new angle
-- Step 3: Manual email (Day 10) — Touch 3 email, fresh proof point
-- Step 4: Phone call (Day 15, Medium priority) — Discovery call, reference previous touches
+- Step 1 (ID: `69a05a3883eda10021b7ff0b`): LinkedIn InMail (Day 1, High priority) — Touch 1 personalized InMail
+- Step 2 (ID: `69a05a3883eda10021b7ff0d`): LinkedIn InMail Follow-up (Day 5, High priority) — Touch 2, new angle
+- Step 3 (ID: `69a05a3883eda10021b7ff0f`): Manual Email (Day 10, Medium priority) — Touch 3 email, fresh proof point
+- Step 4 (ID: `69a05a3883eda10021b7ff11`): Phone Call (Day 15, Medium priority) — Discovery call, reference previous touches
 - ALL steps are MANUAL. Nothing auto-sends. Rob executes each step manually.
 - Vague name "Q1 Priority Accounts" chosen so coworkers don't discover intent-based strategy.
 
+**Which sequence for which prospect:**
+| Prospect Type | Sequence | Rationale |
+|--------------|----------|-----------|
+| Cold outbound (all batches) | Q1 Priority Accounts | Multi-channel 4-touch cadence |
+| Intent-based / transferred accounts | Q1 Priority Accounts | Same cadence, higher priority execution |
+| Website demo request / high-intent inbound | Q1 Website Visitor - Tier 1 Intent | Email-only, faster cadence (3 days between touches) |
+| Warm lead reply / meeting booked | Do NOT enroll in new sequence | Handle manually per Warm Lead SOP |
+
+**Enrollment status (as of Mar 1, 2026):**
+| Batch | Contacts in Q1 Priority Accounts | Step | Notes |
+|-------|----------------------------------|------|-------|
+| Batch 3 | 0 of ~24 | Pending | Need Apollo contact creation first |
+| Batch 5A | ~25 | Step 1 | Enrolled Feb 28 |
+| Batch 5B | ~23 | Step 1 | Enrolled Feb 28 |
+| Batch 6 | ~27 | Step 1 | Enrolled Feb 28 |
+| Batch 7 | 41 (all SENT) | Step 1 | Enrolled Mar 1, verified all 41 |
+| Buyer Intent (9) | 9 | Q1 Website Visitor | Enrolled Feb 27 |
+
 **Sequence usage rules:**
-- Use Q1 Priority Accounts for all intent-based and transferred account prospects
+- Use Q1 Priority Accounts for ALL cold outbound and intent-based prospects
+- Use Q1 Website Visitor for email-only buyer intent inbound signals
 - Enroll prospects AFTER Rob approves all messages in the batch HTML tracker
 - Each step uses personalized copy from the batch tracker (not Apollo templates)
 - 6-month deduplication check required before enrollment: never contact anyone reached by another BDR in last 6 months
+- Enroll via API in batches of 5 (larger batches cause 500 errors)
+- Always use `sequence_no_email: true` and `sequence_active_in_other_campaigns: true` flags
+- Default email account for enrollment: robert.gorham@testsigma.net (ID: `68f65bdf998c4c0015f3446a`)
 
 **Rob's Apollo Email Accounts:**
 | Email | ID | Default | 
@@ -1613,6 +1752,8 @@ Documents indexed from Testsigma Google Drive (Feb 2026). Claude should referenc
 |------|---------|---------|
 | `automation-plan-v1.html` | Comprehensive BDR automation roadmap covering all SOPs, tools, and workflows | 2026-02-25 |
 | `bdr-automation-pipeline-sop.docx` | Complete A-to-Z SOP document for the automated BDR pipeline (3-touch cadence, v3.0) | 2026-02-25 |
+| `bdr-automation-pipeline-sop-v2.docx` | Updated pipeline SOP with expanded Step 7: pre-send setup, post-send Apollo processing, cycle log generation, error handling reference | 2026-03-01 |
+| `daily-prospecting-sop-v2.docx` | Updated daily prospecting SOP with Phases 8-11: Send Queue Prep, LinkedIn Send Session, Post-Send Processing, Tracker Updates and Follow-Up Scheduling | 2026-03-01 |
 | `email-sequence-sop.html` | Interactive email-only SOP with 8 tabs: rules, templates, cadence, QA, proof points, objections. BDR-wide use. | 2026-02-27 |
 | `email-sequence-sop.docx` | Word doc version of email SOP for team distribution and leadership review | 2026-02-27 |
 | `TEMPLATE_LIBRARY.md` | Master template library v2.0: all InMail + Email templates, HC-compliant, MQS >= 9/12 | 2026-02-27 |
@@ -1865,6 +2006,10 @@ This section defines the email-only outreach cadence for use in Apollo sequences
 | Skipped NOT FOUND (Jonathan Lavoie, Batch 7) | 1 |
 | **Unsent prospects remaining** | **0** |
 | InMail credits remaining | ~24 |
+| Apollo contacts created (all batches) | ~144+ (Batches 5A/5B/6/7 + buyer intent) |
+| Enrolled in Q1 Priority Accounts | 144 active at Step 1 |
+| Enrolled in Q1 Website Visitor | 9 (buyer intent emails) |
+| Batch 3 Apollo status | PENDING — need contact creation + enrollment |
 
 ### Email Send History (Feb 27-28)
 | Date | Time | Recipients | Type | Status |
