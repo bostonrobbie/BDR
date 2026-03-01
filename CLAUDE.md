@@ -461,3 +461,33 @@ Never use the same proof point twice for the same prospect across their sequence
 | Referral ("talk to [name]") | 7.4% | High value. Reach out to referred person immediately. |
 | Has tool ("we use [X]") | 2.3% | Objection handle: ask about gaps. |
 | Timing ("not right now") | 2.1% | Set calendar reminder. Re-engage per triggers. |
+
+---
+
+## Secondary Brain Layer
+
+The `memory/` directory contains the extended operational knowledge that Claude should load per session. CLAUDE.md is the primary brain (always loaded). The secondary layer provides deep reference material.
+
+### Directory Structure
+```
+memory/
+  context/              # Core reference knowledge
+    voice-rules.md      # Rob's writing DNA - all formatting, tone, and style rules
+    sales-playbook.md   # Full outreach playbook: templates, objections, discovery, replies
+    gold-standards.md   # Best-performing message examples by touch type (calibration)
+    integrations.md     # Apollo, Gmail, Sales Nav, GitHub - how each tool connects
+  session/              # Session management
+    session-manager.md  # Session startup checklist, workflow routing, context loading
+  ops/                  # Operational procedures
+    prospecting-checklist.md  # Qualification gate, persona tiers, batch composition
+    email-channel-ops.md      # Email send workflow, Apollo sequences, tracker format
+    linkedin-email-sop-v4.md  # Day-to-day execution SOP across all channels
+```
+
+### When to Load What
+- **Every session:** CLAUDE.md + `memory/context/voice-rules.md`
+- **Writing messages:** + `gold-standards.md` + `sales-playbook.md`
+- **Building batches:** + all context/ + previous batch files
+- **Email ops:** + `email-channel-ops.md` + `prospecting-checklist.md`
+- **Analytics/review:** + `analytics/` data + `data/trackers/`
+- **Full session guide:** `memory/session/session-manager.md`
