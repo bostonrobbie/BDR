@@ -106,16 +106,19 @@ Note: Irfan Syed and Katie Hotard were pilot sends on Feb 25 (Tue). Rest of Batc
 
 Jeff Fried, Rebecca Miller-Webster, Tony Slokar, Wen Sun, Jim Ruirong Chen, Lukasz Romaniuk, Mansoor Shaikh, Abhishek Awale
 
-### Master Send Count
+### Master Send Count (Updated 2026-03-01)
 
-| Batch | Total | Sent | Remaining | DNC |
-|-------|-------|------|-----------|-----|
-| Batch 3 | 25 | 24 | 0 | 0 |
-| Batch 5A | 25 | 25 | 0 | 0 |
-| Batch 5B | 25 | 23 | 1 (Terene Lee — BLOCKED) | 1 (Sanjay Singh) |
-| Batch 6 | 27 | 27 | 0 | 0 |
-| Earlier (Feb 13) | 8 | 8 | 0 | 0 |
-| **TOTAL** | **110** | **107** | **1** | **1** |
+| Batch | Total | InMails Sent | Emails Sent | Remaining | DNC/Blocked |
+|-------|-------|-------------|-------------|-----------|-------------|
+| Earlier (Feb 13) | 8 | 8 | 0 | 0 | 0 |
+| Batch 3 | 25 | 24 | 4 (premature, INC-001) | 0 | 0 |
+| Batch 5A | 25 | 25 | 0 | 0 | 0 |
+| Batch 5B | 25 | 23 | 0 | 1 (Terene Lee — BLOCKED) | 1 (Sanjay Singh — DNC) |
+| Batch 6 | 27 | 27 | 0 | 0 | 0 |
+| Batch 7 | 42 | 41 | 0 | 1 (Jonathan Lavoie — NOT FOUND) | 0 |
+| Buyer Intent | 9 | 0 | 9 | 0 | 0 |
+| Orphan (INC-001) | 2 | 0 | 2 (premature) | 0 | 0 |
+| **TOTAL** | **163** | **148 InMails** | **15 Emails** | **2** | **2** |
 
 ### Tracker File Status (renamed to sent-date convention Feb 27)
 Old files archived to `archive/` folder.
@@ -180,16 +183,51 @@ Old files archived to `archive/` folder.
 - 2 Batch 6 contacts (Sudhakar Srinivasan, Satish Chandrasekaran) have no email in Apollo. Touch 3 (email) will need to be skipped or email found elsewhere.
 - Gianna di Franco did not match to a person in Apollo's global DB (person_id: null). Enrichment data may be limited.
 
-### Next Actions
+### Next Actions (Updated 2026-03-01)
 
-- **ALL TOUCH 1 SENDS COMPLETE** (107 of 110 sent, 1 DNC, 1 BLOCKED, 1 not applicable)
-- Touch 2 follow-ups for Batch 5B (23 sent Feb 27) due ~Mar 4 (Day 5)
-- Touch 2 follow-ups for Batch 5A (5 sent Feb 27, 20 sent Feb 28) due ~Mar 4-5
+- **ALL TOUCH 1 SENDS COMPLETE** (148 InMails sent: 107 from Batches 3/5A/5B/6 + 41 from Batch 7)
+- **CRITICAL: InMail credits ~24 remaining.** Cannot send 113 Touch 2 InMails. Must prioritize Hot/Warm only for InMail Touch 2, use email channel for remainder.
+- Touch 2 follow-ups for Batch 3 (24 sent Feb 25-26) due Mar 2-3 (FIRST priority)
+- Touch 2 follow-ups for Batch 5B (23 sent Feb 27) due ~Mar 4
+- Touch 2 follow-ups for Batch 5A (25 sent Feb 27-28) due ~Mar 4-5
 - Touch 2 follow-ups for Batch 6 (27 sent Feb 28) due ~Mar 5
-- Touch 2 follow-ups for Batch 3 (24 sent Feb 26) due ~Mar 3
+- Touch 2 follow-ups for Batch 7 (41 sent Feb 28) due ~Mar 5
+- Touch 2 follow-ups for Buyer Intent (9 emailed Feb 27) due ~Mar 4
 - Terene Lee (Batch 5B) — messaging blocked, monitor for status change
+- Jonathan Lavoie (Batch 7) — NOT FOUND on LinkedIn, skip
 - Monitor for replies across all batches
-- All 102 contacts enrolled in Q1 Priority Accounts sequence
+- All 102 contacts enrolled in Q1 Priority Accounts sequence (Batches 3/5A/5B/6). Batch 7 contacts NOT yet in Apollo.
+- **DELETE 6 premature Gmail drafts** (Sergey, Mobin, Dino, Matthew, Joshua, Pete) — old templates, ownership-blocked contacts
+- **Add orphan prospects to tracker:** Pallavi Sheshadri (Origami Risk), Gunasekaran Chandrasekaran (FloQast)
+
+### Incident Corrective Actions (INC-001, 2026-02-28)
+
+**Status:** IMPLEMENTED (rules added to CLAUDE.md on 2026-03-01)
+
+**7 new rules added to CLAUDE.md → "Draft Safety & Cadence Enforcement Rules":**
+1. Date-Gating: No Touch 2 draft before Day 4, no Touch 3 draft before Day 9
+2. TOUCH_ELIGIBLE_DATE fields required in all trackers
+3. No Orphan Prospects: every prospect must have a tracker entry before any draft
+4. Template Version Enforcement: all drafts must use C2, pass QA Gate (MQS >= 9/12)
+5. Draft Naming Convention: [READY]/[HOLD]/[SENT] prefix with dates
+6. Daily Gmail Draft Audit: added to Phase 1 Intel Scan as mandatory step
+7. Batch 7+ Tracker Requirements: cadence_status, current_touch, eligible_date fields
+
+**Remediation for affected prospects:**
+| Prospect | Action | Status |
+|----------|--------|--------|
+| Irfan Syed (Progress) | Treat premature email as extra touch. Skip official Touch 3. Touch 2 InMail on schedule. | PLANNED |
+| Katie Hotard (Lucid) | Same as above | PLANNED |
+| Rachana Jagetia (Housecall Pro) | Same as above | PLANNED |
+| Giang Hoang (Employee Navigator) | Same as above | PLANNED |
+| Pallavi Sheshadri (Origami Risk) | Add to tracker. Research. Draft proper Touch 2. | PLANNED |
+| Gunasekaran Chandrasekaran (FloQast) | Add to tracker. Research. Draft proper Touch 2. | PLANNED |
+
+**Feb 27 buyer intent emails (9 prospects):**
+All used identical template with HC1 violations. For future buyer intent emails, apply C2 standards. No remediation needed for sent emails since they were Touch 1 (in sequence).
+
+**6 unsent Gmail drafts (Sergey, Mobin, Dino, Matthew, Joshua, Pete):**
+These are for ownership-blocked contacts who were replaced in Batch 3. DELETE all 6 drafts. Do not send.
 
 ---
 

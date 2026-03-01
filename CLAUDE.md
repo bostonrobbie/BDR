@@ -238,6 +238,95 @@ Every prospect gets a 3-touch sequence across two channels: LinkedIn InMail and 
 - Not every prospect will have email addresses. If no email, skip Touch 3 and the sequence ends after Touch 2.
 - The sequence ends after Touch 3 (or Touch 2 if no email). No break-up message.
 
+### Draft Safety & Cadence Enforcement Rules (Added 2026-03-01)
+
+**CRITICAL: These rules prevent out-of-sequence sends. They were created after an incident on Feb 28 where 6 Touch 3 emails were sent 7-8 days early, skipping Touch 2 entirely. See Incident Log below.**
+
+#### Rule 1: Date-Gating (NO early drafts)
+- Touch 2 drafts CANNOT be created until Day 4 (one day before the Day 5 send date).
+- Touch 3 drafts CANNOT be created until Day 9 (one day before the Day 10 send date).
+- If Claude creates a draft earlier than allowed, it must be saved as `[DRAFT-HOLD] [Name] - Touch [N] - NOT BEFORE [date]` and NOT placed in Gmail drafts.
+- **Rationale:** Drafts sitting in Gmail look identical to ready-to-send emails. A premature draft will eventually be sent out of order.
+
+#### Rule 2: TOUCH_ELIGIBLE_DATE Fields (tracker enforcement)
+Every prospect in every batch tracker must have these fields:
+- `touch1_sent_date`: ISO date when Touch 1 was actually sent
+- `touch2_eligible_date`: touch1_sent_date + 4 days (earliest date Touch 2 draft can be created)
+- `touch2_send_date`: touch1_sent_date + 5 days (target send date)
+- `touch3_eligible_date`: touch1_sent_date + 9 days (earliest date Touch 3 draft can be created)
+- `touch3_send_date`: touch1_sent_date + 10 days (target send date)
+- **Before creating ANY draft for Touch 2 or 3, Claude MUST check today's date against the eligible date. If today < eligible date, STOP.**
+
+#### Rule 3: No Orphan Prospects
+- **EVERY prospect must exist in a batch tracker file BEFORE any draft is created for them.**
+- No prospect should ever have a Gmail draft or sent email without a corresponding record in a tracker.
+- If a prospect is discovered in Gmail (draft or sent) without a tracker entry, flag immediately as an orphan and investigate.
+- **Rationale:** Orphan prospects (Pallavi Sheshadri, Gunasekaran Chandrasekaran on Feb 28) bypass all cadence checks and QA gates.
+
+#### Rule 4: Template Version Enforcement
+- All drafts must use C2 message structure (current standard as of Feb 2026).
+- Drafts using C1 style, pre-C2 templates, or any template without the 14-point QA Gate pass are INVALID.
+- Before saving any draft to Gmail, verify: MQS >= 9/12, no HC violations, C2 structure confirmed.
+- **Rationale:** The 6 premature emails on Feb 28 used old pre-C2 templates with HC1 violations ("I noticed"), wrong CTAs, no proof points, and career trajectory references.
+
+#### Rule 5: Draft Naming Convention
+All Gmail drafts must follow this naming convention in the subject line:
+- `[READY] [Name] @ [Company] - Touch [N] - Send on [date]`
+- `[HOLD] [Name] @ [Company] - Touch [N] - NOT BEFORE [date]`
+- `[SENT] [Name] @ [Company] - Touch [N] - Sent [date]`
+- This makes it immediately visible which drafts are safe to send and which are time-gated.
+
+#### Rule 6: Daily Gmail Draft Audit (added to Phase 1 Intel Scan)
+- Every "Run the Daily" session must include a Gmail draft scan.
+- Search for all drafts from robert.gorham@testsigma.com accounts.
+- Cross-reference each draft against batch tracker eligible dates.
+- Flag any draft that: (a) has no tracker entry (orphan), (b) is before its eligible date (premature), (c) uses old template style (C1 or pre-C2), (d) has not passed QA Gate.
+- Delete or hold-tag any flagged drafts before proceeding with the day's work.
+
+#### Rule 7: Batch 7+ Tracker Requirements
+Starting with Batch 7 and all future batches, every batch tracker (HTML or JSON) MUST include:
+- `touch1_sent_date` field (populated when Touch 1 is confirmed sent)
+- `touch2_eligible_date` and `touch3_eligible_date` (auto-calculated from touch1_sent_date)
+- `current_touch` field (1, 2, or 3, indicating which touch is next)
+- `cadence_status` field: ON_TRACK, AHEAD_OF_SCHEDULE (warning), BEHIND_SCHEDULE, COMPLETE
+- No touch can advance from one number to the next without the previous touch being confirmed sent.
+
+### Incident Log
+
+#### INC-001: Premature Touch 3 Emails (2026-02-28)
+**Severity:** HIGH
+**What happened:** 6 Touch 3 emails were sent on Feb 28 at 6:30-6:33 AM ET, 7-8 days ahead of schedule, completely skipping Touch 2 InMails.
+**Who was affected:**
+| Name | Company | Batch | Touch 1 Sent | Touch 3 Sent (premature) | Days Early |
+|------|---------|-------|-------------|-------------------------|------------|
+| Irfan Syed | Progress Software | Batch 3 | Feb 25 | Feb 28 | 7 days early |
+| Katie Barlow Hotard | Lucid Software | Batch 3 | Feb 25 | Feb 28 | 7 days early |
+| Rachana Jagetia | Housecall Pro | Batch 3 | Feb 26 | Feb 28 | 8 days early |
+| Giang Hoang | Employee Navigator | Batch 3 | Feb 26 | Feb 28 | 8 days early |
+| Pallavi Sheshadri | Origami Risk | ORPHAN | Unknown | Feb 28 | N/A (no tracker) |
+| Gunasekaran Chandrasekaran | FloQast | ORPHAN | Unknown | Feb 28 | N/A (no tracker) |
+
+**Root cause (3 stacked failures):**
+1. Gmail drafts were created in a prior session WITHOUT date-gating logic
+2. Drafts used old pre-C2 templates with HC1 violations and wrong CTAs
+3. Two prospects (Pallavi, Gunasekaran) were not in any batch tracker (orphans)
+
+**Content quality violations in all 6 emails:**
+- HC1 violations: "I noticed" phrasing in multiple emails
+- Wrong CTA: "quick 15-minute chat" instead of "what day works"
+- No proof points in several emails
+- Katie's email used career trajectory (banned "show your work" pattern)
+- None passed QA Gate or MQS scoring
+
+**Remediation:**
+- 4 Batch 3 prospects (Irfan, Katie, Rachana, Giang): Treat the premature email as an unplanned extra touch. Skip official Touch 3 on Day 10. Continue with Touch 2 InMail on Day 5 as planned.
+- 2 orphan prospects (Pallavi, Gunasekaran): Add to the active tracker retroactively. Research and draft proper Touch 2 follow-ups.
+- All 6 new prevention rules (above) implemented.
+
+**Additionally found during Feb 28 audit:**
+- 6 additional Gmail drafts (Sergey, Mobin, Dino, Matthew, Joshua, Pete) were created ~2:54 PM but NOT sent. These were also premature and used old templates. All 6 were for prospects who had ownership blocks in Apollo and were later replaced in Batch 3.
+- 9 buyer intent emails sent Feb 27 (~1:30 PM) used identical "Noticed some folks at [Company]" templates with HC1 violations. These need C2 rewrite for future use.
+
 ### Objection Pre-Mapping (per prospect)
 Based on company research, predict the most likely objection for each prospect and pre-load the response in the tracker.
 
@@ -1768,13 +1857,21 @@ This section defines the email-only outreach cadence for use in Apollo sequences
 ### Pipeline Status
 | Category | Count |
 |----------|-------|
-| Total sent (all time) | 148 |
+| Total InMails sent (all time) | 148 |
+| Total Emails sent (all time) | 15 (6 premature Touch 3 on Feb 28 + 9 buyer intent on Feb 27) |
 | Blocked (Terene Lee, messaging disabled) | 1 |
 | DNC (Sanjay Singh) | 1 |
 | Not applicable (Batch 3 unused slot) | 1 |
 | Skipped NOT FOUND (Jonathan Lavoie, Batch 7) | 1 |
 | **Unsent prospects remaining** | **0** |
 | InMail credits remaining | ~24 |
+
+### Email Send History (Feb 27-28)
+| Date | Time | Recipients | Type | Status |
+|------|------|-----------|------|--------|
+| Feb 27 | ~1:30 PM | Andy Nelsen, Jose Moreno, Tom Yang, Eyal Luxenburg, Hibatullah Ahmed, Jeff Barnes, Eduardo Menezes, Todd Willms, Jason Ruan | Buyer Intent Touch 1 Email | SENT (used identical template, HC1 violations, needs C2 rewrite for future) |
+| Feb 28 | 6:30-6:33 AM | Irfan Syed, Katie Hotard, Rachana Jagetia, Giang Hoang, Pallavi Sheshadri, Gunasekaran Chandrasekaran | PREMATURE Touch 3 Email | SENT IN ERROR (see INC-001). 4 Batch 3 + 2 orphans. 7-8 days early, skipped Touch 2. |
+| Feb 28 | ~2:54 PM | Sergey Matetskiy, Mobin Thomas, Dino Gambone, Matthew Smith, Joshua Greig, Pete Draheim | Touch 3 Draft | NOT SENT (saved as drafts, old templates, premature). DELETE these drafts. |
 
 ### Do Not Contact List
 | Name | Company | Reason | Date Added |
@@ -1796,7 +1893,8 @@ When Rob says any trigger phrase, Claude executes the full 5-phase daily outreac
 4. Check Google Calendar for today's meetings (flag any prospect meetings for prep)
 5. Calculate follow-up queue: prospects hitting Day 5 (Touch 2 InMail due) or Day 10 (Touch 3 Email due)
 6. Check InMail credit budget (report remaining, flag if <10)
-**Output:** Intel summary with reply count, follow-up queue, calendar, credit budget.
+7. **Gmail Draft Audit (MANDATORY, added per INC-001):** Search Gmail drafts from all testsigma.com accounts. Cross-reference each draft against batch tracker TOUCH_ELIGIBLE_DATE fields. Flag and report any: (a) orphan drafts with no tracker entry, (b) premature drafts before eligible date, (c) drafts using old C1/pre-C2 templates, (d) drafts that haven't passed QA Gate. Hold-tag or delete flagged drafts before proceeding.
+**Output:** Intel summary with reply count, follow-up queue, calendar, credit budget, draft audit results.
 
 ### Phase 2: Reply Processing (~10-20 min)
 *Skip if zero replies found.*
@@ -1856,6 +1954,29 @@ When Rob says any trigger phrase, Claude executes the full 5-phase daily outreac
 | Meetings Booked | 1-2 | 4-8 |
 
 ---
+
+## Follow-Up Schedule (Computed from Send Dates)
+
+Based on actual Touch 1 send dates and the 3-touch cadence (Day 5 = Touch 2, Day 10 = Touch 3):
+
+| Batch | Touch 1 Sent | Touch 2 Eligible | Touch 2 Send | Touch 3 Eligible | Touch 3 Send |
+|-------|-------------|-----------------|-------------|-----------------|-------------|
+| Batch 3 (24) | Feb 25-26 | Mar 1-2 | Mar 2-3 | Mar 6-7 | Mar 7-8 |
+| Batch 5B (23) | Feb 27 | Mar 3 | Mar 4 | Mar 8 | Mar 9 |
+| Batch 5A (25) | Feb 27-28 | Mar 3-4 | Mar 4-5 | Mar 8-9 | Mar 9-10 |
+| Batch 6 (27) | Feb 28 | Mar 4 | Mar 5 | Mar 9 | Mar 10 |
+| Batch 7 (41) | Feb 28 | Mar 4 | Mar 5 | Mar 9 | Mar 10 |
+| Buyer Intent (9) | Feb 27 (email) | Mar 3 | Mar 4 | Mar 8 | Mar 9 |
+
+**Special cases (premature Touch 3 from INC-001):**
+- Irfan, Katie, Rachana, Giang: Touch 3 already sent (Feb 28). Skip official Touch 3. Touch 2 InMail still due on schedule.
+- Pallavi, Gunasekaran: Need to be added to tracker. Touch 2 follow-up TBD after research.
+
+**Week of Mar 2-6 workload estimate:**
+- ~24 Touch 2 InMails due (Batch 3)
+- ~89 Touch 2 InMails due Mar 4-5 (Batches 5A, 5B, 6, 7)
+- **Total Touch 2 volume: ~113 InMails across the week**
+- InMail credits remaining: ~24 → CRITICAL SHORTFALL. Need to prioritize Hot/Warm only for Touch 2 InMails, use email for the rest.
 
 ## currentDate
 Today's date is 2026-03-01.
