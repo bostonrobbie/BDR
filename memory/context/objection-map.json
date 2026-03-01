@@ -1,0 +1,41 @@
+{
+  "objection_triggers": [
+    {
+      "signal": "Uses TOSCA, Katalon, Testim, or mabl",
+      "objection": "We already have a tool",
+      "response": "Totally fair. A lot of teams we work with had [tool] too. The gap they kept hitting was [specific limitation]. Worth comparing?",
+      "note": "Check memory/competitors/ for tool-specific response instead of this generic one."
+    },
+    {
+      "signal": "50K+ employee company",
+      "objection": "Security/procurement is complex",
+      "response": "We offer on-prem, private cloud, and hybrid. SOC2/ISO certified. A few Fortune 500s run us behind their firewall."
+    },
+    {
+      "signal": "No dedicated QA team visible",
+      "objection": "QA isn't a priority",
+      "response": "That's actually why teams like yours use us. Plain English means devs write tests without a dedicated QA team."
+    },
+    {
+      "signal": "Recently hired QA leader",
+      "objection": "Too early, still assessing",
+      "response": "Makes sense. A lot of QA leaders in their first 90 days use our free trial to benchmark what's possible before committing."
+    },
+    {
+      "signal": "Pharma/healthcare/finance",
+      "objection": "Compliance requirements",
+      "response": "We work with Sanofi, Oscar Health, and several banks. Happy to walk through our compliance story."
+    },
+    {
+      "signal": "Startup/small team (<200 employees)",
+      "objection": "Budget is tight",
+      "response": "Totally get it. One company your size (Spendflo) cut manual testing 50% and saw ROI in the first quarter."
+    }
+  ],
+  "default_objection": "We already have a tool",
+  "rules": [
+    "Assign ONE predicted objection per prospect (the most likely one based on research).",
+    "If a known competitor tool is detected, check the battle card in memory/competitors/ for a tool-specific response.",
+    "If no clear signal, default to 'We already have a tool' since it's the most common objection."
+  ]
+}
