@@ -151,7 +151,7 @@ tr:hover td { background: var(--gray-50); }
 <div class="container">
 
 <h1>Testsigma BDR Email Sequence SOP</h1>
-<p class="subtitle">Data-driven email playbook for Apollo sequences. Built from analysis of 1,326 conversations, 381 replies, and 4,786 messages. Updated February 2026.</p>
+<p class="subtitle">Data-driven email playbook for Apollo sequences. Built from analysis of 1,326 conversations, 381 replies, 4,786 messages, and Sam McKenna's SMYKM methodology. Updated March 2026.</p>
 
 <div class="nav-tabs">
   <button class="nav-tab active" onclick="showTab('overview')">Overview &amp; Data</button>
@@ -179,6 +179,15 @@ tr:hover td { background: var(--gray-50); }
   <div class="score-box"><div class="number">34.8%</div><div class="label">Exactly 2 questions</div></div>
   <div class="score-box"><div class="number">56.5%</div><div class="label">Lunch send (12-1 PM)</div></div>
 </div>
+
+<h3 style="margin-top:20px;">SMYKM Benchmarks (Sam McKenna's "Show Me You Know Me")</h3>
+<p style="font-size:14px; color:var(--gray-500); margin-bottom:12px;">Sam McKenna's hyper-personal email methodology. Available as an A/B testable option for email Touch 1. Source: Apollo Academy, 2024.</p>
+<div class="score-grid" style="margin-top:16px;">
+  <div class="score-box" style="border-color:#7c3aed;"><div class="number" style="color:#7c3aed;">43%</div><div class="label">SMYKM open rate (vs 6% avg)</div></div>
+  <div class="score-box" style="border-color:#7c3aed;"><div class="number" style="color:#7c3aed;">20%</div><div class="label">SMYKM reply rate (vs 0.9% avg)</div></div>
+  <div class="score-box" style="border-color:#7c3aed;"><div class="number" style="color:#7c3aed;">7x</div><div class="label">Open rate vs industry average</div></div>
+  <div class="score-box" style="border-color:#7c3aed;"><div class="number" style="color:#7c3aed;">22x</div><div class="label">Reply rate vs industry average</div></div>
+</div>
 </div>
 
 <h3>What Makes Email Different from InMail</h3>
@@ -191,8 +200,12 @@ tr:hover td { background: var(--gray-50); }
 <tr><td>Subject line</td><td>3-6 words</td><td><strong>5-6 words, problem-framed</strong></td></tr>
 <tr><td>CTA</td><td>"What day works"</td><td>"What day works" (same)</td></tr>
 <tr><td>Proof points</td><td>Required</td><td>Required, specific number</td></tr>
-<tr><td>Personalization bar</td><td>High (1:1 feel)</td><td>Medium (can be slightly more scalable)</td></tr>
+<tr><td>Personalization bar</td><td>High (1:1 feel)</td><td>Medium (standard) / <strong>Very High (SMYKM)</strong></td></tr>
 <tr><td>Mobile reading</td><td>~70% on mobile</td><td>~50-60% on mobile</td></tr>
+<tr style="background:#f3e8ff;"><td><strong>Subject line (SMYKM option)</strong></td><td>3-6 words, generic</td><td><strong>Up to 8 words, hyper-personal: "[Name]'s [unique detail] at [Company]"</strong></td></tr>
+<tr style="background:#f3e8ff;"><td><strong>Opener (SMYKM option)</strong></td><td>Pain question</td><td><strong>"We have yet to be properly introduced, but I'm Rob with Testsigma."</strong></td></tr>
+<tr style="background:#f3e8ff;"><td><strong>Value prop (SMYKM option)</strong></td><td>Context + Proof point</td><td><strong>Challenge-Narrative: embed proof inside a challenge description</strong></td></tr>
+<tr style="background:#f3e8ff;"><td><strong>SMYKM applicable?</strong></td><td>NO (InMail stays C2)</td><td><strong>YES (A/B test vs standard)</strong></td></tr>
 </table>
 </div>
 
@@ -273,6 +286,30 @@ tr:hover td { background: var(--gray-50); }
 </ul>
 </div>
 
+<h3>Email-Specific Hard Constraints</h3>
+<div class="card">
+<ul class="rule-list">
+  <li class="never"><strong>EC1:</strong> Email Touch 1 max 100 words (standard) or 120 words (SMYKM). Follow-ups: see EC2.</li>
+  <li class="never"><strong>EC2:</strong> Follow-up emails max 70 words. Ultra-short wins (<50w = 72.1%).</li>
+  <li class="never"><strong>EC3:</strong> Subject lines: 5-6 words standard, up to 8 words for SMYKM personal. Problem-framed. No clickbait.</li>
+  <li class="never"><strong>EC4:</strong> 1-2 question marks per email. Can be more direct than InMail.</li>
+  <li class="never"><strong>EC5:</strong> No "circling back" or "following up on my last email." Template-visible, triggers spam filters.</li>
+  <li class="never"><strong>EC6:</strong> SMYKM subject lines must reference a UNIQUE professional detail, not just title or company name. "QA Manager at Acme" = FAIL. "[Name]'s regression automation at Acme" = PASS.</li>
+  <li class="never"><strong>EC7:</strong> SMYKM opener must be HC1-compliant. "We have yet to be properly introduced" = PASS. "I noticed you're leading QA" = FAIL. <span class="data-callout red">HC1: -13.4 pp still applies</span></li>
+</ul>
+</div>
+
+<h3>SMYKM Style Rules</h3>
+<div class="card" style="border-left:4px solid #7c3aed;">
+<ul class="rule-list">
+  <li class="must" style="border-left-color:#7c3aed;"><strong>Subject line uniqueness test:</strong> If the subject line could apply to anyone with the same title at the same company, it fails. Must reference something SPECIFIC to this person's professional scope.</li>
+  <li class="must" style="border-left-color:#7c3aed;"><strong>Challenge-narrative embedding:</strong> Don't separate context and proof point into distinct paragraphs. Weave the proof point INTO the challenge description so it reads as one continuous thought.</li>
+  <li class="must" style="border-left-color:#7c3aed;"><strong>Warm intro, not cold pitch:</strong> "We have yet to be properly introduced" signals respect and professionalism. It's the opposite of "I'm reaching out because..." (HC8 violation).</li>
+  <li class="prefer" style="border-left-color:#7c3aed;"><strong>Research depth requirement:</strong> SMYKM requires deeper research than standard. If you can't find a unique professional detail from LinkedIn/Apollo/company research, use Structure A instead.</li>
+  <li class="prefer" style="border-left-color:#7c3aed;"><strong>A/B test guidance:</strong> Split 50/50 within a batch. Same personas and verticals in each group. Test for 3+ batches before drawing conclusions.</li>
+</ul>
+</div>
+
 <h3>Toxic Phrases (NEVER use)</h3>
 <div class="card">
 <table>
@@ -303,9 +340,29 @@ tr:hover td { background: var(--gray-50); }
 
 <!-- STRUCTURE TAB -->
 <div id="structure" class="tab-content">
-<h2>Email Structure (4 Elements)</h2>
+<h2>Email Structure: Two Options</h2>
 <div class="card">
-<p>Every email has 4 elements. They should be invisible as structure. The email reads like one coherent idea from someone who understands the prospect's world, not 4 blocks stitched together.</p>
+<p>Every email uses one of two structures. Both should read like one coherent idea from someone who understands the prospect's world. Choose based on research depth available. A/B test across batches to find what works best for your vertical and persona mix.</p>
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0;">
+<div style="border:2px solid var(--primary-600); border-radius:8px; padding:16px;">
+  <h4 style="color:var(--primary-600); margin-bottom:8px;">Structure A: Standard (Default)</h4>
+  <p style="font-size:13px;">Problem opener → Context → Proof point → "What day works" close</p>
+  <p style="font-size:13px; margin-top:8px;"><strong>Use when:</strong> Limited personal research available. Any prospect.</p>
+  <p style="font-size:13px; margin-top:4px;"><strong>Word count:</strong> 60-100 words</p>
+</div>
+<div style="border:2px solid #7c3aed; border-radius:8px; padding:16px;">
+  <h4 style="color:#7c3aed; margin-bottom:8px;">Structure B: SMYKM (A/B Test Option)</h4>
+  <p style="font-size:13px;">Personal subject → Warm intro → Challenge-narrative with embedded proof → "What day works" close</p>
+  <p style="font-size:13px; margin-top:8px;"><strong>Use when:</strong> Research yields a unique professional detail. Email channel only.</p>
+  <p style="font-size:13px; margin-top:4px;"><strong>Word count:</strong> 80-110 words</p>
+  <p style="font-size:13px; margin-top:4px;"><strong>Source:</strong> Sam McKenna (43% open, 20% reply vs 6% / 0.9% industry avg)</p>
+</div>
+</div>
+</div>
+
+<h3>Structure A: Standard Elements (4 Parts)</h3>
+<div class="card">
 
 <h4>Element 1: Subject Line (5-6 words)</h4>
 <p>Problem-framed, specific to their domain. Not clickbaity. Must reference their world.</p>
@@ -325,6 +382,28 @@ tr:hover td { background: var(--gray-50); }
 <p>Must do TWO things: (a) reference the specific outcome from the proof point, (b) use a "what day works" meeting ask tied to their situation.</p>
 <p style="margin-top:8px;"><strong>Good:</strong> "If 3 fewer weeks of regression would help the platform refresh timeline, what day works for a quick look at how they did it?"</p>
 <p><strong>Bad:</strong> "Would a quick call make sense?" (generic, no proof point tie-in)</p>
+</div>
+
+<h3 style="margin-top:24px;">Structure B: SMYKM Elements (4 Parts)</h3>
+<div class="card" style="border-left:4px solid #7c3aed;">
+<p style="color:#7c3aed; font-weight:600; margin-bottom:12px;">Sam McKenna's "Show Me You Know Me" — A/B test option for email channel only. NOT for InMail.</p>
+
+<h4>SMYKM Element 1: Personal Subject Line (up to 8 words)</h4>
+<p>Hyper-personal. Must reference something UNIQUE about the prospect professionally + their company name. The subject line alone should make them think "this person actually knows who I am."</p>
+<p style="margin-top:8px;"><strong>Good:</strong> "Namita's QA coverage expansion at OverDrive" / "The Libby migration testing, Namita" / "Marcus's Selenium stack at Shopify"</p>
+<p><strong>Bad:</strong> "QA Manager at OverDrive" (title-only, not unique) / "Hi Namita" (no professional detail) / "OverDrive testing" (company-only, no personal element)</p>
+
+<h4 style="margin-top:20px;">SMYKM Element 2: Warm Opener (1-2 lines)</h4>
+<p>Introduce yourself warmly without "I noticed" or "I saw." HC1-compliant. Two options:</p>
+<p style="margin-top:8px;"><strong>Option A (Intro):</strong> "We have yet to be properly introduced, but I'm Rob with Testsigma."</p>
+<p><strong>Option B (Direct challenge):</strong> Jump straight to the challenge observation: "Scaling QA across three consumer apps while migrating off a legacy platform is a tough ask."</p>
+
+<h4 style="margin-top:20px;">SMYKM Element 3: Challenge-Narrative Value Prop (2-3 lines)</h4>
+<p>Embed the proof point inside a challenge description. Frame as: "The challenge [type of team] hits is [problem]. [Customer] was dealing with the same thing and [outcome]." This is different from standard structure where context and proof are separate paragraphs.</p>
+<p style="margin-top:8px;"><strong>Good:</strong> "The challenge QA teams hit during platform overhauls is that test maintenance spikes faster than the team can keep up. Hansard was in the same spot, running 8 weeks of regression, and cut it to 5 after moving to Testsigma's auto-healing."</p>
+
+<h4 style="margin-top:20px;">SMYKM Element 4: Close (same as Standard)</h4>
+<p>"What day works" CTA tied to the proof point outcome + prospect's situation. Same rules as Structure A. Sam McKenna uses a softer close ("Do you have time over the next week or two?") but our data shows "what day works" outperforms at 40.4% vs 14.0% for open-ended asks.</p>
 </div>
 
 <h3>Pre-Draft Checklist (complete BEFORE writing)</h3>
@@ -370,8 +449,10 @@ tr:hover td { background: var(--gray-50); }
 
 <!-- TEMPLATES TAB -->
 <div id="templates" class="tab-content">
-<h2>Email Templates (5 Templates by Pain Hook)</h2>
-<p style="color:var(--gray-500); margin-bottom:20px;">Each template targets a different pain hook. Customize the <span style="background:#fff3e0; color:#e65100; padding:1px 4px; border-radius:3px;">{{variables}}</span> for each prospect. All templates are pre-validated against the QA Gate.</p>
+<h2>Email Templates (Standard + SMYKM)</h2>
+<p style="color:var(--gray-500); margin-bottom:20px;">Two template families: <strong>Standard (Structure A)</strong> and <strong>SMYKM (Structure B)</strong>. Each targets a different pain hook. Customize the <span style="background:#fff3e0; color:#e65100; padding:1px 4px; border-radius:3px;">{{variables}}</span> for each prospect. All templates are pre-validated against the QA Gate.</p>
+
+<h3>Standard Templates (Structure A)</h3>
 
 <!-- Template 1: Test Maintenance -->
 <div class="template-card">
@@ -687,6 +768,197 @@ Rob</div>
   </div>
 </div>
 </div>
+
+<h3 style="margin-top:32px;">SMYKM Templates (Structure B)</h3>
+<p style="color:#7c3aed; margin-bottom:20px;">Use these when research yields a unique professional detail about the prospect. Email channel only. A/B test against Standard templates.</p>
+
+<!-- SMYKM Template 1: Test Maintenance -->
+<div class="template-card" style="border-left:4px solid #7c3aed;">
+<div class="template-header">
+  <h4>SMYKM Template 1: Test Maintenance Pain (EM-SMYKM-1)</h4>
+  <div class="template-badges">
+    <span class="badge" style="background:#7c3aed; color:white;">SMYKM</span>
+    <span class="badge badge-pain">Maintenance</span>
+    <span class="badge badge-persona">QA Manager / Lead</span>
+    <span class="badge badge-touch">Touch 1</span>
+  </div>
+</div>
+<div class="template-body">
+  <div class="template-field">
+    <label>Subject Line (SMYKM personal, up to 8 words)</label>
+    <div class="template-content" id="smykm1-subject"><span class="variable">{{FirstName}}</span>'s <span class="variable">{{specific_QA_scope}}</span> at <span class="variable">{{Company}}</span></div>
+    <button class="copy-btn" onclick="copyText('smykm1-subject', this)">Copy Subject</button>
+  </div>
+  <div class="template-field">
+    <label>Examples: "Namita's QA coverage at OverDrive" / "Marcus's Selenium migration at Shopify" / "Sarah's regression automation at Ally"</label>
+  </div>
+  <div class="template-field">
+    <label>Email Body (target: 80-110 words)</label>
+    <div class="template-content" id="smykm1-body">Hi <span class="variable">{{FirstName}}</span>,
+
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+The challenge QA teams hit during <span class="variable">{{their_change_event}}</span> is that test maintenance spikes faster than the team can keep up. <span class="variable">{{Customer}}</span> was in the same spot, running <span class="variable">{{before_metric}}</span> of regression, and cut it to <span class="variable">{{after_metric}}</span> after moving to Testsigma's auto-healing.
+
+If <span class="variable">{{outcome_reframed_for_them}}</span> would help <span class="variable">{{their_situation}}</span>, what day works for a quick look at how they did it?
+
+<span class="variable">{{SenderFirstName}}</span></div>
+    <button class="copy-btn" onclick="copyText('smykm1-body', this)">Copy Body</button>
+  </div>
+  <div class="template-field">
+    <label>Filled Example (Hansard proof point)</label>
+    <div class="template-content" id="smykm1-example">Hi Namita,
+
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+The challenge QA teams hit during platform overhauls is that test maintenance spikes faster than the team can keep up. Hansard was in the same spot, running 8 weeks of regression, and cut it to 5 after moving to Testsigma's auto-healing.
+
+If 3 fewer weeks of regression would help the Libby migration timeline, what day works for a quick look at how they did it?
+
+Rob</div>
+    <button class="copy-btn" onclick="copyText('smykm1-example', this)">Copy Example</button>
+  </div>
+</div>
+</div>
+
+<!-- SMYKM Template 2: Release Velocity -->
+<div class="template-card" style="border-left:4px solid #7c3aed;">
+<div class="template-header">
+  <h4>SMYKM Template 2: Release Velocity Pain (EM-SMYKM-2)</h4>
+  <div class="template-badges">
+    <span class="badge" style="background:#7c3aed; color:white;">SMYKM</span>
+    <span class="badge badge-pain">Velocity</span>
+    <span class="badge badge-persona">Director / QA Lead</span>
+    <span class="badge badge-touch">Touch 1</span>
+  </div>
+</div>
+<div class="template-body">
+  <div class="template-field">
+    <label>Subject Line</label>
+    <div class="template-content" id="smykm2-subject"><span class="variable">{{FirstName}}</span>'s regression cycles at <span class="variable">{{Company}}</span></div>
+    <button class="copy-btn" onclick="copyText('smykm2-subject', this)">Copy Subject</button>
+  </div>
+  <div class="template-field">
+    <label>Email Body (target: 80-100 words)</label>
+    <div class="template-content" id="smykm2-body">Hi <span class="variable">{{FirstName}}</span>,
+
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+The challenge fast-shipping teams hit is regression becoming the bottleneck nobody planned for. <span class="variable">{{Customer}}</span> was dealing with the same thing, running <span class="variable">{{before_metric}}</span> of regression, and cut it to <span class="variable">{{after_metric}}</span> once they moved their suite to Testsigma.
+
+What day works to see how they did it without <span class="variable">{{their_constraint}}</span>?
+
+<span class="variable">{{SenderFirstName}}</span></div>
+    <button class="copy-btn" onclick="copyText('smykm2-body', this)">Copy Body</button>
+  </div>
+  <div class="template-field">
+    <label>Filled Example (Sanofi proof point)</label>
+    <div class="template-content" id="smykm2-example">Hi James,
+
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+The challenge fast-shipping teams hit is regression becoming the bottleneck nobody planned for. Sanofi was dealing with the same thing, running 3 days of regression, and cut it to 80 minutes once they moved their suite to Testsigma.
+
+What day works to see how they did it without adding headcount?
+
+Rob</div>
+    <button class="copy-btn" onclick="copyText('smykm2-example', this)">Copy Example</button>
+  </div>
+</div>
+</div>
+
+<!-- SMYKM Template 3: Coverage / Scale -->
+<div class="template-card" style="border-left:4px solid #7c3aed;">
+<div class="template-header">
+  <h4>SMYKM Template 3: Coverage / Scale Pain (EM-SMYKM-3)</h4>
+  <div class="template-badges">
+    <span class="badge" style="background:#7c3aed; color:white;">SMYKM</span>
+    <span class="badge badge-pain">Coverage</span>
+    <span class="badge badge-persona">Architect / Sr SDET</span>
+    <span class="badge badge-touch">Touch 1</span>
+  </div>
+</div>
+<div class="template-body">
+  <div class="template-field">
+    <label>Subject Line</label>
+    <div class="template-content" id="smykm3-subject">Scaling QA coverage for <span class="variable">{{their_product}}</span>, <span class="variable">{{FirstName}}</span></div>
+    <button class="copy-btn" onclick="copyText('smykm3-subject', this)">Copy Subject</button>
+  </div>
+  <div class="template-field">
+    <label>Email Body (target: 80-100 words)</label>
+    <div class="template-content" id="smykm3-body">Hi <span class="variable">{{FirstName}}</span>,
+
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+The challenge scaling teams hit is coverage falling behind as the product grows. Manual testing eats the capacity meant for new work. <span class="variable">{{Customer}}</span> was in the same spot and automated <span class="variable">{{test_count}}</span> tests while cutting manual testing by <span class="variable">{{reduction_stat}}</span> using Testsigma's plain English approach.
+
+If <span class="variable">{{outcome_for_them}}</span> before <span class="variable">{{their_deadline}}</span> sounds useful, what day works for a quick look?
+
+<span class="variable">{{SenderFirstName}}</span></div>
+    <button class="copy-btn" onclick="copyText('smykm3-body', this)">Copy Body</button>
+  </div>
+  <div class="template-field">
+    <label>Filled Example (Medibuddy proof point)</label>
+    <div class="template-content" id="smykm3-example">Hi Priya,
+
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+The challenge scaling teams hit is coverage falling behind as the product grows. Manual testing eats the capacity meant for new work. Medibuddy was in the same spot and automated 2,500 tests while cutting manual testing by 50% using Testsigma's plain English approach.
+
+If halving your manual testing effort before the Q2 launch sounds useful, what day works for a quick look?
+
+Rob</div>
+    <button class="copy-btn" onclick="copyText('smykm3-example', this)">Copy Example</button>
+  </div>
+</div>
+</div>
+
+<!-- SMYKM Template 4: Tool Migration -->
+<div class="template-card" style="border-left:4px solid #7c3aed;">
+<div class="template-header">
+  <h4>SMYKM Template 4: Tool Migration Pain (EM-SMYKM-4)</h4>
+  <div class="template-badges">
+    <span class="badge" style="background:#7c3aed; color:white;">SMYKM</span>
+    <span class="badge badge-pain">Tool Switch</span>
+    <span class="badge badge-persona">All QA Personas</span>
+    <span class="badge badge-touch">Touch 1</span>
+  </div>
+</div>
+<div class="template-body">
+  <div class="template-field">
+    <label>Subject Line</label>
+    <div class="template-content" id="smykm4-subject"><span class="variable">{{FirstName}}</span>'s <span class="variable">{{CurrentTool}}</span> stack at <span class="variable">{{Company}}</span></div>
+    <button class="copy-btn" onclick="copyText('smykm4-subject', this)">Copy Subject</button>
+  </div>
+  <div class="template-field">
+    <label>Email Body (target: 80-110 words)</label>
+    <div class="template-content" id="smykm4-body">Hi <span class="variable">{{FirstName}}</span>,
+
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+The challenge teams on <span class="variable">{{CurrentTool}}</span> keep hitting is that every UI change means broken locators and manual script fixes. The maintenance outpaces the value. Teams that have made the switch to Testsigma's auto-healing have cut <span class="variable">{{CurrentTool}}</span> maintenance by 70%.
+
+If 70% less <span class="variable">{{CurrentTool}}</span> upkeep would free your team for <span class="variable">{{their_priority}}</span>, what day works for a quick compare?
+
+<span class="variable">{{SenderFirstName}}</span></div>
+    <button class="copy-btn" onclick="copyText('smykm4-body', this)">Copy Body</button>
+  </div>
+  <div class="template-field">
+    <label>Filled Example (Selenium migration)</label>
+    <div class="template-content" id="smykm4-example">Hi Marcus,
+
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+The challenge teams on Selenium keep hitting is that every UI change means broken locators and manual script fixes. The maintenance outpaces the value. Teams that have made the switch to Testsigma's auto-healing have cut Selenium maintenance by 70%.
+
+If 70% less Selenium upkeep would free your team for the product rebuild, what day works for a quick compare?
+
+Rob</div>
+    <button class="copy-btn" onclick="copyText('smykm4-example', this)">Copy Example</button>
+  </div>
+</div>
+</div>
+
 </div>
 
 <!-- CADENCE TAB -->
@@ -698,7 +970,7 @@ Rob</div>
 <div class="timeline">
   <div class="timeline-item">
     <h4>Touch 1 — Day 1 (Tuesday or Thursday, 12-1 PM local)</h4>
-    <p>Full email. Pain-hook opener + proof point + "what day works" close. 70-90 words. Use Template 1-5 based on research.</p>
+    <p>Full email. Use Standard templates (70-90 words) OR SMYKM templates (80-110 words) based on research depth. Pain-hook opener + proof point + "what day works" close. A/B test SMYKM vs Standard across batches.</p>
   </div>
   <div class="timeline-item">
     <h4>Touch 2 — Day 5 (reply thread, "Re:" subject)</h4>
@@ -789,6 +1061,7 @@ Rob</div>
   <li><strong>Close Dedup:</strong> No two emails in the same batch share the same close structure.</li>
   <li><strong>Personalization Check:</strong> At least one element is specific to THIS prospect (not just name/title/company swap).</li>
   <li><strong>Plain Language:</strong> No buzzwords (velocity, leverage, scalability, bandwidth). Simple words only.</li>
+  <li style="border-left:3px solid #7c3aed; padding-left:12px;"><strong>SMYKM Validation (if using Structure B):</strong> Subject line references a UNIQUE professional detail (EC6). Opener is HC1-compliant, no "I noticed/saw" (EC7). Challenge-narrative embeds proof point naturally. Word count 80-120 max.</li>
 </ul>
 </div>
 

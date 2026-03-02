@@ -188,7 +188,7 @@ No two prospects in the same batch should have structurally identical closes.
 
 #### Message Elements (5 parts, invisible as structure)
 
-1. **Subject line** (3-6 words) - Specific enough to open, not clickbaity. Reference their domain or a QA-relevant situation. "Quick question" works. So does "Regression after the migration."
+1. **Subject line** (3-6 words for InMail, 5-8 words for email) - Specific enough to open, not clickbaity. Reference their domain or a QA-relevant situation. "Quick question" works for InMail. So does "Regression after the migration." **For email (Touch 3 and email-only sequences):** Also consider SMYKM personal subject lines that reference a unique professional detail about the prospect + company name (see Email Subject Line Patterns below). InMail subjects stay domain/problem-focused.
 2. **Opener** (1-2 lines) - Start with a QA situation the prospect would recognize, then ask a real question. Do NOT start by listing products, company facts, or background. Start with a problem.
    - GOOD: "Are flaky tests slowing your releases or just eating engineering time?"
    - GOOD: "What's harder right now - keeping regression stable during the migration, or keeping coverage from falling behind?"
@@ -475,6 +475,8 @@ Split each 25-prospect batch into 2-3 sub-groups to test ONE variable at a time.
 3. **Opener style** - Group A gets career-reference openers, Group B gets company-metric openers
 4. **Ask intensity** - Group A gets "Would 15 minutes make sense?", Group B gets "Happy to share more if helpful"
 5. **Message length** - Group A gets 70-80 words (tight), Group B gets 100-120 words (fuller)
+6. **Email subject line (SMYKM)** - Group A gets Standard problem-framed subjects, Group B gets SMYKM personal subjects (prospect detail + company). Track open rates AND reply rates. This is the highest-priority A/B test for email channel based on SMYKM data (43% open rate vs ~6% industry avg).
+7. **Email structure (SMYKM)** - Group A gets Standard structure (problem → context → proof → close), Group B gets SMYKM challenge-narrative structure (personal opener → challenge with embedded proof → close). Only test AFTER subject line A/B has enough data (3+ batches).
 
 **Rules:**
 - Only test ONE variable per batch. Keep everything else constant across groups.
@@ -1368,6 +1370,36 @@ If MAX_BATCH is negative or <5: **PAUSE new sourcing.** Focus on email-only Touc
 - [ ] If meeting booked: Auto-generate prep card from research above
 - [ ] Create calendar reminder for follow-up (Day 5 = ~Mar 4)
 
+### Pallavi Sheshadri — Origami Risk
+| Field | Detail |
+|-------|--------|
+| **Name** | Pallavi Sheshadri |
+| **Title** | QA (exact title TBD, needs LinkedIn research) |
+| **Company** | Origami Risk |
+| **Email** | Known (received premature Touch 3 email Feb 28) |
+| **LinkedIn** | TBD — needs Sales Navigator lookup |
+| **Lead Type** | Warm reply (responded to premature Touch 3 email from INC-001) |
+| **Priority** | P2 — Replied to outreach, active conversation |
+| **Origin** | Orphan prospect from INC-001 (Feb 28 premature email send) |
+
+**Context:**
+- Pallavi was one of 2 orphan prospects (along with Gunasekaran Chandrasekaran) who received premature Touch 3 emails on Feb 28 without being in any batch tracker.
+- She replied to the premature email. Rob drafted and sent a follow-up reply on Mar 2 at 12:41 PM via Gmail in-thread.
+- The reply was a warm, conversational response bridging to a meeting, referencing Origami Risk's insurance/risk platform and Hansard proof point.
+
+**Outreach Log:**
+| Date | Channel | Touch | Status | Notes |
+|------|---------|-------|--------|-------|
+| 2026-02-28 | Email | Touch 3 (premature) | SENT IN ERROR | Part of INC-001. Old pre-C2 template with HC1 violations. |
+| 2026-03-02 | Email (in-thread reply) | Follow-up reply | SENT | Rob's reply at 12:41 PM. Warm, consultative tone. Hansard proof point. "What day works" CTA. |
+
+**Next Steps:**
+- [ ] Monitor for reply (check daily for 5 business days)
+- [ ] If reply: Bridge to meeting immediately, same-day response
+- [ ] If no reply by Mar 7: Draft a lighter follow-up nudge (email, not InMail since conversation is in email thread)
+- [ ] Complete LinkedIn + Apollo research to fill in missing profile data
+- [ ] If meeting booked: Generate prep card from Origami Risk research
+
 ---
 
 ## LinkedIn Safety & Compliance Rules
@@ -1870,32 +1902,66 @@ Accounts transferred to Rob and enriched via Apollo. Priority ranking based on i
 | Accounts using Selenium | Selenium | 70-90% maintenance reduction, auto-healing |
 | Accounts using TOSCA | Tricentis TOSCA | Agile-friendly, faster deployment, lower cost |
 
-### Email Formula (Derived from Historical Analysis)
-Based on analysis of 1,326 conversations, 50 email templates, and batch performance data:
+### Email Formula (Derived from Historical Analysis + SMYKM Framework)
+Based on analysis of 1,326 conversations, 50 email templates, batch performance data, AND Sam McKenna's "Show Me You Know Me" (SMYKM) cold email methodology (43% open rate, 20% reply rate vs industry avg 6% open / 0.9% reply).
 
-**Optimal Email Structure (Touch 3):**
-- **Subject:** 5-6 words, problem-framed, specific to their domain. NOT clickbait.
-- **Word count:** 60-100 words (shorter than InMail since email feels more direct)
-- **Structure:** Problem question → One-line context → Proof point with number → "What day works" close tied to outcome
+**SMYKM Core Principle (Email-Only):** The subject line and first sentence must prove you did real research on THIS person. Not their company, not their industry, THEM. The subject line is the single biggest lever for email open rates. SMYKM applies to email channel only. InMail format stays as-is (already proven at 28.7% reply rate with C2 structure).
+
+**Two Email Structures Available (choose per prospect):**
+
+**Structure A: Standard (Default)**
+Problem question → One-line context → Proof point with number → "What day works" close tied to outcome. Use when research yields strong QA-relevant company signals but limited personal insights.
+
+**Structure B: SMYKM Challenge-Narrative (Preferred when research supports it)**
+Personal subject line → HC1-compliant warm opener → Challenge description with embedded proof point → "What day works" close tied to outcome. Use when research yields a specific, unique professional detail about the prospect (project they led, initiative they drove, specific responsibility).
+
+**Optimal Email Structure (Both Structures):**
+- **Subject:** See Email Subject Line Patterns below. Two options: problem-framed (5-6 words) OR SMYKM personal (prospect-specific detail + company name).
+- **Word count:** 60-100 words (shorter than InMail since email feels more direct). SMYKM structure may run 80-110 words to accommodate the challenge-narrative, ceiling 120.
 - **Questions:** Exactly 1-2 (email can be more direct than InMail)
 - **Tone:** Slightly more direct than InMail. No "circling back" since this is a channel switch.
+
+**SMYKM Subject Line Construction (Email Only):**
+The subject line references something UNIQUE about the prospect professionally + their company name. Not a problem hook, not a question, a specific personal-professional detail that proves you know them.
+- GOOD: "Namita's QA coverage at OverDrive"
+- GOOD: "The Libby migration testing, Namita"
+- GOOD: "Irfan's OpenEdge regression challenge"
+- BAD: "Regression eating release time?" (this is problem-framed, fine for Standard structure but not SMYKM)
+- BAD: "Quick question about your QA team" (generic, no personal detail)
+- BAD: "I saw you're a QA Manager" (HC1 violation, title-only, not unique)
+- **Rule:** The detail must be something only THIS person would recognize. A title alone doesn't count. A specific product they own, a migration they're leading, a team they built, that counts.
+
+**SMYKM Opener Options (HC1-Compliant):**
+- Option 1: "We have yet to be properly introduced, but I'm Rob with Testsigma." (Warm, non-pushy, avoids "I noticed/I saw")
+- Option 2: Lead directly with the challenge observation. "[Prospect's situation] usually means [specific QA consequence]."
+- **NEVER use:** "I noticed," "I saw," "I see," "Based on your profile." These violate HC1 regardless of structure.
+
+**SMYKM Challenge-Narrative Value Prop:**
+Instead of a standalone proof point, embed the proof point INSIDE a challenge description. Frame it as: "The challenge [type of team] hits is [specific problem]. [Customer] was dealing with the same thing and [outcome with number]."
+- GOOD: "The challenge most teams hit during platform migrations is that flaky tests break faster than anyone can fix them. Hansard was in the same spot and cut regression from 8 to 5 weeks with AI auto-healing."
+- BAD: "Hansard cut regression from 8 to 5 weeks." (standalone proof point, misses the challenge framing)
+- **Key difference from Standard:** The challenge-narrative preemptively validates the problem before dropping the proof point, making the proof point feel like a natural solution rather than a sales pitch.
 
 **Top-Performing Email Patterns (from template analysis):**
 - Reduction framing ("cut regression by 3 weeks") > Multiplier framing ("3X faster")
 - Specific customer name + metric > Anonymous "a Fortune 100"
-- "What day works" CTA > Any soft ask
+- "What day works" CTA > Any soft ask (DATA: 40.4% vs 14.0%. Sam McKenna's softer CTA "Do you have time over the next week or two" falls in the open-ended category. We keep "what day works.")
 - 60-80 words > 100+ words for email
 - Problem-first opener > Company-fact opener
+- SMYKM personal subject line > Generic problem subject (A/B test this, track results by batch)
 
 **Email vs InMail Differences:**
 | Dimension | InMail (Touch 1-2) | Email (Touch 3) |
 |-----------|-------------------|-----------------|
-| Reply rate | ~28.7% | ~1-6% (varies) |
-| Optimal length | 80-120 words | 60-100 words |
+| Reply rate | ~28.7% | ~1-6% (volume play) |
+| Optimal length | 80-120 words | 60-100 words (SMYKM variant: 80-110) |
 | Tone | Warm, conversational | Slightly more direct |
-| Subject line | 3-6 words | 5-6 words, problem-framed |
-| CTA | "What day works" | "What day works" (same) |
+| Subject line | 3-6 words, domain or QA-situation | 5-6 words problem-framed OR SMYKM personal (prospect detail + company) |
+| Opener | QA situation question | Problem question OR "We have yet to be properly introduced" (SMYKM) |
+| Value prop | Standalone proof point | Standalone OR challenge-narrative with embedded proof point (SMYKM) |
+| CTA | "What day works" | "What day works" (same, never soft/open-ended) |
 | Proof point | Required | Required, can be different from InMail |
+| SMYKM applies? | NO — InMail format stays C2 | YES — A/B test SMYKM subject + structure |
 
 ### 6-Month Dedup Protocol
 Before enrolling ANY prospect in the Q1 Priority Accounts sequence:
@@ -1921,11 +1987,13 @@ This section defines the email-only outreach cadence for use in Apollo sequences
 ### Email-Specific Hard Constraints (in addition to HC1-HC10)
 | # | Constraint | Data |
 |---|-----------|------|
-| EC1 | Email Touch 1: max 100 words (shorter than InMail) | 60-80w optimal for email |
+| EC1 | Email Touch 1: max 100 words (Standard) or 120 words (SMYKM challenge-narrative) | 60-80w optimal for Standard, 80-110w for SMYKM |
 | EC2 | Follow-up emails: max 70 words | Ultra-short wins for follow-ups (<50w = 72.1%) |
-| EC3 | Subject lines: 5-6 words, problem-framed, domain-specific | No clickbait, no "Quick question" for email |
+| EC3 | Subject lines: problem-framed (5-6 words) OR SMYKM personal (prospect detail + company, up to 8 words) | No clickbait, no "Quick question" for email |
 | EC4 | 1-2 question marks per email (can be more direct than InMail) | 2 Qs = 34.8% |
 | EC5 | No "circling back" or "following up on my last email" | Template-visible, triggers spam filters |
+| EC6 | SMYKM subject lines must reference a UNIQUE professional detail, not just title or company name | Title-only subjects ("QA Manager at Acme") fail the uniqueness test |
+| EC7 | SMYKM opener must be HC1-compliant: "We have yet to be properly introduced" or direct challenge observation. NEVER "I noticed/saw" | HC1: -13.4 pp differential still applies to email |
 
 ### 5-Touch 21-Day Email Cadence (Apollo Sequence)
 | Touch | Day | Type | Words | Purpose |
@@ -1956,6 +2024,10 @@ This section defines the email-only outreach cadence for use in Apollo sequences
 | EM-FU-2 | Capability Match | Touch 2-3 | Follow-up referencing specific capability for their stack |
 | EM-FU-3 | Industry Angle | Touch 4 | Follow-up with vertical-specific insight |
 | EM-FU-4 | Direct Ask | Touch 5 | Final touch, shortest, most direct |
+| **EM-SMYKM-1** | **SMYKM Maintenance** | **Touch 1** | **SMYKM structure: personal subject + challenge-narrative + maintenance pain** |
+| **EM-SMYKM-2** | **SMYKM Velocity** | **Touch 1** | **SMYKM structure: personal subject + challenge-narrative + release velocity pain** |
+| **EM-SMYKM-3** | **SMYKM Coverage** | **Touch 1** | **SMYKM structure: personal subject + challenge-narrative + coverage/scale pain** |
+| **EM-SMYKM-4** | **SMYKM Tool Migration** | **Touch 1** | **SMYKM structure: personal subject + challenge-narrative + tool migration pain (Selenium/TOSCA/Katalon)** |
 
 ### Email vs InMail Quick Reference
 | Dimension | InMail (Rob's Sequence) | Email (Team Sequence) |
@@ -1969,59 +2041,76 @@ This section defines the email-only outreach cadence for use in Apollo sequences
 | Stat framing | Reduction only | Reduction only (same) |
 | QA Gate | 14 checks, MQS >= 9/12 | Same standard applies |
 
-### Email Subject Line Patterns (Data-Backed)
-| Pattern | Example | When to Use |
-|---------|---------|-------------|
-| Problem-framed | "Regression eating release time?" | Test maintenance, velocity pain |
-| Outcome-framed | "3 fewer weeks of regression" | When you have a strong proof point match |
-| Question format | "What breaks first after the migration?" | Trigger event prospects |
-| Domain-specific | "QA coverage for the payments platform" | When you know their specific product |
+### Email Subject Line Patterns (Data-Backed + SMYKM)
+| Pattern | Example | When to Use | Structure |
+|---------|---------|-------------|-----------|
+| Problem-framed | "Regression eating release time?" | Test maintenance, velocity pain | Standard |
+| Outcome-framed | "3 fewer weeks of regression" | When you have a strong proof point match | Standard |
+| Question format | "What breaks first after the migration?" | Trigger event prospects | Standard |
+| Domain-specific | "QA coverage for the payments platform" | When you know their specific product | Standard |
+| **SMYKM Personal** | **"Namita's QA coverage at OverDrive"** | **When research yields a unique professional detail about the prospect (project, initiative, specific responsibility)** | **SMYKM** |
+| **SMYKM Event** | **"The Libby migration testing, Namita"** | **When prospect's company has a specific QA-relevant event (migration, launch, acquisition) you can tie to the person** | **SMYKM** |
 
-**Banned subject patterns:** "Quick question" (overused in email), "Following up" (spam filter trigger), anything over 8 words, clickbait ("You won't believe..."), all-caps words.
+**SMYKM Subject Line Rules:**
+- Must reference something UNIQUE about the prospect professionally, not just their title
+- Can include their first name (increases personal feel)
+- Can reference a specific project, product, migration, or initiative they own
+- Up to 8 words allowed (longer than Standard's 5-6 to accommodate personal detail)
+- A/B test SMYKM vs Standard subjects within each batch. Track open rates and reply rates by subject pattern.
+
+**Banned subject patterns:** "Quick question" (overused in email), "Following up" (spam filter trigger), anything over 8 words, clickbait ("You won't believe..."), all-caps words, title-only references ("QA Manager at Acme"), lifestyle/personal references ("Fellow dog lover").
 
 ---
 
-## Master Send Log (Updated Feb 28)
+## Master Send Log (Updated Mar 2)
 
 ### Lifetime Send Totals
 | Date | Batch | Sends | Cumulative |
 |------|-------|-------|------------|
 | Feb 13 | Earlier batches | 8 | 8 |
-| Feb 25 | Batch 3 (pilot: Irfan, Katie) | 2 | 10 |
-| Feb 26 (Wed) | Batch 3 (remaining 22) | 22 | 32 |
-| Feb 27 (Thu) | Batch 5B | 23 | 55 |
-| Feb 27 (Thu) | Batch 5A (partial: 5) | 5 | 60 |
+| Feb 25 (Tue) | Batch 3 (pilot: Irfan, Katie) | 2 | 10 |
+| Feb 26 (Thu) | Batch 3 (remaining 22) | 22 | 32 |
+| Feb 27 (Fri) | Batch 5B | 23 | 55 |
+| Feb 27 (Fri) | Batch 5A (partial: 5) | 5 | 60 |
 | Feb 28 (Sat) | Batch 5A (remaining 20) | 20 | 80 |
 | Feb 28 (Sat) | Batch 6 (all 27) | 27 | 107 |
 | Feb 28 (Sat) | Batch 7 (41 sent, 1 NOT FOUND) | 41 | 148 |
+| Mar 1 (Sun) | Overflow / additional sends | 7 | 155 |
 
 ### Pipeline Status
 | Category | Count |
 |----------|-------|
-| Total InMails sent (all time) | 148 |
-| Total Emails sent (all time) | 15 (6 premature Touch 3 on Feb 28 + 9 buyer intent on Feb 27) |
+| Total InMails sent (all time) | 155 (148 through Feb 28 + 7 on Mar 1) |
+| Total Emails sent (all time) | 16 (6 premature Touch 3 on Feb 28 + 9 buyer intent on Feb 27 + 1 Pallavi reply Mar 2) |
 | Blocked (Terene Lee, messaging disabled) | 1 |
-| DNC (Sanjay Singh) | 1 |
+| DNC (Sanjay Singh, Lance Silverman) | 2 |
 | Not applicable (Batch 3 unused slot) | 1 |
 | Skipped NOT FOUND (Jonathan Lavoie, Batch 7) | 1 |
 | **Unsent prospects remaining** | **0** |
-| InMail credits remaining | ~24 |
+| InMail credits remaining | 67 (verified via Sales Navigator Mar 2) |
 | Apollo contacts created (all batches) | ~144+ (Batches 5A/5B/6/7 + buyer intent) |
 | Enrolled in Q1 Priority Accounts | 144 active at Step 1 |
 | Enrolled in Q1 Website Visitor | 9 (buyer intent emails) |
 | Batch 3 Apollo status | PENDING — need contact creation + enrollment |
 
-### Email Send History (Feb 27-28)
+### Email Send History (Feb 27 - Mar 2)
 | Date | Time | Recipients | Type | Status |
 |------|------|-----------|------|--------|
 | Feb 27 | ~1:30 PM | Andy Nelsen, Jose Moreno, Tom Yang, Eyal Luxenburg, Hibatullah Ahmed, Jeff Barnes, Eduardo Menezes, Todd Willms, Jason Ruan | Buyer Intent Touch 1 Email | SENT (used identical template, HC1 violations, needs C2 rewrite for future) |
 | Feb 28 | 6:30-6:33 AM | Irfan Syed, Katie Hotard, Rachana Jagetia, Giang Hoang, Pallavi Sheshadri, Gunasekaran Chandrasekaran | PREMATURE Touch 3 Email | SENT IN ERROR (see INC-001). 4 Batch 3 + 2 orphans. 7-8 days early, skipped Touch 2. |
 | Feb 28 | ~2:54 PM | Sergey Matetskiy, Mobin Thomas, Dino Gambone, Matthew Smith, Joshua Greig, Pete Draheim | Touch 3 Draft | NOT SENT (saved as drafts, old templates, premature). DELETE these drafts. |
+| Mar 2 | 12:41 PM | Pallavi Sheshadri | In-thread reply (warm lead follow-up) | SENT via Gmail UI. Reply to her response to premature Touch 3. Hansard proof point, "what day works" CTA. |
+
+### InMail Send History — Sunday Mar 1 Overflow
+The following 7 InMails were confirmed sent on Sunday Mar 1 via Sales Navigator inbox verification (Mar 2):
+Ron Trachman, Laurie Nielsen, Alan Gutherz, Derek Stanley, Nihal Elsayed, Sarah Kluivert, Kanda Kaliappan.
+Batch origin TBD (likely Batch 7 overflow or additional sends). All confirmed via Sales Navigator "Sun" day label.
 
 ### Do Not Contact List
 | Name | Company | Reason | Date Added |
 |------|---------|--------|------------|
 | Sanjay Singh | ServiceTitan | Hostile reply to prior outreach (2022 mabl era) | 2026-02-27 |
+| Lance Silverman | (Batch 5B) | Polite decline: "Thanks for reaching out, but I'm not interested." Replied Sat Mar 1 to Touch 1 InMail. No follow-up. Re-engage only after 60+ days with new trigger. | 2026-03-01 |
 
 ---
 
@@ -2100,28 +2189,32 @@ When Rob says any trigger phrase, Claude executes the full 5-phase daily outreac
 
 ---
 
-## Follow-Up Schedule (Computed from Send Dates)
+## Follow-Up Schedule (Computed from Send Dates — Updated Mar 2)
 
 Based on actual Touch 1 send dates and the 3-touch cadence (Day 5 = Touch 2, Day 10 = Touch 3):
 
 | Batch | Touch 1 Sent | Touch 2 Eligible | Touch 2 Send | Touch 3 Eligible | Touch 3 Send |
 |-------|-------------|-----------------|-------------|-----------------|-------------|
-| Batch 3 (24) | Feb 25-26 | Mar 1-2 | Mar 2-3 | Mar 6-7 | Mar 7-8 |
-| Batch 5B (23) | Feb 27 | Mar 3 | Mar 4 | Mar 8 | Mar 9 |
-| Batch 5A (25) | Feb 27-28 | Mar 3-4 | Mar 4-5 | Mar 8-9 | Mar 9-10 |
-| Batch 6 (27) | Feb 28 | Mar 4 | Mar 5 | Mar 9 | Mar 10 |
-| Batch 7 (41) | Feb 28 | Mar 4 | Mar 5 | Mar 9 | Mar 10 |
-| Buyer Intent (9) | Feb 27 (email) | Mar 3 | Mar 4 | Mar 8 | Mar 9 |
+| Batch 3 (24) | Feb 25-26 (Tue-Thu) | Mar 1-2 | Mar 2-3 (Mon-Tue) | Mar 6-7 | Mar 7-8 (Sat-Sun) |
+| Batch 5B (23) | Feb 27 (Fri) | Mar 3 | Mar 4 (Wed) | Mar 8 | Mar 9 (Mon) |
+| Batch 5A (25) | Feb 27-28 (Fri-Sat) | Mar 3-4 | Mar 4-5 (Wed-Thu) | Mar 8-9 | Mar 9-10 (Mon-Tue) |
+| Batch 6 (27) | Feb 28 (Sat) | Mar 4 | Mar 5 (Thu) | Mar 9 | Mar 10 (Tue) |
+| Batch 7 (41) | Feb 28 (Sat) | Mar 4 | Mar 5 (Thu) | Mar 9 | Mar 10 (Tue) |
+| Mar 1 overflow (7) | Mar 1 (Sun) | Mar 5 | Mar 6 (Fri) | Mar 10 | Mar 11 (Wed) |
+| Buyer Intent (9) | Feb 27 (email) | Mar 3 | Mar 4 (Wed) | Mar 8 | Mar 9 (Mon) |
 
 **Special cases (premature Touch 3 from INC-001):**
 - Irfan, Katie, Rachana, Giang: Touch 3 already sent (Feb 28). Skip official Touch 3. Touch 2 InMail still due on schedule.
-- Pallavi, Gunasekaran: Need to be added to tracker. Touch 2 follow-up TBD after research.
+- Pallavi Sheshadri: Replied to premature Touch 3 email. Rob sent follow-up reply Mar 2 at 12:41 PM via Gmail. Now tracked as warm lead. See Active Warm Leads section.
+- Gunasekaran Chandrasekaran: Orphan from INC-001. Needs tracker entry and Touch 2 follow-up research.
 
-**Week of Mar 2-6 workload estimate:**
-- ~24 Touch 2 InMails due (Batch 3)
-- ~89 Touch 2 InMails due Mar 4-5 (Batches 5A, 5B, 6, 7)
-- **Total Touch 2 volume: ~113 InMails across the week**
-- InMail credits remaining: ~24 → CRITICAL SHORTFALL. Need to prioritize Hot/Warm only for Touch 2 InMails, use email for the rest.
+**Week of Mar 2-7 workload estimate:**
+- **TODAY Mon Mar 2:** ~24 Batch 3 Touch 2 InMails eligible (sent Feb 25-26). Monday is worst send day (22.9%), consider drafting today and sending Tue.
+- **Wed Mar 4:** ~23 Batch 5B Touch 2 InMails + ~5 Batch 5A partial Touch 2s + 9 Buyer Intent email follow-ups
+- **Thu Mar 5:** ~20 Batch 5A remaining + ~27 Batch 6 + ~41 Batch 7 Touch 2 InMails (PEAK DAY, ~88 prospects)
+- **Fri Mar 6:** ~7 Mar 1 overflow Touch 2 InMails
+- **Total Touch 2 volume this week: ~142 InMails + 9 email follow-ups**
+- InMail credits remaining: **67** (verified Mar 2 via Sales Navigator). Sufficient for Hot/Warm priority Touch 2s. Will need to triage, not all 142 prospects can get InMail Touch 2 with 67 credits. Prioritize by priority score (Hot/Warm first), use email for remaining.
 
 ## currentDate
-Today's date is 2026-03-01.
+Today's date is 2026-03-02.

@@ -1,8 +1,8 @@
 # Testsigma BDR Outreach Template Library
-**Last Updated:** Feb 27, 2026
-**Based on:** 1,326 LinkedIn conversations + 91-prospect pilot batches + email sequence analysis
+**Last Updated:** Mar 2, 2026
+**Based on:** 1,326 LinkedIn conversations + 91-prospect pilot batches + email sequence analysis + Sam McKenna SMYKM methodology
 **Quality Standard:** All templates meet QA Gate (MQS >= 9/12)
-**Version:** 2.0 — Full rewrite aligned to Outbound Intelligence System data
+**Version:** 2.1 — Added SMYKM (Show Me You Know Me) email templates, challenge-narrative structure, personal subject line patterns
 
 ---
 
@@ -29,7 +29,7 @@ Templates are organized by:
 |---|-----------|------|
 | HC1 | No "I noticed" / "I saw" / "I see" | -13.4 pp |
 | HC2 | No leading with AI/ML/self-healing as headline | -9.2 pp |
-| HC3 | InMail: max 120 words. Email Touch 1: max 100 words. Follow-ups: max 70 words | 75-99w = 39.0% |
+| HC3 | InMail: max 120 words. Email Touch 1 Standard: max 100 words. Email Touch 1 SMYKM: max 120 words. Follow-ups: max 70 words | 75-99w = 39.0% |
 | HC4 | No evening sends (after 6 PM) | 12.1% vs 56.5% at lunch |
 | HC5 | No bullet-point or numbered-list feature dumps | -2.2 pp |
 | HC6 | No "would it be unreasonable" as CTA | 12.8% |
@@ -64,6 +64,8 @@ Templates are organized by:
 - Reduction framing only: "cut by 50%", "3 fewer weeks." Never "3X faster."
 - Close must: (a) reference proof point outcome, (b) use "what day works," (c) tie to their situation.
 - No generic closes ("Worth comparing notes?", "Worth a quick chat?").
+- **Email subject lines (SMYKM option):** For email channel, can use SMYKM personal subjects that reference a unique professional detail about the prospect + company name (up to 8 words). InMail subjects stay domain/problem-focused (3-6 words).
+- **Email structure (SMYKM option):** For email channel, can use challenge-narrative format: embed proof point inside a challenge description instead of standalone. Word count ceiling 120 for SMYKM structure.
 
 ---
 
@@ -393,11 +395,14 @@ Rob
 # EMAIL TEMPLATES (Touch 3+, Apollo Sequences)
 
 **Email vs InMail differences:**
-- Shorter: 60-100 words (Touch 1), 40-70 words (follow-ups)
-- Subject line: 5-6 words, problem-framed (not "Re:")
+- Shorter: 60-100 words (Touch 1 Standard), 80-110 words (Touch 1 SMYKM), 40-70 words (follow-ups)
+- Subject line: Standard = 5-6 words, problem-framed. SMYKM = prospect detail + company name, up to 8 words.
 - Tone: Slightly more direct
 - No "circling back from InMail" references (treat as fresh channel)
 - Same "what day works" CTA rules apply
+- **Two structures available:** Standard (problem → context → proof → close) OR SMYKM challenge-narrative (personal opener → challenge with embedded proof → close). Choose per prospect based on research depth.
+- **SMYKM opener options (HC1-compliant):** "We have yet to be properly introduced, but I'm Rob with Testsigma." OR lead directly with challenge observation.
+- **Source:** Sam McKenna's SMYKM methodology (43% open rate, 20% reply rate vs industry avg 6% / 0.9%)
 
 ---
 
@@ -507,6 +512,100 @@ With the QA team growing, is the plan to scale testing with headcount, or is aut
 Scaling QA usually means test demand outpaces capacity faster than you can hire. Spendflo went through something similar and cut manual testing by 50% in one quarter using Testsigma.
 
 If cutting manual testing in half would help the team scale without doubling headcount, what day works for a quick look?
+
+Rob
+```
+
+---
+
+## SMYKM EMAIL TEMPLATES (Challenge-Narrative Structure)
+
+**When to use:** When research yields a specific, unique professional detail about the prospect (project they led, product they own, initiative they're driving). If you only have generic company facts, use Standard templates (EM-1 through EM-5) instead.
+
+**Structure:** SMYKM personal subject → HC1-compliant warm opener → Challenge description with embedded proof point → "What day works" close tied to outcome.
+
+### EM-SMYKM-1: SMYKM Test Maintenance Pain
+**Persona:** QA Manager/Lead, Director
+**Vertical:** All
+**Proof Point:** Hansard 8 → 5 weeks
+**Word Count:** 95 | **MQS:** 11/12
+
+```
+Subject: [Name]'s [specific_QA_scope] at [Company]
+
+Hi [Name],
+
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+The challenge most teams hit when owning test coverage across [their_specific_platform] is that maintenance eats the capacity meant for new work. Every UI change means broken locators and manual fixes. Hansard was dealing with the same thing and cut regression from 8 to 5 weeks after moving to auto-healing.
+
+If 3 fewer weeks of regression would help [their_situation], what day works for a quick look at how they did it?
+
+Rob
+```
+
+---
+
+### EM-SMYKM-2: SMYKM Release Velocity Pain
+**Persona:** Director/QA Lead
+**Vertical:** FinTech, SaaS
+**Proof Point:** Sanofi 3 days → 80 minutes
+**Word Count:** 88 | **MQS:** 11/12
+
+```
+Subject: [Name]'s regression cycles at [Company]
+
+Hi [Name],
+
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+The challenge teams shipping [their_product] run into is regression cycles growing as the platform grows. What used to take hours starts taking days. Sanofi hit the same wall and cut regression from 3 days to 80 minutes once they moved to Testsigma.
+
+What day works to see how they did it without slowing down [their_release_cadence]?
+
+Rob
+```
+
+---
+
+### EM-SMYKM-3: SMYKM Coverage / Scale Pain
+**Persona:** Architect, Sr SDET, QA Manager
+**Vertical:** E-Commerce, Healthcare
+**Proof Point:** Medibuddy 2,500 tests + 50% cut
+**Word Count:** 92 | **MQS:** 11/12
+
+```
+Subject: Scaling QA coverage for [their_product], [Name]
+
+Hi [Name],
+
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+The challenge when [their_platform] scales as fast as it has is that test coverage can't keep up. Manual testing fills the gap until it can't, and things start breaking in production. Medibuddy was in that spot and automated 2,500 tests while cutting manual effort by 50% using plain English test authoring.
+
+If halving manual testing before [their_deadline] sounds useful, what day works for a quick look?
+
+Rob
+```
+
+---
+
+### EM-SMYKM-4: SMYKM Tool Migration Pain
+**Persona:** All QA personas
+**Vertical:** Teams on Selenium/Cypress/Provar/TOSCA
+**Proof Point:** 70% maintenance reduction vs Selenium
+**Word Count:** 98 | **MQS:** 10/12
+
+```
+Subject: [Name]'s [CurrentTool] stack at [Company]
+
+Hi [Name],
+
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+The challenge teams running [CurrentTool] keep hitting is that every time the UI changes, locators break and someone has to fix them manually. The time spent on upkeep grows faster than the time spent writing new tests. Teams making the switch to Testsigma's auto-healing have cut that maintenance by 70%.
+
+If 70% less [CurrentTool] upkeep would free your team for [their_priority], what day works for a quick compare?
 
 Rob
 ```
@@ -725,15 +824,23 @@ Rob
 
 # SUBJECT LINE PATTERNS
 
-## By Pain Hook (5-6 words for email, 3-6 for InMail)
-| Pain Hook | InMail Subject | Email Subject |
-|-----------|---------------|---------------|
-| Maintenance | "Test upkeep eating sprint capacity" | "Test upkeep slowing releases" |
-| Velocity | "Regression cycles at [Company]" | "Regression blocking releases" |
-| Coverage | "Coverage gap at [Company]" | "Coverage gap across [their_platforms]" |
-| Tool Migration | "[Tool] upkeep vs [priority]" | "[Tool] upkeep vs [priority]" |
-| Trigger | "QA during [event]" | "QA during [trigger_event]" |
-| Compliance | "Compliance testing at [Company]" | "HIPAA validation cycles at [Company]" |
+## By Pain Hook (InMail: 3-6 words, Email Standard: 5-6 words, Email SMYKM: up to 8 words)
+| Pain Hook | InMail Subject | Email Subject (Standard) | Email Subject (SMYKM) |
+|-----------|---------------|------------------------|----------------------|
+| Maintenance | "Test upkeep eating sprint capacity" | "Test upkeep slowing releases" | "[Name]'s [QA_scope] at [Company]" |
+| Velocity | "Regression cycles at [Company]" | "Regression blocking releases" | "[Name]'s regression cycles at [Company]" |
+| Coverage | "Coverage gap at [Company]" | "Coverage gap across [their_platforms]" | "Scaling QA coverage for [product], [Name]" |
+| Tool Migration | "[Tool] upkeep vs [priority]" | "[Tool] upkeep vs [priority]" | "[Name]'s [Tool] stack at [Company]" |
+| Trigger | "QA during [event]" | "QA during [trigger_event]" | "The [event] testing, [Name]" |
+| Compliance | "Compliance testing at [Company]" | "HIPAA validation cycles at [Company]" | "[Name]'s compliance testing at [Company]" |
+
+**SMYKM Subject Line Rules:**
+- Must reference something UNIQUE about the prospect professionally (not just title or company name)
+- Can include first name for personal feel
+- Can reference specific project, product, migration, or initiative they own
+- Up to 8 words allowed
+- A/B test SMYKM vs Standard subjects within each batch. Track open + reply rates by pattern.
+- **Banned:** Title-only subjects ("QA Manager at Acme"), lifestyle references ("Fellow dog lover")
 
 ---
 
@@ -749,7 +856,7 @@ Rob
 ## Email-Only (5-Touch, Apollo sequences for team use)
 | Touch | Day | Words | Description |
 |-------|-----|-------|-------------|
-| 1 | Day 1 | 70-90 | Full email, EM-1 through EM-5 templates |
+| 1 | Day 1 | 70-90 (Standard) or 80-110 (SMYKM) | Full email: EM-1 through EM-5 (Standard) OR EM-SMYKM-1 through EM-SMYKM-4 (SMYKM) |
 | 2 | Day 5 | 40-70 | Re: thread, new angle (EM-FU-1) |
 | 3 | Day 10 | 50-70 | Fresh subject, different angle (EM-FU-2) |
 | 4 | Day 15 | 40-60 | Value-add, optional (EM-FU-3) |
@@ -772,8 +879,9 @@ Rob
 4. **CTA Validation:** "What day works" + proof point outcome + prospect's situation. Not generic.
 5. **Proof Point Present:** Customer story or stat with specific number.
 6. **Reduction Framing:** "cut by X%" not "X times faster."
-7. **Subject Line:** InMail: 3-6 words. Email: 5-6 words, problem-framed.
+7. **Subject Line:** InMail: 3-6 words. Email Standard: 5-6 words, problem-framed. Email SMYKM: up to 8 words, must reference unique professional detail + company name.
 8. **Paragraph Spacing:** 4+ breaks. No paragraph over 3 sentences.
+8a. **SMYKM Validation (email only):** If using SMYKM structure, verify: subject references unique professional detail (not just title), opener is HC1-compliant ("We have yet to be properly introduced" or challenge observation, NEVER "I noticed/saw"), proof point is embedded in challenge-narrative format.
 9. **Hyphen Audit:** Max 1 hyphen in body. No mid-sentence dashes.
 10. **Toxic Phrase Scan:** No "I noticed," "flaky tests," "I figure," etc.
 11. **Angle Rotation:** Each touch in sequence uses different proof point.
