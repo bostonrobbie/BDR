@@ -6,3 +6,8 @@ BDR-backup/
 # Local config & deploy
 .env*
 .vercel/
+
+# Local SQLite artifacts
+*.db
+*.db-shm
+*.db-wal
