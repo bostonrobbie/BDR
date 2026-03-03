@@ -11,7 +11,9 @@ memory/
 ├── losses/            # Structured loss reports. Why they didn't convert, what we learn.
 ├── call-notes/        # Post-call capture. What the prospect said about stack, pain, timeline.
 ├── market-intel/      # Industry trends, analyst mentions, competitor moves.
-└── context/           # Sales playbook, persona guides, evergreen reference material.
+├── context/           # Sales playbook, persona guides, evergreen reference material.
+├── sop-outreach.md    # LinkedIn-only outreach SOP.
+└── sop-email.md       # Email-only outreach SOP.
 ```
 
 ## How Agents Use This

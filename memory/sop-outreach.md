@@ -1,4 +1,9 @@
-# Outreach SOP — Message Drafting & Research
+# LinkedIn Outreach SOP — Message Drafting & Research
+
+## Scope
+- This SOP is **LinkedIn-only** (InMail + LinkedIn follow-up touches).
+- Do not apply this SOP to email drafting or email sends.
+- Email process lives in `memory/sop-email.md` and should be run independently.
 
 ## Writing Style Rules
 - **NO em dashes (—).** Use commas or short hyphens (-) only. Prefer commas.
@@ -53,7 +58,7 @@ Close patterns (rotate across batch):
 - "If getting [specific number] back in your [their process] would help, what day works for a quick chat?"
 
 ### Message Elements (5 parts, invisible as structure)
-1. **Subject line** (3-6 words InMail, 5-8 words email) — domain or QA-situation reference
+1. **Subject line** (3-6 words for InMail) — domain or QA-situation reference
 2. **Opener** (1-2 lines) — Start with a QA situation question. Not company facts or background.
 3. **Context** (1-2 lines) — One direct sentence explaining why this matters. No filler.
 4. **Proof point** (0-1 lines) — ONE verified customer example with real numbers. Mention Testsigma once.
@@ -69,18 +74,17 @@ Before sending, check for:
 - 2+ hyphens as mid-sentence dashes
 - No paragraph breaks between sections
 
-## 3-Touch Sequence
-Every prospect gets 3 touches across 2 channels:
+## 2-Touch LinkedIn Sequence
+Every prospect gets 2 LinkedIn touches in this SOP:
 
 **Day 1 — Touch 1 (LinkedIn InMail):** Full 5-element message, 80-120 words.
 **Day 5 — Touch 2 (LinkedIn InMail Follow-up):** 40-70 words, new angle/proof point, lighter close.
-**Day 10 — Touch 3 (Email):** 60-100 words if email available. Fresh approach, different proof point.
 
 Rules:
 - Each touch uses a DIFFERENT proof point/angle
 - Touch 2 doesn't need full 5-element structure
-- If no email, sequence ends after Touch 2
 - No break-up message
+- If an email touch is needed later, switch to `memory/sop-email.md` and run that SOP separately
 
 ## Research Requirements (3 Sources Per Prospect)
 
@@ -118,6 +122,30 @@ Tag each research bullet with which message element it feeds.
 Single HTML file with: prospect tracker table (sorted by priority), individual prospect cards with copy-paste messages for all touches, "Copy Message" and "Copy Subject" buttons, predicted objection + response, status dropdowns, reply tags, A/B groups, personalization scores, priority scores, color-coded badges, priority filter.
 
 Filename: `prospect-outreach-[batch#]-[date].html`
+
+
+## LinkedIn Live Send Procedure (Manual)
+1. Open Sales Navigator profile from tracker.
+2. Run dedup check using composer-first method (blank "New message" = clean).
+3. Verify identity: name/title/company alignment.
+4. Paste approved InMail exactly, preserving paragraph breaks.
+5. Run final QA (2 question marks, no placeholders, CTA present).
+6. Pause for explicit approval before any send action.
+7. After send, log status + date + conversation URL in LinkedIn tracker.
+
+## Data & Tracking (LinkedIn DB)
+LinkedIn records are isolated in the LinkedIn database:
+- **DB path:** `api/data/outreach_linkedin.db`
+- Typical objects to audit: contacts, message drafts, touchpoints, replies, activity timeline
+- Keep LinkedIn operational metrics and logs in this channel DB only
+
+If database bootstrap/reset is needed, run:
+```bash
+python scripts/init_isolated_channel_dbs.py \
+  --source api/data/outreach_seed.db \
+  --email-db api/data/outreach_email.db \
+  --linkedin-db api/data/outreach_linkedin.db
+```
 
 ## Common Pitfalls
 - Don't send messages (Rob copy/pastes manually)

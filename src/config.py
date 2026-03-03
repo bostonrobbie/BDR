@@ -21,6 +21,8 @@ LOGS_DIR = os.path.join(PROJECT_ROOT, "logs")
 # ─── DATABASE ────────────────────────────────────────────────
 
 DB_PATH = os.environ.get("OCC_DB_PATH", os.path.join(PROJECT_ROOT, "outreach.db"))
+DB_EMAIL_PATH = os.environ.get("OCC_DB_EMAIL_PATH", os.path.join(PROJECT_ROOT, "api/data/outreach_email.db"))
+DB_LINKEDIN_PATH = os.environ.get("OCC_DB_LINKEDIN_PATH", os.path.join(PROJECT_ROOT, "api/data/outreach_linkedin.db"))
 DB_JOURNAL_MODE = os.environ.get("OCC_JOURNAL_MODE", "WAL")
 
 # ─── LLM ─────────────────────────────────────────────────────
@@ -102,6 +104,8 @@ def print_config():
     print("BDR Configuration")
     print("=" * 50)
     print(f"  DB_PATH:              {DB_PATH}")
+    print(f"  DB_EMAIL_PATH:        {DB_EMAIL_PATH}")
+    print(f"  DB_LINKEDIN_PATH:     {DB_LINKEDIN_PATH}")
     print(f"  DB_JOURNAL_MODE:      {DB_JOURNAL_MODE}")
     print(f"  OLLAMA_HOST:          {OLLAMA_HOST}")
     print(f"  OLLAMA_MODEL:         {OLLAMA_MODEL}")
