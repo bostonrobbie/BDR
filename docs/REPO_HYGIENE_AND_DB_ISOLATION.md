@@ -39,3 +39,7 @@ python scripts/init_isolated_channel_dbs.py \
 - Email SOP: `memory/sop-email.md`
 
 These SOPs are now explicitly channel-scoped and should be executed independently.
+
+
+## Operational runbook
+- DB write/update process for Apollo + local DB sync: `docs/DB_UPDATE_RUNBOOK.md`

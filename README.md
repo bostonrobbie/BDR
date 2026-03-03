@@ -68,6 +68,7 @@ open src/ui/dashboard.html
 - [Agent Swarm](docs/AGENT_SWARM.md) - Agent roles, communication, safety
 - [Roadmap](docs/ROADMAP.md) - MVP → v1 → v2 build plan
 - [Repo Hygiene + DB Isolation](docs/REPO_HYGIENE_AND_DB_ISOLATION.md) - cleanup policy and channel-separated SQLite setup
+- [DB Update Runbook](docs/DB_UPDATE_RUNBOOK.md) - required Apollo + local DB write steps for each outreach event
 
 ## Channel-Isolated Databases
 

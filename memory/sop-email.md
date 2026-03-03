@@ -44,6 +44,36 @@ Rules:
 6. Update email tracker status and notes.
 7. Monitor bounce/reply/engagement and queue next touch.
 
+## Apollo + Local DB Update Procedure (Required)
+Every completed email action must update BOTH systems in this order:
+
+1. **Apollo update (source of sequence truth)**
+   - Complete/send from Apollo task queue.
+   - Confirm contact advanced to next step (or marked complete/stopped).
+   - If not advancing, add a disposition note (blocked/bounce/manual hold).
+2. **Local DB update (internal analytics + audit)**
+   - Insert/update contact status and stage in local email DB.
+   - Log touch event with channel=`email`, touch number, state, and timestamp.
+   - Store/refresh draft metadata and final sent version reference.
+   - Log reply/bounce outcomes as they arrive.
+   - Append activity timeline entry for each material action.
+
+### Minimum fields to track per email send
+- contact identifier (id + email)
+- channel (`email`)
+- touch number
+- message/draft id
+- send state (`queued`/`sent`/`failed`/`bounced`)
+- sent timestamp
+- Apollo sequence/task reference
+- owner/operator
+- next-step due date
+
+### Reconciliation check (end of run)
+- Apollo sent count == Local DB sent count for this run window.
+- Apollo stopped/paused contacts are reflected in local status.
+- Any mismatch gets logged as `sync_gap` in run notes and fixed before close.
+
 ## Data & Tracking (Email DB)
 Email records are isolated in the email database:
 - **DB path:** `api/data/outreach_email.db`
@@ -61,6 +91,8 @@ python scripts/init_isolated_channel_dbs.py \
 ## Exit Checklist (Email Run)
 - [ ] All pending tasks processed or explicitly deferred with reason.
 - [ ] All sent emails reflected in Apollo activity.
+- [ ] All sent emails reflected in local email DB activity/touch logs.
+- [ ] Apollo and local DB counts reconciled for the run window.
 - [ ] Tracker updated with sent date + next touch date.
 - [ ] Bounce/reply exceptions logged.
 - [ ] No LinkedIn statuses or IDs used in email tracking fields.

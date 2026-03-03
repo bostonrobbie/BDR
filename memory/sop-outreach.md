@@ -133,6 +133,35 @@ Filename: `prospect-outreach-[batch#]-[date].html`
 6. Pause for explicit approval before any send action.
 7. After send, log status + date + conversation URL in LinkedIn tracker.
 
+## Apollo + Local DB Update Procedure (Required)
+Every LinkedIn touch must be logged in BOTH systems so sequence context and reporting stay aligned:
+
+1. **Apollo update (campaign context + ownership visibility)**
+   - Update contact status/disposition in Apollo after each LinkedIn touch.
+   - Add note for outcome (sent, replied, no-response, do-not-contact, role mismatch).
+   - If contact should move to email sequence, queue/assign that next action in Apollo.
+2. **Local DB update (channel analytics + audit trail)**
+   - Record LinkedIn touch in local DB with channel=`linkedin` and touch number.
+   - Update message draft/touch state (`drafted`/`sent`/`replied`/`blocked`).
+   - Log reply intent and attribution when replies come in.
+   - Append activity timeline entry for each send/reply/disposition action.
+
+### Minimum fields to track per LinkedIn touch
+- contact identifier (id + linkedin_url)
+- channel (`linkedin`)
+- touch number
+- message/draft id
+- state (`drafted`/`sent`/`replied`/`blocked`)
+- timestamp
+- Apollo note/disposition reference
+- owner/operator
+- next action + due date
+
+### Reconciliation check (end of run)
+- LinkedIn sends/replies in tracker == Local LinkedIn DB touch/reply logs.
+- Apollo disposition notes exist for every completed LinkedIn send.
+- Any mismatch is flagged as `sync_gap` and fixed before run close.
+
 ## Data & Tracking (LinkedIn DB)
 LinkedIn records are isolated in the LinkedIn database:
 - **DB path:** `api/data/outreach_linkedin.db`
@@ -149,6 +178,7 @@ python scripts/init_isolated_channel_dbs.py \
 
 ## Common Pitfalls
 - Don't send messages (Rob copy/pastes manually)
+- Don't update only Apollo or only local DB, both must be updated each touch
 - NEVER write "I noticed" or "I saw" in ANY message
 - Don't include 2+ prospects from same company per batch
 - Don't use VPs/C-level without strong signal (11.9% / 9.1% reply rates)
