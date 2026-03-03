@@ -153,3 +153,4 @@ Every prospect gets a 3-touch sequence. No cold calls. Claude drafts, Rob sends.
 | `/reply-handle` | Triage and respond to prospect replies | `outbound-intelligence.md` (reply patterns) |
 | `/pre-brief` | Analyze past batches before building new one | `results.json`, `pipeline-state.json` |
 | `/score-message` | Run QA gate on a draft message | `outbound-intelligence.md` (HC, MQS, QA Gate) |
+| `/log-reply` | Record a reply and update the feedback loop | `reply-log.csv`, `results.json`, `pipeline-state.json` |

@@ -61,19 +61,29 @@ For EACH prospect:
 - Subject: 5-6 words, problem-framed
 - Can be more direct than InMail
 
-### Step 6: QA every message
-Run every message through the QA gate (all 14 checks from `.claude/rules/outbound-intelligence.md`):
-- Hard Constraint scan (HC1-HC10)
-- MQS >= 9/12
+### Step 6: QA every message (HARD GATE — no exceptions)
+**Every Touch 1 message MUST pass automated scoring before being included in the deliverable.**
+
+For each Touch 1 message, run:
+```bash
+python scripts/score_message.py "FULL_MESSAGE_TEXT_HERE"
+```
+
+This returns an MQS score (0-12) with dimension breakdown and HC violation flags.
+
+**Gate rules:**
+- MQS >= 9/12 → PASS. Include in deliverable.
+- MQS 7-8 → REWRITE. Fix the flagged dimensions, re-score until >= 9.
+- MQS < 7 → REJECT. Start from scratch with a new angle.
+- Any HC violation (HC1-HC10) → auto-fail regardless of score. Fix the violation first.
+
+After automated scoring, also manually verify these batch-level checks:
 - Proof point rotation (no same proof point twice per prospect)
 - Opener variety (no more than 3 similar openers in the batch)
-- Phrase toxicity scan
 - CTA validation ("what day works" tied to proof point)
-- Hyphen audit (max 1 in body)
-- Paragraph spacing (4+ breaks)
 - Close structure dedup (no identical close structures in batch)
 
-Use: `python scripts/score_message.py --text "MESSAGE_TEXT"` for automated scoring.
+**Do NOT skip the automated scoring step.** If the script errors, fall back to manual MQS scoring using the 4-dimension rubric in `.claude/rules/outbound-intelligence.md`.
 
 ### Step 7: Generate deliverable
 Save output as a copy-paste-ready file in `work/batch-[N]-outreach.md` with:

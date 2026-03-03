@@ -1,21 +1,23 @@
 {
   "last_updated": "2026-03-03",
   "batches_analyzed": 0,
-  "total_prospects_contacted": 0,
+  "total_prospects_contacted": 148,
   "total_replies": 0,
   "overall_reply_rate": 0.0,
+  "positive_replies": 0,
   "meetings_booked": 0,
   "by_persona": {},
   "by_vertical": {},
   "by_proof_point": {},
   "by_personalization_score": {},
   "by_reply_tag": {},
+  "by_intent": {},
   "ab_test_results": [],
   "insights": {
-    "best_persona": "Not enough data yet",
-    "best_proof_point": "Not enough data yet",
-    "best_vertical": "Not enough data yet",
-    "best_pattern": "Not enough data yet",
-    "stop_doing": "Not enough data yet"
+    "best_persona": "Not enough data yet (0 replies, need 5+)",
+    "best_proof_point": "Not enough data yet (0 replies, need 5+)",
+    "best_vertical": "Not enough data yet (0 replies, need 5+)",
+    "best_pattern": "Not enough data yet (0 replies, need 5+)",
+    "stop_doing": "Not enough data yet (0 replies, need 5+)"
   }
 }

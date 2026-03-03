@@ -58,6 +58,20 @@
       "category": "legacy_enterprise",
       "threat_level": "low",
       "prevalence": "declining"
+    },
+    "provar": {
+      "file": "provar.md",
+      "aliases": ["provar", "provar automation", "provar testing"],
+      "category": "commercial",
+      "threat_level": "medium",
+      "prevalence": "salesforce_niche"
+    },
+    "accelq": {
+      "file": "accelq.md",
+      "aliases": ["accelq", "accel q"],
+      "category": "commercial",
+      "threat_level": "medium",
+      "prevalence": "mid_market"
     }
   }
 }
