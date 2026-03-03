@@ -87,6 +87,8 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 |------|---------|--------|------|
 | Sanjay Singh | ServiceTitan | Hostile reply (2022 mabl era) | 2026-02-27 |
 | Lance Silverman | Batch 5B | Polite decline. Re-engage after 60+ days with new trigger. | 2026-03-01 |
+| Clyde Faulkner | CAMP Systems | mabl-era customer (2022). Had direct thread, knew Izzy. Skip permanently. | 2026-03-03 |
+| Ashok Prasad | ZL Technologies | mabl-era contact (Sep 2022). 2 messages sent, no reply. Skip permanently. | 2026-03-03 |
 
 ---
 
@@ -106,8 +108,8 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 | Total InMails sent (all time) | 198 |
 | Total Emails sent (all time) | 16 |
 | InMail credits remaining | 28 |
-| Apollo contacts in Q1 Priority Accounts | 185 active at Step 1 |
-| Current batch | Batch 8 COMPLETE (43/50 sent, 2 skipped, 3 NOT FOUND, 2 FREE) |
+| Apollo contacts in Q1 Priority Accounts | 281 active at Step 1, 285 total (+21 Batch 9 enrolled Mar 3) |
+| Current batch | Batch 9 ACTIVE (22 prospects, Touch 1 sending via Sales Nav. Clyde Faulkner + Ashok Prasad removed — mabl contacts.) |
 
 → Full send log, batch index, follow-up schedule: `memory/pipeline-state.md`
 

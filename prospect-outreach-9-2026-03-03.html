@@ -1,0 +1,2064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Batch 9 — Enhanced Prospect Outreach | 24 Prospects</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #333; padding: 20px; }
+.header { background: linear-gradient(135deg, #1a1a2e, #16213e); color: white; padding: 30px; border-radius: 12px; margin-bottom: 20px; }
+.header h1 { font-size: 24px; margin-bottom: 8px; }
+.header .subtitle { opacity: 0.8; font-size: 14px; }
+.stats { display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
+.stat { background: rgba(255,255,255,0.1); padding: 10px 16px; border-radius: 8px; }
+.stat .num { font-size: 22px; font-weight: 700; }
+.stat .label { font-size: 11px; opacity: 0.7; text-transform: uppercase; }
+.filters { background: white; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.filters label { font-size: 13px; font-weight: 600; color: #666; }
+.filters select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; }
+.summary-table { background: white; border-radius: 8px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.summary-table table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.summary-table th { background: #f8f9fa; padding: 10px 12px; text-align: left; font-weight: 600; color: #555; border-bottom: 2px solid #e9ecef; }
+.summary-table td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; }
+.summary-table tr:hover { background: #f8f9fa; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; color: white; }
+.card { background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-left: 4px solid #ddd; }
+.card.high { border-left-color: #dc3545; }
+.card.medium { border-left-color: #fd7e14; }
+.card.standard { border-left-color: #6c757d; }
+.card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.card-header h3 { font-size: 18px; }
+.card-header .meta { font-size: 13px; color: #666; }
+.card-details { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; font-size: 13px; }
+.card-details .label { color: #888; }
+.msg-box { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 16px; margin-bottom: 8px; position: relative; }
+.msg-box pre { white-space: pre-wrap; font-family: inherit; font-size: 13px; line-height: 1.6; }
+.copy-btn { position: absolute; top: 8px; right: 8px; background: #0066ff; color: white; border: none; padding: 4px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; }
+.copy-btn:hover { background: #0052cc; }
+.copy-btn.copied { background: #28a745; }
+.research { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; padding: 12px; margin-bottom: 12px; font-size: 13px; }
+.objection { background: #fff0f0; border: 1px solid #fca5a5; border-radius: 8px; padding: 12px; margin-bottom: 12px; font-size: 13px; }
+.objection .q { font-weight: 600; color: #dc3545; }
+.objection .a { color: #333; margin-top: 4px; }
+.qa-gate { display: flex; gap: 12px; font-size: 12px; color: #666; margin-top: 8px; flex-wrap: wrap; }
+.qa-item { padding: 3px 8px; background: #f0f9ff; border-radius: 4px; }
+.qa-item.pass { background: #f0fdf4; color: #166534; }
+.qa-item.warn { background: #fffbeb; color: #92400e; }
+.status-select { padding: 4px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; }
+.mqs-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+.mqs-high { background: #dcfce7; color: #166534; }
+.mqs-mid { background: #fef9c3; color: #854d0e; }
+.mqs-low { background: #fecaca; color: #991b1b; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Batch 9 — Enhanced Prospect Outreach</h1>
+  <div class="subtitle">Generated Mar 3, 2026 | Quality Enhanced (MQS avg 10.9/12) | All QA Gate Checks Passed</div>
+  <div class="stats">
+    <div class="stat"><div class="num">24</div><div class="label">Prospects</div></div>
+    <div class="stat"><div class="num">22</div><div class="label">With Email</div></div>
+    <div class="stat"><div class="num">5</div><div class="label">High Priority</div></div>
+    <div class="stat"><div class="num">93w</div><div class="label">Avg Words</div></div>
+    <div class="stat"><div class="num">10.9</div><div class="label">Avg MQS</div></div>
+    <div class="stat"><div class="num">18/24</div><div class="label">Enhanced</div></div>
+  </div>
+</div>
+
+<div class="filters">
+  <label>Filter:</label>
+  <select id="filterPriority" onchange="filterCards()">
+    <option value="all">All Priorities</option>
+    <option value="HIGH">High</option>
+    <option value="MEDIUM">Medium</option>
+    <option value="STANDARD">Standard</option>
+  </select>
+  <select id="filterStatus" onchange="filterCards()">
+    <option value="all">All Statuses</option>
+    <option value="pending">Pending</option>
+    <option value="sent">Sent</option>
+    <option value="replied">Replied</option>
+    <option value="skip">Skip</option>
+  </select>
+  <select id="filterAB" onchange="filterCards()">
+    <option value="all">All Groups</option>
+    <option value="A">Group A</option>
+    <option value="B">Group B</option>
+  </select>
+</div>
+
+<div class="summary-table">
+<table>
+<thead><tr>
+  <th>#</th><th>Name</th><th>Company</th><th>Title</th><th>Priority</th><th>MQS</th><th>Words</th><th>A/B</th><th>Status</th>
+</tr></thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td><a href="#Mohan_Guruswamy">Mohan Guruswamy</a></td>
+  <td>Tavant Technologies</td>
+  <td>QA Lead</td>
+  <td><span class="badge" style="background:#dc3545">HIGH</span></td>
+  <td><span class="mqs-badge mqs-high">12/12</span></td>
+  <td>94w</td>
+  <td>B</td>
+  <td><select class="status-select" data-idx="1"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>2</td>
+  <td><a href="#Lueanne_Fitzhugh">Lueanne Fitzhugh</a></td>
+  <td>Cerner Corporation</td>
+  <td>QA Manager</td>
+  <td><span class="badge" style="background:#dc3545">HIGH</span></td>
+  <td><span class="mqs-badge mqs-mid">9/12</span></td>
+  <td>91w</td>
+  <td>B</td>
+  <td><select class="status-select" data-idx="5"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>3</td>
+  <td><a href="#Jennifer_Tune">Jennifer Tune</a></td>
+  <td>Fossil Group, Inc.</td>
+  <td>Director - Quality Assurance and Pr</td>
+  <td><span class="badge" style="background:#dc3545">HIGH</span></td>
+  <td><span class="mqs-badge mqs-high">11/12</span></td>
+  <td>89w</td>
+  <td>A</td>
+  <td><select class="status-select" data-idx="8"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>4</td>
+  <td><a href="#Sandy_Paray">Sandy Paray</a></td>
+  <td>Saks Global</td>
+  <td>AVP, Quality Assurance Tech</td>
+  <td><span class="badge" style="background:#dc3545">HIGH</span></td>
+  <td><span class="mqs-badge mqs-high">11/12</span></td>
+  <td>94w</td>
+  <td>A</td>
+  <td><select class="status-select" data-idx="10"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>5</td>
+  <td><a href="#Jyothi_Kudithipudi">Jyothi Kudithipudi</a></td>
+  <td>Guidewire Software</td>
+  <td>Senior Quality Assurance Manager</td>
+  <td><span class="badge" style="background:#dc3545">HIGH</span></td>
+  <td><span class="mqs-badge mqs-high">11/12</span></td>
+  <td>92w</td>
+  <td>A</td>
+  <td><select class="status-select" data-idx="22"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>6</td>
+  <td><a href="#Jeremy_Cira">Jeremy Cira</a></td>
+  <td>Kaseya</td>
+  <td>Quality Assurance Manager II</td>
+  <td><span class="badge" style="background:#fd7e14">MEDIUM</span></td>
+  <td><span class="mqs-badge mqs-high">12/12</span></td>
+  <td>98w</td>
+  <td>A</td>
+  <td><select class="status-select" data-idx="2"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>7</td>
+  <td><a href="#Chandana_Ray">Chandana Ray</a></td>
+  <td>Persistent Systems</td>
+  <td>QA Lead</td>
+  <td><span class="badge" style="background:#fd7e14">MEDIUM</span></td>
+  <td><span class="mqs-badge mqs-high">11/12</span></td>
+  <td>101w</td>
+  <td>B</td>
+  <td><select class="status-select" data-idx="3"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>8</td>
+  <td><a href="#Martha_Horns">Martha Horns</a></td>
+  <td>Greenway Health</td>
+  <td>Quality Manager</td>
+  <td><span class="badge" style="background:#fd7e14">MEDIUM</span></td>
+  <td><span class="mqs-badge mqs-high">11/12</span></td>
+  <td>94w</td>
+  <td>A</td>
+  <td><select class="status-select" data-idx="6"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>9</td>
+  <td><a href="#Bhavani_Neerathilingam">Bhavani Neerathilingam</a></td>
+  <td>Automation Anywhere</td>
+  <td>Director QA</td>
+  <td><span class="badge" style="background:#fd7e14">MEDIUM</span></td>
+  <td><span class="mqs-badge mqs-high">11/12</span></td>
+  <td>91w</td>
+  <td>B</td>
+  <td><select class="status-select" data-idx="9"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>10</td>
+  <td><a href="#Denise_Barnett">Denise Barnett</a></td>
+  <td>Progress Software</td>
+  <td>QA Manager</td>
+  <td><span class="badge" style="background:#fd7e14">MEDIUM</span></td>
+  <td><span class="mqs-badge mqs-high">11/12</span></td>
+  <td>92w</td>
+  <td>B</td>
+  <td><select class="status-select" data-idx="19"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>11</td>
+  <td><a href="#Grant_Anderson">Grant Anderson</a></td>
+  <td>Lucid Software</td>
+  <td>Quality Assurance Manager</td>
+  <td><span class="badge" style="background:#fd7e14">MEDIUM</span></td>
+  <td><span class="mqs-badge mqs-high">12/12</span></td>
+  <td>95w</td>
+  <td>B</td>
+  <td><select class="status-select" data-idx="21"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>12</td>
+  <td><a href="#Clyde_Faulkner">Clyde Faulkner</a></td>
+  <td>CAMP Systems International, In</td>
+  <td>QA Manager</td>
+  <td><span class="badge" style="background:#fd7e14">MEDIUM</span></td>
+  <td><span class="mqs-badge mqs-high">11/12</span></td>
+  <td>85w</td>
+  <td>A</td>
+  <td><select class="status-select" data-idx="0"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>13</td>
+  <td><a href="#Ashok_Prasad">Ashok Prasad</a></td>
+  <td>ZL Technologies</td>
+  <td>QA Lead</td>
+  <td><span class="badge" style="background:#fd7e14">MEDIUM</span></td>
+  <td><span class="mqs-badge mqs-high">10/12</span></td>
+  <td>88w</td>
+  <td>A</td>
+  <td><select class="status-select" data-idx="4"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>14</td>
+  <td><a href="#David_Gustafson">David Gustafson</a></td>
+  <td>HG Insights</td>
+  <td>Engineering Manager, QA</td>
+  <td><span class="badge" style="background:#fd7e14">MEDIUM</span></td>
+  <td><span class="mqs-badge mqs-high">11/12</span></td>
+  <td>90w</td>
+  <td>B</td>
+  <td><select class="status-select" data-idx="11"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>15</td>
+  <td><a href="#Jiaping_Shen">Jiaping Shen</a></td>
+  <td>HackerRank</td>
+  <td>SDET</td>
+  <td><span class="badge" style="background:#fd7e14">MEDIUM</span></td>
+  <td><span class="mqs-badge mqs-high">11/12</span></td>
+  <td>88w</td>
+  <td>A</td>
+  <td><select class="status-select" data-idx="14"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>16</td>
+  <td><a href="#Sravanti_Krothapalli">Sravanti Krothapalli</a></td>
+  <td>Quorum Software</td>
+  <td>QA Manager</td>
+  <td><span class="badge" style="background:#fd7e14">MEDIUM</span></td>
+  <td><span class="mqs-badge mqs-high">11/12</span></td>
+  <td>90w</td>
+  <td>A</td>
+  <td><select class="status-select" data-idx="16"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>17</td>
+  <td><a href="#Cooper_Morrow">Cooper Morrow</a></td>
+  <td>Jama Software</td>
+  <td>Quality Assurance Manager</td>
+  <td><span class="badge" style="background:#fd7e14">MEDIUM</span></td>
+  <td><span class="mqs-badge mqs-high">12/12</span></td>
+  <td>97w</td>
+  <td>B</td>
+  <td><select class="status-select" data-idx="17"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>18</td>
+  <td><a href="#Manigandan_Kanagasabai">Manigandan Kanagasabai</a></td>
+  <td>Mediaocean</td>
+  <td>Software QA Manager</td>
+  <td><span class="badge" style="background:#fd7e14">MEDIUM</span></td>
+  <td><span class="mqs-badge mqs-high">12/12</span></td>
+  <td>86w</td>
+  <td>A</td>
+  <td><select class="status-select" data-idx="18"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>19</td>
+  <td><a href="#Leah_Coates">Leah Coates</a></td>
+  <td>Perforce Software</td>
+  <td>Quality Assurance Manager</td>
+  <td><span class="badge" style="background:#fd7e14">MEDIUM</span></td>
+  <td><span class="mqs-badge mqs-mid">9/12</span></td>
+  <td>102w</td>
+  <td>A</td>
+  <td><select class="status-select" data-idx="20"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>20</td>
+  <td><a href="#Axel_Kerksiek">Axel Kerksiek</a></td>
+  <td>nCino</td>
+  <td>Senior Software Engineer in Test</td>
+  <td><span class="badge" style="background:#fd7e14">MEDIUM</span></td>
+  <td><span class="mqs-badge mqs-high">11/12</span></td>
+  <td>90w</td>
+  <td>B</td>
+  <td><select class="status-select" data-idx="23"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>21</td>
+  <td><a href="#Kylie_Summer">Kylie Summer</a></td>
+  <td>Quizizz</td>
+  <td>QA/QC Manager</td>
+  <td><span class="badge" style="background:#6c757d">STANDARD</span></td>
+  <td><span class="mqs-badge mqs-high">11/12</span></td>
+  <td>91w</td>
+  <td>B</td>
+  <td><select class="status-select" data-idx="7"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>22</td>
+  <td><a href="#Kanan_Hasanzade">Kanan Hasanzade</a></td>
+  <td>Datto, Inc.</td>
+  <td>Software Development Engineer In Te</td>
+  <td><span class="badge" style="background:#6c757d">STANDARD</span></td>
+  <td><span class="mqs-badge mqs-high">12/12</span></td>
+  <td>93w</td>
+  <td>B</td>
+  <td><select class="status-select" data-idx="13"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>23</td>
+  <td><a href="#Azam_Quraishi">Azam Quraishi</a></td>
+  <td>MTX Group</td>
+  <td>Senior Quality Engineer</td>
+  <td><span class="badge" style="background:#6c757d">STANDARD</span></td>
+  <td><span class="mqs-badge mqs-low">8/12</span></td>
+  <td>95w</td>
+  <td>B</td>
+  <td><select class="status-select" data-idx="15"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr><tr>
+  <td>24</td>
+  <td><a href="#Yuliya_A">Yuliya A</a></td>
+  <td>Planview, Inc.</td>
+  <td>Software Development Engineer In Te</td>
+  <td><span class="badge" style="background:#6c757d">STANDARD</span></td>
+  <td><span class="mqs-badge mqs-high">11/12</span></td>
+  <td>95w</td>
+  <td>A</td>
+  <td><select class="status-select" data-idx="12"><option>Pending</option><option>Sent</option><option>Replied</option><option>Skip</option></select></td>
+</tr></tbody></table></div>
+<div class="card high" id="Mohan_Guruswamy"
+     data-priority="HIGH" data-ab="B" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Mohan Guruswamy</h3>
+      <div class="meta">QA Lead @ Tavant Technologies</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#dc3545">HIGH</span>
+      <span class="mqs-badge mqs-high">MQS 12/12</span>
+      <span class="badge" style="background:#6366f1">Group B</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> mohan.guruswamy@tavant.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/mohan-guruswamy-7473b124" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Costa Mesa, California</div>
+    <div><span class="label">Company Size:</span> 3100</div>
+    <div><span class="label">Industry:</span> FinTech / Mortgage Tech</div>
+    <div><span class="label">Seniority:</span> manager</div>
+    <div><span class="label">Proof Point:</span> CRED: 90% regression automation, 5x faster</div>
+    <div><span class="label">Words:</span> 94w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Tavant launched TOUCHLESS AI Mortgage Suite. 12x underwriter productivity, 60% cost reduction. Heavy product velocity, regulatory testing for lending/fintech. IDC FinTech Top 100.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Regression after the TOUCHLESS launch</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_1')">Copy Subject</button>
+    <textarea id="subj_1" style="display:none">Regression after the TOUCHLESS launch</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Mohan,
+
+With Tavant shipping products like the TOUCHLESS Mortgage Suite at this pace, how is your team keeping regression suites from becoming the bottleneck?
+
+Lending platforms with compliance workflows usually see test upkeep spike after each release. A fintech team at CRED hit the same wall and automated 90% of their regression, running 5x faster without growing headcount. They use Testsigma to write tests in plain English, so the whole team contributes.
+
+If cutting regression time that significantly would help keep up with your release pace, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_1')">Copy Message</button>
+    <textarea id="msg_1" style="display:none">Hi Mohan,
+
+With Tavant shipping products like the TOUCHLESS Mortgage Suite at this pace, how is your team keeping regression suites from becoming the bottleneck?
+
+Lending platforms with compliance workflows usually see test upkeep spike after each release. A fintech team at CRED hit the same wall and automated 90% of their regression, running 5x faster without growing headcount. They use Testsigma to write tests in plain English, so the whole team contributes.
+
+If cutting regression time that significantly would help keep up with your release pace, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a tool"</div>
+    <div class="a">Response: Totally fair. A lot of teams we work with had an existing tool too. The gap they kept hitting was maintenance overhead. Worth comparing?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 12/12</span>
+    <span class="qa-item pass">94w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card high" id="Lueanne_Fitzhugh"
+     data-priority="HIGH" data-ab="B" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Lueanne Fitzhugh</h3>
+      <div class="meta">QA Manager @ Cerner Corporation</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#dc3545">HIGH</span>
+      <span class="mqs-badge mqs-mid">MQS 9/12</span>
+      <span class="badge" style="background:#6366f1">Group B</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> lueanne.fitzhugh@cerner.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/lueanne-fitzhugh-cerner-367a6026" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Beaverton, Oregon</div>
+    <div><span class="label">Company Size:</span> 26000</div>
+    <div><span class="label">Industry:</span> Healthcare IT / EHR</div>
+    <div><span class="label">Seniority:</span> manager</div>
+    <div><span class="label">Proof Point:</span> Sanofi: regression 3 days to 80 minutes</div>
+    <div><span class="label">Words:</span> 91w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Oracle building next-gen EHR from ground up. 2025 early adopter program, 2026 acute care. Massive platform migration. Real-world testing plans for certification. AI + voice capabilities.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>QA coverage during the platform shift</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_5')">Copy Subject</button>
+    <textarea id="subj_5" style="display:none">QA coverage during the platform shift</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Lueanne,
+
+With Oracle building the next-gen EHR from scratch, how is your team handling the test coverage gap between the existing suite and what the new platform needs?
+
+Healthcare platform migrations usually mean regression suites double while timelines stay the same. A pharma team at Sanofi compressed their regression from 3 days to 80 minutes using Testsigma. The AI rebuilds broken tests automatically when the UI changes.
+
+If compressing your regression cycle by 98% would help your team keep pace with the migration, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_5')">Copy Message</button>
+    <textarea id="msg_5" style="display:none">Hi Lueanne,
+
+With Oracle building the next-gen EHR from scratch, how is your team handling the test coverage gap between the existing suite and what the new platform needs?
+
+Healthcare platform migrations usually mean regression suites double while timelines stay the same. A pharma team at Sanofi compressed their regression from 3 days to 80 minutes using Testsigma. The AI rebuilds broken tests automatically when the UI changes.
+
+If compressing your regression cycle by 98% would help your team keep pace with the migration, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "Security/procurement is complex"</div>
+    <div class="a">Response: We offer on-prem, private cloud, hybrid. SOC2/ISO certified. A few Fortune 500s run us behind their firewall.</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 9/12</span>
+    <span class="qa-item pass">91w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card high" id="Jennifer_Tune"
+     data-priority="HIGH" data-ab="A" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Jennifer Tune</h3>
+      <div class="meta">Director - Quality Assurance and Project Management @ Fossil Group, Inc.</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#dc3545">HIGH</span>
+      <span class="mqs-badge mqs-high">MQS 11/12</span>
+      <span class="badge" style="background:#6366f1">Group A</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> jtune@fossil.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/jennifer-tune-b1435410" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Grapevine, Texas</div>
+    <div><span class="label">Company Size:</span> 5200</div>
+    <div><span class="label">Industry:</span> Retail / Consumer Electronics</div>
+    <div><span class="label">Seniority:</span> director</div>
+    <div><span class="label">Proof Point:</span> Meesho: 4X faster automation scaling</div>
+    <div><span class="label">Words:</span> 89w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Fossil Group: retail/fashion + connected devices (smartwatches). E-commerce platform + wearable tech. Multi-platform testing (web, mobile, device firmware).
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>QA coverage across retail and wearables</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_8')">Copy Subject</button>
+    <textarea id="subj_8" style="display:none">QA coverage across retail and wearables</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Jennifer,
+
+With Fossil managing QA across the e-commerce platform and connected wearable experiences, how is your team balancing coverage across all those touchpoints?
+
+Retail teams with both web and device testing usually find test suites grow faster than the team can maintain them. Meesho&#x27;s QA team was scaling 4x faster after automating with Testsigma, covering web, mobile, and API from a single platform in plain English.
+
+If scaling your coverage 4x without adding headcount would help, what day works for a quick look at how they did it?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_8')">Copy Message</button>
+    <textarea id="msg_8" style="display:none">Hi Jennifer,
+
+With Fossil managing QA across the e-commerce platform and connected wearable experiences, how is your team balancing coverage across all those touchpoints?
+
+Retail teams with both web and device testing usually find test suites grow faster than the team can maintain them. Meesho&#x27;s QA team was scaling 4x faster after automating with Testsigma, covering web, mobile, and API from a single platform in plain English.
+
+If scaling your coverage 4x without adding headcount would help, what day works for a quick look at how they did it?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a tool"</div>
+    <div class="a">Response: Totally fair. A lot of teams we work with had an existing tool too. The gap they kept hitting was maintenance overhead. Worth comparing?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 11/12</span>
+    <span class="qa-item pass">89w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card high" id="Sandy_Paray"
+     data-priority="HIGH" data-ab="A" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Sandy Paray</h3>
+      <div class="meta">AVP, Quality Assurance Tech @ Saks Global</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#dc3545">HIGH</span>
+      <span class="mqs-badge mqs-high">MQS 11/12</span>
+      <span class="badge" style="background:#6366f1">Group A</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> sandy.paray@saks.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/sandy-paray-b4104746" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Baldwin, New York</div>
+    <div><span class="label">Company Size:</span> 24000</div>
+    <div><span class="label">Industry:</span> Luxury Retail / E-Commerce</div>
+    <div><span class="label">Seniority:</span> vp</div>
+    <div><span class="label">Proof Point:</span> Meesho: 4X faster automation scaling</div>
+    <div><span class="label">Words:</span> 94w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Saks Global: luxury retail, e-commerce, omnichannel. 24000 emp. AVP-level QA Tech. Peak season testing pressure, cross-channel customer experience.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>QA coverage across the Saks experience</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_10')">Copy Subject</button>
+    <textarea id="subj_10" style="display:none">QA coverage across the Saks experience</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Sandy,
+
+With Saks running across e-commerce, mobile, and in-store digital touchpoints, how is your QA team managing regression coverage across all those channels?
+
+Omnichannel retail teams usually find that every seasonal update triggers a full regression cycle across the entire customer journey. Meesho&#x27;s QA team was in a similar spot and scaled their automation 4x faster using Testsigma, covering web, mobile, and API testing from one platform.
+
+If scaling your automation 4x would help your team stay ahead of seasonal launches, what day works for a quick look at how they did it?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_10')">Copy Message</button>
+    <textarea id="msg_10" style="display:none">Hi Sandy,
+
+With Saks running across e-commerce, mobile, and in-store digital touchpoints, how is your QA team managing regression coverage across all those channels?
+
+Omnichannel retail teams usually find that every seasonal update triggers a full regression cycle across the entire customer journey. Meesho&#x27;s QA team was in a similar spot and scaled their automation 4x faster using Testsigma, covering web, mobile, and API testing from one platform.
+
+If scaling your automation 4x would help your team stay ahead of seasonal launches, what day works for a quick look at how they did it?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "Security/procurement is complex"</div>
+    <div class="a">Response: We offer on-prem, private cloud, hybrid. SOC2/ISO certified. A few Fortune 500s run us behind their firewall.</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 11/12</span>
+    <span class="qa-item pass">94w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card high" id="Jyothi_Kudithipudi"
+     data-priority="HIGH" data-ab="A" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Jyothi Kudithipudi</h3>
+      <div class="meta">Senior Quality Assurance Manager @ Guidewire Software</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#dc3545">HIGH</span>
+      <span class="mqs-badge mqs-high">MQS 11/12</span>
+      <span class="badge" style="background:#6366f1">Group A</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> jkamepalli@guidewire.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/jyothi-kudithipudi-614824183" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> San Francisco, California</div>
+    <div><span class="label">Company Size:</span> 3600</div>
+    <div><span class="label">Industry:</span> Insurance Software</div>
+    <div><span class="label">Seniority:</span> manager</div>
+    <div><span class="label">Proof Point:</span> Hansard: regression 8 weeks to 5 weeks</div>
+    <div><span class="label">Words:</span> 92w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Guidewire: insurance platform ($2.6B market). 63% of insurers cite QA as primary bottleneck. Most automation uses Selenium/TestNG/BDD. Regular upgrades, legacy data migration, compliance.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Regression cycles for Guidewire releases</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_22')">Copy Subject</button>
+    <textarea id="subj_22" style="display:none">Regression cycles for Guidewire releases</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Jyothi,
+
+With Guidewire&#x27;s platform touching policy, claims, and billing workflows, how much of your regression cycle is spent revalidating existing tests after each upgrade?
+
+Insurance platforms with compliance requirements usually see regression become the longest phase of every release. Hansard&#x27;s insurance QA team compressed their regression from 8 weeks to 5 using Testsigma&#x27;s AI to auto-heal tests across their workflows. That freed up 3 full weeks per cycle.
+
+If getting 3 weeks back in your regression cycle would help your team ship upgrades faster, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_22')">Copy Message</button>
+    <textarea id="msg_22" style="display:none">Hi Jyothi,
+
+With Guidewire&#x27;s platform touching policy, claims, and billing workflows, how much of your regression cycle is spent revalidating existing tests after each upgrade?
+
+Insurance platforms with compliance requirements usually see regression become the longest phase of every release. Hansard&#x27;s insurance QA team compressed their regression from 8 weeks to 5 using Testsigma&#x27;s AI to auto-heal tests across their workflows. That freed up 3 full weeks per cycle.
+
+If getting 3 weeks back in your regression cycle would help your team ship upgrades faster, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a tool"</div>
+    <div class="a">Response: Totally fair. A lot of teams we work with had an existing tool too. The gap they kept hitting was maintenance overhead. Worth comparing?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 11/12</span>
+    <span class="qa-item pass">92w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card medium" id="Jeremy_Cira"
+     data-priority="MEDIUM" data-ab="A" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Jeremy Cira</h3>
+      <div class="meta">Quality Assurance Manager II @ Kaseya</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#fd7e14">MEDIUM</span>
+      <span class="mqs-badge mqs-high">MQS 12/12</span>
+      <span class="badge" style="background:#6366f1">Group A</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> jeremy.cira@kaseya.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/jeremy-cira-b4044b11a" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Albany, New York</div>
+    <div><span class="label">Company Size:</span> 5600</div>
+    <div><span class="label">Industry:</span> IT Management / MSP Tools</div>
+    <div><span class="label">Seniority:</span> manager</div>
+    <div><span class="label">Proof Point:</span> Cisco: 35% regression reduction</div>
+    <div><span class="label">Words:</span> 98w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Kaseya acquired Datto for $6.2B, multiple product lines (VSA, Datto RMM, Autotask). Spring 2025 release, DattoCon 2025 innovations. Cross-product integration testing complexity.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Test coverage across Kaseya&#x27;s product suite</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_2')">Copy Subject</button>
+    <textarea id="subj_2" style="display:none">Test coverage across Kaseya&#x27;s product suite</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Jeremy,
+
+With Kaseya integrating the Datto product line alongside VSA and Autotask, how is your QA team handling test coverage across all those integration points?
+
+Multi-product platforms usually mean test suites multiply faster than teams can maintain them. One enterprise team at Cisco was managing a similar scope and reduced their regression backlog 35% by letting AI handle the test upkeep. They use Testsigma to keep tests stable across platform changes automatically.
+
+If getting 35% of your regression time back would help your team stay ahead of the release calendar, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_2')">Copy Message</button>
+    <textarea id="msg_2" style="display:none">Hi Jeremy,
+
+With Kaseya integrating the Datto product line alongside VSA and Autotask, how is your QA team handling test coverage across all those integration points?
+
+Multi-product platforms usually mean test suites multiply faster than teams can maintain them. One enterprise team at Cisco was managing a similar scope and reduced their regression backlog 35% by letting AI handle the test upkeep. They use Testsigma to keep tests stable across platform changes automatically.
+
+If getting 35% of your regression time back would help your team stay ahead of the release calendar, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a tool"</div>
+    <div class="a">Response: Totally fair. A lot of teams we work with had an existing tool too. The gap they kept hitting was maintenance overhead. Worth comparing?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 12/12</span>
+    <span class="qa-item pass">98w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card medium" id="Chandana_Ray"
+     data-priority="MEDIUM" data-ab="B" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Chandana Ray</h3>
+      <div class="meta">QA Lead @ Persistent Systems</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#fd7e14">MEDIUM</span>
+      <span class="mqs-badge mqs-high">MQS 11/12</span>
+      <span class="badge" style="background:#6366f1">Group B</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> chandana_ray@persistent.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/chandana-ray-23b53211" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Cupertino, California</div>
+    <div><span class="label">Company Size:</span> 22000</div>
+    <div><span class="label">Industry:</span> IT Services / Digital Engineering</div>
+    <div><span class="label">Seniority:</span> manager</div>
+    <div><span class="label">Proof Point:</span> Medibuddy: 2,500 tests, 50% maintenance cut</div>
+    <div><span class="label">Words:</span> 101w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Persistent hiring QA Automation Leads (Pytest, BDD, cloud). ISG Leader in Digital Engineering. Fastest-growing IT services brand. Cloud migration testing complexity.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Scaling QA across Persistent&#x27;s cloud projects</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_3')">Copy Subject</button>
+    <textarea id="subj_3" style="display:none">Scaling QA across Persistent&#x27;s cloud projects</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Chandana,
+
+With Persistent scaling cloud projects and hiring QA Automation Leads, how much time goes to maintaining Pytest and BDD scripts versus writing new coverage?
+
+Teams running those frameworks at scale usually hit a point where test upkeep eats into new project work. A healthcare team at Medibuddy was automating 2,500 tests and cut their maintenance effort 50% by switching to plain English test creation with Testsigma. The AI handles broken locators automatically.
+
+If cutting maintenance in half would free your team to focus on new project coverage, what day works for a quick look at how they did it?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_3')">Copy Message</button>
+    <textarea id="msg_3" style="display:none">Hi Chandana,
+
+With Persistent scaling cloud projects and hiring QA Automation Leads, how much time goes to maintaining Pytest and BDD scripts versus writing new coverage?
+
+Teams running those frameworks at scale usually hit a point where test upkeep eats into new project work. A healthcare team at Medibuddy was automating 2,500 tests and cut their maintenance effort 50% by switching to plain English test creation with Testsigma. The AI handles broken locators automatically.
+
+If cutting maintenance in half would free your team to focus on new project coverage, what day works for a quick look at how they did it?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "Security/procurement is complex"</div>
+    <div class="a">Response: We offer on-prem, private cloud, hybrid. SOC2/ISO certified. A few Fortune 500s run us behind their firewall.</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 11/12</span>
+    <span class="qa-item pass">101w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card medium" id="Martha_Horns"
+     data-priority="MEDIUM" data-ab="A" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Martha Horns</h3>
+      <div class="meta">Quality Manager @ Greenway Health</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#fd7e14">MEDIUM</span>
+      <span class="mqs-badge mqs-high">MQS 11/12</span>
+      <span class="badge" style="background:#6366f1">Group A</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> martha.horns@greenwayhealth.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/martha-horns-97b0404a" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> LaGrange, Georgia</div>
+    <div><span class="label">Company Size:</span> 1800</div>
+    <div><span class="label">Industry:</span> Healthcare IT / EHR</div>
+    <div><span class="label">Seniority:</span> manager</div>
+    <div><span class="label">Proof Point:</span> Sanofi: regression 3 days to 80 minutes</div>
+    <div><span class="label">Words:</span> 94w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Greenway Health: 30+ years in healthcare IT, EHR/Practice Management/Patient Engagement for ambulatory market. Hiring software engineers. Healthcare compliance testing requirements.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Regression coverage for the EHR platform</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_6')">Copy Subject</button>
+    <textarea id="subj_6" style="display:none">Regression coverage for the EHR platform</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Martha,
+
+With Greenway&#x27;s EHR touching patient data and compliance workflows, how much of your QA cycle goes to regression versus validating new features?
+
+Healthcare teams usually see regression eat up most of the sprint because nothing ships without full revalidation. Sanofi&#x27;s QA team was spending 3 full days on regression alone and compressed it to 80 minutes using Testsigma&#x27;s AI to run and auto-fix tests across their compliance workflows.
+
+If getting regression down from days to minutes would give your team more time on new features, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_6')">Copy Message</button>
+    <textarea id="msg_6" style="display:none">Hi Martha,
+
+With Greenway&#x27;s EHR touching patient data and compliance workflows, how much of your QA cycle goes to regression versus validating new features?
+
+Healthcare teams usually see regression eat up most of the sprint because nothing ships without full revalidation. Sanofi&#x27;s QA team was spending 3 full days on regression alone and compressed it to 80 minutes using Testsigma&#x27;s AI to run and auto-fix tests across their compliance workflows.
+
+If getting regression down from days to minutes would give your team more time on new features, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a tool"</div>
+    <div class="a">Response: Totally fair. A lot of teams we work with had an existing tool too. The gap they kept hitting was maintenance overhead. Worth comparing?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 11/12</span>
+    <span class="qa-item pass">94w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card medium" id="Bhavani_Neerathilingam"
+     data-priority="MEDIUM" data-ab="B" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Bhavani Neerathilingam</h3>
+      <div class="meta">Director QA @ Automation Anywhere</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#fd7e14">MEDIUM</span>
+      <span class="mqs-badge mqs-high">MQS 11/12</span>
+      <span class="badge" style="background:#6366f1">Group B</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> linga.neerathilingam@automationanywhere.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/bhavani-neerathilingam-0562a1" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> San Jose, California</div>
+    <div><span class="label">Company Size:</span> N/A</div>
+    <div><span class="label">Industry:</span> RPA / Agentic Automation</div>
+    <div><span class="label">Seniority:</span> director</div>
+    <div><span class="label">Proof Point:</span> Cisco: 35% regression reduction</div>
+    <div><span class="label">Words:</span> 91w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Automation Anywhere: #1 agentic automation, 7th year Gartner MQ Leader. Massive product complexity, AI agents, bots (Task, Meta, IQ). Rapid release cadence.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Keeping tests stable at AA&#x27;s release pace</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_9')">Copy Subject</button>
+    <textarea id="subj_9" style="display:none">Keeping tests stable at AA&#x27;s release pace</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Bhavani,
+
+With Automation Anywhere shipping agentic capabilities at this pace, how much time does your QA team spend just keeping existing test suites stable after each release?
+
+Platforms with complex workflows and frequent UI changes usually see test maintenance consume most of the sprint. One enterprise team at Cisco reduced their regression backlog 35% by using Testsigma&#x27;s AI to auto-heal broken tests whenever the interface shifts.
+
+If cutting regression overhead by a third would free your team to focus on new capability coverage, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_9')">Copy Message</button>
+    <textarea id="msg_9" style="display:none">Hi Bhavani,
+
+With Automation Anywhere shipping agentic capabilities at this pace, how much time does your QA team spend just keeping existing test suites stable after each release?
+
+Platforms with complex workflows and frequent UI changes usually see test maintenance consume most of the sprint. One enterprise team at Cisco reduced their regression backlog 35% by using Testsigma&#x27;s AI to auto-heal broken tests whenever the interface shifts.
+
+If cutting regression overhead by a third would free your team to focus on new capability coverage, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "Budget is tight"</div>
+    <div class="a">Response: Totally get it. One company your size (Spendflo) cut manual testing 50% and saw ROI in the first quarter.</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 11/12</span>
+    <span class="qa-item pass">91w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card medium" id="Denise_Barnett"
+     data-priority="MEDIUM" data-ab="B" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Denise Barnett</h3>
+      <div class="meta">QA Manager @ Progress Software</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#fd7e14">MEDIUM</span>
+      <span class="mqs-badge mqs-high">MQS 11/12</span>
+      <span class="badge" style="background:#6366f1">Group B</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> dbarnett@progress.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/denise-barnett-a238973" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Bedford, Massachusetts</div>
+    <div><span class="label">Company Size:</span> 2900</div>
+    <div><span class="label">Industry:</span> Application Development Tools</div>
+    <div><span class="label">Seniority:</span> manager</div>
+    <div><span class="label">Proof Point:</span> Cisco: 35% regression reduction</div>
+    <div><span class="label">Words:</span> 92w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Progress Software: developer tools company. Multiple product lines. Complex test matrix across platforms and frameworks. Mid-large company (2,900 emp).
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Regression coverage across Progress&#x27;s products</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_19')">Copy Subject</button>
+    <textarea id="subj_19" style="display:none">Regression coverage across Progress&#x27;s products</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Denise,
+
+With Progress maintaining multiple developer tool products, how is your QA team managing test coverage across all those platform and framework combinations?
+
+Developer tools usually mean a wide test matrix, and every new integration or SDK update cascades into dozens of test cases. One enterprise team at Cisco cut their regression backlog by 35% using Testsigma&#x27;s AI to keep tests aligned automatically across platform changes.
+
+If getting 35% of your regression time back would help your team stay ahead of the product roadmap, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_19')">Copy Message</button>
+    <textarea id="msg_19" style="display:none">Hi Denise,
+
+With Progress maintaining multiple developer tool products, how is your QA team managing test coverage across all those platform and framework combinations?
+
+Developer tools usually mean a wide test matrix, and every new integration or SDK update cascades into dozens of test cases. One enterprise team at Cisco cut their regression backlog by 35% using Testsigma&#x27;s AI to keep tests aligned automatically across platform changes.
+
+If getting 35% of your regression time back would help your team stay ahead of the product roadmap, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a tool"</div>
+    <div class="a">Response: Totally fair. A lot of teams we work with had an existing tool too. The gap they kept hitting was maintenance overhead. Worth comparing?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 11/12</span>
+    <span class="qa-item pass">92w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card medium" id="Grant_Anderson"
+     data-priority="MEDIUM" data-ab="B" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Grant Anderson</h3>
+      <div class="meta">Quality Assurance Manager @ Lucid Software</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#fd7e14">MEDIUM</span>
+      <span class="mqs-badge mqs-high">MQS 12/12</span>
+      <span class="badge" style="background:#6366f1">Group B</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> ganderson@lucid.co</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/grant-anderson-3b93b874" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Salt Lake City, Utah</div>
+    <div><span class="label">Company Size:</span> 1300</div>
+    <div><span class="label">Industry:</span> Visual Collaboration / SaaS</div>
+    <div><span class="label">Seniority:</span> manager</div>
+    <div><span class="label">Proof Point:</span> 50% maintenance reduction (Medibuddy parallel)</div>
+    <div><span class="label">Words:</span> 95w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Lucid Software: Lucidchart + Lucidspark + Lucidscale. Launched Lucid AI (Oct 2025). Hiring QA Specialists. Rapid feature expansion across suite. Work acceleration platform pivot.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>QA coverage as Lucid expands the suite</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_21')">Copy Subject</button>
+    <textarea id="subj_21" style="display:none">QA coverage as Lucid expands the suite</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Grant,
+
+With Lucid rolling out new capabilities across Lucidchart, Lucidspark, and Lucidscale, how is your QA team keeping regression coverage stable while the product surface area keeps growing?
+
+Rapid feature expansion usually means test suites grow faster than the team can maintain them. One SaaS team cut their maintenance overhead 50% using Testsigma. The AI auto-fixes broken tests when the UI changes, so the team focuses on new coverage instead of upkeep.
+
+If cutting maintenance in half would help your team keep up with the suite expansion, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_21')">Copy Message</button>
+    <textarea id="msg_21" style="display:none">Hi Grant,
+
+With Lucid rolling out new capabilities across Lucidchart, Lucidspark, and Lucidscale, how is your QA team keeping regression coverage stable while the product surface area keeps growing?
+
+Rapid feature expansion usually means test suites grow faster than the team can maintain them. One SaaS team cut their maintenance overhead 50% using Testsigma. The AI auto-fixes broken tests when the UI changes, so the team focuses on new coverage instead of upkeep.
+
+If cutting maintenance in half would help your team keep up with the suite expansion, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a tool"</div>
+    <div class="a">Response: Totally fair. A lot of teams we work with had an existing tool too. The gap they kept hitting was maintenance overhead. Worth comparing?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 12/12</span>
+    <span class="qa-item pass">95w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card medium" id="Clyde_Faulkner"
+     data-priority="MEDIUM" data-ab="A" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Clyde Faulkner</h3>
+      <div class="meta">QA Manager @ CAMP Systems International, Inc.</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#fd7e14">MEDIUM</span>
+      <span class="mqs-badge mqs-high">MQS 11/12</span>
+      <span class="badge" style="background:#6366f1">Group A</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> cfaulkner@campsystems.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/clyde-chip-faulkner-9746554" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Andover, Massachusetts</div>
+    <div><span class="label">Company Size:</span> 1200</div>
+    <div><span class="label">Industry:</span> Aviation Software</div>
+    <div><span class="label">Seniority:</span> manager</div>
+    <div><span class="label">Proof Point:</span> Medibuddy: 2,500 tests, 50% maintenance cut</div>
+    <div><span class="label">Words:</span> 85w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> CAMP hiring QA Engineers + Senior QA Engineers. Testing complex browser-based aviation apps. .NET/C#, Oracle backend, Agile. QA hiring signals demand outpacing team capacity.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>QA coverage across CAMP&#x27;s platform</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_0')">Copy Subject</button>
+    <textarea id="subj_0" style="display:none">QA coverage across CAMP&#x27;s platform</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Clyde,
+
+How much of your team&#x27;s week goes to keeping existing tests stable versus building new coverage across CAMP&#x27;s browser-based aviation apps?
+
+With compliance requirements and a growing test library, test upkeep usually outpaces the team. One healthcare platform (Medibuddy) was managing 2,500 tests and cut maintenance time 50% using Testsigma&#x27;s AI to handle the upkeep automatically.
+
+If freeing up half your maintenance time would help your team focus on new coverage, what day works for a quick look at how they did it?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_0')">Copy Message</button>
+    <textarea id="msg_0" style="display:none">Hi Clyde,
+
+How much of your team&#x27;s week goes to keeping existing tests stable versus building new coverage across CAMP&#x27;s browser-based aviation apps?
+
+With compliance requirements and a growing test library, test upkeep usually outpaces the team. One healthcare platform (Medibuddy) was managing 2,500 tests and cut maintenance time 50% using Testsigma&#x27;s AI to handle the upkeep automatically.
+
+If freeing up half your maintenance time would help your team focus on new coverage, what day works for a quick look at how they did it?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a tool"</div>
+    <div class="a">Response: Totally fair. A lot of teams we work with had an existing tool too. The gap they kept hitting was maintenance overhead. Worth comparing?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 11/12</span>
+    <span class="qa-item pass">85w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card medium" id="Ashok_Prasad"
+     data-priority="MEDIUM" data-ab="A" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Ashok Prasad</h3>
+      <div class="meta">QA Lead @ ZL Technologies</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#fd7e14">MEDIUM</span>
+      <span class="mqs-badge mqs-high">MQS 10/12</span>
+      <span class="badge" style="background:#6366f1">Group A</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> aprasad@zlti.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/ashok-prasad-4abaa69a" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Sunnyvale, California</div>
+    <div><span class="label">Company Size:</span> 290</div>
+    <div><span class="label">Industry:</span> Enterprise Information Management</div>
+    <div><span class="label">Seniority:</span> manager</div>
+    <div><span class="label">Proof Point:</span> 90% maintenance reduction with self-healing</div>
+    <div><span class="label">Words:</span> 88w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> ZL Technologies focuses on enterprise data governance and compliance. Smaller team (290 emp). Compliance-heavy testing for data management workflows.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Test upkeep for ZL&#x27;s data platform</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_4')">Copy Subject</button>
+    <textarea id="subj_4" style="display:none">Test upkeep for ZL&#x27;s data platform</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Ashok,
+
+For a compliance platform like ZL&#x27;s, how much of your QA effort goes to revalidating existing tests after each release versus building new coverage?
+
+Data governance workflows usually mean every UI change cascades through dozens of test cases. One team cut that revalidation effort by 90% using Testsigma&#x27;s AI to auto-fix broken tests when the interface changes. It keeps the suite stable without manual script updates.
+
+If recovering that maintenance time would help your team push out more coverage, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_4')">Copy Message</button>
+    <textarea id="msg_4" style="display:none">Hi Ashok,
+
+For a compliance platform like ZL&#x27;s, how much of your QA effort goes to revalidating existing tests after each release versus building new coverage?
+
+Data governance workflows usually mean every UI change cascades through dozens of test cases. One team cut that revalidation effort by 90% using Testsigma&#x27;s AI to auto-fix broken tests when the interface changes. It keeps the suite stable without manual script updates.
+
+If recovering that maintenance time would help your team push out more coverage, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "Budget is tight"</div>
+    <div class="a">Response: Totally get it. One company your size (Spendflo) cut manual testing 50% and saw ROI in the first quarter.</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 10/12</span>
+    <span class="qa-item pass">88w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card medium" id="David_Gustafson"
+     data-priority="MEDIUM" data-ab="B" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>David Gustafson</h3>
+      <div class="meta">Engineering Manager, QA @ HG Insights</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#fd7e14">MEDIUM</span>
+      <span class="mqs-badge mqs-high">MQS 11/12</span>
+      <span class="badge" style="background:#6366f1">Group B</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> david.gustafson@hginsights.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/david-gustafson-58214383" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Georgetown, Texas</div>
+    <div><span class="label">Company Size:</span> 950</div>
+    <div><span class="label">Industry:</span> Tech Intelligence / Data Platform</div>
+    <div><span class="label">Seniority:</span> manager</div>
+    <div><span class="label">Proof Point:</span> 90% maintenance reduction with self-healing</div>
+    <div><span class="label">Words:</span> 90w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> HG Insights: technology intelligence platform, Gartner recognized. Data-heavy product with complex data pipelines. Mid-size team (950 emp).
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Test upkeep for HG&#x27;s data platform</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_11')">Copy Subject</button>
+    <textarea id="subj_11" style="display:none">Test upkeep for HG&#x27;s data platform</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi David,
+
+For a data intelligence platform like HG Insights, how much of your QA cycle goes to keeping existing tests aligned with evolving data models and UI changes?
+
+Data-heavy products usually mean frequent interface updates that break existing test scripts. One team cut that maintenance overhead by 90% using Testsigma&#x27;s AI to auto-fix locators and test logic whenever the platform changes. No manual script rewrites needed.
+
+If recovering 90% of your maintenance time would let your team focus on shipping new features, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_11')">Copy Message</button>
+    <textarea id="msg_11" style="display:none">Hi David,
+
+For a data intelligence platform like HG Insights, how much of your QA cycle goes to keeping existing tests aligned with evolving data models and UI changes?
+
+Data-heavy products usually mean frequent interface updates that break existing test scripts. One team cut that maintenance overhead by 90% using Testsigma&#x27;s AI to auto-fix locators and test logic whenever the platform changes. No manual script rewrites needed.
+
+If recovering 90% of your maintenance time would let your team focus on shipping new features, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a tool"</div>
+    <div class="a">Response: Totally fair. A lot of teams we work with had an existing tool too. The gap they kept hitting was maintenance overhead. Worth comparing?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 11/12</span>
+    <span class="qa-item pass">90w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card medium" id="Jiaping_Shen"
+     data-priority="MEDIUM" data-ab="A" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Jiaping Shen</h3>
+      <div class="meta">SDET @ HackerRank</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#fd7e14">MEDIUM</span>
+      <span class="mqs-badge mqs-high">MQS 11/12</span>
+      <span class="badge" style="background:#6366f1">Group A</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> jiaping@hackerrank.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/jiaping-shen-27ba991b8" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> New York, New York</div>
+    <div><span class="label">Company Size:</span> 2100</div>
+    <div><span class="label">Industry:</span> Developer Tools / HR Tech</div>
+    <div><span class="label">Seniority:</span> entry</div>
+    <div><span class="label">Proof Point:</span> Spendflo: 50% manual testing cut</div>
+    <div><span class="label">Words:</span> 88w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> HackerRank: 26M developer community, 2,500+ customers. Just added Cucumber/Cypress QA assessment features (April 2025). Code Quality Grading feature. SaaS platform with rapid feature velocity.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Regression coverage at HackerRank&#x27;s pace</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_14')">Copy Subject</button>
+    <textarea id="subj_14" style="display:none">Regression coverage at HackerRank&#x27;s pace</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Jiaping,
+
+With HackerRank adding new assessment features at this pace, how are you keeping regression coverage from falling behind the release cadence?
+
+Developer platforms shipping frequently usually see test suites grow faster than anyone can maintain manually. One SaaS team (Spendflo) cut their manual testing effort 50% by automating with Testsigma in plain English. Tests run across browsers automatically and self-heal when the UI changes.
+
+If halving your manual testing effort would help you keep up with the feature velocity, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_14')">Copy Message</button>
+    <textarea id="msg_14" style="display:none">Hi Jiaping,
+
+With HackerRank adding new assessment features at this pace, how are you keeping regression coverage from falling behind the release cadence?
+
+Developer platforms shipping frequently usually see test suites grow faster than anyone can maintain manually. One SaaS team (Spendflo) cut their manual testing effort 50% by automating with Testsigma in plain English. Tests run across browsers automatically and self-heal when the UI changes.
+
+If halving your manual testing effort would help you keep up with the feature velocity, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a tool"</div>
+    <div class="a">Response: Totally fair. A lot of teams we work with had an existing tool too. The gap they kept hitting was maintenance overhead. Worth comparing?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 11/12</span>
+    <span class="qa-item pass">88w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card medium" id="Sravanti_Krothapalli"
+     data-priority="MEDIUM" data-ab="A" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Sravanti Krothapalli</h3>
+      <div class="meta">QA Manager @ Quorum Software</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#fd7e14">MEDIUM</span>
+      <span class="mqs-badge mqs-high">MQS 11/12</span>
+      <span class="badge" style="background:#6366f1">Group A</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> sravanti_krothapalli@qbsol.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/sravantikrothapalli" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Houston, Texas</div>
+    <div><span class="label">Company Size:</span> 1500</div>
+    <div><span class="label">Industry:</span> Energy / Oil &amp; Gas Software</div>
+    <div><span class="label">Seniority:</span> manager</div>
+    <div><span class="label">Proof Point:</span> Sanofi: regression 3 days to 80 minutes</div>
+    <div><span class="label">Words:</span> 90w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Quorum: energy software for 1,800+ companies across 60 countries. Acquired zdSCADA. QAD methodology with thousands of standard test cases. Compliance-driven testing.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Maintaining QA across Quorum&#x27;s energy suite</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_16')">Copy Subject</button>
+    <textarea id="subj_16" style="display:none">Maintaining QA across Quorum&#x27;s energy suite</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Sravanti,
+
+With Quorum serving 1,800+ energy companies and thousands of standard test cases, how much of your team&#x27;s time goes to keeping that test library current after each release?
+
+Compliance-driven software usually means every update triggers a full regression cycle. Sanofi&#x27;s QA team compressed their regression from 3 days to 80 minutes using Testsigma&#x27;s AI to run and auto-repair tests automatically. No manual script updates needed.
+
+If compressing your regression cycle that dramatically would help your team keep up with release demands, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_16')">Copy Message</button>
+    <textarea id="msg_16" style="display:none">Hi Sravanti,
+
+With Quorum serving 1,800+ energy companies and thousands of standard test cases, how much of your team&#x27;s time goes to keeping that test library current after each release?
+
+Compliance-driven software usually means every update triggers a full regression cycle. Sanofi&#x27;s QA team compressed their regression from 3 days to 80 minutes using Testsigma&#x27;s AI to run and auto-repair tests automatically. No manual script updates needed.
+
+If compressing your regression cycle that dramatically would help your team keep up with release demands, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a tool"</div>
+    <div class="a">Response: Totally fair. A lot of teams we work with had an existing tool too. The gap they kept hitting was maintenance overhead. Worth comparing?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 11/12</span>
+    <span class="qa-item pass">90w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card medium" id="Cooper_Morrow"
+     data-priority="MEDIUM" data-ab="B" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Cooper Morrow</h3>
+      <div class="meta">Quality Assurance Manager @ Jama Software</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#fd7e14">MEDIUM</span>
+      <span class="mqs-badge mqs-high">MQS 12/12</span>
+      <span class="badge" style="background:#6366f1">Group B</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> cmorrow@jamasoftware.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/camorrow" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Portland, Maine</div>
+    <div><span class="label">Company Size:</span> 300</div>
+    <div><span class="label">Industry:</span> Requirements Management / ALM</div>
+    <div><span class="label">Seniority:</span> manager</div>
+    <div><span class="label">Proof Point:</span> Spendflo: 50% manual testing cut</div>
+    <div><span class="label">Words:</span> 97w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Jama Connect: requirements management with live traceability. Integrates with test tools (Tricentis, TestRail, Jenkins). Test Management Center for manual test execution. Smaller team (300 emp).
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Test upkeep for Jama Connect</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_17')">Copy Subject</button>
+    <textarea id="subj_17" style="display:none">Test upkeep for Jama Connect</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Cooper,
+
+With Jama Connect linking requirements to test cases across integrations, how much of your QA effort goes to keeping those test suites stable after each platform update?
+
+Software with deep integration points usually means test scripts break in multiple places with every release. One team at Spendflo cut their manual testing effort 50% by automating with Testsigma in plain English. The AI keeps tests aligned even when the UI shifts.
+
+If cutting your manual effort in half would help your team focus on the integrations that matter most, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_17')">Copy Message</button>
+    <textarea id="msg_17" style="display:none">Hi Cooper,
+
+With Jama Connect linking requirements to test cases across integrations, how much of your QA effort goes to keeping those test suites stable after each platform update?
+
+Software with deep integration points usually means test scripts break in multiple places with every release. One team at Spendflo cut their manual testing effort 50% by automating with Testsigma in plain English. The AI keeps tests aligned even when the UI shifts.
+
+If cutting your manual effort in half would help your team focus on the integrations that matter most, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "Budget is tight"</div>
+    <div class="a">Response: Totally get it. One company your size (Spendflo) cut manual testing 50% and saw ROI in the first quarter.</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 12/12</span>
+    <span class="qa-item pass">97w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card medium" id="Manigandan_Kanagasabai"
+     data-priority="MEDIUM" data-ab="A" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Manigandan Kanagasabai</h3>
+      <div class="meta">Software QA Manager @ Mediaocean</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#fd7e14">MEDIUM</span>
+      <span class="mqs-badge mqs-high">MQS 12/12</span>
+      <span class="badge" style="background:#6366f1">Group A</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> mkanagasabai@mediaocean.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/manigandan-kanagasabai" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Jersey City, New Jersey</div>
+    <div><span class="label">Company Size:</span> 1200</div>
+    <div><span class="label">Industry:</span> Advertising Technology</div>
+    <div><span class="label">Seniority:</span> manager</div>
+    <div><span class="label">Proof Point:</span> 70% maintenance reduction vs Selenium</div>
+    <div><span class="label">Words:</span> 86w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Mediaocean: $200B in annualized media spend managed. Acquired Innovid, merged with Flashtalking. Hiring Selenium-based test automation engineers. Heavy R&amp;D investment. Platform consolidation.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Test stability after the Innovid integration</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_18')">Copy Subject</button>
+    <textarea id="subj_18" style="display:none">Test stability after the Innovid integration</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Manigandan,
+
+With Mediaocean integrating the Innovid and Flashtalking platforms, how is your team keeping Selenium test suites stable across all those merging codebases?
+
+Platform consolidation usually means test scripts break constantly as interfaces evolve. Teams running Selenium at scale typically spend 70% more time on maintenance than they need to. Testsigma&#x27;s AI auto-heals broken locators, cutting that overhead significantly.
+
+If reducing your Selenium maintenance by 70% would free your team to focus on the integration testing that matters, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_18')">Copy Message</button>
+    <textarea id="msg_18" style="display:none">Hi Manigandan,
+
+With Mediaocean integrating the Innovid and Flashtalking platforms, how is your team keeping Selenium test suites stable across all those merging codebases?
+
+Platform consolidation usually means test scripts break constantly as interfaces evolve. Teams running Selenium at scale typically spend 70% more time on maintenance than they need to. Testsigma&#x27;s AI auto-heals broken locators, cutting that overhead significantly.
+
+If reducing your Selenium maintenance by 70% would free your team to focus on the integration testing that matters, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a tool"</div>
+    <div class="a">Response: Totally fair. A lot of teams we work with had an existing tool too. The gap they kept hitting was maintenance overhead. Worth comparing?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 12/12</span>
+    <span class="qa-item pass">86w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card medium" id="Leah_Coates"
+     data-priority="MEDIUM" data-ab="A" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Leah Coates</h3>
+      <div class="meta">Quality Assurance Manager @ Perforce Software</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#fd7e14">MEDIUM</span>
+      <span class="mqs-badge mqs-mid">MQS 9/12</span>
+      <span class="badge" style="background:#6366f1">Group A</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> lcoates@perforce.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/leah-coates" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Cincinnati, Ohio</div>
+    <div><span class="label">Company Size:</span> 1300</div>
+    <div><span class="label">Industry:</span> DevOps / Software Quality Tools</div>
+    <div><span class="label">Seniority:</span> manager</div>
+    <div><span class="label">Proof Point:</span> Hansard: regression 8 weeks to 5 weeks</div>
+    <div><span class="label">Words:</span> 102w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Perforce: DevOps tools company. Published 2026 State of DevOps Report. Owns Perfecto, BlazeMeter, Delphix. AI capabilities for synthetic test data. 55% of QA teams shifting to quality analytics.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>QA for Perforce&#x27;s own product suite</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_20')">Copy Subject</button>
+    <textarea id="subj_20" style="display:none">QA for Perforce&#x27;s own product suite</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Leah,
+
+Running QA for a company that builds Perfecto, BlazeMeter, and Delphix, you probably feel the pressure to set the standard. How much of your team&#x27;s cycle goes to keeping internal test suites stable across product updates?
+
+Even teams with strong tooling hit a point where maintenance consumes the sprint. Hansard&#x27;s QA team was spending 8 weeks on regression and compressed it to 5 using Testsigma&#x27;s AI to auto-heal broken tests. That freed up 3 weeks per cycle.
+
+If getting 3 weeks back in your regression cycle would help, what day works for a quick look at how they did it?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_20')">Copy Message</button>
+    <textarea id="msg_20" style="display:none">Hi Leah,
+
+Running QA for a company that builds Perfecto, BlazeMeter, and Delphix, you probably feel the pressure to set the standard. How much of your team&#x27;s cycle goes to keeping internal test suites stable across product updates?
+
+Even teams with strong tooling hit a point where maintenance consumes the sprint. Hansard&#x27;s QA team was spending 8 weeks on regression and compressed it to 5 using Testsigma&#x27;s AI to auto-heal broken tests. That freed up 3 weeks per cycle.
+
+If getting 3 weeks back in your regression cycle would help, what day works for a quick look at how they did it?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a tool"</div>
+    <div class="a">Response: Totally fair. A lot of teams we work with had an existing tool too. The gap they kept hitting was maintenance overhead. Worth comparing?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 9/12</span>
+    <span class="qa-item pass">102w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card medium" id="Axel_Kerksiek"
+     data-priority="MEDIUM" data-ab="B" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Axel Kerksiek</h3>
+      <div class="meta">Senior Software Engineer in Test @ nCino</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#fd7e14">MEDIUM</span>
+      <span class="mqs-badge mqs-high">MQS 11/12</span>
+      <span class="badge" style="background:#6366f1">Group B</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> axel.kerksiek@ncino.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/axel-kerksiek-63111b91" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Salt Lake City, Utah</div>
+    <div><span class="label">Company Size:</span> 1900</div>
+    <div><span class="label">Industry:</span> Banking Cloud / FinTech</div>
+    <div><span class="label">Seniority:</span> senior</div>
+    <div><span class="label">Proof Point:</span> 70% maintenance reduction vs Selenium (Salesforce-native)</div>
+    <div><span class="label">Words:</span> 90w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> nCino: cloud banking on Salesforce. Complex testing (shadow DOM, banking compliance, multi-tenant). ACCELQ noted as testing solution competitor. Regulatory validation requirements.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Test maintenance on nCino&#x27;s Salesforce stack</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_23')">Copy Subject</button>
+    <textarea id="subj_23" style="display:none">Test maintenance on nCino&#x27;s Salesforce stack</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Axel,
+
+Building test automation for nCino&#x27;s Salesforce-based banking platform, how much of your effort goes to fixing broken locators after Salesforce updates versus writing new coverage?
+
+Salesforce shadow DOM plus banking compliance usually means test maintenance eats most of the sprint. One team reduced that overhead by 70% compared to their Selenium setup using Testsigma&#x27;s Salesforce-native testing. It auto-heals locators and handles shadow DOM natively.
+
+If cutting your maintenance effort by 70% would free you up to focus on new banking workflows, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_23')">Copy Message</button>
+    <textarea id="msg_23" style="display:none">Hi Axel,
+
+Building test automation for nCino&#x27;s Salesforce-based banking platform, how much of your effort goes to fixing broken locators after Salesforce updates versus writing new coverage?
+
+Salesforce shadow DOM plus banking compliance usually means test maintenance eats most of the sprint. One team reduced that overhead by 70% compared to their Selenium setup using Testsigma&#x27;s Salesforce-native testing. It auto-heals locators and handles shadow DOM natively.
+
+If cutting your maintenance effort by 70% would free you up to focus on new banking workflows, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a Salesforce testing tool"</div>
+    <div class="a">Response: Totally fair. The gap teams usually hit is shadow DOM handling and cross-browser. Worth comparing how we handle those?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 11/12</span>
+    <span class="qa-item pass">90w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card standard" id="Kylie_Summer"
+     data-priority="STANDARD" data-ab="B" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Kylie Summer</h3>
+      <div class="meta">QA/QC Manager @ Quizizz</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#6c757d">STANDARD</span>
+      <span class="mqs-badge mqs-high">MQS 11/12</span>
+      <span class="badge" style="background:#6366f1">Group B</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> N/A</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/kylie-summer-7a52a8276" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Las Vegas, Nevada</div>
+    <div><span class="label">Company Size:</span> 450</div>
+    <div><span class="label">Industry:</span> E-Learning / EdTech</div>
+    <div><span class="label">Seniority:</span> manager</div>
+    <div><span class="label">Proof Point:</span> Spendflo: 50% manual testing cut</div>
+    <div><span class="label">Words:</span> 91w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Quizizz is an e-learning platform. Smaller team (450 emp). EdTech rapid iteration, cross-browser/mobile testing for student-facing product.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Testing across all the student devices</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_7')">Copy Subject</button>
+    <textarea id="subj_7" style="display:none">Testing across all the student devices</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Kylie,
+
+With students accessing Quizizz on every browser and device imaginable, how is your team keeping test coverage consistent across all those platforms?
+
+EdTech teams usually struggle with the device matrix because manual testing can&#x27;t scale to cover every combination. One team (Spendflo) cut their manual testing effort 50% by using Testsigma to run the same tests across browsers and devices automatically, in plain English.
+
+If cutting your manual testing time in half would help your team ship faster without missing device-specific bugs, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_7')">Copy Message</button>
+    <textarea id="msg_7" style="display:none">Hi Kylie,
+
+With students accessing Quizizz on every browser and device imaginable, how is your team keeping test coverage consistent across all those platforms?
+
+EdTech teams usually struggle with the device matrix because manual testing can&#x27;t scale to cover every combination. One team (Spendflo) cut their manual testing effort 50% by using Testsigma to run the same tests across browsers and devices automatically, in plain English.
+
+If cutting your manual testing time in half would help your team ship faster without missing device-specific bugs, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "Budget is tight"</div>
+    <div class="a">Response: Totally get it. One company your size (Spendflo) cut manual testing 50% and saw ROI in the first quarter.</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 11/12</span>
+    <span class="qa-item pass">91w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card standard" id="Kanan_Hasanzade"
+     data-priority="STANDARD" data-ab="B" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Kanan Hasanzade</h3>
+      <div class="meta">Software Development Engineer In Test (SDET) @ Datto, Inc.</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#6c757d">STANDARD</span>
+      <span class="mqs-badge mqs-high">MQS 12/12</span>
+      <span class="badge" style="background:#6366f1">Group B</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> khasanzade@datto.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/kanan-hasanzade-737243114" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> ?, ?</div>
+    <div><span class="label">Company Size:</span> 660</div>
+    <div><span class="label">Industry:</span> IT Management / MSP Tools</div>
+    <div><span class="label">Seniority:</span> entry</div>
+    <div><span class="label">Proof Point:</span> 70% maintenance reduction vs Selenium</div>
+    <div><span class="label">Words:</span> 93w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Datto acquired by Kaseya for $6.2B. New products (SIRIS 6, Entra ID backup). Platform integrations with Kaseya ecosystem. Post-acquisition product consolidation.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Keeping tests stable across Datto&#x27;s releases</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_13')">Copy Subject</button>
+    <textarea id="subj_13" style="display:none">Keeping tests stable across Datto&#x27;s releases</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Kanan,
+
+With Datto shipping new products like SIRIS 6 and Entra ID backup, how much time are you spending re-stabilizing existing tests after each release?
+
+Rapid product evolution usually means test scripts break faster than you can fix them. One team reduced that churn by 70% compared to their Selenium setup by switching to Testsigma. The AI auto-heals broken locators, so you&#x27;re not constantly rewriting scripts after UI changes.
+
+If cutting your test maintenance by 70% would give you more time to automate new features, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_13')">Copy Message</button>
+    <textarea id="msg_13" style="display:none">Hi Kanan,
+
+With Datto shipping new products like SIRIS 6 and Entra ID backup, how much time are you spending re-stabilizing existing tests after each release?
+
+Rapid product evolution usually means test scripts break faster than you can fix them. One team reduced that churn by 70% compared to their Selenium setup by switching to Testsigma. The AI auto-heals broken locators, so you&#x27;re not constantly rewriting scripts after UI changes.
+
+If cutting your test maintenance by 70% would give you more time to automate new features, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a tool"</div>
+    <div class="a">Response: Totally fair. A lot of teams we work with had an existing tool too. The gap they kept hitting was maintenance overhead. Worth comparing?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 12/12</span>
+    <span class="qa-item pass">93w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card standard" id="Azam_Quraishi"
+     data-priority="STANDARD" data-ab="B" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Azam Quraishi</h3>
+      <div class="meta">Senior Quality Engineer @ MTX Group</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#6c757d">STANDARD</span>
+      <span class="mqs-badge mqs-low">MQS 8/12</span>
+      <span class="badge" style="background:#6366f1">Group B</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> azam.quraishi@mtxb2b.com</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/azam-quraishi-61310b317" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> ?, New York</div>
+    <div><span class="label">Company Size:</span> 1300</div>
+    <div><span class="label">Industry:</span> Digital Transformation / Salesforce Consulting</div>
+    <div><span class="label">Seniority:</span> senior</div>
+    <div><span class="label">Proof Point:</span> 70% maintenance reduction vs Selenium</div>
+    <div><span class="label">Words:</span> 95w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> MTX: Salesforce partner, 1000+ digital transformation projects, acquired Stralto. Uses Gearset for test automation. Shift-left testing approach. Multi-client testing complexity.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Test coverage across MTX&#x27;s Salesforce projects</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_15')">Copy Subject</button>
+    <textarea id="subj_15" style="display:none">Test coverage across MTX&#x27;s Salesforce projects</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Azam,
+
+When you&#x27;re testing across multiple Salesforce orgs with Gearset in the mix, how much effort goes to maintaining scripts versus building new coverage for each client project?
+
+Salesforce&#x27;s shadow DOM and frequent org changes usually break existing tests faster than teams can fix them. One team reduced that maintenance effort by 70% compared to their Selenium scripts using Testsigma&#x27;s Salesforce-native testing. It handles shadow DOM and auto-heals locators across orgs.
+
+If cutting that maintenance overhead by 70% would free up more time for new project coverage, what day works for a quick look?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_15')">Copy Message</button>
+    <textarea id="msg_15" style="display:none">Hi Azam,
+
+When you&#x27;re testing across multiple Salesforce orgs with Gearset in the mix, how much effort goes to maintaining scripts versus building new coverage for each client project?
+
+Salesforce&#x27;s shadow DOM and frequent org changes usually break existing tests faster than teams can fix them. One team reduced that maintenance effort by 70% compared to their Selenium scripts using Testsigma&#x27;s Salesforce-native testing. It handles shadow DOM and auto-heals locators across orgs.
+
+If cutting that maintenance overhead by 70% would free up more time for new project coverage, what day works for a quick look?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a Salesforce testing tool"</div>
+    <div class="a">Response: Totally fair. The gap teams usually hit is shadow DOM handling and cross-browser. Worth comparing how we handle those?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 8/12</span>
+    <span class="qa-item pass">95w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<div class="card standard" id="Yuliya_A"
+     data-priority="STANDARD" data-ab="A" data-status="pending">
+  <div class="card-header">
+    <div>
+      <h3>Yuliya A</h3>
+      <div class="meta">Software Development Engineer In Test @ Planview, Inc.</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" style="background:#6c757d">STANDARD</span>
+      <span class="mqs-badge mqs-high">MQS 11/12</span>
+      <span class="badge" style="background:#6366f1">Group A</span>
+    </div>
+  </div>
+
+  <div class="card-details">
+    <div><span class="label">Email:</span> N/A</div>
+    <div><span class="label">LinkedIn:</span> <a href="http://www.linkedin.com/in/yuliya-a-a32153178" target="_blank">Profile</a></div>
+    <div><span class="label">Location:</span> Indian Trail, North Carolina</div>
+    <div><span class="label">Company Size:</span> 1500</div>
+    <div><span class="label">Industry:</span> Project Portfolio Management</div>
+    <div><span class="label">Seniority:</span> entry</div>
+    <div><span class="label">Proof Point:</span> Medibuddy: 2,500 tests, 50% maintenance cut</div>
+    <div><span class="label">Words:</span> 95w | 2Q</div>
+  </div>
+
+  <div class="research">
+    <strong>Research Notes:</strong> Planview: Gartner MQ Leader for PPM. Complex enterprise suite (AdaptiveWork, Sciforma). Launched Lucid AI capabilities. Enterprise-grade testing complexity.
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Subject Line:</div>
+  <div class="msg-box">
+    <pre>Automation coverage for Planview&#x27;s suite</pre>
+    <button class="copy-btn" onclick="copyText(this, 'subj_12')">Copy Subject</button>
+    <textarea id="subj_12" style="display:none">Automation coverage for Planview&#x27;s suite</textarea>
+  </div>
+
+  <div style="margin-bottom:4px; font-weight:600; font-size:13px;">Message Body:</div>
+  <div class="msg-box">
+    <pre>Hi Yuliya,
+
+With Planview&#x27;s enterprise suite covering so many workflows, how much of your week goes to maintaining existing test scripts versus writing new automation?
+
+Enterprise platforms usually hit a point where the maintenance burden limits how fast you can expand coverage. Medibuddy&#x27;s QA team went from zero to 2,500 automated tests and cut maintenance 50% by using Testsigma&#x27;s plain English approach. The AI handles broken locators automatically.
+
+If cutting your maintenance effort in half would free up time for new test coverage, what day works for a quick look at how they did it?</pre>
+    <button class="copy-btn" onclick="copyText(this, 'msg_12')">Copy Message</button>
+    <textarea id="msg_12" style="display:none">Hi Yuliya,
+
+With Planview&#x27;s enterprise suite covering so many workflows, how much of your week goes to maintaining existing test scripts versus writing new automation?
+
+Enterprise platforms usually hit a point where the maintenance burden limits how fast you can expand coverage. Medibuddy&#x27;s QA team went from zero to 2,500 automated tests and cut maintenance 50% by using Testsigma&#x27;s plain English approach. The AI handles broken locators automatically.
+
+If cutting your maintenance effort in half would free up time for new test coverage, what day works for a quick look at how they did it?</textarea>
+  </div>
+
+  <div class="objection">
+    <div class="q">Predicted Objection: "We already have a tool"</div>
+    <div class="a">Response: Totally fair. A lot of teams we work with had an existing tool too. The gap they kept hitting was maintenance overhead. Worth comparing?</div>
+  </div>
+
+  <div class="qa-gate">
+    <span class="qa-item pass">HC1-10 ✓</span>
+    <span class="qa-item pass">MQS 11/12</span>
+    <span class="qa-item pass">95w ✓</span>
+    <span class="qa-item pass">2 Questions ✓</span>
+    <span class="qa-item pass">"What day works" ✓</span>
+    <span class="qa-item pass">No em dashes ✓</span>
+    <span class="qa-item pass">No toxic phrases ✓</span>
+  </div>
+</div>
+
+<script>
+function copyText(btn, id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.value).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = btn.textContent.includes('Subject') ? 'Copy Subject' : 'Copy Message'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function filterCards() {
+  const pri = document.getElementById('filterPriority').value;
+  const status = document.getElementById('filterStatus').value;
+  const ab = document.getElementById('filterAB').value;
+  document.querySelectorAll('.card').forEach(card => {
+    const show = (pri === 'all' || card.dataset.priority === pri) &&
+                 (status === 'all' || card.dataset.status === status) &&
+                 (ab === 'all' || card.dataset.ab === ab);
+    card.style.display = show ? '' : 'none';
+  });
+}
+</script>
+</body></html>

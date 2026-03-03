@@ -112,11 +112,19 @@ Ron Trachman, Laurie Nielsen, Alan Gutherz, Derek Stanley, Nihal Elsayed, Sarah 
 | Total InMails sent | 198 |
 | Total Emails sent | 16 |
 | InMail credits remaining | 28 (verified Mar 3 post-Day 6) |
-| Apollo Q1 Priority Accounts | 185 active at Step 1 |
+| Apollo Q1 Priority Accounts | 281 active at Step 1, 4 finished (285 total) |
 | Apollo Q1 Website Visitor | 9 active |
 | Blocked (Terene Lee) | 1 |
 | DNC | 2 (Sanjay Singh, Lance Silverman) |
 | Skipped NOT FOUND (Jonathan Lavoie) | 1 |
+
+### Enrollment Audit (Mar 3)
+Audited all batches for unenrolled prospects. Enrolled 41 missing contacts:
+- **Batch 1**: 22 contacts enrolled (were never added to sequence after InMail sends)
+- **Batch 8**: 19 contacts enrolled (created during batch but not yet enrolled)
+- All contacts passed checks: no DNC matches, no deletion reasons, no cadence conflicts
+- Override flags used: active_in_other_campaigns, no_email, job_change, without_ownership_permission, finished_in_other_campaigns, unverified_email
+- Kenny Liu enrolled despite prior "bounced" status in another sequence
 
 ## Follow-Up Schedule (from Touch 1 send dates)
 | Batch | Touch 1 Sent | Touch 2 Send | Touch 3 Send |
@@ -163,6 +171,7 @@ Ron Trachman, Laurie Nielsen, Alan Gutherz, Derek Stanley, Nihal Elsayed, Sarah 
 | enriched-prospects-batch8.json | Batch 8 | Enrichment data |
 | prospect-outreach-8-2026-03-02.html | Batch 8 | COMPLETE (43/50 sent, 2 SKIPPED disabled/already msg, 3 NOT FOUND, 2 FREE) |
 | batch8_send_queue.txt | Batch 8 | Send queue (50 prospects, 8 daily) |
+| prospect-outreach-9-2026-03-03.html | Batch 9 | ACTIVE (24 prospects, enrolled in Q1 Priority, Touch 1 pending) |
 
 ## Key Deliverables Index
 | File | Purpose |
