@@ -6,3 +6,4 @@ BDR-backup/
 # Local config & deploy
 .env*
 .vercel/
+outreach.db.corrupt.bak
