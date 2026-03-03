@@ -161,12 +161,21 @@ def check_word_count(body: str, touch_number: int = 1) -> dict:
     return {"check": "word_count", "passed": passed, "flags": flags, "word_count": word_count}
 
 
-def check_one_question_max(body: str) -> dict:
-    """Check 7: One question max."""
+def check_question_count(body: str, touch_number: int = 1) -> dict:
+    """Check 7: Exactly 2 questions for Touch 1, 1-2 for others."""
     questions = body.count("?")
-    passed = questions <= 1
-    flags = [f"Found {questions} questions (max 1)"] if not passed else []
-    return {"check": "one_question_max", "passed": passed, "flags": flags}
+    if touch_number == 1:
+        passed = questions == 2
+        if questions < 2:
+            flags = [f"Found {questions} questions, Touch 1 requires exactly 2 (34.8% reply rate)"]
+        elif questions > 2:
+            flags = [f"Found {questions} questions, Touch 1 max is 2 (3+ questions = 14.3% reply rate)"]
+        else:
+            flags = []
+    else:
+        passed = 1 <= questions <= 2
+        flags = [f"Found {questions} questions (target 1-2)"] if not passed else []
+    return {"check": "question_count", "passed": passed, "flags": flags}
 
 
 def check_opener_variety(body: str) -> dict:
@@ -201,12 +210,15 @@ def check_proof_point_rotation(contact_id: str, proof_point: str, touch_number: 
     return {"check": "proof_point_rotation", "passed": passed, "flags": flags}
 
 
-def check_soft_ask(body: str) -> dict:
-    """Check 10: Soft ask with easy out present."""
+def check_no_easy_out(body: str) -> dict:
+    """Check 10: No easy-out lines (they kill reply rates)."""
     body_lower = body.lower()
-    found_soft = any(phrase in body_lower for phrase in SOFT_ASK_PHRASES)
-    flags = [] if found_soft else ["No soft ask / easy out detected"]
-    return {"check": "soft_ask_present", "passed": found_soft, "flags": flags}
+    easy_outs = ["no worries", "no pressure", "if not", "all good",
+                 "feel free to ignore", "if the timing"]
+    found_easy_out = [phrase for phrase in easy_outs if phrase in body_lower]
+    passed = len(found_easy_out) == 0
+    flags = [f"Easy-out detected: '{found_easy_out[0]}' (SOP bans these)"] if found_easy_out else []
+    return {"check": "no_easy_out", "passed": passed, "flags": flags}
 
 
 def run_quality_gate(message_data: dict) -> dict:
@@ -232,10 +244,10 @@ def run_quality_gate(message_data: dict) -> dict:
         check_personalization(body),
         check_research_citation(body),
         check_word_count(body, touch_num),
-        check_one_question_max(body),
+        check_question_count(body, touch_num),
         check_opener_variety(body),
         check_proof_point_rotation(contact_id, proof_point, touch_num),
-        check_soft_ask(body),
+        check_no_easy_out(body),
     ]
 
     all_passed = all(c["passed"] for c in checks)
