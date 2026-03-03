@@ -1,6 +1,7 @@
-# Email Send Execution Plan
+# Email Send Execution Plan [ARCHIVED]
 ## Q1 Website Visitor - Tier 1 Intent Sequence
 ## Created: Feb 28, 2026
+## ⚠️ ARCHIVED: March 1, 2026 — This plan has been superseded by the Apollo UI send workflow. See `outreach_email_sop.md` and `Tier1_Intent_Sequence_SOP_MASTER.md` for the current process. The batched Gmail approach described below is no longer used.
 
 ---
 

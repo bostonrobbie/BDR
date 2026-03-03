@@ -3,6 +3,7 @@
 
 **Goal:** Prospect, personalize, and send as many high intent Tier 1 emails as possible each day.
 **Target throughput:** 10 to 20 new personalized Touch 1 emails per day.
+**Last Updated:** March 1, 2026 (v2.0 — Apollo UI send standard, enhanced qualification checks)
 
 ---
 
@@ -35,11 +36,19 @@ Open Apollo > Visitors. Filter for:
 - Company size: 200+ employees
 - Geography: US (primary), then expand
 
-**Step 2: Cross reference against existing sequences**
-Before adding anyone, check:
-- Not already in an active Apollo sequence
-- Not contacted in the last 30 days
-- Not in another BDR's territory
+**Step 2: Cross reference against existing sequences (ALL 9 CHECKS — see Master SOP Section 3)**
+Before adding anyone, run the FULL qualification checklist:
+- Not already in Tier 1 sequence
+- Not in any other active sequence
+- Not in 2+ active sequences (triple-sequencing check)
+- Not Salesforce-owned by another BDR (check BOTH Apollo `owner_id` AND SF `crm_owner_id`)
+- Email verified, not catchall (flag catchalls for monitoring)
+- Not a duplicate contact with different owner
+- Person still at the company (verify LinkedIn headline)
+- No prior appointment or warm status (`inactive_reason` = "scheduled appointment", "talked on phone", "interested")
+- No sequence completed within the last 30 days (30-day cooldown)
+- Check `email_source` — if "emailer_message_outbound", they were previously emailed from Apollo
+- Check `contact_stage_id` — if not "New", the contact has been worked before
 
 **Step 3: Find the right persona at each company**
 Use Apollo People Search with filters:
@@ -78,9 +87,13 @@ Rob reviews each email for:
 - CTA appropriateness
 - Any AI tells (em dashes, buzzwords, generic phrasing)
 
-**Step 8: Send via Gmail**
-Option A: Paste each email manually into Gmail compose.
-Option B: Use Gmail API to create drafts in bulk, then review and send each one.
+**Step 8: Send via Apollo UI task queue (ONLY approved method)**
+1. Open Apollo > Sequences > "Q1 Website Visitor - Tier 1 Intent" > Tasks tab
+2. For each prospect's pending task, paste the personalized email
+3. Click Complete to send
+4. Apollo logs the send, tracks engagement, and queues the next touch automatically
+
+**DO NOT** send via Gmail compose or Gmail API drafts. This was deprecated on March 1, 2026. See Master SOP Section 5 for full rationale.
 
 ---
 
@@ -110,20 +123,24 @@ Push updated files to the BDR repo:
 3. **Tracker updates:** Claude can append to the CSV directly.
 4. **Apollo contact creation:** Claude can create contacts via Apollo API.
 5. **Apollo sequence search:** Claude can find and reference existing sequences.
+6. **Full 9-point qualification checks:** Claude can run all checks via Apollo API (sequence membership, ownership, Salesforce, email status, etc.)
+7. **Engagement audits:** Claude can audit existing sequence contacts for risk factors (territory conflicts, triple-sequencing, prior appointments, job changes)
+8. **Slack cross-referencing:** Claude can search Slack for team conversations about flagged contacts/companies
 
 ### What Still Requires Human Action
 
 1. **Reviewing email drafts:** Quick scan for accuracy and tone (~2 min each).
-2. **Sending from Gmail:** Click send on each email or draft.
+2. **Sending via Apollo UI:** Paste personalized email into each Apollo task and click Complete. (Cannot be automated — Apollo UI is required.)
 3. **Apollo website visitor review:** Identifying which visitors are high intent based on page behavior.
-4. **Territory checks:** Confirming no overlap with other BDRs.
+4. **Territory conflict resolution:** When a contact is owned by another BDR, coordinate with them before proceeding.
+5. **Warm lead handling:** Contacts with "talked on phone" or "scheduled appointment" status need personalized outreach, not generic sequences.
 
 ### Future Automation Opportunities
 
-1. **Gmail draft creation via API:** Pre populate drafts so Rob only needs to review and click send.
-2. **Apollo webhook for new visitors:** Auto notify when a Tier 1 company visits the site.
-3. **Templated but personalized:** Build a library of industry specific angles so research time drops further.
-4. **Scoring model:** Weight visitor behavior (pricing page = high, blog = low) to auto prioritize.
+1. **Apollo webhook for new visitors:** Auto notify when a Tier 1 company visits the site.
+2. **Templated but personalized:** Build a library of industry specific angles so research time drops further.
+3. **Scoring model:** Weight visitor behavior (pricing page = high, blog = low) to auto prioritize.
+4. **Automated pre-send audit:** Have Claude run the full 9-point check on all pending tasks before each send session.
 
 ---
 
@@ -132,11 +149,12 @@ Push updated files to the BDR repo:
 When you open a new Cowork session, give Claude:
 
 1. "Here are today's prospects:" followed by a list of names, titles, companies, and emails
-2. "Write Touch 1 emails for these contacts following the SOP"
-3. "Update the tracker CSV"
-4. "Push to the BDR GitHub repo"
+2. "Run qualification checks on all of them" (Claude runs all 9 checks via Apollo API)
+3. "Write Touch 1 emails for the CLEAN contacts following the SOP"
+4. "Update the tracker"
+5. Then YOU send via Apollo UI — paste each email into the Apollo task queue and click Complete
 
-Claude will handle research, enrichment, writing, and file management. You handle review and send.
+Claude handles research, enrichment, qualification checks, writing, and file management. You handle review and Apollo UI send.
 
 ---
 
