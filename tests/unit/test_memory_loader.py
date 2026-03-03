@@ -177,5 +177,5 @@ class TestPlaybook:
     def test_get_playbook(self, loader):
         playbook = loader.get_playbook()
         assert playbook is not None
-        assert "Pain Hook" in playbook
-        assert "Proof Point" in playbook
+        assert "Pain Discovery" in playbook
+        assert "Customer Stories" in playbook

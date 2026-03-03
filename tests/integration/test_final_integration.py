@@ -17,6 +17,7 @@ os.environ["OCC_JOURNAL_MODE"] = "DELETE"
 sys.path.insert(0, os.path.dirname(__file__))
 
 import pytest
+pytest.importorskip("httpx")
 from fastapi.testclient import TestClient
 
 # Patch DB_PATH before importing models and app
