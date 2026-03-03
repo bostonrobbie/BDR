@@ -1,0 +1,133 @@
+# Outreach SOP — Message Drafting & Research
+
+## Writing Style Rules
+- **NO em dashes (—).** Use commas or short hyphens (-) only. Prefer commas.
+- **Minimize hyphens.** Mid-sentence dashes are an AI signature. Replace with commas. Only use hyphens in true compound words (e.g., "self-healing"). Max 1 hyphen in message body.
+- Must sound like Rob wrote it personally. Not AI-generated, not templated.
+- Warm, conversational, low-pressure, specific, respectful.
+- No feature dumping. Focus on a specific solution to something the prospect is already doing.
+- Mobile-friendly: 80-99 words for Touch 1 (data-proven sweet spot). Max 6-8 short lines. Absolute ceiling 120 words.
+- **Paragraph spacing:** Every message must have clear visual breaks. Opener, context, proof point, and close each get their own paragraph. No paragraph exceeds 3 sentences.
+- **Never "show your work."** Do NOT reference LinkedIn, profiles, resume facts, or years at a company.
+- No "I noticed" or "I saw" or "based on your profile." (DATA: -13.4 pp differential)
+- No generic assertions like "you must be doing manual testing." Ask, don't assert.
+- Simple words, short sentences, no corporate phrasing or buzzwords.
+- Exactly TWO question marks in Touch 1 messages (DATA: 2 questions = 34.8% vs 23.4% for 1)
+- **Close must use "what day works" pattern AND tie to the proof point.** (DATA: 40.4% vs 14.0% open-ended)
+- **No easy-out lines.** No "no worries," "if not, all good."
+- Do not frame anything as benefiting us. No "I want to show you."
+- **No generic closes.** BANNED: "Worth comparing notes?", "Worth a quick chat?", "Would exploring that be worth your time?"
+
+## Message Structure (C2 Style)
+Every message must read like a single human idea, not three AI-generated blocks glued together.
+
+### Pre-Draft Step 1: Single Theme Rule
+State the message theme in ONE sentence: "This message is about ______."
+Every sentence must support this theme. Delete anything that doesn't connect.
+
+### Pre-Draft Step 2: QA-Relevant Research Filter
+Only use research from these categories:
+- **Release process signal:** frequency, stability, migrations, refreshes
+- **Testing stack:** Selenium/Playwright/Cypress, CI tools, device matrix
+- **QA org pressure:** hiring for QA/SDET, layoffs, team scaling, compliance
+- **Integration complexity:** number of integrations, platform permutations, regulated workflows
+
+AVOID: general revenue stats, generic "AI strategy," funding rounds, user counts — unless they directly create testing workload.
+
+### Pre-Draft Step 3: Plain Language Pass
+- Replace buzzwords: velocity→speed, bottleneck→blocker, maintenance sprawl→test upkeep, bandwidth→capacity, leverage→use
+- Replace filler connectors: "That's where teams hit the wall"→cut it or say what actually happens
+- Sentences under 15 words when possible. Read it out loud.
+
+### Pre-Draft Step 4: Close Construction
+Answer these 3 questions before writing the close:
+1. What specific outcome did the proof point achieve?
+2. What is the prospect's version of that problem?
+3. How do I connect #1 to #2 and end with "what day works"?
+
+Close patterns (rotate across batch):
+- "If [outcome] would help [their situation], what day works for a quick look at how they did it?"
+- "What day works to see how [customer] [achieved outcome] while [solving their problem]?"
+- "If [outcome] before [their event/deadline] sounds useful, what day works for a quick look?"
+- "What day works to compare how [customer] [achieved outcome] without [their constraint]?"
+- "If getting [specific number] back in your [their process] would help, what day works for a quick chat?"
+
+### Message Elements (5 parts, invisible as structure)
+1. **Subject line** (3-6 words InMail, 5-8 words email) — domain or QA-situation reference
+2. **Opener** (1-2 lines) — Start with a QA situation question. Not company facts or background.
+3. **Context** (1-2 lines) — One direct sentence explaining why this matters. No filler.
+4. **Proof point** (0-1 lines) — ONE verified customer example with real numbers. Mention Testsigma once.
+5. **Close** (1-2 lines) — Reference proof point outcome + "what day works" meeting ask.
+
+### Anti-Pattern: "Stitched Template" Detection
+Before sending, check for:
+- Opener has 2+ disconnected company facts
+- Context uses "That's the [noun] most [type] teams hit/feel/face"
+- Proof point is interchangeable (not tied to theme)
+- Close is generic or doesn't reference proof point outcome
+- Close uses open-ended question instead of "what day works"
+- 2+ hyphens as mid-sentence dashes
+- No paragraph breaks between sections
+
+## 3-Touch Sequence
+Every prospect gets 3 touches across 2 channels:
+
+**Day 1 — Touch 1 (LinkedIn InMail):** Full 5-element message, 80-120 words.
+**Day 5 — Touch 2 (LinkedIn InMail Follow-up):** 40-70 words, new angle/proof point, lighter close.
+**Day 10 — Touch 3 (Email):** 60-100 words if email available. Fresh approach, different proof point.
+
+Rules:
+- Each touch uses a DIFFERENT proof point/angle
+- Touch 2 doesn't need full 5-element structure
+- If no email, sequence ends after Touch 2
+- No break-up message
+
+## Research Requirements (3 Sources Per Prospect)
+
+### Source 1: LinkedIn Profile (Sales Navigator)
+Extract: QA scope, team signals, tech stack clues, pain signals in their posts. 
+Do NOT use in messages: years at company, education, certifications, endorsement counts.
+
+### Source 2: Apollo Enrichment
+Extract: Tech stack, company size, industry, funding, verified email.
+Use for: proof point matching, objection mapping, multi-channel sequence.
+
+### Source 3: Company External Research
+From: product pages, engineering blog, job postings, press releases, news, Glassdoor reviews.
+Extract: Release process, testing stack evidence, QA hiring, integration complexity, recent events.
+NOT just LinkedIn company page.
+
+### Research-to-Message Pipeline
+1. LinkedIn → identifies person's QA scope → feeds **opener**
+2. Apollo → confirms tech stack, industry → feeds **proof point selection** and **objection mapping**
+3. Company research → QA-relevant events → feeds **context** and **theme**
+4. All combined → feeds **close construction**
+
+Tag each research bullet with which message element it feeds.
+
+## Qualification Checklist
+- [ ] Manager+ seniority
+- [ ] ICP title match
+- [ ] No prior interaction in Sales Navigator
+- [ ] US-based
+- [ ] Software QA/engineering (not pharma manufacturing, biotech lab QA)
+- [ ] Company has software products to test
+- [ ] Profile URL captured and logged
+
+## Deliverable Format
+Single HTML file with: prospect tracker table (sorted by priority), individual prospect cards with copy-paste messages for all touches, "Copy Message" and "Copy Subject" buttons, predicted objection + response, status dropdowns, reply tags, A/B groups, personalization scores, priority scores, color-coded badges, priority filter.
+
+Filename: `prospect-outreach-[batch#]-[date].html`
+
+## Common Pitfalls
+- Don't send messages (Rob copy/pastes manually)
+- NEVER write "I noticed" or "I saw" in ANY message
+- Don't include 2+ prospects from same company per batch
+- Don't use VPs/C-level without strong signal (11.9% / 9.1% reply rates)
+- Don't use "300% faster" (16.3% rate). Use reduction framing ("40% fewer bugs" = 39.2%)
+- Don't use "flaky tests" as hook (16.8% rate). Use "test maintenance" (+9.0 pp)
+- Don't send after 6 PM (12.1%) or on Mondays (22.9%)
+- Don't write generic closes (14.0%). Always "what day works" (40.4%)
+- Do prioritize Architects (39.3%) and Manager/Leads (26.8%)
+- Do send at lunch 12-1 PM local (56.5%)
+- Do send on Thursdays (42.1%)
