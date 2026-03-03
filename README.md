@@ -92,6 +92,11 @@ Run hygiene audit:
 python scripts/repo_hygiene_audit.py
 ```
 
+## AI Onboarding + SOPs
+
+- [AI Assistant Onboarding](docs/AI_ASSISTANT_ONBOARDING.md) - first-read guide for any AI collaborator to get current and work consistently.
+- [Canonical SOP Index](docs/sops/README.md) - points to the two primary SOPs and usage rules.
+
 ## Built For
 
 Rob Gorham, BDR @ Testsigma

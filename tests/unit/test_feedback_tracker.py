@@ -8,6 +8,7 @@ import os
 import sqlite3
 import json
 import tempfile
+import pytest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 
 # Set up temp DB before importing models
@@ -16,6 +17,7 @@ os.environ["OCC_DB_PATH"] = _test_db.name
 os.environ["OCC_JOURNAL_MODE"] = "DELETE"
 
 from src.db import models
+models.DB_PATH = _test_db.name
 from src.db.init_db import SCHEMA_SQL
 from src.agents.feedback_tracker import (
     record_reply,
@@ -111,6 +113,13 @@ def _seed_test_data():
 _init_test_db()
 _test_data = _seed_test_data()
 
+
+
+@pytest.fixture(autouse=True)
+def _force_test_db_path():
+    """Ensure this module always talks to its own temp DB."""
+    models.DB_PATH = _test_db.name
+    yield
 
 # ─── TESTS ───────────────────────────────────────────────────
 

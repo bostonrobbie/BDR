@@ -274,3 +274,7 @@ Track these patterns across batches. Claude will update this section as reply da
 - "Not my area" = wrong person, but the company might be right. Ask for a referral.
 - "Too small / no dedicated QA" = misqualified. Adjust company size filters.
 - "Already evaluated" = they looked at Testsigma before. Flag for AE follow-up with new info (Atto 2.0).
+
+
+## Pain Hook Quick Reference
+Use the pain hook that best matches the prospect context.

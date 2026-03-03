@@ -373,3 +373,44 @@ CREATE INDEX idx_batch_prospects ON batch_prospects(batch_id, contact_id);
 CREATE INDEX idx_agent_runs_type ON agent_runs(run_type);
 CREATE INDEX idx_audit_table ON audit_log(table_name, record_id);
 ```
+
+
+## Process Intelligence Extension (v3)
+
+To make outreach execution deterministic for AI assistants and humans, add these tables via migration `003_add_contact_process_intelligence.py`:
+
+### contact_action_plans
+Per-contact single source of truth for current/next action and blockers.
+
+Core fields:
+- `contact_id`, `current_step`, `next_action`, `next_action_due_at`, `blocked_reason`, `owner`, `priority_reason`, `status`.
+
+### qualification_checks
+Audit trail of qualification gates before outreach (pass/fail/warn per check).
+
+Core fields:
+- `contact_id`, `check_name`, `status`, `evidence`, `checked_by`, `run_id`, `checked_at`.
+
+### research_evidence
+Fact-level research with citations and confidence to reduce hallucinations and improve personalization.
+
+Core fields:
+- `contact_id`/`account_id`, `fact_type`, `fact_text`, `source_url`, `source_type`, `confidence`, `expires_at`.
+
+### sequence_state
+Operational send/cadence truth aligned with Apollo task queue workflows.
+
+Core fields:
+- `contact_id`, `apollo_sequence_id`, `apollo_step_number`, `touch_number`, `touch_eligible_date`, `send_method`, `delivery_status`, `skip_reason`, `next_action_date`.
+
+### message_strategies
+Pre-draft strategic decision object for each touch/channel.
+
+Core fields:
+- `contact_id`, `touch_number`, `channel`, `primary_pain`, `proof_point_selected`, `opener_strategy`, `cta_strategy`, `risk_flags`.
+
+### process_compliance_log
+SOP compliance tracking at the step level.
+
+Core fields:
+- `contact_id`/`batch_id`, `sop_name`, `sop_step_id`, `required`, `completed`, `completed_at`, `evidence_ref`, `exceptions`.
