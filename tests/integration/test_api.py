@@ -5,6 +5,7 @@ Tests all core CRUD, flow management, activity, drafts, sender health, and email
 import os
 import sys
 import pytest
+pytest.importorskip("httpx")
 import json
 import tempfile
 import sqlite3

@@ -10,6 +10,9 @@ import time
 import sqlite3
 import tempfile
 import subprocess
+import pytest
+
+pytest.importorskip("requests")
 import requests
 from datetime import datetime
 from pathlib import Path

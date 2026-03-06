@@ -8,6 +8,7 @@ D3: Subject line style tracking in message_drafts and touchpoints
 import sys
 import os
 import tempfile
+import pytest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 
 # Set up temp DB before importing modules that use it
@@ -19,6 +20,7 @@ from src.db.init_db import init_db
 init_db(_tmpdb.name)
 
 from src.db import models
+models.DB_PATH = _tmpdb.name
 from src.agents.feedback_tracker import (
     record_reply,
     score_reply_sentiment,
@@ -26,6 +28,13 @@ from src.agents.feedback_tracker import (
 )
 from src.agents.researcher import build_research_artifact
 
+
+
+@pytest.fixture(autouse=True)
+def _force_test_db_path():
+    """Ensure this module always talks to its own temp DB."""
+    models.DB_PATH = _tmpdb.name
+    yield
 
 # ─── SAMPLE DATA ──────────────────────────────────────────────
 

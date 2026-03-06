@@ -12,9 +12,11 @@ from typing import Optional
 
 
 try:
-    from src.config import DB_PATH, DB_JOURNAL_MODE
+    from src.config import DB_PATH, DB_EMAIL_PATH, DB_LINKEDIN_PATH, DB_JOURNAL_MODE
 except ImportError:
     DB_PATH = os.environ.get("OCC_DB_PATH", os.path.join(os.path.dirname(__file__), "../../outreach.db"))
+    DB_EMAIL_PATH = os.environ.get("OCC_DB_EMAIL_PATH", os.path.join(os.path.dirname(__file__), "../../api/data/outreach_email.db"))
+    DB_LINKEDIN_PATH = os.environ.get("OCC_DB_LINKEDIN_PATH", os.path.join(os.path.dirname(__file__), "../../api/data/outreach_linkedin.db"))
     DB_JOURNAL_MODE = os.environ.get("OCC_JOURNAL_MODE", "WAL")
 
 
@@ -27,6 +29,25 @@ def get_db():
     conn.execute("PRAGMA foreign_keys=ON")
     return conn
 
+
+
+
+def resolve_db_path(channel: Optional[str] = None) -> str:
+    """Resolve SQLite path by channel. Falls back to OCC_DB_PATH for shared/general queries."""
+    if channel == "email":
+        return DB_EMAIL_PATH
+    if channel == "linkedin":
+        return DB_LINKEDIN_PATH
+    return DB_PATH
+
+
+def get_db_for_channel(channel: Optional[str] = None):
+    """Get DB connection routed to channel-isolated DB when channel is provided."""
+    conn = sqlite3.connect(resolve_db_path(channel))
+    conn.row_factory = sqlite3.Row
+    conn.execute(f"PRAGMA journal_mode={DB_JOURNAL_MODE}")
+    conn.execute("PRAGMA foreign_keys=ON")
+    return conn
 
 def gen_id(prefix=""):
     """Generate a prefixed UUID."""

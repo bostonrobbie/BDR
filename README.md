@@ -67,6 +67,35 @@ open src/ui/dashboard.html
 - [Data Model](docs/DATA_MODEL.md) - Database schema, tables, relationships
 - [Agent Swarm](docs/AGENT_SWARM.md) - Agent roles, communication, safety
 - [Roadmap](docs/ROADMAP.md) - MVP → v1 → v2 build plan
+- [Repo Hygiene + DB Isolation](docs/REPO_HYGIENE_AND_DB_ISOLATION.md) - cleanup policy and channel-separated SQLite setup
+- [DB Update Runbook](docs/DB_UPDATE_RUNBOOK.md) - required Apollo + local DB write steps for each outreach event
+
+## Channel-Isolated Databases
+
+For strict separation between email and LinkedIn tracking with the same schema:
+
+- `api/data/outreach_email.db` (email prospects/messages/tracking)
+- `api/data/outreach_linkedin.db` (linkedin prospects/messages/tracking)
+
+Initialize both from the same schema source:
+
+```bash
+python scripts/init_isolated_channel_dbs.py \
+  --source api/data/outreach_seed.db \
+  --email-db api/data/outreach_email.db \
+  --linkedin-db api/data/outreach_linkedin.db
+```
+
+Run hygiene audit:
+
+```bash
+python scripts/repo_hygiene_audit.py
+```
+
+## AI Onboarding + SOPs
+
+- [AI Assistant Onboarding](docs/AI_ASSISTANT_ONBOARDING.md) - first-read guide for any AI collaborator to get current and work consistently.
+- [Canonical SOP Index](docs/sops/README.md) - points to the two primary SOPs and usage rules.
 
 ## Built For
 

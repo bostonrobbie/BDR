@@ -40,6 +40,7 @@ Run without API tests: python3 -m pytest test_comprehensive.py -k "not API" -v
 """
 
 import pytest
+pytest.importorskip("httpx")
 import os
 import sys
 import json
