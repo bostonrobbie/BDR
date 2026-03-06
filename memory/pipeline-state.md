@@ -1,6 +1,6 @@
 # Pipeline State & Send History
 
-## Master Send Log (Updated Mar 3)
+## Master Send Log (Updated Mar 4 — post Sales Nav audit)
 
 ### Lifetime Totals
 | Date | Batch | Sends | Cumulative |
@@ -20,6 +20,7 @@
 | Mar 3 | Batch 8 Day 4 (8 sent, 1 disabled comms) | 8 | 182 |
 | Mar 3 | Batch 8 Day 5 (8 sent) | 8 | 190 |
 | Mar 3 | Batch 8 Day 6 (8 sent, 1 NOT FOUND, 2 FREE) | 8 | 198 |
+| Mar 3 | Batch 9 (6 sent UNTRACKED — see audit note below) | 6 | 204 |
 
 ### Email Send History
 | Date | Time | Recipients | Type | Status |
@@ -106,16 +107,94 @@
 ### Mar 1 Overflow InMails (confirmed)
 Ron Trachman, Laurie Nielsen, Alan Gutherz, Derek Stanley, Nihal Elsayed, Sarah Kluivert, Kanda Kaliappan.
 
+## Mar 4 Sales Nav Audit Findings
+**Conducted:** Mar 4 via Sales Nav inbox inspection — **220 conversations loaded (full audit, Batches 1–9 era)**
+
+### Issues Found — Initial Audit (140 conversations)
+| Issue | Detail |
+|-------|--------|
+| Credit discrepancy | Tracker said 28, Sales Nav shows **23** — 5 credits unaccounted |
+| Batch 9 partial sends | 6 names sent on Tue Mar 3 WITHOUT being logged: Mohan Guruswamy, Jeremy Cira, Chandana Ray, Lueanne Fitzhugh, Martha Horns, Kylie Summer |
+| Batch 9 duplicates | Jennifer Tune, Bhavani Neerathilingam, Sandy Paray — all in Batch 7 (Feb 28) AND Batch 9. Do NOT send again. |
+| DNC violation — Sanjay Singh | Sent in Batch 5B (Feb 27). On DNC list (hostile reply 2022 mabl era). |
+| DNC violation — Lance Silverman | Sent in Batch 5B (Feb 27). On DNC list (polite decline). |
+| Same-company: Saks Global | Sowmya Kandula AND Sandy Paray both messaged in Batch 7 on Feb 28. Two people, same company, same day. |
+| Same-company: Greenway Health | Sam Townsend + Drew Davis (Batch 7, Feb 28) AND Martha Horns (Batch 9, sent Tue). Three people at same company. |
+| Abe Blanco reply | Replied today (Mar 4) "not interested." Add to DNC. Batch 8 / Kapitus. |
+
+### Additional Issues Found — Deep Audit (extended to 220 conversations)
+
+**5 Confirmed Double-Sends (same person messaged twice across different batches):**
+
+| Person | First Send | Second Send | Notes |
+|--------|-----------|------------|-------|
+| Chuck Smith | Batch 1 (Feb 23) | Batch 5B (Feb 27) | Batch 1 may have been connection msg not InMail — monitor for reaction |
+| Abe Blanco | Batch 3 (Feb 26) | Batch 8 Day 2 (Mar 3) | Already on DNC (replied "not interested" Mar 4). Both sends happened. |
+| Rick Kowaleski | Batch 3 (Feb 26) | Batch 8 Day 6 (Mar 3) | Two InMails sent — cannot unsend. If he replies, treat as Touch 1 reply. |
+| Christie Howard | Batch 5B (Feb 27) | Batch 8 Day 4 (Mar 3) | Two InMails sent 4 days apart — cannot unsend. Monitor for reply. |
+| Mohan Gummadi | Batch 5B (Feb 27) | Batch 8 Day 6 (Mar 3) | Two InMails sent 4 days apart — cannot unsend. Monitor for reply. |
+
+**Action:** All 5 already sent, nothing to unsend. For Touch 2 triage, treat these people as already having received Touch 1 + unofficial Touch 1.5 — skip to Touch 2 timeline as normal but note the prior duplicate send.
+
+**Batch 6 File Label Issue (resolved):**
+- File "outreach-batch6-unsent.html" is mislabeled. Batch was ACTUALLY SENT on Feb 28.
+- 14+ names confirmed in Sales Nav inbox. Pipeline metrics already correctly count these 27 sends.
+- File label is wrong but data is accurate. Do not re-send anyone from this file.
+
+**Batch 1 (Feb 23) — CONFIRMED: Connection Requests, NOT InMails:**
+- Verified Mar 4 via Sales Nav audit: zero Batch 1 names appear in Sales Nav inbox across 220 loaded conversations.
+- These were sent as LinkedIn connection requests via regular LinkedIn, not Sales Nav InMail.
+- No InMail credits consumed. No Sales Nav thread created.
+- All 22 people enrolled in Apollo Q1 Priority Accounts sequence (done Mar 3).
+- Touch 2 approach: email (Apollo sequence Step 3) or LinkedIn DM if they accepted the connection. Do NOT send InMail.
+
+**Master Sent List:**
+- `/Work/MASTER_SENT_LIST.csv` — deduplicated CSV of all 193 unique prospects contacted (198 records including 5 double-sends).
+- Regenerate anytime: run `/sessions/practical-brave-goldberg/build_master_list.py`
+- MUST be updated after every send session.
+
+### Batch 9 True State (post-audit)
+| Name | Status |
+|------|--------|
+| Mohan Guruswamy | ✅ SENT Mar 3 (untracked) |
+| Jeremy Cira | ✅ SENT Mar 3 (untracked) |
+| Chandana Ray | ✅ SENT Mar 3 (untracked) |
+| Lueanne Fitzhugh | ✅ SENT Mar 3 (untracked) |
+| Martha Horns | ✅ SENT Mar 3 (untracked) |
+| Kylie Summer | ✅ SENT Mar 3 (untracked) |
+| Jennifer Tune | ⛔ REMOVE — duplicate (Batch 7 Feb 28) |
+| Bhavani Neerathilingam | ⛔ REMOVE — duplicate (Batch 7 Feb 28) |
+| Sandy Paray | ⛔ REMOVE — duplicate (Batch 7 Feb 28) |
+| David Gustafson | ⏳ PENDING |
+| Yuliya A | ⏳ PENDING |
+| Kanan Hasanzade | ⏳ PENDING |
+| Jiaping Shen | ⏳ PENDING |
+| Azam Quraishi | ⏳ PENDING |
+| Sravanti Krothapalli | ⏳ PENDING |
+| Cooper Morrow | ⏳ PENDING |
+| Manigandan Kanagasabai | ⏳ PENDING |
+| Denise Barnett | ⏳ PENDING |
+| Leah Coates | ⏳ PENDING |
+| Grant Anderson | ⏳ PENDING |
+| Jyothi Kudithipudi | ⏳ PENDING |
+| Axel Kerksiek | ⏳ PENDING |
+
+**Remaining Batch 9 to send: 13 (not 22)**
+**Credits available: 23 — sufficient to cover all 13**
+
+---
+
 ## Pipeline Metrics
 | Metric | Value |
 |--------|-------|
-| Total InMails sent | 198 |
+| Total InMails sent | 204 (198 tracked + 6 untracked Batch 9 sends on Mar 3) |
 | Total Emails sent | 16 |
-| InMail credits remaining | 28 (verified Mar 3 post-Day 6) |
+| InMail credits remaining | **23** (Sales Nav confirmed Mar 4; was 28 in tracker — 5 credit gap) |
 | Apollo Q1 Priority Accounts | 281 active at Step 1, 4 finished (285 total) |
 | Apollo Q1 Website Visitor | 9 active |
 | Blocked (Terene Lee) | 1 |
-| DNC | 2 (Sanjay Singh, Lance Silverman) |
+| DNC | 5 (Sanjay Singh, Lance Silverman, Clyde Faulkner, Ashok Prasad, Abe Blanco) |
+| Double-sends (cannot unsend) | 5: Chuck Smith, Abe Blanco, Rick Kowaleski, Christie Howard, Mohan Gummadi |
 | Skipped NOT FOUND (Jonathan Lavoie) | 1 |
 
 ### Enrollment Audit (Mar 3)
@@ -143,6 +222,13 @@ Audited all batches for unenrolled prospects. Enrolled 41 missing contacts:
 | Batch 8 Day 5 (8 sent) | Mar 3 | Mar 8 (Sun→Mar 9 Mon) | Mar 13 |
 | Batch 8 Day 6 (8 sent) | Mar 3 | Mar 8 (Sun→Mar 9 Mon) | Mar 13 |
 
+**INC-002 double-send special cases:**
+- Abe Blanco (Kapitus): DNC. Skip all touches permanently.
+- Rick Kowaleski (Alteryx): Received Batch 3 InMail (Feb 26) + Batch 8 InMail (Mar 3). Touch 2 due ~Mar 8. Treat normally — note the extra prior touch, keep message fresh.
+- Christie Howard (LastPass): Received Batch 5B InMail (Feb 27) + Batch 8 InMail (Mar 3). Touch 2 due ~Mar 8. Treat normally.
+- Mohan Gummadi (Verisk): Received Batch 5B InMail (Feb 27) + Batch 8 InMail (Mar 3). Touch 2 due ~Mar 8. Treat normally.
+- Chuck Smith: Batch 1 was a connection request (no InMail), Batch 5B was InMail (Feb 27). Touch 2 as normal Batch 5B prospect (~Mar 4).
+
 **INC-001 special cases:**
 - Irfan, Katie, Rachana, Giang: Touch 3 already sent (Feb 28). Skip official Touch 3. Touch 2 InMail still due.
 - Pallavi: Replied. Rob sent follow-up Mar 2. Warm lead.
@@ -165,7 +251,7 @@ Audited all batches for unenrolled prospects. Enrolled 41 missing contacts:
 | outreach-sent-feb26-batch3.html | Batch 3 | Complete (24 sent) |
 | outreach-sent-feb27-batch5a.html | Batch 5A | Active |
 | outreach-sent-feb27-batch5b.html | Batch 5B | Active |
-| outreach-batch6-unsent.html | Batch 6 | Complete (27 sent Feb 28) |
+| outreach-batch6-unsent.html | Batch 6 | Complete (27 sent Feb 28) — ⚠️ FILENAME MISLEADING: was actually sent. Do not re-send. |
 | batch7-send-tracker.json | Batch 7 | Complete (41 sent) |
 | batch7-send-tracker.html | Batch 7 HTML | Complete |
 | enriched-prospects-batch8.json | Batch 8 | Enrichment data |

@@ -1,0 +1,3285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Batch 5B - Prospect Outreach Tracker (2026-02-26)</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f1117; color: #e4e4e7; line-height: 1.5; }
+.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+h1 { font-size: 1.8rem; margin-bottom: 8px; color: #fff; }
+.subtitle { color: #a1a1aa; margin-bottom: 20px; font-size: 0.95rem; }
+.pre-brief { background: #1a1b23; border: 1px solid #27272a; border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+.pre-brief h2 { font-size: 1.1rem; color: #60a5fa; margin-bottom: 12px; }
+.pre-brief ol { padding-left: 20px; }
+.pre-brief li { margin-bottom: 8px; font-size: 0.9rem; color: #d4d4d8; }
+.pre-brief strong { color: #fbbf24; }
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.filter-btn { padding: 6px 14px; border-radius: 20px; border: 1px solid #3f3f46; background: #1a1b23; color: #a1a1aa; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+.filter-btn:hover, .filter-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+.ab-info { background: #1a1b23; border: 1px solid #27272a; border-radius: 12px; padding: 16px; margin-bottom: 20px; display: flex; gap: 20px; }
+.ab-info .group { flex: 1; }
+.ab-info .group-label { font-size: 0.8rem; color: #a1a1aa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.ab-info .group-desc { font-size: 0.9rem; color: #d4d4d8; }
+.stats-bar { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+.stat { background: #1a1b23; border: 1px solid #27272a; border-radius: 8px; padding: 12px 16px; min-width: 120px; }
+.stat-value { font-size: 1.4rem; font-weight: 700; color: #fff; }
+.stat-label { font-size: 0.75rem; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.5px; }
+.prospect-card { background: #1a1b23; border: 1px solid #27272a; border-radius: 12px; margin-bottom: 16px; overflow: hidden; transition: border-color 0.2s; }
+.prospect-card:hover { border-color: #3f3f46; }
+.card-header { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+.card-header-left { display: flex; align-items: center; gap: 12px; }
+.priority-badge { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
+.priority-5 { background: #dc2626; color: #fff; }
+.priority-4 { background: #f59e0b; color: #000; }
+.priority-3 { background: #3b82f6; color: #fff; }
+.priority-2 { background: #6b7280; color: #fff; }
+.prospect-name { font-size: 1.05rem; font-weight: 600; color: #fff; }
+.prospect-title { font-size: 0.85rem; color: #a1a1aa; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag { padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 500; }
+.tag-vertical { background: #1e3a5f; color: #60a5fa; }
+.tag-ab { background: #3b1f5e; color: #c084fc; }
+.tag-persona { background: #1f3d1f; color: #4ade80; }
+.card-body { padding: 0 20px 20px; display: none; }
+.card-body.open { display: block; }
+.touch-tabs { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 1px solid #27272a; }
+.touch-tab { padding: 10px 20px; cursor: pointer; font-size: 0.85rem; color: #a1a1aa; border-bottom: 2px solid transparent; transition: all 0.2s; }
+.touch-tab:hover { color: #fff; }
+.touch-tab.active { color: #60a5fa; border-bottom-color: #60a5fa; }
+.touch-content { display: none; }
+.touch-content.active { display: block; }
+.message-box { background: #0f1117; border: 1px solid #27272a; border-radius: 8px; padding: 16px; margin-bottom: 12px; position: relative; }
+.message-subject { font-size: 0.85rem; color: #fbbf24; margin-bottom: 8px; }
+.message-body { font-size: 0.9rem; color: #d4d4d8; white-space: pre-wrap; line-height: 1.6; }
+.copy-btn { position: absolute; top: 8px; right: 8px; padding: 4px 12px; border-radius: 6px; border: 1px solid #3f3f46; background: #27272a; color: #a1a1aa; cursor: pointer; font-size: 0.75rem; transition: all 0.2s; }
+.copy-btn:hover { background: #2563eb; color: #fff; border-color: #2563eb; }
+.copy-btn.copied { background: #16a34a; color: #fff; border-color: #16a34a; }
+.objection-box { background: #1c1917; border: 1px solid #44403c; border-radius: 8px; padding: 12px 16px; margin-top: 12px; }
+.objection-label { font-size: 0.75rem; color: #f59e0b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.objection-text { font-size: 0.85rem; color: #d4d4d8; }
+.objection-response { font-size: 0.85rem; color: #a1a1aa; margin-top: 8px; font-style: italic; }
+.status-row { display: flex; gap: 12px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+.status-row select { background: #0f1117; border: 1px solid #3f3f46; border-radius: 6px; padding: 6px 10px; color: #e4e4e7; font-size: 0.85rem; }
+.meta-row { display: flex; gap: 16px; margin-top: 8px; font-size: 0.8rem; color: #71717a; }
+.linkedin-link { color: #60a5fa; text-decoration: none; }
+.linkedin-link:hover { text-decoration: underline; }
+.word-count { font-size: 0.75rem; color: #71717a; margin-top: 4px; }
+.scores { display: flex; gap: 8px; margin-top: 8px; }
+.score-badge { padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+.score-high { background: #16a34a; color: #fff; }
+.score-mid { background: #f59e0b; color: #000; }
+.score-low { background: #dc2626; color: #fff; }
+.expand-icon { color: #71717a; font-size: 1.2rem; transition: transform 0.2s; }
+.expand-icon.open { transform: rotate(180deg); }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Batch 5B: Multi-Vertical High-Signal Outreach</h1>
+<p class="subtitle">Generated 2026-02-26 &bull; 25 Prospects &bull; 3-Touch Cadence (InMail &rarr; InMail Follow-up &rarr; Email)</p>
+
+<div class="pre-brief">
+<h2>Pre-Brief: What's Working (Batches 1-4 Analysis)</h2>
+<ol>
+<li><strong>Best persona:</strong> Architects reply at 39.3%. This batch has 5 Architects (20%), highest architect density yet.</li>
+<li><strong>Best proof point:</strong> Match by vertical: Nagra DTV for multi-platform, Sanofi for healthcare/compliance, CRED for fintech, Medibuddy for scaling, Hansard for insurance. Anonymous outcomes ("a team cut...") for Group B testing.</li>
+<li><strong>Best vertical:</strong> Diverse mix: Gaming (2), Healthcare (4), SaaS (5), FinTech (3), Enterprise (4), Niche (7). Tests whether vertical diversity outperforms concentration.</li>
+<li><strong>Best pattern:</strong> C2 structure enforced. All messages 80-120 words, exactly 2 questions, "what day works" CTA tied to proof point. Single-theme discipline.</li>
+<li><strong>A/B test:</strong> Group A (named customers) vs Group B (anonymous outcomes). Rotating close structures across all 25 prospects.</li>
+</ol>
+</div>
+
+<div class="ab-info">
+<div class="group">
+<div class="group-label">A/B Test: Proof Point Style (same as 5A for statistical power)</div>
+</div>
+<div class="group">
+<div class="group-label">Group A (12)</div>
+<div class="group-desc">Named customers in Touch 1 (Hansard, CRED, Sanofi, Medibuddy, Nagra DTV, Cisco, Spendflo)</div>
+</div>
+<div class="group">
+<div class="group-label">Group B (13)</div>
+<div class="group-desc">Mix of named and anonymous outcomes to compare engagement patterns</div>
+</div>
+</div>
+
+<div class="filters">
+<button class="filter-btn active" onclick="filterAll()">All (25)</button>
+<button class="filter-btn" onclick="filterPriority(5)">Hot (P5)</button>
+<button class="filter-btn" onclick="filterPriority(4)">Warm (P4)</button>
+<button class="filter-btn" onclick="filterPriority(3)">Standard (P3)</button>
+<button class="filter-btn" onclick="filterAB('a')">Group A</button>
+<button class="filter-btn" onclick="filterAB('b')">Group B</button>
+</div>
+
+<div class="stats-bar">
+<div class="stat"><div class="stat-value">25</div><div class="stat-label">Total</div></div>
+<div class="stat"><div class="stat-value">1</div><div class="stat-label">Hot (P5)</div></div>
+<div class="stat"><div class="stat-value">10</div><div class="stat-label">Warm (P4)</div></div>
+<div class="stat"><div class="stat-value" id="stat-sent">0</div><div class="stat-label">Sent</div></div>
+<div class="stat"><div class="stat-value" id="stat-replied">0</div><div class="stat-label">Replied</div></div>
+</div>
+
+<div id="prospects-container">
+
+<div class="prospect-card" data-priority="5" data-ab="a" data-status="not_started" id="card-6">
+  <div class="card-header" onclick="toggleCard(6)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-5">5</div>
+      <div>
+        <div class="prospect-name">Lyle Landry</div>
+        <div class="prospect-title">QA Manager @ Availity</div>
+        <div style="font-size:0.75rem;color:#71717a;">Baton Rouge, LA</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Healthcare IT</span>
+        <span class="tag tag-ab">Group A</span>
+        <span class="tag tag-persona">Manager</span>
+      </div>
+      <span class="expand-icon" id="icon-6">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-6">
+    <div class="meta-row">
+      <span>Email: lyle.landry@availity.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 11/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(6, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(6, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(6, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-6-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-6-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-6-1">Subject: FHIR compliance deadline</div>
+        <div class="message-body" id="msg-6-1">Hey Lyle,
+
+With the Jan 1, 2027 FHIR compliance deadline, what&#x27;s putting more pressure on QA, validating the new payer APIs APIs or keeping regression stable on the existing claims exchange?
+
+Healthcare data platforms with hard compliance deadlines usually see test maintenance spike as both new and legacy systems need simultaneous validation.
+
+Sanofi cut regression from 3 days to 80 minutes using Testsigma while maintaining regulatory compliance rigor.
+
+If getting regression to 80 minutes would help hit the FHIR deadline, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-6-1')">Copy Message</button>
+      </div>
+      <div class="word-count">90 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-6-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-6-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-6-2">Subject: One more thought</div>
+        <div class="message-body" id="msg-6-2">Hey Lyle,
+
+Circling back. Medibuddy automated 2,500 tests and cut maintenance in half while managing complex healthcare data workflows.
+
+With 420M historical records to validate alongside new FHIR APIs, that kind of coverage velocity matters.
+
+If halving maintenance would help the migration timeline, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-6-2')">Copy Message</button>
+      </div>
+      <div class="word-count">51 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-6-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-6-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-6-3">Subject: FHIR migration testing</div>
+        <div class="message-body" id="msg-6-3">Hey Lyle,
+
+Healthcare platforms with hard compliance deadlines usually underestimate how much regression testing the FHIR migration adds on top of existing claims validation.
+
+Sanofi cut regression from 3 days to 80 minutes using Testsigma while managing complex healthcare data workflows, which freed capacity for compliance validation.
+
+If shrinking regression cycles would help meet the FHIR deadline, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-6-3')">Copy Message</button>
+      </div>
+      <div class="word-count">61 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: Compliance requirements</div>
+      <div class="objection-response">Response: We work with Sanofi, Oscar Health, and several healthcare companies. SOC2, HIPAA, ISO certified. On-prem deployment available.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(6, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="4" data-ab="a" data-status="not_started" id="card-0">
+  <div class="card-header" onclick="toggleCard(0)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-4">4</div>
+      <div>
+        <div class="prospect-name">Iftikhar Hussain</div>
+        <div class="prospect-title">Principal/Sr Test Architect @ Sabre Corporation</div>
+        <div style="font-size:0.75rem;color:#71717a;">Southlake, TX</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Travel Tech</span>
+        <span class="tag tag-ab">Group A</span>
+        <span class="tag tag-persona">Architect</span>
+      </div>
+      <span class="expand-icon" id="icon-0">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-0">
+    <div class="meta-row">
+      <span>Email: iftikhar.hussain@sabre.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(0, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(0, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(0, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-0-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-0-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-0-1">Subject: Cloud migration testing</div>
+        <div class="message-body" id="msg-0-1">Hey Iftikhar,
+
+With the Google Cloud migration underway, what&#x27;s taking more QA time right now, certifying the migrated services or keeping regression stable on the ones that haven&#x27;t moved yet?
+
+During large-scale cloud migrations, test maintenance usually spikes as infrastructure changes break existing test paths.
+
+Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma while managing a similar distributed platform.
+
+If 4x faster test execution would help the migration timeline, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-0-1')">Copy Message</button>
+      </div>
+      <div class="word-count">88 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-0-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-0-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-0-2">Subject: Quick follow-up</div>
+        <div class="message-body" id="msg-0-2">Hey Iftikhar,
+
+Circling back quick. Hansard cut regression from 8 to 5 weeks with tests that auto-fix when infrastructure workflows changed.
+
+For a 40,000-server migration, 3 fewer weeks per regression cycle adds up fast.
+
+If that would help the migration timeline, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-0-2')">Copy Message</button>
+      </div>
+      <div class="word-count">50 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-0-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-0-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-0-3">Subject: Sabre testing velocity</div>
+        <div class="message-body" id="msg-0-3">Hey Iftikhar,
+
+Cloud migrations at Sabre&#x27;s scale usually mean test certification time dominates the release cycle. The dual testing burden stalls progress fast.
+
+CRED hit 90% regression automation and 5x faster execution using Testsigma while managing complex platform integrations.
+
+If 5x faster regression would help the migration cadence, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-0-3')">Copy Message</button>
+      </div>
+      <div class="word-count">60 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: We already have a tool</div>
+      <div class="objection-response">Response: Fair. Most teams migrating to cloud hit limits with existing tools around auto-maintaining tests as infrastructure shifts. Our AI handles that automatically.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(0, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="4" data-ab="a" data-status="not_started" id="card-1">
+  <div class="card-header" onclick="toggleCard(1)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-4">4</div>
+      <div>
+        <div class="prospect-name">Rahul Pandey</div>
+        <div class="prospect-title">Sr. Quality Architect @ CareFirst BCBS</div>
+        <div style="font-size:0.75rem;color:#71717a;">Henrico, VA</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Health Insurance</span>
+        <span class="tag tag-ab">Group A</span>
+        <span class="tag tag-persona">Architect</span>
+      </div>
+      <span class="expand-icon" id="icon-1">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-1">
+    <div class="meta-row">
+      <span>Email: rahul.pandey@carefirst.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 11/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(1, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(1, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(1, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-1-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-1-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-1-1">Subject: Microservices regression</div>
+        <div class="message-body" id="msg-1-1">Hey Rahul,
+
+During the microservices migration, what&#x27;s harder to manage, keeping the legacy Selenium frameworks stable or building new coverage for the microservices APIs?
+
+Insurance teams moving to microservices usually see their existing test suites break faster than the SDET team can fix them.
+
+Sanofi cut regression from 3 days to 80 minutes using Testsigma while maintaining healthcare compliance rigor.
+
+If regression at 80 minutes runs would help the migration timeline, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-1-1')">Copy Message</button>
+      </div>
+      <div class="word-count">82 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-1-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-1-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-1-2">Subject: One more thought</div>
+        <div class="message-body" id="msg-1-2">Hey Rahul,
+
+Circling back. Medibuddy automated 2,500 tests and cut maintenance in half while handling complex healthcare workflows.
+
+For teams with 7+ open SDET roles, that maintenance reduction usually helps more than another hire.
+
+If halving maintenance would ease the hiring pressure, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-1-2')">Copy Message</button>
+      </div>
+      <div class="word-count">50 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-1-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-1-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-1-3">Subject: SDET capacity at CareFirst</div>
+        <div class="message-body" id="msg-1-3">Hey Rahul,
+
+Healthcare teams with active microservices migrations and SDET hiring gaps usually see regression slip since existing test frameworks break with service changes. It compounds the hiring crunch.
+
+Sanofi cut regression from 3 days to 80 minutes using Testsigma's AI to auto fix tests as services change, which freed SDET capacity for new coverage.
+
+If shrinking regression cycles would help manage the migration timeline, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-1-3')">Copy Message</button>
+      </div>
+      <div class="word-count">70 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: Compliance requirements</div>
+      <div class="objection-response">Response: We work with Sanofi and several healthcare companies. SOC2, HIPAA, ISO certified. Happy to walk through our compliance story.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(1, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="4" data-ab="a" data-status="not_started" id="card-5">
+  <div class="card-header" onclick="toggleCard(5)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-4">4</div>
+      <div>
+        <div class="prospect-name">Konduru Srinivasulu</div>
+        <div class="prospect-title">QA Mgr/Field Solution Architect @ Kaleris</div>
+        <div style="font-size:0.75rem;color:#71717a;">Austin, TX</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Supply Chain/Logistics</span>
+        <span class="tag tag-ab">Group A</span>
+        <span class="tag tag-persona">Manager</span>
+      </div>
+      <span class="expand-icon" id="icon-5">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-5">
+    <div class="meta-row">
+      <span>Email: skonduru@kaleris.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 11/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(5, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(5, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(5, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-5-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-5-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-5-1">Subject: Post-acquisition testing</div>
+        <div class="message-body" id="msg-5-1">Hey Konduru,
+
+After the Locus and CAMS acquisitions, what&#x27;s harder on the QA side, merging the test suites from acquired codebases or keeping regression stable while feature velocity stays high?
+
+Post-acquisition teams usually see test maintenance double as they consolidate platforms.
+
+Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma during a similar multi-platform integration.
+
+If 4x faster execution would help the consolidation timeline, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-5-1')">Copy Message</button>
+      </div>
+      <div class="word-count">82 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-5-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-5-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-5-2">Subject: Quick follow-up</div>
+        <div class="message-body" id="msg-5-2">Hey Konduru,
+
+Circling back. Medibuddy automated 2,500 tests and cut maintenance in half while scaling coverage across new platform modules.
+
+For post-acquisition consolidation, that maintenance reduction usually speeds up the integration.
+
+If halving maintenance would help, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-5-2')">Copy Message</button>
+      </div>
+      <div class="word-count">44 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-5-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-5-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-5-3">Subject: Codebase consolidation at Kaleris</div>
+        <div class="message-body" id="msg-5-3">Hey Konduru,
+
+Supply chain platforms merging acquired codebases usually find that test maintenance compounds as each codebase has different frameworks and dependencies. The upkeep burden multiplies fast.
+
+Medibuddy automated 2,500 tests and cut maintenance in half using Testsigma when consolidating platforms with different tech stacks.
+
+If halving maintenance would speed up the consolidation, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-5-3')">Copy Message</button>
+      </div>
+      <div class="word-count">65 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: Too early, still assessing</div>
+      <div class="objection-response">Response: Makes sense. Post-acquisition is actually when teams get the most value from a free trial. Benchmark what&#x27;s possible across both codebases before committing.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(5, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="4" data-ab="a" data-status="not_started" id="card-8">
+  <div class="card-header" onclick="toggleCard(8)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-4">4</div>
+      <div>
+        <div class="prospect-name">Christie Howard</div>
+        <div class="prospect-title">Sr Director, QA Engineering @ LastPass</div>
+        <div style="font-size:0.75rem;color:#71717a;">Atlanta, GA</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Cybersecurity/SaaS</span>
+        <span class="tag tag-ab">Group A</span>
+        <span class="tag tag-persona">Director</span>
+      </div>
+      <span class="expand-icon" id="icon-8">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-8">
+    <div class="meta-row">
+      <span>Email: christie.howard@lastpass.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-mid">Personalization: 2/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(8, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(8, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(8, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-8-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-8-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-8-1">Subject: Multi-platform security testing</div>
+        <div class="message-body" id="msg-8-1">Hey Christie,
+
+With web, mobile, and browser extensions all shipping in parallel, what takes more QA time, regression across the platform surfaces or keeping pace with security patch releases?
+
+Security products usually need fast regression response, but multi-platform test maintenance eats the speed buffer.
+
+Hansard cut regression from 8 weeks down to 5 with Testsigma&#x27;s AI to auto fix tests when UI changes shipped.
+
+If 3 fewer weeks of regression would help the security patch cadence, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-8-1')">Copy Message</button>
+      </div>
+      <div class="word-count">86 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-8-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-8-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-8-2">Subject: Still on my mind</div>
+        <div class="message-body" id="msg-8-2">Hey Christie,
+
+Circling back. CRED hit 90% regression automation and 5x faster execution using Testsigma while shipping daily.
+
+For security products, 5x faster regression means faster confidence before patches go live.
+
+If that speed would help the release cadence, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-8-2')">Copy Message</button>
+      </div>
+      <div class="word-count">47 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-8-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-8-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-8-3">Subject: Password manager regression</div>
+        <div class="message-body" id="msg-8-3">Hey Christie,
+
+Multi-platform security tools usually need rapid regression for patch releases, but maintaining tests across web, mobile, and extensions compounds the effort significantly. Teams often skip test updates on secondary platforms.
+
+Freshworks reduced flakiness at scale using Testsigma across their multi-platform security and password management environment.
+
+If reducing test flakiness would speed up patch release cycles, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-8-3')">Copy Message</button>
+      </div>
+      <div class="word-count">68 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: We already have a tool</div>
+      <div class="objection-response">Response: Fair. Most multi-platform teams hit limits around maintaining tests across 3-4 surfaces simultaneously. Our AI handles cross-platform maintenance automatically.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(8, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="4" data-ab="a" data-status="not_started" id="card-10">
+  <div class="card-header" onclick="toggleCard(10)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-4">4</div>
+      <div>
+        <div class="prospect-name">Mohan Gummadi</div>
+        <div class="prospect-title">Sr Director QA @ Verisk</div>
+        <div style="font-size:0.75rem;color:#71717a;">Jersey City, NJ</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Data Analytics/Insurance</span>
+        <span class="tag tag-ab">Group A</span>
+        <span class="tag tag-persona">Director</span>
+      </div>
+      <span class="expand-icon" id="icon-10">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-10">
+    <div class="meta-row">
+      <span>Email: mgummadi@verisk.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(10, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(10, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(10, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-10-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-10-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-10-1">Subject: AI platform validation</div>
+        <div class="message-body" id="msg-10-1">Hey Mohan,
+
+With three new product launches this year, what&#x27;s harder on the QA side, validating the outputs across all platforms or keeping regression stable on the core analytics platform?
+
+Teams rolling out new features usually see test maintenance spike as each capability creates new behavioral paths to validate.
+
+Sanofi cut regression from 3 days to 80 minutes using Testsigma while maintaining regulatory validation rigor.
+
+If regression at 80 minutes would help the AI launch cadence, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-10-1')">Copy Message</button>
+      </div>
+      <div class="word-count">83 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-10-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-10-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-10-2">Subject: Quick follow-up</div>
+        <div class="message-body" id="msg-10-2">Hey Mohan,
+
+Circling back. CRED hit 90% regression automation and 5x faster execution using Testsigma while shipping daily updates to their analytics platform.
+
+With three new product launches in flight, that speed probably matters a lot right now.
+
+If 5x faster execution would help, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-10-2')">Copy Message</button>
+      </div>
+      <div class="word-count">51 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-10-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-10-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-10-3">Subject: Analytics regression velocity</div>
+        <div class="message-body" id="msg-10-3">Hey Mohan,
+
+Insurance analytics platforms rolling out new features usually see the test matrix grow as each new product creates new validation paths. This compounds during rapid feature velocity.
+
+Hansard cut regression from 8 weeks to 5 weeks using Testsigma's AI to auto fix tests, freeing capacity for AI validation workflows.
+
+If cutting 3 weeks off regression would help the AI launch timeline, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-10-3')">Copy Message</button>
+      </div>
+      <div class="word-count">66 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: We already have a tool</div>
+      <div class="objection-response">Response: Fair. Most analytics platform teams hit limits with existing tools when AI features multiply the test paths. Our AI auto-maintains tests as models evolve.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(10, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="4" data-ab="b" data-status="not_started" id="card-13">
+  <div class="card-header" onclick="toggleCard(13)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-4">4</div>
+      <div>
+        <div class="prospect-name">Sebren Green</div>
+        <div class="prospect-title">Sr Director QA / Head of QA Eng @ Riot Games</div>
+        <div style="font-size:0.75rem;color:#71717a;">El Segundo, CA</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Gaming</span>
+        <span class="tag tag-ab">Group B</span>
+        <span class="tag tag-persona">Director</span>
+      </div>
+      <span class="expand-icon" id="icon-13">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-13">
+    <div class="meta-row">
+      <span>Email: sgreen@riotgames.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 11/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(13, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(13, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(13, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-13-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-13-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-13-1">Subject: Valorant Mobile testing</div>
+        <div class="message-body" id="msg-13-1">Hey Sebren,
+
+With Valorant Mobile launching globally and 100K daily tests already running, what&#x27;s harder to manage, building mobile test coverage or keeping regression stable across PC, console, and mobile simultaneously?
+
+Cross-platform game teams usually see the test matrix explode when adding a new platform, especially mobile with its device fragmentation.
+
+Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma across their multi-device platform.
+
+If 4x faster execution would help the mobile launch timeline, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-13-1')">Copy Message</button>
+      </div>
+      <div class="word-count">92 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-13-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-13-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-13-2">Subject: Still on my mind</div>
+        <div class="message-body" id="msg-13-2">Hey Sebren,
+
+Circling back. Cisco cut regression by 35% using Testsigma across a massive multi-platform footprint.
+
+With seasonal chapter launches plus the mobile expansion, 35% less regression time creates real breathing room.
+
+If that would help the launch cadence, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-13-2')">Copy Message</button>
+      </div>
+      <div class="word-count">47 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-13-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-13-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-13-3">Subject: Cross-platform game testing</div>
+        <div class="message-body" id="msg-13-3">Hey Sebren,
+
+Gaming teams adding a new platform usually see device fragmentation multiply the existing test matrix overnight.
+
+Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma across multiple platforms and devices.
+
+If 4x faster cross-platform test execution would help the Valorant expansion, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-13-3')">Copy Message</button>
+      </div>
+      <div class="word-count">54 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: We already have a tool</div>
+      <div class="objection-response">Response: Fair. Most gaming teams hit limits with existing tools when adding mobile to the platform matrix. Our AI handles cross-platform test maintenance automatically.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(13, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="4" data-ab="b" data-status="not_started" id="card-15">
+  <div class="card-header" onclick="toggleCard(15)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-4">4</div>
+      <div>
+        <div class="prospect-name">Amanda Mao</div>
+        <div class="prospect-title">QA Manager @ Veeva Systems</div>
+        <div style="font-size:0.75rem;color:#71717a;">Boston, MA</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Life Sciences SaaS</span>
+        <span class="tag tag-ab">Group B</span>
+        <span class="tag tag-persona">Manager</span>
+      </div>
+      <span class="expand-icon" id="icon-15">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-15">
+    <div class="meta-row">
+      <span>Email: amanda.mao@veeva.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 11/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(15, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(15, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(15, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-15-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-15-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-15-1">Subject: Vault CRM migrations</div>
+        <div class="message-body" id="msg-15-1">Hey Amanda,
+
+With 7 of the top 20 pharmas migrating to Vault CRM and new agent features rolling out through next year, what takes more QA time, validating the migration paths or regression across the core Vault platform?
+
+Platform migration waves usually mean the QA team is testing old and new simultaneously, which doubles the regression surface.
+
+Sanofi cut regression from 3 days to 80 minutes using Testsigma while maintaining pharma compliance rigor.
+
+If regression at 80 minutes runs would help manage the migration wave, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-15-1')">Copy Message</button>
+      </div>
+      <div class="word-count">95 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-15-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-15-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-15-2">Subject: Quick follow-up</div>
+        <div class="message-body" id="msg-15-2">Hey Amanda,
+
+Circling back. Medibuddy automated 2,500 tests and cut maintenance in half while managing complex healthcare platform workflows.
+
+With pharma CRM migrations running 6-12 months each, that maintenance reduction compounds per customer.
+
+If halving maintenance would help, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-15-2')">Copy Message</button>
+      </div>
+      <div class="word-count">46 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-15-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-15-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-15-3">Subject: Pharma platform regression</div>
+        <div class="message-body" id="msg-15-3">Hey Amanda,
+
+Life sciences platforms with active customer migrations usually need exhaustive regression, but long cycles slow down the migration timeline significantly. Each phase takes months.
+
+Medibuddy automated 2,500 tests and cut maintenance in half using Testsigma while managing complex pharma data workflows.
+
+If halving maintenance would speed up Vault CRM migrations, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-15-3')">Copy Message</button>
+      </div>
+      <div class="word-count">67 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: Compliance requirements</div>
+      <div class="objection-response">Response: We work with Sanofi directly. SOC2, HIPAA, ISO, GxP-friendly. Happy to walk through our compliance story.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(15, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="4" data-ab="b" data-status="not_started" id="card-17">
+  <div class="card-header" onclick="toggleCard(17)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-4">4</div>
+      <div>
+        <div class="prospect-name">Sanjay Singh</div>
+        <div class="prospect-title">QA Lead Automation Engineer @ ServiceTitan</div>
+        <div style="font-size:0.75rem;color:#71717a;">Austin, TX</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Field Service SaaS</span>
+        <span class="tag tag-ab">Group B</span>
+        <span class="tag tag-persona">Manager</span>
+      </div>
+      <span class="expand-icon" id="icon-17">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-17">
+    <div class="meta-row">
+      <span>Email: ssingh@servicetitan.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(17, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(17, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(17, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-17-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-17-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-17-1">Subject: Post-IPO regression discipline</div>
+        <div class="message-body" id="msg-17-1">Hey Sanjay,
+
+Now that ServiceTitan is public, what&#x27;s putting more pressure on QA, keeping regression tight across the 5 core modules or testing the fintech expansion products?
+
+Post-IPO companies usually see regression standards tighten as customer quality becomes investor-visible.
+
+Hansard cut regression from 8 weeks down to 5 with Testsigma&#x27;s AI to auto fix tests when product workflows changed.
+
+If 3 fewer weeks of regression would help the post IPO release cadence, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-17-1')">Copy Message</button>
+      </div>
+      <div class="word-count">82 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-17-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-17-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-17-2">Subject: Forgot to mention</div>
+        <div class="message-body" id="msg-17-2">Hey Sanjay,
+
+Circling back. CRED hit 90% regression automation and 5x faster execution using Testsigma while shipping daily.
+
+Post-IPO, 5x faster regression means more confidence before each release.
+
+If that speed would help, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-17-2')">Copy Message</button>
+      </div>
+      <div class="word-count">41 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-17-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-17-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-17-3">Subject: ServiceTitan QA velocity</div>
+        <div class="message-body" id="msg-17-3">Hey Sanjay,
+
+Post-IPO SaaS companies usually tighten regression standards, but long cycles slow the release cadence that investors want to see.
+
+Spendflo cut manual testing by 50% using Testsigma's codeless automation, which helped accelerate their release cadence.
+
+If cutting manual testing burden would help the post IPO release schedule, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-17-3')">Copy Message</button>
+      </div>
+      <div class="word-count">54 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: We already have a tool</div>
+      <div class="objection-response">Response: Fair. Most post-IPO teams find they need faster maintenance resolution than their current tool provides. Our AI auto-fixes tests without manual intervention.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(17, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="4" data-ab="b" data-status="not_started" id="card-21">
+  <div class="card-header" onclick="toggleCard(21)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-4">4</div>
+      <div>
+        <div class="prospect-name">Rachael Schroeder</div>
+        <div class="prospect-title">QA Manager (LEGO Fortnite) @ Epic Games</div>
+        <div style="font-size:0.75rem;color:#71717a;">Cary, NC</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Gaming</span>
+        <span class="tag tag-ab">Group B</span>
+        <span class="tag tag-persona">Manager</span>
+      </div>
+      <span class="expand-icon" id="icon-21">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-21">
+    <div class="meta-row">
+      <span>Email: rachael.thompson@epicgames.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(21, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(21, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(21, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-21-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-21-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-21-1">Subject: Cross-platform game testing</div>
+        <div class="message-body" id="msg-21-1">Hey Rachael,
+
+With LEGO Fortnite running across PC, console, mobile, and cloud, what takes more QA time, keeping regression stable across all four platforms or testing new seasonal content before chapter launches?
+
+Cross-platform game teams usually see the test matrix multiply with every new platform and content update.
+
+Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma across their multi-platform streaming service.
+
+If 4x faster test execution would help the seasonal launch cadence, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-21-1')">Copy Message</button>
+      </div>
+      <div class="word-count">91 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-21-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-21-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-21-2">Subject: One more thought</div>
+        <div class="message-body" id="msg-21-2">Hey Rachael,
+
+Circling back. A platform team cut test maintenance by 70% with auto-healing tests that adapt when UI and platform surfaces change.
+
+With weekly cosmetics and seasonal chapters, 70% less maintenance means more time for content testing.
+
+If that would help, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-21-2')">Copy Message</button>
+      </div>
+      <div class="word-count">50 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-21-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-21-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-21-3">Subject: LEGO Fortnite QA velocity</div>
+        <div class="message-body" id="msg-21-3">Hey Rachael,
+
+Gaming teams shipping seasonal content across 4 platforms usually spend more time fixing broken tests than testing new features.
+
+Medibuddy cut maintenance in half while scaling their test coverage across new product lines.
+
+If halving maintenance would free time for seasonal content testing, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-21-3')">Copy Message</button>
+      </div>
+      <div class="word-count">53 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: We already have a tool</div>
+      <div class="objection-response">Response: Fair. Most cross-platform gaming teams hit limits around maintaining tests across PC, console, mobile, and cloud simultaneously. Our AI handles all four surfaces.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(21, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="4" data-ab="b" data-status="not_started" id="card-24">
+  <div class="card-header" onclick="toggleCard(24)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-4">4</div>
+      <div>
+        <div class="prospect-name">Anthony Kent</div>
+        <div class="prospect-title">QA Manager @ Apiture</div>
+        <div style="font-size:0.75rem;color:#71717a;">Austin, TX</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">FinTech</span>
+        <span class="tag tag-ab">Group B</span>
+        <span class="tag tag-persona">Manager</span>
+      </div>
+      <span class="expand-icon" id="icon-24">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-24">
+    <div class="meta-row">
+      <span>Email: anthony.kent@apiture.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 11/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(24, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(24, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(24, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-24-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-24-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-24-1">Subject: Post-acquisition testing at Apiture</div>
+        <div class="message-body" id="msg-24-1">Hey Anthony,
+
+After the CSI acquisition, what&#x27;s harder on the QA side, integrating the Apiture cloud platform with CSI&#x27;s core banking system or keeping regression stable across 200+ fintech partner integrations?
+
+Post-acquisition platform merges usually mean the QA team is validating two systems simultaneously while partners keep shipping updates.
+
+Sanofi cut regression from 3 days to 80 minutes using Testsigma while managing complex system integrations and compliance requirements.
+
+If regression at 80 minutes would help the acquisition integration timeline, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-24-1')">Copy Message</button>
+      </div>
+      <div class="word-count">91 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-24-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-24-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-24-2">Subject: Regression thought</div>
+        <div class="message-body" id="msg-24-2">Hey Anthony,
+
+Circling back. Hansard (financial services) cut regression from 8 to 5 weeks with tests that auto-fix when banking workflows changed.
+
+With CSI integration plus 200+ fintech partners, 3 fewer weeks per cycle helps a lot.
+
+If that would help the integration timeline, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-24-2')">Copy Message</button>
+      </div>
+      <div class="word-count">53 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-24-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-24-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-24-3">Subject: Digital banking QA</div>
+        <div class="message-body" id="msg-24-3">Hey Anthony,
+
+Digital banking platforms post-acquisition usually see test maintenance spike as two codebases merge and 200+ partner integrations need continued validation.
+
+CRED hit 90% regression automation and 5x faster execution using Testsigma while managing complex fintech integrations.
+
+If 5x faster regression would help the CSI integration timeline, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-24-3')">Copy Message</button>
+      </div>
+      <div class="word-count">56 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: Too early, still assessing</div>
+      <div class="objection-response">Response: Makes sense. Post-acquisition is actually when most banking teams get the most value from a trial. Benchmark what&#x27;s possible across both platforms before committing.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(24, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="3" data-ab="a" data-status="not_started" id="card-2">
+  <div class="card-header" onclick="toggleCard(2)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-3">3</div>
+      <div>
+        <div class="prospect-name">Edwin Gozun</div>
+        <div class="prospect-title">Sr Principal Test Architect @ Arm</div>
+        <div style="font-size:0.75rem;color:#71717a;">Folsom, CA</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Semiconductors</span>
+        <span class="tag tag-ab">Group A</span>
+        <span class="tag tag-persona">Architect</span>
+      </div>
+      <span class="expand-icon" id="icon-2">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-2">
+    <div class="meta-row">
+      <span>Email: edwin.gozun@arm.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-mid">Personalization: 2/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(2, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(2, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(2, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-2-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-2-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-2-1">Subject: IP verification at scale</div>
+        <div class="message-body" id="msg-2-1">Hey Edwin,
+
+With 1,000+ SoC derivatives using Arm IP, what creates more testing pressure, regression across the IP reuse matrix or keeping coverage current as new cores ship?
+
+Chip design teams usually see verification complexity compound with every new IP block and derivative.
+
+Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma across their distributed platform.
+
+If 4x faster test execution would help the IP validation pipeline, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-2-1')">Copy Message</button>
+      </div>
+      <div class="word-count">85 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-2-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-2-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-2-2">Subject: Forgot to mention</div>
+        <div class="message-body" id="msg-2-2">Hey Edwin,
+
+Circling back. Cisco cut regression by 35% using Testsigma across their enterprise platform, similar scale and complexity to chip IP verification.
+
+If 35% less regression time would help the core release cadence, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-2-2')">Copy Message</button>
+      </div>
+      <div class="word-count">42 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-2-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-2-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-2-3">Subject: Arm test coverage velocity</div>
+        <div class="message-body" id="msg-2-3">Hey Edwin,
+
+Semiconductor teams managing IP reuse at scale usually spend more time maintaining existing tests than building new coverage for next-gen cores.
+
+Freshworks reduced flakiness at scale using Testsigma across massive platform portfolios with complex derivative and config variations.
+
+If reducing test flakiness would accelerate IP coverage delivery, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-2-3')">Copy Message</button>
+      </div>
+      <div class="word-count">56 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: We already have a tool</div>
+      <div class="objection-response">Response: Fair. Most chip verification teams hit limits with existing tools around the IP reuse matrix. Our AI auto-fixes tests as derivative configs change.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(2, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="3" data-ab="a" data-status="not_started" id="card-3">
+  <div class="card-header" onclick="toggleCard(3)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-3">3</div>
+      <div>
+        <div class="prospect-name">Rich Kowalski</div>
+        <div class="prospect-title">PS QA Lead Architect @ Genesys</div>
+        <div style="font-size:0.75rem;color:#71717a;">Indianapolis, IN</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Contact Center SaaS</span>
+        <span class="tag tag-ab">Group A</span>
+        <span class="tag tag-persona">Architect</span>
+      </div>
+      <span class="expand-icon" id="icon-3">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-3">
+    <div class="meta-row">
+      <span>Email: rich.kowalski@genesys.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(3, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(3, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(3, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-3-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-3-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-3-1">Subject: Omnichannel regression</div>
+        <div class="message-body" id="msg-3-1">Hey Rich,
+
+With voice, chat, SMS, WhatsApp, and live agents running through the platform, what takes more QA time, testing the omnichannel routing or regression across the 200+ AppFoundry integrations?
+
+Contact center platforms usually see their test matrix explode as each new channel multiplies the integration paths.
+
+Medibuddy automated 2,500 tests and cut maintenance in half while scaling across complex platform integrations.
+
+If halving test maintenance would help manage the integration sprawl, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-3-1')">Copy Message</button>
+      </div>
+      <div class="word-count">86 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-3-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-3-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-3-2">Subject: Still on my mind</div>
+        <div class="message-body" id="msg-3-2">Hey Rich,
+
+Circling back. CRED hit 90% regression automation and 5x faster execution using Testsigma while managing dozens of third-party integrations.
+
+With 200+ AppFoundry partners, that speed probably compounds fast.
+
+If 5x faster regression would help, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-3-2')">Copy Message</button>
+      </div>
+      <div class="word-count">44 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-3-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-3-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-3-3">Subject: Integration testing at Genesys</div>
+        <div class="message-body" id="msg-3-3">Hey Rich,
+
+Omnichannel platforms with 200+ integrations usually find that partner API changes break tests constantly.
+
+CRED hit 90% regression automation and 5x faster execution using Testsigma while managing complex multi-channel integrations.
+
+If 5x faster regression would free time for new channel coverage testing, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-3-3')">Copy Message</button>
+      </div>
+      <div class="word-count">52 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: We already have a tool</div>
+      <div class="objection-response">Response: Fair. Most omnichannel teams hit limits with existing tools around managing 200+ integration tests. Our AI auto-fixes tests when any partner API changes.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(3, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="3" data-ab="a" data-status="not_started" id="card-4">
+  <div class="card-header" onclick="toggleCard(4)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-3">3</div>
+      <div>
+        <div class="prospect-name">Lance Silverman</div>
+        <div class="prospect-title">Perf Test Architect &amp; Manager @ Healthfirst</div>
+        <div style="font-size:0.75rem;color:#71717a;">Hillsborough, NJ</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Healthcare</span>
+        <span class="tag tag-ab">Group A</span>
+        <span class="tag tag-persona">Architect</span>
+      </div>
+      <span class="expand-icon" id="icon-4">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-4">
+    <div class="meta-row">
+      <span>Email: lsilverman@healthfirst.org</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(4, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(4, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(4, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-4-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-4-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-4-1">Subject: Open enrollment load testing</div>
+        <div class="message-body" id="msg-4-1">Hey Lance,
+
+With open enrollment driving seasonal load spikes every fall, what takes more QA time, performance testing for the enrollment surge or keeping regression stable across the member portal year-round?
+
+Healthcare teams usually need both locked down before enrollment, but test maintenance eats the prep time.
+
+Medibuddy automated 2,500 tests and cut maintenance in half while managing seasonal complexity in healthcare.
+
+If halving maintenance would give more time for enrollment readiness, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-4-1')">Copy Message</button>
+      </div>
+      <div class="word-count">85 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-4-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-4-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-4-2">Subject: Compliance testing thought</div>
+        <div class="message-body" id="msg-4-2">Hey Lance,
+
+Circling back. Sanofi cut regression from 3 days to 80 minutes using Testsigma while maintaining healthcare compliance rigor.
+
+For seasonal healthcare platforms, regression at 80 minutes means faster confidence before enrollment.
+
+If that speed would help pre-enrollment prep, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-4-2')">Copy Message</button>
+      </div>
+      <div class="word-count">46 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-4-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-4-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-4-3">Subject: Healthcare regression speed</div>
+        <div class="message-body" id="msg-4-3">Hey Lance,
+
+Healthcare platforms with seasonal spikes usually need exhaustive regression before open enrollment, but long cycles eat the prep window.
+
+Sanofi cut regression from 3 days to 80 minutes using Testsigma while maintaining healthcare compliance rigor.
+
+If shrinking regression cycles would free time for enrollment load testing, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-4-3')">Copy Message</button>
+      </div>
+      <div class="word-count">57 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: Compliance requirements</div>
+      <div class="objection-response">Response: We work with Sanofi and Oscar Health. SOC2, HIPAA, ISO certified. Happy to walk through our compliance story.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(4, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="3" data-ab="a" data-status="not_started" id="card-7">
+  <div class="card-header" onclick="toggleCard(7)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-3">3</div>
+      <div>
+        <div class="prospect-name">Chuck Smith</div>
+        <div class="prospect-title">Director Quality Engineering @ Aventiv Technologies</div>
+        <div style="font-size:0.75rem;color:#71717a;">Flemington, NJ</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">GovTech/Corrections</span>
+        <span class="tag tag-ab">Group A</span>
+        <span class="tag tag-persona">Director</span>
+      </div>
+      <span class="expand-icon" id="icon-7">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-7">
+    <div class="meta-row">
+      <span>Email: chuck.smith@aventiv.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(7, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(7, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(7, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-7-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-7-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-7-1">Subject: Multi-facility platform QA</div>
+        <div class="message-body" id="msg-7-1">Hey Chuck,
+
+Across 1,800 facilities running on the platform, what creates more QA pressure, testing the tablet hardware integrations or keeping the Securus One platform regression stable?
+
+Multi-facility platforms usually see regression compound as each facility configuration adds test permutations.
+
+Cisco cut regression by 35% using Testsigma across their enterprise platform, similar multi-site complexity.
+
+If 35% less regression would help the platform rollout, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-7-1')">Copy Message</button>
+      </div>
+      <div class="word-count">76 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-7-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-7-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-7-2">Subject: Forgot to mention</div>
+        <div class="message-body" id="msg-7-2">Hey Chuck,
+
+Circling back. Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma across their multi-site platform.
+
+For 1,800 facilities, 4x faster execution probably matters a lot.
+
+If that speed would help the rollout, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-7-2')">Copy Message</button>
+      </div>
+      <div class="word-count">47 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-7-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-7-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-7-3">Subject: Securus One platform testing</div>
+        <div class="message-body" id="msg-7-3">Hey Chuck,
+
+Enterprise platforms deployed across thousands of sites usually find that test maintenance grows with every facility configuration variant.
+
+Cisco cut regression by 35% using Testsigma across their massive multi-platform infrastructure portfolio.
+
+If reducing test maintenance burden would help manage the facility scale, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-7-3')">Copy Message</button>
+      </div>
+      <div class="word-count">56 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: Security/procurement is complex</div>
+      <div class="objection-response">Response: We offer on premises, private cloud, and hybrid deployment. SOC2/ISO certified. Several government-adjacent companies run us behind their firewall.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(7, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="3" data-ab="a" data-status="not_started" id="card-9">
+  <div class="card-header" onclick="toggleCard(9)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-3">3</div>
+      <div>
+        <div class="prospect-name">Ryan Aspleaf</div>
+        <div class="prospect-title">Sr Director QA Engineering @ VIZIO</div>
+        <div style="font-size:0.75rem;color:#71717a;">Sioux City, IA</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Consumer Electronics</span>
+        <span class="tag tag-ab">Group A</span>
+        <span class="tag tag-persona">Director</span>
+      </div>
+      <span class="expand-icon" id="icon-9">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-9">
+    <div class="meta-row">
+      <span>Email: ryan.aspleaf@vizio.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(9, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(9, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(9, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-9-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-9-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-9-1">Subject: Smart TV test matrix</div>
+        <div class="message-body" id="msg-9-1">Hey Ryan,
+
+With 100+ OTT apps across 20+ TV models and firmware versions, what creates more QA pressure, keeping app compatibility tests current or regression on the Home OS across all the SKUs?
+
+Connected device platforms usually see the test matrix explode with every new model and firmware update.
+
+Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma across their streaming platform.
+
+If 4x faster execution would help manage the TV model matrix, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-9-1')">Copy Message</button>
+      </div>
+      <div class="word-count">91 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-9-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-9-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-9-2">Subject: Product launch coverage question</div>
+        <div class="message-body" id="msg-9-2">Hey Ryan,
+
+Circling back. Cisco cut regression by 35% using Testsigma across their enterprise hardware/software platform, similar device matrix complexity.
+
+For 20+ TV models, 35% less regression time adds up fast.
+
+If that would help the SKU release schedule, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-9-2')">Copy Message</button>
+      </div>
+      <div class="word-count">47 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-9-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-9-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-9-3">Subject: VIZIO firmware testing</div>
+        <div class="message-body" id="msg-9-3">Hey Ryan,
+
+Smart TV platforms usually see test maintenance compound with every new model, firmware version, and OTT partner update.
+
+Freshworks reduced flakiness at scale using Testsigma, especially critical for voice/customer service platforms that can\'t tolerate regressions.
+
+If reducing flakiness in production would help manage the model/firmware matrix, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-9-3')">Copy Message</button>
+      </div>
+      <div class="word-count">54 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: We already have a tool</div>
+      <div class="objection-response">Response: Fair. Most device matrix teams hit limits with existing tools around maintaining tests across 20+ hardware variants. Our AI auto-fixes tests when firmware or app surfaces change.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(9, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="3" data-ab="a" data-status="not_started" id="card-11">
+  <div class="card-header" onclick="toggleCard(11)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-3">3</div>
+      <div>
+        <div class="prospect-name">Arun Bhatia</div>
+        <div class="prospect-title">Sr Director QA @ Aspen Technology</div>
+        <div style="font-size:0.75rem;color:#71717a;">Burlington, MA</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Industrial Software</span>
+        <span class="tag tag-ab">Group A</span>
+        <span class="tag tag-persona">Director</span>
+      </div>
+      <span class="expand-icon" id="icon-11">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-11">
+    <div class="meta-row">
+      <span>Email: arun.bhatia@aspentech.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(11, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(11, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(11, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-11-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-11-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-11-1">Subject: V15 expansion testing</div>
+        <div class="message-body" id="msg-11-1">Hey Arun,
+
+With the V15 expansion plus new sustainability domains, what creates more QA pressure, regression across the core simulation engine or coverage for the new green hydrogen and sustainability modules?
+
+Industrial software teams adding AI features usually see the test surface grow faster than the QA team.
+
+Medibuddy automated 2,500 tests and cut maintenance in half while expanding into new product domains.
+
+If halving maintenance would help manage the V15 expansion, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-11-1')">Copy Message</button>
+      </div>
+      <div class="word-count">86 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-11-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-11-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-11-2">Subject: One more thought</div>
+        <div class="message-body" id="msg-11-2">Hey Arun,
+
+Circling back. Cisco cut regression by 35% using Testsigma across their enterprise platform, similar complexity to the AspenTech suite.
+
+With V15 plus acquisition integration, 35% less regression helps a lot.
+
+If that would help the expansion timeline, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-11-2')">Copy Message</button>
+      </div>
+      <div class="word-count">47 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-11-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-11-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-11-3">Subject: Industrial platform testing</div>
+        <div class="message-body" id="msg-11-3">Hey Arun,
+
+Industrial software teams with major version launches plus acquisitions usually see test maintenance compound from both directions simultaneously.
+
+Sanofi cut regression from 3 days to 80 minutes using Testsigma, critical for healthcare where compliance testing can\'t be skipped.
+
+If shrinking regression cycles would free capacity for the new domains, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-11-3')">Copy Message</button>
+      </div>
+      <div class="word-count">55 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: Security/procurement is complex</div>
+      <div class="objection-response">Response: We offer on premises, private cloud, and hybrid. SOC2/ISO certified. Several industrial companies run us behind their firewall.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(11, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="3" data-ab="b" data-status="not_started" id="card-12">
+  <div class="card-header" onclick="toggleCard(12)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-3">3</div>
+      <div>
+        <div class="prospect-name">Gopinath Venu</div>
+        <div class="prospect-title">Sr Software Test Lead/QA Manager @ Teradata</div>
+        <div style="font-size:0.75rem;color:#71717a;">San Diego, CA</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Enterprise Data</span>
+        <span class="tag tag-ab">Group B</span>
+        <span class="tag tag-persona">Manager</span>
+      </div>
+      <span class="expand-icon" id="icon-12">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-12">
+    <div class="meta-row">
+      <span>Email: gopinath.venu@teradata.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-mid">Personalization: 2/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(12, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(12, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(12, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-12-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-12-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-12-1">Subject: Multi-cloud regression</div>
+        <div class="message-body" id="msg-12-1">Hey Gopinath,
+
+With deployments across AWS, Azure, GCP, and on premises, what takes more QA time, keeping regression stable across all four environments or testing the new ModelOps AI features?
+
+Platforms across multiple clouds usually see test maintenance multiply as each environment has different infrastructure behavior.
+
+Medibuddy automated 2,500 tests and cut maintenance in half while managing platform complexity.
+
+If halving maintenance would help manage the cloud testing load, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-12-1')">Copy Message</button>
+      </div>
+      <div class="word-count">79 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-12-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-12-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-12-2">Subject: Forgot to mention</div>
+        <div class="message-body" id="msg-12-2">Hey Gopinath,
+
+Circling back. CRED hit 90% regression automation and 5x faster execution using Testsigma across their platform.
+
+For multi-cloud with ModelOps launching, that speed gives room for AI validation without slowing core regression.
+
+If 5x faster execution would help, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-12-2')">Copy Message</button>
+      </div>
+      <div class="word-count">48 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-12-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-12-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-12-3">Subject: Teradata platform testing</div>
+        <div class="message-body" id="msg-12-3">Hey Gopinath,
+
+Data platforms across multiple clouds usually find that each cloud provider&#x27;s environment breaks tests differently, and maintaining four sets of tests compounds fast.
+
+Cisco cut regression by 35% using Testsigma across their massive multi-cloud infrastructure portfolio.
+
+If reducing test maintenance burden would help manage the multi-cloud scale, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-12-3')">Copy Message</button>
+      </div>
+      <div class="word-count">57 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: We already have a tool</div>
+      <div class="objection-response">Response: Fair. Most multi-cloud teams hit limits with existing tools around maintaining parallel test environments. Our AI handles infrastructure-level test maintenance automatically.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(12, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="3" data-ab="b" data-status="not_started" id="card-14">
+  <div class="card-header" onclick="toggleCard(14)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-3">3</div>
+      <div>
+        <div class="prospect-name">Cherishma Perikala</div>
+        <div class="prospect-title">QA Manager @ GoGuardian</div>
+        <div style="font-size:0.75rem;color:#71717a;">San Francisco, CA</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">EdTech SaaS</span>
+        <span class="tag tag-ab">Group B</span>
+        <span class="tag tag-persona">Manager</span>
+      </div>
+      <span class="expand-icon" id="icon-14">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-14">
+    <div class="meta-row">
+      <span>Email: cperikala@goguardian.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(14, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(14, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(14, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-14-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-14-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-14-1">Subject: Multi-platform EdTech QA</div>
+        <div class="message-body" id="msg-14-1">Hey Cherishma,
+
+With 14+ product updates shipping across ChromeOS, Windows, macOS, iOS, and Android, what takes more QA time, keeping cross-platform regression stable or testing new features like Hall Pass and Pear Deck AI?
+
+EdTech teams shipping across 5 OS platforms usually find that each OS update breaks a chain of existing tests.
+
+Spendflo (similar team size) used Testsigma to cut manual testing by 50% and saw ROI in the first quarter.
+
+If cutting manual testing in half would buy breathing room for new product releases, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-14-1')">Copy Message</button>
+      </div>
+      <div class="word-count">99 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-14-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-14-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-14-2">Subject: Integration testing thought</div>
+        <div class="message-body" id="msg-14-2">Hey Cherishma,
+
+Circling back. A team cut test maintenance by 70% with tests that auto-heal when platform surfaces change.
+
+With 5 OS platforms and rapid release cadence, that kind of maintenance reduction adds up fast.
+
+If 70% less maintenance would help, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-14-2')">Copy Message</button>
+      </div>
+      <div class="word-count">50 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-14-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-14-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-14-3">Subject: Cross-OS testing at GoGuardian</div>
+        <div class="message-body" id="msg-14-3">Hey Cherishma,
+
+EdTech platforms shipping across 5 OS targets usually spend more time fixing tests broken by OS updates than building new feature coverage.
+
+Medibuddy automated 2,500 tests and cut maintenance in half while scaling across multiple platforms.
+
+If halving maintenance would free time for new product testing, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-14-3')">Copy Message</button>
+      </div>
+      <div class="word-count">56 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: Budget is tight</div>
+      <div class="objection-response">Response: Totally get it. Spendflo, similar size to yours, saw ROI in the first quarter. Happy to show you the numbers.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(14, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="3" data-ab="b" data-status="not_started" id="card-16">
+  <div class="card-header" onclick="toggleCard(16)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-3">3</div>
+      <div>
+        <div class="prospect-name">Jamie Kurt</div>
+        <div class="prospect-title">QA Manager @ Vertafore</div>
+        <div style="font-size:0.75rem;color:#71717a;">Denver, CO</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">InsurTech SaaS</span>
+        <span class="tag tag-ab">Group B</span>
+        <span class="tag tag-persona">Manager</span>
+      </div>
+      <span class="expand-icon" id="icon-16">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-16">
+    <div class="meta-row">
+      <span>Email: jkurt@vertafore.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-mid">Personalization: 2/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(16, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(16, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(16, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-16-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-16-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-16-1">Subject: Carrier integration testing</div>
+        <div class="message-body" id="msg-16-1">Hey Jamie,
+
+With 100+ carrier integrations on the platform and new efficiency features shipping continuously, what takes more QA time, keeping the carrier connectivity tests stable or regression on the agency management suite?
+
+Insurance SaaS platforms usually see test maintenance grow with every carrier API update.
+
+Hansard cut regression from 8 to 5 weeks using Testsigma&#x27;s AI to auto fix tests when insurance workflows changed.
+
+If 3 fewer weeks of regression would help the release cadence for agencies, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-16-1')">Copy Message</button>
+      </div>
+      <div class="word-count">90 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-16-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-16-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-16-2">Subject: One more thought</div>
+        <div class="message-body" id="msg-16-2">Hey Jamie,
+
+Circling back. Medibuddy automated 2,500 tests and cut maintenance in half while scaling across platform modules.
+
+With Accelerate 2026 coming up, that kind of velocity helps ship features faster.
+
+If halving maintenance would help before the conference, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-16-2')">Copy Message</button>
+      </div>
+      <div class="word-count">47 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-16-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-16-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-16-3">Subject: Insurance SaaS regression</div>
+        <div class="message-body" id="msg-16-3">Hey Jamie,
+
+Insurance SaaS platforms with 100+ carrier integrations usually find that every carrier API update breaks a chain of existing tests.
+
+Hansard cut regression from 8 weeks to 5 weeks using Testsigma's AI to auto fix tests as integration endpoints change.
+
+If cutting 3 weeks off regression would help manage the carrier integration scale, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-16-3')">Copy Message</button>
+      </div>
+      <div class="word-count">57 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: We already have a tool</div>
+      <div class="objection-response">Response: Fair. Most insurance platform teams hit limits around maintaining tests across 100+ carrier integrations. Our AI auto-fixes tests when any carrier updates their API.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(16, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="3" data-ab="b" data-status="not_started" id="card-18">
+  <div class="card-header" onclick="toggleCard(18)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-3">3</div>
+      <div>
+        <div class="prospect-name">Marcos Guerrero</div>
+        <div class="prospect-title">QA Manager @ Plume</div>
+        <div style="font-size:0.75rem;color:#71717a;">Skokie, IL</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Telecom/IoT</span>
+        <span class="tag tag-ab">Group B</span>
+        <span class="tag tag-persona">Manager</span>
+      </div>
+      <span class="expand-icon" id="icon-18">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-18">
+    <div class="meta-row">
+      <span>Email: mguerrero@plume.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-mid">Personalization: 2/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(18, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(18, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(18, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-18-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-18-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-18-1">Subject: IoT device matrix testing</div>
+        <div class="message-body" id="msg-18-1">Hey Marcos,
+
+With 200+ partner devices and apps running across iOS, Android, Windows, and Linux, what takes more QA time, keeping device compatibility tests current or regression on the cloud platform?
+
+IoT platforms usually see the test matrix explode with every new device partner and OS update.
+
+Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma across their multi-device streaming platform.
+
+If 4x faster execution would help manage the device partner matrix, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-18-1')">Copy Message</button>
+      </div>
+      <div class="word-count">90 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-18-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-18-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-18-2">Subject: Still on my mind</div>
+        <div class="message-body" id="msg-18-2">Hey Marcos,
+
+Circling back. Cisco cut regression by 35% using Testsigma across their enterprise device platform.
+
+With 200+ device partners, 35% less regression time frees up capacity for new partner onboarding.
+
+If that would help, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-18-2')">Copy Message</button>
+      </div>
+      <div class="word-count">43 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-18-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-18-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-18-3">Subject: Smart home device testing</div>
+        <div class="message-body" id="msg-18-3">Hey Marcos,
+
+IoT platforms with 200+ device partners usually spend more time maintaining compatibility tests than building new coverage.
+
+Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma across their multi-device IoT environment.
+
+If 4x faster test execution would help manage the device matrix, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-18-3')">Copy Message</button>
+      </div>
+      <div class="word-count">53 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: We already have a tool</div>
+      <div class="objection-response">Response: Fair. Most IoT device teams hit limits with existing tools around the device-OS permutation matrix. Our AI handles cross-device maintenance automatically.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(18, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="3" data-ab="b" data-status="not_started" id="card-19">
+  <div class="card-header" onclick="toggleCard(19)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-3">3</div>
+      <div>
+        <div class="prospect-name">Terene Lee</div>
+        <div class="prospect-title">QA Manager @ Impartner Software</div>
+        <div style="font-size:0.75rem;color:#71717a;">Riverton, UT</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">PRM SaaS</span>
+        <span class="tag tag-ab">Group B</span>
+        <span class="tag tag-persona">Manager</span>
+      </div>
+      <span class="expand-icon" id="icon-19">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-19">
+    <div class="meta-row">
+      <span>Email: terene.lee@impartner.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(19, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(19, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(19, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-19-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-19-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-19-1">Subject: Post-migration regression</div>
+        <div class="message-body" id="msg-19-1">Hey Terene,
+
+After the PX migration and Europe data center launch, what&#x27;s putting more pressure on QA, stabilizing regression on the new infrastructure or keeping coverage tight across regions?
+
+Teams post migration usually see test maintenance spike as the new platform surfaces unexpected behavior.
+
+Sanofi cut regression from 3 days to 80 minutes using Testsigma while maintaining compliance across regions.
+
+If regression at 80 minutes would help stabilize the post migration release cadence, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-19-1')">Copy Message</button>
+      </div>
+      <div class="word-count">86 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-19-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-19-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-19-2">Subject: Migration question</div>
+        <div class="message-body" id="msg-19-2">Hey Terene,
+
+Circling back. Spendflo (similar SaaS size) cut manual testing by 50% and saw ROI in the first quarter using Testsigma.
+
+Post-migration, that kind of efficiency helps the team focus on stability instead of firefighting.
+
+If cutting manual testing in half would help, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-19-2')">Copy Message</button>
+      </div>
+      <div class="word-count">52 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-19-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-19-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-19-3">Subject: PRM platform stability</div>
+        <div class="message-body" id="msg-19-3">Hey Terene,
+
+Platform migrations usually create a stability debt where the QA team spends more time fixing broken tests than building confidence in the new system.
+
+CRED hit 90% regression automation and 5x faster execution using Testsigma during complex infrastructure migrations.
+
+If 5x faster regression would help post-migration stability, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-19-3')">Copy Message</button>
+      </div>
+      <div class="word-count">60 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: Too early, still assessing</div>
+      <div class="objection-response">Response: Makes sense. Post-migration is actually the best time to evaluate. Use our free trial to benchmark the new platform&#x27;s testability.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(19, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="3" data-ab="b" data-status="not_started" id="card-20">
+  <div class="card-header" onclick="toggleCard(20)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-3">3</div>
+      <div>
+        <div class="prospect-name">Federico Romano</div>
+        <div class="prospect-title">QA Manager @ Legion Technologies</div>
+        <div style="font-size:0.75rem;color:#71717a;">Redwood City, CA</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">Workforce SaaS</span>
+        <span class="tag tag-ab">Group B</span>
+        <span class="tag tag-persona">Manager</span>
+      </div>
+      <span class="expand-icon" id="icon-20">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-20">
+    <div class="meta-row">
+      <span>Email: federico@legion.co</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-high">Personalization: 3/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(20, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(20, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(20, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-20-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-20-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-20-1">Subject: AI feature testing velocity</div>
+        <div class="message-body" id="msg-20-1">Hey Federico,
+
+With 5 new features shipping this year plus real-time HRIS and POS integrations, what takes more QA time, validating the scheduling outputs across all integrations or keeping integration regression stable?
+
+Teams rolling out multiple AI features usually see testing complexity multiply as each model creates new behavioral paths.
+
+CRED hit 90% regression automation and 5x faster execution using Testsigma while managing complex platform integrations.
+
+What day works to see how they kept release confidence high while shipping that fast?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-20-1')">Copy Message</button>
+      </div>
+      <div class="word-count">81 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-20-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-20-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-20-2">Subject: Quick follow-up</div>
+        <div class="message-body" id="msg-20-2">Hey Federico,
+
+Circling back. Spendflo (similar growth stage) cut manual testing by 50% and saw ROI in the first quarter using Testsigma.
+
+With 5 AI Assistants shipping, that efficiency helps the team keep pace.
+
+If cutting manual testing in half would help, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-20-2')">Copy Message</button>
+      </div>
+      <div class="word-count">50 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-20-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-20-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-20-3">Subject: Workforce AI testing</div>
+        <div class="message-body" id="msg-20-3">Hey Federico,
+
+Feature teams usually find that every new product capability creates validation paths faster than manual testing can cover them.
+
+Medibuddy automated 2,500 tests and cut maintenance in half using Testsigma, freeing capacity for expanded testing coverage.
+
+If halving maintenance would free capacity for more comprehensive validation, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-20-3')">Copy Message</button>
+      </div>
+      <div class="word-count">55 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: Budget is tight</div>
+      <div class="objection-response">Response: Totally get it. Spendflo, similar size and stage, saw ROI in the first quarter. Happy to show the numbers.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(20, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="3" data-ab="b" data-status="not_started" id="card-22">
+  <div class="card-header" onclick="toggleCard(22)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-3">3</div>
+      <div>
+        <div class="prospect-name">Heleen Vs</div>
+        <div class="prospect-title">QA Manager @ 10Pearls</div>
+        <div style="font-size:0.75rem;color:#71717a;">New York, NY</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">IT Services</span>
+        <span class="tag tag-ab">Group B</span>
+        <span class="tag tag-persona">Manager</span>
+      </div>
+      <span class="expand-icon" id="icon-22">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-22">
+    <div class="meta-row">
+      <span>Email: heleen.vs@10pearls.com</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-mid">Personalization: 2/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(22, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(22, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(22, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-22-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-22-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-22-1">Subject: Scaling QA delivery</div>
+        <div class="message-body" id="msg-22-1">Hey Heleen,
+
+Your team tests across fintech, healthcare, and IoT clients simultaneously, right? That means juggling different security rules, compliance deadlines, and release cycles all at once.
+
+The challenge most services firms hit is that each client&#x27;s tech stack requires a different test approach, which makes centralizing automation nearly impossible.
+
+Cisco manages massive platform testing complexity and cut regression by 35% using AI-powered self-healing, which works across any stack.
+
+If 35% less regression effort across your client teams would help, what day works for a quick look at how they did it?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-22-1')">Copy Message</button>
+      </div>
+      <div class="word-count">83 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-22-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-22-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-22-2">Subject: Forgot to mention</div>
+        <div class="message-body" id="msg-22-2">Hey Heleen,
+
+Circling back. Spendflo cut manual testing by 50% using Testsigma, which freed their team to focus on new coverage.
+
+For services firms scaling QA, that efficiency multiplies across every client engagement.
+
+If cutting manual testing in half would help, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-22-2')">Copy Message</button>
+      </div>
+      <div class="word-count">49 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-22-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-22-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-22-3">Subject: QA standardization at scale</div>
+        <div class="message-body" id="msg-22-3">Hey Heleen,
+
+IT services teams managing QA across dozens of client projects usually struggle to standardize when each project uses a different tech stack.
+
+CRED hit 90% regression automation and 5x faster execution using plain English test creation that works across any tech stack.
+
+If 5x faster regression would help standardize delivery, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-22-3')">Copy Message</button>
+      </div>
+      <div class="word-count">63 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: No dedicated QA team</div>
+      <div class="objection-response">Response: That&#x27;s actually why services firms use us. Plain English means any engineer writes tests without dedicated QA expertise per project.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(22, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="prospect-card" data-priority="3" data-ab="b" data-status="not_started" id="card-23">
+  <div class="card-header" onclick="toggleCard(23)">
+    <div class="card-header-left">
+      <div class="priority-badge priority-3">3</div>
+      <div>
+        <div class="prospect-name">Shantel Gillette</div>
+        <div class="prospect-title">QA Manager @ Lucid Software</div>
+        <div style="font-size:0.75rem;color:#71717a;">Salt Lake City, UT</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="tags">
+        <span class="tag tag-vertical">SaaS</span>
+        <span class="tag tag-ab">Group B</span>
+        <span class="tag tag-persona">Manager</span>
+      </div>
+      <span class="expand-icon" id="icon-23">&#9660;</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-23">
+    <div class="meta-row">
+      <span>Email: sgillette@lucid.co</span>
+    </div>
+    <div class="scores">
+      <span class="score-badge score-high">MQS: 10/12</span>
+      <span class="score-badge score-mid">Personalization: 2/3</span>
+    </div>
+
+    <div class="touch-tabs">
+      <div class="touch-tab active" onclick="switchTouch(23, 1)">Touch 1 (InMail)</div>
+      <div class="touch-tab" onclick="switchTouch(23, 2)">Touch 2 (Follow-up)</div>
+      <div class="touch-tab" onclick="switchTouch(23, 3)">Touch 3 (Email)</div>
+    </div>
+
+    <div class="touch-content active" id="touch-23-1">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-23-1')">Copy Subject</button>
+        <div class="message-subject" id="subj-23-1">Subject: Integration regression at Lucid</div>
+        <div class="message-body" id="msg-23-1">Hey Shantel,
+
+With 200+ integrations across Lucidchart, Lucidspark, and Lucidscale, what takes more QA time, keeping the integration tests stable or regression on the real-time collaboration features?
+
+Visual collaboration platforms usually see integration maintenance grow faster than the team as partners update their APIs.
+
+CRED hit 90% regression automation and 5x faster execution using Testsigma while managing dozens of third-party integrations.
+
+What day works to see how they kept integration coverage tight while cutting execution by 5x?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-23-1')">Copy Message</button>
+      </div>
+      <div class="word-count">78 words &bull; Day 1 InMail</div>
+    </div>
+
+    <div class="touch-content" id="touch-23-2">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-23-2')">Copy Subject</button>
+        <div class="message-subject" id="subj-23-2">Subject: Still on my mind</div>
+        <div class="message-body" id="msg-23-2">Hey Shantel,
+
+Circling back. Medibuddy automated 2,500 tests and cut maintenance in half while scaling their platform integration coverage.
+
+With 200+ integration partners, that maintenance reduction probably compounds per sprint.
+
+If halving maintenance would help, what day works for a quick look?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-23-2')">Copy Message</button>
+      </div>
+      <div class="word-count">43 words &bull; Day 5 InMail Follow-up</div>
+    </div>
+
+    <div class="touch-content" id="touch-23-3">
+      <div class="message-box">
+        <button class="copy-btn" onclick="copySubject(this, 'subj-23-3')">Copy Subject</button>
+        <div class="message-subject" id="subj-23-3">Subject: Lucid platform testing</div>
+        <div class="message-body" id="msg-23-3">Hey Shantel,
+
+SaaS platforms with 200+ integrations usually spend more time fixing tests broken by partner API changes than building new coverage.
+
+Freshworks reduced flakiness at scale using Testsigma across their massive integration-heavy platform footprint.
+
+If reducing test flakiness would free time for new feature testing, what day works for a quick chat?
+
+Rob</div>
+        <button class="copy-btn" style="top:auto;bottom:8px;" onclick="copyMsg(this, 'msg-23-3')">Copy Message</button>
+      </div>
+      <div class="word-count">57 words &bull; Day 10 Email</div>
+    </div>
+
+    <div class="objection-box">
+      <div class="objection-label">Predicted Objection: We already have a tool</div>
+      <div class="objection-response">Response: Fair. Most integration-heavy SaaS teams hit limits with existing tools around maintaining tests across 200+ partner APIs. Our AI handles integration maintenance automatically.</div>
+    </div>
+
+    <div class="status-row">
+      <label>Status:</label>
+      <select onchange="updateStatus(23, this.value)">
+        <option value="not_started">Not Started</option>
+        <option value="touch1_sent">Touch 1 Sent</option>
+        <option value="touch2_sent">Touch 2 Sent</option>
+        <option value="touch3_sent">Touch 3 Sent</option>
+        <option value="replied">Replied</option>
+        <option value="meeting_booked">Meeting Booked</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="bounced">Bounced</option>
+        <option value="dormant">Dormant</option>
+      </select>
+      <label>Reply Tag:</label>
+      <select>
+        <option value="">--</option>
+        <option value="opener">Opener</option>
+        <option value="pain_hook">Pain Hook</option>
+        <option value="proof_point">Proof Point</option>
+        <option value="timing">Timing</option>
+        <option value="referral">Referral</option>
+        <option value="not_interested">Not Interested</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<script>
+function toggleCard(id) {
+  const body = document.getElementById('body-' + id);
+  const icon = document.getElementById('icon-' + id);
+  body.classList.toggle('open');
+  icon.classList.toggle('open');
+}
+
+function switchTouch(id, touch) {
+  for (let i = 1; i <= 3; i++) {
+    const content = document.getElementById('touch-' + id + '-' + i);
+    const tabs = content.parentElement.querySelectorAll('.touch-tab');
+    if (i === touch) {
+      content.classList.add('active');
+      tabs[i-1].classList.add('active');
+    } else {
+      content.classList.remove('active');
+      tabs[i-1].classList.remove('active');
+    }
+  }
+}
+
+function copyMsg(btn, id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy Message'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copySubject(btn, id) {
+  const el = document.getElementById(id);
+  const text = el.textContent.replace('Subject: ', '');
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy Subject'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function filterAll() {
+  document.querySelectorAll('.prospect-card').forEach(c => c.style.display = '');
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.filter-btn').classList.add('active');
+}
+
+function filterPriority(p) {
+  document.querySelectorAll('.prospect-card').forEach(c => {
+    c.style.display = c.dataset.priority == p ? '' : 'none';
+  });
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function filterAB(g) {
+  document.querySelectorAll('.prospect-card').forEach(c => {
+    c.style.display = c.dataset.ab == g ? '' : 'none';
+  });
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function updateStatus(id, status) {
+  const card = document.getElementById('card-' + id);
+  card.dataset.status = status;
+  updateStats();
+}
+
+function updateStats() {
+  const cards = document.querySelectorAll('.prospect-card');
+  let sent = 0, replied = 0;
+  cards.forEach(c => {
+    const s = c.dataset.status;
+    if (s && s.includes('sent')) sent++;
+    if (s === 'replied' || s === 'meeting_booked') replied++;
+  });
+  document.getElementById('stat-sent').textContent = sent;
+  document.getElementById('stat-replied').textContent = replied;
+}
+</script>
+</body>
+</html>

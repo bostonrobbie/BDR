@@ -65,13 +65,13 @@ Cisco, Samsung, Honeywell, Bosch, Nokia, Nestle, KFC, DHL, Zeiss, Axel Springer,
 ALWAYS use Rob's blue/work Chrome browser (Testsigma profile). Never use red/personal for work tasks. Reuse tabs across sessions.
 
 ### Coworker Visibility
-NEVER take any action visible to Rob's coworkers. No Slack messages, reactions, internal emails (unless Rob asks), or actions revealing Claude usage. Rob's AI use is private.
+NEVER take any action visible to Rob's coworkers. No Slack messages, reactions, internal emails (unless Rob asks), or actions revealing Codex usage. Rob's AI use is private.
 
 ### Company Data Protection
 NEVER modify, delete, alter, or overwrite existing company data. Read and enrich freely. Create new records freely. But modifying or deleting ANYTHING existing requires Rob's explicit per-item approval. If uncertain, STOP and ask.
 
 ### Send Approval
-NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Rob reviews and executes. Exception: Rob explicitly says "APPROVE SEND" for a specific message.
+NEVER send any outreach without Rob's explicit "APPROVE SEND." Codex drafts, Rob reviews and executes. Exception: Rob explicitly says "APPROVE SEND" for a specific message.
 
 ### Draft Safety (from INC-001)
 - Touch 2 drafts: NOT before Day 4 of sequence

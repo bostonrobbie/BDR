@@ -1,0 +1,508 @@
+# DEDUP EXCLUSION LIST - Companies Already Contacted
+
+## Companies
+10pearls
+aamc
+abrigo
+accenture
+acorns
+adt
+alfabit group
+alivecor
+alteryx
+amplifi loyalty
+apiture
+appcard
+applied systems
+appriss retail
+arm
+ascendion
+asi
+aspen technology
+atombeam
+auditboard
+aurora solar
+automation anywhere
+availity
+aventiv technologies
+aya healthcare
+bamboo health
+beyond finance
+biberk business insurance
+bigcommerce
+blackline
+blue yonder
+bottomline
+bread financial
+broadridge
+buildertrend
+camp systems international, inc.
+capgemini
+carefirst bcbs
+ccc intelligent solutions
+ccg marketing
+centerfield
+cerner corporation
+cerner/oracle health
+citizens property insurance
+claritev
+clearcompany
+cloud fintech/saas
+cna insurance
+commure
+coupa
+cricut
+cvent
+cyberark
+cybercube
+datto, inc.
+deliverhealth
+directv
+dolby
+doordash
+drfirst
+drivenets
+dtcc
+dynata
+early warning
+elation health
+elevate
+elios vision
+ellkay
+envestnet
+epic games
+eptura
+essent
+estes express lines
+everbridge
+ex-roblox
+ex.co
+exeter finance
+fintech payments
+fintech/banking
+fitch ratings
+forbes
+form health
+fossil group
+fossil group, inc.
+frost bank
+ftd
+fullsteam
+fusable
+genesys
+getinsured
+glaukos corp
+goguardian
+great american insurance group
+greenway health
+guidewire software
+hackerrank
+healthfirst
+hg insights
+hinge health
+hippo insurance
+hometap
+imanage
+impartner software
+imperial pfs
+imprivata
+infoblox
+insulet corporation
+integrate
+invoicecloud
+ipipeline
+jabra/gn audio
+jack henry
+jakala
+jama software
+jpmorgan chase
+kaiser permanente
+kaleris
+kapitus
+kaseya
+krafton montréal
+lastpass
+legion technologies
+lendbuzz
+lendingclub
+lendkey
+lucid software
+lument
+majesco
+marketaxess
+medeanalytics
+mediaocean
+medidata solutions
+micro1
+modmed
+mongodb
+mtx group
+nasdaq
+ncino
+ncr voyix
+netskope
+nextiva
+nobl9
+octane
+okta
+okx
+on24
+opengov
+openx
+optimizely
+pathward
+paymentus
+perforce software
+persistent systems
+phreesia
+planview, inc.
+plume
+point
+popmenu
+procore technologies
+profitsolv
+programming.com
+progress software
+progyny, inc.
+pure insurance
+pwc
+qrvey
+quantcast
+quest analytics
+quickbase
+quizizz
+quorum software
+rbc capital markets
+realtor.com
+reinsurance group of america
+reliance matrix
+riot games
+roku
+rxsense
+s&p global
+sabre corporation
+saks global
+sapiens
+schell games
+servicetitan
+servpro
+simplify healthcare
+slalom
+smart energy water
+smile digital health
+solera holdings
+solera holdings, llc.
+sondermind
+spectra logic
+stratacache
+syndigo
+tala
+tapestry
+tavant technologies
+tech company
+teradata
+tetrascience
+the npd group
+the options clearing corporation (occ)
+together ai
+tracelink
+tradestation
+tray
+tread
+trek bicycle
+trevipay
+triparc
+triplelift
+u.s. bank
+various software
+veeva systems
+verint
+verisk
+vertafore
+viavi solutions
+vibrent health
+virtru
+visionet systems
+vitech systems group
+vizient, inc
+vizio
+vonage
+waystar
+webmd
+webstaurantstore
+zl technologies
+zynga
+
+## Names
+abe blanco
+advait joshi
+affan rashid
+akshaya ponnappa
+alan gutherz
+alanna klein
+aline warren
+amanda mao
+amir aly
+amira survil
+amrita jha
+anand chawda
+anandbabu singadurai
+andy nelsen
+angela carter
+angela firari
+animesh roy
+anthony kent
+arun bhatia
+arun chinnapalaniyappan
+ashok prasad
+autumn kennedy
+avijit sur
+axel kerksiek
+azam quraishi
+balwinder singh
+benjamin schaefer
+bhavani neerathilingam
+bill st. ores
+bob jones
+bode lee
+brian liu
+brian peters
+calvin fulgham
+cary chan
+chandana ray
+cherishma perikala
+chris o&#x27;neill
+chris o'neill
+christie howard
+christina fullbright
+christopher brown
+christopher cole
+christopher page
+chuck smith
+cindy holsinger
+clayton gould
+clyde faulkner
+cooper morrow
+courtney corbin
+cristina eftimita
+crystal howard
+daniel chesla
+daniel dvorkin
+danielle herzog
+david gustafson
+deepa krishnamoorthy
+denise barnett
+derek curtis
+derek stanley
+dhara dhuldhoya
+diane marrero
+dickson wu
+donald burlingham
+drew davis
+eddie deyo
+eduardo menezes
+edwin gozun
+emre ozdemir
+eugene c.
+eyal luxenburg
+federico romano
+fora shah
+forrest grant
+galina bokov
+gaurav nagpal
+geoffrey juma
+ghada harb
+giang hoang
+gopinath venu
+grant anderson
+grzegorz agacinski
+gunasekaran chandrasekaran
+heleen vs
+henry darana
+hibatullah ahmed
+iftikhar hussain
+imran yousuf
+indu thomas
+irfan syed
+irina shitova
+jake durand
+jamie kurt
+jared mchaffie
+jason fischl
+jason ruan
+jason schwichtenberg
+jeff barnes
+jeff chartos
+jeff roberts
+jennifer chan
+jennifer tune
+jeremy cira
+jeremy haage
+jewetta dobson
+jiaping shen
+jim lenihan
+john cunningham
+jonathan lavoie
+jorge garcia
+jose moreno
+joseph lee
+joseph mitchell
+josie hernandez
+julia mitchum
+jyothi kudithipudi
+kaitlyn kirchhausen
+kalpana medhipalli
+kanan hasanzade
+kanda kaliappan
+karen motyka
+kartik punekar
+kate zhang
+katie hotard
+keith schofield
+kenneth whitham
+kenny liu
+kenny vu
+kerri mcgee
+kevin niekamp
+kirtiraj sardesai
+konduru srinivasulu
+konstantin diachenko
+kylie summer
+kyung kim
+lakshmi raghavan
+lance silverman
+larry sutton
+laurie nielsen
+leah coates
+lidia utesheva
+lizmarie pantoja
+lori riggs
+lueanne fitzhugh
+lyle landry
+manigandan kanagasabai
+marcos guerrero
+marcy vallee
+martha horns
+matt king
+maxim gente
+meraj mohammed
+michael rizzo
+michelle ortiz
+michelle stark
+mihir kumar
+mike balderree
+mike dombrowski
+mikhail nekhaenok
+mohammad mian
+mohan gummadi
+mohan guruswamy
+mona saxena
+monica taduru
+morya moyal
+mrudula kalive
+muhammad ishfaq zia
+nabil ahmed
+nadia korolkova
+namita jain
+nihal elsayed
+nikita barkovsky
+niraj pandey
+nisha mathew
+nishi nigam
+niveditha bharadwaj
+nour e.
+olga lisnichenko
+olga manuylova
+olga norton
+olivia pereiraclarke
+oren amit
+osama rifat
+pallavi sheshadri
+pam bice
+paul berg
+paul c
+paul cucinotta
+paul holland
+pavel semenov
+peter bailey
+prashant patel
+priya khemani
+priya sethuvinayakam
+rachael schroeder
+rachana jagetia
+rafi zeituni
+rahul pandey
+ramnath jayakumar
+ramon fernandez-marina
+rashad fambro
+raye rivera
+renata jundo-scensnovic
+rian musial
+rich kowalski
+richard ford
+rick jasper
+rick kowaleski
+ron trachman
+ronak ray
+roni kaya
+ruslan m.
+ryan aspleaf
+sam townsend
+samata yarlagadda
+sanchit malhotra
+sandhya nekkanti
+sandy paray
+sanjay singh
+sara gilliam
+sara triehy
+sarah kluivert
+scott carruth
+scott hinkle
+sean kumar
+sebren green
+shana johnson
+shantel gillette
+sharath pasupunuti
+shefali singh
+shivaleela devarangadi
+shobha gunupuru
+shweta singh
+siva nagireddy
+sneha bairappa
+snehal
+sonya laplante
+sowjanya palleti
+sowmya kandula
+spencer vigil
+sravanti krothapalli
+sridharan gopal
+stacy wyatt
+stephen starnaud
+subrato sarkar
+sudeepta guchhait
+sujatha valluru
+sundy comer
+sunil prasad
+suresh kumar
+swapnil shirke
+tal shevach
+tejas dhruv
+terene lee
+todd willms
+tom vidal
+tom yang
+tracy grooms
+troy schuetrumpf
+usha k
+venkat nayanala
+venkata upputuri
+victor ionin
+vinayak singh
+vishal karnik
+vishesh bagga
+william busch
+yassi dastan
+yuehli dewolf
+yuliya a
+zain naqvi
+zenta pakulis

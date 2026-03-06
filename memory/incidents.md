@@ -27,6 +27,56 @@
 
 ---
 
+---
+
+## INC-002: Five Double-Sends Across Batches (Discovered 2026-03-04)
+**Severity:** HIGH
+
+### What Happened
+Five prospects were sent LinkedIn InMails twice — once in an early batch and once in Batch 8 (Mar 3). All five sends already occurred and cannot be unsent. Discovered during full Sales Nav inbox audit (220 conversations).
+
+### Affected Prospects
+| Name | First Send | Second Send | Gap |
+|------|-----------|------------|-----|
+| Chuck Smith | Batch 1, Feb 23 (connection msg) | Batch 5B, Feb 27 | 4 days |
+| Abe Blanco | Batch 3, Feb 26 | Batch 8, Mar 3 | 5 days |
+| Rick Kowaleski | Batch 3, Feb 26 | Batch 8, Mar 3 | 5 days |
+| Christie Howard | Batch 5B, Feb 27 | Batch 8, Mar 3 | 4 days |
+| Mohan Gummadi | Batch 5B, Feb 27 | Batch 8, Mar 3 | 4 days |
+
+Note: Abe Blanco also replied "not interested" Mar 4. Added to DNC. Double-send is moot for him but logged for accuracy.
+
+### Root Cause
+No cross-batch dedup check performed before Batch 8 was built. Batch 8 pull from Apollo Q1 Priority Accounts sequence included prospects already messaged in Batches 1/3/5B without any name-level verification against prior send history.
+
+### Remediation (applied 2026-03-04)
+- All 5 double-sends logged in pipeline-state.md under "Double-sends (cannot unsend)"
+- MASTER_SENT_LIST.csv created: single deduplicated CSV of all sends across all batches
+- Pre-batch dedup check added to sop-send.md as mandatory Step A/B before any batch is built
+- For Touch 2: treat double-send people as normal Touch 2 candidates. Note the extra prior touch. Abe Blanco = DNC, skip entirely.
+- For Chuck Smith: first send was a connection request (not InMail, no Sales Nav thread). Touch 2 still due on normal timeline.
+
+---
+
+## INC-003: Batch 9 Untracked Sends (2026-03-03)
+**Severity:** MEDIUM
+
+### What Happened
+6 Batch 9 InMails sent on Mar 3 in a session that ended without logging. Discovered via Sales Nav audit the following day. 5-credit discrepancy between tracker (28) and actual (23) also traced to same-session logging gap.
+
+### Affected Prospects
+Mohan Guruswamy, Jeremy Cira, Chandana Ray, Lueanne Fitzhugh, Martha Horns, Kylie Summer.
+
+### Root Cause
+Send session ended mid-batch without updating pipeline-state.md. Credits not decremented. No same-session logging discipline.
+
+### Remediation (applied 2026-03-04)
+- All 6 logged retroactively in pipeline-state.md Batch 9 True State table
+- Credits corrected to 23
+- Same-session logging rule added to sop-send.md Step 9
+
+---
+
 ## Draft Safety & Cadence Enforcement Rules
 
 ### Rule 1: Date-Gating

@@ -4,6 +4,33 @@
 - NEVER click Send until Rob replies APPROVE SEND in chat
 - If anything looks off, STOP and report with screenshot + fix suggestion
 - One prospect at a time. Complete full workflow before next.
+- NEVER finalize a new batch without running the pre-batch dedup check (see below)
+- NEVER end a session without logging all sends in pipeline-state.md in the same session
+
+## Pre-Batch Build Checklist (MANDATORY before any new batch is finalized)
+
+Run these checks BEFORE prospects are added to a new batch tracker file. Do not build the batch first and check after.
+
+### Step A: DNC Cross-Reference
+Read CLAUDE.md → Do Not Contact List. Remove any name that appears there. Zero tolerance.
+
+### Step B: Master Sent List Dedup
+Cross-reference every prospect name in the new batch against `/Work/MASTER_SENT_LIST.csv`.
+- Fuzzy match: normalize names (strip parentheticals, credentials, middle names), then compare.
+- Any match = flag immediately. Remove from batch unless Rob explicitly approves a second send.
+- If MASTER_SENT_LIST.csv doesn't exist or is stale: re-run `/sessions/practical-brave-goldberg/build_master_list.py` to regenerate it.
+
+### Step C: Same-Company Check
+Scan the batch for multiple people at the same company. Flag any company with 2+ prospects. Present to Rob before proceeding. Default rule: 1 person per company per batch.
+
+### Step D: Batch File Naming
+Name ALL batch files with actual send date and status:
+- `outreach-batchN-sent-MMMDD.html` (e.g. `outreach-batch10-sent-mar7.html`)
+- `outreach-batchN-draft-MMMDD.html` for pre-send drafts
+- NEVER label a file "unsent" if it might get sent later. Rename it the day it goes out.
+
+### Step E: Update MASTER_SENT_LIST.csv
+After every send session: re-run `build_master_list.py` so the CSV stays current. Do this BEFORE ending the session.
 
 ## Inputs Required (from HTML tracker)
 Full name, Title, Company, Sales Nav URL, LinkedIn URL (optional), Apollo ID/email, Message text, Subject line, Research notes.
@@ -52,8 +79,11 @@ Say: "Reply APPROVE SEND to send, or reply EDIT with changes."
 ### Step 8: Send (Only After APPROVE SEND)
 Click Send. Wait for confirmation UI. Screenshot confirming send.
 
-### Step 9: Post-Send Logging
+### Step 9: Post-Send Logging (SAME SESSION — do not defer)
 Update tracker: Status=Touch 1 Sent, dateSent, subjectUsed, conversationUrl, preFlightResult, nextStepDue (+5 days).
+**Also update pipeline-state.md Master Send Log and credits remaining before ending the session.**
+**Also re-run build_master_list.py to update MASTER_SENT_LIST.csv.**
+If the session ends before logging is complete, the next session starts by catching up the log — not by sending more.
 
 ### Step 10: Close & Prepare Next
 Close InMail window. Navigate back to search. Confirm: "Prospect #X complete. Ready for #[X+1]."
