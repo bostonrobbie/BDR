@@ -1,280 +1,251 @@
-# Sales Playbook - BDR Reference
+# Sales Playbook - Testsigma BDR Outreach
 
-## Cold Call Script Framework
+This is the full outreach playbook referenced from CLAUDE.md. It contains templates, examples, objection handling, discovery frameworks, and channel-specific guidance.
 
-### Opener
-"Hey [NAME], this is Rob from Testsigma, was wondering if you've been hearing our name tossed around the QA team since we work with a few similar companies to [THEIR COMPANY]?"
+---
 
-### Value Prop
-"Teams use our Agentic AI to create, plan, run, and heal their web and mobile QA tests so they can release faster."
+## Positioning Statement (internal, never say this verbatim)
 
-### Pain Discovery (pick one of three)
-1. Flaky or brittle tests → AI heal
-2. Spending too much time creating/running tests → plain English creation / parallel
-3. Not enough bandwidth to scale coverage → plain English / AI agent / cross-browser
+Testsigma is an agentic AI test automation platform that lets teams write tests in plain English. AI creates, runs, heals, and optimizes tests across web, mobile, API, desktop, Salesforce, and SAP. We sell to QA leaders and engineering VPs who are drowning in test maintenance, slow regression cycles, or can't scale coverage with their current team.
 
-### Customer Stories (match to pain)
-- **Flaky tests:** Hansard cut regression 8 weeks → 5 weeks with AI auto-heal
-- **Time to create/run:** Medibuddy automated 2,500 tests, cut maintenance 50%
-- **Scaling coverage:** CRED achieved 90% regression automation, 5x faster execution
-- **Speed:** Sanofi reduced regression from 3 days → 80 minutes
-- **Productivity:** Fortune 100 tech company got 3X productivity increase
-- **Migration:** Nagra DTV automated 2,500 tests in 8 months (4X faster)
-- **Efficiency:** Spendflo cut manual testing by 50%
+---
 
-### Soft Close
-"Would 15-20 minutes tomorrow make sense to reconnect and see if there's an actual fit?"
+## Three Pain Hooks
 
-## 20-Minute Discovery Call Structure
-- 0-1 min: Thank, confirm agenda (understand process → see fit → next steps)
-- 1-4 min: Map the pipeline ("Walk me through dev to release. Where do tests run?")
-- 4-8 min: Surface pain ("What slows releases most?")
-- 8-11 min: Quantify impact ("How long are regressions? Which flows are most brittle?")
-- 11-14 min: Timeline & ownership ("Any urgency from leadership? Who signs off?")
-- 14-16 min: Security check ("SSO/SAML, hybrid, or local-only requirements?")
-- 16-17 min: Budget signal ("Is there a budget range we should align to?")
-- 17-20 min: Align KPIs & close → suggest pilot → lock next step with specific times
+Every outreach message anchors to one of these three pains. Pick the one most relevant to the prospect's situation.
 
-## Key Objections & Responses
+### 1. Flaky/Brittle Tests (Maintenance Pain)
+- **Trigger signals:** Uses Selenium/Cypress/Playwright, large legacy test suites, mentions "flaky tests" in job postings
+- **Core message:** Tests break every time the UI changes. Your team spends more time fixing tests than writing new ones.
+- **Proof:** Hansard cut regression 8 weeks to 5 weeks with AI auto-heal. 90% maintenance reduction with self-healing.
+- **Best for:** Insurance, FinServ, enterprise, teams with long regression cycles
 
-### "We already use Selenium/Cypress"
-→ "Selenium is free - maintenance isn't. Teams spend 20+ hrs/week on script upkeep. One client cut maintenance 70% after switching. Plus you can still use custom code — it's not either/or."
+### 2. Too Much Time Creating/Running Tests (Velocity Pain)
+- **Trigger signals:** Fast release cadence, CI/CD mentions, hiring SDETs, "shift left" language
+- **Core message:** Creating tests takes too long. Running them takes longer. Your pipeline is the bottleneck.
+- **Proof:** CRED hit 90% regression automation, 5x faster execution. Sanofi went from 3-day regression to 80 minutes.
+- **Best for:** FinTech, SaaS, any team shipping weekly+
 
-### "Price is too high / no budget"
-→ Focus on ROI, not price. "Customers hesitated at cost but saved far more in production bugs and manual QA. We can start smaller and grow. What timeline works for budget?"
+### 3. Can't Scale Coverage (Coverage Pain)
+- **Trigger signals:** Growing product portfolio, new features/acquisitions, small QA team relative to eng, multiple platforms
+- **Core message:** Your product is growing faster than your test coverage. Every release is a gamble on what you didn't test.
+- **Proof:** Medibuddy automated 2,500 tests, cut maintenance 50%. Nagra DTV built 2,500 tests in 8 months, 4x faster.
+- **Best for:** Healthcare, media, mid-size scaling teams
 
-### "Need on-prem (security concerns)"
-→ "We offer on-prem, private cloud, and hybrid. Customers in finance and healthcare run us behind their firewall. We have SOC2/ISO certs. Let's get through a security review."
+---
 
-### "Missing [X] feature"
-→ Acknowledge honestly, share roadmap, pivot to underlying need. "Our self-healing means you debug less because tests don't break as easily."
+## Multi-Channel Sequence Blueprint
 
-### "Sticking with Competitor X"
-→ "Totally understand. What stood out about their solution?" → Address the specific gap. Offer references from customers who switched.
+### Timing
+| Touch | Channel | Day | Word Target |
+|-------|---------|-----|-------------|
+| 1 | InMail | 1 | 70-100 |
+| 2 | Cold Call | 3 | 3-line snippet |
+| 3 | InMail Follow-up | 5 | 40-70 |
+| 4 | Cold Call #2 | 8 | 3-line snippet (different angle) |
+| 5 | Email (if available) | 10 | 70-100 |
+| 6 | Break-up InMail | 15 | 30-50 |
 
-## Email Best Practices
-- **Length:** <150 words, 2-3 short paragraphs
-- **Subject lines:** Personal or pain-point oriented ("[Company]'s QA process - quick question")
-- **Personalization:** Reference their specific activity (webinar, download, role)
-- **CTA:** One clear ask ("Would you be open to a 30-min demo next week?")
-- **Social proof:** One quick customer stat relevant to their industry
-- **Email cadence:** Day 1 → Day 3 → Day 7 → Day 14 → break-up email (for email sequences)
-- **Multi-channel cadence:** 6 touches over ~15 days (InMail → Call → InMail → Call → Email → Break-up). Full sequence rules live in CLAUDE.md. See LinkedIn/InMail section below for templates.
-- **Speed to lead:** Contact warm leads same day (within hours)
+### Sequence Rules
+- Each written touch uses a DIFFERENT proof point or angle
+- Touches 3-6 do NOT need full C1 structure, they can be looser
+- Touch 6 never pitches, it's a respectful close-out
+- Buyer Intent prospects: Touch 3 can be more direct
+- No email? Skip Touch 5, adjust spacing
+- Rob manually executes calls. Claude provides snippets.
 
-## Calling Windows
-- **East Coast:** Morning calls
-- **West Coast:** 8-11 AM PT (11 AM-2 PM ET) and 3-6 PM PT (6-9 PM ET)
-- **Peak pickup:** 4-5 PM in prospect's local time
+---
 
-## Response Rates by Persona
-| Persona | Email Reply Rate |
-|---------|-----------------|
-| QA Engineers/ICs | ~1.4% (highest) |
-| Team Leads/QA Leads | ~1.1-1.2% |
-| Directors/Heads | ~0.8-1.0% |
-| QA/Eng Managers | ~0.6% |
-| VPs/C-Level | ~0.5-0.8% (lowest) |
+## Objection Handling Playbook
 
-**Implication:** Target "doers" and team leads first, then leverage interest upward.
+### Pre-Mapped Objections (detect during research, pre-load response)
 
-## Verticals & Name-Drops
-| Vertical | Name-Drop Examples |
-|----------|-------------------|
-| SaaS/Tech | Cisco, Samsung, Spendflo |
-| FinTech | CRED, LendAPI, Generational Equity |
-| Retail/E-Commerce | Rugs USA, NTUC Fairprice, KFC |
-| Healthcare | Oscar Health, Medibuddy |
-| Pharma | Sanofi |
-| Telecom | Nokia |
-| Industrial | Honeywell, Bosch |
-| Media | Axel Springer, Nagra DTV |
+| Research Signal | Likely Objection | Response |
+|----------------|-----------------|----------|
+| Uses TOSCA, Katalon, Testim, mabl | "We already have a tool" | "Totally fair. A lot of teams we work with had [tool] too. The gap they kept hitting was [specific limitation]. Worth comparing?" |
+| 50K+ employees | "Security/procurement is complex" | "We offer on-prem, private cloud, and hybrid. SOC2/ISO certified. A few Fortune 500s run us behind their firewall." |
+| No dedicated QA team visible | "QA isn't a priority" | "That's actually why teams like yours use us. Plain English means devs write tests without a dedicated QA team." |
+| Recently hired QA leader | "Too early, still assessing" | "Makes sense. A lot of QA leaders in their first 90 days use our free trial to benchmark what's possible before committing." |
+| Pharma/healthcare/finance | "Compliance requirements" | "We work with Sanofi, Oscar Health, and several banks. Happy to walk through our compliance story." |
+| Startup/small team (<200) | "Budget is tight" | "Totally get it. One company your size (Spendflo) cut manual testing 50% and saw ROI in the first quarter." |
 
-## BANT Discovery Questions
-- How are you currently testing? What tools?
-- What issues/pains with testing right now?
-- What other parts of the business are affected?
-- Has leadership allocated budget and timeline?
-- How large is the team? Who has final decision?
-- % manual vs automated testing?
-- How many tests do you run and how often?
-- What happens if the tech stack breaks?
-- Is there a role of Gen AI in any tests?
+### Live Objection Responses (for calls and replies)
 
-## LinkedIn / InMail Outreach
-
-> **Note:** The full SOP (rules, structure, qualification, pitfalls) lives in CLAUDE.md. This section contains **templates, examples, and reference material** only.
-
-### Good Opener Examples (proven in production)
-- "The 'AI Quality Initiatives' part of your title stood out..."
-- "6+ years at [Company] and previously building a global testing COE at [Previous], you've seen testing at very different scales..."
-- "VP of engineering and innovation at [Company], owning both the technical execution and the innovation mandate is a unique combination..."
-- "Congrats on closing in on two years directing QA at [Company]..."
-- "Running risk decision technology engineering at [Company], where the fraud systems process $1.5 trillion+ annually..."
-
-### Bad Openers (avoid)
-- "I noticed you're in QA..." (too generic)
-- "I came across your profile and..." (sounds automated)
-- "As a leader in the QA space..." (flattery without specificity)
-- Starting every message with "I saw" or "I noticed" (repetitive across a batch)
-
-### Soft Ask Variations (rotate these)
-- "Would 15 minutes to see if there's a fit make sense? If not, no worries."
-- "If that sounds relevant I'd love 15 minutes to compare notes. If not, totally fine, I'll get out of your hair."
-- "Would 15 minutes to explore if there's a fit make sense? If the timing is off, totally fine."
-- "Would a quick 15-minute conversation make sense? If not, no worries at all."
-- "Would 15 minutes to trade ideas make sense?"
-- "Would 15 minutes to compare notes make sense? If not, totally fine."
-
-### Matching Proof Points to Personas
-| Persona Type | Best Proof Point | Why |
-|-------------|-----------------|-----|
-| QA Director at FinServ | CRED (90% automation, 5x faster) or Hansard (8-5 weeks) | They feel regression pain directly |
-| VP Eng at enterprise | Fortune 100 (3X productivity) | Strategic, outcomes-focused |
-| QA leader at healthcare/pharma | Sanofi (3 days to 80 min) | Compliance-heavy resonates |
-| QA leader at mid-size SaaS | Medibuddy (2,500 tests, 50% maintenance) | Scaling coverage without headcount |
-| VP Eng doing cloud migration | Payments company (3 days to 80 min) or 70% maintenance cut | Migration = regression risk |
-| Teams on Selenium/TOSCA/Cypress | 70% less maintenance vs Selenium | Direct comparison to their tool |
-| Smaller/leaner eng teams | Spendflo (50% manual testing cut) or plain-English angle | No bandwidth for framework |
-| Media/streaming companies | Nagra DTV (2,500 tests, 8 months, 4X faster) | Cross-platform + API + UI |
-
-### Touch 2 Template Examples
-
-**For QA leaders (warm, add new angle):**
-"Hey [Name], circling back quick on my note last week. One thing I didn't mention, [different proof point]. [1-2 sentences connecting it to their specific situation]. Worth a quick chat to see if it applies to your team?"
-
-**For VP Eng (outcome-focused):**
-"Hey [Name], wanted to add one thing to my last note. Beyond the [Touch 1 topic], teams like yours are also using [new capability or angle] to [specific outcome]. Happy to share more if helpful."
-
-**For Buyer Intent prospects (more direct):**
-"Hey [Name], noticed your team's been exploring options in the test automation space. Wanted to make sure [specific Testsigma differentiator] is on your radar since it's particularly relevant for [their situation]. Worth 15 minutes?"
-
-### Touch 3 Template Examples
-
-**Standard break-up:**
-"Hey [Name], I know things get busy so I'll keep this short. If test automation isn't a priority right now, totally get it. If it is down the road, my door's open. Either way, appreciate your time."
-
-**Lighter version:**
-"Hey [Name], not trying to fill your inbox, so I'll leave it here. If QA ever moves up the priority list, happy to chat. Have a good one."
-
-**For VP-level (respectful of seniority):**
-"Hey [Name], I'll close the loop here. If test automation comes up for your team down the road, I'm easy to find. Thanks for your time either way."
-
-### Proof Point Rotation Across Multi-Channel Sequence
-- Touch 1 (InMail): Primary proof point matched to their biggest pain
-- Touch 2 (Call): Different proof point than InMail (variety across channels)
-- Touch 3 (InMail follow-up): Third proof point or new angle
-- Touch 4 (Call #2): Lead with the proof point from Touch 3
-- Touch 5 (Email): Can reuse strongest proof point since it's a new channel
-- Touch 6 (Break-up): No proof point, just the respectful close
-- Never use the same proof point in back-to-back touches
-
-### Cold Call Snippet Examples (for prospect cards)
-
-**For QA Director at FinTech:**
-"Hey [Name], Rob from Testsigma. Your team's running regression against payment flows every sprint, right? CRED hit 90% regression automation with us. Worth 60 seconds?"
-
-**For VP Eng at mid-size SaaS:**
-"Hey [Name], Rob from Testsigma. Teams like yours scale test coverage without scaling headcount. One SaaS team automated 2,500 tests in plain English. Is QA on your radar right now?"
-
-**For recently hired QA leader:**
-"Hey [Name], Rob from Testsigma, congrats on the new role at [Company]. QA leaders in their first few months use our free trial to benchmark automation. Worth a quick look?"
-
-**For Buyer Intent prospects:**
-"Hey [Name], Rob from Testsigma. Looks like your team's evaluating test automation options. We specialize in [specific match]. Got 60 seconds?"
-
-### Objection Response Cheat Sheet
-> Full objection mapping rules live in CLAUDE.md. These are quick-reference responses for live calls.
-
-**"We already use [Selenium/Cypress/Playwright]"**
-"Totally fair - a lot of our customers had Selenium too. The gap they kept hitting was maintenance. Teams were spending 20+ hours a week on script upkeep. One switched and cut that by 70%. Would it be worth seeing how we compare?"
-
-**"We already use [TOSCA/Katalon/Testim]"**
-"Makes sense. Curious - are you happy with the maintenance side of things? A lot of [tool] teams tell us the AI self-healing is the piece they're missing. Happy to do a quick comparison if it's useful."
-
-**"No budget right now"**
-"Totally get it. Budget timing is real. A lot of teams start with our free trial to build the case internally. If I shared some ROI numbers from companies your size, would that be helpful for the conversation with leadership?"
-
-**"Not a priority right now"**
-"Fair enough. Out of curiosity, when does it become a priority? Happy to reconnect at the right time rather than bug you now."
-
-**"We're too early / still assessing"**
-"Makes sense. A lot of QA leaders in their first few months use our free trial to benchmark what's possible. No commitment, just a data point. Would that be useful?"
+**"We're happy with our current tool"**
+- "That's great. What are you using?" (Then listen for gaps)
+- If Selenium: "A lot of Selenium teams tell us maintenance is the pain. Is that true for you?"
+- If TOSCA: "TOSCA's solid for enterprise. Where teams usually hit a wall is scripting speed. Is that an issue?"
 
 **"Send me some info"**
-"Happy to. Quick question so I send the right stuff - is it the maintenance/flaky tests side that's most relevant, or the speed/coverage side? That way I don't waste your time with generic marketing stuff."
+- "Happy to. What specifically would be most useful - the technical architecture, a customer case study in [their vertical], or pricing?"
+- Then follow up with that specific asset + a meeting ask
 
-**"We don't have a dedicated QA team"**
-"A lot of teams we work with don't. That's actually where plain-English test creation shines - developers write tests without needing QA specialists. Spendflo cut manual testing 50% without a big QA team."
+**"Not the right person"**
+- "Totally understand. Who on your team owns test automation decisions? Happy to reach out to them directly."
+- Log as referral. Reach out to referred person immediately.
 
-**"Security/procurement is complex here"**
-"Totally get it. We offer on-prem, private cloud, and hybrid. Customers in finance and healthcare run us behind their firewall. SOC2 and ISO certified. Happy to loop in our solutions team for a security review."
+**"We're too busy right now"**
+- "Makes sense. Would it be useful to do a quick 15-minute intro so when timing is better, you already know what we do?"
+- If no: "Got it. When would be a better time to circle back?"
 
-### Re-Engagement Message Templates
+**"We build our own framework"**
+- "Smart. A lot of engineering teams start there. Where they usually come to us is when the maintenance of that internal framework starts eating into feature work. Is that happening yet?"
 
-**Buyer Intent reactivates:**
-"Hey [Name], noticed some activity from your team around test automation recently. Since we last connected, we've launched [new feature or update]. Figured it was worth a fresh conversation. Would 15 minutes make sense?"
+---
 
-**New QA job posting:**
-"Hey [Name], saw [Company] is hiring for [QA role]. When testing headcount grows, it's usually because the automation gap is getting painful. Curious if that's what's happening. Worth a quick chat?"
+## Discovery Framework (BANT + Techstack)
 
-**Company raises funding:**
-"Hey [Name], congrats on the [round]. Scaling usually means scaling QA too. We work with a few companies at your stage who used us to get ahead of that before it became a bottleneck. Worth 15 minutes?"
+When a prospect agrees to a meeting, Rob runs discovery. These questions adapt to what we already know.
 
-**Testsigma ships major feature:**
-"Hey [Name], wanted to circle back since we last talked. We recently launched [feature], which is specifically relevant for [their situation]. Happy to show you what changed if the timing is better now."
+### Budget
+- "Is there a budget allocated for testing tools, or would this be a new line item?"
+- "What are you spending on test maintenance today in terms of engineer time?"
 
-**Leadership change (new QA/Eng VP):**
-"Hey [Name], congrats on the move to [Company]. New leaders usually want to benchmark where QA stands early on. Happy to share what similar teams are doing with automation if it's useful."
+### Authority
+- "Who else would be involved in evaluating a tool like this?"
+- "Is this something you'd own the decision on, or is there a team evaluation process?"
 
-**Company launches new product/platform:**
-"Hey [Name], saw [Company] just launched [product]. New products usually mean new test surface. Curious if your team's automation keeps up with the release pace. Worth a quick chat?"
+### Need
+- "Walk me through how your team tests [specific product from research]."
+- "What's your current automation stack look like?"
+- "Where are regression cycles hitting hardest?"
+- "If you could fix one thing about your testing process tomorrow, what would it be?"
 
-### A/B Testing Rotation Schedule
-> Full A/B testing rules live in CLAUDE.md. This section is a quick-reference for which variable to test next.
+### Timeline
+- "Is there a timeline or leadership mandate driving this?"
+- "When does this need to be decided by?"
 
-**Suggested test order (one per batch):**
-1. Batch 1-2: Pain hook (maintenance vs. velocity)
-2. Batch 3-4: Proof point style (named customer vs. anonymous)
-3. Batch 5-6: Opener style (career-reference vs. company-metric)
-4. Batch 7-8: Ask intensity (direct ask vs. soft offer)
-5. Batch 9+: Retest winners from earlier rounds, or test message length
+### Techstack
+- "What tools are you using today for test automation?"
+- "How does testing fit into your CI/CD pipeline?"
+- "Are you running tests in cloud, on-prem, or hybrid?"
 
-**Minimum sample per test:** 3 batches of the same variable before drawing conclusions. With 25 prospects per batch and ~1% reply rate, you need ~75 messages per variant to see a meaningful signal.
+---
 
-### Personalization Score Examples
+## Reply Handling Playbook
 
-**Score 3 (Deep) examples:**
-- "The 'AI Quality Initiatives' part of your title stood out, not many QA leaders have that built into their role yet."
-- "6+ years at WebstaurantStore and previously building a global testing COE at Nielsen, you've seen testing at very different scales."
-- "Congrats on closing in on two years directing QA at Guaranteed Rate."
+Based on analysis of 1,089 prospect replies across 7 categories:
 
-**Score 2 (Medium) examples:**
-- "Directing QA at Ally's digital banking platform, the test surface across mobile, web, and APIs must be massive."
-- "VP of engineering at Oracle, where the product portfolio spans cloud infrastructure, database, ERP, and HCM."
+### Polite Reply (37.9% of replies)
+> "Thanks for reaching out"
 
-**Score 1 (Light) examples:**
-- "QA teams in fintech often tell us regression cycles are their biggest bottleneck."
-- "Insurance companies at enterprise scale struggle to expand test automation fast enough."
+**Action:** Follow up with value, not more pitch. Share a relevant case study or insight. Don't ask for a meeting yet - earn it.
+> "Thanks [Name] - thought this might be relevant: [Proof point matched to their world]. Happy to dig in if useful."
 
-**Target:** At least 60% of messages in every batch should be Score 3. If you can't get to Score 3, it usually means the profile research wasn't deep enough.
+### Positive Reply (22.8%)
+> "Interested" / "Tell me more" / "Sure, let's chat"
 
-### Reply Analysis Patterns (update as data accumulates)
-Track these patterns across batches. Claude will update this section as reply data comes in.
+**Action:** Book immediately. Don't over-explain. Send a calendar link within the hour.
+> "Great - here's my calendar: [link]. Would [day] at [time] work? Happy to keep it to 15 minutes."
 
-**What positive replies tend to have in common (hypotheses to validate):**
-- Score 3 personalization
-- QA-titled prospects (Director/Head of QA)
-- Companies in active growth or transformation
-- Pain hook matched to something visible in their job description
-- Proof point from a similar vertical or company size
+### Negative Reply (9.4%)
+> "Not interested" / "No thanks"
 
-**What "not interested" replies reveal:**
-- "We're locked into [competitor]" = they have budget, wrong timing. Re-engage in 6 months.
-- "Not my area" = wrong person, but the company might be right. Ask for a referral.
-- "Too small / no dedicated QA" = misqualified. Adjust company size filters.
-- "Already evaluated" = they looked at Testsigma before. Flag for AE follow-up with new info (Atto 2.0).
+**Action:** Log the objection reason. Respond graciously. May re-engage 60+ days later.
+> "Totally get it - appreciate the reply. If anything changes down the road, I'm here."
 
+### Curiosity Reply (8.3%)
+> "How does it work?" / "What's different about your tool?"
 
-## Pain Hook Quick Reference
-Use the pain hook that best matches the prospect context.
+**Action:** Answer directly in 2-3 sentences, then bridge to meeting.
+> "Good question. In short, [one-sentence explanation]. The best way to see it is a quick demo - would 15 minutes work?"
+
+### Referral Reply (7.4%)
+> "Talk to [name]" / "CC'ing [name]"
+
+**Action:** High value. Reach out to referred person immediately. Reference the referral.
+> "Hi [Referred Name], [Original Prospect] suggested I reach out. [One-line context]. Would a quick chat make sense?"
+
+### Has Tool Reply (2.3%)
+> "We use [tool]"
+
+**Action:** Objection handle by asking about gaps, not attacking their tool.
+> "Nice - [tool] is solid. Where teams usually find a gap is [specific limitation]. Is that something you've run into?"
+
+### Timing Reply (2.1%)
+> "Not right now" / "Maybe later"
+
+**Action:** Set calendar reminder. Re-engage per trigger events.
+> "Totally understand. I'll circle back in [timeframe]. In the meantime, if anything changes, feel free to ping me."
+
+---
+
+## Meeting Prep Framework
+
+When status = "Meeting Booked," auto-generate a prep card from existing tracker data.
+
+### Prep Card Contents
+1. **Company snapshot** - What they do, size, key products, recent news
+2. **Prospect snapshot** - Title, tenure, responsibilities, career background
+3. **Known/likely tech stack** - From profile, job postings, engineering blog
+4. **Pain hypothesis** - The specific testing problem from our outreach
+5. **What triggered the reply** - From reply tag (opener, pain hook, proof point, timing)
+6. **Discovery questions** (3-5, tailored to their situation)
+7. **Relevant proof points** - 2-3 customer stories matched to their vertical
+8. **Predicted objection** - Pre-mapped objection + response
+
+### Rules
+- One screen max. Rob reads it in 2 minutes before the call.
+- Generated from tracker data. No new research needed.
+- Include "Copy Prep" button for CRM paste.
+
+---
+
+## Re-Engagement Triggers
+
+After Touch 6 break-up, prospect goes dormant. Re-engage ONLY if:
+
+| Trigger | Approach |
+|---------|----------|
+| Buyer Intent reactivates | "Noticed your team's been researching..." |
+| New QA job posting | "Saw [Company] is hiring for QA - figured testing might be top of mind." |
+| Leadership change | Reach out to the NEW person, not old contact |
+| Funding round | "Congrats on the round - scaling usually means scaling QA too." |
+| Major product launch | "Saw the launch of [product]. Curious if the testing effort was painful." |
+| Testsigma ships major feature | "Since we last talked, we launched [X]." |
+
+**Rules:**
+- Minimum 60 days between break-up and re-engagement
+- Must have a NEW reason. Never repeat old sequence.
+- Log with "Re-engaged" status and trigger reason
+
+---
+
+## A/B Testing Framework
+
+### What to Test (one variable per batch, rotate)
+1. Pain hook - maintenance vs. velocity angle
+2. Proof point style - named customer vs. anonymous
+3. Opener style - career-reference vs. company-metric
+4. Ask intensity - "Would 15 minutes make sense?" vs. "Happy to share more if helpful"
+5. Message length - 70-80 words (tight) vs. 100-120 words (fuller)
+
+### Rules
+- ONE variable per batch. Everything else constant.
+- Split groups evenly by persona and vertical.
+- Need 3+ batches on same variable to draw conclusions.
+- Track variable and group in HTML tracker.
+
+---
+
+## Competitive Intelligence
+
+### Selenium / Cypress / Playwright
+- **Gap:** Maintenance burden. Tests break constantly. Requires coding expertise.
+- **Our edge:** No-code, self-healing, 70% less maintenance
+- **Proof:** 70% maintenance reduction vs Selenium
+
+### Tricentis TOSCA
+- **Gap:** Expensive, complex implementation, heavy enterprise process
+- **Our edge:** Faster setup, more intuitive, comparable coverage at lower cost
+- **Proof:** Teams migrate from TOSCA for speed and simplicity
+
+### Katalon / Testim / mabl
+- **Gap:** Limited scale, less enterprise-ready, narrower platform coverage
+- **Our edge:** Unified platform (web + mobile + API + desktop + Salesforce + SAP), AI agents
+- **Proof:** Broader coverage in single platform
+
+### In-house Frameworks
+- **Gap:** Maintenance becomes a product in itself, pulls devs from feature work
+- **Our edge:** No maintenance burden, plain English, anyone can write tests
+- **Proof:** Teams migrate when internal framework maintenance exceeds 30%+ of QA time

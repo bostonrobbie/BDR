@@ -1,181 +1,197 @@
 # Session Manager
 
-> Detailed startup and closing checklist for every session.
-> Read AGENTS.md first, then this file for the full session workflow.
-> Last updated: 2026-03-07
+This file defines how every Claude session with Rob should start, what context to load, and how to route into the right workflow. Read this first at the beginning of every session.
 
 ---
 
 ## Session Startup Checklist
 
-When a new session begins, do ALL of the following:
+When a new session begins, Claude should:
 
-### 1. Pull and orient
-```bash
-cd /sessions/<your-session-id>/mnt/Work
-git pull origin main
-```
-Then read in order:
-- `AGENTS.md` — collaboration rules
-- `CLAUDE.md` — full memory + hard rules
-- `memory/session/handoff.md` — current state
-- `memory/session/work-queue.md` — available tasks
+### 1. Identify Session Type
+Ask Rob what he's working on today, or infer from his first message. Route to the appropriate workflow below.
 
-### 2. Identify session type
-Ask Rob what he's working on, or infer from his first message. Session types:
+### 2. Load Context
+Read these files in order of relevance to the session type:
+- **Always:** `CLAUDE.md` (primary brain), `memory/context/voice-rules.md`
+- **Prospecting:** `memory/context/integrations.md`, `memory/ops/prospecting-checklist.md`
+- **Writing/Drafting:** `memory/context/gold-standards.md`, `memory/context/sales-playbook.md`
+- **Batch Building:** All of the above + previous batch files in `batches/`
+- **Analytics/Review:** `analytics/linkedin-analysis/analysis_output.json`, `data/trackers/`
+- **Email Ops:** `memory/ops/email-channel-ops.md`, `docs/sops/email_send_execution_plan.md`
 
-| Type | Trigger | Key Files to Load |
-|------|---------|------------------|
-| New Batch Build (LinkedIn) | "build a new batch" | sop-outreach.md, sop-send.md, MASTER_SENT_LIST.csv |
-| Website Visitor Email Batch | "WV batch", "Apollo visitors" | sop-outreach.md, apollo-config.md, MASTER_SENT_LIST.csv |
-| Touch 2/3 Drafts | "follow-up drafts", "touch 2" | sop-outreach.md, incidents.md (cadence), pipeline-state.md |
-| Reply Handling | "[Name] replied" | warm-leads.md, sop-outreach.md |
-| Daily Ops | "run the daily", "what's next" | sop-daily.md, pipeline-state.md, warm-leads.md |
-| Research Only | "research [company/person]" | proof-points.md, data-rules.md |
-| Analytics Review | "how are we doing", "what's working" | scoring-feedback.md, data-rules.md |
-| Tracker Update | "update the tracker", "log these sends" | pipeline-state.md, MASTER_SENT_LIST.csv |
-| Call Prep | "I'm calling...", "prep me for calls" | proof-points.md, warm-leads.md |
-
-### 3. Check current state
-- What batch are we on? Check pipeline-state.md.
-- Any replies to handle? Check warm-leads.md and Gmail if needed.
-- Any touch-ups due today? Check work-queue.md and pipeline-state.md follow-up schedule.
-- Credit state: InMail credits (only 4 remaining as of Mar 6). Apollo leads (~6,879).
-
-### 4. Claim your task in work-queue.md (if doing tracked work)
+### 3. Check State
+- What batch number are we on? Check `batches/` for latest.
+- Any previous batch files to read for pre-brief? If yes, generate pre-brief first.
+- Any tracker updates to review? Check `data/trackers/email_outreach_tracker.csv`
+- Any pending follow-ups or re-engagement triggers?
 
 ---
 
-## Session Closing Checklist
+## Session Types and Workflows
 
-Before ending ANY session — no exceptions:
+### Type 1: New Batch Build (LinkedIn)
+**Trigger:** "Let's build a new batch" or "I have new prospects"
 
-- [ ] Update `memory/session/work-queue.md` (mark done, add new tasks)
-- [ ] Overwrite `memory/session/handoff.md` with current state
-- [ ] Prepend new entry to `memory/session/session-log.md`
-- [ ] Update `CLAUDE.md` Pipeline Status if key numbers changed
-- [ ] Update `memory/pipeline-state.md` if sends or status changes occurred
-- [ ] Commit: `git add -A && git commit -m "Update [DATE]: [summary]"`
-- [ ] Push (or tell Rob to push if VM has no credentials)
-
----
-
-## Session Types — Full Workflows
-
-### Type 1: New Batch Build (LinkedIn InMail)
-
-1. Generate Pre-Brief from previous batch data (see Pre-Brief Template below)
+**Workflow:**
+1. Read all previous batch files, generate Pre-Brief (5-line "What's Working" summary)
 2. Present Pre-Brief to Rob
-3. Receive prospect list (from Rob's Sales Navigator export)
-4. Preflight check: DNC, MASTER_SENT_LIST dedup, same-company collision
-5. For each prospect: research company + person, score ICP fit (1-5), assign A/B group
-6. Draft Touch 1 InMail: C1 framework, 70-100 words, one CTA, MQS target >= 9/12
-7. QA Gate all messages (7 Hard Constraints from sop-outreach.md)
-8. Generate HTML deliverable, save to `batches/`
-9. Present to Rob for review — wait for `APPROVE SEND`
-10. After approval: update MASTER_SENT_LIST.csv, pipeline-state.md, session log
-11. Commit + push
+3. Receive prospect list from Rob (from Sales Navigator)
+4. For each prospect:
+   a. Research company (2 sources: LinkedIn + external)
+   b. Research person (LinkedIn profile)
+   c. Score ICP fit and calculate priority (1-5)
+   d. Assign A/B group (one variable per batch)
+   e. Draft all 6 touches (InMail, Call, Follow-up, Call, Email, Break-up)
+   f. Score each message (MQS 12-point system)
+   g. Pre-map most likely objection
+5. Run QA Gate on all messages
+6. Generate HTML deliverable
+7. Save to `batches/` directory
+8. Push to GitHub
 
-### Type 2: Website Visitor Email Batch
+### Type 2: Email Prospecting (Website Visitors)
+**Trigger:** "Let's do website visitors" or "Apollo visitors" or "email batch"
 
-1. Pull WV data from Apollo (or receive from Rob)
-2. Qualify/filter: persona match, not already in MASTER_SENT_LIST
-3. Research each company (2 sources)
-4. Write Touch 1 emails: C2 framework, 75-99 words, one CTA, personalized subject
-5. QA Gate all messages
-6. Present to Rob — wait for `APPROVE SEND`
-7. Enroll contacts in Apollo WV sequence using correct `.com` email account ID
-8. Update MASTER_SENT_LIST.csv + pipeline-state.md
-9. Commit + push
+**Workflow:**
+1. Pull website visitor data from Apollo
+2. Qualify and filter prospects (see prospecting checklist)
+3. Find right persona at each company
+4. Batch company research via Apollo enrichment
+5. Write personalized Touch 1 emails following voice rules
+6. Run QA Gate
+7. Present to Rob for review
+8. Update email_outreach_tracker.csv
+9. Add contacts to Apollo sequence if needed
+10. Push to GitHub
 
-### Type 3: Touch 2/3 Drafts
+### Type 3: Message Writing/Editing
+**Trigger:** "Write messages for..." or "Draft emails for..." or provides prospect names
 
-1. Check cadence eligibility: Touch 2 = Day 4+, Touch 3 = Day 9+. See incidents.md.
-2. Pull names from pipeline-state.md (no-reply list for target batch)
-3. Verify no reply received (Gmail check if needed)
-4. Draft each touch: reference Touch 1 pain point, different angle, short (40-70 words)
-5. MQS score each draft
-6. QA Gate
-7. Present to Rob — wait for `APPROVE SEND`
-8. After approval: update pipeline-state.md send dates
-9. Commit + push
+**Workflow:**
+1. Load voice rules and gold standards
+2. Research each prospect (if not already done)
+3. Draft messages following C1 framework
+4. Score each message (MQS)
+5. Run QA Gate (all 7 Hard Constraints)
+6. Present to Rob with scores and breakdowns
+7. Iterate based on feedback
 
 ### Type 4: Reply Handling
+**Trigger:** "Got a reply from..." or "[Name] replied"
 
-1. Identify reply type: positive / curious / timing / referral / polite decline / hostile
-2. Note what triggered the reply (opener, pain hook, proof point, timing)
-3. If positive: draft response to book meeting. Update warm-leads.md as Active.
-4. If referral: draft outreach to referred person (standard Touch 1 workflow)
-5. If polite decline: add to DNC (60+ day re-engage flag), log in CLAUDE.md DNC list
-6. If hostile: add to DNC permanently
-7. Draft response per sop-outreach.md reply handling
-8. Present to Rob — wait for approval before sending
-9. Update warm-leads.md, pipeline-state.md, MASTER_SENT_LIST.csv (status column if applicable)
+**Workflow:**
+1. Identify reply type (polite, positive, negative, curiosity, referral, has tool, timing)
+2. Tag what triggered the reply (opener, pain hook, proof point, timing, referral)
+3. Draft response following reply handling playbook
+4. If positive: prepare meeting booking and prep card
+5. If referral: draft outreach to referred person
+6. If negative: log objection, note for 60+ day re-engagement
+7. Update tracker
 
-### Type 5: Daily Ops
+### Type 5: Call Prep
+**Trigger:** "I'm calling..." or "Prep me for calls"
 
-1. Read sop-daily.md
-2. Gmail scan: any new replies? Handle per Type 4.
-3. Warm lead check: any warm-leads.md items overdue for follow-up?
-4. Credit state: InMail credits? Apollo credits?
-5. Touch due check: who is Day 4+ or Day 9+ with no reply?
-6. Generate prioritized action list for Rob
-7. Rob picks what to execute today
+**Workflow:**
+1. Generate 3-line call snippet per prospect
+2. Ensure different pain hypothesis and proof point than InMail touches
+3. If prospect has replied before, note what resonated
+4. Present as quick-glance cheat sheet
+
+### Type 6: Meeting Prep
+**Trigger:** "Meeting with [Name] tomorrow" or status changed to "Meeting Booked"
+
+**Workflow:**
+1. Generate full prep card from tracker data
+2. Company snapshot, prospect snapshot, tech stack, pain hypothesis
+3. What triggered the reply
+4. 3-5 tailored discovery questions
+5. 2-3 relevant proof points with numbers
+6. Predicted objection + response
+7. Present as one-screen summary
+
+### Type 7: Analytics/Review
+**Trigger:** "How are we doing?" or "What's working?" or "Show me the numbers"
+
+**Workflow:**
+1. Read all batch files and tracker data
+2. Generate analytics summary:
+   - Reply rate by persona type
+   - Reply rate by vertical
+   - Reply rate by proof point
+   - Reply rate by personalization score
+   - A/B test results
+3. If 3+ batches exist, offer to generate full dashboard HTML
+4. Recommend adjustments for next batch
+
+### Type 8: Tracker Update
+**Trigger:** "Update the tracker" or "Log these sends"
+
+**Workflow:**
+1. Get details from Rob (who was sent, when, what channel, outcome)
+2. Update email_outreach_tracker.csv
+3. Update prospect status in relevant batch files
+4. Push to GitHub
+
+### Type 9: Research Only
+**Trigger:** "Research [Company]" or "What can you find on [Name]?"
+
+**Workflow:**
+1. Company research from external sources (website, news, engineering blog, job postings)
+2. Person research from LinkedIn profile
+3. Identify testing pain hypothesis
+4. Note any trigger signals (funding, hiring, product launches)
+5. Present structured research notes
 
 ---
 
 ## Pre-Brief Template
 
-Generated before every new batch build. Pulls from accumulated batch data.
+Generated before every new batch from accumulated data across all previous batches.
 
 ```
 ## Pre-Brief: Batch [N] | [Date]
 
-1. Best persona: [which title/level is replying most]
-2. Best proof point: [which customer story is in most replied-to messages]
-3. Best vertical: [which industry is warmest]
-4. Best pattern: [any opener/length/CTA pattern standing out]
-5. Stop doing: [one thing to drop based on data]
+1. **Best persona:** [Which title/level is replying most]
+2. **Best proof point:** [Which customer story is in most replied-to messages]
+3. **Best vertical:** [Which industry is warmest]
+4. **Best pattern:** [Any opener/ask/length pattern standing out]
+5. **Stop doing:** [One thing to drop or change]
 
 Data basis: [X] batches, [Y] prospects, [Z] replies tracked.
 ```
 
-If no batch data available, use defaults from `memory/data-rules.md` and `memory/scoring-feedback.md`.
+If no previous batch data exists, use defaults from CLAUDE.md Outbound Intelligence System.
 
 ---
 
-## Quick Reference: Key Numbers
+## Session Closing Checklist
 
-| Metric | Value | Updated |
-|--------|-------|---------|
-| Total prospects contacted | 206 | 2026-03-07 |
-| Emails sent (confirmed) | 49 | 2026-03-07 |
-| InMail credits | 4 | 2026-03-06 |
-| Apollo lead credits | ~6,879 | 2026-03-06 |
-| MASTER_SENT_LIST rows | 278 | 2026-03-07 |
-| LI Outbound Q1 enrolled | 316 | 2026-03-07 |
-| Current batch number | 11 | 2026-03-07 |
+Before ending any session:
+1. All files saved and up to date
+2. Trackers updated with any new sends or status changes
+3. Changes committed to GitHub with clear message
+4. Push to appropriate branch
+5. Summarize what was accomplished and what's pending
 
 ---
 
-## File Quick Reference
+## Quick Reference: File Locations
 
 | What | Where |
 |------|-------|
-| Primary memory | `CLAUDE.md` |
-| Collaboration rules | `AGENTS.md` |
-| Current handoff | `memory/session/handoff.md` |
-| Task queue | `memory/session/work-queue.md` |
-| Session history | `memory/session/session-log.md` |
-| Voice rules + do-nots | `memory/context/voice-rules.md` (if merged) |
-| Gold standard messages | `memory/context/gold-standards.md` (if merged) |
-| SOP: outreach drafting | `memory/sop-outreach.md` |
-| SOP: sending InMails | `memory/sop-send.md` |
-| SOP: daily workflow | `memory/sop-daily.md` |
-| Pipeline state + send log | `memory/pipeline-state.md` |
-| Incident + cadence rules | `memory/incidents.md` |
-| Apollo config + sequences | `memory/apollo-config.md` |
-| Proof points | `memory/proof-points.md` |
-| Warm leads | `memory/warm-leads.md` |
-| Data-backed rules | `memory/data-rules.md` |
-| Master sent list | `MASTER_SENT_LIST.csv` |
+| Primary brain | `CLAUDE.md` |
+| Voice rules | `memory/context/voice-rules.md` |
+| Sales playbook | `memory/context/sales-playbook.md` |
+| Gold standards | `memory/context/gold-standards.md` |
+| Integrations | `memory/context/integrations.md` |
+| Session manager | `memory/session/session-manager.md` |
+| Prospecting checklist | `memory/ops/prospecting-checklist.md` |
+| Email ops | `memory/ops/email-channel-ops.md` |
+| Scoring weights | `config/scoring_weights.json` |
+| Vertical pains | `config/vertical_pains.json` |
+| Proof points | `config/product_config.json` |
+| Analysis data | `analytics/linkedin-analysis/analysis_output.json` |
+| Email tracker | `data/trackers/email_outreach_tracker.csv` |
+| Batch deliverables | `batches/` |
+| SOPs | `docs/sops/` |
