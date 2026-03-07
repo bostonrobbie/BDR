@@ -1,104 +1,181 @@
 # Testsigma BDR Outreach Repository
 
-**Owner:** Rob Gorham, BDR | **Last Updated:** March 1, 2026
+**Owner:** Rob Gorham, BDR | **Last Updated:** March 7, 2026
 
 This repository contains the complete BDR outreach system for Testsigma, including SOPs, playbooks, templates, intelligence reports, and batch trackers. Everything is designed for a repeatable daily workflow assisted by Cowork (Claude desktop automation).
 
 ---
 
-## How to Use This Repo
+## Orientation: Where Everything Lives
 
-**New to the system?** Read these in order:
-
-1. `daily-prospecting-sop-v1.docx` — The daily step-by-step execution guide (start here)
-2. `bdr-automation-pipeline-sop.docx` — The overall pipeline architecture and strategy
-3. `TEMPLATE_LIBRARY.md` — All message templates with quality scores
-4. `proof-point-reference-card.docx` — Quick lookup: pain type to customer story
-5. `competitive-battlecards.docx` — What to say when prospects mention competitors
-
-**During outreach sessions:** Keep these open:
-
-- `qa-gate-checklist.docx` — 14-point message validation (printable)
-- `proof-point-reference-card.docx` — Which story to use for which pain
-- `objection-handling-playbook.docx` — Ready responses for every objection type
-
-**When prospects reply:** Reference:
-
-- `reply-handling-playbook.docx` — Classification, templates, warm lead SOP
+| You need to... | Go to... |
+|----------------|----------|
+| Start a new session | `CLAUDE.md` → `AGENTS.md` → `memory/session/handoff.md` |
+| See current pipeline state | `CLAUDE.md` header + `memory/pipeline-state.md` |
+| Draft outreach | `TEMPLATE_LIBRARY.md` + `memory/sop-outreach.md` |
+| Send InMails | `memory/sop-send.md` |
+| Handle a reply | `reply-handling-playbook.docx` + `memory/warm-leads.md` |
+| Check product/ICP | `testsigma-knowledge-bible.md` + `knowledge/` folder |
+| Review reference playbooks | `sops/` folder |
+| Find old batch data | `archive/batch-reports/` |
 
 ---
 
-## Core Documents (SOPs & Playbooks)
+## Root-Level Active Files
+
+### Core Ops
 
 | File | What It Is |
 |------|-----------|
-| `daily-prospecting-sop-v1.docx` | Step-by-step daily execution guide: 7 phases from sourcing to send-ready batch (2-3 hours). Includes Sales Navigator saved search IDs, Apollo MCP commands, parallel research workflow, QA Gate automation, and daily iteration framework. |
-| `bdr-automation-pipeline-sop.docx` | Overall pipeline architecture (v3.0). Covers the full system: C2 message structure, 3-touch sequence, research pipeline, batch assembly, send loop, tracking, and feedback loop. |
-| `email-sequence-sop.docx` | Email-only sequence playbook for BDR-wide Apollo use. 5-touch 21-day cadence, template selection, Apollo configuration. |
-| `email-sequence-sop.html` | Interactive HTML version of the email SOP with 8 tabs. |
+| `CLAUDE.md` | Master config for every Cowork session. All rules, hard limits, pipeline state, ICP, tool access, and memory references. Start here. |
+| `AGENTS.md` | Multi-agent collaboration rules. Read at session start so multiple Claude instances don't conflict. |
+| `MASTER_SENT_LIST.csv` | Source of truth for all 278 prospects contacted. Cross-reference before every new batch build. |
+| `OPERATIONAL-SAFETY-CHECKLIST.md` | Safety rules, send guardrails, and hard limits. Review before any batch send. |
 
-## Reference Cards & Playbooks
-
-| File | What It Is |
-|------|-----------|
-| `competitive-battlecards.docx` | 7 competitor battlecards (Selenium, Cypress, Playwright, Tricentis, Provar, AccelQ, Copado). Each has: overview, when you'll encounter them, Testsigma advantages, their strengths, exact objection response, and best proof point. Summary comparison table at the end. |
-| `objection-handling-playbook.docx` | Consolidated objection responses from all sources. 5 categories: Tool/Competitor, Priority/Budget, Compliance/Security, Timing/Interest, plus the universal Acknowledge-Bridge-Ask framework. |
-| `proof-point-reference-card.docx` | One-page quick reference. 3 tables: Master Proof Point Library (12 customer stories with stats and best verticals), Pain-to-Proof-Point Quick Lookup, and Stat Framing Rules (reduction vs. multiplier data). |
-| `reply-handling-playbook.docx` | What to do when prospects respond. Reply classification (8 types with % breakdown), response templates, warm inbound lead SOP, meeting booking best practices, re-engagement triggers, and reply tagging system. |
-| `qa-gate-checklist.docx` | Printable 14-point message validation checklist with pass/fail criteria and common failures. Includes MQS scoring reference (4 dimensions, 12-point scale). |
-
-## Intelligence & Analytics
-
-| File | What It Is |
-|------|-----------|
-| `outreach-intelligence-report.docx` | Deep analysis of 1,326 LinkedIn conversations. Hard constraints, strong preferences, timing optimization, word count curves, pattern differentials, phrase-level intelligence, persona reply rates. The data foundation for everything else. |
-| `outreach-intelligence.html` | Interactive HTML version of the intelligence report. |
-| `linkedin-outreach-analysis.docx` | LinkedIn-specific outreach analysis and channel performance. |
-| `batch-performance-summary.docx` | Aggregate stats across all 8 batches (148 sends, Feb 13-28, 2026). Volume by batch, pipeline status, process metrics, key learnings, DNC list. |
-| `testsigma-knowledge-bible.md` | Master Testsigma product knowledge: features, Atto AI agents, integrations, pricing, deployment options. Used as source material for message drafting. |
-
-## Templates & Sequence Copy
-
-| File | What It Is |
-|------|-----------|
-| `TEMPLATE_LIBRARY.md` | Master template library v2.0. All InMail and Email templates, MQS-validated (>= 9/12). Organized by pain hook (maintenance, velocity, coverage, migration, trigger event). |
-| `apollo-sequence-step-copy.md` | Step-by-step copy guide for Apollo sequences. Template selection, personalization variables, rotation matrix. |
-
-## Batch Trackers (Active)
+### Active Batch Trackers (Mar 2026)
 
 | File | Batch | Status |
 |------|-------|--------|
-| `outreach-sent-feb13-batch1-v2.html` | Batch 1 (rebuild) | Complete |
-| `outreach-sent-feb26-batch3.html` | Batch 3 (24 sent) | Complete |
-| `outreach-sent-feb27-batch5a.html` | Batch 5A - FinServ (25 sent) | Complete |
-| `outreach-sent-feb27-batch5b.html` | Batch 5B - Multi-vertical (23 sent) | Complete |
-| `outreach-batch6-unsent.html` | Batch 6 (27 sent) | Complete |
-| `batch7-send-tracker.html` | Batch 7 (41 sent) | Complete |
-| `batch7-send-tracker.json` | Batch 7 structured data | Complete |
-| `outreach-batch8-unsent.html` | Batch 8 (19 prospects, unsent) | Ready for Review |
+| `outreach-batch10-sent-mar6.html` | Batch 10 (9 sent Mar 6) | Active — Touch 2 due Mar 11 |
+| `outreach-batch11-draft-mar6.html` | Batch 11 (4 sent Mar 6) | Active — Touch 2 due Mar 11 |
+| `outreach-batch10-draft-mar6.html` | Batch 10 draft version | Reference |
+| `prospect-outreach-9-2026-03-03.html` | Batch 9 (sent Mar 3) | Complete |
 
-## Operational Files
+### Intelligence & Analytics
 
 | File | What It Is |
 |------|-----------|
-| `CLAUDE.md` | Master configuration for Cowork sessions. All SOPs, rules, outreach intelligence, writing constraints, tool access, and memory in one file. This is the "brain" that powers each Cowork session. |
-| `daily-work-log.html` | Interactive daily work log. Searchable, filterable by category and date range. Add entries manually or via Cowork. Export to Markdown, CSV, or JSON. Pre-loaded with all activity from Feb 13 onward. |
-| `daily-outreach-workflow.html` | Visual reference for the "Run the Daily" workflow. 5-phase pipeline with adaptive logic, weekly rhythm, and velocity targets. |
-| `daily-execution-guide-2026-02-26.html` | Daily outreach limits, 14-day send schedule, copy-paste workflow, safety guardrails. |
-| `intent-outreach-pipeline-2026-02-26.html` | Intent-based outreach command center: transferred accounts, intent signals, lead assignments. |
-| `EXECUTION-STATUS.md` | Current execution status tracker. |
+| `audit-report-mar6.html` | Full Mar 6–7 Apollo audit. B10/B11 status, enrollment blockers, credit state. |
+| `bdr-intelligence-dashboard-2026-03-06.html` | Interactive pipeline dashboard. Prospect status, batch performance, reply tracking. |
+| `daily-briefing-2026-03-06.html` | Mar 6 daily briefing. Most recent session reference. |
+| `email-analytics-dashboard.html` | Email performance analytics across all sequences. |
+| `testsigma-knowledge-bible.md` | Master Testsigma product knowledge: features, Atto AI agents, integrations, pricing. |
 
-## Account Research
+### Templates & Reference
 
 | File | What It Is |
 |------|-----------|
-| `mastercard-account-map.html` | Mastercard account mapping and research. |
-| `call-prep-joe-casale-lexia-2026-02-26.md` | Call prep for Joe Casale at Lexia Learning. |
-| `moderna-qa-research-deep-dive.md` | Moderna QA team research and intel. |
+| `TEMPLATE_LIBRARY.md` | All InMail and Email templates, MQS-validated (≥9/12). Organized by pain hook. |
+| `apollo-sequence-step-copy.md` | Step-by-step copy for Apollo sequences. Template selection + personalization variables. |
+| `apollo-sequence-audit-mar3.md` | Apollo sequence audit results from Mar 3. Active sequence IDs and enrollment data. |
+| `competitive-battlecards.docx` | 7 competitor battlecards with exact objection responses and best proof points. |
+| `objection-handling-playbook.docx` | All objection responses. 5 categories + Acknowledge-Bridge-Ask framework. |
+| `proof-point-reference-card.docx` | Quick lookup: pain type → customer story → stat. |
+| `reply-handling-playbook.docx` | Reply classification, response templates, warm lead SOP, re-engagement triggers. |
 
-## Archive
+### Trackers & Data
 
-The `archive/` folder contains superseded batch tracker versions and intermediate files from earlier iterations. These are kept for reference but are not part of the active workflow.
+| File | What It Is |
+|------|-----------|
+| `Rob_Cold_Call_Tracker.xlsx` | Cold call tracking spreadsheet. Volume, connect rates, conversation notes. |
+| `email-follow-up-candidates.csv` | Prospects flagged for email follow-up. |
+| `weekly-prep-brief-2026-03-02.md` | Weekly prep brief from Mar 2. Reference for meeting/call context. |
+
+### Infrastructure
+
+| File | What It Is |
+|------|-----------|
+| `pyproject.toml` | Python project config. Dependencies, ruff lint, pytest settings. |
+| `requirements.txt` | Minimal runtime requirements. |
+| `Dockerfile` / `docker-compose.yml` | Container config for running the API locally. |
+| `vercel.json` | Vercel deployment config for static assets. |
+
+---
+
+## Folder Structure
+
+### `memory/` — Operational Brain
+The living, per-session knowledge base. Always read relevant files here before starting any task.
+
+| Path | What It Contains |
+|------|-----------------|
+| `memory/session/handoff.md` | Current state snapshot — read every session start |
+| `memory/session/work-queue.md` | Active task queue with priorities |
+| `memory/session/session-log.md` | Log of all sessions |
+| `memory/pipeline-state.md` | Full send log, batch index, follow-up schedule |
+| `memory/sop-outreach.md` | Message drafting rules, C2 structure, QA Gate |
+| `memory/sop-send.md` | InMail send process, pre-batch dedup checklist |
+| `memory/sop-daily.md` | Run-the-daily workflow |
+| `memory/warm-leads.md` | Active warm leads and handling notes |
+| `memory/incidents.md` | Incident log with cadence enforcement rules (INC-001–003) |
+| `memory/apollo-config.md` | Apollo sequence IDs, email config, credit tracking |
+| `memory/data-rules.md` | Data-backed rules and hard constraints |
+| `memory/scoring-feedback.md` | A/B test results, feedback loops, performance data |
+| `memory/proof-points.md` | Proof point matching and objection handling |
+
+### `src/` — Application Code
+FastAPI backend + agent layer. Not needed for day-to-day BDR work.
+
+| Path | What It Contains |
+|------|-----------------|
+| `src/api/` | REST API: accounts, contacts, messages, email, LinkedIn, analytics |
+| `src/agents/` | 20+ agent modules: scorer, message_writer, quality_gate, swarm_supervisor, etc. |
+| `src/db/` | Database models + migrations (v1→v3) |
+| `src/memory/` | Memory ingest, audit, classification, and loader |
+| `src/config.py` | App-level configuration |
+
+### `knowledge/` — Distilled Reference Docs
+Clean, concise reference files for Claude sessions.
+
+`company.md`, `icp.md`, `me.md`, `objections.md`, `outreach-rules.md`, `proof-points.md`, `scoring.md`, `sequences.md`, `workflows.md`, `data-insights.md`, `deliverable-format.md`
+
+### `config/` — Scoring & Product Config (JSON)
+Edit these to tune scoring without code changes.
+
+| File | What It Contains |
+|------|-----------------|
+| `scoring_weights.json` | 7-dimension ICP scoring with thresholds and signal decay |
+| `product_config.json` | Value props, proof points, customer stories by vertical |
+| `vertical_pains.json` | Pain hypothesis library by industry |
+
+### `sops/` — Standard Operating Procedures
+
+| File | What It Is |
+|------|-----------|
+| `batch-qa-verification-sop.md` | Batch QA process — before every send |
+| `batch-qa-verification-sop.docx` | Word version of batch QA SOP |
+| `daily-prospecting-sop-v2.docx` | Daily execution guide: 7 phases, Sales Nav, Apollo, research, QA |
+| `bdr-automation-pipeline-sop-v2.docx` | Full pipeline architecture (v2) |
+| `email-sequence-sop.docx` | Email-only 5-touch 21-day cadence with Apollo config |
+| `email-sequence-sop.html` | Interactive HTML version of email SOP |
+| `linkedin-apollo-pipeline-sop.docx` | LinkedIn + Apollo combined pipeline SOP |
+| `Rob_Prospecting_SOP.docx` | Comprehensive prospecting SOP |
+| `Calls_Channel_SOP.docx` | Cold call channel SOP |
+| `qa-gate-checklist.docx` | 14-point message validation checklist with MQS scoring |
+
+### `plugins/` — Cowork Plugin Files
+`.plugin` files for Cowork skills: `sales`, `marketing`, `finance`, `data`, `productivity`, `enterprise-search`.
+
+### `tests/` — Test Suite
+34 test files across unit and integration layers. CI runs on every push to `main` or `claude/*` via GitHub Actions (ruff lint + pytest).
+
+### `batches/` — Raw Batch Data
+Per-batch research and prospect data. `batches/email-sequences/` for Apollo sequence step copy.
+
+### `scripts/` — Utility Scripts
+Operational scripts: backfill, scoring, session startup, repo hygiene audit, LLM smoke test.
+`scripts/archive/` — one-off fix scripts from earlier sessions.
+
+### `data/` — Data Exports & Database
+`outreach.db` (SQLite), LinkedIn exports, analysis outputs.
+
+### `analytics/` — LinkedIn Analysis
+LinkedIn conversation and performance analysis outputs.
+
+### `archive/` — Historical Reference
+Everything that's no longer active but kept for reference.
+
+| Subfolder | Contents |
+|-----------|---------|
+| `archive/batch-reports/` | All batch analysis files, send trackers, prospect lists (B1–B9) |
+| `archive/old-outreach-html/` | Superseded batch HTML trackers and .bak files |
+| `archive/apollo-exports/` | Apollo data exports from Feb 2026 |
+| `archive/research-intel/` | One-off research HTMLs (Mastercard, inbound leads, intent batches) |
+| `archive/session-artifacts/` | Old summary docs, start-here files, completion notes |
+| `archive/old-reports/` | Rob_* performance reports, outreach intelligence report |
+| `archive/old-batches/` | Early batch HTML versions |
+| `archive/json-data/` | Old JSON data exports |
+| `archive/intermediate/` | Intermediate work files |
 
 ---
 
@@ -114,7 +191,7 @@ Prospect List          Contact + Org Data       QA-Relevant Insights
      ↓                       ↓                       ↓
      └───────────→  Message Drafting (C2 Style)  ←───────┘
                             ↓
-                     QA Gate (14 checks)
+                     QA Gate (14 checks, MQS ≥9/12)
                             ↓
                      HTML Batch Tracker
                             ↓
@@ -127,15 +204,15 @@ Prospect List          Contact + Org Data       QA-Relevant Insights
                    Feedback → Next Batch
 ```
 
-## Key Metrics (as of Feb 28, 2026)
+## Key Metrics (as of Mar 7, 2026)
 
-- **Total sends:** 148 across 8 batches
-- **InMail credits remaining:** ~24
-- **Message quality:** All messages MQS >= 9/12
-- **Research sources per prospect:** 3 (LinkedIn, Apollo, Company)
-- **Touch sequence:** 3-touch (2 InMail + 1 Email)
-- **Target reply rate:** 28.7% (based on historical data)
+- **Total unique prospects contacted:** 206
+- **Emails sent (Gmail-confirmed):** 49
+- **InMail credits remaining:** 4
+- **Apollo lead credits:** ~6,879
+- **LinkedIn Outbound Q1 enrolled:** 316
+- **MASTER_SENT_LIST rows:** 278
 
 ---
 
-*This index is maintained alongside the CLAUDE.md master configuration. Update both when adding new documents or changing workflows.*
+*This index is maintained alongside `CLAUDE.md`. Update both when adding new documents or changing workflows.*
