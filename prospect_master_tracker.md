@@ -1,5 +1,5 @@
 # Q1 Website Visitor - Tier 1 Intent: Master Prospect Tracker
-## Updated: March 1, 2026
+## Updated: March 7, 2026
 
 ---
 
@@ -13,7 +13,8 @@
 | Extended Scan Step 1 (Group B) | 8 | Gmail DRAFT created Mar 1 — pending send |
 | Step 1 Tracker (Group C) | 25 | Gmail DRAFT created Mar 1 — pending send |
 | Batch 9 Website Visitors (Mar 2) | 7 | Added to Tier 1 Intent sequence — Step 1 tasks pending in Apollo |
-| **Total Touch 1 covered** | **68** | |
+| Batch 10 ICP Cold Outreach (Mar 7) | 53 | SENT Mar 7 via Apollo UI task queue |
+| **Total Touch 1 covered** | **121** | |
 | Excluded (5) | 5 | See notes below |
 
 ---
@@ -367,4 +368,4 @@ valens-semi.com, ringcentral.com, scitec.com, netgear.com, aspentech.com, micros
 - [ ] **Ramon Dominguez** (Alarm.com): Re-attempt enrollment around 3/13/26 (30-day cooldown expires)
 - [ ] **Rick Smith** (Arrowhead Products): Look up correct Apollo contact ID and enroll manually
 - [ ] **Angela Liu** (Cohesity): Evaluate for re-enrollment once email verifies; check after 30 days
-- [ ] Apollo task queue: **61 Touch 1 tasks pending** — review drafts in `touch1_emails_Q1_Tier1.md` and send
+- [x] Apollo task queue: **53 Touch 1 tasks SENT Mar 7, 2026** via Apollo UI task queue (8 excluded — see Excluded table above)
