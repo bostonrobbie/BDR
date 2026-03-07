@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Batch 11 — Outreach Tracker — Mar 6, 2026</title>
+<style>
+  :root {
+    --blue: #1a56db; --green: #057a55; --yellow: #c27803; --red: #c81e1e;
+    --gray: #6b7280; --bg: #f9fafb; --card: #ffffff; --border: #e5e7eb;
+    --p4: #7c3aed; --p3: #1a56db; --p2: #c27803; --p1: #6b7280;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: #111827; font-size: 14px; }
+  .header { background: #1e1e2e; color: #fff; padding: 20px 24px; }
+  .header h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .header .meta { font-size: 12px; color: #a0aec0; }
+  .stats-bar { display: flex; gap: 16px; padding: 16px 24px; background: #fff; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat .n { font-size: 22px; font-weight: 700; color: var(--blue); }
+  .stat .l { font-size: 11px; color: var(--gray); text-transform: uppercase; letter-spacing: .5px; }
+  .filters { padding: 12px 24px; background: #fff; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .filters label { font-size: 12px; color: var(--gray); font-weight: 600; }
+  .filter-btn { padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); background: #fff; cursor: pointer; font-size: 12px; font-weight: 500; }
+  .filter-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .prospect-table { margin: 20px 24px 8px; background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .prospect-table table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .prospect-table th { background: #f3f4f6; padding: 10px 12px; text-align: left; font-weight: 600; color: var(--gray); text-transform: uppercase; font-size: 11px; letter-spacing: .5px; }
+  .prospect-table td { padding: 10px 12px; border-top: 1px solid var(--border); vertical-align: middle; }
+  .prospect-table tr:hover td { background: #f9fafb; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .badge-p4 { background: #ede9fe; color: var(--p4); }
+  .badge-p3 { background: #dbeafe; color: var(--p3); }
+  .badge-p2 { background: #fef3c7; color: var(--p2); }
+  .badge-p1 { background: #f3f4f6; color: var(--p1); }
+  .badge-warn { background: #fef3c7; color: #92400e; }
+  .badge-ok { background: #d1fae5; color: #065f46; }
+  .badge-ab { background: #e0e7ff; color: #3730a3; font-size: 10px; }
+  .mqs-bar { display: flex; align-items: center; gap: 6px; }
+  .mqs-num { font-weight: 700; min-width: 28px; }
+  .mqs-track { flex: 1; background: #e5e7eb; border-radius: 4px; height: 6px; }
+  .mqs-fill { height: 6px; border-radius: 4px; background: var(--green); }
+  .mqs-fill.warn { background: var(--yellow); }
+  .mqs-fill.low { background: var(--red); }
+  .cards { padding: 8px 24px 24px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+  .card-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .card-header-left h2 { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+  .card-header-left .sub { font-size: 12px; color: var(--gray); }
+  .card-header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .status-select { padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border); font-size: 12px; background: #fff; cursor: pointer; }
+  .card-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  @media (max-width: 900px) { .card-body { grid-template-columns: 1fr; } }
+  .card-section { padding: 16px 18px; border-right: 1px solid var(--border); }
+  .card-section:last-child { border-right: none; }
+  .card-section h3 { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--gray); font-weight: 600; margin-bottom: 10px; }
+  .msg-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 13px; line-height: 1.65; white-space: pre-wrap; font-family: Georgia, serif; }
+  .subject-line { font-size: 12px; font-weight: 700; color: var(--blue); margin-bottom: 8px; background: #eff6ff; padding: 4px 8px; border-radius: 4px; display: inline-block; }
+  .copy-btn { padding: 5px 12px; background: var(--blue); color: #fff; border: none; border-radius: 5px; font-size: 12px; cursor: pointer; margin-top: 8px; margin-right: 6px; font-weight: 500; }
+  .copy-btn:hover { background: #1e40af; }
+  .copy-btn.subject { background: #6366f1; }
+  .copy-btn.copied { background: var(--green); }
+  .research-item { font-size: 12px; color: #374151; margin-bottom: 6px; padding-left: 14px; position: relative; line-height: 1.5; }
+  .research-item::before { content: '→'; position: absolute; left: 0; color: var(--blue); font-size: 10px; top: 1px; }
+  .research-tag { font-size: 10px; background: #e0e7ff; color: #3730a3; padding: 1px 5px; border-radius: 3px; margin-left: 4px; font-weight: 600; }
+  .objection-block { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 6px; padding: 10px 12px; margin-top: 8px; }
+  .objection-label { font-size: 10px; font-weight: 700; color: #92400e; text-transform: uppercase; margin-bottom: 4px; }
+  .objection-q { font-size: 12px; font-style: italic; color: #92400e; margin-bottom: 4px; }
+  .objection-a { font-size: 12px; color: #374151; line-height: 1.5; }
+  .flag-warn { background: #fef3c7; border: 1px solid #fcd34d; border-radius: 6px; padding: 8px 12px; font-size: 12px; color: #92400e; margin-bottom: 10px; font-weight: 500; }
+  .info-row { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--gray); margin-bottom: 8px; }
+  .info-row span { display: flex; gap: 4px; align-items: center; }
+  .info-row strong { color: #111827; }
+  .t2-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 10px 12px; font-size: 12px; line-height: 1.6; white-space: pre-wrap; font-family: Georgia, serif; color: #065f46; }
+  .wc-badge { font-size: 10px; background: #d1fae5; color: #065f46; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: 600; }
+  .qm-badge { font-size: 10px; background: #e0e7ff; color: #3730a3; padding: 2px 6px; border-radius: 4px; margin-left: 4px; font-weight: 600; }
+  .hold-banner { background: #fef2f2; border: 2px solid #fca5a5; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; font-size: 13px; color: #991b1b; font-weight: 600; }
+  .hold-banner span { font-weight: 400; color: #7f1d1d; }
+  .send-banner { background: #f0fdf4; border: 2px solid #86efac; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; font-size: 13px; color: #166534; font-weight: 600; }
+  .greeting { font-family: Georgia, serif; font-size: 13px; color: #374151; margin-bottom: 4px; }
+  .signoff { font-family: Georgia, serif; font-size: 13px; color: #374151; margin-top: 8px; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
+  a.snav { color: var(--blue); text-decoration: none; font-size: 12px; }
+  a.snav:hover { text-decoration: underline; }
+  .prospect-table tr.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Batch 11 — LinkedIn Outreach Tracker</h1>
+  <div class="meta">Draft · Mar 6, 2026 · 8 prospects · Sequence: LinkedIn Outbound - Q1 Priority Accounts · Awaiting APPROVE SEND</div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="n">8</div><div class="l">Prospects</div></div>
+  <div class="stat"><div class="n">2</div><div class="l">P4 Priority</div></div>
+  <div class="stat"><div class="n">3</div><div class="l">P3 Priority</div></div>
+  <div class="stat"><div class="n">2</div><div class="l">P2 Priority</div></div>
+  <div class="stat"><div class="n">1</div><div class="l">P1 Priority</div></div>
+  <div class="stat"><div class="n">5</div><div class="l">Verified Emails</div></div>
+  <div class="stat"><div class="n">3</div><div class="l">⚠️ No Email</div></div>
+  <div class="stat"><div class="n">8</div><div class="l">Credits Needed</div></div>
+</div>
+
+<div class="filters">
+  <label>Filter:</label>
+  <button class="filter-btn active" onclick="filterCards('all')">All (8)</button>
+  <button class="filter-btn" onclick="filterCards('p4')">P4 (2)</button>
+  <button class="filter-btn" onclick="filterCards('p3')">P3 (3)</button>
+  <button class="filter-btn" onclick="filterCards('p2')">P2 (2)</button>
+  <button class="filter-btn" onclick="filterCards('p1')">P1 (1)</button>
+  <button class="filter-btn" onclick="filterCards('warn')">⚠️ Flagged (4)</button>
+</div>
+
+<!-- SUMMARY TABLE -->
+<div class="prospect-table">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Title</th>
+        <th>Company</th>
+        <th>Priority</th>
+        <th>Email</th>
+        <th>MQS</th>
+        <th>A/B</th>
+        <th>Status</th>
+        <th>Flags</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="row-all row-p4">
+        <td>1</td>
+        <td><strong>Brad Askins</strong></td>
+        <td>Dir. QA Engineering</td>
+        <td>Trimble</td>
+        <td><span class="badge badge-p4">P4</span></td>
+        <td><span class="badge badge-ok">Verified</span></td>
+        <td>11/12</td>
+        <td><span class="badge badge-ab">A</span></td>
+        <td><select class="status-select"><option>Pending Send</option><option>Sent</option><option>Replied</option><option>No Reply</option><option>DNC</option></select></td>
+        <td>Buyer intent</td>
+      </tr>
+      <tr class="row-all row-p4">
+        <td>2</td>
+        <td><strong>Dan Heintzelman</strong></td>
+        <td>Director of Engineering</td>
+        <td>Prevail Legal</td>
+        <td><span class="badge badge-p4">P4</span></td>
+        <td><span class="badge badge-ok">Verified</span></td>
+        <td>11/12</td>
+        <td><span class="badge badge-ab">A</span></td>
+        <td><select class="status-select"><option>Pending Send</option><option>Sent</option><option>Replied</option><option>No Reply</option><option>DNC</option></select></td>
+        <td>Job change (Litify→Prevail)</td>
+      </tr>
+      <tr class="row-all row-p3">
+        <td>3</td>
+        <td><strong>Georgii Petrosian</strong></td>
+        <td>QA Manager</td>
+        <td>AuditBoard</td>
+        <td><span class="badge badge-p3">P3</span></td>
+        <td><span class="badge badge-ok">Verified</span></td>
+        <td>11/12</td>
+        <td><span class="badge badge-ab">B</span></td>
+        <td><select class="status-select"><option>Pending Send</option><option>Sent</option><option>Replied</option><option>No Reply</option><option>DNC</option></select></td>
+        <td>Prev seq finished; Playwright</td>
+      </tr>
+      <tr class="row-all row-p3">
+        <td>4</td>
+        <td><strong>Madhu Nedunuri</strong></td>
+        <td>QA Manager</td>
+        <td>IDB Bank</td>
+        <td><span class="badge badge-p3">P3</span></td>
+        <td><span class="badge badge-ok">Verified</span></td>
+        <td>11/12</td>
+        <td><span class="badge badge-ab">A</span></td>
+        <td><select class="status-select"><option>Pending Send</option><option>Sent</option><option>Replied</option><option>No Reply</option><option>DNC</option></select></td>
+        <td>IDBTrade migration Oct 2025</td>
+      </tr>
+      <tr class="row-all row-p3 row-warn">
+        <td>5</td>
+        <td><strong>Susanna Frayman</strong></td>
+        <td>VP of Product</td>
+        <td>ConnectPay</td>
+        <td><span class="badge badge-p3">P3</span></td>
+        <td><span class="badge badge-warn">No Email</span></td>
+        <td>9/12</td>
+        <td><span class="badge badge-ab">A</span></td>
+        <td><select class="status-select"><option>Pending Send</option><option>Sent</option><option>Replied</option><option>No Reply</option><option>DNC</option></select></td>
+        <td>⚠️ No Apollo email; Tosca user</td>
+      </tr>
+      <tr class="row-all row-p2 row-warn">
+        <td>6</td>
+        <td><strong>Md Qasim Mia</strong></td>
+        <td>QA Automation Manager</td>
+        <td>Macy's</td>
+        <td><span class="badge badge-p2">P2</span></td>
+        <td><span class="badge badge-warn">No Email</span></td>
+        <td>9/12</td>
+        <td><span class="badge badge-ab">B</span></td>
+        <td><select class="status-select"><option>Pending Send</option><option>Sent</option><option>Replied</option><option>No Reply</option><option>DNC</option></select></td>
+        <td>⚠️ No Apollo match</td>
+      </tr>
+      <tr class="row-all row-p2 row-warn">
+        <td>7</td>
+        <td><strong>Yulia Tsygankova</strong></td>
+        <td>QA Assurance Manager</td>
+        <td>Gainbridge</td>
+        <td><span class="badge badge-p2">P2</span></td>
+        <td><span class="badge badge-warn">No Email</span></td>
+        <td>9/12</td>
+        <td><span class="badge badge-ab">B</span></td>
+        <td><select class="status-select"><option>Pending Send</option><option>Sent</option><option>Replied</option><option>No Reply</option><option>DNC</option></select></td>
+        <td>⚠️ No Apollo match</td>
+      </tr>
+      <tr class="row-all row-p1 row-warn">
+        <td>8</td>
+        <td><strong>George Mitchell</strong></td>
+        <td>QA Manager</td>
+        <td>Nettica VPN</td>
+        <td><span class="badge badge-p1">P1</span></td>
+        <td><span class="badge badge-ok">Verified</span></td>
+        <td>8/12</td>
+        <td><span class="badge badge-ab">A</span></td>
+        <td><select class="status-select"><option>Pending Send</option><option>Sent</option><option>Replied</option><option>No Reply</option><option>DNC</option></select></td>
+        <td>⚠️ 3-employee company (borderline ICP)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PROSPECT CARDS -->
+<div class="cards">
+
+<!-- ===================== CARD 1: BRAD ASKINS ===================== -->
+<div class="card row-all row-p4" id="card-brad-askins">
+  <div class="card-header">
+    <div class="card-header-left">
+      <h2>Brad Askins</h2>
+      <div class="sub">Director, QA Engineering · Trimble · Westminster, CO</div>
+    </div>
+    <div class="card-header-right">
+      <span class="badge badge-p4">P4</span>
+      <span class="badge badge-ab">Group A</span>
+      <span class="badge badge-ok">Verified Email</span>
+      <select class="status-select"><option>Pending Send</option><option>Sent</option><option>Replied</option><option>No Reply</option><option>DNC</option></select>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="card-section">
+      <h3>Research Notes</h3>
+      <div class="info-row">
+        <span>Apollo ID: <strong>69ab39dd100693001931daf8</strong></span>
+        <span>Email: <strong>brad_askins@trimble.com</strong></span>
+      </div>
+      <div class="info-row">
+        <span>Company: <strong>Trimble (TRMB) · 13,000 employees · Civil/Geospatial Engineering</strong></span>
+      </div>
+      <div class="info-row">
+        <span>Sales Nav: <a href="#" class="snav">[VERIFY SALES NAV URL]</a></span>
+      </div>
+      <div class="research-item">Multiple engineering product lines (civil, geospatial, construction, agriculture, field software) create a broad regression surface across every release cycle. <span class="research-tag">OPENER</span></div>
+      <div class="research-item">Trimble is actively hiring SDETs — scaling QA demand is outpacing current coverage capacity. <span class="research-tag">CONTEXT</span></div>
+      <div class="research-item">CI/CD environment with multiple product integrations; test maintenance overhead at 13K-employee scale compounds quickly. <span class="research-tag">CONTEXT</span></div>
+      <div class="research-item">Buyer intent signal (flagged from prospecting session). High engagement signal. <span class="research-tag">PRIORITY</span></div>
+      <div class="research-item">Proof point: Cisco 35% regression reduction — enterprise-scale QA team, no headcount expansion required. <span class="research-tag">PROOF</span></div>
+      <div class="research-item">Predicted objection: "We already have tooling" (large enterprise, likely existing stack). <span class="research-tag">OBJECTION</span></div>
+    </div>
+    <div class="card-section">
+      <h3>Touch 1 — InMail</h3>
+      <div class="send-banner">✅ APPROVED TO SEND · 4 credits · Blue/work Chrome profile</div>
+      <div class="subject-line">Trimble regression across product lines</div>
+      <span class="wc-badge">84 words</span><span class="qm-badge">2 ?</span>
+      <div class="msg-box" id="msg-brad">Hi Brad,
+
+How are you handling regression coverage when your product lines span civil, geospatial, and field software?
+
+At that scale, keeping test suites stable across simultaneous platform updates, without a major maintenance burden, is the part that usually breaks down.
+
+Cisco cut regression failures by 35% using Testsigma's AI-driven test automation, without needing to expand the QA team.
+
+If reducing regression overhead across your platforms would free up capacity for new feature coverage, what day works to see how they did it?
+
+Cheers,
+Rob</div>
+      <button class="copy-btn subject" onclick="copyText('Trimble regression across product lines', this)">Copy Subject</button>
+      <button class="copy-btn" onclick="copyMsg('msg-brad', this)">Copy Message</button>
+      <hr class="divider">
+      <h3>Touch 2 Preview (Day 5)</h3>
+      <div class="t2-box">Adding SDET capacity is one approach to scaling QA coverage, but teams at your scale often find that test maintenance takes more headcount than expected.
+
+One enterprise team kept coverage growing without adding to their QA headcount. If that kind of efficiency is something you're looking at, what day works to compare approaches?</div>
+      <hr class="divider">
+      <div class="objection-block">
+        <div class="objection-label">Predicted Objection</div>
+        <div class="objection-q">"We already have a tool / tooling in place"</div>
+        <div class="objection-a">Totally fair. A lot of teams we work with had existing tooling too. The gap they kept hitting was test maintenance at scale, especially across multiple product lines. Worth comparing?</div>
+      </div>
+      <hr class="divider">
+      <div class="mqs-bar" style="margin-top:8px;">
+        <span class="mqs-num">11/12</span>
+        <div class="mqs-track"><div class="mqs-fill" style="width:91.7%"></div></div>
+        <span style="font-size:11px;color:var(--green);font-weight:600;">PASS</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CARD 2: DAN HEINTZELMAN ===================== -->
+<div class="card row-all row-p4" id="card-dan-heintzelman">
+  <div class="card-header">
+    <div class="card-header-left">
+      <h2>Dan Heintzelman</h2>
+      <div class="sub">Director of Engineering · Prevail Legal · Remote (US)</div>
+    </div>
+    <div class="card-header-right">
+      <span class="badge badge-p4">P4</span>
+      <span class="badge badge-ab">Group A</span>
+      <span class="badge badge-ok">Verified Email</span>
+      <span class="badge badge-warn">Job Change</span>
+      <select class="status-select"><option>Pending Send</option><option>Sent</option><option>Replied</option><option>No Reply</option><option>DNC</option></select>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="card-section">
+      <h3>Research Notes</h3>
+      <div class="info-row">
+        <span>Apollo ID: <strong>62a1d16f7d45fc00a3e1078a</strong></span>
+        <span>Email: <strong>dan.heintzelman@prevail.io</strong></span>
+      </div>
+      <div class="info-row">
+        <span>Company: <strong>Prevail Legal · 82 employees · Legal SaaS</strong></span>
+      </div>
+      <div class="info-row">
+        <span>Sales Nav: <a href="#" class="snav">[VERIFY SALES NAV URL]</a></span>
+      </div>
+      <div class="research-item">28 releases shipped in 2025 (per public engineering blog "Prevail 2025 Year in Review") — very fast cadence for a compliance-certified product. <span class="research-tag">OPENER</span></div>
+      <div class="research-item">SOC2 Type II + ISO 27001 certified — every release must maintain compliance coverage, not just feature coverage. <span class="research-tag">CONTEXT</span></div>
+      <div class="research-item">82-person team — small but fast-shipping. QA capacity is likely lean vs. release velocity. <span class="research-tag">CONTEXT</span></div>
+      <div class="research-item">Job change: Litify → Prevail.ai (joined June 2025). New role + fast cadence = likely assessing QA stack. Apollo flag: sequence_job_change: true. <span class="research-tag">TRIGGER</span></div>
+      <div class="research-item">Proof point: Spendflo (small SaaS team) cut manual testing by 50% — same company profile as Prevail. <span class="research-tag">PROOF</span></div>
+    </div>
+    <div class="card-section">
+      <h3>Touch 1 — InMail</h3>
+      <div class="send-banner">✅ APPROVED TO SEND · 4 credits · Blue/work Chrome profile</div>
+      <div class="subject-line">Prevail's regression at release pace</div>
+      <span class="wc-badge">85 words</span><span class="qm-badge">2 ?</span>
+      <div class="msg-box" id="msg-dan">Hi Dan,
+
+When you're shipping 28+ releases a year on a lean team, what does your regression cycle look like before each one goes out?
+
+Compliance-certified products need stable coverage, but fast cadences often mean test suites get patchy under pressure.
+
+Spendflo, a SaaS team about your size, cut manual testing by 50% with Testsigma without slowing their release rhythm.
+
+If getting that kind of coverage without adding headcount sounds worth exploring, what day works for a quick look at how they did it?
+
+Cheers,
+Rob</div>
+      <button class="copy-btn subject" onclick="copyText('Prevail\'s regression at release pace', this)">Copy Subject</button>
+      <button class="copy-btn" onclick="copyMsg('msg-dan', this)">Copy Message</button>
+      <hr class="divider">
+      <h3>Touch 2 Preview (Day 5)</h3>
+      <div class="t2-box">One thing teams at Prevail's shipping pace run into is that QA can't always write tests fast enough to keep up with engineering. Testsigma's plain English approach lets engineers write tests without a dedicated QA skillset. If keeping up with your release cadence is the real challenge, what day works?</div>
+      <hr class="divider">
+      <div class="objection-block">
+        <div class="objection-label">Predicted Objection</div>
+        <div class="objection-q">"Too early, still assessing / just got into the role"</div>
+        <div class="objection-a">Makes sense. A lot of engineering leaders in their first 90 days use our free trial to benchmark what's possible before making any commitments. Happy to set that up if useful.</div>
+      </div>
+      <hr class="divider">
+      <div class="mqs-bar" style="margin-top:8px;">
+        <span class="mqs-num">11/12</span>
+        <div class="mqs-track"><div class="mqs-fill" style="width:91.7%"></div></div>
+        <span style="font-size:11px;color:var(--green);font-weight:600;">PASS</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CARD 3: GEORGII PETROSIAN ===================== -->
+<div class="card row-all row-p3" id="card-georgii-petrosian">
+  <div class="card-header">
+    <div class="card-header-left">
+      <h2>Georgii Petrosian</h2>
+      <div class="sub">QA Manager · AuditBoard · Remote (US)</div>
+    </div>
+    <div class="card-header-right">
+      <span class="badge badge-p3">P3</span>
+      <span class="badge badge-ab">Group B</span>
+      <span class="badge badge-ok">Verified Email</span>
+      <span class="badge badge-warn">Prev Seq Finished</span>
+      <select class="status-select"><option>Pending Send</option><option>Sent</option><option>Replied</option><option>No Reply</option><option>DNC</option></select>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="card-section">
+      <h3>Research Notes</h3>
+      <div class="info-row">
+        <span>Apollo ID: <strong>68a855cd040f9300015cead0</strong></span>
+        <span>Email: <strong>gpetrosian@auditboard.com</strong></span>
+      </div>
+      <div class="info-row">
+        <span>Company: <strong>AuditBoard · ~600 employees · SaaS (Audit/GRC)</strong></span>
+      </div>
+      <div class="info-row">
+        <span>LinkedIn: <a href="https://www.linkedin.com/in/georgii-petrosian" class="snav" target="_blank">linkedin.com/in/georgii-petrosian</a></span>
+        <span>Sales Nav: <a href="#" class="snav">[VERIFY SALES NAV URL]</a></span>
+      </div>
+      <div class="research-item">AuditBoard uses Playwright for test automation — confirmed via Apollo tech stack. Playwright requires manual locator updates when UI changes. <span class="research-tag">OPENER</span></div>
+      <div class="research-item">AuditBoard actively shipping new AI features into their audit product — frequent UI updates mean Playwright tests break regularly. <span class="research-tag">CONTEXT</span></div>
+      <div class="research-item">Hiring SDET roles — team scaling signal, coverage demand outpacing current capacity. <span class="research-tag">CONTEXT</span></div>
+      <div class="research-item">Previous sequence finished (archived). New approach, clean slate for this InMail. <span class="research-tag">NOTE</span></div>
+      <div class="research-item">Proof point: 70% test maintenance reduction vs Playwright/Selenium-style tooling — direct pain match for Playwright users. <span class="research-tag">PROOF</span></div>
+    </div>
+    <div class="card-section">
+      <h3>Touch 1 — InMail</h3>
+      <div class="send-banner">✅ APPROVED TO SEND · 4 credits · Blue/work Chrome profile</div>
+      <div class="subject-line">AuditBoard Playwright test coverage</div>
+      <span class="wc-badge">85 words</span><span class="qm-badge">2 ?</span>
+      <div class="msg-box" id="msg-georgii">Hi Georgii,
+
+When your audit platform is shipping new UI features regularly, how much time does your team spend updating Playwright tests after each release?
+
+Playwright requires manual locator updates whenever the UI changes, which can slow down a team that should be moving quickly.
+
+A team in a similar SaaS environment cut test maintenance by 70% after switching to Testsigma's self-healing automation.
+
+If reducing test upkeep between releases would help, what day works for a quick look at how they made that shift?
+
+Cheers,
+Rob</div>
+      <button class="copy-btn subject" onclick="copyText('AuditBoard Playwright test coverage', this)">Copy Subject</button>
+      <button class="copy-btn" onclick="copyMsg('msg-georgii', this)">Copy Message</button>
+      <hr class="divider">
+      <h3>Touch 2 Preview (Day 5)</h3>
+      <div class="t2-box">One thing QA teams using Playwright often miss is how much coverage they're actually leaving out as the product evolves. Testsigma's AI can map coverage gaps automatically, not just fix broken tests. If identifying where your test suite has blind spots would help, what day works for a quick look?</div>
+      <hr class="divider">
+      <div class="objection-block">
+        <div class="objection-label">Predicted Objection</div>
+        <div class="objection-q">"We use Playwright and it works for us"</div>
+        <div class="objection-a">Playwright requires coding and isn't optimized for Salesforce or rapid UI change cycles. We offer no-code simplicity plus Salesforce-specific coverage, multi-browser, mobile, API, and built-in reporting. Worth comparing?</div>
+      </div>
+      <hr class="divider">
+      <div class="mqs-bar" style="margin-top:8px;">
+        <span class="mqs-num">11/12</span>
+        <div class="mqs-track"><div class="mqs-fill" style="width:91.7%"></div></div>
+        <span style="font-size:11px;color:var(--green);font-weight:600;">PASS</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CARD 4: MADHU NEDUNURI ===================== -->
+<div class="card row-all row-p3" id="card-madhu-nedunuri">
+  <div class="card-header">
+    <div class="card-header-left">
+      <h2>Madhu Nedunuri</h2>
+      <div class="sub">QA Manager · IDB Bank · Plainsboro, NJ</div>
+    </div>
+    <div class="card-header-right">
+      <span class="badge badge-p3">P3</span>
+      <span class="badge badge-ab">Group A</span>
+      <span class="badge badge-ok">Verified Email</span>
+      <select class="status-select"><option>Pending Send</option><option>Sent</option><option>Replied</option><option>No Reply</option><option>DNC</option></select>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="card-section">
+      <h3>Research Notes</h3>
+      <div class="info-row">
+        <span>Apollo ID: <strong>69ab39f21e3d4300191d9011</strong></span>
+        <span>Email: <strong>mnedunuri@idbny.com</strong></span>
+      </div>
+      <div class="info-row">
+        <span>Company: <strong>IDB Bank · ~1,300 employees · Commercial Banking</strong></span>
+      </div>
+      <div class="info-row">
+        <span>LinkedIn: <a href="http://www.linkedin.com/in/madhu-nedunuri-54a6945" class="snav" target="_blank">linkedin.com/in/madhu-nedunuri-54a6945</a></span>
+        <span>Sales Nav: <a href="#" class="snav">[VERIFY SALES NAV URL]</a></span>
+      </div>
+      <div class="research-item">IDB Bank launched IDBTrade, a new trade finance platform, in October 2025 — major platform migration = test suite rebuilding period. <span class="research-tag">OPENER / TRIGGER</span></div>
+      <div class="research-item">Post-migration testing: new workflows, new integrations, existing regression suite no longer covers the new system end to end. <span class="research-tag">CONTEXT</span></div>
+      <div class="research-item">Bank with FinTech integrations — multiple integration points means regression coverage complexity multiplies post-migration. <span class="research-tag">CONTEXT</span></div>
+      <div class="research-item">Proof point: Hansard cut regression from 8 weeks → 5 weeks using AI self-healing — insurance/financial services, long regression cycles. Direct vertical match. <span class="research-tag">PROOF</span></div>
+    </div>
+    <div class="card-section">
+      <h3>Touch 1 — InMail</h3>
+      <div class="send-banner">✅ APPROVED TO SEND · 4 credits · Blue/work Chrome profile</div>
+      <div class="subject-line">IDB Bank platform regression</div>
+      <span class="wc-badge">93 words</span><span class="qm-badge">2 ?</span>
+      <div class="msg-box" id="msg-madhu">Hi Madhu,
+
+When a major platform migration goes live, how much of your regression cycle has to be rebuilt from scratch to cover the new system's workflows?
+
+That rebuild is where test maintenance overhead tends to spike, particularly when multiple integrations are now touching the same core workflows.
+
+Hansard cut their regression cycle from 8 weeks down to 5 using Testsigma's self-healing automation, without needing a full test suite rebuild.
+
+If shortening that gap after your migration would help, what day works for a quick look at how they did it?
+
+Cheers,
+Rob</div>
+      <button class="copy-btn subject" onclick="copyText('IDB Bank platform regression', this)">Copy Subject</button>
+      <button class="copy-btn" onclick="copyMsg('msg-madhu', this)">Copy Message</button>
+      <hr class="divider">
+      <h3>Touch 2 Preview (Day 5)</h3>
+      <div class="t2-box">After a platform migration, API coverage is often the first thing that gets missed. Testsigma covers UI, API, and integration tests from the same setup, so new workflows get validated end to end. If that kind of post-migration coverage would help, what day works to see how a similar team handled it?</div>
+      <hr class="divider">
+      <div class="objection-block">
+        <div class="objection-label">Predicted Objection</div>
+        <div class="objection-q">"We have compliance and security requirements"</div>
+        <div class="objection-a">We work with Sanofi, Oscar Health, and several banks. SOC2 Type II, ISO 27001, HIPAA, on-prem and private cloud options. Happy to walk through the compliance story if that's the gate.</div>
+      </div>
+      <hr class="divider">
+      <div class="mqs-bar" style="margin-top:8px;">
+        <span class="mqs-num">11/12</span>
+        <div class="mqs-track"><div class="mqs-fill" style="width:91.7%"></div></div>
+        <span style="font-size:11px;color:var(--green);font-weight:600;">PASS</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CARD 5: SUSANNA FRAYMAN ===================== -->
+<div class="card row-all row-p3 row-warn" id="card-susanna-frayman">
+  <div class="card-header">
+    <div class="card-header-left">
+      <h2>Susanna Frayman</h2>
+      <div class="sub">VP of Product · ConnectPay · North Andover, MA</div>
+    </div>
+    <div class="card-header-right">
+      <span class="badge badge-p3">P3</span>
+      <span class="badge badge-ab">Group A</span>
+      <span class="badge badge-warn">No Email</span>
+      <select class="status-select"><option>Pending Send</option><option>Sent</option><option>Replied</option><option>No Reply</option><option>DNC</option></select>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="card-section">
+      <h3>Research Notes</h3>
+      <div class="flag-warn">⚠️ NO APOLLO EMAIL — InMail-only for now. Run Module A2 composer check before send. If Sales Nav profile not found, hold this prospect.</div>
+      <div class="info-row">
+        <span>Apollo ID: <strong>69ab39e24a3739000dad95dc</strong></span>
+        <span>Email: <strong>None (unavailable)</strong></span>
+      </div>
+      <div class="info-row">
+        <span>Company: <strong>ConnectPay · ~170 employees · Payroll SaaS</strong></span>
+      </div>
+      <div class="info-row">
+        <span>Sales Nav: <a href="#" class="snav">[VERIFY SALES NAV URL]</a></span>
+      </div>
+      <div class="research-item">ConnectPay is actively hiring a Tosca QA Engineer — confirmed via LinkedIn job posting. Current stack is Tricentis Tosca. <span class="research-tag">COMPETITIVE SIGNAL</span></div>
+      <div class="research-item">Payroll SaaS with multi-state compliance edge cases — each state rule change creates a new round of regression testing. <span class="research-tag">OPENER</span></div>
+      <div class="research-item">Heavy proprietary tooling (Tosca) requires Java expertise and slows adaptation to new compliance rules or UI changes. <span class="research-tag">CONTEXT</span></div>
+      <div class="research-item">Proof point: Medibuddy automated 2,500 tests + cut maintenance by 50% — mid-size team, scaling coverage to match product growth. <span class="research-tag">PROOF</span></div>
+      <div class="research-item">Predicted objection: "We use Tricentis/TOSCA." Objection response pre-loaded. <span class="research-tag">OBJECTION</span></div>
+    </div>
+    <div class="card-section">
+      <h3>Touch 1 — InMail</h3>
+      <div class="hold-banner">⏸ HOLD — No email on file. <span>Run Module A2 composer check in Sales Nav before sending. If profile not found, skip.</span></div>
+      <div class="subject-line">ConnectPay payroll regression coverage</div>
+      <span class="wc-badge">88 words</span><span class="qm-badge">2 ?</span>
+      <div class="msg-box" id="msg-susanna">Hi Susanna,
+
+With payroll and compliance edge cases spanning multiple states, how is your team keeping regression coverage consistent as the product scales?
+
+When your test suite depends on a heavy proprietary tool, adapting after UI changes or new compliance rules usually means weeks of manual rework.
+
+Medibuddy automated 2,500 tests and cut maintenance by 50% after switching to Testsigma, without having to rebuild from scratch.
+
+If tighter coverage before your next payroll cycle sounds useful, what day works for a quick look at how they did it?
+
+Cheers,
+Rob</div>
+      <button class="copy-btn subject" onclick="copyText('ConnectPay payroll regression coverage', this)">Copy Subject</button>
+      <button class="copy-btn" onclick="copyMsg('msg-susanna', this)">Copy Message</button>
+      <hr class="divider">
+      <h3>Touch 2 Preview (Day 5)</h3>
+      <div class="t2-box">A lot of payroll teams running Tosca hit the same wall: new payroll rules come out, but adapting your test suite takes longer than writing the feature. Testsigma can run alongside your existing setup or replace it incrementally. If that kind of flexibility matters, what day works to compare options?</div>
+      <hr class="divider">
+      <div class="objection-block">
+        <div class="objection-label">Predicted Objection</div>
+        <div class="objection-q">"We use Tricentis / TOSCA"</div>
+        <div class="objection-a">Tricentis works for broad enterprise. We're a better fit for agile teams needing faster deployment and modern CI/CD. Most teams that switch cite setup time and Java dependency as the main friction points. Happy to compare?</div>
+      </div>
+      <hr class="divider">
+      <div class="mqs-bar" style="margin-top:8px;">
+        <span class="mqs-num">9/12</span>
+        <div class="mqs-track"><div class="mqs-fill warn" style="width:75%"></div></div>
+        <span style="font-size:11px;color:var(--yellow);font-weight:600;">PASS (cap: no email)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CARD 6: MD QASIM MIA ===================== -->
+<div class="card row-all row-p2 row-warn" id="card-md-qasim-mia">
+  <div class="card-header">
+    <div class="card-header-left">
+      <h2>Md Qasim Mia</h2>
+      <div class="sub">QA Automation Manager · Macy's · New York, NY</div>
+    </div>
+    <div class="card-header-right">
+      <span class="badge badge-p2">P2</span>
+      <span class="badge badge-ab">Group B</span>
+      <span class="badge badge-warn">No Apollo Match</span>
+      <select class="status-select"><option>Pending Send</option><option>Sent</option><option>Replied</option><option>No Reply</option><option>DNC</option></select>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="card-section">
+      <h3>Research Notes</h3>
+      <div class="flag-warn">⚠️ NO APOLLO MATCH — identity + email unverified. Module A2 composer check is mandatory. If Sales Nav profile not found or composer shows existing thread, do not send.</div>
+      <div class="info-row">
+        <span>Apollo ID: <strong>69ab39f0100693001931db10</strong></span>
+        <span>Email: <strong>None (no match)</strong></span>
+      </div>
+      <div class="info-row">
+        <span>Company: <strong>Macy's · ~130,000 employees · Retail / E-Commerce</strong></span>
+      </div>
+      <div class="info-row">
+        <span>Sales Nav: <a href="#" class="snav">[VERIFY SALES NAV URL]</a></span>
+      </div>
+      <div class="research-item">Macy's runs continuous deployments across web, mobile, and in-store platforms with major seasonal peaks (holiday, Back to School, etc.). Regression coverage must scale up and down with volume. <span class="research-tag">OPENER</span></div>
+      <div class="research-item">At retail scale, test suites grow faster than teams can maintain them — especially around peak traffic events when reliability matters most. <span class="research-tag">CONTEXT</span></div>
+      <div class="research-item">Proof point: Meesho scaled automation 4X faster using Testsigma, without expanding the QA team — e-commerce, rapid growth, same profile. <span class="research-tag">PROOF</span></div>
+    </div>
+    <div class="card-section">
+      <h3>Touch 1 — InMail</h3>
+      <div class="hold-banner">⏸ HOLD — No Apollo match. <span>Run Module A2 composer check before sending. Verify profile identity in Sales Nav first.</span></div>
+      <div class="subject-line">Macy's automation at scale</div>
+      <span class="wc-badge">90 words</span><span class="qm-badge">2 ?</span>
+      <div class="msg-box" id="msg-qasim">Hi Qasim,
+
+When your platform is running seasonal campaigns and continuous deployments, how do you keep regression coverage from becoming a bottleneck heading into each peak period?
+
+At retail scale, test suites tend to grow faster than teams can maintain them, and that gap usually shows up right when you need reliability most.
+
+Meesho scaled their automation 4X faster using Testsigma, without adding headcount to match their growing release pace.
+
+If scaling coverage without the maintenance drag sounds useful, what day works to see how they pulled it off?
+
+Cheers,
+Rob</div>
+      <button class="copy-btn subject" onclick="copyText('Macy\'s automation at scale', this)">Copy Subject</button>
+      <button class="copy-btn" onclick="copyMsg('msg-qasim', this)">Copy Message</button>
+      <hr class="divider">
+      <h3>Touch 2 Preview (Day 5)</h3>
+      <div class="t2-box">Retail testing at scale usually means covering mobile, web, and API paths simultaneously. Testsigma runs all three from a single framework, so you're not maintaining separate suites for each channel. If consolidating your coverage across channels sounds useful, what day works for a quick look at how other retail teams set it up?</div>
+      <hr class="divider">
+      <div class="objection-block">
+        <div class="objection-label">Predicted Objection</div>
+        <div class="objection-q">"Security / procurement is complex at our scale"</div>
+        <div class="objection-a">We offer on-prem, private cloud, and hybrid. SOC2 Type II + ISO 27001 certified. Several Fortune 500s run us behind their firewall. Happy to loop in our enterprise team on the security story.</div>
+      </div>
+      <hr class="divider">
+      <div class="mqs-bar" style="margin-top:8px;">
+        <span class="mqs-num">9/12</span>
+        <div class="mqs-track"><div class="mqs-fill warn" style="width:75%"></div></div>
+        <span style="font-size:11px;color:var(--yellow);font-weight:600;">PASS (cap: no Apollo match)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CARD 7: YULIA TSYGANKOVA ===================== -->
+<div class="card row-all row-p2 row-warn" id="card-yulia-tsygankova">
+  <div class="card-header">
+    <div class="card-header-left">
+      <h2>Yulia Tsygankova</h2>
+      <div class="sub">QA Assurance Manager · Gainbridge · Remote (US)</div>
+    </div>
+    <div class="card-header-right">
+      <span class="badge badge-p2">P2</span>
+      <span class="badge badge-ab">Group B</span>
+      <span class="badge badge-warn">No Apollo Match</span>
+      <select class="status-select"><option>Pending Send</option><option>Sent</option><option>Replied</option><option>No Reply</option><option>DNC</option></select>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="card-section">
+      <h3>Research Notes</h3>
+      <div class="flag-warn">⚠️ NO APOLLO MATCH — identity + email unverified. Module A2 composer check is mandatory. If Sales Nav profile not found or composer shows existing thread, do not send.</div>
+      <div class="info-row">
+        <span>Apollo ID: <strong>69ab39f41e3d430011a8eeb0</strong></span>
+        <span>Email: <strong>None (no match)</strong></span>
+      </div>
+      <div class="info-row">
+        <span>Company: <strong>Gainbridge · ~51 employees · Insurance FinTech (digital annuities)</strong></span>
+      </div>
+      <div class="info-row">
+        <span>Sales Nav: <a href="#" class="snav">[VERIFY SALES NAV URL]</a></span>
+      </div>
+      <div class="research-item">Gainbridge is a regulated insurance FinTech offering digital annuities/savings products across multiple states — compliance requirements are baked into every release. <span class="research-tag">OPENER</span></div>
+      <div class="research-item">QA team must cover both compliance-required test paths AND new product feature tests simultaneously. Splitting that capacity on a 51-person team is a real constraint. <span class="research-tag">CONTEXT</span></div>
+      <div class="research-item">Fast-moving FinTech product with state-level regulatory changes creating ongoing testing obligations. <span class="research-tag">CONTEXT</span></div>
+      <div class="research-item">Proof point: CRED hit 90% regression automation + 5X faster execution — FinTech, high-velocity, same profile. <span class="research-tag">PROOF</span></div>
+    </div>
+    <div class="card-section">
+      <h3>Touch 1 — InMail</h3>
+      <div class="hold-banner">⏸ HOLD — No Apollo match. <span>Run Module A2 composer check before sending. Verify profile identity in Sales Nav first.</span></div>
+      <div class="subject-line">Gainbridge compliance test coverage</div>
+      <span class="wc-badge">92 words</span><span class="qm-badge">2 ?</span>
+      <div class="msg-box" id="msg-yulia">Hi Yulia,
+
+With a regulated insurance product shipping features across multiple states, how do you balance regression coverage for compliance requirements against building out tests for new features?
+
+Keeping that balance usually means your QA team is splitting time between maintaining old compliance test suites and keeping up with new feature coverage.
+
+CRED hit 90% regression automation and ran tests 5X faster after moving to Testsigma, without adding to the team.
+
+If getting ahead of that coverage gap sounds worth a look, what day works to see how they did it?
+
+Cheers,
+Rob</div>
+      <button class="copy-btn subject" onclick="copyText('Gainbridge compliance test coverage', this)">Copy Subject</button>
+      <button class="copy-btn" onclick="copyMsg('msg-yulia', this)">Copy Message</button>
+      <hr class="divider">
+      <h3>Touch 2 Preview (Day 5)</h3>
+      <div class="t2-box">One thing insurance FinTech teams run into is that compliance testing and product testing often live in separate tools with no shared reporting. Testsigma consolidates both into a single framework. If aligning your compliance and feature coverage would simplify your release process, what day works for a quick look?</div>
+      <hr class="divider">
+      <div class="objection-block">
+        <div class="objection-label">Predicted Objection</div>
+        <div class="objection-q">"We have compliance / security requirements"</div>
+        <div class="objection-a">We work with Sanofi, Oscar Health, and several financial services firms. SOC2 Type II, ISO 27001, HIPAA certified. We can also do on-prem if that's a requirement. Happy to walk through the compliance story.</div>
+      </div>
+      <hr class="divider">
+      <div class="mqs-bar" style="margin-top:8px;">
+        <span class="mqs-num">9/12</span>
+        <div class="mqs-track"><div class="mqs-fill warn" style="width:75%"></div></div>
+        <span style="font-size:11px;color:var(--yellow);font-weight:600;">PASS (cap: no Apollo match)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CARD 8: GEORGE MITCHELL ===================== -->
+<div class="card row-all row-p1 row-warn" id="card-george-mitchell">
+  <div class="card-header">
+    <div class="card-header-left">
+      <h2>George Mitchell</h2>
+      <div class="sub">QA Manager · Nettica VPN · Seattle, WA</div>
+    </div>
+    <div class="card-header-right">
+      <span class="badge badge-p1">P1</span>
+      <span class="badge badge-ab">Group A</span>
+      <span class="badge badge-ok">Verified Email</span>
+      <span class="badge badge-warn">3-Employee Company</span>
+      <select class="status-select"><option>Pending Send</option><option>Sent</option><option>Replied</option><option>No Reply</option><option>DNC</option></select>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="card-section">
+      <h3>Research Notes</h3>
+      <div class="flag-warn">⚠️ BORDERLINE ICP — Nettica VPN has only 3 employees per Apollo org data. George's LinkedIn headline is "Sr. QA Manager | Director of QA" which suggests the role is real. Consider sending after P4/P3/P2 batch is processed. InMail credit is low-risk but reply probability is lower at this company size.</div>
+      <div class="info-row">
+        <span>Apollo ID: <strong>6964ae35e8589400119acb39</strong></span>
+        <span>Email: <strong>george@nettica.com</strong></span>
+      </div>
+      <div class="info-row">
+        <span>Company: <strong>Nettica VPN · ~3 employees · Security Software</strong></span>
+      </div>
+      <div class="info-row">
+        <span>LinkedIn: <a href="http://www.linkedin.com/in/georgmi" class="snav" target="_blank">linkedin.com/in/georgmi</a></span>
+        <span>Sales Nav: <a href="#" class="snav">[VERIFY SALES NAV URL]</a></span>
+      </div>
+      <div class="research-item">Security product — every release carries higher consequence for missed bugs than a standard SaaS product. <span class="research-tag">OPENER</span></div>
+      <div class="research-item">Lean team means traditional automation frameworks require more setup overhead than is practical — hence likely relying on manual regression cycles. <span class="research-tag">CONTEXT</span></div>
+      <div class="research-item">Proof point: Spendflo (small SaaS team) cut manual testing by 50% with Testsigma — same lean team profile. <span class="research-tag">PROOF</span></div>
+      <div class="research-item">George's headline includes "Director of QA" — may have broader scope than just Nettica. Worth the InMail. <span class="research-tag">NOTE</span></div>
+    </div>
+    <div class="card-section">
+      <h3>Touch 1 — InMail</h3>
+      <div class="hold-banner">⏸ HOLD — 3-employee company (borderline ICP). <span>Rob's call. If InMail credit available after others, send. Otherwise hold permanently.</span></div>
+      <div class="subject-line">Nettica VPN testing coverage</div>
+      <span class="wc-badge">91 words</span><span class="qm-badge">2 ?</span>
+      <div class="msg-box" id="msg-george">Hi George,
+
+When you're covering a security product with a lean team, how do you keep test coverage consistent without every release turning into a full manual regression cycle?
+
+Security products carry a higher cost for missed bugs, but smaller teams often can't sustain the maintenance overhead that traditional automation frameworks require.
+
+Spendflo, a lean SaaS team, cut manual testing by 50% using Testsigma, without needing to scale up to make it work.
+
+If getting more coverage with fewer manual cycles sounds useful, what day works for a quick look?
+
+Cheers,
+Rob</div>
+      <button class="copy-btn subject" onclick="copyText('Nettica VPN testing coverage', this)">Copy Subject</button>
+      <button class="copy-btn" onclick="copyMsg('msg-george', this)">Copy Message</button>
+      <hr class="divider">
+      <h3>Touch 2 Preview (Day 5)</h3>
+      <div class="t2-box">Most small teams skip automation because setup overhead isn't worth it for their volume. Testsigma's no-code setup takes a day, not weeks, so you're not building infrastructure before you're testing. If getting automation running without a major investment of time sounds useful, what day works?</div>
+      <hr class="divider">
+      <div class="objection-block">
+        <div class="objection-label">Predicted Objection</div>
+        <div class="objection-q">"We're too small / budget is tight"</div>
+        <div class="objection-a">Totally get it. Spendflo is about your size and cut manual testing 50%, seeing ROI in the first quarter. Happy to walk through what a setup looks like for a lean team before any commitment.</div>
+      </div>
+      <hr class="divider">
+      <div class="mqs-bar" style="margin-top:8px;">
+        <span class="mqs-num">8/12</span>
+        <div class="mqs-track"><div class="mqs-fill warn" style="width:66.7%"></div></div>
+        <span style="font-size:11px;color:var(--yellow);font-weight:600;">PASS (borderline ICP)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end cards -->
+
+<div style="padding: 16px 24px; background: #1e1e2e; color: #a0aec0; font-size: 12px; margin-top: 8px;">
+  Batch 11 · Draft · Mar 6, 2026 · Sequence: LinkedIn Outbound - Q1 Priority Accounts (69a05801fdd140001d3fc014) · From: robert.gorham@testsigma.net
+  <br>Pre-batch dedup: ✅ DNC clear · ✅ MASTER_SENT_LIST.csv clear (219 rows checked) · ✅ No same-company conflicts
+</div>
+
+<script>
+function copyMsg(id, btn) {
+  const el = document.getElementById(id);
+  const text = el.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  });
+}
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  });
+}
+function filterCards(filter) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.card').forEach(card => {
+    if (filter === 'all' || card.classList.contains('row-' + filter)) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  document.querySelectorAll('.prospect-table tr.row-all').forEach(row => {
+    if (filter === 'all' || row.classList.contains('row-' + filter)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+</script>
+</body>
+</html>

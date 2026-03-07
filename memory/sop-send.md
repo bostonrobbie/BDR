@@ -21,7 +21,7 @@ Cross-reference every prospect name in the new batch against `/Work/MASTER_SENT_
 - If MASTER_SENT_LIST.csv doesn't exist or is stale: re-run `/sessions/practical-brave-goldberg/build_master_list.py` to regenerate it.
 
 ### Step C: Same-Company Check
-Scan the batch for multiple people at the same company. Flag any company with 2+ prospects. Present to Rob before proceeding. Default rule: 1 person per company per batch.
+Scan the batch for multiple people at the same company. Flag any company with 2+ prospects. Default rule: 1 person per company per batch. Resolve conflicts autonomously using the priority tiebreaker in `sop-outreach.md` → Same-Company Conflict Resolution. Document all deferrals. Only escalate to Rob if priority scores are identical AND both are the same persona tier.
 
 ### Step D: Batch File Naming
 Name ALL batch files with actual send date and status:

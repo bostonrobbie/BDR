@@ -91,6 +91,7 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 | Ashok Prasad | ZL Technologies | mabl-era contact (Sep 2022). 2 messages sent, no reply. Skip permanently. | 2026-03-03 |
 | Abe Blanco | Kapitus | Replied "not interested" Mar 4. Batch 8 send. Skip permanently. | 2026-03-04 |
 | Chuck Smith | Aventiv Technologies | Double-send (B1 connection + B5B InMail). Rob decision Mar 4. Skip permanently. | 2026-03-04 |
+| Jitesh Biswal | JPMorgan Chase | Declined InMail Nov 4 (pre-campaign Oct 27 send). Skip permanently. | 2026-03-06 |
 
 ---
 
@@ -104,17 +105,20 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 
 ---
 
-## Pipeline Status (Updated Mar 4 — post full audit + cleanup)
+## Pipeline Status (Updated Mar 6 — post Batch 11 sends)
 | Metric | Value |
 |--------|-------|
-| Total unique prospects contacted | **193** (from MASTER_SENT_LIST.csv) |
-| Total InMail sends (inc. double-sends) | 198 tracked + 6 untracked = **204** |
+| Total unique prospects contacted | **206** (202 pre-Batch11 + 4 Batch 11 today) |
+| Total InMail sends (inc. double-sends) | 198 tracked + 17 untracked B9 + 9 Batch 10 + 4 Batch 11 = **228** |
 | Total Emails sent | 16 |
-| InMail credits remaining | **23** (Sales Nav confirmed Mar 4) |
+| InMail credits remaining | **4** (Updated Mar 6 — Batch 11 used 4 credit InMails) |
 | Batch 1 (Feb 23) | 23 people — sent as **LinkedIn connection requests, NOT InMails** (no Sales Nav threads, no credits used) |
 | Batch 9 remaining | **13 to send** |
+| Batch 10 | **9 sent Mar 6** (outreach-batch10-sent-mar6.html). 8 credit InMails queued Mon Mar 9. 6 skipped (no InMail access). |
+| Batch 11 | **4 sent Mar 6** (outreach-batch11-draft-mar6.html). Brad Askins/Trimble, Dan Heintzelman/Prevail Legal, Georgii Petrosian/AuditBoard, Madhu Nedunuri/IDB Bank. Touch 2 due Mar 11. |
 | Double-sends (cannot unsend) | Chuck Smith, Rick Kowaleski, Christie Howard, Mohan Gummadi (Abe Blanco = DNC) |
-| Apollo Q1 Priority Accounts | 281 active at Step 1, 285 total |
+| LinkedIn Outbound - Q1 Priority Accounts | **315 enrolled** (311 pre-Batch 11 + 4 Batch 11 adds) |
+| Q1 QA Outreach - US | **RETIRED Mar 6** — 26 clean contacts migrated to LI Outbound, sequence archived |
 
 **Batch 9 duplicates removed:** Jennifer Tune, Bhavani Neerathilingam, Sandy Paray (all in Batch 7 Feb 28)
 **Batch 9 already sent Mar 3 (now logged):** Mohan Guruswamy, Jeremy Cira, Chandana Ray, Lueanne Fitzhugh, Martha Horns, Kylie Summer
@@ -172,4 +176,4 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 | Salesforce Enablement v2 | 1bawvXns5ZSjWNvYkarikltH8aaNcUcSqw388Aks27CI |
 
 ## currentDate
-Today's date is 2026-03-02.
+Today's date is 2026-03-06.

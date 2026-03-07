@@ -176,6 +176,36 @@ python scripts/init_isolated_channel_dbs.py \
   --linkedin-db api/data/outreach_linkedin.db
 ```
 
+## No-Apollo-Match Handling
+
+When Apollo bulk_match returns `null` or no result for a prospect:
+
+1. **Do NOT skip the prospect** — still include them if web research supports their ICP fit.
+2. **Web research only:** Use LinkedIn profile + company external research for 3-source requirement. Document the gap explicitly.
+3. **Flag in the HTML tracker:** Add `"flagged": True` and a warning note: "⚠️ NO APOLLO MATCH — verify identity + email via Module A2 before send."
+4. **Score MQS conservatively:** Cap at 9/12 since tech stack and email can't be confirmed without Apollo.
+5. **Module A2 is mandatory at send time:** Because email can't be verified ahead of time, the composer check is critical. If the profile can't be found on Sales Nav, route to email outreach only if a verified email exists.
+6. **Log the gap:** Note "no Apollo match" in research notes field of the tracker.
+
+**Root cause note (Mar 6):** Kristyn Burke (Kahuna) and Guna Chandrasekaran (FloQast) returned no Apollo match. Likely causes: uncommon name variants, recently changed employer, or contact not in Apollo database. Both included in Batch 10 with full ⚠️ flags.
+
+---
+
+## Same-Company Conflict Resolution
+
+When the pre-batch dedup scan finds 2+ people from the same company, resolve autonomously using this tiebreaker hierarchy (do NOT pause to ask Rob unless truly ambiguous):
+
+1. **Higher priority score wins.** P4 beats P3, P3 beats P2, etc.
+2. **If same priority: QA manager/lead beats SDET.** Primary persona > influencer persona.
+3. **If still tied: confirmed Apollo email wins.** Email mismatch (wrong domain) = defer.
+4. **Deferred contacts:** Document them in the batch tracker's Deferred section with reason. They become candidates for the next batch or a future Touch 2/3 window.
+
+**Special case — Terene Lee rule (Mar 6):** If the deferred person is in a later stage of the sequence (needs Touch 2/3 while the included person is getting Touch 1), note this explicitly: "Needs Touch [X] — schedule in next batch."
+
+**Document all deferrals** in `memory/pipeline-state.md` under the batch's migration/dedup notes.
+
+---
+
 ## Common Pitfalls
 - Don't send messages (Rob copy/pastes manually)
 - Don't update only Apollo or only local DB, both must be updated each touch

@@ -1,6 +1,6 @@
 # Pipeline State & Send History
 
-## Master Send Log (Updated Mar 4 — post Sales Nav audit)
+## Master Send Log (Updated Mar 6 — post Batch 11 sends)
 
 ### Lifetime Totals
 | Date | Batch | Sends | Cumulative |
@@ -21,6 +21,12 @@
 | Mar 3 | Batch 8 Day 5 (8 sent) | 8 | 190 |
 | Mar 3 | Batch 8 Day 6 (8 sent, 1 NOT FOUND, 2 FREE) | 8 | 198 |
 | Mar 3 | Batch 9 (6 sent UNTRACKED — see audit note below) | 6 | 204 |
+| Mar 6 | Q1 QA Outreach → LI Outbound migration (26 enrolled) | 0 InMails | — |
+| Mar 6 | Batch 10 created (25 drafts ready, not yet sent) | 0 | 204 |
+| Mar 6 | Batch 10 Module A2 preflight complete (22 CLEAN, 1 BLOCKED, 1 UNVERIFIABLE) | 0 sends | 204 |
+| Mar 4 | Batch 9 — 11 sent UNTRACKED (discovered Mar 6 via inbox sweep) | 11 | 215 |
+| Mar 6 | Batch 10 — 9 sent (3 free + 6 credit InMails) | 9 | 224 |
+| Mar 6 | Batch 11 — 4 sent (4 credit InMails) | 4 | 228 |
 
 ### Email Send History
 | Date | Time | Recipients | Type | Status |
@@ -165,35 +171,35 @@ Ron Trachman, Laurie Nielsen, Alan Gutherz, Derek Stanley, Nihal Elsayed, Sarah 
 | Jennifer Tune | ⛔ REMOVE — duplicate (Batch 7 Feb 28) |
 | Bhavani Neerathilingam | ⛔ REMOVE — duplicate (Batch 7 Feb 28) |
 | Sandy Paray | ⛔ REMOVE — duplicate (Batch 7 Feb 28) |
-| David Gustafson | ⏳ PENDING |
-| Yuliya A | ⏳ PENDING |
-| Kanan Hasanzade | ⏳ PENDING |
-| Jiaping Shen | ⏳ PENDING |
-| Azam Quraishi | ⏳ PENDING |
-| Sravanti Krothapalli | ⏳ PENDING |
-| Cooper Morrow | ⏳ PENDING |
-| Manigandan Kanagasabai | ⏳ PENDING |
-| Denise Barnett | ⏳ PENDING |
-| Leah Coates | ⏳ PENDING |
-| Grant Anderson | ⏳ PENDING |
-| Jyothi Kudithipudi | ⏳ PENDING |
-| Axel Kerksiek | ⏳ PENDING |
+| David Gustafson | ✅ SENT Mar 4 (untracked — confirmed Mar 6 inbox sweep) |
+| Yuliya A | ✅ SENT Mar 4 (untracked — confirmed Mar 6 inbox sweep) |
+| Kanan Hasanzade | ✅ SENT Mar 4 (untracked — confirmed Mar 6 inbox sweep) |
+| Jiaping Shen | ✅ SENT Mar 4 (untracked — confirmed Mar 6 inbox sweep) |
+| Azam Quraishi | ✅ SENT Mar 4 (untracked — confirmed Mar 6 inbox sweep) |
+| Sravanti Krothapalli | ✅ SENT Mar 4 (untracked — confirmed Mar 6 inbox sweep) |
+| Cooper Morrow | ✅ SENT Mar 4 (untracked — confirmed Mar 6 inbox sweep) |
+| Manigandan Kanagasabai | ✅ SENT Mar 4 (untracked — confirmed Mar 6 inbox sweep) |
+| Denise Barnett | ✅ SENT Mar 4 (untracked — confirmed Mar 6 inbox sweep) |
+| Leah Coates | ✅ SENT Mar 4 (untracked — confirmed Mar 6 inbox sweep) |
+| Grant Anderson | ✅ SENT Mar 4 (untracked — confirmed Mar 6 inbox sweep) |
+| Jyothi Kudithipudi | ⏳ PENDING (Rob decision Mar 6: skip for now) |
+| Axel Kerksiek | ⏳ PENDING (Rob decision Mar 6: skip for now) |
 
-**Remaining Batch 9 to send: 13 (not 22)**
-**Credits available: 23 — sufficient to cover all 13**
+**Remaining Batch 9 to send: 2 (Jyothi Kudithipudi, Axel Kerksiek)**
+**Credits available: 4 (as of Mar 6 post-Batch 11)**
 
 ---
 
 ## Pipeline Metrics
 | Metric | Value |
 |--------|-------|
-| Total InMails sent | 204 (198 tracked + 6 untracked Batch 9 sends on Mar 3) |
+| Total InMails sent | 228 (198 tracked + 6 untracked B9 Mar 3 + 11 untracked B9 Mar 4 + 9 Batch 10 Mar 6 + 4 Batch 11 Mar 6) |
 | Total Emails sent | 16 |
-| InMail credits remaining | **23** (Sales Nav confirmed Mar 4; was 28 in tracker — 5 credit gap) |
-| Apollo Q1 Priority Accounts | 281 active at Step 1, 4 finished (285 total) |
+| InMail credits remaining | **4** (Updated Mar 6 — Batch 11 used 4 credit InMails: Brad Askins, Dan Heintzelman, Georgii Petrosian, Madhu Nedunuri) |
+| Apollo Q1 Priority Accounts | 315 enrolled (311 pre-Batch 11 + 4 Batch 11 adds) |
 | Apollo Q1 Website Visitor | 9 active |
 | Blocked (Terene Lee) | 1 |
-| DNC | 5 (Sanjay Singh, Lance Silverman, Clyde Faulkner, Ashok Prasad, Abe Blanco) |
+| DNC | 7 (Sanjay Singh, Lance Silverman, Clyde Faulkner, Ashok Prasad, Abe Blanco, Chuck Smith, Jitesh Biswal) |
 | Double-sends (cannot unsend) | 5: Chuck Smith, Abe Blanco, Rick Kowaleski, Christie Howard, Mohan Gummadi |
 | Skipped NOT FOUND (Jonathan Lavoie) | 1 |
 
@@ -221,6 +227,13 @@ Audited all batches for unenrolled prospects. Enrolled 41 missing contacts:
 | Batch 8 Day 4 (8 sent) | Mar 3 | Mar 8 (Sun→Mar 9 Mon) | Mar 13 |
 | Batch 8 Day 5 (8 sent) | Mar 3 | Mar 8 (Sun→Mar 9 Mon) | Mar 13 |
 | Batch 8 Day 6 (8 sent) | Mar 3 | Mar 8 (Sun→Mar 9 Mon) | Mar 13 |
+
+| Batch 9 — 6 sent Mar 3 (untracked) | Mar 3 | Mar 8 (Sun→Mar 9 Mon) | Mar 13 |
+| Batch 9 — 11 sent Mar 4 (untracked) | Mar 4 | Mar 9 (Mon) | Mar 14 (Sat→Mar 16) |
+| Batch 10 — 9 sent Mar 6 (3 free + 6 credit) | Mar 6 | Mar 11 (Touch 2) | Mar 16 (Touch 3) |
+| Batch 10 — remaining 16 (Mon Mar 9 sends) | Mar 9 | Mar 14 (Touch 2) | Mar 19 (Touch 3) |
+| Batch 11 — 4 sent Mar 6 (4 credit InMails) | Mar 6 | Mar 11 (Touch 2) | Mar 16 (Touch 3) |
+| Pam Bice Touch 2 | OVERDUE (due Mar 4, now Mar 6) | Send ASAP | — |
 
 **INC-002 double-send special cases:**
 - Abe Blanco (Kapitus): DNC. Skip all touches permanently.
@@ -257,7 +270,31 @@ Audited all batches for unenrolled prospects. Enrolled 41 missing contacts:
 | enriched-prospects-batch8.json | Batch 8 | Enrichment data |
 | prospect-outreach-8-2026-03-02.html | Batch 8 | COMPLETE (43/50 sent, 2 SKIPPED disabled/already msg, 3 NOT FOUND, 2 FREE) |
 | batch8_send_queue.txt | Batch 8 | Send queue (50 prospects, 8 daily) |
-| prospect-outreach-9-2026-03-03.html | Batch 9 | ACTIVE (24 prospects, enrolled in Q1 Priority, Touch 1 pending) |
+| prospect-outreach-9-2026-03-03.html | Batch 9 | ACTIVE — 22/24 sent (6 Mar 3 untracked + 11 Mar 4 untracked + 5 confirmed). 2 PENDING: Jyothi Kudithipudi, Axel Kerksiek. 3 REMOVED (duplicates). Touch 2 starts Mar 9. |
+| outreach-batch10-draft-mar6.html | Batch 10 | DRAFT (source file — superseded by sent file below) |
+| outreach-batch10-sent-mar6.html | Batch 10 | ACTIVE — 9 sent Mar 6 (3 free + 6 credit InMails). 16 pending (8 credit InMails Mon Mar 9: Sasa Lazarevic, Srikanth Sy, Sarah Ross, Niveditha Somasundaram, Stephen Burlingame, Dave Czoper, Crys Simonca, Christian Melville). 6 skipped no InMail access (Gil Taub, Kristyn Burke, Tim Hartgrave, Vince Delfini, Padmanaban Vadivelu, Ravi Nag). |
+| outreach-batch11-draft-mar6.html | Batch 11 | ACTIVE — 4 sent Mar 6 (4 credit InMails): Brad Askins/Trimble, Dan Heintzelman/Prevail Legal, Georgii Petrosian/AuditBoard, Madhu Nedunuri/IDB Bank. All enrolled in LinkedIn Outbound - Q1 Priority Accounts. Touch 2 due Mar 11. |
+
+## Mar 6 Q1 QA Outreach Migration
+
+Q1 QA Outreach - US (ID: 699f4089628b940011da7fb7) fully resolved. 26 clean contacts moved to LinkedIn Outbound - Q1 Priority Accounts and enrolled. Sequence archived.
+
+**Batch 10 — 5 Deferred (same-company conflicts):**
+| Name | Company | Reason |
+|------|---------|--------|
+| Kendal Walton | Aspire Software | Same company as Sarah Ross (included, P3) |
+| Charles Dudley | Simpro Software | Same company as Clint Parker (included, P2); also Apollo email mismatch |
+| Lisa King | Vergent LMS | Same company as Jason Poole (included, P4); no Apollo match |
+| Jerad Fuller | Ncontracts | Same company as Tom Goody (included, P4) |
+| Terene Lee | Impartner Software | Same company as Josh Beach (included, P3); needs Touch 2 next batch |
+
+**Batch 10 — 2 No-Apollo-Match flags (preflight results Mar 6):**
+| Name | Company | Notes |
+|------|---------|-------|
+| Kristyn Burke | Kahuna | ✅ CLEAN — Module A2 composer check passed Mar 6 (blank new message). Recently promoted QA Lead → QA Manager. No Apollo match — verify email before send. |
+| Guna Chandrasekaran | FloQast | ⚠️ UNVERIFIABLE — 0 results on Sales Nav (Mar 6). No Apollo match. SKIP InMail. Route to email only if Apollo email verified. |
+
+---
 
 ## Key Deliverables Index
 | File | Purpose |

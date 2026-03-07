@@ -20,10 +20,10 @@
 ## Active Sequences
 | Sequence | ID | Steps | Purpose | Contacts |
 |----------|-----|-------|---------|----------|
-| Q1 Priority Accounts | 69a05801fdd140001d3fc014 | 4 | PRIMARY for ALL outbound. All manual steps. | 185 active at Step 1 |
-| Q1 Website Visitor - Tier 1 Intent | 69a1b3564fa5fa001152eb66 | 3 | Email-only buyer intent. | 9 active |
+| LinkedIn Outbound - Q1 Priority Accounts | 69a05801fdd140001d3fc014 | 4 | PRIMARY for ALL outbound. All manual steps. | 311 enrolled (26 added Mar 6 from Q1 QA Outreach migration) |
+| Email Outbound - Website Visitor Tier 1 | 69a1b3564fa5fa001152eb66 | 3 | Email-only buyer intent. | 78 active |
 
-### Q1 Priority Accounts Step Details
+### LinkedIn Outbound - Q1 Priority Accounts Step Details
 - Step 1 (69a05a3883eda10021b7ff0b): LinkedIn InMail (Day 1, High)
 - Step 2 (69a05a3883eda10021b7ff0d): LinkedIn InMail Follow-up (Day 5, High)
 - Step 3 (69a05a3883eda10021b7ff0f): Manual Email (Day 10, Medium)
@@ -33,16 +33,16 @@
 ## Retired Sequences (DO NOT USE)
 | Sequence | ID | Reason |
 |----------|-----|--------|
-| Q1 QA Outreach - US | 699f4089628b940011da7fb7 | Retired Mar 1. 0 contacts. |
+| Q1 QA Outreach - US | 699f4089628b940011da7fb7 | Fully resolved Mar 6. 26 clean contacts moved to LinkedIn Outbound. 5 deferred (same-company). Sequence archived. |
 | Rob Outbound | 68f2723ef174870019958d31 | Legacy. 0.25% reply rate. |
 | Eshwar - Rob Outbound | 6915ec4bac6f93000da91dab | Legacy reference only. |
 
 ## Which Sequence for Which Prospect
 | Type | Sequence |
 |------|----------|
-| Cold outbound (all batches) | Q1 Priority Accounts |
-| Intent/transferred accounts | Q1 Priority Accounts |
-| Website demo / high-intent inbound | Q1 Website Visitor |
+| Cold outbound (all batches) | LinkedIn Outbound - Q1 Priority Accounts |
+| Intent/transferred accounts | LinkedIn Outbound - Q1 Priority Accounts |
+| Website demo / high-intent inbound | Email Outbound - Website Visitor Tier 1 |
 | Warm lead reply / meeting booked | Do NOT enroll. Handle manually. |
 
 ## Enrollment Rules
