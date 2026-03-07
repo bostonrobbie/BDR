@@ -11,3 +11,6 @@ BDR-backup/
 *.db
 *.db-shm
 *.db-wal
+
+# FUSE system artifacts
+.fuse_hidden*
