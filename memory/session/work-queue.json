@@ -1,0 +1,166 @@
+{
+  "_meta": {
+    "description": "Machine-readable task queue for multi-agent coordination. Agents claim tasks by setting status=in_progress + claimed_by + claimed_at, then commit+push immediately. The markdown work-queue.md is the human-readable companion. This file is the source of truth for automation.",
+    "schema_version": "1.0",
+    "last_updated": "2026-03-07T13:30:00Z",
+    "rules": [
+      "CLAIM before starting: set status=in_progress, claimed_by, claimed_at, then commit+push",
+      "Use scripts/claim_task.py for atomic claiming",
+      "Only one agent per task at a time",
+      "Stale claims (>4h with no commit) are expired automatically by session_start.py",
+      "DONE tasks stay in completed[] for 14 days then archived"
+    ]
+  },
+  "active": [
+    {
+      "id": "TASK-001",
+      "title": "Mon Mar 9 — B10 InMail sends",
+      "status": "pending",
+      "priority": "HIGH",
+      "due": "2026-03-09",
+      "claimed_by": null,
+      "claimed_at": null,
+      "description": "8 credit InMails queued for Batch 10. Confirm enrollment status first — some blocked by ownership in Apollo. Send only if enrollment confirmed and Rob approves.",
+      "prospects": ["Sasa Lazarevic", "Srikanth Sy", "Sarah Ross", "Niveditha Somasundaram", "Stephen Burlingame", "Dave Czoper", "Crys Simonca", "Christian Melville"],
+      "blockers": ["Apollo ownership issues for Sasa Lazarevic + Christian Melville. Rob must resolve."],
+      "ref_files": ["memory/pipeline-state.md", "MASTER_SENT_LIST.csv"],
+      "tags": ["b10", "inmail", "send"]
+    },
+    {
+      "id": "TASK-002",
+      "title": "B10 + B11 Touch 2 drafts (due Mar 11)",
+      "status": "pending",
+      "priority": "HIGH",
+      "due": "2026-03-11",
+      "claimed_by": null,
+      "claimed_at": null,
+      "description": "Build Touch 2 drafts for all B10 (Day 4+ Mar 11) and B11 (Day 4+ Mar 11) prospects with no reply. Must pass MQS >= 9/12 and QA Gate before presenting to Rob.",
+      "prospects": ["All B10 sent Mar 6 (9 people)", "Brad Askins (Trimble)", "Dan Heintzelman (Prevail Legal)", "Georgii Petrosian (AuditBoard)", "Madhu Nedunuri (IDB Bank)"],
+      "blockers": [],
+      "ref_files": ["memory/sop-outreach.md", "memory/incidents.md", "outreach-batch10-sent-mar6.html", "outreach-batch11-draft-mar6.html"],
+      "tags": ["touch2", "b10", "b11", "draft"]
+    },
+    {
+      "id": "TASK-003",
+      "title": "B10 enrollment blockers",
+      "status": "pending",
+      "priority": "MEDIUM",
+      "due": "2026-03-09",
+      "claimed_by": null,
+      "claimed_at": null,
+      "description": "7 B10 contacts not yet fully enrolled in LinkedIn Outbound Q1. 2 blocked by Apollo ownership. 5 not attempted.",
+      "prospects": ["Sasa Lazarevic (ownership block)", "Christian Melville (ownership block)", "Kristyn Burke", "Tim Hartgrave", "Vince Delfini", "Padmanaban Vadivelu", "Ravi Nag"],
+      "blockers": ["Rob must reassign ownership for Lazarevic + Melville in Apollo UI"],
+      "ref_files": ["memory/pipeline-state.md", "memory/apollo-config.md"],
+      "tags": ["enrollment", "apollo", "b10"]
+    },
+    {
+      "id": "TASK-004",
+      "title": "Namita Jain follow-up (OverDrive)",
+      "status": "pending",
+      "priority": "MEDIUM",
+      "due": "2026-03-07",
+      "claimed_by": null,
+      "claimed_at": null,
+      "description": "Touch 1 email sent Feb 27. No confirmed reply. Check Gmail inbox first — if no reply, draft Touch 2. Day 9 as of Mar 7 (well past Day 4 minimum).",
+      "prospects": ["Namita Jain (OverDrive)"],
+      "blockers": [],
+      "ref_files": ["memory/warm-leads.md", "memory/sop-outreach.md"],
+      "tags": ["warm-lead", "followup", "overdrive"]
+    },
+    {
+      "id": "TASK-005",
+      "title": "Buyer Intent Touch 2 gap — verify status",
+      "status": "pending",
+      "priority": "MEDIUM",
+      "due": "2026-03-11",
+      "claimed_by": null,
+      "claimed_at": null,
+      "description": "5 of 9 original Buyer Intent cohort (Feb 27) did NOT receive confirmed email T2 on Mar 6. Determine whether they got InMail T2 instead or if Touch 2 has not been sent.",
+      "prospects": ["Jose Moreno", "Tom Yang", "Eyal Luxenburg", "Jeff Barnes", "Todd Willms", "Jason Ruan"],
+      "blockers": [],
+      "ref_files": ["memory/pipeline-state.md"],
+      "tags": ["buyer-intent", "touch2", "verification"]
+    },
+    {
+      "id": "TASK-006",
+      "title": "Enroll Tom Goody + Mohan Guruswamy in LinkedIn Outbound Q1",
+      "status": "pending",
+      "priority": "LOW",
+      "due": null,
+      "claimed_by": null,
+      "claimed_at": null,
+      "description": "Both enrolled in 'Outbound Calls (tyler) Only'. Rob confirmed OK to also enroll in LinkedIn Outbound Q1 (called but never spoke).",
+      "prospects": ["Tom Goody (Ncontracts)", "Mohan Guruswamy (Tavant)"],
+      "blockers": [],
+      "ref_files": ["memory/apollo-config.md"],
+      "tags": ["enrollment", "apollo", "linkedin"]
+    },
+    {
+      "id": "TASK-007",
+      "title": "Apollo WV sequence gap investigation",
+      "status": "pending",
+      "priority": "LOW",
+      "due": null,
+      "claimed_by": null,
+      "claimed_at": null,
+      "description": "Apollo UI shows '81 delivered' in WV sequence but only 28 WV emails confirmed via Gmail. Gap of ~53 unresolved. Likely pre-campaign sends or different time window.",
+      "prospects": [],
+      "blockers": [],
+      "ref_files": ["memory/pipeline-state.md", "memory/apollo-config.md"],
+      "tags": ["audit", "apollo", "email"]
+    },
+    {
+      "id": "TASK-008",
+      "title": "Merge unmerged Claude branches (optional)",
+      "status": "pending",
+      "priority": "LOW",
+      "due": null,
+      "claimed_by": null,
+      "claimed_at": null,
+      "description": "Branch claude/add-secondary-brain-layer has useful files: voice-rules.md, gold-standards.md, sales-playbook.md, integrations.md. Review and merge useful content into memory/.",
+      "prospects": [],
+      "blockers": [],
+      "ref_files": ["AGENTS.md"],
+      "tags": ["repo", "maintenance"]
+    }
+  ],
+  "completed": [
+    {
+      "id": "TASK-C001",
+      "title": "Email count reconciliation + audit",
+      "status": "done",
+      "completed_at": "2026-03-07T11:00:00Z",
+      "completed_by": "Cowork-1",
+      "result": "Confirmed 49 outreach emails via Gmail. Updated pipeline-state.md, CLAUDE.md, MASTER_SENT_LIST.csv (278 rows). Discovered 4 cross-channel doubles.",
+      "tags": ["audit", "email"]
+    },
+    {
+      "id": "TASK-C002",
+      "title": "Full Apollo audit",
+      "status": "done",
+      "completed_at": "2026-03-07T11:30:00Z",
+      "completed_by": "Cowork-1",
+      "result": "Verified B10 (9 sent), B11 (4 sent), enrollment status for all batches. Audit report: audit-report-mar6.html.",
+      "tags": ["audit", "apollo"]
+    },
+    {
+      "id": "TASK-C003",
+      "title": "Multi-agent collaboration system build",
+      "status": "done",
+      "completed_at": "2026-03-07T12:00:00Z",
+      "completed_by": "Cowork-1",
+      "result": "Created AGENTS.md, handoff.md, session-log.md, work-queue.md, session-manager.md.",
+      "tags": ["system", "repo"]
+    },
+    {
+      "id": "TASK-C004",
+      "title": "Repo cleanup and reorganization",
+      "status": "done",
+      "completed_at": "2026-03-07T13:00:00Z",
+      "completed_by": "Cowork-1",
+      "result": "133 files reorganized. Root: ~185 -> 54. New: plugins/, sops/, archive/subfolders. BDR-REPO-INDEX.md rewritten.",
+      "tags": ["repo", "cleanup"]
+    }
+  ]
+}
