@@ -30,3 +30,28 @@ Append-only log. Each session adds one entry at the bottom.
 **Commit pending:** `AGENTS.md`, `memory/session/` directory
 
 ---
+
+## 2026-03-07 — Session 2: Touch 2 Drafts (TASK-001 + TASK-002)
+
+**Session type:** Draft creation
+**What was done:**
+- Completed TASK-001: Created `touch2_drafts_feb27.md` — 9 Touch 2 emails for Feb 27 contacts (all MQS 10-12/12, all READY TO SEND)
+- Completed TASK-002: Created `touch2_drafts_batch3_inmail.md` — 4 Touch 2 InMails for INC-001 Batch 3 (Irfan, Katie, Rachana, Giang). All READY TO SEND. MQS: 11, 10, 12, 12.
+- Updated `memory/session/work-queue.md` — TASK-001 and TASK-002 marked DONE, completion records added
+- Updated `memory/session/handoff.md` — INC-001 Batch 3 section changed from 🔴 OVERDUE to ✅ RESOLVED
+
+**Key decisions:**
+- Giang Hoang T2 opener uses "Different angle:" as a combined circling-back + pivot signal (not an HC violation)
+- CRED proof point framed as "cut execution time by 80%" (reduction framing) not "5X faster" (multiplier framing)
+- INC-001 Touch 2 messages do NOT reference the premature Feb 28 email — "Circling back quick" is sufficient
+- After these 4 Touch 2 InMails are sent, the sequence for all 4 INC-001 contacts is COMPLETE (no Touch 3)
+
+**Send window for Batch 3 InMails:** Mon Mar 9 – Tue Mar 10, 12-1 PM local (~4 credits used, ~20 remaining)
+
+**Files created:**
+- `touch2_drafts_feb27.md` ✅
+- `touch2_drafts_batch3_inmail.md` ✅
+
+**Files committed:** Via git commit (see git log). Rob must run `git push` from terminal.
+
+---
