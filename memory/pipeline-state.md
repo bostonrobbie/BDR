@@ -1,5 +1,51 @@
 # Pipeline State & Send History
 
+---
+
+## Mar 7 Audit Findings (Apollo Full Cross-Channel Audit)
+
+**Conducted:** Mar 7, 2026. Full Apollo sequence audit + Gmail cross-channel double-send check.
+
+### Key Findings
+
+**Email tracking gap — partially resolved (Mar 7 update):**
+- Apollo "Email Outbound - Website Visitor Tier 1" sequence shows **81 delivered** in Apollo UI. Gap between Apollo stat (81) and Gmail-confirmed WV emails (28: 19 Mar 3 + 7 Mar 6 + 2 Mar 7) is unexplained — may be pre-campaign sends or different counting period.
+- Gmail (robert.gorham@testsigma.com) shows **201 total sent messages** — includes calendar invites, internal forwards, and non-outreach. Confirmed outreach emails: **49** (see Email Send History).
+- All 19 Mar 3 Website Visitor batch emails now logged in Email Send History.
+- **⚠️ Double-channel flag: Jason Schwichtenberg (WebMD)** received both a Mar 3 email AND a Batch 8 Day 3 InMail same day.
+- **⚠️ Amir Aly (Procore)** received "One more thought" Mar 6 but not in original 9-person Buyer Intent email cohort. Touch 1 was InMail only.
+- Remaining 5 Buyer Intent Touch 2 status (Jose Moreno, Tom Yang, Eyal Luxenburg, Jeff Barnes, Todd Willms, Jason Ruan) — not confirmed sent via email. May have been InMail-only. ⚠️ Needs follow-up.
+
+**B10 enrollment gaps — partial resolution:**
+- 10 gap contacts approved by Rob for enrollment.
+- **Gil Taub (Kahuna)**: ✅ ENROLLED in Q1 Priority Accounts (Mar 7).
+- **Sasa Lazarevic, Christian Melville, Jason Poole, Tim Wiseman**: ❌ BLOCKED — Apollo API rejects with `contacts_without_ownership_permission` even with override flag set. These contacts are owned by a different Apollo team member. **Need manual UI enrollment by Rob, or ownership reassignment in Apollo.**
+- 6 B10 skipped contacts (Kristyn Burke, Tim Hartgrave, Vince Delfini, Padmanaban Vadivelu, Ravi Nag) — enrollment NOT YET ATTEMPTED (interrupted by email discovery).
+
+**Mystery sequence identified:**
+- Sequence ID `6904f70577baa100190e4858` = **"Outbound Calls (tyler) Only"** (created Oct 31, 2025, NOT archived).
+- **Tom Goody (Ncontracts)** and **Mohan Guruswamy (Tavant)** were enrolled in this sequence Mar 7 by a prior Claude instance in the same session.
+- Rule clarification from Rob: "we can add people who I have called before as long as we never spoke." These two had Tyler's call-only outreach, no conversation. Safe to also enroll in LI Outbound.
+- Action: Verify Tom Goody + Mohan Guruswamy are also enrolled in LinkedIn Outbound - Q1 Priority Accounts.
+
+**Cross-channel double-send check:**
+- Buyer Intent cohort (9 people): ✅ CLEAN — no InMail overlap.
+- INC-001 overlap (Irfan, Katie, Rachana, Giang): confirmed double-channel but known/documented.
+- Yassi Dastan Batch 6 entry: **MISSING from MASTER_SENT_LIST.csv** (only Batch 8 shown). CSV updated Mar 7 to add B6 entry (Feb 28, InMail, credit used).
+- B3-B9 enrollment spot-check (Irfan Syed, Christie Howard, Yassi Dastan, Samata Yarlagadda, Mohan Guruswamy, Rick Kowaleski): ✅ All correctly enrolled in Q1 Priority Accounts.
+- Total confirmed InMail-only double-sends: **6** (Chuck Smith, Abe Blanco, Rick Kowaleski, Christie Howard, Mohan Gummadi, Yassi Dastan).
+- **⚠️ NEW: 4 cross-channel (InMail + email) double-contacts discovered Mar 7 email audit:**
+  - **Jason Schwichtenberg (WebMD)**: Batch 8 InMail Mar 3 + Website Visitor email Mar 3 — SAME DAY.
+  - **Lyle Landry (Availity)**: Batch 5B InMail Feb 27 + Website Visitor email Mar 3.
+  - **Kerri McGee (Sapiens)**: Batch 5A InMail Feb 27 + Website Visitor email Mar 3.
+  - **Jamie Kurt (Vertafore)**: Batch 5B InMail Feb 27 + Website Visitor email Mar 3.
+  - These cannot be unsent. Monitor for replies. Treat as multi-touch contacts.
+- MASTER_SENT_LIST.csv updated Mar 7: added 28 email-only contacts (15 Mar 3 WV batch + 4 Buyer Intent T2 + 7 Mar 6 WV batch + 2 Mar 7 WV batch). CSV now 278 rows.
+
+**Full audit report:** `/Work/audit-report-mar6.html`
+
+---
+
 ## Master Send Log (Updated Mar 6 — post Batch 11 sends)
 
 ### Lifetime Totals
@@ -35,6 +81,11 @@
 | Feb 28 | 6:30-6:33 AM | Irfan Syed, Katie Hotard, Rachana Jagetia, Giang Hoang, Pallavi Sheshadri, Gunasekaran Chandrasekaran | PREMATURE Touch 3 | SENT IN ERROR (INC-001) |
 | Feb 28 | ~2:54 PM | Sergey, Mobin, Dino, Matthew, Joshua, Pete | Touch 3 Draft | NOT SENT (premature, delete) |
 | Mar 2 | 12:41 PM | Pallavi Sheshadri | In-thread reply | SENT (warm lead follow-up) |
+| Mar 3 | 4:10–6:46 PM UTC | Shivaleela Devarangadi (rxsense), Stephen Starnaud (biberk), Kyung Kim (webmd), Jason Schwichtenberg (webmd.net) ⚠️DOUBLE-CHANNEL, Geoffrey Juma (solera), Olivia Pereiraclarke (sapiens), Nabil Ahmed (progyny), Sneha Bairappa (aamc), Jim Lenihan (waystar), Courtney Corbin (vizientinc), Jamie Kurt (vertafore), Avijit Sur (solera), Kerri McGee (sapiens), Konstantin Diachenko (paymentus), Morya Moyal (hippo), Priya Khemani (getinsured), Keith Schofield (fullsteam), Emre Ozdemir (theocc), Lyle Landry (availity) | Website Visitor Tier 1 Touch 1 | SENT — 19 emails. ⚠️ WERE UNTRACKED. Added Mar 7 audit. ⚠️ Jason Schwichtenberg also received Batch 8 Day 3 InMail same day. |
+| Mar 4 | 1:24 PM ET | Jason Dudley (RW Baird) | Warm follow-up "Testsigma Trial" | SENT |
+| Mar 6 | 4:01–6:35 PM UTC | Mark Townsend (Silvaco), Kanwar Sangwan (DISQO), Alex Wong (Qualified), Prateek Negi (CData), Misty Pesek (Marigold), Katrina Walker (FreeWill), Joe Biggert (Marigold) | Website Visitor Tier 1 Touch 1 "Quick question" | SENT — 7 emails. ⚠️ Were untracked. |
+| Mar 6 | 12:50–12:52 PM ET | Andy Nelsen (Rightworks), Eduardo Menezes (Fulgent Genetics), Hibatullah Ahmed (SPS Commerce), Amir Aly (Procore) ⚠️ANOMALY | Buyer Intent Touch 2 "One more thought" | SENT — 4 emails. ⚠️ Amir Aly NOT in original 9-person Buyer Intent cohort. No prior email thread — Touch 1 was InMail only. Other 5 Buyer Intent prospects (Jose Moreno, Tom Yang, Eyal Luxenburg, Jeff Barnes, Todd Willms, Jason Ruan) Touch 2 status unknown. |
+| Mar 7 | 2:01–2:02 AM UTC | Chris Bell (Crestron), Davor Milosevic (IQVIA) | Website Visitor Tier 1 Touch 1 | SENT — 2 emails. Sent automatically by Apollo overnight. |
 
 ### Mar 2 Batch 8 InMails (confirmed)
 | # | Name | Company | Title (Sales Nav) | Subject | Time | Credits |
@@ -140,7 +191,12 @@ Ron Trachman, Laurie Nielsen, Alan Gutherz, Derek Stanley, Nihal Elsayed, Sarah 
 | Christie Howard | Batch 5B (Feb 27) | Batch 8 Day 4 (Mar 3) | Two InMails sent 4 days apart — cannot unsend. Monitor for reply. |
 | Mohan Gummadi | Batch 5B (Feb 27) | Batch 8 Day 6 (Mar 3) | Two InMails sent 4 days apart — cannot unsend. Monitor for reply. |
 
-**Action:** All 5 already sent, nothing to unsend. For Touch 2 triage, treat these people as already having received Touch 1 + unofficial Touch 1.5 — skip to Touch 2 timeline as normal but note the prior duplicate send.
+**6th Double-Send discovered Mar 6 audit:**
+| Person | First Send | Second Send | Notes |
+|--------|-----------|------------|-------|
+| Yassi Dastan | Batch 6 (Feb 28) | Batch 8 Day 5 (Mar 3) | Two InMails sent 3 days apart — cannot unsend. If she replies, treat as Touch 1 reply. Touch 2 due ~Mar 8→Mar 9. |
+
+**Action:** All 6 already sent, nothing to unsend. For Touch 2 triage, treat these people as already having received Touch 1 + unofficial Touch 1.5 — skip to Touch 2 timeline as normal but note the prior duplicate send.
 
 **Batch 6 File Label Issue (resolved):**
 - File "outreach-batch6-unsent.html" is mislabeled. Batch was ACTUALLY SENT on Feb 28.
@@ -194,13 +250,13 @@ Ron Trachman, Laurie Nielsen, Alan Gutherz, Derek Stanley, Nihal Elsayed, Sarah 
 | Metric | Value |
 |--------|-------|
 | Total InMails sent | 228 (198 tracked + 6 untracked B9 Mar 3 + 11 untracked B9 Mar 4 + 9 Batch 10 Mar 6 + 4 Batch 11 Mar 6) |
-| Total Emails sent | 16 |
+| Total Emails sent | **49 confirmed** from Gmail (16 prev tracked + 19 Mar 3 WV batch + 1 Mar 4 warm + 7 Mar 6 Quick question + 4 Mar 6 One more thought + 2 Mar 7 WV batch). Gmail shows 201 total sent incl. calendar/internal. Apollo shows "81 delivered" in WV sequence but gap unexplained — may be pre-campaign sends or the Apollo stat is not counting the same period. Updated Mar 7. |
 | InMail credits remaining | **4** (Updated Mar 6 — Batch 11 used 4 credit InMails: Brad Askins, Dan Heintzelman, Georgii Petrosian, Madhu Nedunuri) |
-| Apollo Q1 Priority Accounts | 315 enrolled (311 pre-Batch 11 + 4 Batch 11 adds) |
-| Apollo Q1 Website Visitor | 9 active |
+| Apollo Q1 Priority Accounts | **316 enrolled** (315 pre-Mar7 + 1 Mar 7 Gil Taub add) |
+| Apollo Q1 Website Visitor | 78 active / 81 delivered (⚠️ Previously showed "9 active" — INCORRECT. Reconciliation pending.) |
 | Blocked (Terene Lee) | 1 |
 | DNC | 7 (Sanjay Singh, Lance Silverman, Clyde Faulkner, Ashok Prasad, Abe Blanco, Chuck Smith, Jitesh Biswal) |
-| Double-sends (cannot unsend) | 5: Chuck Smith, Abe Blanco, Rick Kowaleski, Christie Howard, Mohan Gummadi |
+| Double-sends (cannot unsend) | 6: Chuck Smith, Abe Blanco, Rick Kowaleski, Christie Howard, Mohan Gummadi, Yassi Dastan |
 | Skipped NOT FOUND (Jonathan Lavoie) | 1 |
 
 ### Enrollment Audit (Mar 3)
@@ -272,7 +328,7 @@ Audited all batches for unenrolled prospects. Enrolled 41 missing contacts:
 | batch8_send_queue.txt | Batch 8 | Send queue (50 prospects, 8 daily) |
 | prospect-outreach-9-2026-03-03.html | Batch 9 | ACTIVE — 22/24 sent (6 Mar 3 untracked + 11 Mar 4 untracked + 5 confirmed). 2 PENDING: Jyothi Kudithipudi, Axel Kerksiek. 3 REMOVED (duplicates). Touch 2 starts Mar 9. |
 | outreach-batch10-draft-mar6.html | Batch 10 | DRAFT (source file — superseded by sent file below) |
-| outreach-batch10-sent-mar6.html | Batch 10 | ACTIVE — 9 sent Mar 6 (3 free + 6 credit InMails). 16 pending (8 credit InMails Mon Mar 9: Sasa Lazarevic, Srikanth Sy, Sarah Ross, Niveditha Somasundaram, Stephen Burlingame, Dave Czoper, Crys Simonca, Christian Melville). 6 skipped no InMail access (Gil Taub, Kristyn Burke, Tim Hartgrave, Vince Delfini, Padmanaban Vadivelu, Ravi Nag). |
+| outreach-batch10-sent-mar6.html | Batch 10 | ACTIVE — 9 sent Mar 6 (3 free + 6 credit InMails). 16 pending (8 credit InMails Mon Mar 9: Sasa Lazarevic, Srikanth Sy, Sarah Ross, Niveditha Somasundaram, Stephen Burlingame, Dave Czoper, Crys Simonca, Christian Melville). 6 skipped no InMail access: Gil Taub ✅ ENROLLED Q1 LI Outbound Mar 7. Kristyn Burke, Tim Hartgrave, Vince Delfini, Padmanaban Vadivelu, Ravi Nag — enrollment NOT YET ATTEMPTED. Sasa Lazarevic + Christian Melville — enrollment BLOCKED (ownership permission), need UI enrollment. |
 | outreach-batch11-draft-mar6.html | Batch 11 | ACTIVE — 4 sent Mar 6 (4 credit InMails): Brad Askins/Trimble, Dan Heintzelman/Prevail Legal, Georgii Petrosian/AuditBoard, Madhu Nedunuri/IDB Bank. All enrolled in LinkedIn Outbound - Q1 Priority Accounts. Touch 2 due Mar 11. |
 
 ## Mar 6 Q1 QA Outreach Migration

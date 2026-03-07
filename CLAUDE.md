@@ -105,30 +105,32 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 
 ---
 
-## Pipeline Status (Updated Mar 6 — post Batch 11 sends)
+## Pipeline Status (Updated Mar 7 — post full Apollo audit)
 | Metric | Value |
 |--------|-------|
-| Total unique prospects contacted | **206** (202 pre-Batch11 + 4 Batch 11 today) |
+| Total unique prospects contacted | **206** (202 pre-Batch11 + 4 Batch 11 Mar 6) |
 | Total InMail sends (inc. double-sends) | 198 tracked + 17 untracked B9 + 9 Batch 10 + 4 Batch 11 = **228** |
-| Total Emails sent | 16 |
+| Total Emails sent | **49 confirmed** from Gmail (16 prev tracked + 19 Mar 3 WV batch + 7 Mar 6 Quick question + 4 Mar 6 One more thought + 2 Mar 7 WV). Apollo shows "81 delivered" in WV sequence but gap unresolved. Gmail total sent: 201 (incl. non-outreach). Updated Mar 7. |
 | InMail credits remaining | **4** (Updated Mar 6 — Batch 11 used 4 credit InMails) |
 | Batch 1 (Feb 23) | 23 people — sent as **LinkedIn connection requests, NOT InMails** (no Sales Nav threads, no credits used) |
-| Batch 9 remaining | **13 to send** |
-| Batch 10 | **9 sent Mar 6** (outreach-batch10-sent-mar6.html). 8 credit InMails queued Mon Mar 9. 6 skipped (no InMail access). |
+| Batch 9 remaining | **2 to send** (Jyothi Kudithipudi, Axel Kerksiek — deferred) |
+| Batch 10 | **9 sent Mar 6** (outreach-batch10-sent-mar6.html). 8 credit InMails queued Mon Mar 9. Gil Taub ✅ enrolled Q1 LI Outbound Mar 7. Sasa Lazarevic + Christian Melville blocked (ownership). 5 others not yet enrolled. |
 | Batch 11 | **4 sent Mar 6** (outreach-batch11-draft-mar6.html). Brad Askins/Trimble, Dan Heintzelman/Prevail Legal, Georgii Petrosian/AuditBoard, Madhu Nedunuri/IDB Bank. Touch 2 due Mar 11. |
-| Double-sends (cannot unsend) | Chuck Smith, Rick Kowaleski, Christie Howard, Mohan Gummadi (Abe Blanco = DNC) |
-| LinkedIn Outbound - Q1 Priority Accounts | **315 enrolled** (311 pre-Batch 11 + 4 Batch 11 adds) |
+| Double-sends (cannot unsend) | Chuck Smith, Rick Kowaleski, Christie Howard, Mohan Gummadi, Yassi Dastan (Abe Blanco = DNC) |
+| LinkedIn Outbound - Q1 Priority Accounts | **316 enrolled** (315 pre-Mar7 + 1 Gil Taub Mar 7) |
 | Q1 QA Outreach - US | **RETIRED Mar 6** — 26 clean contacts migrated to LI Outbound, sequence archived |
+| Mystery sequence (tyler) | "Outbound Calls (tyler) Only" ID: 6904f70577baa100190e4858 — Tom Goody (Ncontracts) + Mohan Guruswamy (Tavant) enrolled there Mar 7. Safe to also enroll in LI Outbound (Rob confirmed: called but never spoke = OK). |
 
 **Batch 9 duplicates removed:** Jennifer Tune, Bhavani Neerathilingam, Sandy Paray (all in Batch 7 Feb 28)
 **Batch 9 already sent Mar 3 (now logged):** Mohan Guruswamy, Jeremy Cira, Chandana Ray, Lueanne Fitzhugh, Martha Horns, Kylie Summer
 **DNC violations (cannot unsend, monitor):** Sanjay Singh + Lance Silverman sent in Batch 5B (Feb 27)
 **Same-company flags:** Saks Global (Batch 7), Greenway Health (Batches 7 + 9)
-**Master sent list:** `/Work/MASTER_SENT_LIST.csv` — cross-reference before every new batch build
+**Master sent list:** `/Work/MASTER_SENT_LIST.csv` — cross-reference before every new batch build. Updated Mar 7 (added Yassi Dastan B6 entry).
 
 → Full send log, batch index, follow-up schedule: `memory/pipeline-state.md`
 → Pre-batch dedup rules: `memory/sop-send.md` (Pre-Batch Build Checklist)
 → Incident log: `memory/incidents.md` (INC-001 through INC-003)
+→ Full Mar 7 audit report: `/Work/audit-report-mar6.html`
 
 ---
 
@@ -176,4 +178,4 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 | Salesforce Enablement v2 | 1bawvXns5ZSjWNvYkarikltH8aaNcUcSqw388Aks27CI |
 
 ## currentDate
-Today's date is 2026-03-06.
+Today's date is 2026-03-07.
