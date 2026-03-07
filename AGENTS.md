@@ -1,175 +1,179 @@
-# Memory
+# AGENTS.md — Multi-Agent Collaboration Guide
 
-## Me
-Rob Gorham, BDR at Testsigma. I reach out to QA/testing leaders to book meetings and drive pipeline for our agentic AI test automation platform.
-
-## Company
-**Testsigma** — Agentic AI-powered unified test automation platform. Write tests in plain English, AI creates/runs/heals them. Web, mobile, API, desktop, Salesforce, SAP. Founded 2019, HQ San Francisco, ~196 employees. $12.8M total funding (Series A led by MassMutual Ventures).
-
-## People
-| Who | Role |
-|-----|------|
-| Rukmangada Kandyala | CEO & Founder |
-| Pratheep Velicherla | Co-founder |
-| Rajesh Reddy | Co-founder |
-| Vikram Chaitanya | Co-founder |
-
-## Key Product Terms
-| Term | Meaning |
-|------|---------|
-| Atto | AI coworker — suite of agents (Generator, Sprint Planner, Runner, Analyzer, Healer, Optimizer) |
-| Atto 2.0 | Nov 2025 release — intent-based self-healing, coverage discovery, risk analysis |
-| NLP | Natural Language Programming — write tests in plain English |
-| Copilot | GenAI assistant that generates tests from prompts, Figma, Jira, screenshots |
-| Self-healing | AI auto-fixes broken locators/tests when UI changes (90% maintenance reduction) |
-
-## Core Value Props
-1. **Flaky/brittle tests** → AI self-healing. Story: Hansard cut regression 8→5 weeks
-2. **Too much time creating/running tests** → Plain English + parallel execution. Story: Medibuddy 2,500 tests, 50% maintenance cut
-3. **Can't scale coverage** → NLP + AI agent + cross-browser. Story: CRED 90% regression coverage, 5x faster
-
-## Target Personas
-| Title | Priority |
-|-------|----------|
-| QA Manager / QA Lead | Primary |
-| Director/VP of QA | Primary |
-| Software Eng Manager | Secondary |
-| VP Engineering / CTO | Secondary (only with Buyer Intent) |
-| Senior SDET / Automation Lead | Influencer (39.3% reply rate) |
-
-## Top Verticals
-SaaS/Tech, FinTech, Retail/E-Commerce, Healthcare/Digital Health, Telecom, Pharma
-
-## Key Customers
-Cisco, Samsung, Honeywell, Bosch, Nokia, Nestle, KFC, DHL, Zeiss, Axel Springer, NTUC Fairprice, Oscar Health, Sanofi, Spendflo, Nagra DTV, APA
+**Last updated:** 2026-03-07
+**Owner:** Rob Gorham
+**Repo:** https://github.com/bostonrobbie/BDR.git (branch: `main`)
 
 ---
 
-## Tool Stack & Access Rules
-| Tool | Status | Notes |
-|------|--------|-------|
-| LinkedIn Sales Navigator | Primary | Browser automation for prospecting + InMail |
-| Apollo | Connected (MCP) | Enrichment-first. ~6,879 lead credits. |
-| Gmail | Connected (MCP) | **ALWAYS send from robert.gorham@testsigma.com. NEVER use rgorham369@gmail.com for work.** |
-| Google Calendar | Connected (MCP) | Meeting scheduling |
-| Google Drive | Connected (MCP) | File storage, batch trackers |
-| Salesforce | SKIP | Too much 2FA. Use Apollo instead. |
-| Slack | DO NOT CONNECT | Never take any visible action coworkers could see. |
-| Chrome (Work/Blue) | Primary | **ALWAYS use blue/work Testsigma Chrome profile.** Never red/personal. |
+## What This Is
+
+This repo is Rob Gorham's BDR second brain for his role at Testsigma. Multiple Claude agents running on different machines collaborate on this repo. This file is the single source of truth for how agents coordinate, avoid conflicts, and stay in sync.
+
+Read this file at the start of EVERY session before doing anything else.
 
 ---
 
-## Hard Rules (NEVER violate)
+## The Agent Setup
 
-### Chrome Browser
-ALWAYS use Rob's blue/work Chrome browser (Testsigma profile). Never use red/personal for work tasks. Reuse tabs across sessions.
+| Agent | Machine | Primary Focus |
+|-------|---------|--------------|
+| Cowork-1 | Rob's main PC | Primary daily ops: email, Apollo, Gmail, Calendar, pipeline tracking |
+| Cowork-2 | PC2 | Batch building, prospecting, drafting, enrichment |
+| Cowork-3 | PC3 | Research, analytics, repo maintenance |
 
-### Coworker Visibility
-NEVER take any action visible to Rob's coworkers. No Slack messages, reactions, internal emails (unless Rob asks), or actions revealing Codex usage. Rob's AI use is private.
-
-### Company Data Protection
-NEVER modify, delete, alter, or overwrite existing company data. Read and enrich freely. Create new records freely. But modifying or deleting ANYTHING existing requires Rob's explicit per-item approval. If uncertain, STOP and ask.
-
-### Send Approval
-NEVER send any outreach without Rob's explicit "APPROVE SEND." Codex drafts, Rob reviews and executes. Exception: Rob explicitly says "APPROVE SEND" for a specific message.
-
-### Draft Safety (from INC-001)
-- Touch 2 drafts: NOT before Day 4 of sequence
-- Touch 3 drafts: NOT before Day 9 of sequence
-- Every prospect MUST exist in a batch tracker BEFORE any draft is created
-- All drafts must use C2 structure and pass QA Gate (MQS >= 9/12)
-- See `memory/incidents.md` for full cadence enforcement rules
+All agents have the same permissions. Role split is by task, not by capability. Any agent can do any task as long as it's not claimed by another.
 
 ---
 
-## Do Not Contact List
-| Name | Company | Reason | Date |
-|------|---------|--------|------|
-| Sanjay Singh | ServiceTitan | Hostile reply (2022 mabl era) | 2026-02-27 |
-| Lance Silverman | Batch 5B | Polite decline. Re-engage after 60+ days with new trigger. | 2026-03-01 |
-| Clyde Faulkner | CAMP Systems | mabl-era customer (2022). Had direct thread, knew Izzy. Skip permanently. | 2026-03-03 |
-| Ashok Prasad | ZL Technologies | mabl-era contact (Sep 2022). 2 messages sent, no reply. Skip permanently. | 2026-03-03 |
-| Abe Blanco | Kapitus | Replied "not interested" Mar 4. Batch 8 send. Skip permanently. | 2026-03-04 |
-| Chuck Smith | Aventiv Technologies | Double-send (B1 connection + B5B InMail). Rob decision Mar 4. Skip permanently. | 2026-03-04 |
+## Startup Protocol (EVERY session, EVERY agent — no exceptions)
+
+### Step 1 — Pull latest from remote
+```bash
+cd /sessions/<your-session-id>/mnt/Work
+git pull origin main
+```
+
+### Step 2 — Read orientation files IN THIS ORDER
+1. `AGENTS.md` (this file)
+2. `CLAUDE.md` — Rob's full memory, preferences, all hard rules
+3. `memory/session/handoff.md` — what the last agent left, what's in progress RIGHT NOW
+4. `memory/session/work-queue.md` — available tasks, what's claimed
+
+### Step 3 — Claim your task before starting
+Before starting ANY work item in work-queue.md:
+- Find the task
+- Change its status to `IN_PROGRESS`
+- Add your agent identifier and a timestamp
+- Commit immediately: `git add memory/session/work-queue.md && git commit -m "chore: claim [task-id]" && git push origin main`
+
+This prevents two agents from doing the same work simultaneously.
+
+### Step 4 — Load task-specific memory
+See the Reference Files table in `CLAUDE.md` for which memory files to read per task type.
 
 ---
 
-## Active Warm Leads
-| Name | Company | Status | Last Action |
-|------|---------|--------|-------------|
-| Namita Jain | OverDrive | Monitoring for reply | Touch 1 email sent Feb 27. Follow-up due ~Mar 4. |
-| Pallavi Sheshadri | Origami Risk | Warm reply | Rob replied Mar 2. Monitoring for response. |
+## End-of-Session Protocol (EVERY session, EVERY agent — no exceptions)
 
-→ Full details: `memory/warm-leads.md`
+### Step 1 — Update work-queue.md
+- Mark your task(s) `DONE` with a brief completion note
+- Add any newly discovered tasks as `PENDING`
 
----
+### Step 2 — Overwrite handoff.md with current state
+Replace the Current State section with what you know right now:
+- What you did this session
+- What's in progress or partially complete
+- Top 3 priorities for the next agent
+- Any blockers, flags, or anomalies
 
-## Pipeline Status (Updated Mar 4 — post full audit + cleanup)
-| Metric | Value |
-|--------|-------|
-| Total unique prospects contacted | **193** (from MASTER_SENT_LIST.csv) |
-| Total InMail sends (inc. double-sends) | 198 tracked + 6 untracked = **204** |
-| Total Emails sent | 16 |
-| InMail credits remaining | **23** (Sales Nav confirmed Mar 4) |
-| Batch 1 (Feb 23) | 23 people — sent as **LinkedIn connection requests, NOT InMails** (no Sales Nav threads, no credits used) |
-| Batch 9 remaining | **13 to send** |
-| Double-sends (cannot unsend) | Chuck Smith, Rick Kowaleski, Christie Howard, Mohan Gummadi (Abe Blanco = DNC) |
-| Apollo Q1 Priority Accounts | 281 active at Step 1, 285 total |
+### Step 3 — Prepend a new entry to session-log.md
+```
+## [DATE] — [AGENT-ID] — [SESSION TITLE]
+**Completed:** [what was done]
+**Changed files:** [list]
+**Key decisions:** [any important calls made]
+**Pending:** [what's left]
+```
 
-**Batch 9 duplicates removed:** Jennifer Tune, Bhavani Neerathilingam, Sandy Paray (all in Batch 7 Feb 28)
-**Batch 9 already sent Mar 3 (now logged):** Mohan Guruswamy, Jeremy Cira, Chandana Ray, Lueanne Fitzhugh, Martha Horns, Kylie Summer
-**DNC violations (cannot unsend, monitor):** Sanjay Singh + Lance Silverman sent in Batch 5B (Feb 27)
-**Same-company flags:** Saks Global (Batch 7), Greenway Health (Batches 7 + 9)
-**Master sent list:** `/Work/MASTER_SENT_LIST.csv` — cross-reference before every new batch build
+### Step 4 — Update CLAUDE.md pipeline stats if numbers changed
+Key stats to keep current: total prospects contacted, emails sent, InMail credits, CSV row count.
 
-→ Full send log, batch index, follow-up schedule: `memory/pipeline-state.md`
-→ Pre-batch dedup rules: `memory/sop-send.md` (Pre-Batch Build Checklist)
-→ Incident log: `memory/incidents.md` (INC-001 through INC-003)
-
----
-
-## Reference Files (read on-demand when doing specific tasks)
-
-| Task | File to Read |
-|------|-------------|
-| Draft outreach messages | `memory/sop-outreach.md` |
-| Send InMails via Sales Nav | `memory/sop-send.md` |
-| Pre-batch dedup check | `MASTER_SENT_LIST.csv` + `memory/sop-send.md` Pre-Batch Checklist |
-| Run the Daily workflow | `memory/sop-daily.md` |
-| Check data-backed rules | `memory/data-rules.md` |
-| Match proof points / objections | `memory/proof-points.md` |
-| Check pipeline state / send log | `memory/pipeline-state.md` |
-| Apollo sequences / email config | `memory/apollo-config.md` |
-| Draft safety / incidents | `memory/incidents.md` |
-| Warm lead handling | `memory/warm-leads.md` |
-| Scoring, A/B, feedback loops | `memory/scoring-feedback.md` |
-
-**Rule:** Always read the relevant memory file(s) BEFORE starting a task. Don't rely on cached knowledge from prior sessions.
+### Step 5 — Commit and push
+```bash
+git add -A
+git commit -m "Update [DATE]: [brief summary]"
+git push origin main
+```
+If push fails (no GitHub credentials in VM): tell Rob to run `git push origin main` from his terminal. The commit is made locally — do not re-commit.
 
 ---
 
-## Preferences
-- Conversational, consultative BDR style (not scripted)
-- BANT + Techstack discovery framework
-- Keep emails short (<150 words), one CTA, social proof
-- NO em dashes. Use commas. Minimize hyphens.
-- "What day works" as default CTA (40.4% reply rate)
-- 75-99 words sweet spot for Touch 1 (39.0% reply rate)
+## Conflict Prevention Rules
 
-## Google Drive Knowledge Base
-| Document | ID |
-|----------|-----|
-| Objection Handling - Product | 1EDmrZO9ZK1rpYTMlZD1oL2DxtZIYrJY3UO9B_MRQkJU |
-| Competitor Comparisons | 1yFYzrb1FdCOzI9FoVcN2MyfI_vfLOqGy-79SLgjJ0Kc |
-| Persona Battle Cards | 1dqNe_q1RXuzXs4OD0TIEJwkplHk1UwabNQGIL3vpEOg |
-| Simple Talk Tracks | 1lZhfvmxGfI12F64PCtejpHSdWOX_dI0gwr5MV3mGFgA |
-| Trigger Event Playbook | 1e9DDmuOFtd9MgB1ol3MOJklzrq3vZn5oyevM6FAj_7I |
-| Onboarding Assignment | 1JQ3_CgEAGgaL9H-geaLhXfkImIFcRNBQVaLVGZLz-bA |
-| Objection Handling - AI | 1kGN-3bfmrFUclqIKCPky-eJ6ikqJYEBTApldxKiwCw4 |
-| Objection Handling - Security | 1NAZqKAYKKLvJSo11kGxflqhvORW0BWXp0f7xGP1h0YQ |
-| RFP Responses | 10l5kF9LtQwrax09BcOy_m3HhpjbXYdahSYliubiQvRQ |
-| Full-Funnel BDR Scripts | 1yXGKZvy-7o78BxawYjng9H-F7DCBiQaudCZssgMlbjo |
-| Salesforce Enablement v2 | 1bawvXns5ZSjWNvYkarikltH8aaNcUcSqw388Aks27CI |
+1. **Always pull before working.** Never start on a stale copy.
+2. **Always claim tasks before working.** If a task is `IN_PROGRESS` with another agent's claim, skip it.
+3. **MASTER_SENT_LIST.csv: append only.** Never delete or modify existing rows.
+4. **pipeline-state.md and CLAUDE.md are high-collision files.** Pull, edit, commit, push as fast as possible.
+5. **Never overwrite tracker files.** Always read first, then append or update.
+6. **Merge conflicts: stop and tell Rob.** Never force-resolve without human review.
 
-## currentDate
-Today's date is 2026-03-02.
+---
+
+## Hard Rules (same as CLAUDE.md, repeated here as a safety net)
+
+- **NEVER send any outreach without Rob's explicit `APPROVE SEND`.**
+- **NEVER use rgorham369@gmail.com for work.** Always `robert.gorham@testsigma.com`.
+- **NEVER take coworker-visible actions** — no Slack, no internal emails unless Rob explicitly asks.
+- **NEVER modify or delete existing records** without explicit per-item approval from Rob.
+- **NEVER enroll Apollo contacts** without confirming send identity is `.com` account `68e3b53ceaaf74001d36c206`.
+- **Always DNC-check** before drafting. See `CLAUDE.md` Do Not Contact List.
+- **Always dedup** against `MASTER_SENT_LIST.csv` before any batch build.
+- **Touch 2 not before Day 4. Touch 3 not before Day 9.** See `memory/incidents.md`.
+
+---
+
+## Git Workflow
+
+```
+main  ← all agents work here for ops tasks
+  └── use feature branches only for structural/experimental repo changes
+```
+
+### Commit message format
+```
+[Type] [DATE]: [brief summary]
+```
+- `Update` — ops, tracking, pipeline changes
+- `feat:` — new files, new systems
+- `fix:` — corrections to existing data
+- `chore:` — task claims, admin
+
+### Push failures
+If git push fails (HTTPS credentials not available in VM): commit is already made locally. Tell Rob to run `git push origin main` from his own terminal.
+
+---
+
+## File Ownership Map
+
+| File | Write Rules |
+|------|------------|
+| `CLAUDE.md` | Any agent. High-collision — pull before editing, push immediately after. |
+| `AGENTS.md` | Any agent. Update `Last updated` date when editing. |
+| `MASTER_SENT_LIST.csv` | Any agent. **Append only. Never delete rows.** |
+| `memory/pipeline-state.md` | Any agent. High-collision — pull before editing. |
+| `memory/session/handoff.md` | Active agent overwrites at end of session. |
+| `memory/session/session-log.md` | Any agent. **Prepend new entries — never delete history.** |
+| `memory/session/work-queue.md` | Any agent. Claim before starting, mark done when finished. |
+| `memory/incidents.md` | Any agent. **Append only.** |
+| `memory/warm-leads.md` | Any agent. Update status, don't delete rows. |
+| `batches/` | Any agent. Add new files. Don't edit existing batch files. |
+| `logs/` | Any agent. Append only. |
+
+---
+
+## Escalation Conditions
+
+Stop work and surface to Rob immediately if:
+- A DNC contact appears in a pending draft or task queue
+- A duplicate send risk is detected (contact already in MASTER_SENT_LIST)
+- A cadence rule would be violated
+- You find a merge conflict in any file
+- Any proposed action would modify or delete existing records
+- You're unsure whether something has already been sent
+
+---
+
+## Related Files
+
+| Purpose | File |
+|---------|------|
+| Full memory + all hard rules | `CLAUDE.md` |
+| Current state handoff | `memory/session/handoff.md` |
+| Session history log | `memory/session/session-log.md` |
+| Task queue | `memory/session/work-queue.md` |
+| Session startup/closing checklist | `memory/session/session-manager.md` |
+| Agent role split + command contract | `memory/codex-cowork-operating-protocol.md` |
+| Pipeline state + send log | `memory/pipeline-state.md` |
+| Draft safety + incidents | `memory/incidents.md` |
+| SOPs | `memory/sop-*.md` |

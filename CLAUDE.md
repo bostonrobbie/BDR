@@ -1,5 +1,17 @@
 # Memory
 
+## Multi-Agent Session System
+This repo is worked on by multiple Claude agents across different machines. At the start of EVERY session:
+1. `git pull origin main`
+2. Read `AGENTS.md` (collaboration rules)
+3. Read `memory/session/handoff.md` (current state)
+4. Read `memory/session/work-queue.md` (task queue)
+5. Claim your task before starting work
+
+At the end of EVERY session: update handoff.md + work-queue.md + session-log.md, then commit + push.
+
+---
+
 ## Me
 Rob Gorham, BDR at Testsigma. I reach out to QA/testing leaders to book meetings and drive pipeline for our agentic AI test automation platform.
 
@@ -138,6 +150,8 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 
 | Task | File to Read |
 |------|-------------|
+| **Session startup (any task)** | `AGENTS.md` → `memory/session/handoff.md` → `memory/session/work-queue.md` |
+| **Session closing (any task)** | Update `handoff.md`, `work-queue.md`, `session-log.md` → commit → push |
 | Draft outreach messages | `memory/sop-outreach.md` |
 | Send InMails via Sales Nav | `memory/sop-send.md` |
 | Pre-batch dedup check | `MASTER_SENT_LIST.csv` + `memory/sop-send.md` Pre-Batch Checklist |
