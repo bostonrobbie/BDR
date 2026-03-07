@@ -5,13 +5,9 @@ REST API for CRUD, analytics, pipeline control, SSE streaming, and agent trigger
 Run: uvicorn src.api.app:app --reload --port 8000
 """
 
-import sys
 import os
 import asyncio
 import json
-
-# Add project root to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -21,41 +17,31 @@ from pydantic import BaseModel
 from typing import Optional, List
 
 from src.db import models
-from src.logging_config import setup_logging
+from src.api.routers import accounts, contacts, messages, email, linkedin, analytics
 
-# Initialize logging before anything else
-setup_logging()
+ALLOWED_ORIGINS = os.environ.get("OCC_CORS_ORIGINS", "http://localhost:3000,http://localhost:8000,http://localhost:8765").split(",")
 
-import logging
-logger = logging.getLogger("bdr.api")
+app = FastAPI(
+    title="Outreach Command Center",
+    description="BDR operations platform API for LinkedIn, Email, and Cold Calling outreach.",
+    version="2.0.0",
+)
 
-app = FastAPI(title="Outreach Command Center", version="2.0.0")
-
-# CORS for local dev
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Start inbox watcher on startup if enabled
-_watcher_stop = None
-
-@app.on_event("startup")
-def startup_event():
-    global _watcher_stop
-    if os.environ.get("BDR_WATCH_INBOX", "").lower() in ("1", "true", "yes"):
-        from src.memory.watcher import start_watcher
-        interval = float(os.environ.get("BDR_WATCH_INTERVAL", "10"))
-        _watcher_stop = start_watcher(poll_interval=interval)
-        logger.info("Inbox watcher enabled (interval=%ss)", interval)
-
-@app.on_event("shutdown")
-def shutdown_event():
-    if _watcher_stop:
-        _watcher_stop.set()
-        logger.info("Inbox watcher stopped")
+# ─── ROUTERS ─────────────────────────────────────────────────
+# New modular routers (preferred for new development)
+app.include_router(accounts.router)
+app.include_router(contacts.router)
+app.include_router(messages.router)
+app.include_router(email.router)
+app.include_router(linkedin.router)
+app.include_router(analytics.router)
 
 
 # ─── PYDANTIC MODELS ────────────────────────────────────────────
@@ -153,6 +139,21 @@ class BatchCreate(BaseModel):
     ab_variable: Optional[str] = None
     ab_description: Optional[str] = None
     pre_brief: Optional[str] = None
+
+class AccountUpdate(BaseModel):
+    name: Optional[str] = None
+    domain: Optional[str] = None
+    industry: Optional[str] = None
+    sub_industry: Optional[str] = None
+    employee_count: Optional[int] = None
+    employee_band: Optional[str] = None
+    tier: Optional[str] = None
+    known_tools: Optional[list] = None
+    linkedin_company_url: Optional[str] = None
+    website_url: Optional[str] = None
+    buyer_intent: Optional[int] = None
+    hq_location: Optional[str] = None
+    notes: Optional[str] = None
 
 class ContactUpdate(BaseModel):
     stage: Optional[str] = None
@@ -338,8 +339,11 @@ def get_account(account_id: str):
     return result
 
 @app.patch("/api/accounts/{account_id}")
-def update_account(account_id: str, data: dict):
-    result = models.update_account(account_id, data)
+def update_account(account_id: str, data: AccountUpdate):
+    update_data = {k: v for k, v in data.model_dump().items() if v is not None}
+    if not update_data:
+        raise HTTPException(status_code=400, detail="No fields to update")
+    result = models.update_account(account_id, update_data)
     if not result:
         raise HTTPException(status_code=404, detail="Account not found")
     return result
@@ -617,16 +621,6 @@ def top_messages():
     return [dict(r) for r in rows]
 
 
-@app.get("/api/analytics/dashboard")
-def analytics_dashboard():
-    """Unified analytics dashboard - aggregates all metrics for the outreach dashboard."""
-    from src.agents.analytics import get_analytics_summary
-    from src.agents.ab_assigner import compute_ab_results
-    summary = get_analytics_summary()
-    summary["ab_results"] = compute_ab_results()
-    return summary
-
-
 @app.get("/api/analytics/token-costs")
 def token_costs():
     """Token usage and cost tracking - by agent, by batch, and per-prospect."""
@@ -797,8 +791,29 @@ def health():
         tables = conn.execute(
             "SELECT COUNT(*) FROM sqlite_master WHERE type='table'"
         ).fetchone()[0]
+
+        # Check LLM gateway connectivity
+        gateway_status = "unknown"
+        gateway_url = None
+        try:
+            gw = conn.execute("SELECT value FROM gateway_config WHERE key='gateway_url'").fetchone()
+            if gw:
+                gateway_url = gw[0]
+                import urllib.request
+                req = urllib.request.Request(f"{gateway_url}/health", method="GET")
+                req.add_header("User-Agent", "OCC-HealthCheck")
+                with urllib.request.urlopen(req, timeout=3) as resp:
+                    gateway_status = "healthy" if resp.status == 200 else "degraded"
+        except Exception:
+            gateway_status = "unreachable" if gateway_url else "not_configured"
+
         conn.close()
-        return {"status": "healthy", "tables": tables, "db_path": models.DB_PATH}
+        return {
+            "status": "healthy",
+            "tables": tables,
+            "db_path": models.DB_PATH,
+            "gateway": {"status": gateway_status, "url": gateway_url},
+        }
     except Exception as e:
         return JSONResponse(status_code=500, content={"status": "unhealthy", "error": str(e)})
 
@@ -1216,7 +1231,7 @@ class EmailIdentityCreate(BaseModel):
 @app.post("/api/email/identities")
 def create_identity(req: EmailIdentityCreate):
     """Create a new email sending identity."""
-    return models.create_email_identity(req.dict())
+    return models.create_email_identity(req.model_dump())
 
 @app.get("/api/email/identities")
 def list_identities(active_only: bool = True):
@@ -1289,7 +1304,7 @@ class EmailEventLog(BaseModel):
 @app.post("/api/email/events")
 def log_event(req: EmailEventLog):
     """Log an email event (bounce, reply, open, etc.)."""
-    return models.log_email_event(req.dict())
+    return models.log_email_event(req.model_dump())
 
 @app.get("/api/email/events")
 def list_events(contact_id: str = None, event_type: str = None, limit: int = 50):
@@ -1598,317 +1613,4 @@ def weekly_insights():
         return InsightsAgent.weekly_review()
     except ImportError:
         return {"status": "insights_unavailable"}
-
-
-# ─── SIGNAL ENRICHMENT ENDPOINTS ───────────────────────────────
-
-class JobPostingInput(BaseModel):
-    title: str
-    text: str
-
-class EnrichmentRequest(BaseModel):
-    company_name: str
-    job_postings: Optional[List[JobPostingInput]] = []
-    funding_text: Optional[str] = ""
-    funding_amount: Optional[str] = ""
-    funding_stage: Optional[str] = ""
-    funding_date: Optional[str] = ""
-    news_text: Optional[str] = ""
-
-@app.post("/api/enrichment/analyze")
-def analyze_enrichment(req: EnrichmentRequest):
-    """Run signal-based enrichment on provided data."""
-    from src.agents.signal_enrichment import enrich_from_signals
-    postings = [{"title": p.title, "text": p.text} for p in (req.job_postings or [])]
-    result = enrich_from_signals(
-        company_name=req.company_name,
-        job_postings=postings,
-        funding_text=req.funding_text or "",
-        funding_amount=req.funding_amount or "",
-        funding_stage=req.funding_stage or "",
-        funding_date=req.funding_date or "",
-        news_text=req.news_text or "",
-    )
-    return result
-
-@app.post("/api/enrichment/merge/{contact_id}")
-def merge_enrichment(contact_id: str, req: EnrichmentRequest):
-    """Run enrichment and merge results into existing research artifact."""
-    from src.agents.signal_enrichment import enrich_from_signals, merge_enrichment_into_artifact
-    from src.agents.researcher import build_research_artifact
-
-    contact = models.get_contact(contact_id)
-    if not contact:
-        raise HTTPException(404, "Contact not found")
-
-    account = models.get_account(contact.get("account_id", "")) if contact.get("account_id") else {}
-    research = build_research_artifact(contact, account or {})
-    artifact = research["artifact"]
-
-    postings = [{"title": p.title, "text": p.text} for p in (req.job_postings or [])]
-    enrichment = enrich_from_signals(
-        company_name=req.company_name,
-        job_postings=postings,
-        funding_text=req.funding_text or "",
-        funding_amount=req.funding_amount or "",
-        funding_stage=req.funding_stage or "",
-        funding_date=req.funding_date or "",
-        news_text=req.news_text or "",
-    )
-
-    merged = merge_enrichment_into_artifact(artifact, enrichment)
-    return {
-        "artifact": merged,
-        "enrichment_summary": enrichment.get("enrichment_summary", ""),
-        "signals_added": len(enrichment.get("signals", [])),
-        "pains_added": len(enrichment.get("pain_hypotheses", [])),
-    }
-
-
-# ─── FEEDBACK TRACKING ENDPOINTS ──────────────────────────────
-
-class ReplyInput(BaseModel):
-    contact_id: str
-    touchpoint_id: Optional[str] = None
-    channel: Optional[str] = "linkedin"
-    intent: Optional[str] = "neutral"
-    reply_tag: Optional[str] = ""
-    summary: Optional[str] = ""
-    raw_text: Optional[str] = ""
-
-class MeetingInput(BaseModel):
-    contact_id: str
-    meeting_date: Optional[str] = None
-    trigger_touchpoint_id: Optional[str] = None
-    trigger_reply_id: Optional[str] = None
-    pipeline_value: Optional[float] = None
-    ae_name: Optional[str] = ""
-    notes: Optional[str] = ""
-
-@app.post("/api/feedback/reply")
-def record_feedback_reply(req: ReplyInput):
-    """Record a prospect reply with attribution tracking."""
-    from src.agents.feedback_tracker import record_reply
-    return record_reply(
-        contact_id=req.contact_id,
-        touchpoint_id=req.touchpoint_id,
-        channel=req.channel or "linkedin",
-        intent=req.intent or "neutral",
-        reply_tag=req.reply_tag or "",
-        summary=req.summary or "",
-        raw_text=req.raw_text or "",
-    )
-
-@app.post("/api/feedback/meeting")
-def record_feedback_meeting(req: MeetingInput):
-    """Record a meeting/opportunity with full attribution."""
-    from src.agents.feedback_tracker import record_meeting
-    return record_meeting(
-        contact_id=req.contact_id,
-        meeting_date=req.meeting_date,
-        trigger_touchpoint_id=req.trigger_touchpoint_id,
-        trigger_reply_id=req.trigger_reply_id,
-        pipeline_value=req.pipeline_value,
-        ae_name=req.ae_name or "",
-        notes=req.notes or "",
-    )
-
-@app.get("/api/feedback/stats")
-def get_feedback_stats(days: int = Query(default=90, ge=1, le=365)):
-    """Get conversion stats broken down by message attributes."""
-    from src.agents.feedback_tracker import get_conversion_stats
-    return get_conversion_stats(days)
-
-@app.get("/api/feedback/winning-patterns")
-def get_winning_patterns_endpoint(days: int = Query(default=90, ge=1, le=365),
-                                   min_sample: int = Query(default=5, ge=1)):
-    """Get winning patterns and recommendations."""
-    from src.agents.feedback_tracker import get_winning_patterns
-    return get_winning_patterns(min_sample_size=min_sample, days=days)
-
-@app.get("/api/feedback/report")
-def get_feedback_report(days: int = Query(default=90, ge=1, le=365)):
-    """Get a human-readable performance report."""
-    from src.agents.feedback_tracker import generate_feedback_report
-    return {"report": generate_feedback_report(days)}
-
-
-# ─── D/F ENHANCEMENT ENDPOINTS ───────────────────────────────────
-
-@app.get("/api/feedback/attribution/{contact_id}")
-def get_contact_attribution(contact_id: str):
-    """Get full-funnel attribution chain for a contact."""
-    from src.agents.feedback_tracker import get_full_funnel_attribution
-    return get_full_funnel_attribution(contact_id)
-
-@app.get("/api/feedback/attribution-summary")
-def get_attribution_summary_endpoint(days: int = Query(default=90, ge=1, le=365)):
-    """Get aggregated attribution summary across all contacts."""
-    from src.agents.feedback_tracker import get_attribution_summary
-    return get_attribution_summary(days)
-
-class PainRefineRequest(BaseModel):
-    contact_id: str
-    reply_text: str
-    use_llm: Optional[bool] = False
-
-@app.post("/api/feedback/refine-pains")
-def refine_pains_endpoint(req: PainRefineRequest):
-    """Refine pain hypotheses based on reply content (F10)."""
-    from src.agents.feedback_tracker import refine_pains_from_reply
-    return refine_pains_from_reply(
-        contact_id=req.contact_id,
-        reply_text=req.reply_text,
-        use_llm=req.use_llm,
-    )
-
-@app.get("/api/vertical-pains/{vertical}")
-def get_vertical_pains_endpoint(vertical: str):
-    """Get curated pain hypotheses for a specific vertical (F7)."""
-    from src.agents.researcher import get_vertical_pains
-    pains = get_vertical_pains(vertical)
-    return {"vertical": vertical, "pains": pains}
-
-class RescoreRequest(BaseModel):
-    threshold: Optional[float] = 0.2
-    dry_run: Optional[bool] = True
-
-@app.post("/api/rescore/stale")
-def rescore_stale_endpoint(req: RescoreRequest):
-    """Find and optionally re-score contacts with decayed signals (F9)."""
-    from scripts.rescore_stale import find_stale_contacts, run_rescore
-    if req.dry_run:
-        stale = find_stale_contacts(req.threshold)
-        return {"stale_contacts": stale, "count": len(stale), "dry_run": True}
-    return run_rescore(threshold=req.threshold, dry_run=False)
-
-
-# ─── LLM POLISH ENDPOINT ──────────────────────────────────────
-
-class PolishRequest(BaseModel):
-    body: str
-    tone: str = "friendly"
-    prospect_name: Optional[str] = ""
-    company: Optional[str] = ""
-    temperature: Optional[float] = 0.3
-
-@app.post("/api/polish/message")
-def polish_single_message(req: PolishRequest):
-    """Polish a single message body using the LLM."""
-    from src.agents.llm_polish import polish_message
-    return polish_message(
-        body=req.body,
-        tone=req.tone,
-        metadata={"prospect_name": req.prospect_name, "company": req.company},
-        temperature=req.temperature or 0.3,
-    )
-
-
-# ─── SEQUENCE GENERATOR ENDPOINTS ─────────────────────────────
-
-class SequenceRequest(BaseModel):
-    contact_id: str
-    tone: Optional[str] = "friendly"
-    start_date: Optional[str] = None
-
-@app.post("/api/sequence/generate")
-def generate_sequence_endpoint(req: SequenceRequest):
-    """Generate a full multi-touch outreach sequence for a contact."""
-    from src.agents.researcher import build_research_artifact
-    from src.agents.scorer import score_from_artifact
-    from src.agents.sequence_generator import generate_sequence
-
-    contact = models.get_contact(req.contact_id)
-    if not contact:
-        raise HTTPException(404, "Contact not found")
-
-    account = models.get_account(contact.get("account_id", "")) if contact.get("account_id") else {}
-    research = build_research_artifact(contact, account or {})
-    artifact = research["artifact"]
-    scoring = score_from_artifact(artifact)
-
-    return generate_sequence(
-        artifact, scoring, tone=req.tone or "friendly",
-        has_email=bool(contact.get("email")),
-        start_date=req.start_date,
-    )
-
-@app.get("/api/sequence/cadence/{tier}")
-def get_cadence_schedule_endpoint(tier: str, start_date: Optional[str] = None):
-    """Get the cadence schedule for a tier."""
-    from src.agents.sequence_generator import get_cadence_schedule, CADENCE
-    if tier not in CADENCE:
-        raise HTTPException(400, f"Invalid tier. Must be one of: {list(CADENCE.keys())}")
-    return {
-        "tier": tier,
-        "schedule": get_cadence_schedule(tier, start_date),
-        "label": CADENCE[tier]["label"],
-    }
-
-
-# ─── LINKEDIN OPTIMIZER ENDPOINTS ─────────────────────────────
-
-class PreviewScoreRequest(BaseModel):
-    body: str
-    first_name: Optional[str] = ""
-
-@app.post("/api/linkedin/preview-score")
-def score_linkedin_preview(req: PreviewScoreRequest):
-    """Score a message's LinkedIn preview effectiveness."""
-    from src.agents.linkedin_optimizer import score_preview
-    return score_preview(req.body, req.first_name or "")
-
-@app.post("/api/linkedin/optimize")
-def optimize_linkedin_message(req: PreviewScoreRequest):
-    """Full LinkedIn optimization: preview score + length check."""
-    from src.agents.linkedin_optimizer import optimize_for_preview
-    return optimize_for_preview(req.body, req.first_name or "")
-
-@app.post("/api/linkedin/rank-variants")
-def rank_variants_by_linkedin_preview(first_name: Optional[str] = ""):
-    """Rank message variants by LinkedIn preview score.
-    Expects JSON body with 'variants' array."""
-    from src.agents.linkedin_optimizer import rank_variants_by_preview
-    # This endpoint is used programmatically with variant data
-    return {"note": "Use POST with variants array in body"}
-
-
-# ─── CHANNEL RENDERING ENDPOINT ───────────────────────────────
-
-class ChannelRenderRequest(BaseModel):
-    contact_id: str
-    channel: str = "linkedin_inmail"
-    tone: Optional[str] = None
-
-@app.post("/api/messages/render-for-channel")
-def render_messages_for_channel(req: ChannelRenderRequest):
-    """Generate message variants and render them for a specific channel."""
-    from src.agents.researcher import build_research_artifact
-    from src.agents.scorer import score_from_artifact
-    from src.agents.message_writer import generate_message_variants, render_for_channel
-
-    contact = models.get_contact(req.contact_id)
-    if not contact:
-        raise HTTPException(404, "Contact not found")
-
-    account = models.get_account(contact.get("account_id", "")) if contact.get("account_id") else {}
-    research = build_research_artifact(contact, account or {})
-    artifact = research["artifact"]
-    scoring = score_from_artifact(artifact)
-
-    base_channel = "email" if "email" in req.channel else "linkedin"
-    output = generate_message_variants(artifact, scoring, channel=base_channel)
-
-    adapted = []
-    for v in output["variants"]:
-        if req.tone and v["tone"] != req.tone:
-            continue
-        rendered = render_for_channel(v, req.channel, artifact)
-        adapted.append(rendered)
-
-    return {
-        "variants": adapted,
-        "channel": req.channel,
-        "metadata": output["metadata"],
-    }
 

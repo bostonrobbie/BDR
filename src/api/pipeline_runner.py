@@ -8,17 +8,10 @@ import queue
 import json
 import time
 import os
-import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
-
 from src.db import models
-from src.agents.error_handler import log_pipeline_error
-
-import logging
-logger = logging.getLogger("bdr.pipeline")
 
 
 # ─── GLOBAL STATE ─────────────────────────────────────────────
@@ -64,7 +57,7 @@ class PipelineRun:
     def to_dict(self) -> dict:
         elapsed = None
         if self.started_at:
-            end = self.completed_at or datetime.utcnow()
+            end = self.completed_at or datetime.now(timezone.utc)
             elapsed = int((end - self.started_at).total_seconds())
 
         return {
@@ -95,7 +88,7 @@ def _emit(run_id: str, event_type: str, data: dict):
     """Send SSE event to all subscribers."""
     with _lock:
         queues = _event_subscribers.get(run_id, [])
-        msg = {"event": event_type, "data": data, "timestamp": datetime.utcnow().isoformat()}
+        msg = {"event": event_type, "data": data, "timestamp": datetime.now(timezone.utc).isoformat()}
         for q in queues:
             try:
                 q.put_nowait(msg)
@@ -114,7 +107,7 @@ def subscribe(run_id: str) -> queue.Queue:
     # Send current state immediately
     run = _active_runs.get(run_id)
     if run:
-        q.put_nowait({"event": "state", "data": run.to_dict(), "timestamp": datetime.utcnow().isoformat()})
+        q.put_nowait({"event": "state", "data": run.to_dict(), "timestamp": datetime.now(timezone.utc).isoformat()})
     return q
 
 
@@ -193,7 +186,7 @@ def _execute_pipeline(run: PipelineRun):
     from src.agents.deliverable_generator import generate_batch_html
 
     run.status = "running"
-    run.started_at = datetime.utcnow()
+    run.started_at = datetime.now(timezone.utc)
     _emit(run.run_id, "started", run.to_dict())
 
     builder = BatchPipeline(run.batch_number, run.config)
@@ -246,39 +239,17 @@ def _execute_pipeline(run: PipelineRun):
 
         # Phase 3: Research
         _start_phase(run, "research")
+        # Research happens externally (via Cowork Chrome sessions).
+        # In automated mode, check what research already exists.
         research_count = 0
-        research_missing = []
         conn = models.get_db()
         for cid in run.contact_ids:
             r = conn.execute(
                 "SELECT COUNT(*) FROM research_snapshots WHERE contact_id=?", (cid,)
             ).fetchone()[0]
-            if r > 0:
-                research_count += r
-            else:
-                research_missing.append(cid)
+            research_count += r
         conn.close()
-
-        # If research is missing and auto_research is enabled, generate it
-        if research_missing and run.config.get("auto_research", False):
-            from src.agents.researcher import build_research_context
-            from src.agents.error_handler import safe_execute
-            for cid in research_missing:
-                ctx = safe_execute(
-                    build_research_context, args=(cid,),
-                    phase="research", contact_id=cid,
-                    agent_name="researcher", batch_id=run.batch_id,
-                    fallback={"error": "research failed"},
-                )
-                if ctx and not ctx.get("error"):
-                    research_count += 1
-                if _check_cancel(run):
-                    return
-
-        _complete_phase(run, "research", {
-            "snapshots_found": research_count,
-            "missing": len(research_missing),
-        })
+        _complete_phase(run, "research", {"snapshots_found": research_count})
 
         if _check_cancel(run):
             return
@@ -312,44 +283,8 @@ def _execute_pipeline(run: PipelineRun):
 
         # Phase 6: Messages
         _start_phase(run, "messages")
+        # Check for existing messages in this batch
         msgs = models.list_messages(batch_id=builder.batch_id)
-
-        # If no messages exist and auto_messages is enabled, generate them
-        if not msgs and run.config.get("auto_messages", False):
-            from src.agents.message_writer import build_all_prompts, store_generated_messages
-            from src.agents.error_handler import safe_execute
-            generated_count = 0
-            for cid in run.contact_ids:
-                # Look up A/B assignment for this contact
-                conn = models.get_db()
-                bp = conn.execute(
-                    "SELECT ab_group FROM batch_prospects WHERE batch_id=? AND contact_id=?",
-                    (builder.batch_id, cid)
-                ).fetchone()
-                conn.close()
-                ab_group = bp["ab_group"] if bp else None
-                ab_variable = run.config.get("ab_variable", "pain_hook")
-
-                prompts = safe_execute(
-                    build_all_prompts,
-                    args=(cid,),
-                    kwargs={"ab_group": ab_group, "ab_variable": ab_variable},
-                    phase="messages", contact_id=cid,
-                    agent_name="message_writer", batch_id=run.batch_id,
-                    fallback={"error": "message generation failed"},
-                )
-                if prompts and not prompts.get("error"):
-                    store_generated_messages(
-                        cid, prompts, batch_id=builder.batch_id,
-                        ab_group=ab_group, ab_variable=ab_variable,
-                    )
-                    generated_count += 1
-                if _check_cancel(run):
-                    return
-
-            # Re-fetch messages after generation
-            msgs = models.list_messages(batch_id=builder.batch_id)
-
         run.message_ids = [m["id"] for m in msgs]
         builder.messages = msgs
         _complete_phase(run, "messages", {"count": len(msgs)})
@@ -434,21 +369,14 @@ def _execute_pipeline(run: PipelineRun):
         _start_phase(run, "finalize")
         builder.finalize()
         run.status = "completed"
-        run.completed_at = datetime.utcnow()
+        run.completed_at = datetime.now(timezone.utc)
         _complete_phase(run, "finalize", run.to_dict())
         _emit(run.run_id, "completed", run.to_dict())
 
     except Exception as e:
         run.status = "failed"
         run.error = str(e)
-        run.completed_at = datetime.utcnow()
-        logger.error("Pipeline failed in phase %s: %s", run.current_phase, e, exc_info=True)
-        log_pipeline_error(
-            phase=run.current_phase or "unknown",
-            error=e,
-            batch_id=run.batch_id,
-            severity="critical",
-        )
+        run.completed_at = datetime.now(timezone.utc)
         _emit(run.run_id, "error", {"error": str(e), "phase": run.current_phase})
 
 
@@ -467,7 +395,7 @@ def _complete_phase(run: PipelineRun, phase: str, result: dict = None):
     run.phase_results[phase] = {
         "status": "completed",
         "result": result or {},
-        "completed_at": datetime.utcnow().isoformat(),
+        "completed_at": datetime.now(timezone.utc).isoformat(),
     }
     _emit(run.run_id, "phase_complete", {
         "phase": phase,
@@ -479,7 +407,7 @@ def _complete_phase(run: PipelineRun, phase: str, result: dict = None):
 def _check_cancel(run: PipelineRun) -> bool:
     if run.cancel_event.is_set():
         run.status = "cancelled"
-        run.completed_at = datetime.utcnow()
+        run.completed_at = datetime.now(timezone.utc)
         _emit(run.run_id, "cancelled", run.to_dict())
         return True
     return False
@@ -490,7 +418,7 @@ def _check_cancel(run: PipelineRun) -> bool:
 def run_agent_action(action: str, contact_id: str = None, batch_id: str = None, params: dict = None) -> dict:
     """Run a single agent action (not a full pipeline)."""
     params = params or {}
-    result = {"action": action, "status": "started", "started_at": datetime.utcnow().isoformat()}
+    result = {"action": action, "status": "started", "started_at": datetime.now(timezone.utc).isoformat()}
 
     try:
         if action == "re_score" and contact_id:
@@ -559,5 +487,5 @@ def run_agent_action(action: str, contact_id: str = None, batch_id: str = None, 
         result["status"] = "failed"
         result["error"] = str(e)
 
-    result["completed_at"] = datetime.utcnow().isoformat()
+    result["completed_at"] = datetime.now(timezone.utc).isoformat()
     return result
