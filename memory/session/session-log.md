@@ -6,6 +6,41 @@
 
 ---
 
+## 2026-03-08 — Cowork-1 — Touch 2 audit: Apollo enrollment gap + proof point assignments
+
+**Completed:**
+- Full Apollo sequence enrollment audit for all Touch 2 targets (WV Mar 3 batch + BI stragglers)
+- **Core finding:** All 19 WV Mar 3 contacts are in LinkedIn Outbound only — NOT enrolled in WV email sequence. Apollo cannot auto-generate Touch 2 for any of them. All Touch 2 must be manual Gmail sends.
+- **TASK-005 resolved:** All 6 Buyer Intent stragglers investigated and documented:
+  - Jose Moreno (Flywire): manually finished in WV sequence. Manual Gmail needed.
+  - Jason Ruan (Binance): WV Step 2 FAILED — `thread_reply_original_email_missing` (T1 sent via Gmail MCP, not Apollo). Manual Gmail needed.
+  - Eyal Luxenburg (Island): Same failure. Manual Gmail needed.
+  - Tom Yang: NOT in Apollo. Correct company = Versant Media. Email: tom.yang@versantmedia.com.
+  - Jeff Barnes: NOT in Apollo. Correct company = Digi International. Email: jeff.barnes@digi.com.
+  - Todd Willms: NOT in Apollo. Correct company = Bynder. Email: todd.willms@bynder.com.
+- Proof point assignments by vertical determined for all 25 T2 drafts (see handoff.md)
+- Confirmed 7 email addresses from Apollo for WV Mar 3 contacts (Starnaud, Kim, Landry, Moyal, Devarangadi, Lenihan, Diachenko)
+- Updated TASK-005 to DONE, created TASK-009 with full T2 email draft instructions
+- Updated handoff.md, work-queue.md, session-log.md → committed + pushed
+
+**Files changed:**
+- `memory/session/handoff.md` (full Mar 8 overwrite)
+- `memory/session/work-queue.md` (TASK-009 added, TASK-005 marked done)
+- `memory/session/session-log.md` (this entry)
+
+**Key decisions:**
+- Rob confirmed: send Touch 2 to all 19 WV Mar 3 contacts, including the 4 double-channel ones (Schwichtenberg, McGee, Kurt, Landry)
+- Root cause of broken Apollo T2 generation: T1 emails sent via Gmail MCP, not Apollo sequence sender — Apollo has no thread reference for reply-based Step 2
+- Fix: All 25 Touch 2 emails sent as manual Gmail drafts from robert.gorham@testsigma.com
+
+**Pending for next session:**
+- Pull 12 remaining email addresses from Apollo (Corbin, Schwichtenberg, Juma, Pereiraclarke, Ahmed, Bairappa, Kurt, Sur, McGee, Khemani, Schofield, Ozdemir)
+- Draft all 25 Touch 2 emails using EM-FU-1 template
+- QA Gate each draft (MQS ≥ 9/12)
+- Present to Rob for "APPROVE SEND"
+
+---
+
 ## 2026-03-07 — Cowork-1 — Email audit + Apollo audit + collaboration system
 
 **Completed:**

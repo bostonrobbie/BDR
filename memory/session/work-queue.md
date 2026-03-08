@@ -9,6 +9,65 @@
 
 ## Active Tasks
 
+### TASK-009 | Touch 2 emails — WV Mar 3 batch + BI stragglers (25 total) ⬅ DO THIS FIRST
+**Status:** IN_PROGRESS (email collection 7/19 done; 0 drafts written)
+**Priority:** URGENT — all overdue or due today Mar 8
+**Due:** Mar 8 (WV Mar 3 batch Day 4+), Buyer Intent batch overdue since Mar 3
+**Description:** Draft and send 25 Touch 2 emails. 12 email addresses still missing — collect from Apollo first, then draft all 25.
+
+**Sending mechanism:** ALL manual Gmail sends (robert.gorham@testsigma.com). Apollo cannot auto-generate — WV Mar 3 batch is enrolled in LinkedIn Outbound only, not the WV email sequence. Buyer Intent stragglers have failed/finished/missing Apollo contact records.
+
+**Template:** EM-FU-1 (TEMPLATE_LIBRARY.md). Subject: "Re: Quick question, [First Name]". Max 70 words. Different proof point from T1 (T1 = Medibuddy 80% maintenance). "What day works" CTA. MQS ≥ 9/12.
+
+**Emails already collected (7):**
+| Name | Email | Company | Proof Point |
+|------|-------|---------|-------------|
+| Stephen Starnaud | stephen.starnaud@biberk.com | biBerk | Hansard 8→5wk |
+| Kyung Kim | kkim@webmd.com | WebMD | Sanofi 3d→80min |
+| Lyle Landry | lyle.landry@availity.com | Availity | Sanofi 3d→80min |
+| Morya Moyal | mmoyal@hippo.com | Hippo | Hansard 8→5wk |
+| Shivaleela Devarangadi | sdevarangadi@rxsense.com | RxSense | Sanofi 3d→80min |
+| Jim Lenihan | jim.lenihan@waystar.com | Waystar | Sanofi 3d→80min |
+| Konstantin Diachenko | kdiachenko@paymentus.com | Paymentus | CRED 90%+5x |
+
+**Buyer Intent emails (already confirmed from website_visitor_sequence_drafts.md):**
+| Name | Email | Company | Proof Point |
+|------|-------|---------|-------------|
+| Jose Moreno | jose.moreno@flywire.com | Flywire | CRED 90%+5x |
+| Eyal Luxenburg | eyal.luxenburg@island.io | Island | Fortune 100 3X |
+| Jeff Barnes | jeff.barnes@digi.com | Digi International | Spendflo 50% |
+| Todd Willms | todd.willms@bynder.com | Bynder | Spendflo 50% |
+| Tom Yang | tom.yang@versantmedia.com | Versant Media | Nagra DTV 2500 |
+| Jason Ruan | jason.ruan@binance.com | Binance | CRED 90%+5x |
+
+**Emails still needed — pull from Apollo (search by name+domain):**
+| Name | Domain | Vertical | Proof Point |
+|------|--------|----------|-------------|
+| Courtney Corbin | vizientinc.com | Healthcare | Sanofi 3d→80min |
+| Jason Schwichtenberg | webmd.net | Healthcare ⚠️double-channel | Sanofi 3d→80min |
+| Geoffrey Juma | solera.com | InsurTech | Hansard 8→5wk |
+| Olivia Pereiraclarke | sapiens.com | Insurance | Hansard 8→5wk |
+| Nabil Ahmed | progyny.com | Healthcare | Sanofi 3d→80min |
+| Sneha Bairappa | aamc.org | Healthcare | Sanofi 3d→80min |
+| Jamie Kurt | vertafore.com | Insurance ⚠️double-channel | Hansard 8→5wk |
+| Avijit Sur | solera.com | InsurTech | Hansard 8→5wk |
+| Kerri McGee | sapiens.com | Insurance ⚠️double-channel | Hansard 8→5wk |
+| Priya Khemani | getinsured.com | InsurTech | Hansard 8→5wk |
+| Keith Schofield | fullsteam.com | FinTech | CRED 90%+5x |
+| Emre Ozdemir | theocc.com | FinTech | CRED 90%+5x |
+
+⚠️ **Nabil Ahmed:** May not be in Apollo. If not found, search Gmail sent folder for the Mar 3 email to progyny.com to get his exact address.
+⚠️ **Double-channel contacts** (Schwichtenberg, McGee, Kurt): Still send Touch 2 email (per Rob's Mar 8 confirmation — send to all 19).
+
+**Draft rules (non-negotiable):**
+- No em dashes. No "I noticed/I saw." Reduction framing only (not "Nx faster").
+- 1-2 question marks max. Max 70 words. Subject: "Re: Quick question, [First Name]"
+- MQS ≥ 9/12. Present all drafts to Rob for review. NEVER SEND without "APPROVE SEND."
+
+**Files:** `TEMPLATE_LIBRARY.md`, `memory/sop-outreach.md`, `memory/proof-points.md`, `memory/incidents.md`
+
+---
+
 ### TASK-001 | Mon Mar 9 — B10 InMail sends
 **Status:** PENDING
 **Priority:** HIGH
@@ -52,12 +111,16 @@
 ---
 
 ### TASK-005 | Buyer Intent Touch 2 gap — verify status
-**Status:** PENDING
-**Priority:** MEDIUM
-**Due:** Before Mar 11
-**Description:** 5 of 9 original Buyer Intent cohort (Feb 27 batch) did NOT receive confirmed email T2 on Mar 6. Determine whether they got InMail T2 instead or if Touch 2 has not been sent.
-**Contacts:** Jose Moreno, Tom Yang, Eyal Luxenburg, Jeff Barnes, Todd Willms, Jason Ruan
-**Action:** Check Apollo sequence enrollment + LinkedIn for InMail threads. Report status.
+**Status:** DONE (2026-03-08)
+**Completed by:** Cowork-1 (Mar 8 session)
+**Result:**
+- Jose Moreno (Flywire): WV sequence "manually finished" at Step 1. No T2 generated. → Manual Gmail send needed.
+- Jason Ruan (Binance): WV sequence Step 2 FAILED — `thread_reply_original_email_missing`. Apollo can't find original T1 thread (sent via Gmail MCP, not Apollo). → Manual Gmail.
+- Eyal Luxenburg (Island): Same failure as Ruan — Step 2 FAILED, `thread_reply_original_email_missing`. → Manual Gmail.
+- Tom Yang: NOT IN APOLLO contacts. Correct company = Versant Media (not IQVIA from the audit file — different person). Email: tom.yang@versantmedia.com.
+- Jeff Barnes: NOT IN APOLLO. Correct company = Digi International (not Mimecast). Email: jeff.barnes@digi.com.
+- Todd Willms: NOT IN APOLLO. Correct company = Bynder. Email: todd.willms@bynder.com.
+**All 6 folded into TASK-009 for manual Gmail T2 send.**
 
 ---
 
