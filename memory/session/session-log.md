@@ -6,6 +6,28 @@
 
 ---
 
+## 2026-03-08 — Cowork-3 — T2 InMail SOP corrected via live Sales Nav testing; B9 degree audit complete
+
+**Completed:**
+- **Live browser audit of all 17 B9 contacts in Sales Nav inbox** — Checked connection degree + reply box for each. Finding: the previously documented SOP was WRONG.
+- **Key correction:** Thread continuation is NOT free for 2nd/3rd degree contacts. Degree determines cost, not thread history. Reply box shows "New InMail / Use 1 of X credits" for non-connected prospects even inside an existing thread.
+- **B9 Degree Results:** Only Leah Coates (Perforce) = 1st degree (FREE). All other 16 B9 contacts = 2nd or 3rd degree = 1 credit each.
+- **`sop-outreach.md` corrected** — T2 InMail mechanics section rewritten with table (1st = free, 2nd/3rd = 1 credit), degree check steps, and credit strategy guidance.
+- **`linkedin-t2-drafts-mar8.html` updated** — Per-card cost indicators added (💳 1 credit or ✅ FREE), SOP box corrected, credit strategy banner added above B9 section. B10/B11 cards marked as "verify degree before sending."
+- **`handoff.md` updated** — TASK-010 corrected to reflect credit reality (Leah free + pick 4 for credits).
+
+**Key finding:**
+- With 4 credits remaining: Rob can send Leah Coates FREE + 4 others at 1 credit each = 5 total out of 17 B9 contacts. Recommended paid 4: David Gustafson, Sravanti Krothapalli, Jiaping Shen, Cooper Morrow.
+- **Old SOP line "Always use thread continuation = FREE" is now DELETED.** Replaced with correct degree-based rule.
+
+**Files changed:**
+- `memory/sop-outreach.md` (T2 mechanics section corrected)
+- `linkedin-t2-drafts-mar8.html` (per-card cost indicators + corrected SOP box + credit strategy banner)
+- `memory/session/handoff.md` (TASK-010 updated, blockers updated, degree audit results added)
+- `memory/session/session-log.md` (this entry)
+
+---
+
 ## 2026-03-08 — Cowork-2 — LinkedIn T2 InMail tracker built (30 drafts); T2 email collection in progress
 
 **Completed:**

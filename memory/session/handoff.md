@@ -16,7 +16,12 @@
 
 ## What Was Done This Session
 
-1. **LinkedIn Touch 2 InMail mechanics researched and documented** — Rob raised the question "I don't think we can just reply to our first InMail." Confirmed: Sales Navigator allows FREE thread continuation via Inbox (find T1 thread → add reply at bottom). This does NOT cost a credit. Sending a NEW InMail from the prospect's profile DOES cost 1 credit. Documented in `memory/sop-outreach.md` under new section "Touch 2 InMail Mechanics — Sales Navigator (Updated Mar 8, 2026)."
+1. **LinkedIn Touch 2 InMail mechanics researched, THEN CORRECTED via live browser testing** — Rob raised the question "I don't think we can just reply to our first InMail." Initial SOP said thread continuation was FREE. Rob then asked to verify in Sales Nav UI. Live testing of all 17 B9 contacts revealed the original SOP was WRONG. The real rule: **connection degree determines cost, not thread history.** 1st degree (connected) = free reply. 2nd/3rd degree = "New InMail / Use 1 of X credits" even inside an existing thread. Full B9 degree audit completed. `sop-outreach.md` corrected. `linkedin-t2-drafts-mar8.html` updated with per-card cost indicators.
+
+   **B9 Degree Audit Results (all 17 contacts):**
+   - Leah Coates / Perforce → **1st degree → FREE** ✓ (only one)
+   - All other 16 B9 contacts → 2nd or 3rd degree → **1 credit each**
+   - With 4 credits remaining: Rob can send 1 free (Leah) + 4 paid T2s = 5 total out of 17
 
 2. **`linkedin-t2-drafts-mar8.html` built — 30 T2 drafts across 3 batches:**
    - **Section 1 (URGENT — red):** 17 B9 prospects, due TODAY Mar 8 / TOMORROW Mar 9. All T1 proof points extracted from `prospect-outreach-9-2026-03-03.html` and T2 rotation assigned.
@@ -52,7 +57,7 @@
 
 ## Top 3 Priorities for Next Agent
 
-1. **[URGENT TODAY] B9 Touch 2 InMail sends — TASK-010** — Rob to execute via Sales Nav. 17 prospects at Day 5+. All drafts are in `linkedin-t2-drafts-mar8.html` Section 1. Process: Sales Nav → Messages → find T1 thread → add reply (FREE, no credits consumed). Due TODAY Mar 8 and TOMORROW Mar 9.
+1. **[URGENT TODAY] B9 Touch 2 InMail sends — TASK-010** — Rob to execute via Sales Nav. 17 prospects at Day 5+. All drafts in `linkedin-t2-drafts-mar8.html` Section 1. **⚠️ CREDIT REALITY:** Only Leah Coates (Perforce) is 1st degree → FREE. All other 16 cost 1 credit each. Rob has 4 credits → can send Leah (free) + pick 4 others (1 credit each). Recommended paid 4: David Gustafson (HG Insights), Sravanti Krothapalli (Quorum), Jiaping Shen (HackerRank), Cooper Morrow (Jama). Others wait for credit reset.
 
 2. **[URGENT] Complete TASK-009 — 25 Touch 2 emails** — 12 email addresses still missing. Collect from Apollo first (people-match by name + domain), then draft all 25 using template EM-FU-1 (max 70 words, subject "Re: Quick question, [First Name]", different proof point from T1, "what day works" CTA). Present ALL to Rob before sending. NEVER SEND without "APPROVE SEND."
 
@@ -187,14 +192,14 @@ Sanjay Singh (ServiceTitan), Lance Silverman, Clyde Faulkner (CAMP Systems), Ash
 - **0 T2 email drafts written yet** — collection was the blocker.
 - Push to GitHub requires Rob to run `git push origin main` from his terminal. VM has no stored GitHub credentials.
 - B10 Apollo ownership blocks: Sasa Lazarevic + Christian Melville — Rob must resolve manually.
-- InMail credits: only 4 remaining — use thread continuation method exclusively for all T2s.
+- **InMail credits: only 4 remaining** — ⚠️ Thread continuation does NOT mean free for 2nd/3rd degree contacts. Only 1st degree (connected) prospects can be replied to for free. With 4 credits: prioritize top 4 + Leah Coates (free). All B10/B11 also cost credits (unverified degrees — check before sending).
 
 ---
 
 ## Files Changed This Session
 
-- `linkedin-t2-drafts-mar8.html` — **NEW** — 30 T2 InMail drafts (17 B9 urgent + 9 B10 + 4 B11)
-- `memory/sop-outreach.md` — Added T2 InMail mechanics section (thread continuation vs new InMail)
+- `linkedin-t2-drafts-mar8.html` — **NEW then CORRECTED** — 30 T2 InMail drafts (17 B9 urgent + 9 B10 + 4 B11). Per-card credit cost updated: Leah Coates = FREE, all others = 1 credit. Credit strategy box added above B9 section. SOP box corrected with real mechanic.
+- `memory/sop-outreach.md` — T2 InMail mechanics section **CORRECTED** (original said FREE, live testing showed 2nd/3rd degree = 1 credit regardless of thread). Table + degree check steps added.
 - `memory/session/work-queue.md` — TASK-002 done, TASK-006 done, TASK-010 added
-- `memory/session/handoff.md` — this file (full Mar 8 update, second session)
-- `memory/session/session-log.md` — Mar 8 second session entry added
+- `memory/session/handoff.md` — this file (full Mar 8 update, third session — degree audit + SOP correction)
+- `memory/session/session-log.md` — Mar 8 second session entry added (prior session)

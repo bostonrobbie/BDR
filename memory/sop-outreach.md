@@ -86,25 +86,43 @@ Rules:
 - No break-up message
 - If an email touch is needed later, switch to `memory/sop-email.md` and run that SOP separately
 
-## Touch 2 InMail Mechanics — Sales Navigator (Updated Mar 8, 2026)
+## Touch 2 InMail Mechanics — Sales Navigator (Corrected Mar 8, 2026)
 
 **Rob's question:** "Can we just reply to our first InMail?"
 
-**Answer: Yes — via thread continuation from the Inbox. This is FREE (no credit consumed).**
+**Answer: It depends entirely on connection degree — NOT on whether a thread exists.**
 
-### Method A: Thread Continuation (✅ PREFERRED — Free)
-1. Go to Sales Navigator → Messages (or Inbox → Sent)
-2. Find the original T1 InMail thread for that prospect
-3. Click to open the conversation thread
-4. Type the T2 message in the reply field at the bottom of the thread
-5. Send — LinkedIn allows thread continuation at no credit cost
+⚠️ **CRITICAL CORRECTION (live-tested Mar 8):** The original SOP said thread continuation is always FREE. This was WRONG. Browser testing of all B9 prospects confirmed:
 
-This is the correct process for all T2s when credits are limited.
+### The Actual Rule
 
-### Method B: New InMail from Profile (⚠️ COSTS 1 CREDIT — Avoid)
-- Clicking "Send InMail" from the prospect's profile page creates a brand-new InMail
-- This costs 1 InMail credit and starts a separate conversation thread
-- Only use this if: the original T1 thread is missing, expired (>90 days), or the prospect has no message history
+| Connection Degree | Reply Box Shows | Cost |
+|-------------------|-----------------|------|
+| **1st degree** (connected) | "Type your message here..." | **FREE** |
+| **2nd or 3rd degree** (not connected) | "New InMail / Use 1 of X credits" | **1 credit** |
+
+This applies even when you are inside an existing T1 thread. The thread does not matter. Degree determines cost.
+
+### How to Check Degree Before Sending
+1. Go to Sales Navigator → Messages (Inbox)
+2. Search for the prospect's name (use first name only if full name returns no results)
+3. Click the thread to open it
+4. Check the right panel profile card — degree is shown as "· 1st", "· 2nd", or "· 3rd" next to their name
+5. If reply box shows "New InMail / Use 1 of X credits" → costs 1 credit. If it shows plain "Type your message here..." → FREE.
+
+### Method A: 1st Degree Reply (✅ FREE)
+- Only available when the prospect accepted your connection request
+- Open their thread → reply field at bottom → send
+- No credit consumed
+
+### Method B: 2nd/3rd Degree Follow-up (⚠️ COSTS 1 CREDIT — plan carefully)
+- Even replying inside an existing T1 thread costs 1 credit for non-connected prospects
+- Sales Nav shows "New InMail / Use 1 of X credits" in the reply area
+- Use credits only for the highest-priority prospects when credits are low
+- Consider waiting for credit reset (monthly) before sending lower-priority T2s
+
+### Credit Strategy When Credits Are Low
+With 4 credits remaining (as of Mar 8): only send paid T2s for the top 4 highest-priority prospects. All others wait for credit reset. Leah Coates (Perforce) = 1st degree, always FREE.
 
 ### T2 Message Rules
 - 40-70 words (shorter than T1)
