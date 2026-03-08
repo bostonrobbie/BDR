@@ -6,6 +6,40 @@
 
 ---
 
+## 2026-03-08 — Cowork-2 — LinkedIn T2 InMail tracker built (30 drafts); T2 email collection in progress
+
+**Completed:**
+- **T2 InMail mechanics question answered + documented:** Rob asked "I don't think we can just reply to our first InMail." Confirmed: Sales Navigator thread continuation is FREE (find T1 thread in Inbox → add reply at bottom = $0 credits). Sending NEW InMail from profile = 1 credit. Added new section to `memory/sop-outreach.md`.
+- **`linkedin-t2-drafts-mar8.html` built** — 30 T2 InMail drafts across 3 batches:
+  - Section 1 (URGENT): 17 B9 prospects — due TODAY Mar 8 / TOMORROW Mar 9. T1 proof points extracted from `prospect-outreach-9-2026-03-03.html`. T2 rotation assigned.
+  - Section 2: 9 B10 prospects — due Mar 11. T1 proof points from `outreach-batch10-sent-mar6.html`. Drafts written fresh.
+  - Section 3: 4 B11 prospects — due Mar 11. Pre-built T2 drafts extracted verbatim from `t2-box` divs in `outreach-batch11-draft-mar6.html`.
+- **TASK-002 marked DONE** — All B10 + B11 T2 drafts now in `linkedin-t2-drafts-mar8.html`.
+- **TASK-006 confirmed DONE** — Tom Goody + Mohan Guruswamy already enrolled in LinkedIn Outbound Q1 via Apollo API. No action needed.
+- **TASK-010 created** — B9 T2 InMail sends (17 prospects), URGENT, due Mar 8-9. Rob executes via Sales Nav.
+- **TASK-009 partial** — 7 Apollo emails + 6 BI emails confirmed (13 total). 12 still needed. 0 drafts written.
+
+**Files changed:**
+- `linkedin-t2-drafts-mar8.html` (NEW — 30 T2 drafts)
+- `memory/sop-outreach.md` (T2 InMail mechanics section added)
+- `memory/session/work-queue.md` (TASK-002 done, TASK-006 done, TASK-010 added)
+- `memory/session/handoff.md` (full overwrite — second Mar 8 session)
+- `memory/session/session-log.md` (this entry)
+
+**Key decisions / findings:**
+- T2 InMails via thread continuation = FREE. Always use this method. Only 4 credits remain.
+- B11 already had pre-built T2 drafts in the HTML file (t2-box class) — extracted and used verbatim.
+- B10 had NO pre-built T2 drafts — all 9 written fresh.
+- B9 T2 is URGENT (Day 5+ already). Rob to send today/tomorrow via Sales Nav.
+
+**Pending for next session:**
+- Pull 12 remaining emails from Apollo (Corbin, Schwichtenberg, Juma, Pereiraclarke, Ahmed, Bairappa, Kurt, Sur, McGee, Khemani, Schofield, Ozdemir)
+- Draft all 25 T2 emails (EM-FU-1 template, max 70 words, different proof point from T1)
+- QA Gate each (MQS ≥ 9/12), present to Rob for "APPROVE SEND"
+- Check Gmail for Namita Jain reply (TASK-004)
+
+---
+
 ## 2026-03-08 — Cowork-1 — Touch 2 audit: Apollo enrollment gap + proof point assignments
 
 **Completed:**

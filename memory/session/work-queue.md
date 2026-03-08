@@ -9,6 +9,34 @@
 
 ## Active Tasks
 
+### TASK-010 | B9 Touch 2 InMail sends (17 prospects) — URGENT
+**Status:** PENDING — Rob to execute via Sales Nav
+**Priority:** URGENT — due TODAY Mar 8 / TOMORROW Mar 9
+**Due:** 2026-03-08 to 2026-03-09
+**Description:** 17 B9 prospects are at Day 5+ of the sequence and need T2 InMail follow-up. All 17 draft messages are pre-built in `linkedin-t2-drafts-mar8.html`. Rob opens each T1 thread in Sales Nav Inbox and adds the reply (FREE — no credits used).
+**Process:** Sales Nav → Messages → find T1 thread → add reply at bottom → send. Free thread continuation, not a new InMail.
+**File:** `linkedin-t2-drafts-mar8.html` (Section 1 — marked URGENT)
+**Prospects (by T1 proof point used → T2 rotation):**
+- Mohan Guruswamy (Tavant): CRED→Medibuddy
+- Lueanne Fitzhugh (Cerner): Sanofi→Hansard
+- Jeremy Cira (Kaseya): Cisco→Medibuddy
+- Chandana Ray (Persistent): Medibuddy→Sanofi
+- Martha Horns (Greenway Health): Sanofi→Hansard
+- David Gustafson (HG Insights): 90% Maintenance→CRED
+- Jiaping Shen (HackerRank): Spendflo→CRED
+- Sravanti Krothapalli (Quorum): Sanofi→Medibuddy
+- Cooper Morrow (Jama): Spendflo→Hansard
+- Manigandan Kanagasabai (Mediaocean): 70% Selenium→CRED
+- Leah Coates (Perforce): Hansard→Cisco
+- Kylie Summer (Quizizz): Spendflo→CRED
+- Kanan Hasanzade (Datto): 70% Selenium→Medibuddy
+- Azam Quraishi (MTX Group): 70% Selenium→Sanofi
+- Yuliya A (Planview): Medibuddy→Hansard
+- Grant Anderson (Lucid): Medibuddy→CRED
+- Denise Barnett (Progress Software): Cisco→Hansard
+
+---
+
 ### TASK-009 | Touch 2 emails — WV Mar 3 batch + BI stragglers (25 total) ⬅ DO THIS FIRST
 **Status:** IN_PROGRESS (email collection 7/19 done; 0 drafts written)
 **Priority:** URGENT — all overdue or due today Mar 8
@@ -80,13 +108,9 @@
 ---
 
 ### TASK-002 | B10 + B11 Touch 2 drafts (due Mar 11)
-**Status:** PENDING
-**Priority:** HIGH
-**Due:** Start drafting Mar 8-9, send Mar 11
-**Description:** Build Touch 2 drafts for all B10 (Day 4+ Mar 11) and B11 (Day 4+ Mar 11) prospects with no reply. Must pass MQS >= 9/12 and QA Gate before presenting to Rob.
-**Reference:** `memory/sop-outreach.md`, `memory/incidents.md` (cadence rules), `memory/session/session-manager.md`
-**B10 prospects:** 9 sent Mar 6 — see outreach-batch10-sent-mar6.html
-**B11 prospects:** Brad Askins (Trimble), Dan Heintzelman (Prevail Legal), Georgii Petrosian (AuditBoard), Madhu Nedunuri (IDB Bank)
+**Status:** DONE (2026-03-08)
+**Completed by:** Cowork-1 (Mar 8 session)
+**Result:** All T2 drafts built in `linkedin-t2-drafts-mar8.html`. B10: 9 prospects (Tim Wiseman, Josh Thayer, Elena Lysenko, Jason Poole, Tom Goody, LP Guo, Francesco Leising, Chet West, Clint Parker). B11: 4 prospects (Brad Askins, Dan Heintzelman, Georgii Petrosian, Madhu Nedunuri). All use free thread continuation method (Sales Nav Inbox). **Rob reviews and sends via Sales Nav on/after Mar 11.**
 
 ---
 
@@ -125,11 +149,9 @@
 ---
 
 ### TASK-006 | Tom Goody + Mohan Guruswamy — enroll in LinkedIn Outbound Q1
-**Status:** PENDING
-**Priority:** LOW
-**Due:** No hard deadline
-**Description:** Both are enrolled in "Outbound Calls (tyler) Only" sequence (called but never spoken). Rob confirmed OK to also enroll in LinkedIn Outbound Q1.
-**Apollo IDs:** Look up via Apollo contacts search.
+**Status:** DONE (2026-03-07/08)
+**Completed by:** Cowork-1
+**Result:** Apollo API confirmed BOTH are already enrolled in LinkedIn Outbound Q1 (sequence `69a05801fdd140001d3fc014`, status: active). Tom Goody is B10 sent Mar 6. Mohan Guruswamy is B9 sent Mar 3. No action needed.
 
 ---
 

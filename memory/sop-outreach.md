@@ -86,6 +86,36 @@ Rules:
 - No break-up message
 - If an email touch is needed later, switch to `memory/sop-email.md` and run that SOP separately
 
+## Touch 2 InMail Mechanics — Sales Navigator (Updated Mar 8, 2026)
+
+**Rob's question:** "Can we just reply to our first InMail?"
+
+**Answer: Yes — via thread continuation from the Inbox. This is FREE (no credit consumed).**
+
+### Method A: Thread Continuation (✅ PREFERRED — Free)
+1. Go to Sales Navigator → Messages (or Inbox → Sent)
+2. Find the original T1 InMail thread for that prospect
+3. Click to open the conversation thread
+4. Type the T2 message in the reply field at the bottom of the thread
+5. Send — LinkedIn allows thread continuation at no credit cost
+
+This is the correct process for all T2s when credits are limited.
+
+### Method B: New InMail from Profile (⚠️ COSTS 1 CREDIT — Avoid)
+- Clicking "Send InMail" from the prospect's profile page creates a brand-new InMail
+- This costs 1 InMail credit and starts a separate conversation thread
+- Only use this if: the original T1 thread is missing, expired (>90 days), or the prospect has no message history
+
+### T2 Message Rules
+- 40-70 words (shorter than T1)
+- DIFFERENT proof point from T1 (check T1 before drafting)
+- "What day works" CTA tied to the new proof point
+- No "following up", "just checking in", "circling back"
+- No "I noticed/saw"
+- No em dashes
+- Max 1-2 question marks
+- New angle, not a repeat of T1 — feel like a fresh message, not a nudge
+
 ## Research Requirements (3 Sources Per Prospect)
 
 ### Source 1: LinkedIn Profile (Sales Navigator)

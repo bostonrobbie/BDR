@@ -9,71 +9,30 @@
 ## Last Session
 
 **Date:** 2026-03-08
-**Agent:** Cowork-1 (Rob's main PC)
-**Session title:** Touch 2 email audit — Apollo enrollment gap discovered, proof points assigned
+**Agent:** Cowork-2 (Rob's main PC, second session Mar 8)
+**Session title:** LinkedIn T2 InMail tracker built — 30 drafts, B9 urgent, B10/B11 due Mar 11. Partial T2 email collection done.
 
 ---
 
 ## What Was Done This Session
 
-1. **Full Apollo sequence enrollment audit for Touch 2 targets** — investigated why Touch 2 emails weren't auto-generating in Apollo. Root cause found.
+1. **LinkedIn Touch 2 InMail mechanics researched and documented** — Rob raised the question "I don't think we can just reply to our first InMail." Confirmed: Sales Navigator allows FREE thread continuation via Inbox (find T1 thread → add reply at bottom). This does NOT cost a credit. Sending a NEW InMail from the prospect's profile DOES cost 1 credit. Documented in `memory/sop-outreach.md` under new section "Touch 2 InMail Mechanics — Sales Navigator (Updated Mar 8, 2026)."
 
-2. **Core finding: WV Mar 3 batch enrollment gap** — All 19 Website Visitor Mar 3 contacts are enrolled ONLY in "LinkedIn Outbound - Q1 Priority Accounts" (ID: `69a05801fdd140001d3fc014`) at Step 1. They are NOT enrolled in the WV email sequence ("Email Outbound - Website Visitor Tier 1", ID: `69a1b3564fa5fa001152eb66`). Their Mar 3 emails were sent via Gmail MCP outside Apollo's tracking. Apollo will never auto-generate Touch 2 for any of them. **Fix: All Touch 2 must be sent as manual Gmail emails.**
+2. **`linkedin-t2-drafts-mar8.html` built — 30 T2 drafts across 3 batches:**
+   - **Section 1 (URGENT — red):** 17 B9 prospects, due TODAY Mar 8 / TOMORROW Mar 9. All T1 proof points extracted from `prospect-outreach-9-2026-03-03.html` and T2 rotation assigned.
+   - **Section 2 (blue):** 9 B10 prospects, due Mar 11. T1 proof points extracted from `outreach-batch10-sent-mar6.html`. No pre-built drafts existed — all written fresh.
+   - **Section 3 (blue):** 4 B11 prospects, due Mar 11. Pre-built T2 drafts extracted verbatim from `t2-box` divs in `outreach-batch11-draft-mar6.html`.
+   - Features: SOP box explaining thread continuation vs new InMail, copy buttons, status toggles, word counts, credit badge (4 remaining), per-card instructions.
 
-3. **Buyer Intent stragglers status resolved (TASK-005 completed):**
-   - **Jose Moreno (Flywire)** — In WV sequence but status "finished/inactive" (manually finished at Step 1). No T2 task will generate. → Manual Gmail.
-   - **Jason Ruan (Binance)** — In WV sequence at Step 2, status "failed" — `thread_reply_original_email_missing` error. Apollo can't find original T1 thread because it was sent via Gmail MCP. → Manual Gmail.
-   - **Eyal Luxenburg (Island)** — Same failure: in WV sequence at Step 2, status "failed" — `thread_reply_original_email_missing`. → Manual Gmail.
-   - **Tom Yang (Versant Media)** — NOT FOUND in Apollo contacts. NOT in MASTER_SENT_LIST.csv. Confirmed email: tom.yang@versantmedia.com (from website_visitor_sequence_drafts.md). Company is Versant Media (not IQVIA — the audit-mar3 file had a different Tom Yang).
-   - **Jeff Barnes (Digi International)** — NOT FOUND in Apollo. Confirmed email: jeff.barnes@digi.com. Company is Digi International (IoT), not Mimecast.
-   - **Todd Willms (Bynder)** — NOT FOUND in Apollo. Confirmed email: todd.willms@bynder.com.
+3. **TASK-006 confirmed DONE (no action needed):** Tom Goody (Ncontracts) + Mohan Guruswamy (Tavant) were already enrolled in LinkedIn Outbound Q1 (sequence `69a05801fdd140001d3fc014`, status: active), confirmed via Apollo API in prior session.
 
-4. **Proof point assignments by vertical determined** — T1 used Medibuddy 80% maintenance reduction angle. T2 must use a DIFFERENT proof point (rotation rule):
-   - **Insurance/InsurTech** (biBerk/Starnaud, Sapiens/Pereiraclarke+McGee, Vertafore/Kurt, Hippo/Moyal, GetInsured/Khemani, Solera/Juma+Sur): **Hansard 8 weeks → 5 weeks regression**
-   - **Healthcare** (WebMD/Kim+Schwichtenberg, Progyny/Ahmed, AAMC/Bairappa, Waystar/Lenihan, Vizient/Corbin, Availity/Landry, RxSense/Devarangadi): **Sanofi 3 days → 80 minutes**
-   - **FinTech/Payments** (Paymentus/Diachenko, Fullsteam/Schofield, TheOCC/Ozdemir, Binance/Ruan, Flywire/Moreno): **CRED 90% regression coverage + 5x faster**
-   - **SaaS/DAM** (Bynder/Willms, Digi International/Barnes): **Spendflo 50% manual testing cut** or Freshworks
-   - **Media** (Versant Media/Yang): **Nagra DTV 2,500 tests in 8 months**
-   - **Enterprise browser** (Island/Luxenburg): **Fortune 100 3X productivity**
+4. **TASK-009 (25 T2 emails) partial progress:**
+   - 7 email addresses collected in prior session (Starnaud, Kim, Landry, Moyal, Devarangadi, Lenihan, Diachenko)
+   - 6 Buyer Intent emails already confirmed from `website_visitor_sequence_drafts.md` (Moreno, Luxenburg, Barnes, Willms, Yang, Ruan)
+   - 12 email addresses still needed from Apollo (see table below)
+   - **0 drafts written yet** — collection was interrupted
 
-5. **Email addresses confirmed from Apollo (partial — collection interrupted):**
-
-   | Name | Email | Company | Domain |
-   |------|-------|---------|--------|
-   | Stephen Starnaud | stephen.starnaud@biberk.com | biBerk | biberk.com |
-   | Kyung Kim | kkim@webmd.com | WebMD | webmd.com |
-   | Lyle Landry | lyle.landry@availity.com | Availity | availity.com |
-   | Morya Moyal | mmoyal@hippo.com | Hippo | hippo.com |
-   | Shivaleela Devarangadi | sdevarangadi@rxsense.com | RxSense | rxsense.com |
-   | Jim Lenihan | jim.lenihan@waystar.com | Waystar | waystar.com |
-   | Konstantin Diachenko | kdiachenko@paymentus.com | Paymentus | paymentus.com |
-
-6. **Email addresses NOT yet pulled** (still needed from Apollo or Gmail history):
-
-   | Name | Domain | Notes |
-   |------|--------|-------|
-   | Courtney Corbin | vizientinc.com | |
-   | Jason Schwichtenberg | webmd.net | ⚠️ Double-channel (InMail + email Mar 3) |
-   | Geoffrey Juma | solera.com | |
-   | Olivia Pereiraclarke | sapiens.com | |
-   | Nabil Ahmed | progyny.com | May NOT be in Apollo — check Gmail sent |
-   | Sneha Bairappa | aamc.org | |
-   | Jamie Kurt | vertafore.com | ⚠️ Double-channel (B5B InMail + email Mar 3) |
-   | Avijit Sur | solera.com | |
-   | Kerri McGee | sapiens.com | ⚠️ Double-channel (B5A InMail + email Mar 3) |
-   | Priya Khemani | getinsured.com | |
-   | Keith Schofield | fullsteam.com | |
-   | Emre Ozdemir | theocc.com | |
-
-   **Buyer Intent email addresses (from website_visitor_sequence_drafts.md — already confirmed):**
-   | Name | Email | Company |
-   |------|-------|---------|
-   | Jose Moreno | jose.moreno@flywire.com | Flywire |
-   | Eyal Luxenburg | eyal.luxenburg@island.io | Island |
-   | Jeff Barnes | jeff.barnes@digi.com | Digi International |
-   | Todd Willms | todd.willms@bynder.com | Bynder |
-   | Tom Yang | tom.yang@versantmedia.com | Versant Media |
-   | Jason Ruan | jason.ruan@binance.com | Binance |
+5. **Ops files updated:** `work-queue.md` (TASK-002 done, TASK-006 done, TASK-010 added), `sop-outreach.md` (T2 mechanics section added), `handoff.md` (this file).
 
 ---
 
@@ -89,84 +48,123 @@
 | MASTER_SENT_LIST rows | 278 |
 | LinkedIn Outbound - Q1 enrolled | 316 |
 
-### Touch 2 emails needed — 25 total (ALL overdue or due today)
-**Overdue — Buyer Intent stragglers (T1 sent Feb 27, T2 was due Mar 3):**
-| # | Name | Email | Company | Vertical | Proof Point for T2 |
-|---|------|-------|---------|----------|-------------------|
-| 1 | Jose Moreno | jose.moreno@flywire.com | Flywire | FinTech | CRED 90%+5x |
-| 2 | Eyal Luxenburg | eyal.luxenburg@island.io | Island | Enterprise browser | Fortune 100 3X |
-| 3 | Jeff Barnes | jeff.barnes@digi.com | Digi International | SaaS/IoT | Spendflo 50% |
-| 4 | Todd Willms | todd.willms@bynder.com | Bynder | SaaS/DAM | Spendflo 50% |
-| 5 | Tom Yang | tom.yang@versantmedia.com | Versant Media | Media | Nagra DTV 2500 |
-| 6 | Jason Ruan | jason.ruan@binance.com | Binance | FinTech | CRED 90%+5x |
-
-**Due today Mar 8 — WV Mar 3 batch (T1 sent Mar 3, T2 due Day 4 = Mar 7/8):**
-| # | Name | Email | Company | Vertical | Proof Point for T2 |
-|---|------|-------|---------|----------|-------------------|
-| 7 | Stephen Starnaud | stephen.starnaud@biberk.com | biBerk | Insurance | Hansard 8→5wk |
-| 8 | Kyung Kim | kkim@webmd.com | WebMD | Healthcare | Sanofi 3d→80min |
-| 9 | Lyle Landry | lyle.landry@availity.com | Availity | Healthcare | Sanofi 3d→80min |
-| 10 | Morya Moyal | mmoyal@hippo.com | Hippo | InsurTech | Hansard 8→5wk |
-| 11 | Shivaleela Devarangadi | sdevarangadi@rxsense.com | RxSense | Healthcare | Sanofi 3d→80min |
-| 12 | Jim Lenihan | jim.lenihan@waystar.com | Waystar | Healthcare | Sanofi 3d→80min |
-| 13 | Konstantin Diachenko | kdiachenko@paymentus.com | Paymentus | FinTech | CRED 90%+5x |
-| 14 | Courtney Corbin | [NEED EMAIL] | Vizient | Healthcare | Sanofi 3d→80min |
-| 15 | Jason Schwichtenberg | [NEED EMAIL] | WebMD | Healthcare | Sanofi 3d→80min |
-| 16 | Geoffrey Juma | [NEED EMAIL] | Solera | InsurTech | Hansard 8→5wk |
-| 17 | Olivia Pereiraclarke | [NEED EMAIL] | Sapiens | Insurance | Hansard 8→5wk |
-| 18 | Nabil Ahmed | [NEED EMAIL] | Progyny | Healthcare | Sanofi 3d→80min |
-| 19 | Sneha Bairappa | [NEED EMAIL] | AAMC | Healthcare | Sanofi 3d→80min |
-| 20 | Jamie Kurt | [NEED EMAIL] | Vertafore | Insurance | Hansard 8→5wk |
-| 21 | Avijit Sur | [NEED EMAIL] | Solera | InsurTech | Hansard 8→5wk |
-| 22 | Kerri McGee | [NEED EMAIL] | Sapiens | Insurance | Hansard 8→5wk |
-| 23 | Priya Khemani | [NEED EMAIL] | GetInsured | InsurTech | Hansard 8→5wk |
-| 24 | Keith Schofield | [NEED EMAIL] | Fullsteam | FinTech | CRED 90%+5x |
-| 25 | Emre Ozdemir | [NEED EMAIL] | TheOCC | FinTech | CRED 90%+5x |
-
-### Active warm leads
-| Name | Company | Status |
-|------|---------|--------|
-| Namita Jain | OverDrive | Touch 1 sent Feb 27. Follow-up overdue (was due ~Mar 4, now Day 9). Check for reply FIRST. |
-| Pallavi Sheshadri | Origami Risk | Rob replied Mar 2. Still monitoring. |
-
-### DNC list (7 people — always check before drafting)
-Sanjay Singh (ServiceTitan), Lance Silverman, Clyde Faulkner (CAMP Systems), Ashok Prasad (ZL Technologies), Abe Blanco (Kapitus), Chuck Smith (Aventiv), Jitesh Biswal (JPMorgan Chase). Full list in `CLAUDE.md`.
-
 ---
 
 ## Top 3 Priorities for Next Agent
 
-1. **[URGENT] Complete email collection + draft all 25 Touch 2 emails** — TASK-009. Complete Apollo email lookups for the 12 remaining contacts with `[NEED EMAIL]`, then draft all 25 T2 emails. Template: `EM-FU-1` (max 70 words, subject "Re: Quick question, [First Name]", different proof point from T1, "what day works" close). Send via Gmail MCP from robert.gorham@testsigma.com. **ALL require Rob's explicit "APPROVE SEND" before any send.**
+1. **[URGENT TODAY] B9 Touch 2 InMail sends — TASK-010** — Rob to execute via Sales Nav. 17 prospects at Day 5+. All drafts are in `linkedin-t2-drafts-mar8.html` Section 1. Process: Sales Nav → Messages → find T1 thread → add reply (FREE, no credits consumed). Due TODAY Mar 8 and TOMORROW Mar 9.
 
-2. **Mon Mar 9 sends — B10 InMails** — TASK-001. 8 credit InMails queued. Confirm enrollment status for each prospect (especially Sasa Lazarevic + Christian Melville — ownership-blocked). Must confirm with Rob before sending.
+2. **[URGENT] Complete TASK-009 — 25 Touch 2 emails** — 12 email addresses still missing. Collect from Apollo first (people-match by name + domain), then draft all 25 using template EM-FU-1 (max 70 words, subject "Re: Quick question, [First Name]", different proof point from T1, "what day works" CTA). Present ALL to Rob before sending. NEVER SEND without "APPROVE SEND."
 
-3. **Check Namita Jain Gmail inbox** — TASK-004. Touch 1 sent Feb 27. Was due Mar 4. Now Day 9. Check for reply, draft T2 if no response.
+3. **Check Namita Jain Gmail — TASK-004** — Touch 1 sent Feb 27. Now Day 9. Check Gmail for reply. Draft T2 if no response. See `memory/warm-leads.md`.
+
+---
+
+## TASK-009 — Touch 2 Emails Detail (25 total)
+
+### Emails already confirmed (13 total):
+
+**From Apollo (7):**
+| Name | Email | Company | Proof Point for T2 |
+|------|-------|---------|-------------------|
+| Stephen Starnaud | stephen.starnaud@biberk.com | biBerk | Hansard 8→5wk |
+| Kyung Kim | kkim@webmd.com | WebMD | Sanofi 3d→80min |
+| Lyle Landry | lyle.landry@availity.com | Availity | Sanofi 3d→80min |
+| Morya Moyal | mmoyal@hippo.com | Hippo | Hansard 8→5wk |
+| Shivaleela Devarangadi | sdevarangadi@rxsense.com | RxSense | Sanofi 3d→80min |
+| Jim Lenihan | jim.lenihan@waystar.com | Waystar | Sanofi 3d→80min |
+| Konstantin Diachenko | kdiachenko@paymentus.com | Paymentus | CRED 90%+5x |
+
+**From website_visitor_sequence_drafts.md (6):**
+| Name | Email | Company | Proof Point for T2 |
+|------|-------|---------|-------------------|
+| Jose Moreno | jose.moreno@flywire.com | Flywire | CRED 90%+5x |
+| Eyal Luxenburg | eyal.luxenburg@island.io | Island | Fortune 100 3X |
+| Jeff Barnes | jeff.barnes@digi.com | Digi International | Spendflo 50% |
+| Todd Willms | todd.willms@bynder.com | Bynder | Spendflo 50% |
+| Tom Yang | tom.yang@versantmedia.com | Versant Media | Nagra DTV 2500 |
+| Jason Ruan | jason.ruan@binance.com | Binance | CRED 90%+5x |
+
+### Emails still needed — pull from Apollo (12):
+| Name | Domain | Vertical | Proof Point for T2 |
+|------|--------|----------|--------------------|
+| Courtney Corbin | vizientinc.com | Healthcare | Sanofi 3d→80min |
+| Jason Schwichtenberg | webmd.net | Healthcare ⚠️double-channel | Sanofi 3d→80min |
+| Geoffrey Juma | solera.com | InsurTech | Hansard 8→5wk |
+| Olivia Pereiraclarke | sapiens.com | Insurance | Hansard 8→5wk |
+| Nabil Ahmed | progyny.com | Healthcare | Sanofi 3d→80min |
+| Sneha Bairappa | aamc.org | Healthcare | Sanofi 3d→80min |
+| Jamie Kurt | vertafore.com | Insurance ⚠️double-channel | Hansard 8→5wk |
+| Avijit Sur | solera.com | InsurTech | Hansard 8→5wk |
+| Kerri McGee | sapiens.com | Insurance ⚠️double-channel | Hansard 8→5wk |
+| Priya Khemani | getinsured.com | InsurTech | Hansard 8→5wk |
+| Keith Schofield | fullsteam.com | FinTech | CRED 90%+5x |
+| Emre Ozdemir | theocc.com | FinTech | CRED 90%+5x |
+
+⚠️ **Nabil Ahmed (Progyny):** May not be in Apollo. If not found, search Gmail sent folder for Mar 3 email to progyny.com domain.
+⚠️ **Double-channel contacts** (Schwichtenberg, McGee, Kurt): Still send T2 email per Rob's Mar 8 confirmation.
+
+### Draft rules (non-negotiable):
+- Template: EM-FU-1 from TEMPLATE_LIBRARY.md
+- Subject: "Re: Quick question, [First Name]"
+- Max 70 words. No em dashes. No "I noticed/I saw." Reduction framing only.
+- 1-2 question marks max. MQS ≥ 9/12.
+- Send from: robert.gorham@testsigma.com ONLY
+- NEVER SEND without Rob's explicit "APPROVE SEND"
+
+---
+
+## TASK-010 — B9 T2 InMail Sends (Rob to execute)
+
+**Status:** PENDING — Rob executes via Sales Nav
+**Due:** TODAY Mar 8 / TOMORROW Mar 9
+
+17 prospects — all T2 drafts in `linkedin-t2-drafts-mar8.html` Section 1 (marked URGENT, red border).
+
+Process: Sales Nav → Messages → find T1 thread → add reply at bottom → send. FREE — no credits consumed.
+
+| Prospect | Company | T1 Proof Point Used | T2 Rotation |
+|----------|---------|---------------------|-------------|
+| Mohan Guruswamy | Tavant | CRED 90%+5x | Medibuddy |
+| Lueanne Fitzhugh | Cerner | Sanofi 3d→80min | Hansard |
+| Jeremy Cira | Kaseya | Cisco 35% | Medibuddy |
+| Chandana Ray | Persistent | Medibuddy | Sanofi |
+| Martha Horns | Greenway Health | Sanofi 3d→80min | Hansard |
+| David Gustafson | HG Insights | 90% maintenance | CRED |
+| Jiaping Shen | HackerRank | Spendflo 50% | CRED |
+| Sravanti Krothapalli | Quorum | Sanofi 3d→80min | Medibuddy |
+| Cooper Morrow | Jama | Spendflo 50% | Hansard |
+| Manigandan Kanagasabai | Mediaocean | 70% Selenium | CRED |
+| Leah Coates | Perforce | Hansard 8→5wk | Cisco |
+| Kylie Summer | Quizizz | Spendflo 50% | CRED |
+| Kanan Hasanzade | Datto | 70% Selenium | Medibuddy |
+| Azam Quraishi | MTX Group | 70% Selenium | Sanofi |
+| Yuliya A | Planview | Medibuddy | Hansard |
+| Grant Anderson | Lucid | Medibuddy | CRED |
+| Denise Barnett | Progress Software | Cisco 35% | Hansard |
+
+---
+
+## Active Warm Leads
+| Name | Company | Status |
+|------|---------|--------|
+| Namita Jain | OverDrive | T1 sent Feb 27. Day 9 as of Mar 8. Check Gmail for reply FIRST. Draft T2 if no reply. |
+| Pallavi Sheshadri | Origami Risk | Rob replied Mar 2. Monitoring for response. |
+
+---
+
+## DNC List (7 people — always check before drafting)
+Sanjay Singh (ServiceTitan), Lance Silverman, Clyde Faulkner (CAMP Systems), Ashok Prasad (ZL Technologies), Abe Blanco (Kapitus), Chuck Smith (Aventiv), Jitesh Biswal (JPMorgan Chase). Full list in `CLAUDE.md`.
 
 ---
 
 ## Secondary / Monitoring
 
-- **WV Mar 6 Touch 2** (Mark Townsend, Kanwar Sangwan, Alex Wong, Prateek Negi, Misty Pesek, Katrina Walker, Joe Biggert) — NOT eligible until Mar 11 (Day 4). Do not draft until Mar 10/11.
-- **B10 Touch 2 + B11 Touch 2** — Due Mar 11 (Day 4+). TASK-002. Start drafting Mar 9-10 so ready by Mar 11.
-- **B10 enrollment blockers** — TASK-003. Sasa Lazarevic + Christian Melville blocked by Apollo ownership. Rob must resolve in Apollo.
-- **Tom Goody + Mohan Guruswamy** — TASK-006. Enroll in LinkedIn Outbound Q1 (Rob OK'd).
-- **Apollo WV "81 delivered" mystery** — TASK-007. Not blocking, low priority.
-
----
-
-## Sending Rules for Touch 2 (Critical)
-
-- **Template:** EM-FU-1 from TEMPLATE_LIBRARY.md
-- **Subject:** Re: Quick question, [First Name]
-- **Word count:** Max 70 words
-- **Proof point:** MUST be different from T1 (T1 used Medibuddy 80% maintenance reduction)
-- **Framing:** "X% reduction" NOT "Nx faster" (39.2% vs 16.3% reply rate)
-- **Question marks:** 1-2 max
-- **CTA:** "What day works" (40.4% reply rate)
-- **From:** robert.gorham@testsigma.com ONLY (never @gmail.com)
-- **MQS gate:** ≥ 9/12 before presenting to Rob
-- **No em dashes. No "I noticed/I saw." No multiplier framing.**
-- **NEVER SEND without Rob's explicit "APPROVE SEND"**
+- **WV Mar 6 T2** (Mark Townsend, Kanwar Sangwan, Alex Wong, Prateek Negi, Misty Pesek, Katrina Walker, Joe Biggert) — NOT eligible until Mar 11 (Day 4). Do not draft until Mar 10/11.
+- **B10 T2 + B11 T2** — Due Mar 11. Drafts already built in `linkedin-t2-drafts-mar8.html` Sections 2 + 3. Rob sends via Sales Nav on/after Mar 11.
+- **TASK-001 Mon Mar 9 B10 InMails** — 8 credit InMails queued, only 4 credits remain. Confirm enrollment status. Rob decides who gets credits. See `memory/pipeline-state.md` B10 section.
+- **TASK-003 B10 enrollment blockers** — Sasa Lazarevic + Christian Melville blocked by Apollo ownership. Rob must resolve. 5 others (Kristyn Burke, Tim Hartgrave, Vince Delfini, Padmanaban Vadivelu, Ravi Nag) — attempt enrollment via MCP.
+- **TASK-007 Apollo WV "81 delivered" mystery** — Not blocking. Low priority.
 
 ---
 
@@ -185,15 +183,18 @@ Sanjay Singh (ServiceTitan), Lance Silverman, Clyde Faulkner (CAMP Systems), Ash
 ## Blockers / Flags
 
 - **12 email addresses still missing** for WV Mar 3 Touch 2 drafts — see table above.
-- **Nabil Ahmed (Progyny)** may not be in Apollo. If not found, check Gmail sent history for the original Mar 3 email to get his address.
+- **Nabil Ahmed (Progyny)** may not be in Apollo. Check Gmail sent if Apollo returns null.
+- **0 T2 email drafts written yet** — collection was the blocker.
 - Push to GitHub requires Rob to run `git push origin main` from his terminal. VM has no stored GitHub credentials.
 - B10 Apollo ownership blocks: Sasa Lazarevic + Christian Melville — Rob must resolve manually.
-- InMail credits: only 4 remaining.
+- InMail credits: only 4 remaining — use thread continuation method exclusively for all T2s.
 
 ---
 
 ## Files Changed This Session
 
-- `memory/session/handoff.md` — this file (full Mar 8 update)
-- `memory/session/work-queue.md` — TASK-005 marked done, TASK-009 + TASK-010 added
-- `memory/session/session-log.md` — Mar 8 entry prepended
+- `linkedin-t2-drafts-mar8.html` — **NEW** — 30 T2 InMail drafts (17 B9 urgent + 9 B10 + 4 B11)
+- `memory/sop-outreach.md` — Added T2 InMail mechanics section (thread continuation vs new InMail)
+- `memory/session/work-queue.md` — TASK-002 done, TASK-006 done, TASK-010 added
+- `memory/session/handoff.md` — this file (full Mar 8 update, second session)
+- `memory/session/session-log.md` — Mar 8 second session entry added
