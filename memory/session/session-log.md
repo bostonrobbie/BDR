@@ -6,6 +6,15 @@
 
 ---
 
+## 2026-03-09 — Cowork-9 — TAM coverage tracker built; new prospecting rule codified
+- Built `tam-coverage-tracker.html` + `.csv` — 312 accounts, filterable by status/ICP/region
+- Status: 33 HOT Factor | 1 warm lead | 259 untouched | 15 skip/gov/bad data | 2 check-first
+- ICP: 142 HIGH · 153 Medium · 17 Low/Gov
+- New rule: TAM + Factor universe ONLY — no open Sales Nav prospecting
+- Updated `memory/target-accounts.md` with coverage summary + new rule
+- Added TASK-012 (Wave 1 Factor prospecting) + TASK-013 (add company column to MASTER_SENT_LIST) to work-queue
+- Note: PGA of America is Factor-only, not in TAM CSV
+
 ## 2026-03-09 — Cowork-8 — Salesforce dashboards + reports catalog created (sf-dashboards.md)
 
 **Completed:**

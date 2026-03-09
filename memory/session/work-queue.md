@@ -9,6 +9,25 @@
 
 ## Active Tasks
 
+### TASK-012 | TAM prospecting — Wave 1 Factor accounts
+**Status:** PENDING
+**Priority:** HIGH
+**Due:** This week (Mar 9+)
+**Description:** Begin systematic prospecting into Factor account Wave 1. All 6 accounts need contacts sourced, enriched via Apollo, added to LinkedIn Outbound Q1 sequence. Verify TruStage prior outreach before including.
+**Wave 1 accounts:** Chase, Cboe Global Markets, Commvault, Fidelity Investments, YouTube, TruStage (check first)
+**Files:** `memory/target-accounts.md` (Wave 1 section), `tam-coverage-tracker.html`, `memory/sop-send.md`
+
+---
+
+### TASK-013 | Add company column to MASTER_SENT_LIST
+**Status:** PENDING
+**Priority:** MEDIUM (process improvement)
+**Due:** Next batch send
+**Description:** MASTER_SENT_LIST.csv currently has no company column, making account-level dedup against TAM impossible. Add "company" column to all future entries. Backfill for existing 228 entries where possible (lower priority).
+**Impact:** Enables programmatic cross-reference — know exactly which TAM accounts already have contacts worked.
+
+---
+
 ### TASK-010 | B9 Touch 2 sends (17 prospects) — ✅ DONE
 **Status:** DONE (2026-03-09)
 **Completed by:** Cowork-6 (Mar 9 send session)

@@ -1,9 +1,36 @@
 # Target Accounts — Rob Gorham NAMER
 
-## Overview
-Rob has three distinct account lists assigned by Testsigma leadership, all stored in Salesforce. These are separate from open Sales Nav prospecting and represent NAMED accounts Rob is responsible for.
+## ⚡ PROSPECTING RULE (Effective Mar 9, 2026)
 
-**Priority hierarchy:** Factors (HOT) > TAM Named Accounts > Manual Testers TAM > Open Prospecting
+**The TAM list (312 accounts) + Factor accounts (38) are the ONLY authorized prospecting universe.**
+No open Sales Nav prospecting outside these lists. Goal: systematic full coverage of every account to hit intro meeting → demo quota.
+
+All Factor accounts are a subset of the TAM (37 of 38 appear in TAM CSV; PGA of America is Factor-only).
+
+**Coverage tracker:** `/Work/tam-coverage-tracker.html` — interactive dashboard with filters by status, ICP, region
+**Data file:** `/Work/tam-coverage-tracker.csv` — machine-readable version
+
+**Coverage summary as of Mar 9, 2026:**
+| Status | Count |
+|--------|-------|
+| 🎯 HOT Factor (ready to work) | 33 |
+| ⚠️ Factor — Check Prior Outreach First | 2 (TruStage, Tailored Brands) |
+| 🔥 Warm Lead (active) | 1 (OverDrive) |
+| ✅ Untouched TAM (clean to prospect) | 259 |
+| ⛔ Skip (DNC / Competitor) | 2 (Kapitus, ACCELQ) |
+| 🏛️ Government — Out of ICP | 11 |
+| 🗑️ Bad Data | 4 |
+| **TOTAL** | **312** |
+
+**ICP breakdown:** HIGH = 142 · Medium = 153 · Low/Gov = 17
+
+---
+
+## Overview
+Rob has three distinct account lists assigned by Testsigma leadership, all stored in Salesforce.
+
+**Priority hierarchy:** Factors (HOT) > TAM Named Accounts > Manual Testers TAM
+*(Open Sales Nav prospecting outside these lists is no longer authorized as of Mar 9, 2026)*
 
 ---
 
@@ -190,12 +217,17 @@ Broadcom, Check Point Software, BeyondTrust, WatchGuard Technologies, Sysdig, Pr
 
 ## Using Named Accounts in Prospecting
 
-When building any Sales Nav batch:
+All batches must be built from within the TAM + Factor universe. No open prospecting.
 
-1. **Check Factor accounts FIRST** — if any are unworked, they take Tier 1 priority over fresh Sales Nav prospecting
-2. **Check TAM accounts** — named TAM accounts should be worked before Tier 3 (saved search backfill)
-3. **Manual Testers TAM** — supplement once Factor and primary TAM accounts are being worked
-4. **Farming accounts** — separate motion, always coordinate with AE/CSM first. Do NOT cold-pitch.
+**Batch build order:**
+1. Factor accounts Wave 1 first (Chase, Cboe, Commvault, Fidelity, YouTube, TruStage — see section above)
+2. Factor accounts Wave 2 (HIGH ICP + Tier B signals)
+3. Factor accounts Wave 3 (newly added, no Nektar history)
+4. Untouched TAM — HIGH ICP first (142 accounts), then Medium (153)
+5. Manual Testers TAM — supplement after TAM coverage is underway
+6. Farming accounts — separate motion, always coordinate with AE/CSM. Do NOT cold-pitch.
+
+**⚠️ MASTER_SENT_LIST limitation:** The sent list tracks people (names only), not companies. This makes programmatic cross-referencing against TAM account names impossible. **Fix going forward:** When adding to MASTER_SENT_LIST, also log the company name in a new column. This will enable dedup by account (not just by person).
 
 → See `memory/sop-daily.md` → Batch Sourcing Decision Framework for the full waterfall.
 

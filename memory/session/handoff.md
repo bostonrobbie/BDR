@@ -9,12 +9,32 @@
 ## Last Session
 
 **Date:** 2026-03-09
-**Agent:** Cowork-8 (Mar 9 — Salesforce dashboards + reports catalog)
-**Session title:** Navigated SF home page + all dashboards/reports; created memory/sf-dashboards.md with full catalog.
+**Agent:** Cowork-9 (Mar 9 — TAM coverage tracker + new prospecting rule)
+**Session title:** Cross-referenced TAM list against MASTER_SENT_LIST; built full TAM coverage tracker (HTML + CSV); codified new prospecting rule.
 
 ---
 
 ## What Was Done This Session
+
+### Cowork-9 (Mar 9 — TAM coverage tracker)
+
+1. **Cross-referenced 312 TAM accounts vs MASTER_SENT_LIST** — Confirmed limitation: MASTER_SENT_LIST has no company column, so programmatic dedup by account is not possible. Known flags from memory applied instead (OverDrive warm lead, Kapitus DNC, ACCELQ competitor, TruStage/Tailored Brands prior outreach checks).
+
+2. **Built TAM coverage tracker** (`/Work/tam-coverage-tracker.html` + `.csv`):
+   - 33 HOT Factor accounts ready to work
+   - 2 Factor accounts requiring prior outreach check (TruStage, Tailored Brands)
+   - 1 warm lead (OverDrive / Namita Jain)
+   - 259 untouched TAM accounts (clean to prospect)
+   - 2 DNC/Competitor skips (Kapitus, ACCELQ)
+   - 11 Government entities (out of ICP)
+   - 4 bad data records
+   - ICP breakdown: HIGH=142, Medium=153, Low/Gov=17
+
+3. **Codified new prospecting rule** in `memory/target-accounts.md`: TAM list (312) + Factor accounts (38) are the ONLY authorized prospecting universe. No open Sales Nav prospecting outside these lists.
+
+4. **Noted MASTER_SENT_LIST fix needed:** Add company column to future entries so account-level dedup is possible.
+
+5. **Note:** PGA of America is a Factor account NOT in the TAM CSV — treat as Wave 4 Factor.
 
 ### Cowork-8 (Mar 9 — SF dashboards and reports catalog)
 
