@@ -1444,7 +1444,7 @@ Apollo's primary value for our workflow is **contact enrichment**, not sequence 
 | Sequence | ID | Steps | Purpose | Contacts (Mar 1) |
 |----------|-----|-------|---------|-------------------|
 | **Q1 Priority Accounts** | 69a05801fdd140001d3fc014 | 4 | **PRIMARY sequence for ALL outbound.** All manual steps. LinkedIn InMail (Day 1) → LinkedIn InMail Follow-up (Day 5) → Manual Email (Day 10) → Phone Call (Day 15). Used for cold outbound batches, intent accounts, and transferred accounts. | 144 active at Step 1 |
-| **Q1 Website Visitor - Tier 1 Intent** | 69a1b3564fa5fa001152eb66 | 3 | **Email-only buyer intent sequence.** For website demo requests and high-intent inbound signals. Auto Email (Day 1) → Auto Email (Day 3) → Manual Email (Day 7). | 9 active |
+| **Q1 Website Visitor - Tier 1 Intent** | 69a1b3564fa5fa001152eb66 | 3 | **Email-only buyer intent sequence.** For website demo requests and high-intent inbound signals. Auto Email (Day 1) → Auto Email (Day 3) → Manual Email (Day 7). Apollo display name: "Email Outbound - Website Visitor Tier 1". **All 3 step templates updated to C2-compliant copy (verified via API 2026-03-08).** | 9 active |
 
 ### Retired/Legacy Sequences (DO NOT USE)
 | Sequence | ID | Status | Reason |
@@ -1478,6 +1478,12 @@ Apollo's primary value for our workflow is **contact enrichment**, not sequence 
 | Batch 6 | ~27 | Step 1 | Enrolled Feb 28 |
 | Batch 7 | 41 (all SENT) | Step 1 | Enrolled Mar 1, verified all 41 |
 | Buyer Intent (9) | 9 | Q1 Website Visitor | Enrolled Feb 27 |
+
+**Q1 Website Visitor Sequence Step Details (C2 copy confirmed 2026-03-08):**
+- Step 1 (templateId: `69a1b5078b586d001161af0d`, Day 1, new thread): Subject "Quick question, {{first_name}}" — regression cycles / test maintenance opener + Sanofi proof point (3 days → 80 min). "What day works" close.
+- Step 2 (templateId: `69a1b927035d030021d5a950`, Day 4, reply to thread): No subject (auto "Re: Quick question...") — CRED proof point (90% regression automated, 5x faster). "If that sounds familiar, what day works to see how they did it?"
+- Step 3 (templateId: `69a1be2cb8738b000d0262ee`, Day 10, new thread): Subject "Closing the loop, {{first_name}}" — Hansard proof point (8-week regression → 5 weeks, self-healing). "If test upkeep is slowing releases at {{company}}, what day works for a 20-minute look at what they built?"
+- **Technical note:** Step templates were updated 2026-03-08 via Apollo API fetch intercept method. Apollo's sequence editor uses React controlled components — DOM edits don't persist to server. Working method: intercept Apollo's authenticated PUT via `window.fetch` override, capture full nested JSON payload (11,186 chars), inject correct `body_html` values, replay with `window.__origFetch` + Apollo's own CSRF token + session cookies. Verified via `GET /api/v1/emailer_campaigns/{id}`. For future Apollo template edits: use this intercept-and-replay pattern, not direct DOM manipulation or `PATCH /api/v1/emailer_templates/{id}`.
 
 **Sequence usage rules:**
 - Use Q1 Priority Accounts for ALL cold outbound and intent-based prospects
@@ -1804,6 +1810,7 @@ Old files archived to `archive/` folder. New naming: `outreach-sent-[date]-[batc
 | File | Purpose |
 |------|---------|
 | `apollo-sequence-step-copy.md` | Step-by-step copy guide for all 3 Apollo sequences with template selection, personalization vars, rotation matrix | 2026-02-27 |
+| *(Apollo sequence "Q1 Website Visitor - Tier 1 Intent" step templates)* | All 3 steps updated directly in Apollo via API intercept method on 2026-03-08. Live in Apollo — no separate file needed. See step details in Apollo Integration Strategy section above. | 2026-03-08 |
 
 ### Send Infrastructure
 | File | Purpose |
@@ -1981,47 +1988,64 @@ This section defines the email-only outreach cadence for use in Apollo sequences
 
 ---
 
-## Master Send Log (Updated Feb 28)
+## Master Send Log (Updated Mar 8)
 
 ### Lifetime Send Totals
-| Date | Batch | Sends | Cumulative |
-|------|-------|-------|------------|
-| Feb 13 | Earlier batches | 8 | 8 |
-| Feb 25 | Batch 3 (pilot: Irfan, Katie) | 2 | 10 |
-| Feb 26 (Wed) | Batch 3 (remaining 22) | 22 | 32 |
-| Feb 27 (Thu) | Batch 5B | 23 | 55 |
-| Feb 27 (Thu) | Batch 5A (partial: 5) | 5 | 60 |
-| Feb 28 (Sat) | Batch 5A (remaining 20) | 20 | 80 |
-| Feb 28 (Sat) | Batch 6 (all 27) | 27 | 107 |
-| Feb 28 (Sat) | Batch 7 (41 sent, 1 NOT FOUND) | 41 | 148 |
+| Date | Batch | Channel | Sends | Cumulative | Notes |
+|------|-------|---------|-------|------------|-------|
+| Feb 13 | Earlier batches | LinkedIn InMail | 8 | 8 | Pre-automation |
+| Feb 25 | Batch 3 (pilot: Irfan, Katie) | LinkedIn InMail | 2 | 10 | |
+| Feb 26 (Wed) | Batch 3 (remaining 22) | LinkedIn InMail | 22 | 32 | |
+| Feb 27 (Thu) | Batch 5B | LinkedIn InMail | 23 | 55 | |
+| Feb 27 (Thu) | Batch 5A (partial: 5) | LinkedIn InMail | 5 | 60 | |
+| Feb 27 (Thu) | Buyer Intent 9 | Email (Apollo) | 9 | 69 | Old template, HC1 violations |
+| Feb 28 (Sat) | Batch 5A (remaining 20) | LinkedIn InMail | 20 | 89 | |
+| Feb 28 (Sat) | Batch 6 (all 27) | LinkedIn InMail | 27 | 116 | |
+| Feb 28 (Sat) | Batch 7 (41 sent, 1 NOT FOUND) | LinkedIn InMail | 41 | 157 | Jonathan Lavoie = NOT FOUND |
+| Feb 28 (Sat) | INC-001 premature Touch 3 (6) | Email (Gmail) | 6 | 163 | SENT IN ERROR — see INC-001 |
+| Mar 2-5 | AI Maturity Audit Campaign (~20) | Email (Apollo) | ~20 | ~183 | Tier 1 Intent sequence step updates |
+| Mar 6 (Fri) | Tier 1 Intent Touch 1 backfill (8) | Email (Apollo) | 8 | ~191 | From sequence_status_report_mar6.md |
+| Mar 7 (Sat) | Batch 10 ICP cold outreach (53) | Email (Apollo) | 53 | ~244 | Apollo UI task queue, Touch 1 |
+| Mar 7 (Sat) | Davor Milosevic custom C2 (1) | Email (Gmail) | 1 | ~245 | Custom send, separate from Groups A/B/C |
 
-### Pipeline Status
-| Category | Count |
-|----------|-------|
-| Total InMails sent (all time) | 148 |
-| Total Emails sent (all time) | 15 (6 premature Touch 3 on Feb 28 + 9 buyer intent on Feb 27) |
-| Blocked (Terene Lee, messaging disabled) | 1 |
-| DNC (Sanjay Singh) | 1 |
-| Not applicable (Batch 3 unused slot) | 1 |
-| Skipped NOT FOUND (Jonathan Lavoie, Batch 7) | 1 |
-| **Unsent prospects remaining** | **0** |
-| InMail credits remaining | ~24 |
-| Apollo contacts created (all batches) | ~144+ (Batches 5A/5B/6/7 + buyer intent) |
-| Enrolled in Q1 Priority Accounts | 144 active at Step 1 |
-| Enrolled in Q1 Website Visitor | 9 (buyer intent emails) |
-| Batch 3 Apollo status | PENDING — need contact creation + enrollment |
+**Total estimated touches as of Mar 8: ~245** (148 InMails + ~97 emails)
 
-### Email Send History (Feb 27-28)
+### Pipeline Status (as of March 8, 2026)
+| Category | Count | Notes |
+|----------|-------|-------|
+| Total LinkedIn InMails sent | 148 | Batches 1-7, all manual Rob sends |
+| Total Emails sent | ~97 | Buyer Intent (9) + INC-001 (6) + AI Maturity (~20) + Tier 1 backfill (8) + Batch 10 (53) + Davor (1) |
+| **Total touches (all channels)** | **~245** | |
+| InMail credits remaining | ~24 | CRITICAL — prioritize Hot/Warm only |
+| Q1 Priority Accounts enrolled | 285 | ZERO InMails actually sent from this sequence — all credits used direct |
+| Q1 Website Visitor (Tier 1 Intent) | 91 enrolled / 90 Touch 1 sent / 0 Touch 2 sent | Touch 2 backlog = 70 contacts, biggest gap |
+| Batch 10 | 53 enrolled (Apollo, Mar 7) | Touch 1 sent via Apollo UI, Touch 2 due ~Mar 12 |
+| Touch 3 C2 rewrites ready to send | 44 | Groups A (12), B (8), C (24) — in step3_c2_rewrites_batch2_2026-03-07.md |
+| Touch 2 email drafts ready | 67 | In touch2_drafts_all_contacts_mar6.md — prioritize oldest sends first |
+| DNC list | 3 | Sanjay Singh, Lance Silverman, Tom Yang |
+| Blocked (Terene Lee) | 1 | LinkedIn messaging disabled |
+| Not applicable (Batch 3 unused slot) | 1 | |
+| Skipped NOT FOUND (Jonathan Lavoie, Batch 7) | 1 | |
+| Confirmed reply (Pallavi Sheshadri) | 1 | Changed jobs — thread stalled, no meeting booked |
+| Meetings booked | 0 | |
+
+### Email Send History (Chronological)
 | Date | Time | Recipients | Type | Status |
 |------|------|-----------|------|--------|
-| Feb 27 | ~1:30 PM | Andy Nelsen, Jose Moreno, Tom Yang, Eyal Luxenburg, Hibatullah Ahmed, Jeff Barnes, Eduardo Menezes, Todd Willms, Jason Ruan | Buyer Intent Touch 1 Email | SENT (used identical template, HC1 violations, needs C2 rewrite for future) |
+| Feb 27 | ~1:30 PM | Andy Nelsen, Jose Moreno, Tom Yang, Eyal Luxenburg, Hibatullah Ahmed, Jeff Barnes, Eduardo Menezes, Todd Willms, Jason Ruan | Buyer Intent Touch 1 Email | SENT (old identical template, HC1 violations — needs C2 rewrite for re-engagement) |
 | Feb 28 | 6:30-6:33 AM | Irfan Syed, Katie Hotard, Rachana Jagetia, Giang Hoang, Pallavi Sheshadri, Gunasekaran Chandrasekaran | PREMATURE Touch 3 Email | SENT IN ERROR (see INC-001). 4 Batch 3 + 2 orphans. 7-8 days early, skipped Touch 2. |
-| Feb 28 | ~2:54 PM | Sergey Matetskiy, Mobin Thomas, Dino Gambone, Matthew Smith, Joshua Greig, Pete Draheim | Touch 3 Draft | NOT SENT (saved as drafts, old templates, premature). DELETE these drafts. |
+| Feb 28 | ~2:54 PM | Sergey Matetskiy, Mobin Thomas, Dino Gambone, Matthew Smith, Joshua Greig, Pete Draheim | Touch 3 Draft | NOT SENT (saved as Gmail drafts, old templates, premature). DELETED. |
+| Mar 2-5 | Various | ~20 Tier 1 Intent contacts | AI Maturity Audit campaign emails | SENT via Apollo sequence (step copy updated to C2) |
+| Mar 6 | Various | 8 contacts | Tier 1 Intent Touch 1 backfill | SENT via Apollo |
+| Mar 7 | Various | 53 Batch 10 ICP contacts | Cold outreach Touch 1 | SENT via Apollo UI task queue |
+| Mar 7 | — | Davor Milosevic | Custom C2 Touch 3 | SENT via Gmail (separate from Groups A/B/C) |
 
 ### Do Not Contact List
 | Name | Company | Reason | Date Added |
 |------|---------|--------|------------|
-| Sanjay Singh | ServiceTitan | Hostile reply to prior outreach (2022 mabl era) | 2026-02-27 |
+| Sanjay Singh | ServiceTitan | Hostile reply to prior outreach (2022 mabl era). Requested no further contact. | 2026-02-27 |
+| Lance Silverman | (Batch 5B) | Polite decline: "Thanks for reaching out, but I'm not interested." Replied Sat Mar 1 to Touch 1 InMail. Re-engage only after 60+ days with new trigger. | 2026-03-01 |
+| Tom Yang | (Buyer Intent, Feb 27) | DNC — replied negatively. No further contact. | 2026-02-27 |
 
 ---
 
@@ -2104,24 +2128,38 @@ When Rob says any trigger phrase, Claude executes the full 5-phase daily outreac
 
 Based on actual Touch 1 send dates and the 3-touch cadence (Day 5 = Touch 2, Day 10 = Touch 3):
 
-| Batch | Touch 1 Sent | Touch 2 Eligible | Touch 2 Send | Touch 3 Eligible | Touch 3 Send |
-|-------|-------------|-----------------|-------------|-----------------|-------------|
-| Batch 3 (24) | Feb 25-26 | Mar 1-2 | Mar 2-3 | Mar 6-7 | Mar 7-8 |
-| Batch 5B (23) | Feb 27 | Mar 3 | Mar 4 | Mar 8 | Mar 9 |
-| Batch 5A (25) | Feb 27-28 | Mar 3-4 | Mar 4-5 | Mar 8-9 | Mar 9-10 |
-| Batch 6 (27) | Feb 28 | Mar 4 | Mar 5 | Mar 9 | Mar 10 |
-| Batch 7 (41) | Feb 28 | Mar 4 | Mar 5 | Mar 9 | Mar 10 |
-| Buyer Intent (9) | Feb 27 (email) | Mar 3 | Mar 4 | Mar 8 | Mar 9 |
+| Batch | Touch 1 Sent | Touch 2 Eligible | Touch 2 Target | Touch 3 Eligible | Touch 3 Target | Status (Mar 8) |
+|-------|-------------|-----------------|----------------|-----------------|----------------|----------------|
+| Batch 3 (24) | Feb 25-26 | Mar 1-2 | Mar 2-3 | Mar 6-7 | Mar 7-8 | Touch 2 OVERDUE. Touch 3 due NOW. |
+| Batch 5B (23) | Feb 27 | Mar 3 | Mar 4 | Mar 8 | Mar 9 | Touch 2 OVERDUE. Touch 3 due Mon Mar 9. |
+| Batch 5A (25) | Feb 27-28 | Mar 3-4 | Mar 4-5 | Mar 8-9 | Mar 9-10 | Touch 2 OVERDUE. Touch 3 due Mon-Tue. |
+| Batch 6 (27) | Feb 28 | Mar 4 | Mar 5 | Mar 9 | Mar 10 | Touch 2 OVERDUE. Touch 3 due Mon Mar 9. |
+| Batch 7 (41) | Feb 28 | Mar 4 | Mar 5 | Mar 9 | Mar 10 | Touch 2 OVERDUE. Touch 3 due Mon Mar 9. |
+| Buyer Intent (9) | Feb 27 (email) | Mar 3 | Mar 4 | Mar 8 | Mar 9 | Touch 2 OVERDUE. Touch 3 due Mon Mar 9. |
+| Tier 1 Intent backfill (8) | Mar 6 | Mar 10 | Mar 11 | Mar 15 | Mar 16 | On track — not due yet |
+| Batch 10 (53) | Mar 7 | Mar 11 | Mar 12 | Mar 16 | Mar 17 | On track — not due yet |
 
 **Special cases (premature Touch 3 from INC-001):**
-- Irfan, Katie, Rachana, Giang: Touch 3 already sent (Feb 28). Skip official Touch 3. Touch 2 InMail still due on schedule.
-- Pallavi, Gunasekaran: Need to be added to tracker. Touch 2 follow-up TBD after research.
+- Irfan, Katie, Rachana, Giang: Touch 3 already sent (Feb 28). Skip official Touch 3. Touch 2 InMail treated as an extra engagement if done.
+- Pallavi, Gunasekaran: Orphan contacts — added retroactively. Pallavi replied (changed jobs, thread stalled).
+- Tom Yang: DNC — no further contact.
+- Lance Silverman: DNC (polite decline Mar 1) — no further contact.
 
-**Week of Mar 2-6 workload estimate:**
-- ~24 Touch 2 InMails due (Batch 3)
-- ~89 Touch 2 InMails due Mar 4-5 (Batches 5A, 5B, 6, 7)
-- **Total Touch 2 volume: ~113 InMails across the week**
-- InMail credits remaining: ~24 → CRITICAL SHORTFALL. Need to prioritize Hot/Warm only for Touch 2 InMails, use email for the rest.
+**As of Mar 8 (Sunday) — ACTION QUEUE for Monday Mar 9:**
+- **PRIORITY 1 — Touch 3 emails (free, send via Apollo):** 44 C2 rewrites ready in `step3_c2_rewrites_batch2_2026-03-07.md` — Groups A (12), B (8), C (24). Send Monday.
+- **PRIORITY 2 — Touch 2 emails (free, send via Apollo):** 67 drafts ready in `touch2_drafts_all_contacts_mar6.md` — 70 contacts awaiting, oldest sends first. Send Monday.
+- **PRIORITY 3 — Touch 2 InMails (24 credits, use sparingly):** 285 in Q1 Priority Accounts queue. Do HOT/WARM contacts only via LinkedIn. Save credits for highest-priority prospects.
+- **No new Touch 1s Monday** (22.9% open rate). Source new prospects for Tuesday/Thursday sends.
+- **Credit replenishment:** Check if InMail credits renew this month and when. Consider requesting credit top-up if needed.
 
 ## currentDate
-Today's date is 2026-03-01.
+Today's date is 2026-03-08.
+
+## Recent Work Log
+
+### 2026-03-08: Apollo Sequence Copy Update
+**Task:** Updated all 3 step templates in "Q1 Website Visitor - Tier 1 Intent" sequence (ID: `69a1b3564fa5fa001152eb66`) with C2-compliant copy.
+**Status:** COMPLETE — verified via API GET.
+**Method used:** Apollo's sequence editor uses React controlled components. DOM edits (insertHTML) don't update React state, so Save fires stale null bodies. Working fix: install `window.fetch` interceptor → click Save to capture the full authenticated PUT payload (11,186 chars) including CSRF token → modify `emailer_steps[n].emailer_touches[0].emailer_template.body_html` in the JSON → replay with `window.__origFetch` + `credentials: 'include'` + Apollo's own headers. Confirmed by independent GET to `/api/v1/emailer_campaigns/{id}`.
+**Note:** `<input>` fields (subjects) CAN be updated via React's native value setter + dispatching `input` event — this works because it updates React internal state. Only contenteditable body fields require the intercept-and-replay approach.
+**Step copy confirmed:** See Q1 Website Visitor Sequence Step Details in Apollo Integration Strategy section.

@@ -1,5 +1,99 @@
 # Execution Status Report
-Updated: 2026-02-28 11:15 EST
+Updated: 2026-03-07 (Investigation added) / Prior: 2026-02-28 11:15 EST
+
+---
+
+## INVESTIGATION: Group A/B/C Touch 1 Email Send Audit
+**Date:** 2026-03-07
+**Trigger:** Rob requested autonomous investigation of 46 email drafts created 2026-03-01
+**Scope:** 46 "Quick question, [First Name]" emails intended to send from robert.gorham@testsigma.com
+
+### FINDING: 0 of 46 emails were ever sent.
+
+All 46 drafts were created March 1, 2026 and later deleted without sending.
+
+### Method
+Gmail sent folder searched by: recipient domains (all 25+ company domains), subject "Quick question" after 2026/03/01, and specific recipient email addresses.
+
+### Group A — 13 Contacts (Batch 3 Apollo Sequence)
+| # | Name | Email | Company | Status |
+|---|------|-------|---------|--------|
+| 1 | Thong Vu | thong.vu@hitachivantara.com | Hitachi Vantara | NOT SENT |
+| 2 | Jennifer Ades | jennifer.ades@hitachivantara.com | Hitachi Vantara | NOT SENT |
+| 3 | Lakshmi Maganthi | lakshmi.maganthi@netapp.com | NetApp | NOT SENT |
+| 4 | Adhiti Kannan | adhiti.kannan@iqvia.com | IQVIA | NOT SENT |
+| 5 | Anand Kumar | anand.kumar@synechron.com | Synechron | NOT SENT |
+| 6 | Dan Knox | dknox@g2.com | G2 | NOT SENT |
+| 7 | Peter Seliga | peter.seliga@medimpact.com | MedImpact | NOT SENT |
+| 8 | Rick Colonello | rick.colonello@netapp.com | NetApp | NOT SENT |
+| 9 | Dena McEwan | dena.mcewan@iqvia.com | IQVIA | NOT SENT |
+| 10 | Aline Cordier | aline.cordier@iqvia.com | IQVIA Biotech | NOT SENT |
+| 11 | Davor Milosevic | davor.milosevic@iqvia.com | IQVIA | NOT SENT — ⚠️ SEE NOTE |
+| 12 | Anthony Oluoch | anthony.oluoch@medimpact.com | MedImpact Healthcare | NOT SENT |
+| 13 | Sandeep Shah | sandeep.shah@netapp.com | NetApp | NOT SENT |
+
+**⚠️ Davor Milosevic special case:** He received a DIFFERENT email on 2026-03-07 with subject "QE load coverage as Vimeo moves beyond B2B, Davor" — a separate custom email already sent today. Do NOT send the Group A "Quick question" template to him. He is already in a separate outreach thread.
+
+### Group B — 8 Contacts (Extended Scan Step 1)
+| # | Name | Email | Company | Status |
+|---|------|-------|---------|--------|
+| 14 | Ryan Kennedy | rkennedy@suvoda.com | Suvoda | NOT SENT |
+| 15 | Jeremy Jensen | jeremy.jensen@awardco.com | Awardco | NOT SENT |
+| 16 | Mark Nguyen | mnguyen@aerospike.com | Aerospike | NOT SENT |
+| 17 | Pankaj Batra | pankaj.batra@butterflymx.com | ButterflyMX | NOT SENT |
+| 18 | Ashutosh Singh | ashu.singh@acquia.com | Acquia | NOT SENT |
+| 19 | Julia Yeh | julia.yeh@tempus.com | Tempus AI | NOT SENT |
+| 20 | Dave Cantrell | dcantrell@solifi.com | Solifi | NOT SENT |
+| 21 | Tracy Grooms | tracy.grooms@buildertrend.com | Buildertrend | NOT SENT |
+
+### Group C — 25 Contacts (Step 1 Tracker Contacts)
+| # | Name | Email | Company | Status |
+|---|------|-------|---------|--------|
+| 22 | Eileen Zheng | eileen.zheng@zelis.com | Zelis | NOT SENT |
+| 23 | Joyce Lee | joyce.lee@veeva.com | Veeva Systems | NOT SENT |
+| 24 | Trent Walkup | trent.walkup@redsailtechnologies.com | RedSail Technologies | NOT SENT |
+| 25 | Dawn Coen | dawn.coen@oppfi.com | OppFi | NOT SENT |
+| 26 | Prashanthi Nettem | pnettem@gtreasury.com | GTreasury | NOT SENT |
+| 27 | Shalaka Munjal | smunjal@healthedge.com | HealthEdge | NOT SENT |
+| 28 | Vinayak Singh | vinayak.singh@pureinsurance.com | PURE Insurance | NOT SENT |
+| 29 | Luis Sanchez | luis.sanchez@drata.com | Drata | NOT SENT |
+| 30 | Amir Aly | amir.aly@procore.com | Procore | NOT SENT — ⚠️ SEE NOTE |
+| 31 | Sachin Kumbhar | sachin.kumbhar@altair.com | Altair | NOT SENT |
+| 32 | Kai Esbensen | kai.esbensen@granicus.com | Granicus | NOT SENT |
+| 33 | Jonathan Zarnosky | jzarnosky@freedompay.com | FreedomPay | NOT SENT |
+| 34 | Kia Duran | kia.duran@fleetio.com | Fleetio | NOT SENT |
+| 35 | Kimberly Salerno | ksalerno@instructure.com | Instructure | NOT SENT |
+| 36 | Vijaya Belthur | vijaya.belthur@bessemertrust.com | Bessemer Trust | NOT SENT |
+| 37 | Ellen Puckett | ellen.puckett@invesco.com | Invesco | NOT SENT |
+| 38 | Julie Bozeman | julie.bozeman@color.com | Color | NOT SENT |
+| 39 | Patrick Southall | patrick.southall@goodrx.com | GoodRx | NOT SENT |
+| 40 | Tom Bombara | tom.bombara@extremenetworks.com | Extreme Networks | NOT SENT |
+| 41 | Thomas Lamontia | thomas.lamontia@csgi.com | CSG | NOT SENT |
+| 42 | Stu Naylor | stu.naylor@owlcyberdefense.com | Owl Cyber Defense | NOT SENT |
+| 43 | Joe Pember | joe.pember@riverbed.com | Riverbed | NOT SENT |
+| 44 | Marc Jarvis | marc.jarvis@partech.com | PAR Technology | NOT SENT |
+| 45 | Sneha Prabhakar | sneha.prabhakar@ariasystems.com | Aria Systems | NOT SENT |
+| 46 | Kamal Pokharel | kamal.pokharel@cedargatetechnologies.com | Cedar Gate Technologies | NOT SENT |
+
+**⚠️ Amir Aly special case:** He received a "One more thought, Amir" follow-up on 2026-03-06 from a prior LinkedIn InMail sequence. His Touch 1 was LinkedIn InMail (separate channel). The Group C email Touch 1 was never sent. Sending it now would create a confusing second thread. Recommend skipping the Group C template for Amir and treating him as already mid-sequence via LinkedIn.
+
+### Summary
+| Group | Total | Sent | Not Sent | Special Cases |
+|-------|-------|------|----------|---------------|
+| Group A (Batch 3 Apollo) | 13 | 0 | 13 | Davor Milosevic: skip, different email sent Mar 7 |
+| Group B (Extended Scan) | 8 | 0 | 8 | None |
+| Group C (Step 1 Tracker) | 25 | 0 | 25 | Amir Aly: skip, active LinkedIn sequence |
+| **TOTAL** | **46** | **0** | **46** | 2 contacts have separate active outreach |
+
+### What the March 6 "Quick question" sends were
+The 7 "Quick question" emails sent March 6 went to entirely different prospects: Mark Townsend (Silvaco), Kanwar Sangwan (DISQO), Alex Wong (Qualified), Prateek Negi (CData), Misty Pesek (Marigold), Joe Biggert (Marigold), Katrina Walker (FreeWill). These are separate — not from this batch.
+
+### Template Quality Note
+The Group A/B/C templates use "Noticed some folks at [Company] have been exploring test automation solutions lately" — this is the old buyer intent "Noticed some folks" template, NOT C2 standard. Before sending any of these 44 contacts (excl. Davor and Amir), they should either be: (a) rewritten to C2 structure, or (b) sent as-is if Rob accepts the template quality.
+
+### Draft files
+- Groups A & B: `/mnt/Work/touch1_drafts_batch2.md` (contacts 1-21)
+- Group C: `/mnt/Work/touch1_drafts_batch2_groupC.md` (contacts 22-46)
 
 ---
 

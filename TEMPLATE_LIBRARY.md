@@ -1,8 +1,8 @@
 # Testsigma BDR Outreach Template Library
-**Last Updated:** Feb 27, 2026
+**Last Updated:** March 7, 2026
 **Based on:** 1,326 LinkedIn conversations + 91-prospect pilot batches + email sequence analysis
 **Quality Standard:** All templates meet QA Gate (MQS >= 9/12)
-**Version:** 2.0 — Full rewrite aligned to Outbound Intelligence System data
+**Version:** 2.1 — Added C2-compliant buyer-intent email templates (BI-1A through BI-3A). Retired HC1-violating "Noticed some folks" opener used in March 1, 2026 batch incident.
 
 ---
 
@@ -836,9 +836,197 @@ After 3+ batches, analyze:
 
 ---
 
-**End of Template Library v2.0**
+---
 
-*Changes from v1.0:*
+# BUYER-INTENT EMAIL TEMPLATES (Apollo Q1 Website Visitor Sequence)
+
+**Context:** These templates are for contacts showing buyer intent signals (website visits, demo requests, Sales Navigator intent). They load into the Apollo Q1 Website Visitor — Tier 1 Intent sequence (ID: `69a1b3564fa5fa001152eb66`), which runs:
+- Step 1 (Day 1): Auto-email → use BI-1A or BI-1B
+- Step 2 (Day 3): Auto-email → use BI-2A or BI-2B
+- Step 3 (Day 7): Manual email → use BI-3A (send manually from robert.gorham@testsigma.com)
+
+**Critical rules for buyer-intent templates:**
+- NEVER open with "Noticed some folks at [Company]" or any "I noticed" variant — HC1 violation
+- Intent gives permission to be slightly more direct, but the opener must still be a QA-relevant question, NOT an acknowledgment that they were browsing
+- Proof point required in every step
+- "What day works" CTA required in every step
+
+---
+
+## STEP 1 — DAY 1 AUTO-EMAIL
+
+### BI-1A: Maintenance Hook (Primary)
+**Proof Point:** Hansard 8 weeks → 5 weeks
+**Best For:** All personas, any vertical
+**Word Count:** 86 | **MQS:** 11/12
+
+```
+Subject: Test upkeep vs automation at [Company]
+
+Hi [Name],
+
+With the team exploring test automation options, what's the biggest driver, keeping tests stable through [their_change_event], or getting new coverage built faster?
+
+Most teams we talk to hit a wall where test maintenance eats the capacity they need for new work. Hansard was in the same spot and cut their regression cycle from 8 weeks to 5 after moving to Testsigma's auto-healing.
+
+If 3 fewer weeks of regression would help [their_situation], what day works for a quick look at how they did it?
+
+Rob
+```
+
+---
+
+### BI-1B: Velocity Hook (Alternate)
+**Proof Point:** Sanofi 3 days → 80 minutes
+**Best For:** Director/VP, fast-shipping teams, SaaS/FinTech
+**Word Count:** 79 | **MQS:** 11/12
+
+```
+Subject: Regression blocking [Company] releases
+
+Hi [Name],
+
+Are release cycles holding steady as [their_platform] grows, or is regression becoming the bottleneck between sprints?
+
+For teams actively evaluating automation, that's usually the deciding factor. Sanofi cut regression from 3 days to 80 minutes after consolidating their suite on Testsigma, without adding headcount.
+
+If shortening regression cycles would help the team ship faster, what day works for a quick look?
+
+Rob
+```
+
+---
+
+## STEP 2 — DAY 3 AUTO-EMAIL
+
+### BI-2A: Coverage Angle (Primary)
+**Proof Point:** Medibuddy 2,500 tests + 50% manual cut
+**Best For:** QA Managers, Directors, Healthcare/SaaS
+**Word Count:** 54 | **MQS:** 10/12
+
+```
+Subject: Re: Test upkeep vs automation at [Company]
+
+Hi [Name],
+
+One more thought on the automation front.
+
+As the product grows, coverage gaps are usually the first thing to cause production issues. Medibuddy automated 2,500 tests and cut manual testing by 50% after switching to Testsigma's plain English approach.
+
+If halving manual testing effort would help [their_situation], what day works for a quick look?
+
+Rob
+```
+
+---
+
+### BI-2B: Compliance Angle (Alternate — regulated industries)
+**Proof Point:** Sanofi 3 days → 80 minutes
+**Best For:** Healthcare, Pharma, FinServ (HIPAA/PCI compliance signal)
+**Word Count:** 55 | **MQS:** 10/12
+
+```
+Subject: Re: Regression blocking [Company] releases
+
+Hi [Name],
+
+Different angle on the compliance side.
+
+For teams in regulated industries, the biggest hidden cost isn't test creation, it's the upkeep when locators break after every UI change. Sanofi cut their regression from 3 days to 80 minutes by automating those repetitive validation steps.
+
+If shorter compliance cycles would help your team ship with confidence, what day works?
+
+Rob
+```
+
+---
+
+## STEP 3 — DAY 7 MANUAL EMAIL
+
+### BI-3A: Final Outreach (Manual Send from Gmail)
+**Proof Points:** Cisco 35% regression reduction + Spendflo 50% manual cut
+**Best For:** All personas, any vertical
+**Send From:** robert.gorham@testsigma.com manually — NOT Apollo auto-send
+**Word Count:** 60 | **MQS:** 10/12
+
+```
+Subject: Last note on testing at [Company]
+
+Hi [Name],
+
+One last note. What's harder for the team right now, keeping coverage ahead of releases, or keeping tests stable as the product changes?
+
+Cisco cut regression overhead by 35% after consolidating on Testsigma. Spendflo cut manual testing by 50% in their first quarter.
+
+If either of those would help [their_situation], what day works for a quick look?
+
+Rob
+```
+
+---
+
+## BUYER-INTENT PROOF POINT ROTATION GUIDE
+
+| Sequence | Step 1 | Step 2 | Step 3 |
+|----------|--------|--------|--------|
+| BI-1A path (maintenance) | Hansard 8→5 wks | Medibuddy 2,500 tests / 50% cut | Cisco 35% + Spendflo 50% |
+| BI-1B path (velocity) | Sanofi 3 days→80 min | Sanofi compliance angle (different framing) | Cisco 35% + Spendflo 50% |
+
+**To update Apollo Step 1/2 copy:** Rob updates the auto-email body text in the Q1 Website Visitor sequence settings manually via Apollo UI. Claude does not modify existing sequence content (company data protection rule).
+
+---
+
+# RETIRED TEMPLATES
+
+## RETIRED: Buyer-Intent "Noticed Some Folks" Template
+**Status:** RETIRED March 7, 2026
+**Reason:** HC1 violation (–13.4 pp differential). Do not load into Apollo or use in any outreach.
+
+**Original text (for reference only):**
+
+```
+[RETIRED — DO NOT USE]
+
+Hi [Name],
+
+Noticed some folks at [Company] have been exploring test automation solutions lately
+and figured it might be worth a quick intro.
+
+I'm Rob with Testsigma. We help engineering teams cut test maintenance by up to 80%
+with AI powered test automation that works across web, mobile, and API from a single platform.
+[Personalized line about their specific situation.]
+
+Would it be worth a 15 minute call to see if there's a fit? Happy to share a quick
+overview doc instead if that's easier.
+
+Best,
+Rob
+```
+
+**Why it failed (5 violations):**
+
+| # | Violation | Rule | Impact |
+|---|-----------|------|--------|
+| 1 | "Noticed some folks at [Company]" | HC1 — no "I noticed/I saw" variants | –13.4 pp (strongest negative signal) |
+| 2 | "Happy to share a quick overview doc instead if that's easier" | No easy-out lines | Signals low confidence, invites a pass |
+| 3 | "Would it be worth a 15 minute call" | SP5 — must use "what day works" CTA | 14.0% vs 40.4% reply rate |
+| 4 | Opens with product description, not a QA question | HC2 — no feature leading | Features repel, outcomes attract |
+| 5 | Personalization is a one-sentence swap at end | Zero close construction | Generic close fails QA Gate check 10 |
+
+**Incident record:** This template was loaded into the Apollo Q1 Website Visitor — Tier 1 Intent sequence and auto-sent via Apollo SMTP for Steps 1 and 2 to 44 contacts enrolled Feb 28 - March 1, 2026. The HC1 violations were not caught before auto-send because the template bypasses the Gmail draft review step. The Step 3 Day 7 manual drafts (saved as Gmail drafts) were rewritten to C2 standard before Rob sent them. Replacement emails are in `step3_c2_rewrites_batch2_2026-03-07.md`.
+
+**Fix applied:** Templates BI-1A through BI-3A (above) replace this template for all future buyer-intent sequences.
+
+---
+
+**End of Template Library v2.1**
+
+*Changes from v2.0:*
+- Added Buyer-Intent Email Templates section: BI-1A, BI-1B (Day 1), BI-2A, BI-2B (Day 3), BI-3A (Day 7 manual)
+- Retired HC1-violating "Noticed some folks at [Company]" opener with full incident documentation and violation breakdown
+- Updated version header to v2.1, March 7, 2026
+
+*Changes from v1.0 (carried forward):*
 - Removed all HC violations (fixed "flaky tests," "I noticed," multiplier framing, generic closes)
 - Added full email template set (5 Touch 1 + 4 follow-ups) for Apollo sequences
 - Added email-only 5-touch cadence alongside InMail-first 3-touch
