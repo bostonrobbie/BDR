@@ -6,6 +6,34 @@
 
 ---
 
+## 2026-03-09 — Cowork-8 — Salesforce dashboards + reports catalog created (sf-dashboards.md)
+
+**Completed:**
+- Navigated Salesforce home page, captured all 10 live widget readings (current as of Mar 9 2026)
+- Explored All Reports (recent view) — captured 20+ recently-used reports with URLs/IDs where available
+- Explored All Dashboards (97 total in org) — scrolled all 4 pages, identified BDR-relevant dashboards
+- Captured dashboard IDs via ref-based click navigation (SF Shadow DOM workaround):
+  - BDR: Daily standup review = `01ZOX000000XJVJ2A4`
+  - BDR: Outbound Dashboard = `01ZOX000000y7cv2AA`
+- Created `memory/sf-dashboards.md` — comprehensive SF catalog with home page widgets, key reports, Tier 1/2/3 dashboards, folder structure, quick-access links
+- Updated `handoff.md` + this session log
+- Committed all changes (7b30c47)
+
+**Key technical notes:**
+- SF home page shadow DOM + Lightning iframe causes blank screen on scroll. Fix: navigate directly to sub-URLs (/lightning/o/Report/home, /lightning/o/Dashboard/home) instead of scrolling
+- SF Lightning dashboard list uses virtual scroll with lazy loading — must scroll to bottom to load all 97 records
+- SF dashboard row clicks via coordinate don't navigate; must use `find` tool + ref-based click to trigger navigation and reveal dashboard URL/ID
+- JS `document.querySelectorAll('a')` returns empty in SF Lightning due to Shadow DOM — ref-based approach is the correct workaround
+
+**Files changed:**
+- `memory/sf-dashboards.md` (new — SF dashboards + reports catalog)
+- `memory/session/handoff.md` (updated)
+- `memory/session/session-log.md` (this entry)
+
+**Status:** SF catalog complete + committed. Push to GitHub still requires Rob to run `git push origin main` from his terminal.
+
+---
+
 ## 2026-03-09 — Cowork-7 — All 38 HOT Factor accounts read from Salesforce + documented in target-accounts.md
 
 **Completed:**

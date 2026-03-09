@@ -9,12 +9,30 @@
 ## Last Session
 
 **Date:** 2026-03-09
-**Agent:** Cowork-7 (Mar 9 — Factor accounts read from Salesforce)
-**Session title:** All 38 HOT Factor accounts read from Salesforce report + documented in target-accounts.md with ICP priority flags.
+**Agent:** Cowork-8 (Mar 9 — Salesforce dashboards + reports catalog)
+**Session title:** Navigated SF home page + all dashboards/reports; created memory/sf-dashboards.md with full catalog.
 
 ---
 
 ## What Was Done This Session
+
+### Cowork-8 (Mar 9 — SF dashboards and reports catalog)
+
+1. **Navigated Salesforce home page** — Captured all 10 live widget readings (Mar 9 2026): Open Leads, Open Contacts (1,200+), My Accounts Non-Customers (314 prospect accounts), My Customer Accounts (10 farming), Factors Identified Accounts (~38 HOT), Accounts w/o Recent Activity (506), BD SAL This Month (0), Disco Calls, Demo Completed, Demo Completed but not Qualified.
+
+2. **Cataloged all SF reports** — Captured 20+ recently-used reports from the Recent Reports view. Reports are what Rob actually uses day-to-day, organized into the Key Reports table.
+
+3. **Cataloged all 97 SF dashboards** — Scrolled through all 4 pages of All Dashboards. Filtered down to ~15 BDR-relevant dashboards organized into Tier 1 (daily use), Tier 2 (useful context), Tier 3 (FYI).
+
+4. **Captured dashboard URLs/IDs** for key dashboards via ref-based click navigation:
+   - BDR: Daily standup review = `01ZOX000000XJVJ2A4`
+   - BDR: Outbound Dashboard = `01ZOX000000y7cv2AA`
+
+5. **Created `memory/sf-dashboards.md`** — New memory file with comprehensive catalog of home page widgets, key reports (with URLs), key dashboards (Tier 1/2/3), dashboard folder structure, and quick-access links.
+
+6. **Committed** `memory/sf-dashboards.md` to git (commit 7b30c47).
+
+---
 
 ### Cowork-7 (Mar 9 continuation — Factor accounts from Salesforce)
 
@@ -209,6 +227,10 @@ Sanjay Singh (ServiceTitan), Lance Silverman, Clyde Faulkner (CAMP Systems), Ash
 
 ## Files Changed This Session
 
+**Mar 9 Cowork-8 — SF dashboards catalog:**
+- `memory/sf-dashboards.md` — NEW: Full SF dashboards + reports catalog (home page widgets, key reports, Tier 1/2/3 dashboards, folder structure, quick-access links)
+
+**Cowork-7/6/5 (earlier Mar 9):**
 - `memory/sop-send.md` — Added full Apollo UI Manual Email Send (Touch 2) section
 - `memory/pipeline-state.md` — T2 sends logged (25 total), total emails updated 49→74, T3 due dates added
 - `memory/session/work-queue.md` — TASK-010 + TASK-011 marked DONE
