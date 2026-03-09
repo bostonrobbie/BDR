@@ -25,49 +25,97 @@ Rob has three distinct account lists assigned by Testsigma leadership, all store
 
 ### All 38 Factor Accounts (read from SF report Mar 9, 2026)
 
-| # | Account Name | Size | Engagement | Industry | ICP Fit |
-|---|-------------|------|-----------|----------|---------|
-| 1 | TELUS | Enterprise[1000+] | Warm | Telecommunications | Medium |
-| 2 | GE | Enterprise[1000+] | Hot | Manufacturing | Medium |
-| 3 | Microchip Technology Inc. | Enterprise[1000+] | Hot | Manufacturing | Medium |
-| 4 | Mindbody | Enterprise[1000+] | Hot | Healthcare | **HIGH** |
-| 5 | Datamatics | Enterprise[1000+] | Hot | Technology | **HIGH** |
-| 6 | OneMain Financial | Enterprise[1000+] | Warm | Finance | **HIGH** |
-| 7 | ACCELQ | Commercial[100-499] | Hot | Software | ⚠️ COMPETITOR |
-| 8 | KKR | Enterprise[1000+] | Warm | Finance | Medium |
-| 9 | Cboe Global Markets | Enterprise[1000+] | Hot | Finance | **HIGH** |
-| 10 | Centers for Disease Control and Prevention | Enterprise[1000+] | Hot | Government | Low |
-| 11 | Cetera Financial Group | Enterprise[1000+] | Warm | Finance | **HIGH** |
-| 12 | Charles River Laboratories | Enterprise[1000+] | Hot | Other | Medium |
-| 13 | Enterprise Mobility Inc | Enterprise[1000+] | Hot | Entertainment | Medium |
-| 14 | OSF HealthCare | Enterprise[1000+] | Hot | Healthcare | **HIGH** |
-| 15 | Electronic Arts | Enterprise[1000+] | Hot | Entertainment | **HIGH** |
-| 16 | Fidelity Investments | Enterprise[1000+] | Warm | Finance | **HIGH** |
-| 17 | Commvault | Enterprise[1000+] | Hot | Technology | **HIGH** |
-| 18 | bp | Enterprise[1000+] | Warm | Energy | Low |
-| 19 | Chase | Enterprise[1000+] | Hot | Finance | **HIGH** |
-| 20 | Successive Technologies | Mid Market[500-999] | Warm | Technology | **HIGH** |
-| 21 | HashiCorp | Enterprise[1000+] | Hot | Technology | **HIGH** |
-| 22 | TruStage | Enterprise[1000+] | Hot | Finance | **HIGH** |
-| 23 | GEICO | Enterprise[1000+] | Hot | Insurance | **HIGH** |
-| 24 | Winsupply | Enterprise[1000+] | Hot | Retail | Medium |
-| 25 | Laboratorios Sanfer | Enterprise[1000+] | Hot | Healthcare | Medium |
-| 26 | YouTube | Enterprise[1000+] | Hot | Technology | **HIGH** |
-| 27 | Yahoo | Enterprise[1000+] | Hot | Technology | **HIGH** |
-| 28 | Checkr, Inc. | Enterprise[1000+] | Hot | Technology | **HIGH** |
-| 29 | Tailored Brands, Inc. | Enterprise[1000+] | Hot | Apparel | Low |
-| 30 | Veradigm® | Enterprise[1000+] | Hot | Healthcare | **HIGH** |
-| 31 | Plenty® | Commercial[100-499] | Hot | Agriculture & Mining | Low |
-| 32 | Corewell Health | Enterprise[1000+] | Hot | Healthcare & Life Sciences | **HIGH** |
-| 33 | Charlie Health | Enterprise[1000+] | Hot | Healthcare & Life Sciences | **HIGH** |
-| 34 | Georgia-Pacific LLC | Enterprise[1000+] | Hot | Manufacturing, Automotive & Energy | Low |
-| 35 | Market of Choice | Commercial[100-499] | Hot | Retail & CG | Low |
-| 36 | Springboard | Enterprise[1000+] | Hot | Education | Low |
-| 37 | L3Harris Technologies | Enterprise[1000+] | Hot | Manufacturing | Medium |
-| 38 | PGA of America | Enterprise[1000+] | Hot | Communications & Media | Low |
+**Signal Tier key:** A = demo/pricing/signup/G2 page visit (buying-intent actions) · B = website/blog sessions only · C = no recent Nektar signal
+**Last Activity** = last Nektar-tracked interaction date (blank = no recorded date; recently-added accounts may not have Nektar history yet)
 
-**ICP Priority Summary (HIGH fit = 16 accounts):**
-Chase, Fidelity Investments, Cetera Financial Group, Cboe Global Markets, TruStage, GEICO (Finance/Insurance) · Mindbody, OSF HealthCare, Veradigm, Corewell Health, Charlie Health (Healthcare) · HashiCorp, Commvault, Datamatics, Checkr Inc., Successive Technologies, YouTube, Yahoo, Electronic Arts (Technology/SaaS)
+| # | Account Name | Size | Engagement | Industry | ICP Fit | Signal Tier | Last Activity |
+|---|-------------|------|-----------|----------|---------|-------------|---------------|
+| 1 | TELUS | Enterprise[1000+] | Warm | Telecommunications | Medium | **A** (G2, Demo) | Feb 24 2025 |
+| 2 | GE | Enterprise[1000+] | Hot | Manufacturing | Medium | **A** (Pricing Page) | Jul 18 2025 |
+| 3 | Microchip Technology Inc. | Enterprise[1000+] | Hot | Manufacturing | Medium | B (Review sites, web) | Dec 16 2024 |
+| 4 | Mindbody | Enterprise[1000+] | Hot | Healthcare | **HIGH** | B (web sessions) | Sep 12 2024 |
+| 5 | Datamatics | Enterprise[1000+] | Hot | Technology | **HIGH** | B (web sessions) | Oct 15 2025 |
+| 6 | OneMain Financial | Enterprise[1000+] | Warm | Finance | **HIGH** | **A** (G2 x4) | Feb 20 2025 |
+| 7 | ACCELQ | Commercial[100-499] | Hot | Software | ⚠️ COMPETITOR | A (G2 x19!) | May 5 2025 |
+| 8 | KKR | Enterprise[1000+] | Warm | Finance | Medium | B (web sessions) | Feb 5 2025 |
+| 9 | Cboe Global Markets | Enterprise[1000+] | Hot | Finance | **HIGH** | **A** (Signup x2, Demo x2) | Jan 9 2026 🔥 |
+| 10 | Centers for Disease Control | Enterprise[1000+] | Hot | Government | Low | B (web sessions) | — |
+| 11 | Cetera Financial Group | Enterprise[1000+] | Warm | Finance | **HIGH** | C (no signals) | Nov 4 2025 |
+| 12 | Charles River Laboratories | Enterprise[1000+] | Hot | Other | Medium | B (web sessions) | — |
+| 13 | Enterprise Mobility Inc | Enterprise[1000+] | Hot | Entertainment | Medium | B (web sessions) | — |
+| 14 | OSF HealthCare | Enterprise[1000+] | Hot | Healthcare | **HIGH** | **A** (Signup x1, web x5) | Jan 27 2025 |
+| 15 | Electronic Arts | Enterprise[1000+] | Hot | Entertainment | **HIGH** | B (web x4, blog x3) | — |
+| 16 | Fidelity Investments | Enterprise[1000+] | Warm | Finance | **HIGH** | **A** (G2, Use-case pg) | Aug 8 2025 |
+| 17 | Commvault | Enterprise[1000+] | Hot | Technology | **HIGH** | **A** (G2, Signup x2, web x6) | Jun 12 2025 |
+| 18 | bp | Enterprise[1000+] | Warm | Energy | Low | B (web sessions) | — |
+| 19 | Chase | Enterprise[1000+] | Hot | Finance | **HIGH** | **A** (Pricing, Signup x2, Use-case x3, web x7) | Oct 15 2025 🔥 |
+| 20 | Successive Technologies | Mid Market[500-999] | Warm | Technology | **HIGH** | B (web sessions) | Sep 25 2025 |
+| 21 | HashiCorp | Enterprise[1000+] | Hot | Technology | **HIGH** | B (web sessions) | Aug 13 2025 |
+| 22 | TruStage | Enterprise[1000+] | Hot | Finance | **HIGH** | **A** (Demo x1, Outbound Completed x11) | Feb 3 2026 ⚠️ |
+| 23 | GEICO | Enterprise[1000+] | Hot | Insurance | **HIGH** | B (web sessions) | Feb 5 2025 |
+| 24 | Winsupply | Enterprise[1000+] | Hot | Retail | Medium | **A** (Signup x1, blog) | Oct 9 2025 |
+| 25 | Laboratorios Sanfer | Enterprise[1000+] | Hot | Healthcare | Medium | **A** (Signup x2, Demo x1) | Jun 20 2025 |
+| 26 | YouTube | Enterprise[1000+] | Hot | Technology | **HIGH** | **A** (Signup x1, alt page, web x4) | Sep 17 2025 |
+| 27 | Yahoo | Enterprise[1000+] | Hot | Technology | **HIGH** | B (web sessions) | Aug 11 2025 |
+| 28 | Checkr, Inc. | Enterprise[1000+] | Hot | Technology | **HIGH** | B (web sessions) | — |
+| 29 | Tailored Brands, Inc. | Enterprise[1000+] | Hot | Apparel | Low | A (Outbound Completed x7) | Feb 4 2026 ⚠️ |
+| 30 | Veradigm® | Enterprise[1000+] | Hot | Healthcare | **HIGH** | B (web sessions) | — |
+| 31 | Plenty® | Commercial[100-499] | Hot | Agriculture & Mining | Low | **A** (Signup x3, Demo x2) | — |
+| 32 | Corewell Health | Enterprise[1000+] | Hot | Healthcare & Life Sciences | **HIGH** | B (web sessions) | — |
+| 33 | Charlie Health | Enterprise[1000+] | Hot | Healthcare & Life Sciences | **HIGH** | B (web sessions) | — |
+| 34 | Georgia-Pacific LLC | Enterprise[1000+] | Hot | Manufacturing, Automotive & Energy | Low | B (web sessions) | — |
+| 35 | Market of Choice | Commercial[100-499] | Hot | Retail & CG | Low | **A** (Pricing Page x1) | — |
+| 36 | Springboard | Enterprise[1000+] | Hot | Education | Low | **A** (Pricing Page, Case Study) | — |
+| 37 | L3Harris Technologies | Enterprise[1000+] | Hot | Manufacturing | Medium | B (web sessions x9) | — |
+| 38 | PGA of America | Enterprise[1000+] | Hot | Communications & Media | Low | **A** (G2, Review sites) | — |
+
+---
+
+### ⚠️ Prior Outreach Flags — Check Before Contacting
+
+| Account | Flag | What to Do |
+|---------|------|-----------|
+| **TruStage** | "Outbound Engagement Completed 11" — 11 prior outreach touches tracked | Check SF/Apollo contact history. Who sent these (Rob? Shakeel? Another BDR)? If Shakeel's, may be OK to re-engage fresh. If Rob's, must wait for cooling period. |
+| **Tailored Brands, Inc.** | "Outbound Engagement Completed 7" — 7 prior outreach touches tracked | Same check required. ICP fit is Low (Apparel), so deprioritize anyway. |
+| **ACCELQ** | Competitor — G2 Event x19 = they are intensively monitoring Testsigma on G2 | Do NOT reach out without checking with leadership/AE first. |
+
+---
+
+### Recommended Outreach Sequence (Factor Accounts)
+
+Start with HIGH ICP + Tier A signals + most recent activity. Cross-check each against MASTER_SENT_LIST first.
+
+**Wave 1 — Start here (HIGH ICP + strong buying signals):**
+1. **Chase** — Finance/Enterprise, 5 distinct signal types (Pricing + Demo + Signup + Use-case + 7 web sessions). Freshly active Oct 2025. Highest signal volume of any account.
+2. **Cboe Global Markets** — Finance/Enterprise, Signup x2 + Demo x2. Last activity Jan 9, 2026 — freshest of all 38.
+3. **Commvault** — Tech/Enterprise, G2 + Signup x2 + 6 web sessions. Active Jun 2025.
+4. **Fidelity Investments** — Finance/Enterprise, G2 + Use-case page visit. Active Aug 2025.
+5. **YouTube** — Tech/Enterprise, Signup + 4 web sessions. Active Sep 2025.
+6. **TruStage** — Finance/Enterprise, Demo + recent Feb 2026 activity. ⚠️ Verify no prior Rob outreach first.
+
+**Wave 2 — Next (HIGH ICP + Tier B signals):**
+7. **HashiCorp** — Tech/Enterprise, Aug 2025.
+8. **Datamatics** — Tech/Enterprise, Oct 2025.
+9. **Successive Technologies** — Tech/Mid-Market, Sep 2025.
+10. **Electronic Arts** — Entertainment/Enterprise, 4 web sessions.
+11. **GEICO** — Insurance/Enterprise. Good ICP even with older signals.
+12. **Checkr, Inc.** — Tech/Enterprise. No Nektar date but HOT flagged.
+
+**Wave 3 — HIGH ICP + newly added (no Nektar history yet):**
+13. Veradigm (Healthcare IT)
+14. Corewell Health (Healthcare & Life Sciences)
+15. Charlie Health (Healthcare & Life Sciences)
+
+**Deprioritize / skip for now:**
+- ACCELQ — competitor, needs clearance
+- Tailored Brands — Low ICP, prior outreach flag
+- bp, KKR, CDC, Georgia-Pacific, PGA of America — Low/Medium ICP fit
+- Plenty, Market of Choice, Springboard — commercial/low-fit
+
+---
+
+**ICP Priority Summary (HIGH fit = 18 accounts):**
+Chase, Fidelity Investments, Cetera Financial Group, Cboe Global Markets, TruStage, GEICO, OneMain Financial (Finance/Insurance) · Mindbody, OSF HealthCare, Veradigm, Corewell Health, Charlie Health (Healthcare) · HashiCorp, Commvault, Datamatics, Checkr Inc., Successive Technologies, YouTube, Yahoo, Electronic Arts (Technology/SaaS)
 
 ---
 
