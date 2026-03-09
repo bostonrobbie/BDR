@@ -9,12 +9,24 @@
 ## Last Session
 
 **Date:** 2026-03-09
-**Agent:** Cowork-6 (Mar 9 — T2 email send session)
-**Session title:** 25 of 28 B9/B10/B11 T2 emails sent via Apollo UI. Apollo From address bug discovered + SOP updated.
+**Agent:** Cowork-7 (Mar 9 — Factor accounts read from Salesforce)
+**Session title:** All 38 HOT Factor accounts read from Salesforce report + documented in target-accounts.md with ICP priority flags.
 
 ---
 
 ## What Was Done This Session
+
+### Cowork-7 (Mar 9 continuation — Factor accounts from Salesforce)
+
+1. **Read all 38 HOT Factor accounts from Salesforce** — Navigated to `Untapped Factors Accounts` report (00OOX00000HOtHh2AL). Used Report Builder to remove Account Owner grouping + add Account Owner = Robert Gorham filter. Read all 38 rows via keyboard navigation. Full list now in `memory/target-accounts.md`.
+
+2. **Updated `memory/target-accounts.md`** — Added complete 38-account table with: Account Name, Size, Engagement Level, Industry, ICP Fit rating. Identified 16 HIGH-priority accounts (Finance/Insurance, Healthcare, Technology/SaaS verticals). Flagged ACCELQ as competitor — confirm with Rob before outreach.
+
+3. **Key finding:** Factor list is 38 accounts, not 7 (grew since Nov 2025 original assignment). Most are Enterprise[1000+], all HOT except 7 Warm. 16 accounts are HIGH ICP fit for Testsigma's QA automation pitch.
+
+---
+
+### Cowork-6 (Mar 9 — T2 email send session)
 
 1. **Sent 25 of 28 T2 emails via Apollo UI** — Rob granted APPROVE SEND for all 28 drafts from `t2-email-drafts-mar9.html`. Sends executed one at a time via Apollo contact page.
    - B9: 16 sent (Kylie Summer + Yuliya A excluded — no emails; Georgii Petrosian counted as B11)
@@ -56,7 +68,9 @@
 
 ## Top 3 Priorities for Next Agent
 
-1. **[URGENT] Complete TASK-009 — 25 WV Mar 3 Touch 2 emails** — 12 email addresses still missing. Collect from Apollo (people-match by name + domain), draft all 25 using EM-FU-1 formula (max 70 words, "Re: Quick question, [First Name]" subject, different proof point from T1, "what day works" CTA). Present ALL to Rob before sending. NEVER SEND without "APPROVE SEND."
+1. **[NEW] Start prospecting into HIGH-priority Factor accounts** — 16 HIGH-fit accounts now documented in `memory/target-accounts.md`. Recommended first targets: Chase, HashiCorp, GEICO, Checkr Inc., Commvault, Electronic Arts, Fidelity Investments, TruStage. For each: (1) check MASTER_SENT_LIST for prior contact, (2) search Apollo for QA/SDET leads, (3) build batch per normal ICP rules. Skip ACCELQ until Rob confirms.
+
+2. **[URGENT] Complete TASK-009 — 25 WV Mar 3 Touch 2 emails** — 12 email addresses still missing. Collect from Apollo (people-match by name + domain), draft all 25 using EM-FU-1 formula (max 70 words, "Re: Quick question, [First Name]" subject, different proof point from T1, "what day works" CTA). Present ALL to Rob before sending. NEVER SEND without "APPROVE SEND."
    - Note: TASK-009 uses the OLD EM-FU-1 template — NOT the Variant A formula. Variant A = LinkedIn sequence T2s only.
    - **⚠️ Nabil Ahmed (Progyny):** May not be in Apollo. If not found, search Gmail sent folder for Mar 3 email to progyny.com domain.
 
@@ -202,8 +216,11 @@ Sanjay Singh (ServiceTitan), Lance Silverman, Clyde Faulkner (CAMP Systems), Ash
 - `memory/session/session-log.md` — Mar 9 Cowork-6 entry added
 - `/sessions/gallant-cool-mccarthy/build_t2.py` — Python build script (not in Work folder — not committed to repo)
 
-**Mar 9 continuation — Named Accounts + SOP documentation:**
-- `memory/target-accounts.md` — NEW: documents all 4 account types (Factor 7 HOT accounts, TAM Oct 2025, Manual Testers TAM, Farming ~10 accounts), Salesforce report links, usage rules, key contacts
+**Mar 9 Cowork-7 — Factor accounts from Salesforce:**
+- `memory/target-accounts.md` — UPDATED: Added complete 38-account Factor list with ICP fit ratings. 16 HIGH priority accounts identified.
+
+**Mar 9 continuation — Named Accounts + SOP documentation (Cowork-6 continuation):**
+- `memory/target-accounts.md` — Originally created: documents all 4 account types (Factor accounts, TAM Oct 2025, Manual Testers TAM, Farming ~10 accounts), Salesforce report links, usage rules, key contacts
 - `memory/sop-daily.md` — Added Tier 0: Named Accounts to batch sourcing waterfall (above Buyer Intent)
 - `memory/sop-prospect.md` — Added Named Account Priority section at top (check Factor/TAM/Farming before any Sales Nav search)
 - `memory/sop-outreach.md` — 3-touch sequence note updated (Mar 8 email T2 change)

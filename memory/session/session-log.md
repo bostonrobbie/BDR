@@ -6,6 +6,27 @@
 
 ---
 
+## 2026-03-09 — Cowork-7 — All 38 HOT Factor accounts read from Salesforce + documented in target-accounts.md
+
+**Completed:**
+- Navigated Salesforce `Untapped Factors Accounts` report (00OOX00000HOtHh2AL) via browser automation
+- Used Report Builder to remove Account Owner grouping (converts Summary → Tabular) + added filter: Account Owner = Robert Gorham
+- Read all 38 rows via keyboard navigation (virtual scroll required Down Arrow from selected row)
+- Updated `memory/target-accounts.md` with complete 38-account table, ICP fit ratings, and ⚠️ ACCELQ competitor flag
+- Updated `memory/session/handoff.md` with Cowork-7 section + new Priority #1 (Factor account prospecting)
+- Updated `memory/session/session-log.md` (this entry)
+
+**Key findings:**
+- Factor list is 38 accounts (not 7 from Nov 2025) — expanded since original Shakeel handoff
+- 16 accounts are HIGH ICP fit: Chase, GEICO, TruStage, Fidelity, Cboe, Cetera (Finance/Insurance); Mindbody, OSF HealthCare, Veradigm, Corewell Health, Charlie Health (Healthcare); HashiCorp, Commvault, Datamatics, Checkr, Successive Technologies, YouTube, Yahoo, Electronic Arts (Tech/SaaS)
+- ACCELQ (row 7) is a test automation COMPETITOR — flagged, needs Rob confirmation before outreach
+- SF report had shadow DOM blocking table scroll; worked around via keyboard navigation after row selection
+- Dates on rows 32-38 are 2026 (recently added to list)
+
+**Status:** Factor accounts fully documented. Next: cross-check MASTER_SENT_LIST for each HIGH-priority account, then begin Apollo prospecting.
+
+---
+
 ## 2026-03-09 — Cowork-6 — 25 of 28 B9/B10/B11 T2 emails sent via Apollo UI; Apollo From bug discovered + SOP updated
 
 **Completed:**

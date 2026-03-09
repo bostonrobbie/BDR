@@ -11,15 +11,63 @@ Rob has three distinct account lists assigned by Testsigma leadership, all store
 
 **What they are:** Existing Testsigma prospect accounts that Salesforce has flagged as HOT Factors — accounts showing strong buying signals or intent, previously worked by AE Shakeel who has since left/transferred.
 
-**Rob's assignment:** 7 accounts inherited from Shakeel A (Nov 3, 2025)
+**Rob's assignment:** 38 accounts (current as of Mar 9, 2026 — originally 7 from Shakeel A, expanded since)
 
 **Salesforce Report:** [HOT Factors Untapped Report](https://d2v000000sgbdea0.lightning.force.com/lightning/r/Report/00OOX00000HOtHh2AL/view)
 
 **Channel:** LDR_SDR channel (LinkedIn + email outreach)
 
-**Context:** These are HOT — act on them first. They had prior AE activity (Shakeel) so contacts may already exist in CRM. Check for prior touches before outreach.
+**Context:** These are HOT — act on them first. They had prior AE activity (Shakeel) so contacts may already exist in CRM. Check for prior touches before outreach. Most have recent Nektar activity signals (website sessions, G2 visits, demo page visits).
 
-**Status:** Assigned Nov 2025. Unknown how many have been worked by Rob to date.
+**Status:** 38 accounts confirmed via SF report Mar 9, 2026. Cross-check MASTER_SENT_LIST before prospecting each one.
+
+**⚠️ NOTE: ACCELQ (row 7) is a test automation competitor to Testsigma.** Confirm with Rob before any outreach — they may be in the list by mistake or for competitive monitoring only.
+
+### All 38 Factor Accounts (read from SF report Mar 9, 2026)
+
+| # | Account Name | Size | Engagement | Industry | ICP Fit |
+|---|-------------|------|-----------|----------|---------|
+| 1 | TELUS | Enterprise[1000+] | Warm | Telecommunications | Medium |
+| 2 | GE | Enterprise[1000+] | Hot | Manufacturing | Medium |
+| 3 | Microchip Technology Inc. | Enterprise[1000+] | Hot | Manufacturing | Medium |
+| 4 | Mindbody | Enterprise[1000+] | Hot | Healthcare | **HIGH** |
+| 5 | Datamatics | Enterprise[1000+] | Hot | Technology | **HIGH** |
+| 6 | OneMain Financial | Enterprise[1000+] | Warm | Finance | **HIGH** |
+| 7 | ACCELQ | Commercial[100-499] | Hot | Software | ⚠️ COMPETITOR |
+| 8 | KKR | Enterprise[1000+] | Warm | Finance | Medium |
+| 9 | Cboe Global Markets | Enterprise[1000+] | Hot | Finance | **HIGH** |
+| 10 | Centers for Disease Control and Prevention | Enterprise[1000+] | Hot | Government | Low |
+| 11 | Cetera Financial Group | Enterprise[1000+] | Warm | Finance | **HIGH** |
+| 12 | Charles River Laboratories | Enterprise[1000+] | Hot | Other | Medium |
+| 13 | Enterprise Mobility Inc | Enterprise[1000+] | Hot | Entertainment | Medium |
+| 14 | OSF HealthCare | Enterprise[1000+] | Hot | Healthcare | **HIGH** |
+| 15 | Electronic Arts | Enterprise[1000+] | Hot | Entertainment | **HIGH** |
+| 16 | Fidelity Investments | Enterprise[1000+] | Warm | Finance | **HIGH** |
+| 17 | Commvault | Enterprise[1000+] | Hot | Technology | **HIGH** |
+| 18 | bp | Enterprise[1000+] | Warm | Energy | Low |
+| 19 | Chase | Enterprise[1000+] | Hot | Finance | **HIGH** |
+| 20 | Successive Technologies | Mid Market[500-999] | Warm | Technology | **HIGH** |
+| 21 | HashiCorp | Enterprise[1000+] | Hot | Technology | **HIGH** |
+| 22 | TruStage | Enterprise[1000+] | Hot | Finance | **HIGH** |
+| 23 | GEICO | Enterprise[1000+] | Hot | Insurance | **HIGH** |
+| 24 | Winsupply | Enterprise[1000+] | Hot | Retail | Medium |
+| 25 | Laboratorios Sanfer | Enterprise[1000+] | Hot | Healthcare | Medium |
+| 26 | YouTube | Enterprise[1000+] | Hot | Technology | **HIGH** |
+| 27 | Yahoo | Enterprise[1000+] | Hot | Technology | **HIGH** |
+| 28 | Checkr, Inc. | Enterprise[1000+] | Hot | Technology | **HIGH** |
+| 29 | Tailored Brands, Inc. | Enterprise[1000+] | Hot | Apparel | Low |
+| 30 | Veradigm® | Enterprise[1000+] | Hot | Healthcare | **HIGH** |
+| 31 | Plenty® | Commercial[100-499] | Hot | Agriculture & Mining | Low |
+| 32 | Corewell Health | Enterprise[1000+] | Hot | Healthcare & Life Sciences | **HIGH** |
+| 33 | Charlie Health | Enterprise[1000+] | Hot | Healthcare & Life Sciences | **HIGH** |
+| 34 | Georgia-Pacific LLC | Enterprise[1000+] | Hot | Manufacturing, Automotive & Energy | Low |
+| 35 | Market of Choice | Commercial[100-499] | Hot | Retail & CG | Low |
+| 36 | Springboard | Enterprise[1000+] | Hot | Education | Low |
+| 37 | L3Harris Technologies | Enterprise[1000+] | Hot | Manufacturing | Medium |
+| 38 | PGA of America | Enterprise[1000+] | Hot | Communications & Media | Low |
+
+**ICP Priority Summary (HIGH fit = 16 accounts):**
+Chase, Fidelity Investments, Cetera Financial Group, Cboe Global Markets, TruStage, GEICO (Finance/Insurance) · Mindbody, OSF HealthCare, Veradigm, Corewell Health, Charlie Health (Healthcare) · HashiCorp, Commvault, Datamatics, Checkr Inc., Successive Technologies, YouTube, Yahoo, Electronic Arts (Technology/SaaS)
 
 ---
 
@@ -63,19 +111,6 @@ Rob has three distinct account lists assigned by Testsigma leadership, all store
 **Context:** Assigned Feb 10, 2026. Mithun followed up Mar 5, 2026 reminding AE team to work with their BDRs on upsell/cross-sell.
 
 **Status:** Unknown — check with AE/CSM before any outreach.
-
----
-
-## How to Access the Account Names
-
-All four lists are in Salesforce. Rob needs to:
-
-1. Log into Salesforce at `d2v000000sgbdea0.lightning.force.com`
-2. Navigate to each report link above
-3. Export as CSV (Reports → Export → CSV)
-4. Share the CSVs here → Claude will build a prioritized named account tracker
-
-**Alternative:** Rob can open Salesforce in the browser during a session and Claude can read the report data via browser automation.
 
 ---
 
