@@ -166,6 +166,39 @@ Single HTML file with: prospect tracker table (sorted by priority), individual p
 Filename: `prospect-outreach-[batch#]-[date].html`
 
 
+## Batch Approval Checklist (Present to Rob Before Any Sends)
+
+When presenting a completed batch HTML for Rob's review and APPROVE SEND, include this summary block in the chat:
+
+```
+BATCH [N] SUMMARY — [Date]
+Prospects: [N] included, [N] deferred, [N] flagged
+DNC check: Clean / [N removed]
+Dedup check: Clean / [N removed — names]
+Same-company flags: [None / X resolved: Person A kept, Person B deferred]
+Credit budget: [N] credits required / [N] remaining
+Apollo no-match: [None / X flagged: names]
+A/B groups: Group A ([N]) — [variable tested] | Group B ([N]) — [variable tested]
+
+Ready for review: [link or file path to HTML tracker]
+
+Reply APPROVE SEND to send all, or EDIT [prospect name] with changes.
+```
+
+**What Rob reviews in the HTML:**
+1. One quick read of each T1 message — check for AI-sounding language, wrong names, missing personalization
+2. Priority scores and proof point assignments look correct
+3. No DNC or prior-contact flags
+4. Objection/response pairs look reasonable
+5. T2 and T3 drafts are present in the card (batch is fully built for all 3 touches)
+
+**When Rob gives APPROVE SEND:**
+- "APPROVE SEND" = proceed with all sends in the batch
+- "APPROVE SEND — [name] only" = send that one prospect only, hold the rest
+- "EDIT [prospect name] — [change]" = make the change, re-present, do NOT send yet
+
+---
+
 ## LinkedIn Live Send Procedure (Manual)
 1. Open Sales Navigator profile from tracker.
 2. Run dedup check using composer-first method (blank "New message" = clean).

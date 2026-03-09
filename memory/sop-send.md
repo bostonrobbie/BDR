@@ -181,6 +181,54 @@ Log in pipeline-state.md Email Send History immediately. Do not defer.
 | Chrome extension disconnects | Use tabs_create_mcp → new tab → navigate apollo.io → switch_browser to reconnect |
 | Page blank after navigate | Go to #/home first, then search |
 
+## T3 LinkedIn Connection Request Send
+
+Use this procedure when sending Touch 3 (Day 10 — LinkedIn connection request) for prospects in the LinkedIn Outbound - Q1 Priority Accounts sequence.
+
+### Hard Rules
+- Send Day 10 (±1 day) from T1 InMail date. Do NOT send T3 before Day 9.
+- Never pitch in T3. Goal = get accepted (1st degree), not to close.
+- Max 200-250 characters (under LinkedIn's 300-char hard limit).
+- Do NOT reference T1/T2 messages explicitly ("I sent you an InMail" = awkward). A light topic callback is fine.
+- Rob must give APPROVE SEND before any connection request is sent.
+
+### Connection Note Templates (rotate to avoid repetition)
+- "Hi [First], been following [Company]'s work in [relevant space] — thought it made sense to connect. Rob"
+- "Hi [First], reached out about QA automation a couple weeks back. Either way, good to be connected. Rob"
+- "Hi [First], [Company]'s [relevant initiative] caught my attention — would love to stay connected. Rob"
+- "Hi [First], interested in what you're building at [Company] on the QA side. Happy to connect either way. Rob"
+
+### Step-by-Step Send Procedure
+
+**1. Navigate to prospect's LinkedIn profile**
+Use the LinkedIn URL from the batch tracker (linkedin.com/in/...). Do NOT use Sales Navigator for this step — use standard LinkedIn.
+
+**2. Check connection status**
+Confirm they are still 2nd or 3rd degree (not already 1st degree from a prior connection). If already 1st degree: skip T3 (already connected), note as "Connected" in tracker.
+
+**3. Click "Connect"**
+Click the Connect button on their profile. If the button shows "Follow" instead: click the three-dot menu (•••) → "Connect."
+
+**4. Add a note**
+When the connection modal opens: click "Add a note" (do NOT click "Send without a note" — personalized notes have higher acceptance rates). Paste the approved connection note from the batch tracker. Confirm character count ≤ 250.
+
+**5. Verify and send**
+Screenshot the modal showing the note text before sending. Present to Rob with "Reply APPROVE SEND to send, or EDIT with changes."
+
+**6. Post-send logging**
+Update batch tracker: Status = T3 Sent, date sent. Log in pipeline-state.md. Note: once accepted, this contact becomes 1st degree — future DMs are FREE.
+
+### Common Errors & Fixes
+| Issue | Fix |
+|-------|-----|
+| "Connect" button missing | Check if already connected (1st degree). If 3rd degree with no mutual connections, may be limited. Note as "T3 blocked" and skip. |
+| Can only "Follow" | Three-dot menu → Connect. If unavailable, prospect has restricted connections. Skip. |
+| Character count > 250 | Trim note. Never exceed 250 chars (buffer under LinkedIn's 300 limit). |
+| Note field doesn't appear | Click "Add a note" explicitly before typing. Do NOT send without note. |
+| Profile not findable | Search by name on LinkedIn. If still not found, log as "T3 - profile unavailable." |
+
+---
+
 ## LinkedIn Safety & Compliance
 ### Pacing Limits
 | Activity | Daily Max | Weekly Max |
