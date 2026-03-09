@@ -2,6 +2,26 @@
 
 ---
 
+## Mar 9 Status — T2 Drafts Approved (APPROVE SEND Granted)
+
+**Date:** 2026-03-09
+**Action:** Rob granted APPROVE SEND for all 28 T2 email drafts built this session.
+**File:** `/Work/t2-email-drafts-mar9.html`
+**Formula:** Locked Variant A (company fact → "I'd imagine..." → LinkedIn callback → customer story + tie-back → engagement CTA). Full spec in `memory/sop-email.md`.
+**Send from:** robert.gorham@testsigma.com ONLY. Rob executes sends manually.
+
+| Batch | Drafts ready | Notes |
+|-------|-------------|-------|
+| B9 | 16 | Kylie Summer (Quizizz) + Yuliya A (Planview) missing emails — pending Rob decision |
+| B10 | 9 | Sravanti Krothapalli email domain qbsol.com ⚠️ may be prior employer — verify before sending |
+| B11 | 3 | Dan Heintzelman (Prevail Legal) missing email — pending Rob decision |
+| **Total** | **28** | |
+
+**B9 is overdue (Day 5+ as of Mar 9). Send B9 first.**
+**B10/B11 T2 due Mar 11 (Day 5 from Mar 6 T1 sends).**
+
+---
+
 ## Mar 7 Audit Findings (Apollo Full Cross-Channel Audit)
 
 **Conducted:** Mar 7, 2026. Full Apollo sequence audit + Gmail cross-channel double-send check.

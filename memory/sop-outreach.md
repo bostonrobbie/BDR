@@ -79,16 +79,17 @@ Before sending, check for:
 Every prospect gets 3 touches across 2 channels:
 
 **Day 1 — Touch 1 (LinkedIn InMail):** Full 5-element message, 80-120 words. Costs 1 InMail credit for 2nd/3rd degree.
-**Day 5 — Touch 2 (Email):** 40-70 words, new angle/proof point. Follow `memory/sop-email.md`. Template: EM-FU-1 or EM-FU-2.
+**Day 5 — Touch 2 (Email):** 60-90 words. Uses locked Variant A formula (approved Mar 9, 2026). 5-part structure: opening company fact → "I'd imagine..." empathy bridge → LinkedIn callback naming the T1 topic → customer story + tie-back → engagement CTA tied to opening tension. NOT a meeting ask in T2. Full formula, examples, and hard rules: `memory/sop-email.md`.
 **Day 10 — Touch 3 (LinkedIn Connection Request):** Short note, 200-250 chars max. Goal is to get accepted (1st degree) — not to pitch. See Connection Request rules below.
 
 Rules:
 - Each touch uses a DIFFERENT proof point/angle
-- T2 email is a standalone message — do NOT reference T1 InMail, prospect may not remember it
+- T2 email DOES reference the T1 LinkedIn topic — via the LinkedIn callback (Part 3 of Variant A). The callback names the T1 topic, explains the channel switch, and creates continuity across touches. This is intentional.
+- T2 CTA is an engagement question tied to the opening tension. Meeting ask is reserved for T3 or after a reply.
 - T3 connection request is a relationship move, NOT another sales ask
 - No break-up message
 - Sequence lives in Apollo: "LinkedIn Outbound - Q1 Priority Accounts" (steps 1-3)
-- See `memory/sop-email.md` for full T2 email drafting rules
+- See `memory/sop-email.md` for full T2 email drafting rules (Variant A formula)
 
 ### Why Email for T2 (not a second InMail)
 InMail T2s cost 1 credit each for 2nd/3rd degree prospects (confirmed via live testing Mar 8). With limited credits (reset monthly), using them for T2 follow-ups has poor ROI. Email is free, multi-channel lift is +37% per Gong data, and T2 email response rates are well-documented. Credits are reserved for fresh T1 InMails to new prospects.
