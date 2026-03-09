@@ -5,17 +5,88 @@
 - Do not use LinkedIn send steps, LinkedIn cadence, or LinkedIn QA from `memory/sop-outreach.md`.
 - LinkedIn InMail/follow-up operations are run separately in `memory/sop-outreach.md`.
 
-## Multi-Channel T2 Email (After LinkedIn InMail T1)
+## Multi-Channel T2 Email (After LinkedIn InMail T1) — Locked Formula Mar 9
 
-When email is used as Touch 2 in the LinkedIn Outbound sequence (Day 5 after T1 InMail):
+When email is used as Touch 2 in the LinkedIn Outbound sequence (Day 5 after T1 InMail).
 
-- **Do NOT reference T1 InMail.** Prospect may not remember it. Write as a fully standalone message.
-- **Do NOT say "following up" or "circling back."** Treat it as fresh outreach on a new angle.
-- **Word count:** 40-70 words. Tighter than a standard T1 email.
-- **Template:** EM-FU-1 or EM-FU-2 (new proof point or capability match — different from T1 angle).
-- **Subject line:** Problem-framed or outcome-framed (not SMYKM for T2 unless strong signal exists).
-- **Same writing rules apply:** No em dashes, no "I noticed," no generic closes. "What day works" CTA.
-- **Sequence step:** Step 2 of "LinkedIn Outbound - Q1 Priority Accounts" (Day 5, Manual Email).
+### Locked Formula: Variant A (approved Mar 9, 2026)
+
+The T2 email follows a 5-part structure. Each part must be executed in order. The formula must be INVISIBLE — it should read as a human wrote one cohesive message, not as a fill-in-the-blank template.
+
+**Part 1 — Opening company fact (1 sentence)**
+A specific, undeniably true statement about what the company does, builds, or sells. NOT an industry generalization. NOT a quality/emotion word (e.g., "rigor," "excellence"). A concrete, factual claim about their product or business model.
+- ✅ "AuditBoard builds the platform that companies use to manage their internal audits, risk, and compliance programs."
+- ✅ "Kaseya runs one of the largest portfolios of IT management products in the industry."
+- ✅ "Fairfax Software's payment processing platform is deployed across tax and revenue agencies in half the states in the US."
+- ❌ "AuditBoard sells rigor to its customers." (rigor = emotion, not a product)
+- ❌ "Healthcare IT companies face complex compliance requirements." (industry generalization)
+
+**Part 2 — "I'd imagine..." empathy bridge (1 sentence)**
+Connects the opening fact to the specific QA/release pressure it creates for THEIR team. Makes the logic feel inevitable. Uses "I'd imagine" as the entry phrase.
+- ✅ "I'd imagine that puts a certain pressure on your own releases, knowing the teams using your platform are auditors and compliance officers who notice everything."
+- ✅ "I'd imagine every acquisition brings in a codebase with its own test environment that nobody outside that original team fully understands."
+
+**Part 3 — LinkedIn callback (1 sentence)**
+References the T1 InMail naturally as a bridge, naming the specific topic covered. Explains the channel switch practically — "but thought X was worth adding/sending separately." Does NOT apologize for reaching out again. Does NOT say "following up."
+- Format: "I reached out on LinkedIn about [specific T1 topic], but thought [specific angle] was worth [adding / sending separately]."
+- ✅ "I reached out on LinkedIn about Selenium overhead, but thought a coverage angle was worth adding."
+- ✅ "I reached out on LinkedIn about regression efficiency, but thought a maintenance angle was worth sending separately."
+- ❌ "I sent you a LinkedIn message but figured email was a better spot to share a proof point." (too corporate, announces the formula)
+
+**Part 4 — Customer story + connection (2 sentences)**
+Sentence 1: "One of our customers, [Name], [brief story — what they were dealing with and what changed]."
+Sentence 2: Tie the result back to the prospect's specific situation. Use "Reminded me of..." or "Felt like the kind of thing..." — NOT "I thought you might find this interesting."
+- ✅ "One of our customers, Hansard, was in a similar spot and cut their regression window from 8 weeks to 5 with AI that generates and heals tests automatically. Reminded me of the pressure your team is probably navigating."
+- ✅ "One of our customers, CRED, reached 90% regression coverage using AI tests written in plain English. Reminded me of the kind of confidence that matters when government agencies are depending on your platform to process payments without interruption."
+
+**Part 5 — Tied CTA (1 sentence)**
+An engagement question — NOT a meeting ask. Must echo the specific tension established in Parts 1-2. Generic CTAs ("Is this relevant for your team?") are not acceptable.
+- ✅ "Does that tension actually show up in how you approach releases?" (mirrors Part 1: AuditBoard compliance irony)
+- ✅ "Is the maintenance side something your team is trying to get ahead of?" (mirrors Part 1: Kaseya M&A complexity)
+- ✅ "Is test coverage something your team is actively working to improve?" (mirrors Part 1: Fairfax state agency stakes)
+- ❌ "What day works for a quick call?" (DO NOT use as T2 CTA — save for T3 or after engagement)
+- ❌ "Is this something your team deals with?" (too generic)
+
+### Hard Rules (non-negotiable)
+
+- No em dashes anywhere
+- No "I noticed" / "I saw" / "I came across"
+- No "following up" / "circling back"
+- No testsigma.com URL in body (removed entirely from T2)
+- No "proof point" language (too corporate)
+- No "figured email was a better spot" phrasing
+- No meeting ask — T2 CTA is engagement only
+- LinkedIn callback MUST name the specific T1 topic (not generic "about test automation")
+- Opening MUST be a concrete company fact, not an industry observation
+- Proof point rotation REQUIRED — T2 customer story must be different from T1 story
+- Word count: 60-90 words (slightly longer than original 40-70 due to fuller structure)
+- Subject line: "[topic] at [Company]" format (e.g., "QA cycles at AuditBoard", "Test maintenance at Kaseya")
+- Send from: robert.gorham@testsigma.com ONLY
+- NEVER SEND without Rob's explicit "APPROVE SEND"
+
+### Proof Point Rotation Reference
+
+| Story | Key fact | Best for |
+|-------|----------|----------|
+| Hansard | Regression window: 8 wks → 5 wks | Companies with long release cycles, compliance pressure |
+| Sanofi | Test creation: 3 days → 80 min | Large enterprises, pharma, healthcare IT |
+| CRED | 90% regression coverage, 5x faster | Coverage gaps, scale challenges |
+| Medibuddy | 50% test maintenance reduction | Maintenance overhead, growing codebases, M&A complexity |
+| Cisco | 35% regression reduction | Enterprise, platform companies, hardware-software complexity |
+
+### Opening Angle Patterns
+
+- **Irony angle:** Company's product/standards create internal QA pressure (AuditBoard audits compliance but must pass their own releases, HackerRank tests developers but must test their own platform, Datto protects MSPs from downtime but must be downtime-free)
+- **M&A / portfolio complexity:** Multiple acquisitions = multiple inherited codebases with unknown test environments (Kaseya, Upland, Persistent, Tavant)
+- **Regulatory / mission-critical:** Platform failures affect regulated customers or critical operations (Fairfax/state agencies, IDB Bank/banking, Ncontracts/banking compliance, Prevail Legal/legal case management)
+- **Campaign criticality:** Platform errors during live campaigns have outsized impact (Mediaocean ad spend, Bynder brand campaigns)
+- **Field operations:** Software embedded in deployed hardware or field systems (Trimble construction, Digi remote devices, Simpro field services)
+
+### Sequence Position
+
+- Step 2 of "LinkedIn Outbound - Q1 Priority Accounts" (Day 5, Manual Email task)
+- Apollo task note instructs: "Send via robert.gorham@testsigma.com. Use T2 locked formula. Do NOT reference T1 InMail directly."
+- Day count starts from Day 1 InMail send date
 
 ## Canonical References
 - Primary detailed process: `docs/sops/outreach_email_sop.md`

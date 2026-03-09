@@ -6,12 +6,48 @@
 
 ---
 
+## 2026-03-09 — Cowork-5 — Variant A T2 formula locked through iteration; 28 drafts built; SOPs updated
+
+**Completed:**
+- **Locked Variant A T2 email formula** through multi-round iteration with Rob. Final 5-part structure:
+  1. Opening company fact (specific, concrete — not industry generalization)
+  2. "I'd imagine..." empathy bridge (connects opening to their specific QA/release pressure)
+  3. LinkedIn callback naming T1 topic ("I reached out on LinkedIn about [X], but thought [Y] was worth adding")
+  4. Customer story: "One of our customers, [Name]..." + tie-back sentence ("Reminded me of...")
+  5. Engagement CTA tied to opening tension (NOT a meeting ask — T2 = engagement only)
+- **Key formula decisions made by Rob this session:**
+  - Opening = concrete company fact, not industry observation. "AuditBoard sells rigor" = wrong. "AuditBoard builds the platform companies use to manage audits, risk, and compliance" = correct.
+  - LinkedIn reference sits mid-email as bridge, not at opening and not as apology for following up.
+  - "Figured email was a better spot to share a proof point" = too corporate. Replaced with casual alternatives.
+  - No testsigma.com URL anywhere in T2.
+  - CTA must mirror opening tension, not be a generic placeholder. "What day works" is reserved for T3.
+  - "One of our customers, [Name]" + tie-back sentence is the locked customer story format.
+- **Built 28 T2 email drafts** in `t2-email-drafts-mar9.html`:
+  - B9: 16 drafts (Kylie Summer/Quizizz + Yuliya A/Planview excluded — no emails found)
+  - B10: 9 drafts (all written; Sravanti Krothapalli email domain ⚠️ uncertain — qbsol.com may be prior employer)
+  - B11: 3 drafts (Dan Heintzelman/Prevail Legal skipped — no email)
+  - Researched Fairfax Software via web search (payment processing + doc mgmt for state tax/revenue agencies in half of US states)
+- **Updated `memory/sop-email.md`** — Full Variant A formula documented with examples for all 5 parts, hard rules, proof point rotation table, opening angle pattern library.
+- **Updated work-queue.md** — TASK-010 + TASK-011 status updated to "DRAFTS BUILT — AWAITING ROB REVIEW + APPROVE SEND"
+- **Updated handoff.md** — Full session state captured
+
+**Status:** Drafts built, awaiting Rob review. 4 prospects with missing emails pending Rob decision.
+
+**Files changed:**
+- `/Work/t2-email-drafts-mar9.html` (new — 28 T2 email drafts)
+- `memory/sop-email.md` (Variant A formula fully documented — replaces thin Mar 8 stub)
+- `memory/session/work-queue.md` (TASK-010 + TASK-011 updated)
+- `memory/session/handoff.md` (updated)
+- `memory/session/session-log.md` (this entry)
+
+---
+
 ## 2026-03-08 — Cowork-4 — Sequence pivot: 3-touch multi-channel SOP implemented in Apollo + SOPs
 
 **Completed:**
 - **Apollo sequence "LinkedIn Outbound - Q1 Priority Accounts" restructured** to 3-touch multi-channel strategy (Rob's decision from prior session):
   - Step 1: LinkedIn InMail (Day 1, High) — unchanged
-  - Step 2: Changed from "LinkedIn InMail Follow-up" → **Action item / Manual Email** (Day 5, High). Task note: "Touch 2 — MANUAL EMAIL (Day 5): Send via robert.gorham@testsigma.net. Use EM-FU-1 or EM-FU-2 template. 40-70 words, new angle — do NOT reference T1 InMail. Standalone message."
+  - Step 2: Changed from "LinkedIn InMail Follow-up" → **Action item / Manual Email** (Day 5, High). Task note: "Touch 2 — MANUAL EMAIL (Day 5): Send via robert.gorham@testsigma.com. Use EM-FU-1 or EM-FU-2 template. 40-70 words, new angle — do NOT reference T1 InMail. Standalone message."
   - Step 3: Changed from "LinkedIn send message (Day 30)" → **LinkedIn Connection Request** (Day 10, Medium). Task note + default LI message template added.
   - Sequence saved successfully in Apollo (green success toast confirmed).
 - **`memory/sop-email.md` updated** — Added "Multi-Channel T2 Email" section with rules: standalone message, no T1 reference, 40-70 words, EM-FU-1 or EM-FU-2 template.

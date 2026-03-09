@@ -8,34 +8,38 @@
 
 ## Last Session
 
-**Date:** 2026-03-08
-**Agent:** Cowork-4 (Mar 8 — sequence pivot session)
-**Session title:** 3-touch multi-channel sequence implemented — Apollo Steps 2+3 changed, SOPs updated.
+**Date:** 2026-03-09
+**Agent:** Cowork-5 (Mar 9 — T2 formula lock + 28-draft build session)
+**Session title:** Variant A T2 formula locked, 28 drafts built, SOPs updated.
 
 ---
 
 ## What Was Done This Session
 
-1. **Apollo sequence "LinkedIn Outbound - Q1 Priority Accounts" restructured** per Rob's decision to switch from InMail-only to multi-channel:
-   - Step 2: Changed from LinkedIn InMail Follow-up → **"Action item" (Manual Email, Day 5, High)**. Task note instructs: send via robert.gorham@testsigma.net, use EM-FU-1/EM-FU-2, 40-70 words, standalone — do NOT reference T1 InMail.
-   - Step 3: Changed from LinkedIn send message (Day 30) → **LinkedIn Connection Request (Day 10, Medium)**. Task note + default LI message template added ("Hi [First], reached out about QA automation a couple weeks back. Either way, good to be connected. Rob").
-   - Sequence saved successfully.
+1. **Locked Variant A T2 email formula** through iterative refinement with Rob:
+   - Opening company fact (concrete, specific — not industry generalization)
+   - "I'd imagine..." empathy bridge connecting opening to QA/release pressure
+   - LinkedIn callback naming the specific T1 topic ("I reached out on LinkedIn about [X], but thought [Y] was worth adding")
+   - Customer story: "One of our customers, [Name]..." + tie-back sentence ("Reminded me of...")
+   - Engagement CTA tied to opening tension (NOT a meeting ask — T2 = engagement only)
 
-2. **`memory/sop-email.md` updated** — Added "Multi-Channel T2 Email (After LinkedIn InMail T1)" section at top. Rules: standalone message, no T1 reference, 40-70 words, EM-FU-1 or EM-FU-2, problem-framed subject.
+2. **Built 28 T2 email drafts** using the locked formula:
+   - B9: 16 drafts (Kylie Summer + Yuliya A excluded — no emails)
+   - B10: 9 drafts (all complete, Sravanti Krothapalli flagged ⚠️)
+   - B11: 3 drafts (Dan Heintzelman missing — skipped)
+   - File: `/Work/t2-email-drafts-mar9.html`
+   - Build script: `/sessions/gallant-cool-mccarthy/build_t2.py`
+   - Researched Fairfax Software via web search (payment processing + doc mgmt for state tax agencies)
 
-3. **`memory/sop-outreach.md` updated** (prior sub-session) — 3-Touch Multi-Channel Sequence section written; InMail credit mechanics corrected (2nd/3rd degree = 1 credit even in existing threads); Connection Request rules and templates added.
+3. **Updated `memory/sop-email.md`** — Full Variant A formula documented with examples for all 5 parts, hard rules, proof point rotation table, opening angle pattern library (irony, M&A/portfolio, regulatory, campaign, field ops).
 
-4. **`memory/apollo-config.md` corrected** — Step count 4→3, phantom Step 4 (Phone Call Day 15) removed, Step 3 description updated to reflect LI Connection Request (Day 10).
-
-5. **Work queue updated** — TASK-010 marked as strategy-changed, TASK-011 added for B9/B10/B11 email T2 draft build.
-
-**⚠️ KEY IMPLICATION:** The `linkedin-t2-drafts-mar8.html` InMail T2 drafts (Sections 1, 2, 3) are now OBSOLETE as the T2 vehicle. T2 is now email. Those drafts should be discarded/ignored. Email T2 drafts need to be built (TASK-011).
+4. **Updated `memory/session/work-queue.md`** — TASK-010 + TASK-011 updated to "DRAFTS BUILT — AWAITING ROB REVIEW + APPROVE SEND."
 
 ---
 
 ## Current State Snapshot
 
-### Pipeline numbers (as of 2026-03-08)
+### Pipeline numbers (as of 2026-03-09)
 | Metric | Value |
 |--------|-------|
 | Total unique prospects contacted | 206 |
@@ -49,15 +53,44 @@
 
 ## Top 3 Priorities for Next Agent
 
-1. **[URGENT] Build B9 T2 email drafts — TASK-011** — 17 B9 prospects are past Day 5 and need Touch 2 EMAIL (NOT InMail). The `linkedin-t2-drafts-mar8.html` InMail drafts are now OBSOLETE. Build fresh email T2s using EM-FU-1/EM-FU-2 (40-70 words, new proof point, standalone message, "what day works" CTA). Collect email addresses from Apollo for any missing. Present all to Rob before sending. **B10/B11 email T2s also due Mar 11** (9 + 4 prospects).
+1. **[URGENT] Get Rob's review + APPROVE SEND on 28 T2 drafts** — `t2-email-drafts-mar9.html` is built and ready. Rob must review each draft and say "APPROVE SEND" before anything goes out. Rob sends from robert.gorham@testsigma.com. B9 drafts are overdue. B10/B11 due Mar 11.
+   - **⚠️ 4 pending decisions before final draft count:**
+     - Sravanti Krothapalli: email sravanti.k@qbsol.com may be prior employer (Quorum is her current company) — find Quorum email or send to qbsol?
+     - Kylie Summer (Quizizz): no email found — LinkedIn search?
+     - Yuliya A (Planview): no email found — LinkedIn search?
+     - Dan Heintzelman (Prevail Legal): no email found — LinkedIn search?
 
-2. **[URGENT] Complete TASK-009 — 25 Touch 2 emails** — 12 email addresses still missing from WV Mar 3 batch. Collect from Apollo first (people-match by name + domain), then draft all 25 using template EM-FU-1 (max 70 words, subject "Re: Quick question, [First Name]", different proof point from T1, "what day works" CTA). Present ALL to Rob before sending. NEVER SEND without "APPROVE SEND."
+2. **[URGENT] Complete TASK-009 — 25 WV Mar 3 Touch 2 emails** — 12 email addresses still missing. Collect from Apollo (people-match by name + domain), then draft all 25 using EM-FU-1 formula (max 70 words, "Re: Quick question, [First Name]" subject, different proof point from T1, "what day works" CTA). Present ALL to Rob before sending. NEVER SEND without "APPROVE SEND."
+   - Note: TASK-009 uses the OLD EM-FU-1 template ("Re: Quick question" subject, "what day works" CTA) — NOT the Variant A formula. Variant A = LinkedIn sequence T2s only.
 
-3. **[Mon Mar 9] B10 InMail sends — TASK-001** — 8 B10 contacts need T1 InMail still (8 credit InMails queued, but only 4 credits remain). Check enrollment status first. Rob decides who gets the 4 remaining credits. Sasa Lazarevic + Christian Melville still blocked by Apollo ownership — Rob must resolve.
+3. **[Mon Mar 9] B10 InMails — TASK-001** — 8 credit InMails queued, only 4 credits remain. Confirm enrollment status first. Rob decides who gets the 4 remaining credits. Sasa Lazarevic + Christian Melville still blocked by Apollo ownership.
 
 ---
 
-## TASK-009 — Touch 2 Emails Detail (25 total)
+## T2 Draft Formula (locked Mar 9) — Quick Reference
+
+**For B9/B10/B11 T2 emails only (LinkedIn sequence T2s):**
+```
+[Subject: [topic] at [Company]]
+
+[First],
+
+[Opening company fact — specific, concrete, undeniably true.]
+I'd imagine [empathy bridge: what that means for their QA/release pressure].
+
+I reached out on LinkedIn about [specific T1 topic], but thought [specific angle] was worth [adding / sending separately].
+One of our customers, [Name], [brief story]. [Tie-back: "Reminded me of..."]
+
+[Engagement CTA tied to opening tension — not a meeting ask]
+
+Rob
+```
+
+Hard rules: No em dashes. No URL. No "following up." No "I noticed." No meeting ask in CTA. LinkedIn callback names T1 topic. Opening = company fact, not industry observation. T2 proof point ≠ T1 proof point.
+
+---
+
+## TASK-009 — Touch 2 Emails Detail (25 total — unchanged from Mar 8)
 
 ### Emails already confirmed (13 total):
 
@@ -84,7 +117,7 @@
 
 ### Emails still needed — pull from Apollo (12):
 | Name | Domain | Vertical | Proof Point for T2 |
-|------|--------|----------|--------------------|
+|------|--------|----------|-------------------|
 | Courtney Corbin | vizientinc.com | Healthcare | Sanofi 3d→80min |
 | Jason Schwichtenberg | webmd.net | Healthcare ⚠️double-channel | Sanofi 3d→80min |
 | Geoffrey Juma | solera.com | InsurTech | Hansard 8→5wk |
@@ -101,51 +134,21 @@
 ⚠️ **Nabil Ahmed (Progyny):** May not be in Apollo. If not found, search Gmail sent folder for Mar 3 email to progyny.com domain.
 ⚠️ **Double-channel contacts** (Schwichtenberg, McGee, Kurt): Still send T2 email per Rob's Mar 8 confirmation.
 
-### Draft rules (non-negotiable):
+### Draft rules (non-negotiable — TASK-009 uses EM-FU-1, NOT Variant A formula):
 - Template: EM-FU-1 from TEMPLATE_LIBRARY.md
 - Subject: "Re: Quick question, [First Name]"
 - Max 70 words. No em dashes. No "I noticed/I saw." Reduction framing only.
 - 1-2 question marks max. MQS ≥ 9/12.
+- CTA: "What day works" (standard EM-FU-1 CTA — NOT engagement question)
 - Send from: robert.gorham@testsigma.com ONLY
 - NEVER SEND without Rob's explicit "APPROVE SEND"
-
----
-
-## TASK-010/TASK-011 — B9/B10/B11 Touch 2 (STRATEGY CHANGED — Now EMAIL, not InMail)
-
-**Status:** PENDING — email T2 drafts not yet built
-**Due:** B9 = ASAP (overdue). B10/B11 = Mar 11
-
-⚠️ **Strategy changed Mar 8.** T2 is now EMAIL (standalone, new angle, 40-70 words), NOT InMail follow-up. The `linkedin-t2-drafts-mar8.html` InMail drafts are OBSOLETE for T2. Build email drafts instead.
-
-Process: Collect email addresses from Apollo → Draft T2 emails (EM-FU-1/EM-FU-2) → Present to Rob → Rob sends from robert.gorham@testsigma.net.
-
-| Prospect | Company | T1 Proof Point Used | T2 Rotation |
-|----------|---------|---------------------|-------------|
-| Mohan Guruswamy | Tavant | CRED 90%+5x | Medibuddy |
-| Lueanne Fitzhugh | Cerner | Sanofi 3d→80min | Hansard |
-| Jeremy Cira | Kaseya | Cisco 35% | Medibuddy |
-| Chandana Ray | Persistent | Medibuddy | Sanofi |
-| Martha Horns | Greenway Health | Sanofi 3d→80min | Hansard |
-| David Gustafson | HG Insights | 90% maintenance | CRED |
-| Jiaping Shen | HackerRank | Spendflo 50% | CRED |
-| Sravanti Krothapalli | Quorum | Sanofi 3d→80min | Medibuddy |
-| Cooper Morrow | Jama | Spendflo 50% | Hansard |
-| Manigandan Kanagasabai | Mediaocean | 70% Selenium | CRED |
-| Leah Coates | Perforce | Hansard 8→5wk | Cisco |
-| Kylie Summer | Quizizz | Spendflo 50% | CRED |
-| Kanan Hasanzade | Datto | 70% Selenium | Medibuddy |
-| Azam Quraishi | MTX Group | 70% Selenium | Sanofi |
-| Yuliya A | Planview | Medibuddy | Hansard |
-| Grant Anderson | Lucid | Medibuddy | CRED |
-| Denise Barnett | Progress Software | Cisco 35% | Hansard |
 
 ---
 
 ## Active Warm Leads
 | Name | Company | Status |
 |------|---------|--------|
-| Namita Jain | OverDrive | T1 sent Feb 27. Day 9 as of Mar 8. Check Gmail for reply FIRST. Draft T2 if no reply. |
+| Namita Jain | OverDrive | T1 sent Feb 27. Day 10 as of Mar 9. Check Gmail for reply FIRST. Draft T2 if no reply. |
 | Pallavi Sheshadri | Origami Risk | Rob replied Mar 2. Monitoring for response. |
 
 ---
@@ -157,8 +160,7 @@ Sanjay Singh (ServiceTitan), Lance Silverman, Clyde Faulkner (CAMP Systems), Ash
 
 ## Secondary / Monitoring
 
-- **WV Mar 6 T2** (Mark Townsend, Kanwar Sangwan, Alex Wong, Prateek Negi, Misty Pesek, Katrina Walker, Joe Biggert) — NOT eligible until Mar 11 (Day 4). Do not draft until Mar 10/11.
-- **B10 T2 + B11 T2** — Due Mar 11. Drafts already built in `linkedin-t2-drafts-mar8.html` Sections 2 + 3. Rob sends via Sales Nav on/after Mar 11.
+- **WV Mar 6 T2** (Mark Townsend, Kanwar Sangwan, Alex Wong, Prateek Negi, Misty Pesek, Katrina Walker, Joe Biggert) — NOT eligible until Mar 11 (Day 4/5). Do not draft until Mar 10/11.
 - **TASK-001 Mon Mar 9 B10 InMails** — 8 credit InMails queued, only 4 credits remain. Confirm enrollment status. Rob decides who gets credits. See `memory/pipeline-state.md` B10 section.
 - **TASK-003 B10 enrollment blockers** — Sasa Lazarevic + Christian Melville blocked by Apollo ownership. Rob must resolve. 5 others (Kristyn Burke, Tim Hartgrave, Vince Delfini, Padmanaban Vadivelu, Ravi Nag) — attempt enrollment via MCP.
 - **TASK-007 Apollo WV "81 delivered" mystery** — Not blocking. Low priority.
@@ -179,21 +181,20 @@ Sanjay Singh (ServiceTitan), Lance Silverman, Clyde Faulkner (CAMP Systems), Ash
 
 ## Blockers / Flags
 
-- **12 email addresses still missing** for WV Mar 3 Touch 2 drafts — see table above.
-- **Nabil Ahmed (Progyny)** may not be in Apollo. Check Gmail sent if Apollo returns null.
-- **0 T2 email drafts written yet** — collection was the blocker.
+- **4 prospects with no emails** for T2 drafts — Rob must decide: LinkedIn search or skip? (Kylie Summer/Quizizz, Yuliya A/Planview, Dan Heintzelman/Prevail Legal, Sravanti Krothapalli/Quorum email domain uncertain)
+- **12 email addresses still missing** for WV Mar 3 Touch 2 drafts (TASK-009)
+- **0 TASK-009 T2 drafts written yet** — email collection is the blocker
 - Push to GitHub requires Rob to run `git push origin main` from his terminal. VM has no stored GitHub credentials.
 - B10 Apollo ownership blocks: Sasa Lazarevic + Christian Melville — Rob must resolve manually.
-- **InMail credits: only 4 remaining** — ⚠️ Thread continuation does NOT mean free for 2nd/3rd degree contacts. Only 1st degree (connected) prospects can be replied to for free. With 4 credits: prioritize top 4 + Leah Coates (free). All B10/B11 also cost credits (unverified degrees — check before sending).
+- **InMail credits: only 4 remaining** — Thread continuation does NOT mean free for 2nd/3rd degree. Only 1st degree (connected) prospects can be replied to for free. Prioritize top 4.
 
 ---
 
 ## Files Changed This Session
 
-- `memory/sop-email.md` — Multi-Channel T2 Email section added (standalone rules for email as T2 after LI InMail T1)
-- `memory/sop-outreach.md` — 3-touch multi-channel sequence documented; connection request rules/templates added; InMail credit mechanics corrected and demoted to reference
-- `memory/apollo-config.md` — Step count corrected (4→3), phantom Step 4 removed, Step 3 description updated (LI Connection Request Day 10)
-- Apollo sequence UI — Step 2 changed to Action item/Manual Email (Day 5) + task note; Step 3 changed to LinkedIn Connection Request (Day 10) + task note + LI message template. Saved.
-- `memory/session/work-queue.md` — TASK-010 updated (strategy changed), TASK-011 added (B9/B10/B11 email T2 drafts)
+- `memory/sop-email.md` — Variant A T2 formula fully documented (5 parts, hard rules, proof point rotation, opening angle patterns). Replaces thin Mar 8 stub.
+- `memory/session/work-queue.md` — TASK-010 + TASK-011 updated to "DRAFTS BUILT — AWAITING ROB REVIEW + APPROVE SEND"
 - `memory/session/handoff.md` — this file
-- `memory/session/session-log.md` — Mar 8 Cowork-4 entry added
+- `memory/session/session-log.md` — Mar 9 Cowork-5 entry added
+- `/Work/t2-email-drafts-mar9.html` — 28 T2 drafts (B9 x16, B10 x9, B11 x3)
+- `/sessions/gallant-cool-mccarthy/build_t2.py` — Python build script (not in Work folder — not committed to repo)

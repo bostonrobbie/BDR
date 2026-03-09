@@ -10,12 +10,12 @@
 ## Active Tasks
 
 ### TASK-010 | B9 Touch 2 sends (17 prospects) — ⚠️ STRATEGY CHANGED
-**Status:** PENDING — ⚠️ Strategy changed Mar 8. Was InMail T2. Now EMAIL T2.
+**Status:** DRAFTS BUILT — AWAITING ROB REVIEW + APPROVE SEND (see TASK-011)
 **Priority:** URGENT — overdue (Day 5+ as of Mar 8/9)
 **Due:** ASAP
-**Description:** 17 B9 prospects need Touch 2. New SOP (Mar 8): T2 = standalone EMAIL (Day 5), NOT InMail follow-up. The `linkedin-t2-drafts-mar8.html` InMail drafts are now OBSOLETE for T2 purpose. Build email T2 drafts instead — see TASK-011.
-**⚠️ Note:** `linkedin-t2-drafts-mar8.html` is now incorrect for T2 use. Email drafts must be written from scratch using EM-FU-1/EM-FU-2 template (40-70 words, standalone, new proof point angle).
-**Process:** Draft emails → Rob reviews → Rob sends from robert.gorham@testsigma.net. NOT from Apollo. NOT a Sales Nav InMail.
+**Description:** 17 B9 prospects need Touch 2. New SOP (Mar 8): T2 = standalone EMAIL (Day 5), NOT InMail follow-up. Drafts now built (Mar 9) in `t2-email-drafts-mar9.html` — B9 section has 16 drafts (Kylie Summer + Yuliya A missing emails).
+**⚠️ Note:** `linkedin-t2-drafts-mar8.html` is OBSOLETE for T2. Use `t2-email-drafts-mar9.html` instead.
+**Process:** Rob reviews drafts → Rob sends from robert.gorham@testsigma.com. NOT from Apollo. NOT a Sales Nav InMail.
 **File:** TASK-011 covers the draft build. Email addresses may need to be collected from Apollo first.
 **Prospects (by T1 proof point used → T2 rotation):**
 - Mohan Guruswamy (Tavant): CRED→Medibuddy
@@ -39,16 +39,21 @@
 ---
 
 ### TASK-011 | B9/B10/B11 Touch 2 EMAIL drafts (new multi-channel strategy)
-**Status:** PENDING
+**Status:** DRAFTS BUILT — AWAITING ROB REVIEW + APPROVE SEND
 **Priority:** URGENT — B9 T2 overdue, B10/B11 due Mar 11
 **Due:** B9 = ASAP (overdue). B10/B11 = Mar 11
-**Description:** New 3-touch multi-channel SOP requires T2 to be a standalone email (Day 5), NOT an InMail. Need to build email T2 drafts for:
-- **B9 (17 prospects):** ASAP — all past Day 5 as of Mar 8-9. Collect emails from Apollo first if not already on hand.
-- **B10 (9 prospects):** Due Mar 11. T1 was Mar 6.
-- **B11 (4 prospects):** Due Mar 11. T1 was Mar 6.
-**Template:** EM-FU-1 or EM-FU-2 (40-70 words, new angle/proof point, do NOT reference T1 InMail, "what day works" CTA, no em dashes). See `memory/sop-email.md` and `memory/sop-outreach.md`.
-**Note:** These email T2s replace the InMail T2 drafts in `linkedin-t2-drafts-mar8.html`. That file's T2 sections are now obsolete.
-**Files:** `memory/sop-email.md`, `memory/sop-outreach.md`, `memory/apollo-config.md`, `memory/proof-points.md`
+**Completed by:** Cowork-5 (Mar 9 session)
+**Description:** 28 T2 email drafts built using locked Variant A formula (approved Mar 9). File: `/Work/t2-email-drafts-mar9.html`
+- **B9: 16 drafts** (Kylie Summer + Yuliya A excluded — no emails found)
+- **B10: 9 drafts** (Francesco Leising email domain cfsb.com — verify active; Sravanti Krothapalli email domain qbsol.com may be prior employer ⚠️)
+- **B11: 3 drafts** (Dan Heintzelman missing email — skipped)
+**⚠️ Pending Rob decisions before sending:**
+1. Sravanti Krothapalli (Quorum): email sravanti.k@qbsol.com may be prior employer — find Quorum email OR send to qbsol.com?
+2. Kylie Summer (Quizizz): no email found — attempt LinkedIn search?
+3. Yuliya A (Planview): no email found — attempt LinkedIn search?
+4. Dan Heintzelman (Prevail Legal): no email found — attempt LinkedIn search?
+**Formula locked:** Opening company fact → "I'd imagine..." → LinkedIn callback naming T1 topic → "One of our customers, [Name]..." + tie-back → engagement CTA tied to opening tension. Full formula in `memory/sop-email.md`.
+**NEVER SEND without Rob's explicit "APPROVE SEND"**
 
 ---
 
