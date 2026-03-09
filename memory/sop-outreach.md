@@ -74,65 +74,58 @@ Before sending, check for:
 - 2+ hyphens as mid-sentence dashes
 - No paragraph breaks between sections
 
-## 2-Touch LinkedIn Sequence
-Every prospect gets 2 LinkedIn touches in this SOP:
+## 3-Touch Multi-Channel Sequence (Updated Mar 8, 2026)
 
-**Day 1 — Touch 1 (LinkedIn InMail):** Full 5-element message, 80-120 words.
-**Day 5 — Touch 2 (LinkedIn InMail Follow-up):** 40-70 words, new angle/proof point, lighter close.
+Every prospect gets 3 touches across 2 channels:
+
+**Day 1 — Touch 1 (LinkedIn InMail):** Full 5-element message, 80-120 words. Costs 1 InMail credit for 2nd/3rd degree.
+**Day 5 — Touch 2 (Email):** 40-70 words, new angle/proof point. Follow `memory/sop-email.md`. Template: EM-FU-1 or EM-FU-2.
+**Day 10 — Touch 3 (LinkedIn Connection Request):** Short note, 200-250 chars max. Goal is to get accepted (1st degree) — not to pitch. See Connection Request rules below.
 
 Rules:
 - Each touch uses a DIFFERENT proof point/angle
-- Touch 2 doesn't need full 5-element structure
+- T2 email is a standalone message — do NOT reference T1 InMail, prospect may not remember it
+- T3 connection request is a relationship move, NOT another sales ask
 - No break-up message
-- If an email touch is needed later, switch to `memory/sop-email.md` and run that SOP separately
+- Sequence lives in Apollo: "LinkedIn Outbound - Q1 Priority Accounts" (steps 1-3)
+- See `memory/sop-email.md` for full T2 email drafting rules
 
-## Touch 2 InMail Mechanics — Sales Navigator (Corrected Mar 8, 2026)
+### Why Email for T2 (not a second InMail)
+InMail T2s cost 1 credit each for 2nd/3rd degree prospects (confirmed via live testing Mar 8). With limited credits (reset monthly), using them for T2 follow-ups has poor ROI. Email is free, multi-channel lift is +37% per Gong data, and T2 email response rates are well-documented. Credits are reserved for fresh T1 InMails to new prospects.
 
-**Rob's question:** "Can we just reply to our first InMail?"
+### Touch 3 — LinkedIn Connection Request Rules
+- **Limit: 200-250 characters** (under the 300 char hard limit, leaves buffer)
+- **Tone: warm, human, not salesy** — the goal is to get accepted, nothing else
+- **Do NOT repeat the pitch** — they've seen it in T1 and T2
+- **Do NOT reference your previous messages explicitly** ("I sent you an InMail..." = awkward)
+- **Light callback is fine:** a brief nod to the topic, not a rehash
+- Once accepted: they become 1st degree, future DMs are FREE
 
-**Answer: It depends entirely on connection degree — NOT on whether a thread exists.**
+**Connection request note template patterns:**
+- "Hi [First], been following [Company]'s work in [relevant space] — thought it made sense to connect. Rob"
+- "Hi [First], reached out about QA automation a couple weeks back. Either way, good to be connected. Rob"
+- "Hi [First], [Company]'s [relevant initiative/product] caught my attention — would love to stay connected. Rob"
 
-⚠️ **CRITICAL CORRECTION (live-tested Mar 8):** The original SOP said thread continuation is always FREE. This was WRONG. Browser testing of all B9 prospects confirmed:
+## InMail Credit Mechanics — Reference (Mar 8, 2026)
 
-### The Actual Rule
+T2 InMails are no longer the active strategy (see 3-Touch Sequence above). This section is kept for reference on InMail credit rules when sending T1s or any future InMails.
 
+### Credit Cost by Degree
 | Connection Degree | Reply Box Shows | Cost |
 |-------------------|-----------------|------|
 | **1st degree** (connected) | "Type your message here..." | **FREE** |
 | **2nd or 3rd degree** (not connected) | "New InMail / Use 1 of X credits" | **1 credit** |
 
-This applies even when you are inside an existing T1 thread. The thread does not matter. Degree determines cost.
+This applies even inside an existing thread. Degree determines cost — thread history does not.
 
-### How to Check Degree Before Sending
-1. Go to Sales Navigator → Messages (Inbox)
-2. Search for the prospect's name (use first name only if full name returns no results)
-3. Click the thread to open it
-4. Check the right panel profile card — degree is shown as "· 1st", "· 2nd", or "· 3rd" next to their name
-5. If reply box shows "New InMail / Use 1 of X credits" → costs 1 credit. If it shows plain "Type your message here..." → FREE.
+### Checking Degree Before Sending
+1. Sales Navigator → Messages (Inbox)
+2. Search by first name (full name sometimes fails)
+3. Open thread → check right panel for "· 1st", "· 2nd", or "· 3rd" next to their name
+4. Reply box label confirms cost
 
-### Method A: 1st Degree Reply (✅ FREE)
-- Only available when the prospect accepted your connection request
-- Open their thread → reply field at bottom → send
-- No credit consumed
-
-### Method B: 2nd/3rd Degree Follow-up (⚠️ COSTS 1 CREDIT — plan carefully)
-- Even replying inside an existing T1 thread costs 1 credit for non-connected prospects
-- Sales Nav shows "New InMail / Use 1 of X credits" in the reply area
-- Use credits only for the highest-priority prospects when credits are low
-- Consider waiting for credit reset (monthly) before sending lower-priority T2s
-
-### Credit Strategy When Credits Are Low
-With 4 credits remaining (as of Mar 8): only send paid T2s for the top 4 highest-priority prospects. All others wait for credit reset. Leah Coates (Perforce) = 1st degree, always FREE.
-
-### T2 Message Rules
-- 40-70 words (shorter than T1)
-- DIFFERENT proof point from T1 (check T1 before drafting)
-- "What day works" CTA tied to the new proof point
-- No "following up", "just checking in", "circling back"
-- No "I noticed/saw"
-- No em dashes
-- Max 1-2 question marks
-- New angle, not a repeat of T1 — feel like a fresh message, not a nudge
+### Credit Strategy
+Reserve InMail credits for fresh T1 outreach to new prospects. Do not spend credits on T2 follow-ups — use email instead (free, multi-channel lift). Credits reset monthly.
 
 ## Research Requirements (3 Sources Per Prospect)
 

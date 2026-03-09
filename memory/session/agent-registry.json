@@ -6,11 +6,11 @@
   },
   "agents": {
     "Cowork-1": {
-      "machine": "Rob-PC",
-      "last_seen": "2026-03-07T13:30:00Z",
-      "status": "idle",
+      "machine": "claude",
+      "last_seen": "2026-03-08T13:01:14Z",
+      "status": "active",
       "current_task": null,
-      "session_count": 5,
+      "session_count": 6,
       "notes": "Primary daily ops agent"
     },
     "Cowork-2": {

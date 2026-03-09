@@ -20,15 +20,16 @@
 ## Active Sequences
 | Sequence | ID | Steps | Purpose | Contacts |
 |----------|-----|-------|---------|----------|
-| LinkedIn Outbound - Q1 Priority Accounts | 69a05801fdd140001d3fc014 | 4 | PRIMARY for ALL outbound. All manual steps. | 311 enrolled (26 added Mar 6 from Q1 QA Outreach migration) |
+| LinkedIn Outbound - Q1 Priority Accounts | 69a05801fdd140001d3fc014 | 3 | PRIMARY for ALL outbound. All manual steps. | 311 enrolled (26 added Mar 6 from Q1 QA Outreach migration) |
 | Email Outbound - Website Visitor Tier 1 | 69a1b3564fa5fa001152eb66 | 3 | Email-only buyer intent. | 78 active |
 
-### LinkedIn Outbound - Q1 Priority Accounts Step Details
+### LinkedIn Outbound - Q1 Priority Accounts Step Details (Updated Mar 8, 2026)
 - Step 1 (69a05a3883eda10021b7ff0b): LinkedIn InMail (Day 1, High)
-- Step 2 (69a05a3883eda10021b7ff0d): LinkedIn InMail Follow-up (Day 5, High)
-- Step 3 (69a05a3883eda10021b7ff0f): Manual Email (Day 10, Medium)
-- Step 4 (69a05a3883eda10021b7ff11): Phone Call (Day 15, Medium)
-- ALL steps are MANUAL. Nothing auto-sends.
+- Step 2 (69a05a3883eda10021b7ff0d): **Manual Email** (Day 5, High) ← changed from LinkedIn InMail Follow-up
+- Step 3 (69a05a3883eda10021b7ff0f): **LinkedIn Connection Request** (Day 10, Medium) ← changed from LinkedIn send message (Day 30)
+- ALL steps are MANUAL. Nothing auto-sends. (Step 2 is "Action item" type in Apollo — no native email step type available.)
+
+**Rationale for change (Mar 8):** T2 InMails cost 1 credit each for 2nd/3rd degree (confirmed via live testing). Credits are scarce and reserved for T1s. Email is free with +37% multi-channel lift (Gong). LI Connection Request as T3 moves prospect to 1st degree — future DMs then free. See `memory/sop-outreach.md` for full sequence policy.
 
 ## Retired Sequences (DO NOT USE)
 | Sequence | ID | Reason |

@@ -5,6 +5,18 @@
 - Do not use LinkedIn send steps, LinkedIn cadence, or LinkedIn QA from `memory/sop-outreach.md`.
 - LinkedIn InMail/follow-up operations are run separately in `memory/sop-outreach.md`.
 
+## Multi-Channel T2 Email (After LinkedIn InMail T1)
+
+When email is used as Touch 2 in the LinkedIn Outbound sequence (Day 5 after T1 InMail):
+
+- **Do NOT reference T1 InMail.** Prospect may not remember it. Write as a fully standalone message.
+- **Do NOT say "following up" or "circling back."** Treat it as fresh outreach on a new angle.
+- **Word count:** 40-70 words. Tighter than a standard T1 email.
+- **Template:** EM-FU-1 or EM-FU-2 (new proof point or capability match — different from T1 angle).
+- **Subject line:** Problem-framed or outcome-framed (not SMYKM for T2 unless strong signal exists).
+- **Same writing rules apply:** No em dashes, no "I noticed," no generic closes. "What day works" CTA.
+- **Sequence step:** Step 2 of "LinkedIn Outbound - Q1 Priority Accounts" (Day 5, Manual Email).
+
 ## Canonical References
 - Primary detailed process: `docs/sops/outreach_email_sop.md`
 - Sequence policy and workflow notes: `docs/sops/Tier1_Intent_Sequence_SOP_MASTER.md`

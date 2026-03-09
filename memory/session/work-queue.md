@@ -9,13 +9,14 @@
 
 ## Active Tasks
 
-### TASK-010 | B9 Touch 2 InMail sends (17 prospects) — URGENT
-**Status:** PENDING — Rob to execute via Sales Nav
-**Priority:** URGENT — due TODAY Mar 8 / TOMORROW Mar 9
-**Due:** 2026-03-08 to 2026-03-09
-**Description:** 17 B9 prospects are at Day 5+ of the sequence and need T2 InMail follow-up. All 17 draft messages are pre-built in `linkedin-t2-drafts-mar8.html`. Rob opens each T1 thread in Sales Nav Inbox and adds the reply (FREE — no credits used).
-**Process:** Sales Nav → Messages → find T1 thread → add reply at bottom → send. Free thread continuation, not a new InMail.
-**File:** `linkedin-t2-drafts-mar8.html` (Section 1 — marked URGENT)
+### TASK-010 | B9 Touch 2 sends (17 prospects) — ⚠️ STRATEGY CHANGED
+**Status:** PENDING — ⚠️ Strategy changed Mar 8. Was InMail T2. Now EMAIL T2.
+**Priority:** URGENT — overdue (Day 5+ as of Mar 8/9)
+**Due:** ASAP
+**Description:** 17 B9 prospects need Touch 2. New SOP (Mar 8): T2 = standalone EMAIL (Day 5), NOT InMail follow-up. The `linkedin-t2-drafts-mar8.html` InMail drafts are now OBSOLETE for T2 purpose. Build email T2 drafts instead — see TASK-011.
+**⚠️ Note:** `linkedin-t2-drafts-mar8.html` is now incorrect for T2 use. Email drafts must be written from scratch using EM-FU-1/EM-FU-2 template (40-70 words, standalone, new proof point angle).
+**Process:** Draft emails → Rob reviews → Rob sends from robert.gorham@testsigma.net. NOT from Apollo. NOT a Sales Nav InMail.
+**File:** TASK-011 covers the draft build. Email addresses may need to be collected from Apollo first.
 **Prospects (by T1 proof point used → T2 rotation):**
 - Mohan Guruswamy (Tavant): CRED→Medibuddy
 - Lueanne Fitzhugh (Cerner): Sanofi→Hansard
@@ -34,6 +35,20 @@
 - Yuliya A (Planview): Medibuddy→Hansard
 - Grant Anderson (Lucid): Medibuddy→CRED
 - Denise Barnett (Progress Software): Cisco→Hansard
+
+---
+
+### TASK-011 | B9/B10/B11 Touch 2 EMAIL drafts (new multi-channel strategy)
+**Status:** PENDING
+**Priority:** URGENT — B9 T2 overdue, B10/B11 due Mar 11
+**Due:** B9 = ASAP (overdue). B10/B11 = Mar 11
+**Description:** New 3-touch multi-channel SOP requires T2 to be a standalone email (Day 5), NOT an InMail. Need to build email T2 drafts for:
+- **B9 (17 prospects):** ASAP — all past Day 5 as of Mar 8-9. Collect emails from Apollo first if not already on hand.
+- **B10 (9 prospects):** Due Mar 11. T1 was Mar 6.
+- **B11 (4 prospects):** Due Mar 11. T1 was Mar 6.
+**Template:** EM-FU-1 or EM-FU-2 (40-70 words, new angle/proof point, do NOT reference T1 InMail, "what day works" CTA, no em dashes). See `memory/sop-email.md` and `memory/sop-outreach.md`.
+**Note:** These email T2s replace the InMail T2 drafts in `linkedin-t2-drafts-mar8.html`. That file's T2 sections are now obsolete.
+**Files:** `memory/sop-email.md`, `memory/sop-outreach.md`, `memory/apollo-config.md`, `memory/proof-points.md`
 
 ---
 

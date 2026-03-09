@@ -9,35 +9,27 @@
 ## Last Session
 
 **Date:** 2026-03-08
-**Agent:** Cowork-2 (Rob's main PC, second session Mar 8)
-**Session title:** LinkedIn T2 InMail tracker built — 30 drafts, B9 urgent, B10/B11 due Mar 11. Partial T2 email collection done.
+**Agent:** Cowork-4 (Mar 8 — sequence pivot session)
+**Session title:** 3-touch multi-channel sequence implemented — Apollo Steps 2+3 changed, SOPs updated.
 
 ---
 
 ## What Was Done This Session
 
-1. **LinkedIn Touch 2 InMail mechanics researched, THEN CORRECTED via live browser testing** — Rob raised the question "I don't think we can just reply to our first InMail." Initial SOP said thread continuation was FREE. Rob then asked to verify in Sales Nav UI. Live testing of all 17 B9 contacts revealed the original SOP was WRONG. The real rule: **connection degree determines cost, not thread history.** 1st degree (connected) = free reply. 2nd/3rd degree = "New InMail / Use 1 of X credits" even inside an existing thread. Full B9 degree audit completed. `sop-outreach.md` corrected. `linkedin-t2-drafts-mar8.html` updated with per-card cost indicators.
+1. **Apollo sequence "LinkedIn Outbound - Q1 Priority Accounts" restructured** per Rob's decision to switch from InMail-only to multi-channel:
+   - Step 2: Changed from LinkedIn InMail Follow-up → **"Action item" (Manual Email, Day 5, High)**. Task note instructs: send via robert.gorham@testsigma.net, use EM-FU-1/EM-FU-2, 40-70 words, standalone — do NOT reference T1 InMail.
+   - Step 3: Changed from LinkedIn send message (Day 30) → **LinkedIn Connection Request (Day 10, Medium)**. Task note + default LI message template added ("Hi [First], reached out about QA automation a couple weeks back. Either way, good to be connected. Rob").
+   - Sequence saved successfully.
 
-   **B9 Degree Audit Results (all 17 contacts):**
-   - Leah Coates / Perforce → **1st degree → FREE** ✓ (only one)
-   - All other 16 B9 contacts → 2nd or 3rd degree → **1 credit each**
-   - With 4 credits remaining: Rob can send 1 free (Leah) + 4 paid T2s = 5 total out of 17
+2. **`memory/sop-email.md` updated** — Added "Multi-Channel T2 Email (After LinkedIn InMail T1)" section at top. Rules: standalone message, no T1 reference, 40-70 words, EM-FU-1 or EM-FU-2, problem-framed subject.
 
-2. **`linkedin-t2-drafts-mar8.html` built — 30 T2 drafts across 3 batches:**
-   - **Section 1 (URGENT — red):** 17 B9 prospects, due TODAY Mar 8 / TOMORROW Mar 9. All T1 proof points extracted from `prospect-outreach-9-2026-03-03.html` and T2 rotation assigned.
-   - **Section 2 (blue):** 9 B10 prospects, due Mar 11. T1 proof points extracted from `outreach-batch10-sent-mar6.html`. No pre-built drafts existed — all written fresh.
-   - **Section 3 (blue):** 4 B11 prospects, due Mar 11. Pre-built T2 drafts extracted verbatim from `t2-box` divs in `outreach-batch11-draft-mar6.html`.
-   - Features: SOP box explaining thread continuation vs new InMail, copy buttons, status toggles, word counts, credit badge (4 remaining), per-card instructions.
+3. **`memory/sop-outreach.md` updated** (prior sub-session) — 3-Touch Multi-Channel Sequence section written; InMail credit mechanics corrected (2nd/3rd degree = 1 credit even in existing threads); Connection Request rules and templates added.
 
-3. **TASK-006 confirmed DONE (no action needed):** Tom Goody (Ncontracts) + Mohan Guruswamy (Tavant) were already enrolled in LinkedIn Outbound Q1 (sequence `69a05801fdd140001d3fc014`, status: active), confirmed via Apollo API in prior session.
+4. **`memory/apollo-config.md` corrected** — Step count 4→3, phantom Step 4 (Phone Call Day 15) removed, Step 3 description updated to reflect LI Connection Request (Day 10).
 
-4. **TASK-009 (25 T2 emails) partial progress:**
-   - 7 email addresses collected in prior session (Starnaud, Kim, Landry, Moyal, Devarangadi, Lenihan, Diachenko)
-   - 6 Buyer Intent emails already confirmed from `website_visitor_sequence_drafts.md` (Moreno, Luxenburg, Barnes, Willms, Yang, Ruan)
-   - 12 email addresses still needed from Apollo (see table below)
-   - **0 drafts written yet** — collection was interrupted
+5. **Work queue updated** — TASK-010 marked as strategy-changed, TASK-011 added for B9/B10/B11 email T2 draft build.
 
-5. **Ops files updated:** `work-queue.md` (TASK-002 done, TASK-006 done, TASK-010 added), `sop-outreach.md` (T2 mechanics section added), `handoff.md` (this file).
+**⚠️ KEY IMPLICATION:** The `linkedin-t2-drafts-mar8.html` InMail T2 drafts (Sections 1, 2, 3) are now OBSOLETE as the T2 vehicle. T2 is now email. Those drafts should be discarded/ignored. Email T2 drafts need to be built (TASK-011).
 
 ---
 
@@ -57,11 +49,11 @@
 
 ## Top 3 Priorities for Next Agent
 
-1. **[URGENT TODAY] B9 Touch 2 InMail sends — TASK-010** — Rob to execute via Sales Nav. 17 prospects at Day 5+. All drafts in `linkedin-t2-drafts-mar8.html` Section 1. **⚠️ CREDIT REALITY:** Only Leah Coates (Perforce) is 1st degree → FREE. All other 16 cost 1 credit each. Rob has 4 credits → can send Leah (free) + pick 4 others (1 credit each). Recommended paid 4: David Gustafson (HG Insights), Sravanti Krothapalli (Quorum), Jiaping Shen (HackerRank), Cooper Morrow (Jama). Others wait for credit reset.
+1. **[URGENT] Build B9 T2 email drafts — TASK-011** — 17 B9 prospects are past Day 5 and need Touch 2 EMAIL (NOT InMail). The `linkedin-t2-drafts-mar8.html` InMail drafts are now OBSOLETE. Build fresh email T2s using EM-FU-1/EM-FU-2 (40-70 words, new proof point, standalone message, "what day works" CTA). Collect email addresses from Apollo for any missing. Present all to Rob before sending. **B10/B11 email T2s also due Mar 11** (9 + 4 prospects).
 
-2. **[URGENT] Complete TASK-009 — 25 Touch 2 emails** — 12 email addresses still missing. Collect from Apollo first (people-match by name + domain), then draft all 25 using template EM-FU-1 (max 70 words, subject "Re: Quick question, [First Name]", different proof point from T1, "what day works" CTA). Present ALL to Rob before sending. NEVER SEND without "APPROVE SEND."
+2. **[URGENT] Complete TASK-009 — 25 Touch 2 emails** — 12 email addresses still missing from WV Mar 3 batch. Collect from Apollo first (people-match by name + domain), then draft all 25 using template EM-FU-1 (max 70 words, subject "Re: Quick question, [First Name]", different proof point from T1, "what day works" CTA). Present ALL to Rob before sending. NEVER SEND without "APPROVE SEND."
 
-3. **Check Namita Jain Gmail — TASK-004** — Touch 1 sent Feb 27. Now Day 9. Check Gmail for reply. Draft T2 if no response. See `memory/warm-leads.md`.
+3. **[Mon Mar 9] B10 InMail sends — TASK-001** — 8 B10 contacts need T1 InMail still (8 credit InMails queued, but only 4 credits remain). Check enrollment status first. Rob decides who gets the 4 remaining credits. Sasa Lazarevic + Christian Melville still blocked by Apollo ownership — Rob must resolve.
 
 ---
 
@@ -119,14 +111,14 @@
 
 ---
 
-## TASK-010 — B9 T2 InMail Sends (Rob to execute)
+## TASK-010/TASK-011 — B9/B10/B11 Touch 2 (STRATEGY CHANGED — Now EMAIL, not InMail)
 
-**Status:** PENDING — Rob executes via Sales Nav
-**Due:** TODAY Mar 8 / TOMORROW Mar 9
+**Status:** PENDING — email T2 drafts not yet built
+**Due:** B9 = ASAP (overdue). B10/B11 = Mar 11
 
-17 prospects — all T2 drafts in `linkedin-t2-drafts-mar8.html` Section 1 (marked URGENT, red border).
+⚠️ **Strategy changed Mar 8.** T2 is now EMAIL (standalone, new angle, 40-70 words), NOT InMail follow-up. The `linkedin-t2-drafts-mar8.html` InMail drafts are OBSOLETE for T2. Build email drafts instead.
 
-Process: Sales Nav → Messages → find T1 thread → add reply at bottom → send. FREE — no credits consumed.
+Process: Collect email addresses from Apollo → Draft T2 emails (EM-FU-1/EM-FU-2) → Present to Rob → Rob sends from robert.gorham@testsigma.net.
 
 | Prospect | Company | T1 Proof Point Used | T2 Rotation |
 |----------|---------|---------------------|-------------|
@@ -198,8 +190,10 @@ Sanjay Singh (ServiceTitan), Lance Silverman, Clyde Faulkner (CAMP Systems), Ash
 
 ## Files Changed This Session
 
-- `linkedin-t2-drafts-mar8.html` — **NEW then CORRECTED** — 30 T2 InMail drafts (17 B9 urgent + 9 B10 + 4 B11). Per-card credit cost updated: Leah Coates = FREE, all others = 1 credit. Credit strategy box added above B9 section. SOP box corrected with real mechanic.
-- `memory/sop-outreach.md` — T2 InMail mechanics section **CORRECTED** (original said FREE, live testing showed 2nd/3rd degree = 1 credit regardless of thread). Table + degree check steps added.
-- `memory/session/work-queue.md` — TASK-002 done, TASK-006 done, TASK-010 added
-- `memory/session/handoff.md` — this file (full Mar 8 update, third session — degree audit + SOP correction)
-- `memory/session/session-log.md` — Mar 8 second session entry added (prior session)
+- `memory/sop-email.md` — Multi-Channel T2 Email section added (standalone rules for email as T2 after LI InMail T1)
+- `memory/sop-outreach.md` — 3-touch multi-channel sequence documented; connection request rules/templates added; InMail credit mechanics corrected and demoted to reference
+- `memory/apollo-config.md` — Step count corrected (4→3), phantom Step 4 removed, Step 3 description updated (LI Connection Request Day 10)
+- Apollo sequence UI — Step 2 changed to Action item/Manual Email (Day 5) + task note; Step 3 changed to LinkedIn Connection Request (Day 10) + task note + LI message template. Saved.
+- `memory/session/work-queue.md` — TASK-010 updated (strategy changed), TASK-011 added (B9/B10/B11 email T2 drafts)
+- `memory/session/handoff.md` — this file
+- `memory/session/session-log.md` — Mar 8 Cowork-4 entry added

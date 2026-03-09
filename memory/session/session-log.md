@@ -6,6 +6,33 @@
 
 ---
 
+## 2026-03-08 — Cowork-4 — Sequence pivot: 3-touch multi-channel SOP implemented in Apollo + SOPs
+
+**Completed:**
+- **Apollo sequence "LinkedIn Outbound - Q1 Priority Accounts" restructured** to 3-touch multi-channel strategy (Rob's decision from prior session):
+  - Step 1: LinkedIn InMail (Day 1, High) — unchanged
+  - Step 2: Changed from "LinkedIn InMail Follow-up" → **Action item / Manual Email** (Day 5, High). Task note: "Touch 2 — MANUAL EMAIL (Day 5): Send via robert.gorham@testsigma.net. Use EM-FU-1 or EM-FU-2 template. 40-70 words, new angle — do NOT reference T1 InMail. Standalone message."
+  - Step 3: Changed from "LinkedIn send message (Day 30)" → **LinkedIn Connection Request** (Day 10, Medium). Task note + default LI message template added.
+  - Sequence saved successfully in Apollo (green success toast confirmed).
+- **`memory/sop-email.md` updated** — Added "Multi-Channel T2 Email" section with rules: standalone message, no T1 reference, 40-70 words, EM-FU-1 or EM-FU-2 template.
+- **`memory/sop-outreach.md` updated** (prior session) — 3-Touch Multi-Channel Sequence section added; Connection Request rules section added; InMail credit mechanics kept as reference.
+- **`memory/apollo-config.md` corrected** — Step count fixed (4→3), Step 4 (phantom Phone Call) removed, Step 3 updated with correct description and timing note.
+
+**Key implication for pending tasks:**
+- TASK-010 (B9 T2 "InMail" sends) is NOW SUPERSEDED by the email T2 strategy. B9/B10/B11 T2s should be EMAIL (Day 5), not InMail follow-ups. The `linkedin-t2-drafts-mar8.html` InMail drafts are no longer the correct vehicle for T2. Email T2 drafts need to be built.
+- This is reflected in updated TASK-010 notes in work-queue.md.
+
+**Files changed:**
+- `memory/sop-email.md` (Multi-Channel T2 Email section added)
+- `memory/sop-outreach.md` (3-touch sequence policy, connection request rules — prior session)
+- `memory/apollo-config.md` (3 steps, Step 4 removed, correct descriptions)
+- Apollo sequence UI — Steps 2+3 type, timing, task notes updated and saved
+- `memory/session/work-queue.md` (TASK-010 updated, TASK-011 added)
+- `memory/session/handoff.md` (updated — this session)
+- `memory/session/session-log.md` (this entry)
+
+---
+
 ## 2026-03-08 — Cowork-3 — T2 InMail SOP corrected via live Sales Nav testing; B9 degree audit complete
 
 **Completed:**
