@@ -61,7 +61,20 @@ Sales Nav saved searches, "Show X new results" filter, Prospect Mix Ratio.
 ONLY when Rob explicitly directs.
 
 ### Batch Size Calculation
-MAX_BATCH = (CREDITS_REMAINING - FOLLOWUP_RESERVE - 5) / 1
+```
+CREDIT_INMAILS_TODAY = min(8, CREDITS_REMAINING - FOLLOWUP_RESERVE - 5)
+OPEN_PROFILE_INMAILS_TODAY = 10-20  (free — do not subtract from credit budget)
+CONNECTION_REQUESTS_TODAY = 15      (free)
+TOTAL_BATCH = CREDIT_INMAILS_TODAY + OPEN_PROFILE_INMAILS_TODAY + CONNECTION_REQUESTS_TODAY
+```
+Always fill Open Profile slots first (Pass 1) before spending credits (Pass 2). See `sop-prospect.md` → Two-Pass Search Strategy.
+
+### Daily LinkedIn Send Targets
+| Type | Daily Target | Cost |
+|------|-------------|------|
+| Credit InMails | 8 | 1 credit each |
+| Open Profile InMails | 10-20 | FREE |
+| Connection requests | 15 | FREE |
 
 ### Prospect Mix Ratio (per 25-prospect batch)
 - 10-12 QA Manager/Lead (26.8% reply rate)

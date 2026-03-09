@@ -229,14 +229,58 @@ Update batch tracker: Status = T3 Sent, date sent. Log in pipeline-state.md. Not
 
 ---
 
+## Open Profile InMails (Free — No Credits Used)
+
+Some LinkedIn users have "Open Profile" enabled (LinkedIn Premium subscribers who allow anyone to InMail them). These cost ZERO credits and have a separate, higher daily limit than credit InMails. This is one of the most underused volume levers in Sales Nav.
+
+### How to Identify Open Profile Prospects
+
+**In Sales Nav search:**
+- Filter: "Premium LinkedIn member" checkbox (left panel under "Premium Filters")
+- On individual profiles: look for the gold LinkedIn Premium badge (gold "in" icon) next to their name
+- When you open the InMail composer for an Open Profile prospect: the composer will show "Send for free" or will NOT show "Use 1 of X credits" — that's the confirmation
+
+**Not all Premium members have Open Profile enabled.** The composer is the only 100% reliable check — if it says free, it's free.
+
+### Open Profile InMail Rules
+- Daily target: **10-20 free InMails** (separate from the 8 credit InMails)
+- Same message quality standards as credit InMails — same C2 structure, same MQS ≥ 9/12 requirement
+- Same composer check (Module A2) required before sending
+- Same APPROVE SEND rule — Rob must approve before any send
+- Log separately in pipeline-state.md as "Open Profile InMail (free)" so credit tracking stays accurate
+
+### Prioritizing Open Profiles in Batch Build
+When building a batch, run two passes in Sales Nav:
+1. **First pass:** Premium filter ON → fill Open Profile slots (these are free, so they don't affect credit budget)
+2. **Second pass:** Premium filter OFF → fill remaining credit InMail slots from broader search
+
+This maximizes the free sends before spending credits.
+
+---
+
+## Daily LinkedIn Activity Summary
+
+| Activity | Daily Target | Credit Cost | Notes |
+|----------|-------------|-------------|-------|
+| Credit InMails | 8 | 1 per send | 2nd/3rd degree non-Open profiles |
+| Open Profile InMails | 10-20 | FREE | Premium members with Open Profile enabled |
+| Connection requests (with note) | 15 | FREE | T3 or net-new cold connect |
+| Profile views | 50-100 | FREE | Generates inbound curiosity visits |
+| Post comments/engagement | 5-10 | FREE | Pre-warm before InMail |
+| **Total direct messages/day** | **~33-43** | | InMails + connection requests |
+| **Total LinkedIn activities/day** | **~88-153** | | All of the above |
+
+---
+
 ## LinkedIn Safety & Compliance
 ### Pacing Limits
 | Activity | Daily Max | Weekly Max |
 |----------|-----------|------------|
-| InMails | 8 | 20 |
+| Credit InMails | 8 | 20 |
+| Open Profile InMails (free) | 20 | 80 |
 | Profile views | 100 | 500 |
 | Connection requests | 15 | 80 |
-| Total messages | 15 | 60 |
+| Total direct messages | ~43 | ~180 |
 
 ### Session Rules
 - Space sends 2-3 min apart. 10-min break every 10 sends.

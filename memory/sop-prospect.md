@@ -76,6 +76,18 @@ Open LinkedIn Sales Navigator → Leads search.
 | Job Title (exclude) | QA Analyst (too junior), Software QA Engineer (IC, not decision maker) |
 | Geography (exclude) | India, Philippines, Eastern Europe (unless they manage US teams — confirm) |
 
+### Two-Pass Search Strategy (Credit Optimization)
+
+Run searches in two passes to maximize free Open Profile InMails before spending credits:
+
+**Pass 1 — Open Profile prospects (free InMails):**
+Add filter: "Premium LinkedIn member" (left panel). These prospects have a gold badge on their profile. Confirm for free in the composer (shows "Send for free" instead of "Use 1 of X credits"). Target: fill 10-20 Open Profile slots per batch. These don't count against credit budget.
+
+**Pass 2 — All remaining prospects (credit InMails):**
+Remove Premium filter. Pull the remaining credit InMail slots. Target: 8 per day, using credit budget as the governor.
+
+Tag each prospect in the batch tracker as "Open Profile (free)" or "Credit InMail" so credit tracking stays accurate in pipeline-state.md.
+
 ### Using Saved Searches
 Check for existing saved searches in Sales Nav. Click "Saved searches" in the left nav. Use "Show X new results since last checked" to pull only new prospects — do NOT re-pull the entire search.
 
