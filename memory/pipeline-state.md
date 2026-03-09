@@ -106,6 +106,9 @@
 | Mar 6 | 4:01–6:35 PM UTC | Mark Townsend (Silvaco), Kanwar Sangwan (DISQO), Alex Wong (Qualified), Prateek Negi (CData), Misty Pesek (Marigold), Katrina Walker (FreeWill), Joe Biggert (Marigold) | Website Visitor Tier 1 Touch 1 "Quick question" | SENT — 7 emails. ⚠️ Were untracked. |
 | Mar 6 | 12:50–12:52 PM ET | Andy Nelsen (Rightworks), Eduardo Menezes (Fulgent Genetics), Hibatullah Ahmed (SPS Commerce), Amir Aly (Procore) ⚠️ANOMALY | Buyer Intent Touch 2 "One more thought" | SENT — 4 emails. ⚠️ Amir Aly NOT in original 9-person Buyer Intent cohort. No prior email thread — Touch 1 was InMail only. Other 5 Buyer Intent prospects (Jose Moreno, Tom Yang, Eyal Luxenburg, Jeff Barnes, Todd Willms, Jason Ruan) Touch 2 status unknown. |
 | Mar 7 | 2:01–2:02 AM UTC | Chris Bell (Crestron), Davor Milosevic (IQVIA) | Website Visitor Tier 1 Touch 1 | SENT — 2 emails. Sent automatically by Apollo overnight. |
+| Mar 9 | ~2:00–3:06 PM ET | **B9 T2 (16 sent):** Georgii Petrosian (AuditBoard), Mohan Guruswamy (Tavant), Lueanne Fitzhugh (Cerner), Jeremy Cira (Kaseya), Chandana Ray (Persistent Systems), Martha Horns (Greenway Health), David Gustafson (HG Insights), Jiaping Shen (HackerRank), Sravanti Krothapalli (Quorum Software, sent to qbsol.com), Cooper Morrow (Jama Software), Manigandan Kanagasabai (Mediaocean), Leah Coates (Perforce), Kanan Hasanzade (Datto), Azam Quraishi (MTX Group), Grant Anderson (Lucid), Denise Barnett (Progress Software) | B9 Touch 2 — Variant A formula via Apollo UI | SENT — 16 emails. ⚠️ Drafts 1-16 sent from **robert.gorham@testsigma.net** (Apollo default was incorrectly .net — not caught until Draft 26). Rob aware. |
+| Mar 9 | ~2:00–3:06 PM ET | **B10 T2 (6 sent):** Josh Thayer (Jenius Bank), Elena Lysenko (CFSB), Tom Goody (Ncontracts), Francesco Leising (Fairfax Software), Chet West (Tempworks), Clint Parker (Simpro Group) | B10 Touch 2 — Variant A formula via Apollo UI | SENT — 6 emails. ⚠️ Drafts 18, 19, 21, 23, 24, 25 sent from **robert.gorham@testsigma.net** (same .net issue as B9 batch). **3 skipped:** Tim Wiseman (Draft 17) wrong owner/sequence; Jason Poole (Draft 20) wrong owner; LP Guo (Draft 22) no sequences in Apollo. |
+| Mar 9 | ~2:00–3:06 PM ET | **B11 T2 (3 sent):** Brad Askins (Trimble), Dan Heintzelman (Prevail Legal), Madhu Nedunuri (IDB Bank) | B11 Touch 2 — Variant A formula via Apollo UI | SENT — 3 emails from **robert.gorham@testsigma.com** ✅ (From address corrected starting with Draft 26). |
 
 ### Mar 2 Batch 8 InMails (confirmed)
 | # | Name | Company | Title (Sales Nav) | Subject | Time | Credits |
@@ -270,7 +273,7 @@ Ron Trachman, Laurie Nielsen, Alan Gutherz, Derek Stanley, Nihal Elsayed, Sarah 
 | Metric | Value |
 |--------|-------|
 | Total InMails sent | 228 (198 tracked + 6 untracked B9 Mar 3 + 11 untracked B9 Mar 4 + 9 Batch 10 Mar 6 + 4 Batch 11 Mar 6) |
-| Total Emails sent | **49 confirmed** from Gmail (16 prev tracked + 19 Mar 3 WV batch + 1 Mar 4 warm + 7 Mar 6 Quick question + 4 Mar 6 One more thought + 2 Mar 7 WV batch). Gmail shows 201 total sent incl. calendar/internal. Apollo shows "81 delivered" in WV sequence but gap unexplained — may be pre-campaign sends or the Apollo stat is not counting the same period. Updated Mar 7. |
+| Total Emails sent | **74 confirmed** (49 pre-Mar9 + 25 Mar 9 T2 sends via Apollo UI). Mar 9 breakdown: 16 B9 T2 + 6 B10 T2 + 3 B11 T2 = 25 total. ⚠️ Drafts 1-25 sent from robert.gorham@testsigma.net (Apollo default), Drafts 26-28 from .com. Rob aware. Updated Mar 9. |
 | InMail credits remaining | **4** (Updated Mar 6 — Batch 11 used 4 credit InMails: Brad Askins, Dan Heintzelman, Georgii Petrosian, Madhu Nedunuri) |
 | Apollo Q1 Priority Accounts | **316 enrolled** (315 pre-Mar7 + 1 Mar 7 Gil Taub add) |
 | Apollo Q1 Website Visitor | 78 active / 81 delivered (⚠️ Previously showed "9 active" — INCORRECT. Reconciliation pending.) |
@@ -310,6 +313,9 @@ Audited all batches for unenrolled prospects. Enrolled 41 missing contacts:
 | Batch 10 — remaining 16 (Mon Mar 9 sends) | Mar 9 | Mar 14 (Touch 2) | Mar 19 (Touch 3) |
 | Batch 11 — 4 sent Mar 6 (4 credit InMails) | Mar 6 | Mar 11 (Touch 2) | Mar 16 (Touch 3) |
 | Pam Bice Touch 2 | OVERDUE (due Mar 4, now Mar 6) | Send ASAP | — |
+| B9 T2 (16 sent Mar 9) | Mar 9 | — | Mar 14 (Touch 3) |
+| B10 T2 (6 sent Mar 9) | Mar 9 | — | Mar 14 (Touch 3) |
+| B11 T2 (3 sent Mar 9) | Mar 9 | — | Mar 14 (Touch 3) |
 
 **INC-002 double-send special cases:**
 - Abe Blanco (Kapitus): DNC. Skip all touches permanently.

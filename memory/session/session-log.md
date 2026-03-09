@@ -6,6 +6,41 @@
 
 ---
 
+## 2026-03-09 — Cowork-6 — 25 of 28 B9/B10/B11 T2 emails sent via Apollo UI; Apollo From bug discovered + SOP updated
+
+**Completed:**
+- **Sent 25 T2 emails via Apollo UI** — Rob granted APPROVE SEND for all 28 drafts from `t2-email-drafts-mar9.html`. Executed via Apollo contact page, one at a time.
+  - B9: 16 sent (Kylie Summer + Yuliya A excluded — no emails)
+  - B10: 6 sent (3 skipped on preflight — see below)
+  - B11: 3 sent (Brad Askins, Dan Heintzelman, Madhu Nedunuri)
+- **3 drafts skipped on preflight failures:**
+  - Tim Wiseman / Upland Software — wrong owner + not in correct sequence
+  - Jason Poole / Vergent LMS — wrong owner
+  - LP Guo / Moody's Analytics — no sequences in Apollo
+- **⚠️ Apollo From address bug discovered:** Apollo's default From = robert.gorham@testsigma.net (not .com). Drafts 1-25 sent from .net before bug caught. Drafts 26-28 corrected to .com. Rob notified. Cannot unsend.
+- **Updated `memory/sop-send.md`** — Added full "Apollo UI Manual Email Send (Touch 2)" section with hard rules, preflight table, 9-step procedure (including mandatory From address change), Quill JS API body injection, error/fix table.
+- **Updated `memory/pipeline-state.md`** — Logged 25 T2 sends in Email Send History, updated total emails 49→74, added T3 due dates (Mar 14).
+- **Updated work-queue.md** — TASK-010 + TASK-011 marked DONE.
+- **Updated handoff.md** — Full session state captured.
+
+**Status:** 25/28 T2 emails sent. 3 skips pending Rob decision. TASK-009 (WV Mar 3 T2s) still in progress.
+
+**Key technical learnings this session:**
+- Apollo From address MUST be manually changed from .net to .com every send — it resets to .net by default
+- Subject field: use `find` + `form_input` with ref — keyboard input goes to AI panel, not subject
+- Body: Quill JS API only (`container.__quill.setText(...)`) — clipboard and keyboard both unreliable
+- "Write with AI" panel opens first — click tooltip at ~(930, 58) to reveal full Send email panel
+- Apollo contact search: search name only (drop company) to avoid 0-result failures
+
+**Files changed:**
+- `memory/sop-send.md` (Apollo UI Email Send section added)
+- `memory/pipeline-state.md` (T2 sends logged, metrics updated, T3 dates added)
+- `memory/session/work-queue.md` (TASK-010 + TASK-011 marked DONE)
+- `memory/session/handoff.md` (updated)
+- `memory/session/session-log.md` (this entry)
+
+---
+
 ## 2026-03-09 — Cowork-5 — Variant A T2 formula locked through iteration; 28 drafts built; SOPs updated
 
 **Completed:**

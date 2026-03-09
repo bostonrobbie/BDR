@@ -9,51 +9,18 @@
 
 ## Active Tasks
 
-### TASK-010 | B9 Touch 2 sends (17 prospects) — ⚠️ STRATEGY CHANGED
-**Status:** DRAFTS BUILT — AWAITING ROB REVIEW + APPROVE SEND (see TASK-011)
-**Priority:** URGENT — overdue (Day 5+ as of Mar 8/9)
-**Due:** ASAP
-**Description:** 17 B9 prospects need Touch 2. New SOP (Mar 8): T2 = standalone EMAIL (Day 5), NOT InMail follow-up. Drafts now built (Mar 9) in `t2-email-drafts-mar9.html` — B9 section has 16 drafts (Kylie Summer + Yuliya A missing emails).
-**⚠️ Note:** `linkedin-t2-drafts-mar8.html` is OBSOLETE for T2. Use `t2-email-drafts-mar9.html` instead.
-**Process:** Rob reviews drafts → Rob sends from robert.gorham@testsigma.com. NOT from Apollo. NOT a Sales Nav InMail.
-**File:** TASK-011 covers the draft build. Email addresses may need to be collected from Apollo first.
-**Prospects (by T1 proof point used → T2 rotation):**
-- Mohan Guruswamy (Tavant): CRED→Medibuddy
-- Lueanne Fitzhugh (Cerner): Sanofi→Hansard
-- Jeremy Cira (Kaseya): Cisco→Medibuddy
-- Chandana Ray (Persistent): Medibuddy→Sanofi
-- Martha Horns (Greenway Health): Sanofi→Hansard
-- David Gustafson (HG Insights): 90% Maintenance→CRED
-- Jiaping Shen (HackerRank): Spendflo→CRED
-- Sravanti Krothapalli (Quorum): Sanofi→Medibuddy
-- Cooper Morrow (Jama): Spendflo→Hansard
-- Manigandan Kanagasabai (Mediaocean): 70% Selenium→CRED
-- Leah Coates (Perforce): Hansard→Cisco
-- Kylie Summer (Quizizz): Spendflo→CRED
-- Kanan Hasanzade (Datto): 70% Selenium→Medibuddy
-- Azam Quraishi (MTX Group): 70% Selenium→Sanofi
-- Yuliya A (Planview): Medibuddy→Hansard
-- Grant Anderson (Lucid): Medibuddy→CRED
-- Denise Barnett (Progress Software): Cisco→Hansard
+### TASK-010 | B9 Touch 2 sends (17 prospects) — ✅ DONE
+**Status:** DONE (2026-03-09)
+**Completed by:** Cowork-6 (Mar 9 send session)
+**Result:** 16 of 17 B9 T2 emails sent via Apollo UI. (Kylie Summer + Yuliya A excluded — no emails. Georgii Petrosian counted as B11 not B9.) ⚠️ Sent from robert.gorham@testsigma.net (Apollo default — not caught until Draft 26). Rob aware. T3 due Mar 14.
 
 ---
 
-### TASK-011 | B9/B10/B11 Touch 2 EMAIL drafts (new multi-channel strategy)
-**Status:** DRAFTS BUILT — AWAITING ROB REVIEW + APPROVE SEND
-**Priority:** URGENT — B9 T2 overdue, B10/B11 due Mar 11
-**Due:** B9 = ASAP (overdue). B10/B11 = Mar 11
-**Completed by:** Cowork-5 (Mar 9 session)
-**Description:** 28 T2 email drafts built using locked Variant A formula (approved Mar 9). File: `/Work/t2-email-drafts-mar9.html`
-- **B9: 16 drafts** (Kylie Summer + Yuliya A excluded — no emails found)
-- **B10: 9 drafts** (Francesco Leising email domain cfsb.com — verify active; Sravanti Krothapalli email domain qbsol.com may be prior employer ⚠️)
-- **B11: 3 drafts** (Dan Heintzelman missing email — skipped)
-**⚠️ Pending Rob decisions before sending:**
-1. Sravanti Krothapalli (Quorum): email sravanti.k@qbsol.com may be prior employer — find Quorum email OR send to qbsol.com?
-2. Kylie Summer (Quizizz): no email found — attempt LinkedIn search?
-3. Yuliya A (Planview): no email found — attempt LinkedIn search?
-4. Dan Heintzelman (Prevail Legal): no email found — attempt LinkedIn search?
-**Formula locked:** Opening company fact → "I'd imagine..." → LinkedIn callback naming T1 topic → "One of our customers, [Name]..." + tie-back → engagement CTA tied to opening tension. Full formula in `memory/sop-email.md`.
-**NEVER SEND without Rob's explicit "APPROVE SEND"**
+### TASK-011 | B9/B10/B11 Touch 2 EMAIL drafts — ✅ DONE
+**Status:** DONE (2026-03-09)
+**Completed by:** Cowork-6 (Mar 9 send session)
+**Result:** 25 of 28 T2 emails sent via Apollo UI. 3 skipped (preflight failures): Tim Wiseman/Upland wrong owner/sequence, Jason Poole/Vergent wrong owner, LP Guo/Moody's no sequences. ⚠️ Drafts 1-25 from robert.gorham@testsigma.net, Drafts 26-28 from .com. T3 due Mar 14. Full send log in pipeline-state.md Email Send History.
+**Key fix this session:** Apollo From dropdown must be manually changed from .net to .com every time. SOP updated in memory/sop-send.md (Apollo UI Email Send section).
 
 ---
 

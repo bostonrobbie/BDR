@@ -100,6 +100,87 @@ Close InMail window. Navigate back to search. Confirm: "Prospect #X complete. Re
 | Title/company mismatch | Note change, present to Rob |
 | Session expired | STOP, ask Rob to re-authenticate |
 
+---
+
+## Apollo UI Manual Email Send (Touch 2)
+
+Use this procedure when sending T2 emails via the Apollo contact page (not LinkedIn InMail). This is the standard method for B9/B10/B11 Touch 2 emails.
+
+### Hard Rules
+- ALWAYS send from **robert.gorham@testsigma.com** (not .net, not .in). Apollo's default is .net — you MUST change it every time.
+- Subject and body are NEVER typed via keyboard into the compose panel — use the technical methods below (form_input for Subject, Quill API for body). Keyboard input goes to the wrong element.
+- Compose panel closing after clicking Send Now = success indicator.
+
+### Preflight (all 3 required before opening compose)
+| Check | Criteria |
+|-------|----------|
+| Owner | Must show "Rob Gorham" in Record Details section |
+| Sequence | Must be enrolled in "LinkedIn Outbound - Q1 Priority Accounts" with status Active |
+| Email | Primary email must match the draft email |
+If ANY fails: SKIP. Document the reason.
+
+### Step-by-Step Flow
+
+**1. Navigate to contact**
+```
+https://app.apollo.io/#/contacts/{contact_id}/sequences
+```
+Get contact_id from Apollo MCP: `apollo_contacts_search q_keywords="Name Company"`
+
+**2. Preflight**
+Verify Owner = Rob Gorham, sequence = LinkedIn Outbound - Q1 Priority Accounts (Active), email correct.
+
+**3. Open compose**
+Click the envelope icon in the top right toolbar. A "Write with AI" panel opens on the left, and a "Send email" panel opens on the right. If only "Write with AI" opens, click the tooltip button at ~(930, 58) to reveal the full compose panel.
+
+**4. CRITICAL — Change From address**
+Apollo's default From is `robert.gorham@testsigma.net`. You MUST change it:
+- Click the From dropdown (at ~1113, 152)
+- Select `robert.gorham@testsigma.com` (second option in the list)
+- Confirm the From field and the email signature both show `@testsigma.com`
+
+**5. Set Subject**
+Use the `find` tool: `find "Subject field for email"` → get ref (e.g., ref_336).
+Then: `form_input ref=ref_336 value="[subject line]"`
+Do NOT click the subject field and type — keystrokes go to the wrong element.
+
+**6. Set Body**
+Use the Quill JS API (NOT typing or clipboard):
+```javascript
+const emailText = `[full email body text]`;
+const editorEl = document.querySelector('.ql-editor');
+const container = editorEl.closest('.ql-container');
+const quill = container.__quill;
+quill.setText(emailText);
+quill.setSelection(quill.getLength(), 0);
+'done';
+```
+
+**7. Verify before sending**
+Take a screenshot. Confirm:
+- From: robert.gorham@testsigma.com ✅
+- To: correct prospect email ✅
+- Subject: correct ✅
+- Body: correct (all paragraphs, no truncation) ✅
+- Signature: shows testsigma.com ✅
+
+**8. Send Now**
+Use `find "Send Now button"` → get ref. Then `left_click ref=ref_XXX`.
+Confirm compose panel closes = email sent successfully.
+
+**9. Post-send**
+Log in pipeline-state.md Email Send History immediately. Do not defer.
+
+### Common Errors & Fixes
+| Issue | Fix |
+|-------|-----|
+| From shows .net after send | NEVER SEND — you must change it FIRST. If you notice after send, flag to Rob. |
+| Keyboard input goes to AI panel | Do NOT type in Subject — use form_input with ref |
+| "Write with AI" panel blocks compose | Click X on "Write with AI" or click "Send email" tooltip (~930, 58) |
+| Contact not found via search | Search name only (drop company name) — company search often returns 0 results |
+| Chrome extension disconnects | Use tabs_create_mcp → new tab → navigate apollo.io → switch_browser to reconnect |
+| Page blank after navigate | Go to #/home first, then search |
+
 ## LinkedIn Safety & Compliance
 ### Pacing Limits
 | Activity | Daily Max | Weekly Max |

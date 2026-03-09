@@ -9,31 +9,34 @@
 ## Last Session
 
 **Date:** 2026-03-09
-**Agent:** Cowork-5 (Mar 9 — T2 formula lock + 28-draft build session)
-**Session title:** Variant A T2 formula locked, 28 drafts built, SOPs updated.
+**Agent:** Cowork-6 (Mar 9 — T2 email send session)
+**Session title:** 25 of 28 B9/B10/B11 T2 emails sent via Apollo UI. Apollo From address bug discovered + SOP updated.
 
 ---
 
 ## What Was Done This Session
 
-1. **Locked Variant A T2 email formula** through iterative refinement with Rob:
-   - Opening company fact (concrete, specific — not industry generalization)
-   - "I'd imagine..." empathy bridge connecting opening to QA/release pressure
-   - LinkedIn callback naming the specific T1 topic ("I reached out on LinkedIn about [X], but thought [Y] was worth adding")
-   - Customer story: "One of our customers, [Name]..." + tie-back sentence ("Reminded me of...")
-   - Engagement CTA tied to opening tension (NOT a meeting ask — T2 = engagement only)
+1. **Sent 25 of 28 T2 emails via Apollo UI** — Rob granted APPROVE SEND for all 28 drafts from `t2-email-drafts-mar9.html`. Sends executed one at a time via Apollo contact page.
+   - B9: 16 sent (Kylie Summer + Yuliya A excluded — no emails; Georgii Petrosian counted as B11)
+   - B10: 6 sent (Tim Wiseman/Upland, Jason Poole/Vergent skipped — preflight failures; LP Guo/Moody's skipped — no sequences)
+   - B11: 3 sent (Brad Askins, Dan Heintzelman, Madhu Nedunuri)
+   - **3 skipped on preflight:** Tim Wiseman/Upland (wrong owner/sequence), Jason Poole/Vergent (wrong owner), LP Guo/Moody's (no sequences in Apollo)
 
-2. **Built 28 T2 email drafts** using the locked formula:
-   - B9: 16 drafts (Kylie Summer + Yuliya A excluded — no emails)
-   - B10: 9 drafts (all complete, Sravanti Krothapalli flagged ⚠️)
-   - B11: 3 drafts (Dan Heintzelman missing — skipped)
-   - File: `/Work/t2-email-drafts-mar9.html`
-   - Build script: `/sessions/gallant-cool-mccarthy/build_t2.py`
-   - Researched Fairfax Software via web search (payment processing + doc mgmt for state tax agencies)
+2. **⚠️ Apollo From address bug discovered (mid-session):**
+   - Apollo's default From is `robert.gorham@testsigma.net` — NOT `.com`
+   - Drafts 1-25 were sent from `.net` before the bug was caught
+   - Drafts 26-28 (Brad Askins, Dan Heintzelman, Madhu Nedunuri) sent from `.com` correctly
+   - Rob was notified. SOP updated with mandatory From address fix step.
 
-3. **Updated `memory/sop-email.md`** — Full Variant A formula documented with examples for all 5 parts, hard rules, proof point rotation table, opening angle pattern library (irony, M&A/portfolio, regulatory, campaign, field ops).
+3. **Updated `memory/sop-send.md`** — Added full "Apollo UI Manual Email Send (Touch 2)" section:
+   - Hard rules (always .com, use form_input + Quill API, panel close = success)
+   - Preflight table (Owner, Sequence, Email — all 3 required)
+   - 9-step procedure with direct nav URL, From dropdown fix, Subject via form_input, body via Quill JS API, screenshot verify, Send Now
+   - Error/fix table covering .net sends, keyboard input issue, AI panel, contact search, Chrome disconnect, blank page
 
-4. **Updated `memory/session/work-queue.md`** — TASK-010 + TASK-011 updated to "DRAFTS BUILT — AWAITING ROB REVIEW + APPROVE SEND."
+4. **Updated `memory/pipeline-state.md`** — Added Mar 9 T2 email rows to Email Send History (16 B9 + 6 B10 + 3 B11 = 25 total), updated total emails from 49 → 74, added T3 due dates (Mar 14).
+
+5. **Updated `memory/session/work-queue.md`** — TASK-010 + TASK-011 marked DONE.
 
 ---
 
@@ -43,27 +46,26 @@
 | Metric | Value |
 |--------|-------|
 | Total unique prospects contacted | 206 |
-| Total outreach emails sent (Gmail-confirmed) | 49 (pre-Touch 2 wave) |
+| Total outreach emails sent (Gmail + Apollo confirmed) | **74** (49 T1 + 25 T2 sent this session) |
 | InMail credits remaining | 4 |
 | Apollo lead credits | ~6,879 |
-| MASTER_SENT_LIST rows | 278 |
+| MASTER_SENT_LIST rows | 278 (T2 sends are follow-ups — no new rows needed) |
 | LinkedIn Outbound - Q1 enrolled | 316 |
 
 ---
 
 ## Top 3 Priorities for Next Agent
 
-1. **[URGENT] Get Rob's review + APPROVE SEND on 28 T2 drafts** — `t2-email-drafts-mar9.html` is built and ready. Rob must review each draft and say "APPROVE SEND" before anything goes out. Rob sends from robert.gorham@testsigma.com. B9 drafts are overdue. B10/B11 due Mar 11.
-   - **⚠️ 4 pending decisions before final draft count:**
-     - Sravanti Krothapalli: email sravanti.k@qbsol.com may be prior employer (Quorum is her current company) — find Quorum email or send to qbsol?
-     - Kylie Summer (Quizizz): no email found — LinkedIn search?
-     - Yuliya A (Planview): no email found — LinkedIn search?
-     - Dan Heintzelman (Prevail Legal): no email found — LinkedIn search?
+1. **[URGENT] Complete TASK-009 — 25 WV Mar 3 Touch 2 emails** — 12 email addresses still missing. Collect from Apollo (people-match by name + domain), draft all 25 using EM-FU-1 formula (max 70 words, "Re: Quick question, [First Name]" subject, different proof point from T1, "what day works" CTA). Present ALL to Rob before sending. NEVER SEND without "APPROVE SEND."
+   - Note: TASK-009 uses the OLD EM-FU-1 template — NOT the Variant A formula. Variant A = LinkedIn sequence T2s only.
+   - **⚠️ Nabil Ahmed (Progyny):** May not be in Apollo. If not found, search Gmail sent folder for Mar 3 email to progyny.com domain.
 
-2. **[URGENT] Complete TASK-009 — 25 WV Mar 3 Touch 2 emails** — 12 email addresses still missing. Collect from Apollo (people-match by name + domain), then draft all 25 using EM-FU-1 formula (max 70 words, "Re: Quick question, [First Name]" subject, different proof point from T1, "what day works" CTA). Present ALL to Rob before sending. NEVER SEND without "APPROVE SEND."
-   - Note: TASK-009 uses the OLD EM-FU-1 template ("Re: Quick question" subject, "what day works" CTA) — NOT the Variant A formula. Variant A = LinkedIn sequence T2s only.
+2. **[DECISION NEEDED] 3 skipped T2 sends** — Rob must decide what to do:
+   - Tim Wiseman / Upland Software — wrong owner/sequence. Reassign in Apollo and send?
+   - Jason Poole / Vergent LMS — wrong owner. Reassign and send?
+   - LP Guo / Moody's Analytics — no sequences in Apollo. Enroll in LinkedIn Outbound Q1 first, then send?
 
-3. **[Mon Mar 9] B10 InMails — TASK-001** — 8 credit InMails queued, only 4 credits remain. Confirm enrollment status first. Rob decides who gets the 4 remaining credits. Sasa Lazarevic + Christian Melville still blocked by Apollo ownership.
+3. **[T3 DUE MAR 14] Prep T3 drafts for all Mar 9 T2 sends** — T3 due Mar 14 for all 25 contacts who received T2 today. Use Variant A T3 formula when available, or escalate if formula not yet locked.
 
 ---
 
@@ -160,7 +162,7 @@ Sanjay Singh (ServiceTitan), Lance Silverman, Clyde Faulkner (CAMP Systems), Ash
 
 ## Secondary / Monitoring
 
-- **WV Mar 6 T2** (Mark Townsend, Kanwar Sangwan, Alex Wong, Prateek Negi, Misty Pesek, Katrina Walker, Joe Biggert) — NOT eligible until Mar 11 (Day 4/5). Do not draft until Mar 10/11.
+- **WV Mar 6 T2** (Mark Townsend, Kanwar Sangwan, Alex Wong, Prateek Negi, Misty Pesek, Katrina Walker, Joe Biggert) — eligible Mar 11 (Day 4/5). Draft Mar 10/11.
 - **TASK-001 Mon Mar 9 B10 InMails** — 8 credit InMails queued, only 4 credits remain. Confirm enrollment status. Rob decides who gets credits. See `memory/pipeline-state.md` B10 section.
 - **TASK-003 B10 enrollment blockers** — Sasa Lazarevic + Christian Melville blocked by Apollo ownership. Rob must resolve. 5 others (Kristyn Burke, Tim Hartgrave, Vince Delfini, Padmanaban Vadivelu, Ravi Nag) — attempt enrollment via MCP.
 - **TASK-007 Apollo WV "81 delivered" mystery** — Not blocking. Low priority.
@@ -181,20 +183,21 @@ Sanjay Singh (ServiceTitan), Lance Silverman, Clyde Faulkner (CAMP Systems), Ash
 
 ## Blockers / Flags
 
-- **4 prospects with no emails** for T2 drafts — Rob must decide: LinkedIn search or skip? (Kylie Summer/Quizizz, Yuliya A/Planview, Dan Heintzelman/Prevail Legal, Sravanti Krothapalli/Quorum email domain uncertain)
+- **⚠️ Drafts 1-25 sent from .net** — robert.gorham@testsigma.net (Apollo default). Drafts 26-28 correctly sent from .com. Rob was notified. Cannot unsend. SOP now documents mandatory From fix.
+- **3 T2 skips pending Rob decision:** Tim Wiseman/Upland, Jason Poole/Vergent, LP Guo/Moody's (see Priority #2 above)
 - **12 email addresses still missing** for WV Mar 3 Touch 2 drafts (TASK-009)
 - **0 TASK-009 T2 drafts written yet** — email collection is the blocker
 - Push to GitHub requires Rob to run `git push origin main` from his terminal. VM has no stored GitHub credentials.
 - B10 Apollo ownership blocks: Sasa Lazarevic + Christian Melville — Rob must resolve manually.
-- **InMail credits: only 4 remaining** — Thread continuation does NOT mean free for 2nd/3rd degree. Only 1st degree (connected) prospects can be replied to for free. Prioritize top 4.
+- **InMail credits: only 4 remaining** — Thread continuation does NOT mean free for 2nd/3rd degree. Only 1st degree (connected) prospects can be replied to for free.
 
 ---
 
 ## Files Changed This Session
 
-- `memory/sop-email.md` — Variant A T2 formula fully documented (5 parts, hard rules, proof point rotation, opening angle patterns). Replaces thin Mar 8 stub.
-- `memory/session/work-queue.md` — TASK-010 + TASK-011 updated to "DRAFTS BUILT — AWAITING ROB REVIEW + APPROVE SEND"
+- `memory/sop-send.md` — Added full Apollo UI Manual Email Send (Touch 2) section
+- `memory/pipeline-state.md` — T2 sends logged (25 total), total emails updated 49→74, T3 due dates added
+- `memory/session/work-queue.md` — TASK-010 + TASK-011 marked DONE
 - `memory/session/handoff.md` — this file
-- `memory/session/session-log.md` — Mar 9 Cowork-5 entry added
-- `/Work/t2-email-drafts-mar9.html` — 28 T2 drafts (B9 x16, B10 x9, B11 x3)
+- `memory/session/session-log.md` — Mar 9 Cowork-6 entry added
 - `/sessions/gallant-cool-mccarthy/build_t2.py` — Python build script (not in Work folder — not committed to repo)
