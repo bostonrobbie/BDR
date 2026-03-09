@@ -201,3 +201,19 @@ Sanjay Singh (ServiceTitan), Lance Silverman, Clyde Faulkner (CAMP Systems), Ash
 - `memory/session/handoff.md` — this file
 - `memory/session/session-log.md` — Mar 9 Cowork-6 entry added
 - `/sessions/gallant-cool-mccarthy/build_t2.py` — Python build script (not in Work folder — not committed to repo)
+
+**Mar 9 continuation — Named Accounts + SOP documentation:**
+- `memory/target-accounts.md` — NEW: documents all 4 account types (Factor 7 HOT accounts, TAM Oct 2025, Manual Testers TAM, Farming ~10 accounts), Salesforce report links, usage rules, key contacts
+- `memory/sop-daily.md` — Added Tier 0: Named Accounts to batch sourcing waterfall (above Buyer Intent)
+- `memory/sop-prospect.md` — Added Named Account Priority section at top (check Factor/TAM/Farming before any Sales Nav search)
+- `memory/sop-outreach.md` — 3-touch sequence note updated (Mar 8 email T2 change)
+- `CLAUDE.md` — Added target-accounts.md to reference file table
+
+**⚠️ Account lists NOT accessible from emails:** All 4 account lists (TAM, Factors, Manual Testers TAM, Farming) are exclusively in Salesforce reports. Email threads only contained SF report links. To get actual company names, Rob needs to export from Salesforce or log in during a session so browser automation can read the reports.
+
+**Salesforce report links (all in target-accounts.md):**
+- TAM Oct 2025 accounts: /Report/00OOX00000H3IwL2AV
+- TAM Oct 2025 contacts: /Report/00OOX00000H8ucj2AB
+- HOT Factors accounts: /Report/00OOX00000HOtHh2AL
+- Manual Testers TAM: /Report/00OOX00000HGoa92AD
+- Farming/Active Customers: /Report/00OOX000009bkmt2AA

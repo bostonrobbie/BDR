@@ -48,7 +48,16 @@ Summary, log updates, tomorrow preview, numbered action items for Rob.
 ## Batch Sourcing Decision Framework (SOP D)
 Claude follows this waterfall autonomously (never asks Rob which method):
 
-### Tier 1: Buyer Intent (Highest)
+### Tier 0: Named Accounts (Highest — check before everything else)
+Rob's assigned account lists. Always work these first before open Sales Nav prospecting.
+- **Factor Accounts (HOT):** 7 accounts from Shakeel's list — check for unworked contacts first every session.
+- **TAM Accounts (Oct 2025):** Rob's primary NAMER named account list — ICP contacts enriched by LDR team.
+- **Manual Testers TAM:** Supplemental TAM, coordinate with AEs Tyler + Eshwar.
+- **Farming Accounts:** Active customers. NOT cold outreach. Coordinate with AE/CSM first.
+
+All Salesforce report links + context: `memory/target-accounts.md`
+
+### Tier 1: Buyer Intent (High)
 Sales Nav Buyer Intent, website demo requests, webinar attendees (<48 hrs).
 
 ### Tier 2: Re-Engagement (High)

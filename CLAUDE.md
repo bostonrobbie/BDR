@@ -163,6 +163,7 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 | Draft safety / incidents | `memory/incidents.md` |
 | Warm lead handling | `memory/warm-leads.md` |
 | Scoring, A/B, feedback loops | `memory/scoring-feedback.md` |
+| Named accounts (TAM, Factors, Farming) | `memory/target-accounts.md` |
 
 **Rule:** Always read the relevant memory file(s) BEFORE starting a task. Don't rely on cached knowledge from prior sessions.
 

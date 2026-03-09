@@ -7,6 +7,19 @@ This is Phase 1 of the end-to-end sequence. Everything after batch approval runs
 
 ---
 
+## Named Account Priority (Check Before Any Sales Nav Search)
+
+Rob has assigned named account lists that take priority over open Sales Nav prospecting. **Before building a new batch from saved searches, always check:**
+
+1. **Factor Accounts (HOT)** — 7 accounts inherited from Shakeel. Highest priority. Check first every session.
+2. **TAM Accounts (Oct 2025)** — Rob's primary named NAMER account universe. ICP-curated by LDR team with enriched contacts already in CRM.
+3. **Manual Testers Footprint TAM** — Supplemental TAM for all BDRs, focused on companies with manual testers. Work in coordination with AEs Tyler + Eshwar.
+4. **Farming Accounts** — ~10 active customers for upsell/cross-sell. NOT cold outreach. Coordinate with AE/CSM first. Separate motion.
+
+**All account names and contacts are in Salesforce.** See `memory/target-accounts.md` for Salesforce report links, context, and usage rules.
+
+---
+
 ## When to Build a New Batch
 
 Run the batch sourcing decision framework from `sop-daily.md`:
