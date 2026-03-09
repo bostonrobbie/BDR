@@ -108,7 +108,7 @@ Rob runs multi-channel outbound across LinkedIn InMail, email, and cold calls to
 
 ### Sending
 - Via Apollo sequence task completion (preferred) or Gmail manual
-- Send from: robert.gorham@testsigma.net
+- Send from: robert.gorham@testsigma.com
 - Afternoon window (12-5 PM)
 - Max 50 per day per account
 

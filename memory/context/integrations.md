@@ -67,7 +67,7 @@ Primary prospecting channel. Used for finding prospects, reading profiles, check
 Contact enrichment, email discovery, sequence management, and website visitor intent tracking.
 
 ### Account Details
-- Send from: robert.gorham@testsigma.net
+- Send from: robert.gorham@testsigma.com
 - Email account ID: 68f65bdf998c4c0015f3446a
 - Key sequence: Q1 Website Visitor - Tier 1 Intent (ID: 69a1b3564fa5fa001152eb66)
 
