@@ -123,13 +123,39 @@ Chase, Fidelity Investments, Cetera Financial Group, Cboe Global Markets, TruSta
 
 **What they are:** Testsigma's Total Addressable Market accounts for Rob's NAMER region. Built and assigned by the LDR team using ICP criteria (industry, employees, business type). This is Rob's primary named account universe.
 
+**Total:** 312 accounts (exported Mar 9, 2026)
+**Full list:** `/Work/tam-accounts-mar26.csv` (Account Name, Location, LinkedIn URL, Domain, Owner)
+
 **Salesforce Reports:**
 - [TAM Account List](https://d2v000000sgbdea0.lightning.force.com/lightning/r/Report/00OOX00000H3IwL2AV/view?queryScope=userFolders) — company list
 - [TAM Contacts (enriched)](https://d2v000000sgbdea0.lightning.force.com/lightning/r/Report/00OOX00000H8ucj2AB/view?queryScope=userFolders) — ICP contacts already enriched and uploaded by LDR team
 
 **Context:** Contacts were enriched by the LDR team in batches (confirmed Oct 21, 2025 follow-up from Muthu). These contacts should already be in Salesforce/CRM. Additional contacts can be requested from ldr-team@testsigma.com.
 
-**Status:** Assigned Oct 2025. Rob confirmed Dec 5 that he was prospecting into them alongside accounts from Tyler and Eshwar.
+**Status:** Assigned Oct 2025. Full list captured Mar 9, 2026.
+
+### ⚠️ Known Flags in TAM List
+
+| Account | Flag |
+|---------|------|
+| ACCELQ | Competitor — DO NOT contact without leadership clearance |
+| Kapitus | DNC — Abe Blanco replied "not interested" Mar 4 |
+| OverDrive | Active warm lead — Namita Jain (Touch 1 sent Feb 27) |
+| trailblazercgl, Samozatrudnienie, Confidencial, gnc-hq.com | Data quality issues — likely bad records, skip |
+| Government orgs (DC Gov, State of NJ, Texas DOT, Michigan DHHS, City of Hamilton, LA Metro, Service New Brunswick, Govt of Canada, Buenos Aires, Godoy Cruz) | Out of ICP — government entities |
+
+### High-ICP TAM Accounts NOT Already in Factor List
+
+These are the best untouched accounts to target next (not in the 38 Factor accounts):
+
+**Finance / Insurance (HIGH priority):**
+Morgan Stanley, BMO, BlackRock, Mastercard, Allianz Life US, Farmers Insurance, Blue Cross Blue Shield, Humana, Great American Insurance, Pacific Life, Selective Insurance, EmblemHealth, Definity, AssuredPartners, Jack Henry, Bluevine, Lemonade, SailPoint, Everbridge, ID.me
+
+**Healthcare / Life Sciences (HIGH priority):**
+Cleveland Clinic, Memorial Sloan Kettering, Dana-Farber Cancer Institute, Children's Hospital of Philadelphia, HonorHealth, Evernorth Health Services, Point32Health, Vaya Health, Health Net, hims & hers, Johnson & Johnson MedTech, Acadia Pharmaceuticals, Zimmer Biomet, Tandem Diabetes Care, Clinisys, Incyte, Radiology Partners
+
+**Tech / SaaS / Security (HIGH priority):**
+Broadcom, Check Point Software, BeyondTrust, WatchGuard Technologies, Sysdig, Procore Technologies, Anaplan, Yext, Epicor, Infor, Celonis, SingleStore, Couchbase, Pathlock, AppLovin, Bungie, Bethesda Softworks, DraftKings, Square / Cash App, Pluralsight, Incode Technologies, Zipline, Dark Matter Technologies, Webex, Aura
 
 ---
 
