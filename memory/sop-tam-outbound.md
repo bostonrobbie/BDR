@@ -908,3 +908,221 @@ TAM batch [YYYYMMDD]-[N]: [N] contacts across [N] accounts enrolled
 
 *Version 2.1 — Updated Mar 10, 2026 — Research depth hardened, batch-first drafting enforced, logging protocol airtight*
 *Next review: After first 250 contacts enrolled (est. 5 days at 50/day)*
+
+---
+
+## Part 22: Automated QA Gate + Enrollment Pipeline
+
+*Added Mar 10, 2026 — End-to-end automation from batch tracker HTML to Apollo enrollment*
+
+This section documents the automated pipeline built for TAM Outbound T1 emails. It covers the Python QA gate script, the automated trim process, and the Apollo enrollment flow. Run this pipeline on every T1 batch after Rob gives APPROVE SEND.
+
+---
+
+### Step 1 — Run QA Gate (automated)
+
+The QA gate script checks every email in the batch tracker HTML and flags any that fail. It lives at `/sessions/determined-sharp-keller/qa_gate_v3.py` but should be regenerated from the spec below each session (the VM resets between sessions — only `/Work/` persists).
+
+**Script spec — `qa_gate_v3.py`:**
+
+```python
+import re
+from bs4 import BeautifulSoup
+
+html_path = "/sessions/determined-sharp-keller/mnt/Work/[BATCH_FILE].html"
+with open(html_path, "r") as f:
+    html = f.read()
+
+soup = BeautifulSoup(html, "html.parser")
+cards = soup.find_all("div", class_="email-body")
+
+BANNED_EXACT = ["AI"]           # checked with word boundary \b
+BANNED_SUB = ["self-healing", "flaky test", "CI/CD", "I noticed", "I saw", "what day works"]
+BANNED_CHAR = ["—"]             # em dash
+NAMED_CUSTOMERS = ["Cisco", "Samsung", "Honeywell", "Bosch", "Nokia", "Nestle",
+                   "KFC", "DHL", "Zeiss", "NTUC", "Oscar Health", "Sanofi",
+                   "Spendflo", "Nagra", "Hansard", "Medibuddy", "CRED", "APA"]
+# NAMED_CUSTOMERS: use word boundary \b (case-insensitive) to avoid
+#   substring false positives (e.g. "APA" inside "capacity")
+```
+
+**What it checks per email:**
+- Body core word count: 80-97 words (body core = text AFTER "Hi [Name],\n\n" AND BEFORE "Rob Gorham | Testsigma")
+- Exactly 2 question marks in the full email
+- No banned exact words (whole-word "AI", not "automation" or "maintaining")
+- No banned substrings (self-healing, flaky test, CI/CD, I noticed, I saw, what day works)
+- No em dashes (—)
+- No named customers (word boundary, case-insensitive)
+- Required phrase: "thought it would be worth" present in body core
+- Opener format: "Hi [First Name]," present
+
+**Known edge cases:**
+- "Yu Jin" is a two-part first name. The opener "Hi Yu Jin," is correct. If the script uses `name.split()[0]` it produces "Yu" which fails the opener check. Use full first name "Yu Jin" for this contact, or hard-code the check.
+- "APA" named customer check must use `\b` word boundary to avoid matching inside "capacity," "Japan," etc.
+- "AI" must use `\b` word boundary — substring match would flag "automation," "maintaining," "detailing," etc.
+
+**Pass threshold:** All 12 criteria. Any failure = fix before enrolling.
+
+---
+
+### Step 2 — Trim Failing Emails (if needed)
+
+If any emails fail the word count check (>97 words), trim them before enrolling. Never send an over-limit email.
+
+**Trim methodology:**
+1. For each failing email, identify the body core (text after greeting, before signature)
+2. Count words: `len(body_core.split())`
+3. Trim to ≤97 words while preserving: challenge narrative, Q1, vertical proof point, "thought it would be worth," Q2 close, 2 question marks, no banned words
+4. Common trim targets: redundant prepositional phrases, "right now," "tend to," "a lot of" → "significant," "in the same release window" → "at that pace," extra adjectives in P3
+5. After trimming all emails, write a replace script (`trim_emails.py`) that updates both the `<div class="email-body">` content (real newlines) AND the `onclick="copyText(...)"` attribute (escaped `\n` sequences)
+6. Re-run QA gate to confirm all pass before proceeding
+
+**trim_emails.py template:**
+```python
+html_path = "/sessions/determined-sharp-keller/mnt/Work/[BATCH_FILE].html"
+with open(html_path, "r") as f:
+    html = f.read()
+
+edits = [
+    (first_name, sig_tail, old_core, new_core),
+    # one entry per trimmed email
+]
+for (first_name, sig_tail, old_core, new_core) in edits:
+    old_full = f"Hi {first_name},\n\n{old_core}\n\nRob Gorham | Testsigma\n{sig_tail}"
+    new_full = f"Hi {first_name},\n\n{new_core}\n\nRob Gorham | Testsigma\n{sig_tail}"
+    if old_full in html:
+        html = html.replace(old_full, new_full, 1)
+    # Also update onclick copy text (escaped newlines)
+    old_js = old_full.replace("'", "\\'").replace("\n", "\\n")
+    new_js = new_full.replace("'", "\\'").replace("\n", "\\n")
+    if old_js in html:
+        html = html.replace(old_js, new_js, 1)
+
+with open(html_path, "w") as f:
+    f.write(html)
+```
+
+---
+
+### Step 3 — Extract Prospect Details from Batch Tracker
+
+Parse the overview table in the HTML to get all 16 (or N) contacts with their Apollo enrollment data:
+
+```python
+from bs4 import BeautifulSoup
+
+soup = BeautifulSoup(html, "html.parser")
+table = soup.find("table", class_="overview")
+rows = table.find("tbody").find_all("tr")
+
+prospects = []
+for row in rows:
+    cells = row.find_all("td")
+    if len(cells) >= 4:
+        name = cells[0].get_text(strip=True)
+        title = cells[1].get_text(strip=True)
+        company = cells[2].get_text(strip=True)
+        email = cells[3].get_text(strip=True)
+        priority_span = cells[4].find("span") if len(cells) > 4 else None
+        priority = priority_span.get_text(strip=True) if priority_span else ""
+        prospects.append({"name": name, "title": title, "company": company,
+                          "email": email, "priority": priority})
+```
+
+---
+
+### Step 4 — Create / Verify Apollo Contacts
+
+For each prospect:
+1. Search Apollo contacts by email: `apollo_contacts_search(q_keywords=email)`
+2. If not found: create via `apollo_contacts_create` with `run_dedupe=true`
+3. Track the returned `id` for enrollment
+4. Multi-word first names (e.g. "Yu Jin"): pass `first_name="Yu"`, `last_name="Jin"` — NOT `first_name="Yu Jin"` which doubles the name
+
+**Required fields for create:**
+- `first_name`, `last_name` (split from full name)
+- `email` (verified business email from tracker)
+- `title` (from tracker)
+- `organization_name` (from tracker)
+- `website_url` (company domain)
+- `run_dedupe=true`
+
+---
+
+### Step 5 — Enroll in TAM Outbound Sequence
+
+**Sequence:** TAM Outbound - Rob Gorham (`69afff8dc8897c0019b78c7e`)
+**Email account:** `robert.gorham@testsigma.com` (`68e3b53ceaaf74001d36c206`) — .com ONLY
+
+Enroll HIGH → MED → LOW order. Batch by priority tier (6+9+1 = 16 for Wave 2). Batches up to 10 are fine for email-only contacts. Larger batches (50+) should be split into groups of 10 to avoid timeouts.
+
+```python
+apollo_emailer_campaigns_add_contact_ids(
+    id="69afff8dc8897c0019b78c7e",
+    emailer_campaign_id="69afff8dc8897c0019b78c7e",
+    contact_ids=[id1, id2, ...],
+    send_email_from_email_account_id="68e3b53ceaaf74001d36c206",
+    sequence_no_email=False,
+    sequence_active_in_other_campaigns=False
+)
+```
+
+Verify response: check that `emailer_campaign_ids` contains `69afff8dc8897c0019b78c7e` for each enrolled contact.
+
+---
+
+### Step 6 — Log and Update Status
+
+After all contacts enrolled:
+
+**MASTER_SENT_LIST.csv — append one row per contact:**
+```
+[Full Name], TAM Outbound Wave[N] T1 [Date], [YYYY-MM-DD], Email (Apollo TAM Outbound T1), 0, [batch-file.html], [lowercase full name]
+```
+
+**Batch tracker HTML — update status badges:**
+```python
+old_badge = '<span class="badge badge-high">Draft Ready</span>'
+new_badge = '<span class="badge badge-sent">T1 Sent [Mon DD]</span>'
+html = html.replace(old_badge, new_badge)
+```
+
+Add `.badge-sent` CSS if not present:
+```css
+.badge-sent { background: #d4edda; color: #155724; padding: 3px 8px;
+              border-radius: 4px; font-size: 0.8em; font-weight: 600; }
+```
+
+---
+
+### Full Pipeline Summary (T1 Email Batch — Automated)
+
+```
+APPROVE SEND received
+        ↓
+1. Run QA gate (qa_gate_v3.py) on batch HTML
+        ↓
+2. Any failures? → Trim emails (trim_emails.py) → Re-run QA gate → All pass
+        ↓
+3. Extract prospects from batch HTML overview table
+        ↓
+4. Search Apollo for each contact → create if missing (run_dedupe=true)
+        ↓
+5. Enroll HIGH → MED → LOW in TAM Outbound sequence (ID: 69afff8dc8897c0019b78c7e)
+        ↓
+6. Verify all contacts show sequence ID in emailer_campaign_ids
+        ↓
+7. Append 16 rows to MASTER_SENT_LIST.csv
+        ↓
+8. Update HTML status badges: Draft Ready → T1 Sent [Date]
+        ↓
+9. Update handoff.md, work-queue.md, session-log.md
+        ↓
+10. Git commit + push
+```
+
+**T2 follow-up schedule:** T2 due Day 5 from send date. Apollo task queue will auto-generate Step 2 tasks — check daily per sop-daily.md.
+
+---
+
+*Part 22 added Mar 10, 2026 — documents automation pipeline built during Wave 2 T1 send session*

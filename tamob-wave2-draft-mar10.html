@@ -22,7 +22,16 @@
   .account-name { font-size: 16px; font-weight: 700; }
   .account-meta { color: #6b7280; font-size: 12px; }
   .badge { padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
-  .badge-high { background: #fef3c7; color: #92400e; }
+  
+    .badge-sent {
+        background: #d4edda;
+        color: #155724;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.8em;
+        font-weight: 600;
+    }
+    .badge-high { background: #fef3c7; color: #92400e; }
   .badge-medium { background: #dbeafe; color: #1e40af; }
   .badge-low { background: #f3f4f6; color: #6b7280; }
   .badge-insurance { background: #f0fdf4; color: #166534; }
@@ -119,22 +128,22 @@
     <tr><th>Name</th><th>Title</th><th>Company</th><th>Email</th><th>Priority</th><th>MQS</th><th>Research Angle</th><th>Status</th></tr>
   </thead>
   <tbody>
-    <tr><td><strong>Marcela Fetters</strong></td><td>Director of QA</td><td>GEICO</td><td>mfetters@geico.com</td><td><span class="priority-badge p5">P5 HIGH</span></td><td>11/12</td><td>600→15 legacy consolidation / coverage consistency</td><td><span class="badge badge-high">Draft Ready</span></td></tr>
-    <tr><td><strong>Roberto Bouza</strong></td><td>Sr Director Engineering</td><td>GEICO</td><td>rbouza@geico.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>Cloud repatriation / hybrid infra / test env drift</td><td><span class="badge badge-high">Draft Ready</span></td></tr>
-    <tr><td><strong>Sambhav Taneja</strong></td><td>Sr SQA Manager</td><td>GEICO</td><td>sambhav_taneja@geico.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>QA hiring surge / maintenance vs. coverage tension</td><td><span class="badge badge-high">Draft Ready</span></td></tr>
-    <tr><td><strong>Chandni Jain</strong></td><td>VP Engineering</td><td>Checkr</td><td>chandni.jain@checkr.com</td><td><span class="priority-badge p5">P5 HIGH</span></td><td>11/12</td><td>Truework acquisition + I-9/fraud detection expansion</td><td><span class="badge badge-high">Draft Ready</span></td></tr>
-    <tr><td><strong>Sarah Kneedler</strong></td><td>Manager QA</td><td>Checkr</td><td>sarah.kneedler@checkr.com</td><td><span class="priority-badge p5">P5 HIGH</span></td><td>11/12</td><td>Test creation pace vs. rapid product launches</td><td><span class="badge badge-high">Draft Ready</span></td></tr>
-    <tr><td><strong>Krista Moroder</strong></td><td>Sr Director Engineering</td><td>Checkr</td><td>krista.moroder@checkr.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>200+ integrations / acquisition regression complexity</td><td><span class="badge badge-high">Draft Ready</span></td></tr>
-    <tr><td><strong>Cristian Brotto</strong></td><td>Sr Director Engineering</td><td>Checkr</td><td>cristian.brotto@checkr.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>$800M scale / engineering quality vs. velocity</td><td><span class="badge badge-high">Draft Ready</span></td></tr>
-    <tr><td><strong>Yu Jin</strong></td><td>Director Engineering</td><td>Electronic Arts</td><td>yjin@ea.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>Live service cadence / regression bottleneck</td><td><span class="badge badge-high">Draft Ready</span></td></tr>
-    <tr><td><strong>Maalika Tadinada</strong></td><td>Director Engineering</td><td>Electronic Arts</td><td>mtadinada@ea.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>Multi-platform coverage / cross-surface test maintenance</td><td><span class="badge badge-high">Draft Ready</span></td></tr>
-    <tr><td><strong>Richelle Paulsen</strong></td><td>Director of QA</td><td>Cetera Financial</td><td>richelle.paulsen@cetera.com</td><td><span class="priority-badge p5">P5 HIGH</span></td><td>11/12</td><td>8K+ advisor platform / compliance-critical regression</td><td><span class="badge badge-high">Draft Ready</span></td></tr>
-    <tr><td><strong>Anton Aleksandrov</strong></td><td>QA Manager</td><td>Cetera Financial</td><td>anton.aleksandrov@cetera.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>Compliance regression / QA cycle time / headcount constraints</td><td><span class="badge badge-high">Draft Ready</span></td></tr>
-    <tr><td><strong>Saeyed Shamlou</strong></td><td>VP Quality Engineering</td><td>OneMain Financial</td><td>saeyed.shamlou@omf.com</td><td><span class="priority-badge p5">P5 HIGH</span></td><td>12/12</td><td>Bank charter + digital scale / active QA hiring</td><td><span class="badge badge-high">Draft Ready</span></td></tr>
-    <tr><td><strong>Karen Teng</strong></td><td>VP Engineering</td><td>Mindbody</td><td>karen.teng@mindbodyonline.com</td><td><span class="priority-badge p5">P5 HIGH</span></td><td>11/12</td><td>ClassPass/Mindbody merger / shared component regression</td><td><span class="badge badge-high">Draft Ready</span></td></tr>
-    <tr><td><strong>Henry Rose</strong></td><td>Sr Director Engineering</td><td>Mindbody</td><td>henry.rose@mindbodyonline.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>Consumer release velocity / regression cycle time</td><td><span class="badge badge-high">Draft Ready</span></td></tr>
-    <tr><td><strong>Bipin Bhoite</strong></td><td>Director Software Engineering</td><td>Mindbody</td><td>bipin.bhoite@mindbodyonline.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>70K+ studio integrations / integration test coverage</td><td><span class="badge badge-high">Draft Ready</span></td></tr>
-    <tr><td><strong>Shyamendra Singh</strong></td><td>Director Engineering, Platform</td><td>HashiCorp</td><td>shyamendra.singh@hashicorp.com</td><td><span class="priority-badge p1">P1 LOW</span></td><td>9/12</td><td>Multi-SDK regression / IBM integration environment</td><td><span class="badge badge-high">Draft Ready</span></td></tr>
+    <tr><td><strong>Marcela Fetters</strong></td><td>Director of QA</td><td>GEICO</td><td>mfetters@geico.com</td><td><span class="priority-badge p5">P5 HIGH</span></td><td>11/12</td><td>600→15 legacy consolidation / coverage consistency</td><td><span class="badge badge-sent">T1 Sent Mar 10</span></td></tr>
+    <tr><td><strong>Roberto Bouza</strong></td><td>Sr Director Engineering</td><td>GEICO</td><td>rbouza@geico.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>Cloud repatriation / hybrid infra / test env drift</td><td><span class="badge badge-sent">T1 Sent Mar 10</span></td></tr>
+    <tr><td><strong>Sambhav Taneja</strong></td><td>Sr SQA Manager</td><td>GEICO</td><td>sambhav_taneja@geico.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>QA hiring surge / maintenance vs. coverage tension</td><td><span class="badge badge-sent">T1 Sent Mar 10</span></td></tr>
+    <tr><td><strong>Chandni Jain</strong></td><td>VP Engineering</td><td>Checkr</td><td>chandni.jain@checkr.com</td><td><span class="priority-badge p5">P5 HIGH</span></td><td>11/12</td><td>Truework acquisition + I-9/fraud detection expansion</td><td><span class="badge badge-sent">T1 Sent Mar 10</span></td></tr>
+    <tr><td><strong>Sarah Kneedler</strong></td><td>Manager QA</td><td>Checkr</td><td>sarah.kneedler@checkr.com</td><td><span class="priority-badge p5">P5 HIGH</span></td><td>11/12</td><td>Test creation pace vs. rapid product launches</td><td><span class="badge badge-sent">T1 Sent Mar 10</span></td></tr>
+    <tr><td><strong>Krista Moroder</strong></td><td>Sr Director Engineering</td><td>Checkr</td><td>krista.moroder@checkr.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>200+ integrations / acquisition regression complexity</td><td><span class="badge badge-sent">T1 Sent Mar 10</span></td></tr>
+    <tr><td><strong>Cristian Brotto</strong></td><td>Sr Director Engineering</td><td>Checkr</td><td>cristian.brotto@checkr.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>$800M scale / engineering quality vs. velocity</td><td><span class="badge badge-sent">T1 Sent Mar 10</span></td></tr>
+    <tr><td><strong>Yu Jin</strong></td><td>Director Engineering</td><td>Electronic Arts</td><td>yjin@ea.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>Live service cadence / regression bottleneck</td><td><span class="badge badge-sent">T1 Sent Mar 10</span></td></tr>
+    <tr><td><strong>Maalika Tadinada</strong></td><td>Director Engineering</td><td>Electronic Arts</td><td>mtadinada@ea.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>Multi-platform coverage / cross-surface test maintenance</td><td><span class="badge badge-sent">T1 Sent Mar 10</span></td></tr>
+    <tr><td><strong>Richelle Paulsen</strong></td><td>Director of QA</td><td>Cetera Financial</td><td>richelle.paulsen@cetera.com</td><td><span class="priority-badge p5">P5 HIGH</span></td><td>11/12</td><td>8K+ advisor platform / compliance-critical regression</td><td><span class="badge badge-sent">T1 Sent Mar 10</span></td></tr>
+    <tr><td><strong>Anton Aleksandrov</strong></td><td>QA Manager</td><td>Cetera Financial</td><td>anton.aleksandrov@cetera.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>Compliance regression / QA cycle time / headcount constraints</td><td><span class="badge badge-sent">T1 Sent Mar 10</span></td></tr>
+    <tr><td><strong>Saeyed Shamlou</strong></td><td>VP Quality Engineering</td><td>OneMain Financial</td><td>saeyed.shamlou@omf.com</td><td><span class="priority-badge p5">P5 HIGH</span></td><td>12/12</td><td>Bank charter + digital scale / active QA hiring</td><td><span class="badge badge-sent">T1 Sent Mar 10</span></td></tr>
+    <tr><td><strong>Karen Teng</strong></td><td>VP Engineering</td><td>Mindbody</td><td>karen.teng@mindbodyonline.com</td><td><span class="priority-badge p5">P5 HIGH</span></td><td>11/12</td><td>ClassPass/Mindbody merger / shared component regression</td><td><span class="badge badge-sent">T1 Sent Mar 10</span></td></tr>
+    <tr><td><strong>Henry Rose</strong></td><td>Sr Director Engineering</td><td>Mindbody</td><td>henry.rose@mindbodyonline.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>Consumer release velocity / regression cycle time</td><td><span class="badge badge-sent">T1 Sent Mar 10</span></td></tr>
+    <tr><td><strong>Bipin Bhoite</strong></td><td>Director Software Engineering</td><td>Mindbody</td><td>bipin.bhoite@mindbodyonline.com</td><td><span class="priority-badge p3">P3 MED</span></td><td>10/12</td><td>70K+ studio integrations / integration test coverage</td><td><span class="badge badge-sent">T1 Sent Mar 10</span></td></tr>
+    <tr><td><strong>Shyamendra Singh</strong></td><td>Director Engineering, Platform</td><td>HashiCorp</td><td>shyamendra.singh@hashicorp.com</td><td><span class="priority-badge p1">P1 LOW</span></td><td>9/12</td><td>Multi-SDK regression / IBM integration environment</td><td><span class="badge badge-sent">T1 Sent Mar 10</span></td></tr>
   </tbody>
 </table>
 
@@ -231,14 +240,14 @@ Moving workloads back on-prem while building a hybrid cloud platform means engin
 
 One enterprise insurance team we work with kept test environments synchronized during a major infrastructure shift and cut regression cycle time from 8 weeks to 5.
 
-Thought it would be worth reaching out because GEICO's hybrid infrastructure overhaul is exactly the kind of change where test environment drift creates slow-building problems. Is that on your radar right now?
+Thought it would be worth reaching out because GEICO's hybrid infrastructure overhaul is exactly the kind of change where test environment drift creates slow-building problems. Is that on your radar?
 
 Rob Gorham | Testsigma
 We have yet to be properly introduced. I work with engineering leaders at enterprise insurance companies.</div>
       </div>
       <div class="copy-row">
         <button class="copy-btn" onclick="copyText('Roberto\'s platform engineering at GEICO', this)">Copy Subject</button>
-        <button class="copy-btn" onclick="copyText('Hi Roberto,\n\nMoving workloads back on-prem while building a hybrid cloud platform means engineering teams end up running the same regression suites across two infrastructure configurations. When test environments diverge, maintenance overhead compounds quickly. Does that create friction in your release cycles?\n\nOne enterprise insurance team we work with kept test environments synchronized during a major infrastructure shift and cut regression cycle time from 8 weeks to 5.\n\nThought it would be worth reaching out because GEICO\'s hybrid infrastructure overhaul is exactly the kind of change where test environment drift creates slow-building problems. Is that on your radar right now?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at enterprise insurance companies.', this)">Copy Message</button>
+        <button class="copy-btn" onclick="copyText('Hi Roberto,\n\nMoving workloads back on-prem while building a hybrid cloud platform means engineering teams end up running the same regression suites across two infrastructure configurations. When test environments diverge, maintenance overhead compounds quickly. Does that create friction in your release cycles?\n\nOne enterprise insurance team we work with kept test environments synchronized during a major infrastructure shift and cut regression cycle time from 8 weeks to 5.\n\nThought it would be worth reaching out because GEICO\'s hybrid infrastructure overhaul is exactly the kind of change where test environment drift creates slow-building problems. Is that on your radar?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at enterprise insurance companies.', this)">Copy Message</button>
       </div>
       <div class="meta-grid">
         <div class="meta-item"><div class="meta-label">Word Count</div><div class="meta-value">~90 words</div></div>
@@ -350,7 +359,7 @@ We have yet to be properly introduced. I work with QA leaders at enterprise insu
         <div class="email-subject">Subject: Chandni's coverage at Checkr</div>
         <div class="email-body">Hi Chandni,
 
-Acquiring Truework, expanding into I-9 verification, and adding document fraud detection in the same release window means your product surface is growing fast. Keeping regression coverage current with features shipping this quickly is where coverage debt usually builds up. What does your current approach to test coverage across the expanded product look like?
+Acquiring Truework, expanding into I-9 verification, and adding fraud detection means your product surface is growing fast. Keeping regression coverage current at this pace is where coverage debt builds up. What does your current approach to test coverage across the expanded product look like?
 
 One HR technology team we work with closed a similar coverage gap across an acquisition and reduced release cycle delays caused by testing gaps by 60%.
 
@@ -361,7 +370,7 @@ We have yet to be properly introduced. I work with engineering leaders at high-g
       </div>
       <div class="copy-row">
         <button class="copy-btn" onclick="copyText('Chandni\'s coverage at Checkr', this)">Copy Subject</button>
-        <button class="copy-btn" onclick="copyText('Hi Chandni,\n\nAcquiring Truework, expanding into I-9 verification, and adding document fraud detection in the same release window means your product surface is growing fast. Keeping regression coverage current with features shipping this quickly is where coverage debt usually builds up. What does your current approach to test coverage across the expanded product look like?\n\nOne HR technology team we work with closed a similar coverage gap across an acquisition and reduced release cycle delays caused by testing gaps by 60%.\n\nThought it would be worth reaching out because Checkr\'s expansion pace is exactly when coverage debt compounds quickly. Is that something you\'re actively solving for?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at high-growth HR technology companies.', this)">Copy Message</button>
+        <button class="copy-btn" onclick="copyText('Hi Chandni,\n\nAcquiring Truework, expanding into I-9 verification, and adding fraud detection means your product surface is growing fast. Keeping regression coverage current at this pace is where coverage debt builds up. What does your current approach to test coverage across the expanded product look like?\n\nOne HR technology team we work with closed a similar coverage gap across an acquisition and reduced release cycle delays caused by testing gaps by 60%.\n\nThought it would be worth reaching out because Checkr\'s expansion pace is exactly when coverage debt compounds quickly. Is that something you\'re actively solving for?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at high-growth HR technology companies.', this)">Copy Message</button>
       </div>
       <div class="meta-grid">
         <div class="meta-item"><div class="meta-label">Word Count</div><div class="meta-value">~88 words</div></div>
@@ -406,18 +415,18 @@ We have yet to be properly introduced. I work with engineering leaders at high-g
         <div class="email-subject">Subject: Sarah's test coverage at Checkr</div>
         <div class="email-body">Hi Sarah,
 
-When new product lines ship every quarter, QA teams face a familiar problem: test creation can't keep up with the pace of feature delivery. The backlog of untested coverage grows faster than the team can write and maintain it. Is that a pressure you're managing right now?
+When new products ship every quarter, QA teams face a familiar problem: test creation can't keep up with feature delivery. Coverage grows faster than the team can write and maintain it. Is that a pressure you're managing right now?
 
 One HR technology team we work with tripled their test creation output without adding headcount by moving to plain-English test authoring across the QA team.
 
-Thought it would be worth reaching out because Checkr's product expansion, including Truework and new verification features, means test creation demand is likely outpacing what any fixed team can keep up with manually. Does that resonate with where your team is?
+Thought it would be worth reaching out because Checkr's expansion, including Truework and new verification features, means test creation demand is likely outpacing what a fixed team can handle. Does that resonate?
 
 Rob Gorham | Testsigma
 We have yet to be properly introduced. I work with QA leaders at high-growth HR technology companies.</div>
       </div>
       <div class="copy-row">
         <button class="copy-btn" onclick="copyText('Sarah\'s test coverage at Checkr', this)">Copy Subject</button>
-        <button class="copy-btn" onclick="copyText('Hi Sarah,\n\nWhen new product lines ship every quarter, QA teams face a familiar problem: test creation can\'t keep up with the pace of feature delivery. The backlog of untested coverage grows faster than the team can write and maintain it. Is that a pressure you\'re managing right now?\n\nOne HR technology team we work with tripled their test creation output without adding headcount by moving to plain-English test authoring across the QA team.\n\nThought it would be worth reaching out because Checkr\'s product expansion, including Truework and new verification features, means test creation demand is likely outpacing what any fixed team can keep up with manually. Does that resonate with where your team is?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with QA leaders at high-growth HR technology companies.', this)">Copy Message</button>
+        <button class="copy-btn" onclick="copyText('Hi Sarah,\n\nWhen new products ship every quarter, QA teams face a familiar problem: test creation can\'t keep up with feature delivery. Coverage grows faster than the team can write and maintain it. Is that a pressure you\'re managing right now?\n\nOne HR technology team we work with tripled their test creation output without adding headcount by moving to plain-English test authoring across the QA team.\n\nThought it would be worth reaching out because Checkr\'s expansion, including Truework and new verification features, means test creation demand is likely outpacing what a fixed team can handle. Does that resonate?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with QA leaders at high-growth HR technology companies.', this)">Copy Message</button>
       </div>
       <div class="meta-grid">
         <div class="meta-item"><div class="meta-label">Word Count</div><div class="meta-value">~96 words</div></div>
@@ -462,18 +471,18 @@ We have yet to be properly introduced. I work with QA leaders at high-growth HR 
         <div class="email-subject">Subject: Krista's regression coverage at Checkr</div>
         <div class="email-body">Hi Krista,
 
-Integrating an acquired product into an existing platform while keeping 200+ ATS and HRIS integrations running without regressions is a coordination challenge most teams underestimate. Test coverage across that many integration points is hard to maintain without a lot of manual effort. Does that create friction in your release cycles?
+Integrating an acquired product while keeping 200+ ATS and HRIS integrations running without regressions is a coordination challenge most teams underestimate. Test coverage across that many integration points is hard to maintain without significant manual effort. Does that create friction in your release cycles?
 
 One HR technology team we work with maintained full integration test coverage across a similar acquisition while cutting regression cycle time by 40%.
 
-Thought it would be worth reaching out because Checkr's integration breadth is one of the more complex test maintenance problems I've seen in this space. Is that something you're actively solving for?
+Thought it would be worth reaching out because Checkr's integration breadth is one of the more complex test maintenance problems in this space. Is that something you're actively solving for?
 
 Rob Gorham | Testsigma
 We have yet to be properly introduced. I work with engineering leaders at HR technology companies.</div>
       </div>
       <div class="copy-row">
         <button class="copy-btn" onclick="copyText('Krista\'s regression coverage at Checkr', this)">Copy Subject</button>
-        <button class="copy-btn" onclick="copyText('Hi Krista,\n\nIntegrating an acquired product into an existing platform while keeping 200+ ATS and HRIS integrations running without regressions is a coordination challenge most teams underestimate. Test coverage across that many integration points is hard to maintain without a lot of manual effort. Does that create friction in your release cycles?\n\nOne HR technology team we work with maintained full integration test coverage across a similar acquisition while cutting regression cycle time by 40%.\n\nThought it would be worth reaching out because Checkr\'s integration breadth is one of the more complex test maintenance problems I\'ve seen in this space. Is that something you\'re actively solving for?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at HR technology companies.', this)">Copy Message</button>
+        <button class="copy-btn" onclick="copyText('Hi Krista,\n\nIntegrating an acquired product while keeping 200+ ATS and HRIS integrations running without regressions is a coordination challenge most teams underestimate. Test coverage across that many integration points is hard to maintain without significant manual effort. Does that create friction in your release cycles?\n\nOne HR technology team we work with maintained full integration test coverage across a similar acquisition while cutting regression cycle time by 40%.\n\nThought it would be worth reaching out because Checkr\'s integration breadth is one of the more complex test maintenance problems in this space. Is that something you\'re actively solving for?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at HR technology companies.', this)">Copy Message</button>
       </div>
       <div class="meta-grid">
         <div class="meta-item"><div class="meta-label">Word Count</div><div class="meta-value">~90 words</div></div>
@@ -518,18 +527,18 @@ We have yet to be properly introduced. I work with engineering leaders at HR tec
         <div class="email-subject">Subject: Cristian's engineering quality at Checkr</div>
         <div class="email-body">Hi Cristian,
 
-At $800M revenue with product expanding on multiple fronts, the engineering team at Checkr is moving fast. The challenge at that pace is usually that test coverage planning lags behind feature velocity, and release confidence starts to vary across teams. Is that something you're seeing at the director level?
+At $800M revenue and expanding quickly, Checkr's engineering teams are moving fast. The challenge at that pace is usually that test coverage lags behind feature velocity and release confidence varies across teams. Is that something you're seeing at the director level?
 
 One HR technology team we work with standardized test coverage across distributed engineering teams during a high-growth phase and cut regression failures in production by 50%.
 
-Thought it would be worth reaching out because Checkr's growth trajectory is at the point where engineering quality processes either scale with the team or become a bottleneck. Is that challenge on your radar?
+Thought it would be worth reaching out because Checkr's growth is where engineering quality processes either scale with the team or become a bottleneck. Is that challenge on your radar?
 
 Rob Gorham | Testsigma
 We have yet to be properly introduced. I work with engineering leaders at high-growth HR technology companies.</div>
       </div>
       <div class="copy-row">
         <button class="copy-btn" onclick="copyText('Cristian\'s engineering quality at Checkr', this)">Copy Subject</button>
-        <button class="copy-btn" onclick="copyText('Hi Cristian,\n\nAt $800M revenue with product expanding on multiple fronts, the engineering team at Checkr is moving fast. The challenge at that pace is usually that test coverage planning lags behind feature velocity, and release confidence starts to vary across teams. Is that something you\'re seeing at the director level?\n\nOne HR technology team we work with standardized test coverage across distributed engineering teams during a high-growth phase and cut regression failures in production by 50%.\n\nThought it would be worth reaching out because Checkr\'s growth trajectory is at the point where engineering quality processes either scale with the team or become a bottleneck. Is that challenge on your radar?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at high-growth HR technology companies.', this)">Copy Message</button>
+        <button class="copy-btn" onclick="copyText('Hi Cristian,\n\nAt $800M revenue and expanding quickly, Checkr\'s engineering teams are moving fast. The challenge at that pace is usually that test coverage lags behind feature velocity and release confidence varies across teams. Is that something you\'re seeing at the director level?\n\nOne HR technology team we work with standardized test coverage across distributed engineering teams during a high-growth phase and cut regression failures in production by 50%.\n\nThought it would be worth reaching out because Checkr\'s growth is where engineering quality processes either scale with the team or become a bottleneck. Is that challenge on your radar?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at high-growth HR technology companies.', this)">Copy Message</button>
       </div>
       <div class="meta-grid">
         <div class="meta-item"><div class="meta-label">Word Count</div><div class="meta-value">~92 words</div></div>
@@ -586,18 +595,18 @@ We have yet to be properly introduced. I work with engineering leaders at high-g
         <div class="email-subject">Subject: Yu Jin's platform testing at EA</div>
         <div class="email-body">Hi Yu Jin,
 
-Live service titles mean engineering teams ship updates on a continuous cadence, but platform testing doesn't always scale with that frequency. When releases are weekly or bi-weekly, test maintenance for existing coverage tends to become the hidden bottleneck. Is that a pressure you're managing right now?
+Live service titles mean engineering teams ship updates continuously, but platform testing doesn't always scale with that frequency. When releases are weekly or bi-weekly, test maintenance tends to become the hidden bottleneck. Is that a pressure you're managing right now?
 
 One entertainment platform we work with cut regression cycle time by 40% without reducing coverage, which let their teams ship live service updates with more confidence.
 
-Thought it would be worth reaching out because EA's engineering scale and live service product mix creates exactly the kind of sustained regression pressure that compounds over time. Is that something you're actively solving for on your team?
+Thought it would be worth reaching out because EA's live service scale creates exactly the kind of sustained regression pressure that compounds over time. Is that something you're actively solving for?
 
 Rob Gorham | Testsigma
 We have yet to be properly introduced. I work with engineering leaders at large-scale entertainment platforms.</div>
       </div>
       <div class="copy-row">
         <button class="copy-btn" onclick="copyText('Yu Jin\'s platform testing at EA', this)">Copy Subject</button>
-        <button class="copy-btn" onclick="copyText('Hi Yu Jin,\n\nLive service titles mean engineering teams ship updates on a continuous cadence, but platform testing doesn\'t always scale with that frequency. When releases are weekly or bi-weekly, test maintenance for existing coverage tends to become the hidden bottleneck. Is that a pressure you\'re managing right now?\n\nOne entertainment platform we work with cut regression cycle time by 40% without reducing coverage, which let their teams ship live service updates with more confidence.\n\nThought it would be worth reaching out because EA\'s engineering scale and live service product mix creates exactly the kind of sustained regression pressure that compounds over time. Is that something you\'re actively solving for on your team?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at large-scale entertainment platforms.', this)">Copy Message</button>
+        <button class="copy-btn" onclick="copyText('Hi Yu Jin,\n\nLive service titles mean engineering teams ship updates continuously, but platform testing doesn\'t always scale with that frequency. When releases are weekly or bi-weekly, test maintenance tends to become the hidden bottleneck. Is that a pressure you\'re managing right now?\n\nOne entertainment platform we work with cut regression cycle time by 40% without reducing coverage, which let their teams ship live service updates with more confidence.\n\nThought it would be worth reaching out because EA\'s live service scale creates exactly the kind of sustained regression pressure that compounds over time. Is that something you\'re actively solving for?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at large-scale entertainment platforms.', this)">Copy Message</button>
       </div>
       <div class="meta-grid">
         <div class="meta-item"><div class="meta-label">Word Count</div><div class="meta-value">~93 words</div></div>
@@ -642,18 +651,18 @@ We have yet to be properly introduced. I work with engineering leaders at large-
         <div class="email-subject">Subject: Maalika's automation coverage at EA</div>
         <div class="email-body">Hi Maalika,
 
-Managing test coverage across multiple platforms simultaneously, whether PC, console, mobile, or web, creates a test maintenance challenge that scales with every new surface added. Keeping automation current across that breadth is where coverage gaps typically appear. Does that create friction in your team's release cycles?
+Managing test coverage across PC, console, mobile, and web simultaneously creates a test maintenance challenge that scales with every new surface. Keeping automation current across that breadth is where coverage gaps typically appear. Does that create friction in your release cycles?
 
 One entertainment technology team we work with reduced cross-platform regression time by 35%, letting engineering teams ship platform updates without a proportional increase in QA effort.
 
-Thought it would be worth reaching out because EA's engineering scale and platform breadth is one of the more complex cross-surface coverage problems in the industry. Is that something you're actively working through on your team?
+Thought it would be worth reaching out because EA's platform breadth is one of the more complex cross-surface coverage problems I've seen. Is that something you're actively working through?
 
 Rob Gorham | Testsigma
 We have yet to be properly introduced. I work with engineering leaders at large-scale entertainment platforms.</div>
       </div>
       <div class="copy-row">
         <button class="copy-btn" onclick="copyText('Maalika\'s automation coverage at EA', this)">Copy Subject</button>
-        <button class="copy-btn" onclick="copyText('Hi Maalika,\n\nManaging test coverage across multiple platforms simultaneously, whether PC, console, mobile, or web, creates a test maintenance challenge that scales with every new surface added. Keeping automation current across that breadth is where coverage gaps typically appear. Does that create friction in your team\'s release cycles?\n\nOne entertainment technology team we work with reduced cross-platform regression time by 35%, letting engineering teams ship platform updates without a proportional increase in QA effort.\n\nThought it would be worth reaching out because EA\'s engineering scale and platform breadth is one of the more complex cross-surface coverage problems in the industry. Is that something you\'re actively working through on your team?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at large-scale entertainment platforms.', this)">Copy Message</button>
+        <button class="copy-btn" onclick="copyText('Hi Maalika,\n\nManaging test coverage across PC, console, mobile, and web simultaneously creates a test maintenance challenge that scales with every new surface. Keeping automation current across that breadth is where coverage gaps typically appear. Does that create friction in your release cycles?\n\nOne entertainment technology team we work with reduced cross-platform regression time by 35%, letting engineering teams ship platform updates without a proportional increase in QA effort.\n\nThought it would be worth reaching out because EA\'s platform breadth is one of the more complex cross-surface coverage problems I\'ve seen. Is that something you\'re actively working through?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at large-scale entertainment platforms.', this)">Copy Message</button>
       </div>
       <div class="meta-grid">
         <div class="meta-item"><div class="meta-label">Word Count</div><div class="meta-value">~96 words</div></div>
@@ -765,7 +774,7 @@ We have yet to be properly introduced. I work with QA leaders at enterprise fina
         <div class="email-subject">Subject: Anton's automation coverage at Cetera</div>
         <div class="email-body">Hi Anton,
 
-In financial services, QA teams deal with a particular version of the test maintenance problem: compliance-critical workflows can't be skipped in regression, but they're often the most expensive to maintain manually. When required coverage grows but headcount doesn't, something has to give. Is that a tension you're managing right now?
+In financial services, QA teams face a specific version of the test maintenance problem: compliance-critical workflows can't be skipped, but they're often the most expensive to maintain. When required coverage grows but headcount doesn't, something has to give. Is that a tension you're managing right now?
 
 One financial services team we work with automated their compliance regression suite and cut QA cycle time by 40% without adding headcount.
 
@@ -776,7 +785,7 @@ We have yet to be properly introduced. I work with QA leaders at enterprise fina
       </div>
       <div class="copy-row">
         <button class="copy-btn" onclick="copyText('Anton\'s automation coverage at Cetera', this)">Copy Subject</button>
-        <button class="copy-btn" onclick="copyText('Hi Anton,\n\nIn financial services, QA teams deal with a particular version of the test maintenance problem: compliance-critical workflows can\'t be skipped in regression, but they\'re often the most expensive to maintain manually. When required coverage grows but headcount doesn\'t, something has to give. Is that a tension you\'re managing right now?\n\nOne financial services team we work with automated their compliance regression suite and cut QA cycle time by 40% without adding headcount.\n\nThought it would be worth reaching out because Cetera\'s platform scope and regulatory environment create exactly that kind of sustained maintenance pressure. Is that something you\'re actively solving for?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with QA leaders at enterprise financial services companies.', this)">Copy Message</button>
+        <button class="copy-btn" onclick="copyText('Hi Anton,\n\nIn financial services, QA teams face a specific version of the test maintenance problem: compliance-critical workflows can\'t be skipped, but they\'re often the most expensive to maintain. When required coverage grows but headcount doesn\'t, something has to give. Is that a tension you\'re managing right now?\n\nOne financial services team we work with automated their compliance regression suite and cut QA cycle time by 40% without adding headcount.\n\nThought it would be worth reaching out because Cetera\'s platform scope and regulatory environment create exactly that kind of sustained maintenance pressure. Is that something you\'re actively solving for?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with QA leaders at enterprise financial services companies.', this)">Copy Message</button>
       </div>
       <div class="meta-grid">
         <div class="meta-item"><div class="meta-label">Word Count</div><div class="meta-value">~89 words</div></div>
@@ -832,18 +841,18 @@ We have yet to be properly introduced. I work with QA leaders at enterprise fina
         <div class="email-subject">Subject: Saeyed's QA coverage at OneMain</div>
         <div class="email-body">Hi Saeyed,
 
-Scaling a digital lending platform while pursuing a bank charter is a significant increase in regulatory exposure, and QA coverage requirements grow proportionally. A platform already processing $3.9B in quarterly originations has measurable risk attached to any quality gap in production. What does your current approach to regression coverage across the digital platform look like?
+Pursuing a bank charter while scaling a digital lending platform means QA coverage requirements grow significantly. A platform already processing $3.9B in quarterly originations has measurable risk attached to any quality gap in production. What does your current approach to regression coverage look like?
 
-One consumer financial services team we work with reduced release cycle delays by 50% during a major platform expansion by automating the most compliance-critical test paths first.
+One consumer financial services team we work with reduced release delays by 50% during a platform expansion by automating compliance-critical test paths first.
 
-Thought it would be worth reaching out because OneMain's digital scale and bank charter pursuit is exactly when QA infrastructure investment pays off disproportionately. Is that a challenge you're actively working through?
+Thought it would be worth reaching out because OneMain's digital scale and bank charter pursuit is exactly when QA investment pays off. Is that a challenge you're actively working through?
 
 Rob Gorham | Testsigma
 We have yet to be properly introduced. I work with QA leaders at enterprise consumer financial services companies.</div>
       </div>
       <div class="copy-row">
         <button class="copy-btn" onclick="copyText('Saeyed\'s QA coverage at OneMain', this)">Copy Subject</button>
-        <button class="copy-btn" onclick="copyText('Hi Saeyed,\n\nScaling a digital lending platform while pursuing a bank charter is a significant increase in regulatory exposure, and QA coverage requirements grow proportionally. A platform already processing $3.9B in quarterly originations has measurable risk attached to any quality gap in production. What does your current approach to regression coverage across the digital platform look like?\n\nOne consumer financial services team we work with reduced release cycle delays by 50% during a major platform expansion by automating the most compliance-critical test paths first.\n\nThought it would be worth reaching out because OneMain\'s digital scale and bank charter pursuit is exactly when QA infrastructure investment pays off disproportionately. Is that a challenge you\'re actively working through?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with QA leaders at enterprise consumer financial services companies.', this)">Copy Message</button>
+        <button class="copy-btn" onclick="copyText('Hi Saeyed,\n\nPursuing a bank charter while scaling a digital lending platform means QA coverage requirements grow significantly. A platform already processing $3.9B in quarterly originations has measurable risk attached to any quality gap in production. What does your current approach to regression coverage look like?\n\nOne consumer financial services team we work with reduced release delays by 50% during a platform expansion by automating compliance-critical test paths first.\n\nThought it would be worth reaching out because OneMain\'s digital scale and bank charter pursuit is exactly when QA investment pays off. Is that a challenge you\'re actively working through?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with QA leaders at enterprise consumer financial services companies.', this)">Copy Message</button>
       </div>
       <div class="meta-grid">
         <div class="meta-item"><div class="meta-label">Word Count</div><div class="meta-value">~96 words</div></div>
@@ -899,18 +908,18 @@ We have yet to be properly introduced. I work with QA leaders at enterprise cons
         <div class="email-subject">Subject: Karen's platform coverage at Mindbody</div>
         <div class="email-body">Hi Karen,
 
-Combining ClassPass and Mindbody into a unified platform means your engineering team is running test coverage for two previously separate codebases while shipping features across both. At that integration depth, regression coverage for shared components becomes a cross-team coordination problem. What does your current approach to test coverage across the merged platform look like?
+Combining ClassPass and Mindbody means engineering teams are managing test coverage for two separate codebases simultaneously. Regression coverage for shared components becomes a cross-team coordination problem. What does your current approach to test coverage across the merged platform look like?
 
-One health technology platform we work with reduced cross-team regression time by 45% during a platform merger, letting them ship integration features without holding up either product line.
+One health technology platform we work with reduced cross-team regression time by 45% during a merger, letting them ship integration features without holding up either product line.
 
-Thought it would be worth reaching out because the ClassPass-Mindbody integration is at the stage where test coverage coordination is usually the bottleneck. Is that something you're actively solving for?
+Thought it would be worth reaching out because the ClassPass-Mindbody integration is exactly when coverage coordination becomes the bottleneck. Is that something you're actively solving for?
 
 Rob Gorham | Testsigma
 We have yet to be properly introduced. I work with engineering leaders at health and wellness platforms.</div>
       </div>
       <div class="copy-row">
         <button class="copy-btn" onclick="copyText('Karen\'s platform coverage at Mindbody', this)">Copy Subject</button>
-        <button class="copy-btn" onclick="copyText('Hi Karen,\n\nCombining ClassPass and Mindbody into a unified platform means your engineering team is running test coverage for two previously separate codebases while shipping features across both. At that integration depth, regression coverage for shared components becomes a cross-team coordination problem. What does your current approach to test coverage across the merged platform look like?\n\nOne health technology platform we work with reduced cross-team regression time by 45% during a platform merger, letting them ship integration features without holding up either product line.\n\nThought it would be worth reaching out because the ClassPass-Mindbody integration is at the stage where test coverage coordination is usually the bottleneck. Is that something you\'re actively solving for?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at health and wellness platforms.', this)">Copy Message</button>
+        <button class="copy-btn" onclick="copyText('Hi Karen,\n\nCombining ClassPass and Mindbody means engineering teams are managing test coverage for two separate codebases simultaneously. Regression coverage for shared components becomes a cross-team coordination problem. What does your current approach to test coverage across the merged platform look like?\n\nOne health technology platform we work with reduced cross-team regression time by 45% during a merger, letting them ship integration features without holding up either product line.\n\nThought it would be worth reaching out because the ClassPass-Mindbody integration is exactly when coverage coordination becomes the bottleneck. Is that something you\'re actively solving for?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at health and wellness platforms.', this)">Copy Message</button>
       </div>
       <div class="meta-grid">
         <div class="meta-item"><div class="meta-label">Word Count</div><div class="meta-value">~97 words</div></div>
@@ -955,18 +964,18 @@ We have yet to be properly introduced. I work with engineering leaders at health
         <div class="email-subject">Subject: Henry's consumer release velocity at Mindbody</div>
         <div class="email-body">Hi Henry,
 
-Consumer product teams running live fitness and wellness platforms tend to have aggressive release schedules, and when test maintenance doesn't keep up, release confidence starts to vary. Slow regression cycles are usually what creates the delay, not the development itself. Is that something you're running into with the consumer platform at Mindbody?
+Consumer teams with aggressive release schedules face a familiar pattern: when test maintenance doesn't keep up, release confidence varies. Slow regression cycles are usually what creates the delay, not the development. Is that something you're running into at Mindbody?
 
 One health tech team we work with cut regression cycle time by 40%, which let their consumer platform team ship feature updates on a two-week cadence without slipping.
 
-Thought it would be worth reaching out because Mindbody's consumer-facing scale (70K+ studios on the platform) is exactly where regression slowdowns show up first. Does that resonate with what you're seeing?
+Thought it would be worth reaching out because Mindbody's consumer scale, 70K+ studios, is exactly where regression slowdowns show up first. Does that resonate with what you're seeing?
 
 Rob Gorham | Testsigma
 We have yet to be properly introduced. I work with engineering leaders at health and wellness platforms.</div>
       </div>
       <div class="copy-row">
         <button class="copy-btn" onclick="copyText('Henry\'s consumer release velocity at Mindbody', this)">Copy Subject</button>
-        <button class="copy-btn" onclick="copyText('Hi Henry,\n\nConsumer product teams running live fitness and wellness platforms tend to have aggressive release schedules, and when test maintenance doesn\'t keep up, release confidence starts to vary. Slow regression cycles are usually what creates the delay, not the development itself. Is that something you\'re running into with the consumer platform at Mindbody?\n\nOne health tech team we work with cut regression cycle time by 40%, which let their consumer platform team ship feature updates on a two-week cadence without slipping.\n\nThought it would be worth reaching out because Mindbody\'s consumer-facing scale (70K+ studios on the platform) is exactly where regression slowdowns show up first. Does that resonate with what you\'re seeing?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at health and wellness platforms.', this)">Copy Message</button>
+        <button class="copy-btn" onclick="copyText('Hi Henry,\n\nConsumer teams with aggressive release schedules face a familiar pattern: when test maintenance doesn\'t keep up, release confidence varies. Slow regression cycles are usually what creates the delay, not the development. Is that something you\'re running into at Mindbody?\n\nOne health tech team we work with cut regression cycle time by 40%, which let their consumer platform team ship feature updates on a two-week cadence without slipping.\n\nThought it would be worth reaching out because Mindbody\'s consumer scale, 70K+ studios, is exactly where regression slowdowns show up first. Does that resonate with what you\'re seeing?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at health and wellness platforms.', this)">Copy Message</button>
       </div>
       <div class="meta-grid">
         <div class="meta-item"><div class="meta-label">Word Count</div><div class="meta-value">~95 words</div></div>
@@ -1011,7 +1020,7 @@ We have yet to be properly introduced. I work with engineering leaders at health
         <div class="email-subject">Subject: Bipin's software coverage at Mindbody</div>
         <div class="email-body">Hi Bipin,
 
-When a platform processes bookings and payments across 70,000+ studio integrations, test coverage for the integration layer is where quality problems surface most. A single integration regression can affect thousands of studios before it's caught. Does managing coverage across that many integration points create maintenance pressure for your team?
+When a platform serves 70,000+ studio integrations, test coverage for the integration layer is where quality problems surface most. A single regression can affect thousands of studios before it's caught. Does coverage across that many integration points create maintenance pressure for your team?
 
 One health and wellness platform we work with automated their integration test coverage and reduced integration-related incidents by 55% during a scale-up phase.
 
@@ -1022,7 +1031,7 @@ We have yet to be properly introduced. I work with engineering leaders at health
       </div>
       <div class="copy-row">
         <button class="copy-btn" onclick="copyText('Bipin\'s software coverage at Mindbody', this)">Copy Subject</button>
-        <button class="copy-btn" onclick="copyText('Hi Bipin,\n\nWhen a platform processes bookings and payments across 70,000+ studio integrations, test coverage for the integration layer is where quality problems surface most. A single integration regression can affect thousands of studios before it\'s caught. Does managing coverage across that many integration points create maintenance pressure for your team?\n\nOne health and wellness platform we work with automated their integration test coverage and reduced integration-related incidents by 55% during a scale-up phase.\n\nThought it would be worth reaching out because Mindbody\'s integration footprint is one of the more complex maintenance challenges in the health tech space. Is that something you\'re actively solving for?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at health and wellness platforms.', this)">Copy Message</button>
+        <button class="copy-btn" onclick="copyText('Hi Bipin,\n\nWhen a platform serves 70,000+ studio integrations, test coverage for the integration layer is where quality problems surface most. A single regression can affect thousands of studios before it\'s caught. Does coverage across that many integration points create maintenance pressure for your team?\n\nOne health and wellness platform we work with automated their integration test coverage and reduced integration-related incidents by 55% during a scale-up phase.\n\nThought it would be worth reaching out because Mindbody\'s integration footprint is one of the more complex maintenance challenges in the health tech space. Is that something you\'re actively solving for?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at health and wellness platforms.', this)">Copy Message</button>
       </div>
       <div class="meta-grid">
         <div class="meta-item"><div class="meta-label">Word Count</div><div class="meta-value">~88 words</div></div>
@@ -1077,7 +1086,7 @@ We have yet to be properly introduced. I work with engineering leaders at health
         <div class="email-subject">Subject: Shyamendra's platform testing at HashiCorp</div>
         <div class="email-body">Hi Shyamendra,
 
-When a platform engineering team supports multiple SDKs across languages like Go, Python, and Java, keeping regression coverage consistent across all of them without redundant test maintenance is a common challenge. Changes in shared infrastructure tend to surface differently across each SDK. Is that something you're navigating right now?
+When a platform team supports multiple SDKs across Go, Python, and Java, keeping regression coverage consistent across all of them without redundant test maintenance is a common challenge. Changes in shared infrastructure surface differently across each SDK. Is that something you're navigating right now?
 
 One infrastructure tooling team we work with reduced cross-platform regression time by 40% by standardizing test coverage across their language-specific SDKs.
 
@@ -1088,7 +1097,7 @@ We have yet to be properly introduced. I work with engineering leaders at enterp
       </div>
       <div class="copy-row">
         <button class="copy-btn" onclick="copyText('Shyamendra\'s platform testing at HashiCorp', this)">Copy Subject</button>
-        <button class="copy-btn" onclick="copyText('Hi Shyamendra,\n\nWhen a platform engineering team supports multiple SDKs across languages like Go, Python, and Java, keeping regression coverage consistent across all of them without redundant test maintenance is a common challenge. Changes in shared infrastructure tend to surface differently across each SDK. Is that something you\'re navigating right now?\n\nOne infrastructure tooling team we work with reduced cross-platform regression time by 40% by standardizing test coverage across their language-specific SDKs.\n\nThought it would be worth reaching out because HashiCorp\'s platform depth creates exactly the kind of environment where test coverage consistency becomes a system-level problem. Is that on your radar?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at enterprise infrastructure companies.', this)">Copy Message</button>
+        <button class="copy-btn" onclick="copyText('Hi Shyamendra,\n\nWhen a platform team supports multiple SDKs across Go, Python, and Java, keeping regression coverage consistent across all of them without redundant test maintenance is a common challenge. Changes in shared infrastructure surface differently across each SDK. Is that something you\'re navigating right now?\n\nOne infrastructure tooling team we work with reduced cross-platform regression time by 40% by standardizing test coverage across their language-specific SDKs.\n\nThought it would be worth reaching out because HashiCorp\'s platform depth creates exactly the kind of environment where test coverage consistency becomes a system-level problem. Is that on your radar?\n\nRob Gorham | Testsigma\nWe have yet to be properly introduced. I work with engineering leaders at enterprise infrastructure companies.', this)">Copy Message</button>
       </div>
       <div class="meta-grid">
         <div class="meta-item"><div class="meta-label">Word Count</div><div class="meta-value">~92 words</div></div>

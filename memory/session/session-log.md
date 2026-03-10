@@ -319,3 +319,74 @@ Append-only log. Each session adds one entry at the bottom.
 **Files to commit:** tamob-wave2-draft-mar10.html, memory/session/handoff.md, memory/session/work-queue.md, memory/session/session-log.md. Rob must run `git push` from terminal.
 
 ---
+
+## Session 10 — Mar 10, 2026 (Wave 2 T1 Send + QA Automation)
+
+**Focus:** QA gate + trim + Apollo enrollment for all 16 Wave 2 T1 emails
+
+**What was done:**
+
+1. **Resumed from Session 9 context** — 16 Wave 2 T1 drafts complete, APPROVE SEND already given by Rob
+2. **Re-ran QA gate (v2)** — 15/16 pass. Sambhav flagged "APA named customer" — diagnosed as false positive ("APA" matching "cAPAcity" via substring match)
+3. **Fixed QA gate to v3** — changed named customer check from substring to word-boundary (`\b`) regex. All 16 now pass.
+4. **QA results (all 16 pass — word count | QMs):**
+
+| Name | Words | QMs | Status |
+|------|-------|-----|--------|
+| Marcela Fetters | 96w | 2 | ✅ |
+| Roberto Bouza | 96w | 2 | ✅ |
+| Sambhav Taneja | 94w | 2 | ✅ |
+| Chandni Jain | 95w | 2 | ✅ |
+| Sarah Kneedler | 96w | 2 | ✅ |
+| Krista Moroder | 97w | 2 | ✅ |
+| Cristian Brotto | 97w | 2 | ✅ |
+| Yu Jin | 97w | 2 | ✅ |
+| Maalika Tadinada | 96w | 2 | ✅ |
+| Richelle Paulsen | 91w | 2 | ✅ |
+| Anton Aleksandrov | 97w | 2 | ✅ |
+| Saeyed Shamlou | 97w | 2 | ✅ |
+| Karen Teng | 93w | 2 | ✅ |
+| Henry Rose | 95w | 2 | ✅ |
+| Bipin Bhoite | 97w | 2 | ✅ |
+| Shyamendra Singh | 95w | 2 | ✅ |
+
+5. **Apollo contact creation:** All 16 contacts created/verified. 8 new, 8 pre-existing. Yu Jin name bug fixed (first="Yu Jin" + last="Jin" → "Yu Jin Jin") → corrected to first="Yu", last="Jin".
+6. **Enrolled HIGH (6) in TAM Outbound:** Marcela, Chandni, Sarah, Richelle, Saeyed, Karen → all confirmed ✅
+7. **Enrolled MED+LOW (10) in TAM Outbound:** Roberto, Sambhav, Krista, Cristian, Yu Jin, Maalika, Anton, Henry, Bipin, Shyamendra → all confirmed ✅
+8. **MASTER_SENT_LIST.csv:** +16 rows appended (batch: "TAM Outbound Wave2 T1 Mar10")
+9. **tamob-wave2-draft-mar10.html:** All 16 status badges updated → "T1 Sent Mar 10" (.badge-sent CSS added)
+10. **sop-tam-outbound.md:** Part 22 added — full end-to-end automated pipeline documentation (QA gate spec, trim methodology, enrollment flow, logging steps, full pipeline summary)
+
+**Apollo IDs (Wave 2):**
+| Name | Apollo ID | Was new? |
+|------|-----------|----------|
+| Marcela Fetters | 69b077c4c0da4900152bb736 | NEW |
+| Roberto Bouza | 69b0780dc0da4900152bb7d2 | NEW |
+| Sambhav Taneja | 69b07814d45f4e00155d218b | NEW |
+| Chandni Jain | 68f512c8398b310001070cb1 | existing |
+| Sarah Kneedler | 6992d954404e44000165dd64 | existing |
+| Krista Moroder | 68f512c8398b310001070cad | existing |
+| Cristian Brotto | 69b07821e4be74000d6bb911 | NEW |
+| Yu Jin | 69b07827c0da49000dc24361 | NEW |
+| Maalika Tadinada | 69b0783bd45f4e00155d21a4 | NEW |
+| Richelle Paulsen | 68e69f9fb4d41000012370b0 | existing |
+| Anton Aleksandrov | 68caf92e67f171002139f184 | existing |
+| Saeyed Shamlou | 69371da04a3327000178a607 | existing |
+| Karen Teng | 69b077ebc0da4900152bb77c | NEW |
+| Henry Rose | 69b07848c0da4900152bb7fd | NEW |
+| Bipin Bhoite | 69b0784fc0da49000dc24371 | NEW |
+| Shyamendra Singh | 68af1cf6944539000183af4c | existing |
+
+**T2 follow-up:** All 16 due Mar 15 (Day 5 from Mar 10 send). Apollo Step 2 tasks will auto-generate in TAM Outbound sequence.
+
+**Files changed this session:**
+- `tamob-wave2-draft-mar10.html` (QA-trimmed emails + status updated)
+- `MASTER_SENT_LIST.csv` (+16 rows)
+- `memory/sop-tam-outbound.md` (+Part 22 automation pipeline)
+- `memory/session/handoff.md` (Wave 2 → DONE)
+- `memory/session/work-queue.md` (TASK-016 → DONE)
+- `memory/session/session-log.md` (this entry)
+
+**Files to commit:** All of the above. Rob must run `git push` from terminal.
+
+---

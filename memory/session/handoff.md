@@ -1,5 +1,5 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-10 (Session 9: Wave 2 drafts complete, Wave 1 sends still blocked)
+## Last Updated: 2026-03-10 (Session 10: Wave 2 T1 sends complete — all 16 enrolled in TAM Outbound)
 
 ---
 
@@ -136,31 +136,36 @@ Last audit: Not completed this session. Need to check:
 
 ---
 
-## TAM OUTBOUND WAVE 2 — CURRENT STATE (Mar 10 — Session 9)
+## TAM OUTBOUND WAVE 2 — CURRENT STATE (Mar 10 — Session 10)
 
-**16 T1 email drafts COMPLETE. Awaiting APPROVE SEND.**
+**✅ ALL 16 T1 EMAILS SENT AND ENROLLED — Mar 10, 2026**
 
-**File:** `tamob-wave2-draft-mar10.html`
+**File:** `tamob-wave2-draft-mar10.html` (all badges updated to "T1 Sent Mar 10")
 **Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
+**T2 due:** Mar 15 (Day 5) for all 16
 
-| Account | Contacts | Enrolled | Status |
-|---------|----------|----------|--------|
-| GEICO | Marcela Fetters, Roberto Bouza, Sambhav Taneja | ❌ Not yet | T1 drafted. Awaiting APPROVE SEND. |
-| Checkr | Chandni Jain, Sarah Kneedler, Krista Moroder, Cristian Brotto | ❌ Not yet | T1 drafted. Awaiting APPROVE SEND. |
-| EA | Yu Jin, Maalika Tadinada | ❌ Not yet | T1 drafted. ea.com = catch-all domain. |
-| Cetera | Richelle Paulsen, Anton Aleksandrov | ❌ Not yet | T1 drafted. Awaiting APPROVE SEND. |
-| OneMain | Saeyed Shamlou | ❌ Not yet | T1 drafted. 12/12 MQS. Top priority. |
-| Mindbody | Karen Teng, Henry Rose, Bipin Bhoite | ❌ Not yet | T1 drafted. Awaiting APPROVE SEND. |
-| HashiCorp | Shyamendra Singh | ❌ Not yet | T1 drafted. LOW priority (IBM acq). |
+| Account | Contacts | Apollo ID | Priority | Status |
+|---------|----------|-----------|----------|--------|
+| GEICO | Marcela Fetters | 69b077c4c0da4900152bb736 | P5 HIGH | ✅ T1 Sent Mar 10 |
+| GEICO | Roberto Bouza | 69b0780dc0da4900152bb7d2 | P3 MED | ✅ T1 Sent Mar 10 |
+| GEICO | Sambhav Taneja | 69b07814d45f4e00155d218b | P3 MED | ✅ T1 Sent Mar 10 |
+| Checkr | Chandni Jain | 68f512c8398b310001070cb1 | P5 HIGH | ✅ T1 Sent Mar 10 |
+| Checkr | Sarah Kneedler | 6992d954404e44000165dd64 | P5 HIGH | ✅ T1 Sent Mar 10 |
+| Checkr | Krista Moroder | 68f512c8398b310001070cad | P3 MED | ✅ T1 Sent Mar 10 |
+| Checkr | Cristian Brotto | 69b07821e4be74000d6bb911 | P3 MED | ✅ T1 Sent Mar 10 |
+| EA | Yu Jin | 69b07827c0da49000dc24361 | P3 MED | ✅ T1 Sent Mar 10 |
+| EA | Maalika Tadinada | 69b0783bd45f4e00155d21a4 | P3 MED | ✅ T1 Sent Mar 10 |
+| Cetera | Richelle Paulsen | 68e69f9fb4d41000012370b0 | P5 HIGH | ✅ T1 Sent Mar 10 |
+| Cetera | Anton Aleksandrov | 68caf92e67f171002139f184 | P3 MED | ✅ T1 Sent Mar 10 |
+| OneMain | Saeyed Shamlou | 69371da04a3327000178a607 | P5 HIGH | ✅ T1 Sent Mar 10 |
+| Mindbody | Karen Teng | 69b077ebc0da4900152bb77c | P5 HIGH | ✅ T1 Sent Mar 10 |
+| Mindbody | Henry Rose | 69b07848c0da4900152bb7fd | P3 MED | ✅ T1 Sent Mar 10 |
+| Mindbody | Bipin Bhoite | 69b0784fc0da49000dc24371 | P3 MED | ✅ T1 Sent Mar 10 |
+| HashiCorp | Shyamendra Singh | 68af1cf6944539000183af4c | P1 LOW | ✅ T1 Sent Mar 10 |
 
-**Send order:** HIGH first (Saeyed, Marcela, Chandni, Sarah, Richelle, Karen) → MED → LOW
-
-**After APPROVE SEND:**
-1. Create Apollo contacts for any not in system
-2. Enroll all 16 in TAM Outbound (robert.gorham@testsigma.com .com only)
-3. Send T1 emails via Apollo UI
-4. Log 16 rows in MASTER_SENT_LIST.csv
-5. T2 eligible Day 5 from each send date
+**QA gate:** All 16 passed (automated Python script v3 — word count 80-97w, 2 QMs, no banned words, named customer check)
+**MASTER_SENT_LIST.csv:** 16 rows added (batch: "TAM Outbound Wave2 T1 Mar10")
+**T2 schedule:** All 16 due Mar 15 (Day 5). Apollo Step 2 tasks will auto-generate.
 
 ---
 
@@ -228,7 +233,8 @@ Last audit: Not completed this session. Need to check:
 - Latest commit: `1b8053c` — Add Touch 2/3/Reply Handling sections to Tier1 SOP + email sequence performance audit
 - Mar 10 (Session 7) changes: `wave1-batch1-tracker-mar10.html`, `memory/apollo-config.md`, `memory/target-accounts.md`
 - Mar 10 (Session 8) changes: `tyler-referrals-outreach-mar10.html`, `MASTER_SENT_LIST.csv`, `memory/pipeline-state.md`
-- Mar 10 (Session 9) changes: `tamob-wave2-draft-mar10.html`, `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md` — need commit + push
+- Mar 10 (Session 9) changes: `tamob-wave2-draft-mar10.html` (drafts built), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
+- Mar 10 (Session 10) changes: `tamob-wave2-draft-mar10.html` (QA trimmed + status updated), `MASTER_SENT_LIST.csv` (+16 Wave 2 rows), `memory/sop-tam-outbound.md` (Part 22 added), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md` — need commit + push
 - Claude cannot push (no GitHub auth in VM). Rob must run `git push` from his terminal.
 
 ---

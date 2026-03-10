@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-10 (Session 9 — Wave 2 drafts complete)
+## Last Updated: 2026-03-10 (Session 10 — Wave 2 T1 sends complete)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 1. `git pull origin main`
@@ -227,8 +227,8 @@ Built full end-to-end SOP covering:
 
 ---
 
-### TASK-016: TAM Outbound Wave 2 — Enroll + Send T1 (16 contacts, awaiting APPROVE SEND)
-**Status:** UNCLAIMED — awaiting Rob's APPROVE SEND
+### TASK-016: TAM Outbound Wave 2 — Enroll + Send T1 (16 contacts)
+**Status:** DONE (Mar 10, Session 10)
 **Priority:** P1 — drafts complete, ready to execute
 **Effort:** ~60 min (Apollo enrollment + Apollo email sends)
 **Output:** Wave 2 contacts enrolled in TAM Outbound; T1 sends logged in MASTER_SENT_LIST.csv
