@@ -1,0 +1,60 @@
+Missing: 21
+  #16 Christie Howard @ LastPass
+  #17 Tim Wiseman @ Upland Software
+  #21 Michelle Mangio @ Epic Games
+  #22 Ryan Aspleaf @ VIZIO
+  #23 Chris Bell @ Crestron Electronics
+  #24 Carlos Romero @ Dotdash Meredith
+  #25 Ken Dacey @ Discovery Education
+  #26 Andy Roth @ Teaching Strategies
+  #27 Ramya Potaraju @ Dental Intelligence
+  #28 Laura Riley @ Ampersand
+  #29 Ellie Ghodoosian @ OpSec Security
+  #31 Jenny Li @ ON24
+  #33 Harsha Navaratne @ Interactions LLC
+  #46 Mazie Roxx @ Phreesia
+  #52 Pete Draheim @ Best Buy
+  #55 Joshua Greig @ Verra Mobility
+  #58 Matthew Smith @ IQVIA
+  #59 Dino Gambone @ IQVIA
+  #60 Mobin Thomas @ UST
+  #61 Sergey Matetskiy @ Orion Innovation
+  #65 Davor Milosevic @ IQVIA
+T2-mar6: +0 new emails (total: 46)
+T2-mar9: +0 new emails (total: 46)
+T1-hyper: +0 new emails (total: 46)
+personalized: +0 new emails (total: 46)
+T2-batch3: +0 new emails (total: 46)
+  T1-batch5: Mazie Roxx -> kai.esbensen@granicus.com
+T1-batch5: +1 new emails (total: 47)
+T1-batch6: +0 new emails (total: 47)
+intent-html: +0 new emails (total: 47)
+exec-plan: +0 new emails (total: 47)
+seq-status: +0 new emails (total: 47)
+audit-mar7: +0 new emails (total: 47)
+T1-tier1: +0 new emails (total: 47)
+T1-tier1-v2: +0 new emails (total: 47)
+research-csv: +0 new emails (total: 47)
+
+=== FINAL: 47 emails total ===
+Still missing: 20
+  #16 Christie Howard @ LastPass
+  #17 Tim Wiseman @ Upland Software
+  #21 Michelle Mangio @ Epic Games
+  #22 Ryan Aspleaf @ VIZIO
+  #23 Chris Bell @ Crestron Electronics
+  #24 Carlos Romero @ Dotdash Meredith
+  #25 Ken Dacey @ Discovery Education
+  #26 Andy Roth @ Teaching Strategies
+  #27 Ramya Potaraju @ Dental Intelligence
+  #28 Laura Riley @ Ampersand
+  #29 Ellie Ghodoosian @ OpSec Security
+  #31 Jenny Li @ ON24
+  #33 Harsha Navaratne @ Interactions LLC
+  #52 Pete Draheim @ Best Buy
+  #55 Joshua Greig @ Verra Mobility
+  #58 Matthew Smith @ IQVIA
+  #59 Dino Gambone @ IQVIA
+  #60 Mobin Thomas @ UST
+  #61 Sergey Matetskiy @ Orion Innovation
+  #65 Davor Milosevic @ IQVIA

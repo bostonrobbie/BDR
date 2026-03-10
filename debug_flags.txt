@@ -1,0 +1,8 @@
+Total sections: 68
+#1: ['GMAIL']
+#3: ['GMAIL']
+#8: ['DNC']
+#9: ['GMAIL']
+#12: ['GMAIL']
+#65: ['SEQFLAG']
+#67: ['GMAIL', 'SEQFLAG']

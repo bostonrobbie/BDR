@@ -1,0 +1,32 @@
+Total: 67
+Apollo: 62
+Gmail-only: 4
+DNC: 1
+SeqFlag: 0
+
+Gmail contacts:
+  #1 Andy Nelsen @ Rightworks
+  #3 Eduardo Menezes @ Fulgent Genetics
+  #9 Hibatullah Ahmed @ SPS Commerce
+  #12 Amir Aly @ Procore
+
+DNC contacts:
+  #8 Tom Yang @ Versant Media
+
+SeqFlag contacts:
+
+First 5 Apollo contacts:
+  #2 Jeff Barnes @ Digi International | Subject: IoT test coverage keeping pace with releases?
+    Body (first 150 chars): 'Jeff,\n\nIt seems like running QA across IoT hardware and cloud software simultaneously means your test matrix is wider than most teams deal with. Firmw'
+
+  #4 Jose Moreno @ Flywire | Subject: Payment platform releases staying clean?
+    Body (first 150 chars): 'Jose,\n\nIt seems like running QA for a cross-border payments platform means zero tolerance for regression bugs. A broken disbursement or checkout workf'
+
+  #5 Eyal Luxenburg @ Island | Subject: Enterprise browser regression staying stable?
+    Body (first 150 chars): 'Eyal,\n\nI imagine testing an enterprise browser means covering cross-site isolation, extension policies, and session management workflows that most QA '
+
+  #6 Todd Willms @ Bynder | Subject: DAM platform test upkeep keeping pace?
+    Body (first 150 chars): 'Todd,\n\nIt seems like managing QA for a digital asset platform means keeping regression stable across a growing set of CMS, creative tool, and API inte'
+
+  #7 Jason Ruan @ Binance | Subject: Crypto platform regression holding under release pressure?
+    Body (first 150 chars): 'Jason,\n\nI imagine testing a global crypto exchange means carrying both the high-velocity release pressure of a FinTech platform and the zero-tolerance'

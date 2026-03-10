@@ -1,203 +1,177 @@
 # Work Queue
+## Last Updated: 2026-03-07
 
-> Task tracker for multi-agent coordination.
-> **Before starting any task:** claim it by setting status to `IN_PROGRESS` and adding your agent ID.
-> **After finishing:** mark `DONE` with a completion note.
-> Keep completed tasks in the file for reference — move to the Archive section after 2 weeks.
+Tasks are sorted by priority. Claim one task at a time by updating status to IN_PROGRESS.
 
 ---
 
-## Active Tasks
+## 🔴 CRITICAL — Do First
 
-### TASK-012 | TAM prospecting — Wave 1 Factor accounts
-**Status:** IN_PROGRESS (Cowork-10, Mar 9)
-**Priority:** HIGH
-**Due:** This week (Mar 9+)
-**Description:** Prospecting plan built. T1 InMail drafts ready for 4 of 6 accounts. 2 blockers remain (TruStage prior outreach confirmation, YouTube US contact needed). Rob reviews HTML and sends via Sales Nav.
-**Wave 1 accounts:** Chase ✅, Cboe ✅, Commvault ✅, Fidelity ✅, TruStage ⚠️ (HOLD — confirm prior outreach), YouTube ❌ (no US contact)
-**Deliverable:** `/Work/wave1-prospecting-plan-mar9.html` — full T1 drafts, QA gate, send order checklist, credit tracker
-**Next step:** Rob confirms TruStage + finds YouTube US contact via Sales Nav, then APPROVE SEND to proceed
-**Files:** `memory/target-accounts.md` (Wave 1 section), `tam-coverage-tracker.html`, `memory/sop-send.md`
+### TASK-001: Draft Touch 2 Emails for Original 9 Feb 27 Contacts
+**Status:** DONE (2026-03-07)
+**Priority:** P0 — 3 days overdue
+**Effort:** ~45 min
+**Output:** `touch2_drafts_feb27.md` ✅ CREATED
 
----
+Draft Touch 2 follow-up emails for these 9 contacts (from the Q1 Website Visitor Tier 1 Intent sequence):
+1. Andy Nelsen — QA Architect, Rightworks (anelsen@rightworks.com)
+2. Jose Moreno — QA Architect, Flywire (jose.moreno@flywire.com)
+3. Tom Yang — Director of Engineering, Versant Media (tom.yang@versantmedia.com)
+4. Eyal Luxenburg — SW Engineering Manager, Island (eyal.luxenburg@island.io)
+5. Hibatullah Ahmed — Engineering Manager, SPS Commerce (hahmed@spscommerce.com)
+6. Jeff Barnes — Test Engineering Manager, Digi International (jeff.barnes@digi.com)
+7. Eduardo Menezes — Sr QA Manager, Fulgent Genetics (emenezes@fulgentgenetics.com)
+8. Todd Willms — Director of Engineering, Bynder (todd.willms@bynder.com)
+9. Jason Ruan — Director of Engineering, Binance (jason.ruan@binance.com)
 
-### TASK-013 | Add company column to MASTER_SENT_LIST
-**Status:** PENDING
-**Priority:** MEDIUM (process improvement)
-**Due:** Next batch send
-**Description:** MASTER_SENT_LIST.csv currently has no company column, making account-level dedup against TAM impossible. Add "company" column to all future entries. Backfill for existing 228 entries where possible (lower priority).
-**Impact:** Enables programmatic cross-reference — know exactly which TAM accounts already have contacts worked.
-
----
-
-### TASK-010 | B9 Touch 2 sends (17 prospects) — ✅ DONE
-**Status:** DONE (2026-03-09)
-**Completed by:** Cowork-6 (Mar 9 send session)
-**Result:** 16 of 17 B9 T2 emails sent via Apollo UI. (Kylie Summer + Yuliya A excluded — no emails. Georgii Petrosian counted as B11 not B9.) ⚠️ Sent from robert.gorham@testsigma.net (Apollo default — not caught until Draft 26). Rob aware. T3 due Mar 14.
-
----
-
-### TASK-011 | B9/B10/B11 Touch 2 EMAIL drafts — ✅ DONE
-**Status:** DONE (2026-03-09)
-**Completed by:** Cowork-6 (Mar 9 send session)
-**Result:** 25 of 28 T2 emails sent via Apollo UI. 3 skipped (preflight failures): Tim Wiseman/Upland wrong owner/sequence, Jason Poole/Vergent wrong owner, LP Guo/Moody's no sequences. ⚠️ Drafts 1-25 from robert.gorham@testsigma.net, Drafts 26-28 from .com. T3 due Mar 14. Full send log in pipeline-state.md Email Send History.
-**Key fix this session:** Apollo From dropdown must be manually changed from .net to .com every time. SOP updated in memory/sop-send.md (Apollo UI Email Send section).
+**Rules:**
+- Touch 2 = 40-70 words, new angle, new proof point (NOT the same as Touch 1)
+- Reference that you reached out before, but keep it light ("Circling back quick...")
+- Close: lighter than Touch 1 but still ties to proof point outcome + "what day works"
+- Follow C2 message structure and all HC rules
+- QA Gate: MQS >= 9/12, no HC violations
+- Check `personalized_sequence_emails.md` for what was used in Touch 1 for each person
 
 ---
 
-### TASK-009 | Touch 2 emails — WV Mar 3 batch + BI stragglers (25 total) ⬅ DO THIS FIRST
-**Status:** IN_PROGRESS (email collection 7/19 done; 0 drafts written)
-**Priority:** URGENT — all overdue or due today Mar 8
-**Due:** Mar 8 (WV Mar 3 batch Day 4+), Buyer Intent batch overdue since Mar 3
-**Description:** Draft and send 25 Touch 2 emails. 12 email addresses still missing — collect from Apollo first, then draft all 25.
+### TASK-002: Draft Touch 2 InMails for INC-001 Batch 3 Contacts (4 people)
+**Status:** DONE (2026-03-07)
+**Priority:** P0 — 2-3 days overdue
+**Effort:** ~30 min
+**Output:** `touch2_drafts_batch3_inmail.md`
 
-**Sending mechanism:** ALL manual Gmail sends (robert.gorham@testsigma.com). Apollo cannot auto-generate — WV Mar 3 batch is enrolled in LinkedIn Outbound only, not the WV email sequence. Buyer Intent stragglers have failed/finished/missing Apollo contact records.
+These 4 contacts got a premature Touch 3 email on Feb 28 (INC-001). Per remediation plan, Touch 2 InMail proceeds as scheduled (treat premature email as an unplanned extra touch):
+1. Irfan Syed — Progress Software (LinkedIn InMail, Touch 2)
+2. Katie Barlow Hotard — Lucid Software (LinkedIn InMail, Touch 2)
+3. Rachana Jagetia — Housecall Pro (LinkedIn InMail, Touch 2)
+4. Giang Hoang — Employee Navigator (LinkedIn InMail, Touch 2)
 
-**Template:** EM-FU-1 (TEMPLATE_LIBRARY.md). Subject: "Re: Quick question, [First Name]". Max 70 words. Different proof point from T1 (T1 = Medibuddy 80% maintenance). "What day works" CTA. MQS ≥ 9/12.
-
-**Emails already collected (7):**
-| Name | Email | Company | Proof Point |
-|------|-------|---------|-------------|
-| Stephen Starnaud | stephen.starnaud@biberk.com | biBerk | Hansard 8→5wk |
-| Kyung Kim | kkim@webmd.com | WebMD | Sanofi 3d→80min |
-| Lyle Landry | lyle.landry@availity.com | Availity | Sanofi 3d→80min |
-| Morya Moyal | mmoyal@hippo.com | Hippo | Hansard 8→5wk |
-| Shivaleela Devarangadi | sdevarangadi@rxsense.com | RxSense | Sanofi 3d→80min |
-| Jim Lenihan | jim.lenihan@waystar.com | Waystar | Sanofi 3d→80min |
-| Konstantin Diachenko | kdiachenko@paymentus.com | Paymentus | CRED 90%+5x |
-
-**Buyer Intent emails (already confirmed from website_visitor_sequence_drafts.md):**
-| Name | Email | Company | Proof Point |
-|------|-------|---------|-------------|
-| Jose Moreno | jose.moreno@flywire.com | Flywire | CRED 90%+5x |
-| Eyal Luxenburg | eyal.luxenburg@island.io | Island | Fortune 100 3X |
-| Jeff Barnes | jeff.barnes@digi.com | Digi International | Spendflo 50% |
-| Todd Willms | todd.willms@bynder.com | Bynder | Spendflo 50% |
-| Tom Yang | tom.yang@versantmedia.com | Versant Media | Nagra DTV 2500 |
-| Jason Ruan | jason.ruan@binance.com | Binance | CRED 90%+5x |
-
-**Emails still needed — pull from Apollo (search by name+domain):**
-| Name | Domain | Vertical | Proof Point |
-|------|--------|----------|-------------|
-| Courtney Corbin | vizientinc.com | Healthcare | Sanofi 3d→80min |
-| Jason Schwichtenberg | webmd.net | Healthcare ⚠️double-channel | Sanofi 3d→80min |
-| Geoffrey Juma | solera.com | InsurTech | Hansard 8→5wk |
-| Olivia Pereiraclarke | sapiens.com | Insurance | Hansard 8→5wk |
-| Nabil Ahmed | progyny.com | Healthcare | Sanofi 3d→80min |
-| Sneha Bairappa | aamc.org | Healthcare | Sanofi 3d→80min |
-| Jamie Kurt | vertafore.com | Insurance ⚠️double-channel | Hansard 8→5wk |
-| Avijit Sur | solera.com | InsurTech | Hansard 8→5wk |
-| Kerri McGee | sapiens.com | Insurance ⚠️double-channel | Hansard 8→5wk |
-| Priya Khemani | getinsured.com | InsurTech | Hansard 8→5wk |
-| Keith Schofield | fullsteam.com | FinTech | CRED 90%+5x |
-| Emre Ozdemir | theocc.com | FinTech | CRED 90%+5x |
-
-⚠️ **Nabil Ahmed:** May not be in Apollo. If not found, search Gmail sent folder for the Mar 3 email to progyny.com to get his exact address.
-⚠️ **Double-channel contacts** (Schwichtenberg, McGee, Kurt): Still send Touch 2 email (per Rob's Mar 8 confirmation — send to all 19).
-
-**Draft rules (non-negotiable):**
-- No em dashes. No "I noticed/I saw." Reduction framing only (not "Nx faster").
-- 1-2 question marks max. Max 70 words. Subject: "Re: Quick question, [First Name]"
-- MQS ≥ 9/12. Present all drafts to Rob for review. NEVER SEND without "APPROVE SEND."
-
-**Files:** `TEMPLATE_LIBRARY.md`, `memory/sop-outreach.md`, `memory/proof-points.md`, `memory/incidents.md`
+**Reference:** Check `outreach-sent-feb26-batch3.html` for Touch 1 InMail content used for each.
 
 ---
 
-### TASK-001 | Mon Mar 9 — B10 InMail sends
-**Status:** PENDING
-**Priority:** HIGH
-**Due:** 2026-03-09
-**Description:** 8 credit InMails queued for Batch 10. Confirm enrollment status first — some may be blocked by ownership in Apollo. Send only if enrollment confirmed and Rob approves.
-**Prospects:** Sasa Lazarevic, Srikanth Sy, Sarah Ross, Niveditha Somasundaram, Stephen Burlingame, Dave Czoper, Crys Simonca, Christian Melville
-**Blocked by:** Apollo ownership issues for Sasa Lazarevic + Christian Melville. Rob must resolve.
-**Files:** `memory/pipeline-state.md` (B10 section), `MASTER_SENT_LIST.csv`
+### TASK-003: Gmail Draft Audit
+**Status:** UNCLAIMED
+**Priority:** P0 — compliance/safety
+**Effort:** ~20 min
+**Output:** Report in chat
+
+Audit Gmail drafts from all testsigma.com accounts:
+1. Verify the 46 Group A/B/C drafts still exist and are correctly named
+2. Check for any orphan drafts (no tracker entry)
+3. Check for any premature drafts (before eligible date)
+4. Flag any drafts from the old 6 (Sergey, Mobin, Dino, Matthew, Joshua, Pete) — should have been deleted
+5. Cross-reference the 16 Apollo Mar 1 sends — were their Gmail drafts deleted to avoid double-send?
 
 ---
 
-### TASK-002 | B10 + B11 Touch 2 drafts (due Mar 11)
-**Status:** DONE (2026-03-08)
-**Completed by:** Cowork-1 (Mar 8 session)
-**Result:** All T2 drafts built in `linkedin-t2-drafts-mar8.html`. B10: 9 prospects (Tim Wiseman, Josh Thayer, Elena Lysenko, Jason Poole, Tom Goody, LP Guo, Francesco Leising, Chet West, Clint Parker). B11: 4 prospects (Brad Askins, Dan Heintzelman, Georgii Petrosian, Madhu Nedunuri). All use free thread continuation method (Sales Nav Inbox). **Rob reviews and sends via Sales Nav on/after Mar 11.**
+## 🟡 HIGH — Do Soon
+
+### TASK-004: Draft Touch 3 Emails for Batch 3 Contacts (24 people)
+**Status:** UNCLAIMED
+**Priority:** P1 — due TODAY (Mar 7) and tomorrow (Mar 8)
+**Effort:** ~60 min
+**Output:** `touch3_drafts_batch3.md`
+
+Batch 3 Touch 1 was sent Feb 25-26. Touch 3 eligible Mar 6-7 (send Mar 7-8).
+These are email Touch 3s — fresh approach, different proof point from both prior touches.
+**Check:** `outreach-sent-feb26-batch3.html` for full prospect list and prior touch content.
 
 ---
 
-### TASK-003 | B10 enrollment blockers
-**Status:** PENDING
-**Priority:** MEDIUM
-**Due:** Before Mar 9 sends
-**Description:** 7 B10 contacts not yet fully enrolled in LinkedIn Outbound Q1. 2 blocked by Apollo ownership (Sasa Lazarevic, Christian Melville). 5 not attempted (Kristyn Burke, Tim Hartgrave, Vince Delfini, Padmanaban Vadivelu, Ravi Nag).
-**Action needed from Rob:** Reassign ownership for Lazarevic + Melville in Apollo, OR manually enroll via Apollo UI.
-**Other 5:** Attempt enrollment via MCP, report back on result.
+### TASK-005: Draft Touch 2 Emails for 16 Apollo Mar 1 Sends
+**Status:** UNCLAIMED
+**Priority:** P1 — 1 day overdue
+**Effort:** ~45 min
+**Output:** `touch2_drafts_apollo_mar1.md`
+
+These 16 contacts received Touch 1 from robert.gorham@testsigma.net on Mar 1 via Apollo task queue:
+Scott Winzenread (DRB), Kunal Patel (aPriori), Jennifer Bieg (RealPage), Joel Brent (Kiddom), Alexander Tuaev (Convoso), Manu Jain (Iteris), Jennifer Marinas (ETAP), Rashad Fambro (MedeAnalytics), and 8 others from the Groups A/B/C list.
+
+**Note:** Confirm which 16 were sent via Apollo before drafting — check Apollo task queue history or prospect_master_tracker.md notes.
 
 ---
 
-### TASK-004 | Namita Jain follow-up (OverDrive)
-**Status:** PENDING
-**Priority:** MEDIUM
-**Due:** Overdue — was due ~Mar 4
-**Description:** Touch 1 email sent Feb 27. No confirmed reply in Gmail. Check inbox first — if no reply, draft follow-up Touch 2. Must be Day 4+ from Feb 27 (it is — Day 9 as of Mar 7).
-**Reference:** `memory/warm-leads.md`, `memory/sop-outreach.md`
-**Important:** Check Gmail for any reply before drafting.
+### TASK-006: Send 46 Pending Gmail Drafts (Touch 1 — Groups A/B/C)
+**Status:** UNCLAIMED (Rob must execute)
+**Priority:** P1 — drafts have been sitting 6 days
+**Effort:** Rob sends manually
+**Output:** Update tracker with send dates
+
+Rob needs to send the 46 Gmail drafts from Mar 1 (Groups A=13, B=8, C=25).
+Before sending: confirm none of these contacts were already sent via Apollo (avoid double-send).
+Drafts are in: `touch1_drafts_batch2.md` (A+B) and `touch1_drafts_batch2_groupC.md` (Group C).
 
 ---
 
-### TASK-005 | Buyer Intent Touch 2 gap — verify status
-**Status:** DONE (2026-03-08)
-**Completed by:** Cowork-1 (Mar 8 session)
-**Result:**
-- Jose Moreno (Flywire): WV sequence "manually finished" at Step 1. No T2 generated. → Manual Gmail send needed.
-- Jason Ruan (Binance): WV sequence Step 2 FAILED — `thread_reply_original_email_missing`. Apollo can't find original T1 thread (sent via Gmail MCP, not Apollo). → Manual Gmail.
-- Eyal Luxenburg (Island): Same failure as Ruan — Step 2 FAILED, `thread_reply_original_email_missing`. → Manual Gmail.
-- Tom Yang: NOT IN APOLLO contacts. Correct company = Versant Media (not IQVIA from the audit file — different person). Email: tom.yang@versantmedia.com.
-- Jeff Barnes: NOT IN APOLLO. Correct company = Digi International (not Mimecast). Email: jeff.barnes@digi.com.
-- Todd Willms: NOT IN APOLLO. Correct company = Bynder. Email: todd.willms@bynder.com.
-**All 6 folded into TASK-009 for manual Gmail T2 send.**
+### TASK-007: Draft Touch 2 Emails for Batch 9 Contacts (7 people)
+**Status:** UNCLAIMED
+**Priority:** P1 — 2 days overdue
+**Effort:** ~20 min
+**Output:** `touch2_drafts_batch9.md`
+
+Batch 9 was sent Mar 2 via Apollo. Touch 2 due Mar 5 (2 days late).
+These 7 contacts are in the Q1 Website Visitor sequence.
+**Check:** `prospect_master_tracker.md` Section 6 or batch9 tracker for names.
 
 ---
 
-### TASK-006 | Tom Goody + Mohan Guruswamy — enroll in LinkedIn Outbound Q1
-**Status:** DONE (2026-03-07/08)
-**Completed by:** Cowork-1
-**Result:** Apollo API confirmed BOTH are already enrolled in LinkedIn Outbound Q1 (sequence `69a05801fdd140001d3fc014`, status: active). Tom Goody is B10 sent Mar 6. Mohan Guruswamy is B9 sent Mar 3. No action needed.
+## 🟢 NORMAL — Batch Prep
+
+### TASK-008: Build Touch 2 Draft File for Batch 10 (53 contacts — due Mar 11)
+**Status:** UNCLAIMED
+**Priority:** P2 — eligible Mar 11, start prep Mar 10
+**Effort:** ~120 min (large batch)
+**Output:** `touch2_drafts_batch10.md`
+
+53 contacts sent Touch 1 on Mar 7. Touch 2 eligible Mar 11 (Day 4), send Mar 12 (Day 5).
+Do NOT start drafting until Mar 10 (per date-gating Rule 1 from CLAUDE.md).
+**Reference:** `email_outreach_tracker.csv` rows 163-215 for all 53 contacts.
 
 ---
 
-### TASK-007 | Apollo WV sequence gap investigation
-**Status:** PENDING
-**Priority:** LOW
-**Due:** No hard deadline
-**Description:** Apollo UI shows "81 delivered" in Website Visitor sequence but only 28 WV emails confirmed via Gmail. Gap of ~53 is unresolved. Likely pre-campaign sends or different time window.
-**Action:** Pull Apollo sequence stats via API and compare date ranges to Gmail sends.
+### TASK-009: New Outbound Batch (InMail) — When Credit Budget Allows
+**Status:** UNCLAIMED
+**Priority:** P3 — low credits (~24 remaining)
+**Effort:** ~90 min
+**Output:** New `outreach-sent-[date]-batch[N].html`
+
+Only proceed when:
+- Credits > 10
+- Follow-up queue is light (< 10 overdue)
+- Not a Monday
+
+Source from Sales Navigator saved searches. Prospect Mix Ratio: 10-12 Manager/Lead, 4-6 Director, 3-5 Architect, 2-3 Buyer Intent, max 2 VP.
 
 ---
 
-### TASK-008 | Merge unmerged Claude branches (optional)
-**Status:** PENDING
-**Priority:** LOW
-**Due:** No hard deadline
-**Description:** Three Claude branches have unmerged content that may be useful:
-- `claude/add-secondary-brain-layer` — voice-rules.md, gold-standards.md, sales-playbook.md, integrations.md, email-channel-ops.md, linkedin-email-sop-v4.md, prospecting-checklist.md
-- `claude/consolidate-sessions-repo` — older restructure with knowledge/ folder
-- `claude/plan-upgrades` — CI/CD, test suite, API rewrite (engineering-heavy, not urgent)
-**Action:** Review add-secondary-brain-layer files, merge useful content into current memory/ structure. Skip consolidate and plan-upgrades unless Rob requests.
+### TASK-010: Reply Inbox Scan
+**Status:** UNCLAIMED
+**Priority:** P2 — run at start of every "run the daily" session
+**Effort:** ~10 min
+**Output:** Reply summary in chat
+
+Search Gmail for replies to robert.gorham@testsigma.com from all prospects.
+Classify: Positive / Negative / Referral / Timing / Has Tool / Polite / Curiosity.
+Draft responses per reply handling SOP (Section 13 of Tier1_Intent_Sequence_SOP_MASTER.md).
 
 ---
 
-## Completed Tasks
+## ✅ COMPLETED
 
-### TASK-C001 | Email count reconciliation + audit (DONE 2026-03-07)
-**Completed by:** Cowork-1
-**Result:** Confirmed 49 outreach emails via Gmail audit. Updated pipeline-state.md, CLAUDE.md, MASTER_SENT_LIST.csv. Discovered 4 cross-channel double-contacts.
+| Task | Completed | Notes |
+|------|-----------|-------|
+| Tier1_Intent_Sequence_SOP_MASTER.md Sections 11-13 | Mar 7 | Touch 2/3/Reply Handling |
+| email_sequence_performance_audit_mar7.md | Mar 7 | 1.1% reply rate analysis |
+| Batch 10 sends (53 contacts) | Mar 7 | Apollo task queue |
+| email_outreach_tracker.csv update | Mar 7 | 215 rows through Batch 10 |
+| prospect_master_tracker.md update | Mar 7 | All 121 contacts tracked |
+| AGENTS.md created | Mar 7 | Multi-agent protocol |
+| memory/session/handoff.md created | Mar 7 | Pipeline state snapshot |
+| memory/session/work-queue.md created | Mar 7 | This file |
+| touch2_drafts_feb27.md | Mar 7 | 9 Touch 2 emails for Feb 27 contacts, all MQS 10-12/12 |
+| touch2_drafts_batch3_inmail.md | Mar 7 | 4 Touch 2 InMails for INC-001 Batch 3 (Irfan, Katie, Rachana, Giang). MQS 11, 10, 12, 12. All READY TO SEND. |
 
-### TASK-C002 | Full Apollo audit (DONE 2026-03-07)
-**Completed by:** Cowork-1
-**Result:** Verified B10 (9 sent), B11 (4 sent), enrollment status for all batches. Audit report saved to audit-report-mar6.html. Pipeline state synced.
+---
 
-### TASK-C003 | Multi-agent collaboration system build (DONE 2026-03-07)
-**Completed by:** Cowork-1
-**Result:** Created AGENTS.md, handoff.md, session-log.md, work-queue.md, session-manager.md. Git committed (db17edb). Push needs Rob's terminal.
-
-### TASK-C004 | Repo organize + commit (DONE 2026-03-07)
-**Completed by:** Cowork-1
-**Result:** 194 files staged and committed (db17edb). Push failed — requires Rob's terminal (`git push origin main`).
+*Updated by Claude — 2026-03-07 (Session 2)*

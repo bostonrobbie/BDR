@@ -1,349 +1,136 @@
-# Session Handoff — Current State
-
-> This file is OVERWRITTEN at the end of every session by the active agent.
-> It always reflects the most recent state of the BDR operation.
-> Read this FIRST after pulling the repo. It tells you exactly where things stand.
+# Handoff — Current Pipeline State
+## Last Updated: 2026-03-07 (Session: Multi-agent setup + startup)
 
 ---
 
-## Last Session
-
-**Date:** 2026-03-09
-**Agent:** Cowork-12 (Mar 9 — BDR targeting report built)
-**Session title:** Consolidated all account targeting data into a single BDR report HTML. No outreach sent. No data modified. Report-only session.
+## TODAY'S DATE
+**Saturday, March 7, 2026**
 
 ---
 
-### Cowork-12 (Mar 9 — BDR targeting report)
+## CRITICAL ISSUES (Action Required)
 
-1. **Built `/Work/bdr-targeting-report-mar9.html`** — Consolidated BDR targeting report for reporting/sharing:
-   - Tab 1: Pipeline Snapshot (206 prospects, 74 emails, 316 enrolled, 4 InMail credits, pending decisions)
-   - Tab 2: Account Universe (TAM 312 coverage breakdown, ICP quality, account list sources)
-   - Tab 3: Wave 1 Accounts (6 enriched account cards with contacts, signals, send order, credit plan)
-   - Tab 4: All 38 Factor Accounts (full table with signal tier, ICP, wave assignment)
-   - Tab 5: Next Steps (10 prioritized actions with due dates and badges)
+### 🔴 OVERDUE: Touch 2 for Feb 27 Contacts (9 people — 8 days since Touch 1)
+These 9 contacts received Touch 1 on Feb 27. Touch 2 was due Mar 4. NOW 3 DAYS LATE.
 
-2. **No data was modified** — Report is a read-only consolidation of existing memory files.
+| # | Name | Company | Email | Touch 1 Sent | Touch 2 Due | Days Late |
+|---|------|---------|-------|-------------|-------------|-----------|
+| 1 | Andy Nelsen | Rightworks | anelsen@rightworks.com | Feb 27 | Mar 4 | 3 |
+| 2 | Jose Moreno | Flywire | jose.moreno@flywire.com | Feb 27 | Mar 4 | 3 |
+| 3 | Tom Yang | Versant Media | tom.yang@versantmedia.com | Feb 27 | Mar 4 | 3 |
+| 4 | Eyal Luxenburg | Island | eyal.luxenburg@island.io | Feb 27 | Mar 4 | 3 |
+| 5 | Hibatullah Ahmed | SPS Commerce | hahmed@spscommerce.com | Feb 27 | Mar 4 | 3 |
+| 6 | Jeff Barnes | Digi International | jeff.barnes@digi.com | Feb 27 | Mar 4 | 3 |
+| 7 | Eduardo Menezes | Fulgent Genetics | emenezes@fulgentgenetics.com | Feb 27 | Mar 4 | 3 |
+| 8 | Todd Willms | Bynder | todd.willms@bynder.com | Feb 27 | Mar 4 | 3 |
+| 9 | Jason Ruan | Binance | jason.ruan@binance.com | Feb 27 | Mar 4 | 3 |
 
-3. **Push still needed** from Rob's terminal: `git push origin main`
-
----
-
-## Last Session (previous)
-
-**Date:** 2026-03-09
-**Agent:** Cowork-11 (Mar 9 — SOP account universe enforcement)
-**Session title:** Hardcoded TAM + Factor authorized prospecting universe into all 5 SOPs. Fixed stale "7 Shakeel accounts" references. All SOPs now gate on Factor (38) + TAM (312) as the only authorized prospect companies.
-
----
-
-## What Was Done This Session
-
-### Cowork-11 (Mar 9 — SOP account universe enforcement)
-
-1. **Updated all 5 SOPs** to enforce the TAM + Factor authorized universe rule as a hard gate — not advisory language:
-   - `sop-daily.md`: Added ⛔ MANDATORY GATE block to Phase 4. Fixed Tier 0 from "7 Shakeel accounts" to "38 Factor accounts (Rob's, Shakeel departed Mar 9)." Suspended Tier 3 (Saved Search Backfill) — only Tier 0 named accounts are authorized. Tiers 1-2 re-scoped as prioritization signals within authorized universe only.
-   - `sop-prospect.md`: New ⛔ AUTHORIZED PROSPECTING UNIVERSE hard rule block added at the very top (above Scope). Named Account Priority updated: 38 accounts, Shakeel departure noted, framing changed from advisory to absolute restriction.
-   - `sop-outreach.md`: Scope section now opens with account restriction notice — draft only for prospects who already passed the gate.
-   - `sop-send.md`: Pre-Batch Build Checklist gains Step 0 (Account Source Validation) that runs before DNC, before dedup, before everything else.
-   - `sop-email.md`: Scope section includes same restriction — T2 email only for prospects in Factor/TAM universe.
-
-2. **Committed** all 5 SOP changes to git (commit 27bb4d9, local).
-
-3. **Push still needed** from Rob's terminal: `git push origin main`
+**Draft file to create:** `touch2_drafts_feb27.md`
+**Touch 2 cadence:** New angle + new proof point, 40-70 words, lighter close
 
 ---
 
-### Cowork-10 (Mar 9 — Wave 1 Factor account prospecting plan)
+### ✅ RESOLVED: Touch 2 for Feb 28 Batch 3 INC-001 Contacts (4 people)
+Drafts COMPLETE. File: `touch2_drafts_batch3_inmail.md`
 
-1. **Researched all 6 Wave 1 Factor accounts** using Apollo Director+ enrichment (`person_seniorities: director/vp/c_suite`) + bulk match for contact details. Proof points matched per vertical.
+| Name | Company | Subject | Words | MQS | Status |
+|------|---------|---------|-------|-----|--------|
+| Irfan Syed | Progress Software | Test creation across 12 products | 63 | 11/12 | READY TO SEND |
+| Katie Barlow Hotard | Lucid Software | Regression speed for 39 engineers | 68 | 10/12 | READY TO SEND |
+| Rachana Jagetia | Housecall Pro | Coverage during the rebuild | 61 | 12/12 | READY TO SEND |
+| Giang Hoang | Employee Navigator | Compliance-critical regression | 56 | 12/12 | READY TO SEND |
 
-2. **Built Wave 1 prospecting plan HTML** (`/Work/wave1-prospecting-plan-mar9.html`):
-   - Priority matrix table (all 6 accounts ranked by signal freshness + readiness)
-   - Per-account tabs: Nektar signal context, company research angles, primary contact card, T1 InMail draft + copy button, QA gate checklist
-   - Send order tab with pre-send checklist, credit budget tracker, Apollo enrollment instructions, MASTER_SENT_LIST entry templates
-   - ⚠️ 2 action flags surfaced (see Blockers)
-
-3. **Contacts enriched and finalized:**
-   - Cboe → Rick Brandt, Sr. Director QA, rbrandt@cboe.com (verified) ✅
-   - Fidelity → Seth Drummond, VP QA, seth.drummond@fidelity.com (verified) ✅
-   - Chase → Rose Serao, VP QA Manager, rose.serao@chase.com (extrapolated) ⚠️
-   - Commvault → Brahmaiah Vallabhaneni, VP Engineering, bvallabhaneni@commvault.com (verified) ✅
-   - TruStage → Chamath Guneratne, IT Director QE, chamath.guneratne@trustage.com (verified, HOLD) ⚠️
-   - YouTube → No US contact found. Ramona Bobohalma is Zürich-based (disqualified). Need Sales Nav search. ❌
-
-4. **T1 InMail drafts written for all 6 accounts** — All pass QA gate (10/12 MQS, 2 question marks, "what day works" close, no em dashes, under 120 words, reduction framing, proof point in close).
-
-5. **Key findings:**
-   - TruStage prior outreach investigation: All 3 Apollo contacts have zero campaign activity — prior outreach was Shakeel's (AE), not Rob's. Waiting on Rob confirmation before sending.
-   - YouTube email gap: Google employees rarely expose emails in Apollo. Most YouTube contacts lack emails. Only verified email found (Bobohalma) is non-US.
-   - Credit budget: 4 credits available, 6 accounts need T1 → prioritize Cboe/Fidelity/Chase/Commvault first, then replenish or reassess.
-
-### Cowork-9 (Mar 9 — TAM coverage tracker)
-
-1. **Cross-referenced 312 TAM accounts vs MASTER_SENT_LIST** — Confirmed limitation: MASTER_SENT_LIST has no company column, so programmatic dedup by account is not possible. Known flags from memory applied instead (OverDrive warm lead, Kapitus DNC, ACCELQ competitor, TruStage/Tailored Brands prior outreach checks).
-
-2. **Built TAM coverage tracker** (`/Work/tam-coverage-tracker.html` + `.csv`):
-   - 33 HOT Factor accounts ready to work
-   - 2 Factor accounts requiring prior outreach check (TruStage, Tailored Brands)
-   - 1 warm lead (OverDrive / Namita Jain)
-   - 259 untouched TAM accounts (clean to prospect)
-   - 2 DNC/Competitor skips (Kapitus, ACCELQ)
-   - 11 Government entities (out of ICP)
-   - 4 bad data records
-   - ICP breakdown: HIGH=142, Medium=153, Low/Gov=17
-
-3. **Codified new prospecting rule** in `memory/target-accounts.md`: TAM list (312) + Factor accounts (38) are the ONLY authorized prospecting universe. No open Sales Nav prospecting outside these lists.
-
-4. **Noted MASTER_SENT_LIST fix needed:** Add company column to future entries so account-level dedup is possible.
-
-5. **Note:** PGA of America is a Factor account NOT in the TAM CSV — treat as Wave 4 Factor.
-
-### Cowork-8 (Mar 9 — SF dashboards and reports catalog)
-
-1. **Navigated Salesforce home page** — Captured all 10 live widget readings (Mar 9 2026): Open Leads, Open Contacts (1,200+), My Accounts Non-Customers (314 prospect accounts), My Customer Accounts (10 farming), Factors Identified Accounts (~38 HOT), Accounts w/o Recent Activity (506), BD SAL This Month (0), Disco Calls, Demo Completed, Demo Completed but not Qualified.
-
-2. **Cataloged all SF reports** — Captured 20+ recently-used reports from the Recent Reports view. Reports are what Rob actually uses day-to-day, organized into the Key Reports table.
-
-3. **Cataloged all 97 SF dashboards** — Scrolled through all 4 pages of All Dashboards. Filtered down to ~15 BDR-relevant dashboards organized into Tier 1 (daily use), Tier 2 (useful context), Tier 3 (FYI).
-
-4. **Captured dashboard URLs/IDs** for key dashboards via ref-based click navigation:
-   - BDR: Daily standup review = `01ZOX000000XJVJ2A4`
-   - BDR: Outbound Dashboard = `01ZOX000000y7cv2AA`
-
-5. **Created `memory/sf-dashboards.md`** — New memory file with comprehensive catalog of home page widgets, key reports (with URLs), key dashboards (Tier 1/2/3), dashboard folder structure, and quick-access links.
-
-6. **Committed** `memory/sf-dashboards.md` to git (commit 7b30c47).
+**Send window:** Mon Mar 9 – Tue Mar 10, 12-1 PM local. Uses 4 InMail credits (~20 remaining after).
+**After send:** Sequence for these 4 is COMPLETE. No Touch 3 (premature Feb 28 email counts).
 
 ---
 
-### Cowork-7 (Mar 9 continuation — Factor accounts from Salesforce)
-
-1. **Read all 38 HOT Factor accounts from Salesforce** — Navigated to `Untapped Factors Accounts` report (00OOX00000HOtHh2AL). Used Report Builder to remove Account Owner grouping + add Account Owner = Robert Gorham filter. Read all 38 rows via keyboard navigation. Full list now in `memory/target-accounts.md`.
-
-2. **Updated `memory/target-accounts.md`** — Added complete 38-account table with: Account Name, Size, Engagement Level, Industry, ICP Fit rating. Identified 16 HIGH-priority accounts (Finance/Insurance, Healthcare, Technology/SaaS verticals). Flagged ACCELQ as competitor — confirm with Rob before outreach.
-
-3. **Key finding:** Factor list is 38 accounts, not 7 (grew since Nov 2025 original assignment). Most are Enterprise[1000+], all HOT except 7 Warm. 16 accounts are HIGH ICP fit for Testsigma's QA automation pitch.
+### 🟡 PENDING: 46 Gmail Drafts from Mar 1 — Touch 1 NOT YET SENT
+Groups A (13), B (8), C (25) — all have Gmail drafts ready but Rob has not sent them yet.
+These are Touch 1 emails for the Tier 1 Intent sequence.
+**These drafts are from robert.gorham@testsigma.com — check for doubles before sending.**
+**NOTE:** 16 of these contacts may have already received Touch 1 via Apollo on Mar 1 (from testsigma.net). Confirm before sending to avoid double-send.
 
 ---
 
-### Cowork-6 (Mar 9 — T2 email send session)
+## PIPELINE STATE BY SEQUENCE
 
-1. **Sent 25 of 28 T2 emails via Apollo UI** — Rob granted APPROVE SEND for all 28 drafts from `t2-email-drafts-mar9.html`. Sends executed one at a time via Apollo contact page.
-   - B9: 16 sent (Kylie Summer + Yuliya A excluded — no emails; Georgii Petrosian counted as B11)
-   - B10: 6 sent (Tim Wiseman/Upland, Jason Poole/Vergent skipped — preflight failures; LP Guo/Moody's skipped — no sequences)
-   - B11: 3 sent (Brad Askins, Dan Heintzelman, Madhu Nedunuri)
-   - **3 skipped on preflight:** Tim Wiseman/Upland (wrong owner/sequence), Jason Poole/Vergent (wrong owner), LP Guo/Moody's (no sequences in Apollo)
+### Q1 Website Visitor — Tier 1 Intent (69a1b3564fa5fa001152eb66)
 
-2. **⚠️ Apollo From address bug discovered (mid-session):**
-   - Apollo's default From is `robert.gorham@testsigma.net` — NOT `.com`
-   - Drafts 1-25 were sent from `.net` before the bug was caught
-   - Drafts 26-28 (Brad Askins, Dan Heintzelman, Madhu Nedunuri) sent from `.com` correctly
-   - Rob was notified. SOP updated with mandatory From address fix step.
+| Group | Touch 1 Sent | Count | Next Action | Due |
+|-------|-------------|-------|------------|-----|
+| Original 9 (Feb 27 Gmail) | Feb 27 | 9 | Touch 2 EMAIL | OVERDUE (Mar 4) |
+| Feb 28 sends (INC-001) | Feb 28 | 6 | Touch 2 INMAIL | OVERDUE (Mar 5-6) |
+| 16 Apollo sends (Mar 1, testsigma.net) | Mar 1 | 16 | Touch 2 EMAIL | Due Mar 4 (1 day late) |
+| 46 Gmail drafts (Groups A/B/C) | NOT SENT | 46 | SEND Touch 1 | URGENT |
+| Batch 9 (Mar 2, Apollo) | Mar 2 | 7 | Touch 2 EMAIL | Due Mar 5 (2 days late) |
+| Batch 10 (Mar 7, Apollo) | Mar 7 | 53 | Touch 2 EMAIL | Eligible Mar 11 |
 
-3. **Updated `memory/sop-send.md`** — Added full "Apollo UI Manual Email Send (Touch 2)" section:
-   - Hard rules (always .com, use form_input + Quill API, panel close = success)
-   - Preflight table (Owner, Sequence, Email — all 3 required)
-   - 9-step procedure with direct nav URL, From dropdown fix, Subject via form_input, body via Quill JS API, screenshot verify, Send Now
-   - Error/fix table covering .net sends, keyboard input issue, AI panel, contact search, Chrome disconnect, blank page
+### Q1 Priority Accounts (69a05801fdd140001d3fc014)
 
-4. **Updated `memory/pipeline-state.md`** — Added Mar 9 T2 email rows to Email Send History (16 B9 + 6 B10 + 3 B11 = 25 total), updated total emails from 49 → 74, added T3 due dates (Mar 14).
-
-5. **Updated `memory/session/work-queue.md`** — TASK-010 + TASK-011 marked DONE.
-
----
-
-## Current State Snapshot
-
-### Pipeline numbers (as of 2026-03-09)
-| Metric | Value |
-|--------|-------|
-| Total unique prospects contacted | 206 |
-| Total outreach emails sent (Gmail + Apollo confirmed) | **74** (49 T1 + 25 T2 sent this session) |
-| InMail credits remaining | 4 |
-| Apollo lead credits | ~6,879 |
-| MASTER_SENT_LIST rows | 278 (T2 sends are follow-ups — no new rows needed) |
-| LinkedIn Outbound - Q1 enrolled | 316 |
+| Group | Touch 1 Sent | Count | Next Action | Due |
+|-------|-------------|-------|------------|-----|
+| Batch 3 (Feb 25-26) | Feb 25-26 | 24 | Touch 3 EMAIL | Mar 7-8 (TODAY/tomorrow) |
+| Batch 5A (Feb 27-28) | Feb 27-28 | 25 | Touch 3 EMAIL | Mar 9-10 |
+| Batch 5B (Feb 27) | Feb 27 | 23 | Touch 3 EMAIL | Mar 9 |
+| Batch 6 (Feb 28) | Feb 28 | 27 | Touch 3 EMAIL | Mar 10 |
+| Batch 7 (Feb 28) | Feb 28 | 41 | Touch 3 EMAIL | Mar 10 |
+| Batch 8 (Mar 2) | Mar 2 | ~20 | Touch 2 INMAIL | Mar 7 (TODAY) |
 
 ---
 
-## Top 3 Priorities for Next Agent
+## GMAIL DRAFT AUDIT STATUS
 
-1. **[READY TO SEND] Wave 1 Factor accounts — T1 InMails** — HTML plan built at `/Work/wave1-prospecting-plan-mar9.html`. Rob reviews, then sends via Sales Nav. Send order: Cboe → Fidelity → Chase → Commvault. Hold TruStage until prior outreach confirmed. Hold YouTube until US contact identified. Enroll each in LinkedIn Outbound Q1 immediately after T1 send. 4 credits cover the first 4 accounts.
-
-2. **[URGENT] Complete TASK-009 — 25 WV Mar 3 Touch 2 emails** — 12 email addresses still missing. Collect from Apollo (people-match by name + domain), draft all 25 using EM-FU-1 formula (max 70 words, "Re: Quick question, [First Name]" subject, different proof point from T1, "what day works" CTA). Present ALL to Rob before sending. NEVER SEND without "APPROVE SEND."
-   - Note: TASK-009 uses the OLD EM-FU-1 template — NOT the Variant A formula. Variant A = LinkedIn sequence T2s only.
-   - **⚠️ Nabil Ahmed (Progyny):** May not be in Apollo. If not found, search Gmail sent folder for Mar 3 email to progyny.com domain.
-
-2. **[DECISION NEEDED] 3 skipped T2 sends** — Rob must decide what to do:
-   - Tim Wiseman / Upland Software — wrong owner/sequence. Reassign in Apollo and send?
-   - Jason Poole / Vergent LMS — wrong owner. Reassign and send?
-   - LP Guo / Moody's Analytics — no sequences in Apollo. Enroll in LinkedIn Outbound Q1 first, then send?
-
-3. **[T3 DUE MAR 14] Prep T3 drafts for all Mar 9 T2 sends** — T3 due Mar 14 for all 25 contacts who received T2 today. Use Variant A T3 formula when available, or escalate if formula not yet locked.
+Last audit: Not completed this session. Need to check:
+- 46 drafts (Groups A/B/C) — still in Gmail?
+- 6 premature Touch 3 drafts (Sergey, Mobin, Dino, Matthew, Joshua, Pete) — were these deleted?
+- Any new orphan drafts?
 
 ---
 
-## T2 Draft Formula (locked Mar 9) — Quick Reference
+## INMAIL CREDIT STATUS
 
-**For B9/B10/B11 T2 emails only (LinkedIn sequence T2s):**
-```
-[Subject: [topic] at [Company]]
-
-[First],
-
-[Opening company fact — specific, concrete, undeniably true.]
-I'd imagine [empathy bridge: what that means for their QA/release pressure].
-
-I reached out on LinkedIn about [specific T1 topic], but thought [specific angle] was worth [adding / sending separately].
-One of our customers, [Name], [brief story]. [Tie-back: "Reminded me of..."]
-
-[Engagement CTA tied to opening tension — not a meeting ask]
-
-Rob
-```
-
-Hard rules: No em dashes. No URL. No "following up." No "I noticed." No meeting ask in CTA. LinkedIn callback names T1 topic. Opening = company fact, not industry observation. T2 proof point ≠ T1 proof point.
+- Estimated remaining: ~24 credits (as of Feb 28)
+- Batch 10 was Apollo email (no InMail credits used)
+- Touch 2 InMails for Feb 27-28 contacts will use credits
+- **CRITICAL: Only ~24 credits. Prioritize Hot/Warm for InMail Touch 2. Use email for rest.**
 
 ---
 
-## TASK-009 — Touch 2 Emails Detail (25 total — unchanged from Mar 8)
+## LAST SESSION WORK (Mar 7 pre-summary)
 
-### Emails already confirmed (13 total):
-
-**From Apollo (7):**
-| Name | Email | Company | Proof Point for T2 |
-|------|-------|---------|-------------------|
-| Stephen Starnaud | stephen.starnaud@biberk.com | biBerk | Hansard 8→5wk |
-| Kyung Kim | kkim@webmd.com | WebMD | Sanofi 3d→80min |
-| Lyle Landry | lyle.landry@availity.com | Availity | Sanofi 3d→80min |
-| Morya Moyal | mmoyal@hippo.com | Hippo | Hansard 8→5wk |
-| Shivaleela Devarangadi | sdevarangadi@rxsense.com | RxSense | Sanofi 3d→80min |
-| Jim Lenihan | jim.lenihan@waystar.com | Waystar | Sanofi 3d→80min |
-| Konstantin Diachenko | kdiachenko@paymentus.com | Paymentus | CRED 90%+5x |
-
-**From website_visitor_sequence_drafts.md (6):**
-| Name | Email | Company | Proof Point for T2 |
-|------|-------|---------|-------------------|
-| Jose Moreno | jose.moreno@flywire.com | Flywire | CRED 90%+5x |
-| Eyal Luxenburg | eyal.luxenburg@island.io | Island | Fortune 100 3X |
-| Jeff Barnes | jeff.barnes@digi.com | Digi International | Spendflo 50% |
-| Todd Willms | todd.willms@bynder.com | Bynder | Spendflo 50% |
-| Tom Yang | tom.yang@versantmedia.com | Versant Media | Nagra DTV 2500 |
-| Jason Ruan | jason.ruan@binance.com | Binance | CRED 90%+5x |
-
-### Emails still needed — pull from Apollo (12):
-| Name | Domain | Vertical | Proof Point for T2 |
-|------|--------|----------|-------------------|
-| Courtney Corbin | vizientinc.com | Healthcare | Sanofi 3d→80min |
-| Jason Schwichtenberg | webmd.net | Healthcare ⚠️double-channel | Sanofi 3d→80min |
-| Geoffrey Juma | solera.com | InsurTech | Hansard 8→5wk |
-| Olivia Pereiraclarke | sapiens.com | Insurance | Hansard 8→5wk |
-| Nabil Ahmed | progyny.com | Healthcare | Sanofi 3d→80min |
-| Sneha Bairappa | aamc.org | Healthcare | Sanofi 3d→80min |
-| Jamie Kurt | vertafore.com | Insurance ⚠️double-channel | Hansard 8→5wk |
-| Avijit Sur | solera.com | InsurTech | Hansard 8→5wk |
-| Kerri McGee | sapiens.com | Insurance ⚠️double-channel | Hansard 8→5wk |
-| Priya Khemani | getinsured.com | InsurTech | Hansard 8→5wk |
-| Keith Schofield | fullsteam.com | FinTech | CRED 90%+5x |
-| Emre Ozdemir | theocc.com | FinTech | CRED 90%+5x |
-
-⚠️ **Nabil Ahmed (Progyny):** May not be in Apollo. If not found, search Gmail sent folder for Mar 3 email to progyny.com domain.
-⚠️ **Double-channel contacts** (Schwichtenberg, McGee, Kurt): Still send T2 email per Rob's Mar 8 confirmation.
-
-### Draft rules (non-negotiable — TASK-009 uses EM-FU-1, NOT Variant A formula):
-- Template: EM-FU-1 from TEMPLATE_LIBRARY.md
-- Subject: "Re: Quick question, [First Name]"
-- Max 70 words. No em dashes. No "I noticed/I saw." Reduction framing only.
-- 1-2 question marks max. MQS ≥ 9/12.
-- CTA: "What day works" (standard EM-FU-1 CTA — NOT engagement question)
-- Send from: robert.gorham@testsigma.com ONLY
-- NEVER SEND without Rob's explicit "APPROVE SEND"
+1. Added Sections 11-13 to `Tier1_Intent_Sequence_SOP_MASTER.md`:
+   - Section 11: Touch 2 Writing Standards
+   - Section 12: Touch 3 Writing Standards
+   - Section 13: Reply Handling (8 reply types)
+2. Created `email_sequence_performance_audit_mar7.md` — data-driven audit showing 1.1% reply rate tied to template MQS failures
+3. Appended 53 Batch 10 sends to `email_outreach_tracker.csv`
+4. Committed all changes (commit: `1b8053c`)
 
 ---
 
-## Active Warm Leads
-| Name | Company | Status |
-|------|---------|--------|
-| Namita Jain | OverDrive | T1 sent Feb 27. Day 10 as of Mar 9. Check Gmail for reply FIRST. Draft T2 if no reply. |
-| Pallavi Sheshadri | Origami Risk | Rob replied Mar 2. Monitoring for response. |
+## GIT STATUS
+
+- Remote: `https://github.com/bostonrobbie/bdr-work.git`
+- Branch: `main`
+- Latest commit: `1b8053c` — Add Touch 2/3/Reply Handling sections to Tier1 SOP + email sequence performance audit
+- Claude cannot push (no GitHub auth in VM). Rob must run `git push` from his terminal.
 
 ---
 
-## DNC List (7 people — always check before drafting)
-Sanjay Singh (ServiceTitan), Lance Silverman, Clyde Faulkner (CAMP Systems), Ashok Prasad (ZL Technologies), Abe Blanco (Kapitus), Chuck Smith (Aventiv), Jitesh Biswal (JPMorgan Chase). Full list in `CLAUDE.md`.
+## KEY FILES
+
+| File | Status | Notes |
+|------|--------|-------|
+| `Tier1_Intent_Sequence_SOP_MASTER.md` | ✅ Complete (Sections 1-13) | 105KB |
+| `email_sequence_performance_audit_mar7.md` | ✅ Complete | 26KB |
+| `email_outreach_tracker.csv` | ✅ Current | 215 rows (through Mar 7 Batch 10) |
+| `prospect_master_tracker.md` | ✅ Current | Shows all 121 contacts |
+| `touch2_drafts_feb27.md` | ❌ NOT CREATED | Priority task |
+| `personalized_sequence_emails.md` | ✅ Exists | Original 9 Touch 1 personalized emails |
+| `touch1_drafts_batch2.md` | ✅ Exists | Groups A+B drafts |
+| `touch1_drafts_batch2_groupC.md` | ✅ Exists | Group C drafts |
 
 ---
 
-## Secondary / Monitoring
-
-- **WV Mar 6 T2** (Mark Townsend, Kanwar Sangwan, Alex Wong, Prateek Negi, Misty Pesek, Katrina Walker, Joe Biggert) — eligible Mar 11 (Day 4/5). Draft Mar 10/11.
-- **TASK-001 Mon Mar 9 B10 InMails** — 8 credit InMails queued, only 4 credits remain. Confirm enrollment status. Rob decides who gets credits. See `memory/pipeline-state.md` B10 section.
-- **TASK-003 B10 enrollment blockers** — Sasa Lazarevic + Christian Melville blocked by Apollo ownership. Rob must resolve. 5 others (Kristyn Burke, Tim Hartgrave, Vince Delfini, Padmanaban Vadivelu, Ravi Nag) — attempt enrollment via MCP.
-- **TASK-007 Apollo WV "81 delivered" mystery** — Not blocking. Low priority.
-
----
-
-## Apollo Sequence IDs (for reference)
-
-| Sequence | ID |
-|----------|-----|
-| Email Outbound - Website Visitor Tier 1 | `69a1b3564fa5fa001152eb66` |
-| LinkedIn Outbound - Q1 Priority Accounts | `69a05801fdd140001d3fc014` |
-| Outbound Calls (tyler) Only | `6904f70577baa100190e4858` |
-| Rob's Apollo Owner ID | `68e16f05978e5e000d10a621` |
-| Send from email account ID | `68f65bdf998c4c0015f3446a` (robert.gorham@testsigma.net) |
-
----
-
-## Blockers / Flags
-
-- **⚠️ Drafts 1-25 sent from .net** — robert.gorham@testsigma.net (Apollo default). Drafts 26-28 correctly sent from .com. Rob was notified. Cannot unsend. SOP now documents mandatory From fix.
-- **3 T2 skips pending Rob decision:** Tim Wiseman/Upland, Jason Poole/Vergent, LP Guo/Moody's (see Priority #2 above)
-- **12 email addresses still missing** for WV Mar 3 Touch 2 drafts (TASK-009)
-- **0 TASK-009 T2 drafts written yet** — email collection is the blocker
-- Push to GitHub requires Rob to run `git push origin main` from his terminal. VM has no stored GitHub credentials.
-- B10 Apollo ownership blocks: Sasa Lazarevic + Christian Melville — Rob must resolve manually.
-- **InMail credits: only 4 remaining** — Thread continuation does NOT mean free for 2nd/3rd degree. Only 1st degree (connected) prospects can be replied to for free.
-
----
-
-## Files Changed This Session
-
-**Mar 9 Cowork-11 — SOP account universe enforcement:**
-- `memory/sop-daily.md` — Phase 4 mandatory gate added, Tier 0 fixed (38 accounts, Shakeel departed), Tier 3 suspended, Tiers 1-2 re-scoped
-- `memory/sop-prospect.md` — Hard ⛔ rule block added at top, Named Account Priority updated to 38 accounts
-- `memory/sop-outreach.md` — Scope section: account restriction added
-- `memory/sop-send.md` — Pre-Batch Checklist Step 0 (Account Source Validation) added
-- `memory/sop-email.md` — Scope section: account restriction added
-- `memory/session/handoff.md` — this file
-
-**Mar 9 Cowork-8 — SF dashboards catalog:**
-- `memory/sf-dashboards.md` — NEW: Full SF dashboards + reports catalog (home page widgets, key reports, Tier 1/2/3 dashboards, folder structure, quick-access links)
-
-**Cowork-7/6/5 (earlier Mar 9):**
-- `memory/sop-send.md` — Added full Apollo UI Manual Email Send (Touch 2) section
-- `memory/pipeline-state.md` — T2 sends logged (25 total), total emails updated 49→74, T3 due dates added
-- `memory/session/work-queue.md` — TASK-010 + TASK-011 marked DONE
-- `memory/session/handoff.md` — this file
-- `memory/session/session-log.md` — Mar 9 Cowork-6 entry added
-- `/sessions/gallant-cool-mccarthy/build_t2.py` — Python build script (not in Work folder — not committed to repo)
-
-**Mar 9 Cowork-7 — Factor accounts from Salesforce:**
-- `memory/target-accounts.md` — UPDATED: Added complete 38-account Factor list with ICP fit ratings. 16 HIGH priority accounts identified.
-
-**Mar 9 continuation — Named Accounts + SOP documentation (Cowork-6 continuation):**
-- `memory/target-accounts.md` — Originally created: documents all 4 account types (Factor accounts, TAM Oct 2025, Manual Testers TAM, Farming ~10 accounts), Salesforce report links, usage rules, key contacts
-- `memory/sop-daily.md` — Added Tier 0: Named Accounts to batch sourcing waterfall (above Buyer Intent)
-- `memory/sop-prospect.md` — Added Named Account Priority section at top (check Factor/TAM/Farming before any Sales Nav search)
-- `memory/sop-outreach.md` — 3-touch sequence note updated (Mar 8 email T2 change)
-- `CLAUDE.md` — Added target-accounts.md to reference file table
-
-**⚠️ Account lists NOT accessible from emails:** All 4 account lists (TAM, Factors, Manual Testers TAM, Farming) are exclusively in Salesforce reports. Email threads only contained SF report links. To get actual company names, Rob needs to export from Salesforce or log in during a session so browser automation can read the reports.
-
-**Salesforce report links (all in target-accounts.md):**
-- TAM Oct 2025 accounts: /Report/00OOX00000H3IwL2AV
-- TAM Oct 2025 contacts: /Report/00OOX00000H8ucj2AB
-- HOT Factors accounts: /Report/00OOX00000HOtHh2AL
-- Manual Testers TAM: /Report/00OOX00000HGoa92AD
-- Farming/Active Customers: /Report/00OOX000009bkmt2AA
+*Next session should start with: work-queue.md and pick up Touch 2 drafts for the Feb 27 contacts.*

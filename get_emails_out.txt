@@ -1,0 +1,65 @@
+
+=== Apollo TSV (17592 chars) ===
+Headers: Name	Title	Email	Organization	Email Status	Last Activity	In Sequences	Campaign Count	Labels Count	Phone	LinkedIn
+Rows: 100
+After Apollo TSV: 4 emails mapped
+
+=== email_outreach_tracker.csv (63241 chars) ===
+Headers: 
+Rows: 215
+After tracker CSV: 4 emails mapped
+
+=== contacts_list.json ===
+Type: list, Length: 67
+After contacts_list.json: 4 emails mapped
+
+=== BATCH_5A_PROSPECTS.csv ===
+Headers: Index,Name,Title,Company,Priority,AB_Group,Status,LinkedIn_URL,Email,Touch1_Subject,Touch1_Body,Touch2_Subject,Touch2_Body,Touch3_Subject,Touch3_Body
+Rows: 25
+After batch5a CSV: 4 emails mapped
+
+=== touch2_drafts_all_contacts_mar6.md (53493 chars) ===
+  Email line: **Email:** anelsen@rightworks.com
+  Email line: **Email:** jeff.barnes@digi.com
+  Email line: **Email:** emenezes@fulgentgenetics.com
+  Email line: **Email:** jose.moreno@flywire.com
+  Email line: **Email:** eyal.luxenburg@island.io
+  Email line: **Email:** todd.willms@bynder.com
+  Email line: **Email:** jason.ruan@binance.com
+  Email line: **Email:** tom.yang@versantmedia.com
+  Email line: **Email:** hahmed@spscommerce.com
+After touch2 mar6: 4 emails mapped
+
+=== FINAL SUMMARY ===
+Total mapped: 4
+Still missing: 62
+  #2 Jeff Barnes @ Digi International
+  #4 Jose Moreno @ Flywire
+  #5 Eyal Luxenburg @ Island
+  #6 Todd Willms @ Bynder
+  #7 Jason Ruan @ Binance
+  #10 Joe Pember @ Riverbed Technology
+  #11 Joyce Lee @ Veeva Systems
+  #13 Tom Bombara @ Extreme Networks
+  #14 Patrick Southall @ GoodRx
+  #15 Eileen Zheng @ Zelis
+  #16 Christie Howard @ LastPass
+  #17 Tim Wiseman @ Upland Software
+  #18 Marc Jarvis @ PAR Technology
+  #19 Thomas Lamontia @ CSG
+  #20 Luis Sanchez @ Drata
+  #21 Michelle Mangio @ Epic Games
+  #22 Ryan Aspleaf @ VIZIO
+  #23 Chris Bell @ Crestron Electronics
+  #24 Carlos Romero @ Dotdash Meredith
+  #25 Ken Dacey @ Discovery Education
+  #26 Andy Roth @ Teaching Strategies
+  #27 Ramya Potaraju @ Dental Intelligence
+  #28 Laura Riley @ Ampersand
+  #29 Ellie Ghodoosian @ OpSec Security
+  #30 Trent Walkup @ RedSail Technologies
+  #31 Jenny Li @ ON24
+  #32 Kamal Pokharel @ Cedar Gate Technologies
+  #33 Harsha Navaratne @ Interactions LLC
+  #34 Dawn Coen @ OppFi
+  #35 Vinayak Singh @ PURE Insurance
