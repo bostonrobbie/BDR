@@ -171,7 +171,45 @@ Draft responses per reply handling SOP (Section 13 of Tier1_Intent_Sequence_SOP_
 | memory/session/work-queue.md created | Mar 7 | This file |
 | touch2_drafts_feb27.md | Mar 7 | 9 Touch 2 emails for Feb 27 contacts, all MQS 10-12/12 |
 | touch2_drafts_batch3_inmail.md | Mar 7 | 4 Touch 2 InMails for INC-001 Batch 3 (Irfan, Katie, Rachana, Giang). MQS 11, 10, 12, 12. All READY TO SEND. |
+| TAM Outbound - Rob Gorham sequence built | Mar 10 | Apollo ID: 69afff8dc8897c0019b78c7e. 7 steps all manual, Day 1/5/10/15/21/28/35. email→email→LI connect→call→call→call→breakup email. Ready for enrollment. |
 
 ---
 
-*Updated by Claude — 2026-03-07 (Session 2)*
+### TASK-011: Prospect Wave 1 Factor Enterprise Accounts
+**Status:** UNCLAIMED
+**Priority:** P1 — sequence is ready, accounts are identified
+**Effort:** ~90 min
+**Output:** Batch tracker file for Wave 1 TAM prospects
+
+Identify QA/testing leaders at Factor enterprise accounts and enroll in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e).
+
+Priority accounts:
+- JPMorgan Chase (Note: Jitesh Biswal = DNC — skip him)
+- Cboe Global Markets
+- Commvault
+- TruStage
+- Fidelity (confirm right contact)
+- YouTube / Google (confirm right contact)
+
+Rules:
+- Use Apollo enrichment to find QA Manager/Director/Lead titles
+- Dedup against MASTER_SENT_LIST.csv before enrolling
+- Enrollment email: robert.gorham@testsigma.com (.com only)
+- Create batch tracker BEFORE any drafts
+- ALL messages need Rob's "APPROVE SEND" first
+
+---
+
+### TASK-012: Revise sop-outreach.md — Enterprise Email-Only T1 Formula
+**Status:** UNCLAIMED
+**Priority:** P2 — needed before Wave 1 T1 drafts are written
+**Effort:** ~30 min
+**Output:** New section in `memory/sop-outreach.md`
+
+Add:
+- Enterprise email-only T1 formula (for TAM named accounts without InMail credits)
+- A+ research protocol (what to find before writing to a Fortune 500/enterprise contact)
+
+---
+
+*Updated by Claude — 2026-03-10 (Session 3)*

@@ -22,6 +22,17 @@
 |----------|-----|-------|---------|----------|
 | LinkedIn Outbound - Q1 Priority Accounts | 69a05801fdd140001d3fc014 | 3 | PRIMARY for ALL outbound. All manual steps. | 311 enrolled (26 added Mar 6 from Q1 QA Outreach migration) |
 | Email Outbound - Website Visitor Tier 1 | 69a1b3564fa5fa001152eb66 | 3 | Email-only buyer intent. | 78 active |
+| TAM Outbound - Rob Gorham | 69afff8dc8897c0019b78c7e | 7 | Enterprise TAM accounts (Factors + named accounts). All manual. 35-day cadence. | 0 enrolled (created Mar 10) |
+
+### TAM Outbound - Rob Gorham Step Details (Created Mar 10, 2026)
+- Step 1 (69afffcc6dc86e000d692314): Manual email (Day 1, immediate)
+- Step 2 (69b0016ef164af00192fc746): Manual email T2 (Day 5, +4 days)
+- Step 3 (69b003c06920cc0019a88a93): LinkedIn connection request (Day 10, +5 days)
+- Step 4 (69b0048405e0ed00112bd2d0): Phone call (Day 15, +5 days)
+- Step 5 (69b004e0f0eb92000d9da2dd): Phone call (Day 21, +6 days)
+- Step 6 (69b004e0c110a7001515603c): Phone call (Day 28, +7 days)
+- Step 7 (69b005431006ab001168de9c): Manual email breakup (Day 35, +7 days)
+- ALL steps are MANUAL. Nothing auto-sends. Use robert.gorham@testsigma.com (.com) for enrollment.
 
 ### LinkedIn Outbound - Q1 Priority Accounts Step Details (Updated Mar 8, 2026)
 - Step 1 (69a05a3883eda10021b7ff0b): LinkedIn InMail (Day 1, High)
