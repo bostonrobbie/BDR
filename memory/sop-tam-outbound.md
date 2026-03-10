@@ -1,7 +1,11 @@
 # SOP: TAM Outbound — End-to-End Process
-## Version 1.0 — Built during Wave 1 execution (Mar 10, 2026)
+## Version 2.0 — Updated Mar 10, 2026 (50/day rolling cadence)
 
 This SOP governs all outreach to named TAM accounts. It is the authoritative guide for any Claude agent executing the TAM outbound process. Read this file in full before starting any TAM batch.
+
+**Target:** 50 T1 sends per day, enrolled in TAM Outbound sequence, at highest personalization quality.
+**Method:** Rolling daily batches. Account-first research (one company pass covers all contacts at that company). Continuous pipeline — no wave gating.
+**Sequence:** TAM Outbound - Rob Gorham (`69afff8dc8897c0019b78c7e`) — enrollment email: `robert.gorham@testsigma.com`
 
 ---
 
@@ -20,19 +24,41 @@ The TAM outbound process works accounts from a prioritized list, identifies the 
 
 ---
 
-## Part 1: Wave Architecture
+## Part 1: Rolling Pipeline Architecture
 
-Accounts are processed in waves. Each wave is a cohort of accounts worked simultaneously.
+TAM outbound runs as a continuous daily pipeline. No wave gating. Batches go out every working day until the full TAM list is covered.
 
-| Wave | Type | Source | Count | Status |
-|------|------|---------|-------|--------|
-| Wave 1 | Factor accounts (HOT intent signals) | `memory/target-accounts.md` | 6 | IN PROGRESS |
-| Wave 2+ | Non-Factor TAM accounts | `tam-accounts-mar26.csv` filtered by ICP=HIGH | ~130+ | NOT STARTED |
+### Pipeline Tiers (priority order — all run concurrently)
 
-**Rules:**
-- Do not start Wave 2 while Wave 1 has unresolved accounts (T1 not yet sent, or in active sequence below Day 35)
-- Exception: If a Wave 1 account is permanently blocked (DNC, bounced email, wrong contact), skip it and move on
-- Process accounts within a wave simultaneously — no staggering needed
+| Tier | Type | Source | Count | Priority |
+|------|------|---------|-------|----------|
+| Tier A | Factor HOT accounts (intent signals) | `memory/target-accounts.md` | ~38 | Always first. Clear these before moving to Tier B/C. |
+| Tier B | TAM ICP=HIGH accounts | `tam-accounts-mar26.csv` — `icp=HIGH` | ~130 | Primary daily volume source. Work in account priority order. |
+| Tier C | TAM ICP=Medium accounts | `tam-accounts-mar26.csv` — `icp=Medium` | ~130+ | Start when Tier B backlog < 20 accounts remaining. |
+
+**Wave 1** (current active batch) = Tier A Factor accounts. Already enrolled — see Part 14.
+**Wave 2+** = Tier B/C TAM accounts from `tam-accounts-mar26.csv`. Start building immediately.
+
+### Rolling Batch Rules
+- **Daily goal: 50 T1 sends enrolled in TAM Outbound sequence.** This is the target, not a hard cap — if 45 or 55 are ready, that's fine.
+- Each day = one or more batch tracker files (e.g., `tamob-batch-20260310-1.html`). If a day's 50 contacts span many accounts, a single tracker file is fine. Split only if the file gets unwieldy (>60 rows).
+- Tier A contacts always go in the current batch alongside Tier B/C — no separate queue.
+- Do NOT hold Tier B accounts waiting for Tier A to finish. They run concurrently in the same daily batch.
+- The Apollo task queue manages all follow-up for enrolled contacts. Claude only needs to draft new T1s daily and draft follow-up messages when Apollo tasks come due.
+
+### What "50/day" means in practice
+50 T1 emails sent = approximately 15-20 accounts per day at ~3 contacts/account average.
+
+| Component | Estimated time |
+|-----------|---------------|
+| Account sourcing + dedup (15-20 accounts) | ~30 min |
+| Account research blocks (15-20 companies × 5 min) | ~75 min |
+| Contact-level LinkedIn scans (50 contacts × 2 min) | ~100 min |
+| T1 + T2 draft writing (50 × ~3-4 min with shared company context) | ~150 min |
+| QA gate + batch summary | ~30 min |
+| **Total per session** | **~6.5 hours** |
+
+In practice Claude does research + drafting; Rob reviews and sends. These can run async — Claude builds the batch, presents it, Rob approves and sends when ready.
 
 ---
 
@@ -49,14 +75,20 @@ Priority order:
 
 Skip permanently: `⛔ SKIP` (ACCELQ = competitor), `🏛️ Gov — Skip`, `🗑️ Bad Data`
 
-### Non-Factor TAM Accounts (Wave 2+)
+### Non-Factor TAM Accounts (Tier B/C — Daily Volume Source)
 Source: `tam-accounts-mar26.csv` — read the full file, filter by:
-- `icp` = HIGH (priority) or Medium (secondary)
-- `status` = ✅ Untouched
+- `icp` = HIGH (Tier B) or Medium (Tier C)
+- `status` = ✅ Untouched (not already in sequence, not bounced, not DNC)
 - Not government, competitor, or bad data
 - Enterprise size (verify via Apollo org enrichment — target 500+ employees minimum)
 
-Order: ICP=HIGH first, then Medium. Within each tier, alphabetical by company name.
+**Order:** ICP=HIGH first, then Medium. Within each tier, sorted by employee count descending (larger companies first — higher TAM value per account). Within same employee band: alphabetical.
+
+**Daily account selection target (to hit 50 contacts):**
+- Pull 15-20 new accounts per daily batch
+- Check `tam-coverage-tracker.csv` to see which are still Untouched
+- Mark each account as "🔄 In Progress — [date]" in the tracker as soon as you start working it (prevents double-claiming across sessions)
+- After T1 send: update to "📤 In Sequence — [date]"
 
 ### Account Validation Checklist
 Before adding any account to a batch:
@@ -141,53 +173,72 @@ If dedup clean: proceed. If any flag: document in batch tracker notes, ask Rob b
 
 ---
 
-## Part 5: Research Protocol (SMYKM-Level)
+## Part 5: Research Protocol (SMYKM-Level) — At Scale
 
-This is not a quick skim. Enterprise contacts require real research. Set aside 5-10 minutes per person.
+**Efficiency principle at 50/day:** Research the ACCOUNT once, then research each CONTACT briefly. Company context is shared across all contacts at the same account — do not repeat it for each person.
 
-### Research Sources (3 required, in this order)
+### The Account Research Block (5-8 min per company — done once, covers all contacts)
 
-**Source 1: LinkedIn Profile (via Sales Nav)**
-Find and extract:
-- Current role scope (what they own: mobile? API? specific platform?)
-- Team size signals (any "team of X" language in profile or posts)
-- Recent posts or activity (have they commented on testing tools, written about CI challenges, posted about a launch?)
-- Tech stack signals (framework names in skills, job descriptions mentioning Playwright, Selenium, etc.)
-- Duration in role (recent hire = building new processes = openness to new tools)
-DO NOT use in messages: years at company, education, endorsements, certifications
+**Step 1 — Apollo Org Enrichment (run once per company)**
+Call `apollo_organizations_enrich` for the company domain. Extract and note:
+- Tech stack (`current_technologies`) — testing tools, CI/CD tools, cloud platform
+- Employee count — confirms enterprise tier, sets persona rule (Part 3)
+- Funding / revenue / industry — selects proof point from Part 15 table
 
-**Source 2: Apollo Org Enrichment**
-Run `apollo_organizations_enrich` for the company domain. Extract:
-- Tech stack (under `current_technologies`) — testing tools, CI/CD tools, cloud platform
-- Employee count (confirms enterprise tier)
-- Funding/revenue (context for proof point selection)
-- Industry classification (use for proof point matching)
+**Step 2 — External Research (5 min per company max)**
+Check in priority order — stop when you have enough for the email:
+1. LinkedIn job postings for open QA/SDET/Automation roles (signals team scaling pain — best trigger)
+2. Engineering blog or tech pages (any velocity, testing culture, migration signals)
+3. Recent news (product launches, acquisitions, platform expansions — implies new test coverage needed)
+4. Glassdoor QA reviews (rare but high signal — mention if highly specific to their pain)
 
-**Source 3: Company External Research**
-Check in this order:
-1. Company engineering blog (Substack, Medium, tech.companyblog.com) — release velocity, testing culture, recent migrations
-2. Recent job postings on LinkedIn/Greenhouse — open QA/SDET roles = team scaling pain
-3. Recent news (press releases, TechCrunch, CrunchBase) — product launches, acquisitions, platform migrations
-4. Glassdoor QA reviews — team morale, tool pain, process complaints (rare but gold)
-5. GitHub (if available) — test framework presence, contribution velocity
+**Stop criteria:** Once you have one strong trigger (job posting OR news item OR tech signal), stop. You do NOT need all four sources if you already have a good hook.
+
+**Account Research Output (document once, apply to all contacts at that company):**
+```
+Account: [Company]
+Domain: [domain.com]
+Industry: [vertical]
+Employees: [count]
+Tech stack: [Selenium / Playwright / Jenkins / etc.]
+Trigger: [e.g., "3 open QA Automation Engineer roles as of Mar 10" OR "launched mobile app Jan 2026"]
+Proof point (T1): [Hansard / CRED / Fortune 100 / etc.]
+Proof point (T2): [rotation from Part 15]
+Notes: [any special flags — Selenium-heavy, has compliance requirements, etc.]
+```
+
+### Contact-Level Research (2-3 min per person — LinkedIn only)
+
+**Source: LinkedIn Profile (via Sales Nav)**
+Find and extract ONE of:
+- Role scope signal (what they own: mobile QA? API testing? platform regression? specific product area?)
+- Recent post or activity (commented on testing tools, posted about a launch or a pain point)
+- Tech stack signal in skills or summary (Playwright, Selenium, JIRA-first team vs. mature automation)
+- Duration in role (recent hire under 6 months = building new processes = very open to tools)
+
+**That one detail is your opener.** You do NOT need all four. One specific, role-relevant detail is more powerful than four generic facts.
+
+**DO NOT use in messages:** years at company, education, endorsements, certifications, LinkedIn follower count, company tenure.
 
 ### Research-to-Message Mapping
-| Research Finding | Feeds |
+| Research Finding | Feeds Into |
 |------------------|-------|
 | LinkedIn: QA scope (e.g., "owns mobile + API regression") | Opener — make it specific to their scope |
-| Apollo: Tech stack (e.g., Selenium + Jenkins) | Context — frame maintenance pain with known tools |
-| Job posting: "5 QA automation engineers" hiring | Theme — scaling challenge = right timing |
-| Company news: "Launched new mobile app" | Theme — new coverage = regression expansion |
-| Engineering blog: "our CI pipeline takes 4 hours" | Proof point angle — velocity reduction |
+| Apollo: Tech stack (e.g., Selenium + Jenkins) | Challenge sentence — frame maintenance pain around their tools |
+| Job posting: open QA automation roles | Theme — scaling challenge = right timing for a conversation |
+| Company news: product launch or platform migration | Theme — new coverage need = natural timing |
+| Engineering blog: CI pipeline pain, test flakiness posts | Proof point angle — tie proof point to their stated problem |
 
-### Research Quality Gate
-Before drafting, confirm you have:
-- [ ] One QA-relevant detail from their LinkedIn (NOT just "QA Manager at X")
-- [ ] Company's tech stack OR industry vertical confirmed
-- [ ] One external trigger OR vertical match for theme
-- [ ] Proof point selected and tied to their specific pain
+### Research Quality Gate (same for all batch sizes)
+Before drafting any T1, confirm:
+- [ ] One QA-relevant account trigger (tech stack + one external signal)
+- [ ] One contact-specific detail (scope, focus area, or platform)
+- [ ] Proof point assigned and matches vertical (Part 15 table)
+- [ ] No duplicate with MASTER_SENT_LIST.csv
 
-If any are missing: do more research. Do not draft from title + company alone.
+If the account trigger is missing: run Apollo org enrichment + 5-min web check.
+If the contact detail is missing: do a LinkedIn profile read via Sales Nav.
+Do NOT draft from title + company alone — that produces generic mail that gets ignored.
 
 ---
 
@@ -294,27 +345,37 @@ Testsigma
 
 ## Part 9: Batch Tracker Creation
 
-Before writing ANY draft, create the batch tracker HTML file.
+Before writing ANY draft, create the batch tracker HTML file. Tracker files hold draft content and serve as the audit trail. They are NOT the follow-up controller — Apollo is.
 
-**Filename:** `wave[N]-batch[N]-tracker-[date].html`
+**Filename:** `tamob-batch-[YYYYMMDD]-[N].html` (e.g., `tamob-batch-20260311-1.html`)
+- Increment N within the same day if you split a large batch (e.g., `-1.html` and `-2.html`)
+- Old naming (`wave1-batch1-tracker-mar10.html`) is still valid for Wave 1 specifically
 
-**Required fields per contact:**
-- Name, title, company, email (with verification status), LinkedIn URL
-- T1 draft placeholder (type: InMail or Email)
-- T2 draft placeholder
-- Breakup draft placeholder
-- Status: [Draft Ready / Awaiting Approval / Sent / Replied / Bounced / DNC]
-- Send date (filled after send)
-- MASTER_SENT_LIST entry (pre-formatted for copy-paste)
-- Proof points assigned (T1 / T2)
-- Any flags (⚠️ Verify email / ⚠️ Confirm prior outreach / etc.)
+**Required fields per contact row:**
+- Name, title, company, email (with ✅ verified / ⚠️ extrapolated / 🔴 unverified flag)
+- LinkedIn URL
+- Targeting level (Standard / Medium / High per Part 3)
+- Account trigger used (one phrase — what made this company timely)
+- T1 subject line
+- T1 body draft
+- T2 body draft
+- Status: `📝 Draft Ready` / `⏳ Awaiting APPROVE SEND` / `📤 T1 Sent [date]` / `✅ Enrolled` / `↩️ Replied` / `🔴 Bounced` / `⛔ DNC`
+- T1 send date (fill after send)
+- T2 send date (fill after T2 send)
+- Proof points used (T1 / T2)
+- MASTER_SENT_LIST entry pre-formatted (copy-paste ready)
+- Flags: any dedup concerns, extrapolated email warnings, ops QA concerns
 
-**MASTER_SENT_LIST entry format (new columns added Mar 10):**
+**Company grouping:** Group contacts by account within the tracker file. Color-code by account — makes it easy to verify that all contacts at one company have distinct angles.
+
+**Large batches (50 contacts):** A 50-row tracker in a single HTML file is fine. Use collapsible sections per account if it helps readability. Do not split into multiple files unless you need to (i.e., context limit forces it).
+
+**MASTER_SENT_LIST entry format:**
 ```
-[Full Name], [email], [Company], [Title], [Channel: LinkedIn InMail or Email], [Send Date], [B_Wave1 or Wave2_BatchN]
+[Full Name], [email], [Company], [Title], Email, [Send Date], [tamob-batch-YYYYMMDD-N]
 ```
 
-**Apollo task queue is the primary follow-up controller.** The batch tracker HTML is the audit trail and draft storage — it is NOT what drives daily follow-up. After each T1 send, enroll the contact in TAM Outbound (Step 1 complete) and Apollo auto-generates all remaining tasks on the correct days. See Part 18 for full Apollo task control SOP.
+**Apollo task queue is the primary follow-up controller.** The batch tracker HTML is the audit trail and draft storage. After each T1 send, enroll the contact in TAM Outbound (Step 1 complete) and Apollo auto-generates all remaining tasks on the correct days. See Part 18 for full Apollo task control SOP.
 
 ---
 
@@ -391,43 +452,22 @@ After each batch is complete:
 
 ## Part 14: Wave 1 Current State (as of Mar 10, 2026)
 
-**UPDATED STATE — Mar 10, 2026 (multi-contact approach, email T1 only)**
+**STATUS: Enrollment complete. T1 + T2 drafts pending.**
 
-All T1s are email-only via Apollo Step 1 (robert.gorham@testsigma.com). Old InMail drafts from wave1-prospecting-plan-mar9.html are DEPRECATED. Build fresh email T1 + T2 drafts per TASK-014.
+All 23 clean contacts enrolled in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) via robert.gorham@testsigma.com. Full roster and enrollment statuses live in `memory/target-accounts.md`. Batch tracker: `wave1-batch1-tracker-mar10.html`.
 
-| # | Account | Contact | Title | Email | Email Status | Outreach Status |
-|---|---------|---------|-------|-------|-------------|-----------------|
-| 1 | Cboe Global Markets | Rick Brandt | Sr. Director, QA Engineering | rbrandt@cboe.com | ✅ Verified | Needs fresh T1 email draft |
-| 2 | Fidelity Investments | Seth Drummond | VP, Quality Assurance | seth.drummond@fidelity.com | ✅ Verified | Needs fresh T1 email draft |
-| 3 | Fidelity Investments | Nithya Arunkumar | Director, QA | n.arunkumar@fidelity.com | ✅ Verified | Needs fresh T1 email draft (same batch — different angle from Seth) |
-| 4 | Fidelity Investments | Chris Pendergast | Director, QA | chris.pendergast@fidelity.com | ✅ Verified | Needs fresh T1 email draft (same batch — different angle from Seth + Nithya) |
-| 5 | JPMorgan Chase | Rose Serao | VP, QA Manager | rose.serao@chase.com | ⚠️ Extrapolated | Verify email first, then draft |
-| 6 | JPMorgan Chase | Neeraj Tati | Director, SW Engineering | neeraj.tati@chase.com | ✅ Verified | Needs fresh T1 email draft (Engineering title — secondary; enroll same batch after Rose confirmed) |
-| 7 | Commvault | Brahmaiah Vallabhaneni | VP, Engineering | bvallabhaneni@commvault.com | ✅ Verified | Needs fresh T1 email draft |
-| 8 | Commvault | Jennifer Wang | Director, Engineering | jenniferwang@commvault.com | ✅ Verified | Needs fresh T1 email draft (same batch — different angle from Brahmaiah) |
-| 9 | TruStage | Chamath Guneratne | IT Director, QE | chamath.guneratne@trustage.com | ✅ Verified | ✅ Confirmed CLEAN (Shakeel's prior AE outreach). Needs fresh T1 email draft. |
-| 10 | TruStage | Maggie Redden | Director, SW Engineering | maggie.redden@trustage.com | ⚠️ Extrapolated (@trustage.com domain pattern) | Try to verify via Apollo enrichment before including |
-| 11 | YouTube / Google | John Harding | VP Engineering, YouTube Music & Premium | jharding@youtube.com | ✅ Catch-all | Primary YouTube contact. Apollo ID: 685908e0ad153600113e33a1. Needs fresh T1. |
-| 12 | YouTube / Google | Des Keane | Engineering Director, Video Infrastructure | des@google.com | ✅ Verified | Secondary. Enroll same batch. Different angle (infrastructure/reliability). |
-| 13 | YouTube / Google | (search for more US QA/Eng Directors) | — | — | — | Run expanded Apollo search for YouTube/Google US QA titles |
+| Account | Enrolled | HOLD | Notes |
+|---------|----------|------|-------|
+| Cboe Global Markets | 3 (Rick Brandt, Maurice Saunders, Snezhana Ruseva) | 0 | Standard targeting. Needs T1 drafts. |
+| Fidelity Investments | 8 (Seth, Nithya, Chris P, Christopher B, Eric P, Richelle, Sourabh, Padma) | 0 | Medium targeting. 8 contacts = differentiate by role scope. Needs T1 drafts. |
+| JPMorgan Chase | 1 (Neeraj Tati) | 3 (Rose — extrapolated email; Justin + Nikki — ops QA concern) | Rob to decide on HOLD contacts. |
+| Commvault | 5 (Brahmaiah, Arun, Prasad, Sucheth + Jennifer D) | 0 | Medium targeting. Needs T1 drafts. |
+| TruStage | 3 (Chamath, Maggie @cunamutual.com, Jennifer D @cunamutual.com) | 1 (Shawn Woods — below Director threshold) | Standard targeting. Needs T1 drafts. |
+| YouTube / Google | 3 (John Harding, Des Keane, Hrishikesh Aradhye — both with job_change bypass) | 0 | High targeting — product-area specific per contact. Needs T1 drafts. |
 
-**Fidelity personalization note (3 contacts — Medium targeting level):**
-- Seth (VP QA): Organization-level angle — overall regression strategy, QA team productivity
-- Nithya (Director QA): Team execution angle — test creation speed, maintenance burden
-- Chris (Director QA): Different proof point than Nithya — if Nithya gets Hansard, Chris gets CRED
+**Next action:** TASK-014 Steps C+D — draft T1 + T2 for 23 enrolled contacts. Use wave1-batch1-tracker-mar10.html as the draft storage. Present batch summary → APPROVE SEND.
 
-**Chase personalization note (2 contacts — Medium targeting level):**
-- Rose (VP QA): Executive angle — coverage at scale, risk-based regression
-- Neeraj (Director SW Eng): Engineering angle — CI/CD pipeline test speed, developer productivity
-
-**Commvault personalization note (2 contacts — Medium targeting level):**
-- Brahmaiah (VP Eng): Executive angle — QA team productivity multiplier, 3X Fortune 100 story
-- Jennifer (Director Eng): Tactical angle — specific platform migration or Cisco 35% regression reduction story
-
-**YouTube personalization note (3+ contacts — High targeting level):**
-- John Harding (VP, Music & Premium): Music platform angle — coverage for streaming features, Nagra DTV proof point
-- Des Keane (Director, Video Infrastructure): Infrastructure/reliability angle — test automation for video pipeline
-- Additional contacts found: write to their specific product area
+**Wave 2+:** Start building immediately. Do not wait for Wave 1 T1s to be sent first. Use Part 20 daily batch cadence starting with Tier B ICP=HIGH accounts from tam-coverage-tracker.csv.
 
 ---
 
@@ -571,5 +611,180 @@ When in doubt: Apollo + batch tracker HTML will tell you everything you need to 
 
 ---
 
-*Created by Claude during Wave 1 execution, Mar 10, 2026. Update this file as the process evolves.*
-*Next review: After Wave 1 completes (est. Apr 14, 2026 — Day 35 from first T1 send)*
+---
+
+## Part 20: Daily Batch Cadence — 50/Day Target
+
+This is the repeating daily workflow. Run it every working day to build and execute the 50-contact batch.
+
+### Phase 1: Account Sourcing (30 min)
+
+**Goal:** Identify 15-20 accounts for today's batch. These accounts should yield ~50 contacts total.
+
+1. Open `tam-coverage-tracker.csv`
+2. Filter: `icp = HIGH`, `status = ✅ Untouched` — sort by employee count descending
+3. Pull the next 15-20 accounts in that ordered list
+4. For each: run a quick Apollo people search to estimate contact count:
+   - If 1-2 QA contacts found → include (Standard targeting)
+   - If 3-6 contacts → include (Medium targeting)
+   - If 7+ contacts → include only the top 5-6 by seniority (High targeting) — do not include 10+ people from one company in a single batch
+5. Mark each selected account in `tam-coverage-tracker.csv` as "🔄 In Progress — [date]" immediately (prevents double-claim across sessions)
+6. Count estimated contacts. If under 45: pull 2-3 more accounts. If over 55: drop the last account or defer lower-seniority contacts to next day's batch.
+
+**Checkpoint:** Target ~50 contacts sourced before moving to Phase 2.
+
+### Phase 2: Dedup (20 min — parallel with Phase 1)
+
+For every contact identified in Phase 1:
+1. MASTER_SENT_LIST.csv check (name + company)
+2. DNC list check (CLAUDE.md)
+3. Apollo contact search — check `emailer_campaign_ids` and `last_activity_date`
+4. Remove any flagged contacts from the batch. Replace from the same account's bench if available. If no bench, pull a new account.
+
+**Dedup result:** Clean list of ~50 contacts, zero duplicates.
+
+### Phase 3: Account Research Blocks (5-8 min per company — do all accounts before drafting)
+
+Run every account through the Account Research Block (Part 5) sequentially:
+1. `apollo_organizations_enrich` for domain → log tech stack + employee count + vertical
+2. Quick external scan (job postings first — single Apollo or Google search) → identify 1 strong trigger
+
+Document each account's research block in the batch tracker HTML (create the tracker file now, before drafting).
+
+**Checkpoint:** Tracker file exists with all 50 contacts. Account research complete for all companies. No drafts yet.
+
+### Phase 4: Contact LinkedIn Scans (2-3 min per person)
+
+For each contact in the tracker:
+1. Pull their LinkedIn profile via Sales Nav (or Apollo contact record)
+2. Extract one specific detail (role scope, tech signal, recent post)
+3. Add to their row in the tracker as "Contact note: [detail]"
+4. Assign targeting level (Standard / Medium / High based on company contact count from Phase 1)
+5. Assign proof point from Part 15 table — ensure no two contacts at the same company get the SAME proof point
+
+**Checkpoint:** Every contact row in the tracker has: company trigger + contact detail + proof point assigned.
+
+### Phase 5: T1 + T2 Draft Writing (150-180 min total)
+
+Draft in account batches, not random order. Write all contacts at one company consecutively:
+- Keeps the company context fresh in working memory
+- Makes it easy to spot if two contacts at the same company are too similar
+
+**Per contact (~4-5 min):**
+1. Write T1 subject (SMYKM format — specific to person/company, NOT generic pain category)
+2. Write T1 body (HC1 intro → challenge observation → proof point → "what day works" CTA, 75-100 words)
+3. Write T2 body (bridge → new angle → new proof point → engagement question, 50-70 words)
+4. Quick self-check: would this read as mass-produced if compared to the next contact at the same company? If yes, revise.
+
+**Draft speed target:** ~4-5 min per contact including both T1 and T2 when account research is already done.
+
+### Phase 6: Quality Gate (20-30 min for full batch of 50)
+
+Before presenting to Rob, run the batch through the QA Gate:
+
+**Per-message checks:**
+- [ ] No "following up" / "circling back" language in T1 (HC violation)
+- [ ] HC1 compliant opener: "We have yet to be properly introduced, but I'm Rob with Testsigma."
+- [ ] T1 subject is person/company-specific (NOT generic pain phrase)
+- [ ] T1 body 75-100 words (hard cap 120)
+- [ ] T2 body 50-70 words
+- [ ] T1 and T2 use different proof points
+- [ ] No em dashes anywhere
+- [ ] No two contacts at same company have same opener angle, same proof point, or same CTA phrasing
+- [ ] Extrapolated emails flagged in tracker
+
+**MQS check (spot-check minimum 5 contacts):** Run MQS scoring from sop-outreach.md on at least 10% of the batch. Target: all spot-checked contacts at 9/12 or above. If any score below 9: revise before presenting.
+
+**Checkpoint:** Batch passes QA gate. Extrapolated emails flagged. MQS spot-check done.
+
+### Phase 7: APPROVE SEND Presentation
+
+Post the BATCH SUMMARY block per Part 10 format. Include:
+- Total contacts: [N]
+- Accounts covered: [N]
+- Dedup removed: [N names]
+- Email verification: [N] verified, [N] extrapolated (flagged)
+- Targeting levels: [N] Standard, [N] Medium, [N] High
+- MQS spot-check: [N] checked, [N] passing
+- Link to tracker HTML file
+
+Wait for Rob's APPROVE SEND. Do NOT enroll or send anything before approval.
+
+### Phase 8: Send + Enroll (after APPROVE SEND)
+
+For each approved contact:
+1. Rob sends T1 email via Apollo task or direct send from robert.gorham@testsigma.com
+2. Claude (or Rob) enrolls contact in TAM Outbound immediately after send (same day — never defer enrollment)
+3. Enrollment: batch of max 5 via `apollo_emailer_campaigns_add_contact_ids`, flags: `sequence_no_email: true`, `sequence_active_in_other_campaigns: true`
+4. After enrollment: update tracker HTML row → Status = "📤 T1 Sent [date] / ✅ Enrolled"
+5. Add row to MASTER_SENT_LIST.csv
+
+**Enrollment tempo:** Enroll in batches of 5 (Apollo limit). For 50 contacts: 10 batches of 5. Takes ~10-15 min.
+
+### Phase 9: Coverage Tracker + Session Close
+
+After enrollment:
+1. Update `tam-coverage-tracker.csv`: all enrolled accounts → "📤 In Sequence — [date]"
+2. Update `memory/session/handoff.md` with today's batch count and any flagged contacts
+3. Update `memory/session/work-queue.md` with next batch number
+4. Git add + commit → Rob git pushes from terminal
+
+### Daily Metrics to Track
+
+| Metric | Target |
+|--------|--------|
+| New T1s sent | 50/day |
+| New enrollments | 50/day |
+| Accounts covered | 15-20/day |
+| Extrapolated emails in batch | < 10% of batch (max 5 out of 50) |
+| MQS spot-check pass rate | 100% of checked contacts at 9+ |
+| Dedup removal rate | Track for pattern detection |
+
+### Managing the Growing Follow-up Load
+
+As the enrolled base grows, Apollo will generate more follow-up tasks per day (T2s, LinkedIn connects, calls). Here's the rough daily task load:
+
+| Days Since Launch | Approx. Apollo Tasks Due Daily |
+|-------------------|-------------------------------|
+| Days 1-4 | Low — only T2s if any T1s were sent 4-5 days ago |
+| Days 5-15 | Growing — T2s + LinkedIn connects accumulating |
+| Days 15-28 | High — T2s + calls + new enrollments all active |
+| Steady state (Day 28+) | ~50-70 tasks/day (new T1s + follow-ups for prior batches) |
+
+**Priority order when task load is high:**
+1. T2 email drafts (Day 5 from T1) — highest leverage, highest reply probability window
+2. New T1 batch drafts — keeps pipeline full
+3. LinkedIn connection requests (Day 10) — quick, minimal drafting
+4. Call alerts to Rob (Days 15/21/28) — Claude flags, Rob executes
+5. Breakup emails (Day 35) — draft and queue
+
+If daily task volume feels overwhelming: reduce new T1 batch to 25-30/day temporarily until follow-up clears. Do not skip follow-up tasks — they are where meetings get booked.
+
+---
+
+## Part 21: Batch Naming Convention
+
+All TAM Outbound batch files use this naming system going forward:
+
+| Type | Format | Example |
+|------|--------|---------|
+| Daily batch tracker | `tamob-batch-YYYYMMDD-N.html` | `tamob-batch-20260311-1.html` |
+| Legacy Wave 1 tracker | `wave1-batch1-tracker-mar10.html` | (existing file — do not rename) |
+| Daily draft file (if separate) | `tamob-drafts-YYYYMMDD.md` | `tamob-drafts-20260311.md` |
+
+N = batch number within the same day (usually 1; split into 2 if session breaks mid-batch).
+
+**Git commit message format for batch commits:**
+```
+TAM batch [YYYYMMDD]-[N]: [N] contacts across [N] accounts enrolled
+
+- Accounts: [Company A, Company B, ...]
+- Dedup removed: [N]
+- Enrolled: [N] / [total batch size]
+- Next batch: [date]
+```
+
+---
+
+*Version 2.0 — Updated Mar 10, 2026 — 50/day rolling cadence added*
+*Next review: After first 250 contacts enrolled (est. 5 days at 50/day)*
