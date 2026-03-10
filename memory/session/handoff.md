@@ -97,16 +97,29 @@ Last audit: Not completed this session. Need to check:
 
 ---
 
-## LAST SESSION WORK (Mar 10 — TAM Outbound SOP Build + Wave 1 Prep)
+## LAST SESSION WORK (Mar 10 — TAM SOP v2 + YouTube Prospecting)
 
 **Session 3 (TAM Sequence Build):**
 1. Built TAM Outbound - Rob Gorham sequence in Apollo (ID: 69afff8dc8897c0019b78c7e) — 7 steps, all manual, 35-day cadence
 2. Updated apollo-config.md with full step IDs
 
 **Session 4 (TAM SOP Build + Wave 1 Prep):**
-1. **Created `memory/sop-tam-outbound.md`** — 17-part end-to-end TAM outbound SOP covering: wave architecture, account selection, contact ID, dedup, A+ research, T1 decision tree, enterprise email formula, T2/breakup rules, batch tracker, Apollo enrollment, follow-up loop, Wave 1 state, proof point matching
+1. **Created `memory/sop-tam-outbound.md`** — 17-part end-to-end TAM outbound SOP
 2. **Updated `memory/sop-outreach.md`** — enterprise email T1 formula + 7-step A+ research protocol (TASK-012 complete)
-3. **Corrected `wave1-prospecting-plan-mar9.html`** — all "LinkedIn Outbound Q1" refs changed to "TAM Outbound - Rob Gorham"; same-company max lifted for Fidelity backup contacts
+3. **Corrected `wave1-prospecting-plan-mar9.html`** — sequence name fixed to "TAM Outbound - Rob Gorham"
+
+**Session 5 (TAM SOP v2 + YouTube + Email System):**
+1. **TAM-Outbound-SOP-draft-v1.html → Updated to Draft v2** — 4 major changes:
+   - T1 confirmed email-only. Old InMail drafts deprecated.
+   - New unified T2 formula designed from scratch (email-first, no LinkedIn callback)
+   - TruStage confirmed CLEAN (Apollo: emailer_campaign_ids: [], last_activity_date: null)
+   - YouTube contact shortlist built: John Harding (VP Eng, YouTube Music & Premium) identified as primary
+2. **YouTube Apollo search** — 19 Director+/VP contacts found. 5 have verified emails:
+   - **John Harding** — VP Eng YouTube Music & Premium — jharding@youtube.com ✅ — PRIMARY (Apollo contact ID: 685908e0ad153600113e33a1)
+   - Hrishikesh Aradhye — Sr Dir, Music & Podcasts — hrishi@google.com ✅ — Secondary
+   - Des Keane — Engineering Director, Video Infrastructure — des@google.com ✅ — Strong fit
+   - Nils Krahnstoever — Director, YouTube — nilsk@google.com ✅ — General
+3. **TruStage confirmed clean** — All contacts show emailer_campaign_ids: [], last_activity_date: null. Rob's belief (Shakeel's AE activity) confirmed.
 
 ---
 
@@ -117,15 +130,16 @@ Last audit: Not completed this session. Need to check:
 
 **Next step (TASK-014):** Wave 1 T1 sends — 4 accounts ready. Rob gives APPROVE SEND, sends via Sales Nav, then enrolls in TAM Outbound. Details in work-queue.md TASK-014.
 
-**Wave 1 T1 send order:**
-1. Rick Brandt — Cboe (rbrandt@cboe.com ✓) — CLEAR
-2. Seth Drummond — Fidelity (seth.drummond@fidelity.com ✓) — CLEAR
-3. Rose Serao — Chase (rose.serao@chase.com ⚠ extrapolated) — VERIFY EMAIL FIRST
-4. Brahmaiah Vallabhaneni — Commvault (bvallabhaneni@commvault.com ✓) — CLEAR
-5. Chamath Guneratne — TruStage (HOLD — confirm prior outreach = Shakeel's AE activity)
-6. YouTube — BLOCKED (need US Director+ contact via Sales Nav search)
+**Wave 1 account status (updated Mar 10):**
+- Cboe: Rick Brandt (rbrandt@cboe.com ✓) — CLEAR. Needs fresh T1 email draft (old InMail deprecated).
+- Fidelity: Seth Drummond (seth.drummond@fidelity.com ✓) — CLEAR. Needs fresh T1 email draft.
+- Chase: Rose Serao (rose.serao@chase.com ⚠ extrapolated) — VERIFY EMAIL FIRST. Needs fresh T1 email draft.
+- Commvault: Brahmaiah Vallabhaneni (bvallabhaneni@commvault.com ✓) — CLEAR. Needs fresh T1 email draft.
+- TruStage: Chamath Guneratne — ✅ CONFIRMED CLEAN Mar 10. Apollo: emailer_campaign_ids: [], last_activity_date: null. Ready to prospect.
+- YouTube: ✅ PRIMARY CONTACT IDENTIFIED — John Harding, VP Eng YouTube Music & Premium, jharding@youtube.com (verified, catch-all), SF CA. Apollo contact ID: 685908e0ad153600113e33a1. Ready to draft T1.
 
-**All 4 clear-to-send drafts:** `wave1-prospecting-plan-mar9.html` (corrected Mar 10)
+**⚠️ IMPORTANT:** Old wave1-prospecting-plan-mar9.html InMail drafts are DEPRECATED. Do NOT use. Start fresh for all 6 accounts.
+**Next step:** Build fresh T1 email drafts for all 6 Wave 1 accounts. Reference TAM-Outbound-SOP-draft-v2 for the email system.
 
 ---
 

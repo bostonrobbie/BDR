@@ -77,6 +77,12 @@ Before adding any account to a batch:
 5. Senior SDET / Automation Lead (influencer — secondary touch, not primary T1)
 6. VP Engineering / CTO (buyer-intent accounts only)
 
+### Enterprise Persona Rule — Company Size Changes the Target Level (Updated Mar 10)
+- Mid-size enterprise (<2,000 employees): QA Manager / Director is primary target
+- Large enterprise (2,000–20,000 employees): Director or above preferred
+- Mega-enterprise (20,000+ employees — Google, YouTube, Fidelity, Chase, etc.): VP-level required. At this scale, Directors are often too many layers from budget authority. Go as high as the verified email will allow.
+- Rule of thumb: bigger company = higher up the org chart for initial T1
+
 ### Finding Contacts
 
 **Step 1 — Apollo People Search**
@@ -171,20 +177,11 @@ If any are missing: do more research. Do not draft from title + company alone.
 
 ---
 
-## Part 6: T1 Draft Decision Tree
+## Part 6: T1 — Email Only (Updated Mar 10)
 
-```
-Does the account have Tier A Factor signals (Demo or Signup)?
-├── YES → Use InMail T1 (Sales Nav) if InMail credits available
-│         → 80-120 words, SMYKM or problem-framed subject
-│         → After send: enroll in TAM Outbound, SKIP Step 1 (already done)
-└── NO → Use Email T1 via TAM Outbound Step 1
-          → 75-100 words, enterprise email formula (see below)
-          → Enroll in TAM Outbound, Step 1 email is the T1
+**CONFIRMED: T1 is email only for TAM Outbound.** Old InMail T1 decision tree is deprecated.
 
-InMail credits = 0?
-└── Force email for ALL T1s, regardless of signal tier
-```
+Step 1 of the TAM Outbound sequence is always an email sent via Apollo (robert.gorham@testsigma.com). Old Wave 1 InMail drafts (wave1-prospecting-plan-mar9.html) are deprecated and deleted. Start fresh prospecting for all accounts.
 
 ### Enterprise Email T1 Formula
 
@@ -226,18 +223,25 @@ Testsigma
 
 ---
 
-## Part 7: T2 Draft Rules
+## Part 7: T2 Draft Rules (Unified Email-First Formula — Updated Mar 10)
 
 T2 sends on Day 5 from T1. Via Apollo TAM Outbound Step 2 (manual email task).
 
+**Unified T2 Formula (4 parts, 50-70 words) — Designed from scratch for email-first sequences:**
+
+1. **Bridge** (1 sentence): Light reference to T1 without "following up" or "circling back." Use: "One more angle from my last note." or "Different lens on the same problem." or "Thought this was worth adding."
+2. **New trigger/observation** (1 sentence): Completely different angle from T1. If T1 = maintenance/self-healing, T2 = test creation speed or coverage gaps. If T1 = speed, T2 = maintenance.
+3. **New proof point** (1-2 sentences): Different customer story from T1. Tie back to the new angle.
+4. **Engagement question CTA** (1 sentence): NOT "what day works" — ask a qualifying question that lets them confirm their own pain. Examples: "Is test creation time or maintenance more of the pain point right now?" / "Are you mostly Selenium-based, or have you moved to something newer?"
+
 **Rules:**
-- 40-70 words
+- 50-70 words
+- NO "following up" / "circling back" — use bridge language above
+- NO LinkedIn callback (this is email-first)
 - NEW angle — different from T1 theme
 - NEW proof point — do not repeat T1's customer story
-- Light reference to T1: "Circling back quick..." or "Different angle from my last note..."
-- CTA options: engagement question OR lighter "what day works" ask
-- Subject: keep short (4-5 words), can reference their name or company
-- Follow sop-email.md Variant A formula for full structure
+- CTA = engagement question, NOT "what day works" (save meeting ask for breakup)
+- No em dashes
 
 **Proof point rotation (T1 → T2):**
 - T1: Hansard (regression 8→5 weeks) → T2: CRED (90% coverage, 5x faster) or MediBuddy (50% maintenance cut)

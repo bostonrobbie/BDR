@@ -236,31 +236,47 @@ Built full end-to-end SOP covering:
 
 ---
 
-### TASK-014: Execute Wave 1 T1 Sends (4 accounts)
-**Status:** UNCLAIMED — awaiting Rob's APPROVE SEND
-**Priority:** P0 — drafts ready, accounts confirmed
-**Effort:** Rob sends via Sales Nav (~20 min)
-**Output:** 4 InMail sends, log to MASTER_SENT_LIST, enroll in TAM Outbound
+### TASK-014: Draft Wave 1 T1 Email Drafts — Fresh Start (6 accounts)
+**Status:** UNCLAIMED — awaiting next session. Rob must give APPROVE SEND before anything sends.
+**Priority:** P0 — ready to build
+**Effort:** ~120 min (research + draft for 6 accounts)
+**Output:** Wave 1 batch tracker HTML with T1 + T2 drafts for all 6 accounts
 
-**T1 drafts ready in:** `wave1-prospecting-plan-mar9.html` (updated Mar 10 — sequence references corrected)
+**IMPORTANT:** Old wave1-prospecting-plan-mar9.html drafts are DEPRECATED. InMail drafts deleted. Start fresh email T1 drafts for all accounts.
 
-Accounts ready:
-1. Rick Brandt — Cboe Global Markets (rbrandt@cboe.com ✓) — 104w, MQS 10/12
-2. Seth Drummond — Fidelity (seth.drummond@fidelity.com ✓) — 101w, MQS 10/12
-3. Rose Serao — JPMorgan Chase (rose.serao@chase.com ⚠ extrapolated) — 105w, MQS 10/12
-4. Brahmaiah Vallabhaneni — Commvault (bvallabhaneni@commvault.com ✓) — 109w, MQS 9/12
+Accounts ready to draft (email T1 via TAM Outbound Step 1):
+1. Rick Brandt — Cboe Global Markets (rbrandt@cboe.com ✓) — needs fresh email T1
+2. Seth Drummond — Fidelity (seth.drummond@fidelity.com ✓) — needs fresh email T1
+3. Rose Serao — JPMorgan Chase (rose.serao@chase.com ⚠ extrapolated) — verify email first, then draft
+4. Brahmaiah Vallabhaneni — Commvault (bvallabhaneni@commvault.com ✓) — needs fresh email T1
+5. Chamath Guneratne — TruStage — ✅ CONFIRMED CLEAN Mar 10. Needs contact enrichment + fresh T1.
+6. John Harding — YouTube — VP Eng YouTube Music & Premium — jharding@youtube.com ✅ verified — Apollo ID: 685908e0ad153600113e33a1. Needs fresh T1.
 
-**Blockers to clear before sending:**
-- Rose Serao email is extrapolated — recommend testing via email (not InMail) to avoid credit spend on unverified address
-- TruStage: HOLD until Rob confirms prior outreach was Shakeel's AE activity (not Rob's)
-- YouTube: Need US-based Director+ contact via Sales Nav search
+**Formula to use:** Enterprise Email T1 (HC1 intro, SMYKM subject, 75-100 words). See TAM-Outbound-SOP-draft-v1.html Section 7 (Draft v2).
+
+**T2 formula to use:** Unified email-first formula (4 parts, 50-70 words, engagement question CTA). See SOP Section 7 / sop-tam-outbound.md Part 7.
 
 **Post-send steps (per account):**
 1. Log to MASTER_SENT_LIST.csv (B_Wave1)
-2. Enroll in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) via Apollo
-3. Skip Step 1 in Apollo (InMail was T1, already sent)
-4. Step 2 email task due Day 5 from send date
+2. Enroll in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) via Apollo — use Step 1
+3. Step 2 email task due Day 5 from send date
 
 ---
 
-*Updated by Claude — 2026-03-10 (Session 4)*
+### TASK-015: TAM SOP Review + Sign-Off
+**Status:** UNCLAIMED — Rob needs to review Draft v2
+**Priority:** P1 — read before any Wave 1 sends
+**Effort:** ~15 min (Rob reads)
+**Output:** Rob confirms SOP is approved for use
+
+Review TAM-Outbound-SOP-draft-v1.html (now Draft v2). Check:
+- Section 2 persona rule (bigger company = higher)
+- Section 7 T1 formula (HC1 intro + SMYKM)
+- Section 7 T2 formula (unified email-first)
+- Section 7 Breakup formula
+- YouTube contact shortlist (John Harding as primary)
+- Decisions Made section (4 decisions confirmed)
+
+---
+
+*Updated by Claude — 2026-03-10 (Session 5)*
