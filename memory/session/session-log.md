@@ -97,3 +97,47 @@ Append-only log. Each session adds one entry at the bottom.
 **Files to commit:** All 4 memory files above. Rob must run `git push` from terminal.
 
 ---
+
+## 2026-03-10 — Session 4: TAM Outbound SOP Build + Wave 1 Execution Prep
+
+**Session type:** SOP creation + Wave 1 readiness
+**Continued from:** Session 3 (context-limit cutoff mid-SOP design)
+
+**What was done:**
+- Read `tam-coverage-tracker.csv` (312 accounts, 38 Factor HOT, Wave 1 has 6 accounts)
+- Read `wave1-prospecting-plan-mar9.html` — found T1 InMail drafts already built for 4/6 accounts (MQS 9-10/12). Key discovery: plan referenced wrong sequence ("LinkedIn Outbound Q1" — should be "TAM Outbound - Rob Gorham")
+- **Created** `memory/sop-tam-outbound.md` — 17-part end-to-end TAM outbound SOP including wave architecture, account selection, contact identification, dedup protocol, A+ research protocol, T1 InMail vs email decision tree, enterprise email T1 formula, T2/breakup rules, batch tracker format, Apollo enrollment, follow-up loop, Wave 1 current state table, proof point vertical matching
+- **Updated** `memory/sop-outreach.md` — added enterprise email T1 formula (SMYKM + HC1 intro, 75-100 words, challenge-narrative structure) and 7-step A+ research protocol for Fortune 500/enterprise contacts (Steps 4-7: job postings, engineering blog, news scan, Glassdoor signal)
+- **Updated** `wave1-prospecting-plan-mar9.html` — corrected all "LinkedIn Outbound Q1" references to "TAM Outbound - Rob Gorham", added correction notice at top, added same-company max lifted note (Fidelity backup contacts now eligible after Seth's T1)
+- **Updated** `memory/session/work-queue.md` — TASK-012 marked DONE, TASK-013 (SOP build) marked DONE, TASK-014 (Wave 1 sends) added as new P0 task
+
+**Wave 1 status after this session:**
+| Account | Contact | Status |
+|---------|---------|--------|
+| Cboe Global Markets | Rick Brandt | ✅ Draft ready — clear to send |
+| Fidelity Investments | Seth Drummond | ✅ Draft ready — clear to send |
+| JPMorgan Chase | Rose Serao | ⚠️ Email extrapolated — verify first |
+| Commvault | Brahmaiah Vallabhaneni | ✅ Draft ready — clear to send |
+| TruStage | Chamath Guneratne | ⚠️ HOLD — confirm prior outreach = Shakeel's |
+| YouTube | US contact TBD | ❌ BLOCKED — need US Director |
+
+**Key decisions documented in SOP:**
+- TAM accounts use "TAM Outbound - Rob Gorham" sequence (NOT LinkedIn Outbound Q1)
+- No max simultaneous contacts per company — but enroll in priority order (most senior first)
+- Same-company max rule lifted — Fidelity backup contacts eligible after Seth T1 sent
+- InMail T1 approach for Tier A Factor accounts → then enroll in TAM Outbound, skip Step 1 in Apollo
+- Email T1 approach when credits = 0 → enroll in TAM Outbound, Step 1 fires the email
+- Rose Serao email is extrapolated — recommend emailing first to test deliverability (safer than spending 1 InMail credit on unverified address)
+
+**Files created/updated:**
+- `memory/sop-tam-outbound.md` ✅ CREATED
+- `memory/sop-outreach.md` ✅ UPDATED (enterprise email formula + A+ research)
+- `wave1-prospecting-plan-mar9.html` ✅ UPDATED (sequence correction)
+- `memory/session/work-queue.md` ✅ UPDATED
+- `memory/session/session-log.md` ✅ this entry
+
+**Pending for next session:** TASK-014 — Wave 1 T1 sends. Rob needs to give APPROVE SEND for the 4 ready accounts, then send via Sales Nav and enroll in TAM Outbound sequence. Two blockers (TruStage confirmation, YouTube US contact) can be resolved while sends are in flight.
+
+**Files to commit:** `sop-tam-outbound.md`, `sop-outreach.md`, `wave1-prospecting-plan-mar9.html`, all 3 session files. Rob must run `git push` from terminal.
+
+---

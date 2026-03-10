@@ -296,3 +296,111 @@ When the pre-batch dedup scan finds 2+ people from the same company, resolve aut
 - Do prioritize Architects (39.3%) and Manager/Leads (26.8%)
 - Do send at lunch 12-1 PM local (56.5%)
 - Do send on Thursdays (42.1%)
+
+---
+
+## Enterprise Email T1 Formula (TAM Outbound — Added Mar 10, 2026)
+
+Use this formula for ALL email T1 outreach to TAM enterprise accounts (sent via TAM Outbound sequence Step 1). This replaces the standard SMB email formula for enterprise named accounts.
+
+### When to Use This Formula
+- Account is in `tam-accounts-mar26.csv` or is a Factor account
+- T1 channel is email (not InMail) — either because InMail credits = 0, or account lacks a Sales Nav profile
+- Enrolled in TAM Outbound - Rob Gorham sequence (`69afff8dc8897c0019b78c7e`)
+
+### Key Differences from SMB Email T1
+| Dimension | SMB Email (Tier 1 Intent) | Enterprise Email (TAM) |
+|-----------|--------------------------|----------------------|
+| Opener | Can go straight to challenge observation | MUST use HC1 intro: "We have yet to be properly introduced..." |
+| Research depth | 1 relevant detail from LinkedIn | 3-source research required (LinkedIn + Apollo + external) |
+| Word count | 75-99 words sweet spot | 75-100 words, tighter ceiling (enterprise = time-scarce) |
+| Subject | Problem-framed or SMYKM | SMYKM preferred ("Name's QA coverage at Company") |
+| Proof point | Any matching proof point | Match to vertical exactly (see proof point table in sop-tam-outbound.md) |
+| CTA | "What day works" standard | Same, but can ask engagement question for VP+ titles |
+
+### Formula Structure
+
+**Subject line (enterprise SMYKM format):**
+- "[Name]'s QA coverage at [Company]" — person-first SMYKM
+- "[Specific platform] regression at [Company]" — platform-specific
+- "Testing [Company product/platform name]" — product-specific
+- BANNED: "Quick question", "Following up", generic problem frames like "Regression eating release time?"
+
+**Line 1 — HC1-Compliant SMYKM Intro:**
+> "We have yet to be properly introduced, but I'm Rob with Testsigma."
+
+This is NOT optional for enterprise contacts. Director+ titles at enterprise accounts expect a proper introduction. Skipping this reads as mass-produced.
+
+**Lines 2-3 — Challenge-Narrative:**
+State the specific challenge their type of org faces. Connect to something research-verified — a platform they run, a regulatory constraint in their vertical, or an org signal (e.g., "At [Company]'s scale..."). Transition to proof point.
+
+Pattern: "The challenge [type of org] hits is [specific problem]. [Customer] was dealing with the same [thing] and [outcome + Testsigma]."
+
+**Lines 4-5 — Close:**
+Standard "what day works" close, tied to proof point outcome. No open-ended questions.
+
+**Example (Fidelity — Seth Drummond):**
+```
+Subject: Seth's regression coverage at Fidelity
+
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+At Fidelity's scale, financial platform updates ripple through hundreds of test cases. Most QA leaders at large institutions say test maintenance limits coverage growth more than headcount.
+
+Hansard cut their regression cycle from 8 to 5 weeks with our AI self-healing. Tests fix themselves when the UI changes.
+
+If cutting that overhead would help your team, what day works for a quick look at how they did it?
+
+Rob Gorham
+Testsigma
+```
+
+---
+
+## A+ Research Protocol (Enterprise / TAM Accounts — Added Mar 10, 2026)
+
+Standard research (3 sources) applies to all accounts. For Fortune 500 and named enterprise TAM accounts, add these additional research layers before drafting.
+
+### A+ Research Steps (run before drafting T1 for any Director+ contact at a named TAM account)
+
+**Step 4: Job Postings Scan**
+Search LinkedIn Jobs or Greenhouse for `[Company] QA` or `[Company] SDET` or `[Company] test automation`.
+What to look for:
+- Open QA automation engineer roles = team scaling, current tooling likely stressed
+- "Selenium/Cypress" in job req = maintaining legacy framework = self-healing pitch angle
+- "We're rebuilding our test infrastructure" in job desc = migration angle
+- "Join a team of X automation engineers" = team size = scale of pain
+
+**Step 5: Engineering Content Scan**
+Search: `[Company] engineering blog` / `[Company] tech blog` / `site:medium.com/[company]`
+What to look for:
+- Blog posts about CI/CD, test flakiness, or release velocity = confirmed pain
+- "We switched from X to Y" = migration in progress = change is happening
+- Post by your actual prospect = gold (you can reference their own words as a challenge observation — do NOT say "I read your post," but you can echo the challenge they described)
+
+**Step 6: Recent News Filter**
+Search: `[Company] site:techcrunch.com OR site:reuters.com OR site:businesswire.com` — last 90 days
+What to look for:
+- Product launches (new platform = new test coverage required)
+- Acquisitions (M&A = integration testing pain)
+- Platform migrations or re-platforming announcements
+- Regulatory news (new compliance = new test requirements)
+
+**Step 7: Glassdoor QA Signal (Optional but High-Value)**
+Search Glassdoor for "[Company] QA" reviews.
+What to look for:
+- "Manual testing" complaints = automation immaturity
+- "Flaky tests slow us down" = direct pain signal
+- "No good tooling" = tool evaluation in progress
+Note: Use this as context only. Do NOT reference Glassdoor in messages.
+
+### Research Quality Thresholds by Account Type
+
+| Account Type | Minimum Research Required | A+ Target |
+|---|---|---|
+| Tier B Factor (web sessions only) | 3-source standard | Steps 4-5 |
+| Tier A Factor (G2/Demo/Signup) | 3-source + Step 4 | Steps 4-6 |
+| Fortune 500 / F100 | All steps (3-7) | All 7 steps |
+| LinkedIn InMail target (1 credit) | All steps — justify the credit | All 7 steps |
+
+The research investment scales with the credit/effort cost. An InMail to a VP at Chase deserves 20 minutes of research. A web-session-only Tier B contact needs less.

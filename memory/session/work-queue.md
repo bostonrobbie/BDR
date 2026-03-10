@@ -176,7 +176,7 @@ Draft responses per reply handling SOP (Section 13 of Tier1_Intent_Sequence_SOP_
 ---
 
 ### TASK-011: Prospect Wave 1 Factor Enterprise Accounts
-**Status:** UNCLAIMED
+**Status:** IN PROGRESS (Mar 10 — SOP built, drafts ready, awaiting APPROVE SEND)
 **Priority:** P1 — sequence is ready, accounts are identified
 **Effort:** ~90 min
 **Output:** Batch tracker file for Wave 1 TAM prospects
@@ -201,15 +201,66 @@ Rules:
 ---
 
 ### TASK-012: Revise sop-outreach.md — Enterprise Email-Only T1 Formula
-**Status:** UNCLAIMED
+**Status:** DONE (Mar 10)
 **Priority:** P2 — needed before Wave 1 T1 drafts are written
 **Effort:** ~30 min
-**Output:** New section in `memory/sop-outreach.md`
+**Output:** New section in `memory/sop-outreach.md` ✅ ADDED
 
-Add:
-- Enterprise email-only T1 formula (for TAM named accounts without InMail credits)
-- A+ research protocol (what to find before writing to a Fortune 500/enterprise contact)
+Added:
+- Enterprise email-only T1 formula (HC1 intro, SMYKM subject, challenge-narrative structure, word limit 75-100)
+- A+ research protocol (7-step research process for Fortune 500/enterprise contacts — job postings, engineering blog, recent news, Glassdoor signal)
+- Research quality thresholds by account type
 
 ---
 
-*Updated by Claude — 2026-03-10 (Session 3)*
+### TASK-013: Build TAM Outbound SOP / Skill
+**Status:** DONE (Mar 10)
+**Priority:** P1 — needed for Wave 1 execution and all future TAM waves
+**Effort:** ~90 min
+**Output:** `memory/sop-tam-outbound.md` ✅ CREATED
+
+Built full end-to-end SOP covering:
+- Wave architecture (Factor Wave 1 → Non-Factor Wave 2+)
+- Account selection from tam-coverage-tracker.csv
+- Contact identification via Apollo + Sales Nav
+- Dedup protocol (MASTER_SENT_LIST + DNC + Apollo + Gmail)
+- A+ research protocol (17 parts total)
+- T1 decision tree (InMail vs. email)
+- Enterprise email T1 formula
+- T2 + breakup email rules
+- Batch tracker format
+- Apollo enrollment (TAM Outbound sequence)
+- Follow-up loop
+- Wave 1 current state (4/6 ready to send, 2 flagged)
+- Proof point vertical matching table
+
+---
+
+### TASK-014: Execute Wave 1 T1 Sends (4 accounts)
+**Status:** UNCLAIMED — awaiting Rob's APPROVE SEND
+**Priority:** P0 — drafts ready, accounts confirmed
+**Effort:** Rob sends via Sales Nav (~20 min)
+**Output:** 4 InMail sends, log to MASTER_SENT_LIST, enroll in TAM Outbound
+
+**T1 drafts ready in:** `wave1-prospecting-plan-mar9.html` (updated Mar 10 — sequence references corrected)
+
+Accounts ready:
+1. Rick Brandt — Cboe Global Markets (rbrandt@cboe.com ✓) — 104w, MQS 10/12
+2. Seth Drummond — Fidelity (seth.drummond@fidelity.com ✓) — 101w, MQS 10/12
+3. Rose Serao — JPMorgan Chase (rose.serao@chase.com ⚠ extrapolated) — 105w, MQS 10/12
+4. Brahmaiah Vallabhaneni — Commvault (bvallabhaneni@commvault.com ✓) — 109w, MQS 9/12
+
+**Blockers to clear before sending:**
+- Rose Serao email is extrapolated — recommend testing via email (not InMail) to avoid credit spend on unverified address
+- TruStage: HOLD until Rob confirms prior outreach was Shakeel's AE activity (not Rob's)
+- YouTube: Need US-based Director+ contact via Sales Nav search
+
+**Post-send steps (per account):**
+1. Log to MASTER_SENT_LIST.csv (B_Wave1)
+2. Enroll in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) via Apollo
+3. Skip Step 1 in Apollo (InMail was T1, already sent)
+4. Step 2 email task due Day 5 from send date
+
+---
+
+*Updated by Claude — 2026-03-10 (Session 4)*

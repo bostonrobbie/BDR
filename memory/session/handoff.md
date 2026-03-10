@@ -97,14 +97,16 @@ Last audit: Not completed this session. Need to check:
 
 ---
 
-## LAST SESSION WORK (Mar 10 — TAM Outbound Sequence Build)
+## LAST SESSION WORK (Mar 10 — TAM Outbound SOP Build + Wave 1 Prep)
 
-1. **Built TAM Outbound - Rob Gorham sequence in Apollo** (ID: 69afff8dc8897c0019b78c7e)
-   - 7 steps, all manual, correct day spacing (1/5/10/15/21/28/35)
-   - Steps: email → email → LinkedIn connect → call → call → call → breakup email
-   - Used direct API (POST /api/v1/emailer_steps, PUT for corrections) — UI had React state issues
-   - Updated `memory/apollo-config.md` with full step IDs and details
-2. **Context carry-over:** Session continued from prior context-limit cutoff (browser reconnection, sequence creation mid-flight)
+**Session 3 (TAM Sequence Build):**
+1. Built TAM Outbound - Rob Gorham sequence in Apollo (ID: 69afff8dc8897c0019b78c7e) — 7 steps, all manual, 35-day cadence
+2. Updated apollo-config.md with full step IDs
+
+**Session 4 (TAM SOP Build + Wave 1 Prep):**
+1. **Created `memory/sop-tam-outbound.md`** — 17-part end-to-end TAM outbound SOP covering: wave architecture, account selection, contact ID, dedup, A+ research, T1 decision tree, enterprise email formula, T2/breakup rules, batch tracker, Apollo enrollment, follow-up loop, Wave 1 state, proof point matching
+2. **Updated `memory/sop-outreach.md`** — enterprise email T1 formula + 7-step A+ research protocol (TASK-012 complete)
+3. **Corrected `wave1-prospecting-plan-mar9.html`** — all "LinkedIn Outbound Q1" refs changed to "TAM Outbound - Rob Gorham"; same-company max lifted for Fidelity backup contacts
 
 ---
 
@@ -113,7 +115,17 @@ Last audit: Not completed this session. Need to check:
 |----------|-----|--------|
 | TAM Outbound - Rob Gorham | 69afff8dc8897c0019b78c7e | ✅ Built. 0 enrolled. Ready for Wave 1 prospects. |
 
-**Next step:** Prospect Wave 1 Factor enterprise accounts (Chase, Cboe, Commvault, TruStage) and enroll via TAM Outbound sequence using robert.gorham@testsigma.com.
+**Next step (TASK-014):** Wave 1 T1 sends — 4 accounts ready. Rob gives APPROVE SEND, sends via Sales Nav, then enrolls in TAM Outbound. Details in work-queue.md TASK-014.
+
+**Wave 1 T1 send order:**
+1. Rick Brandt — Cboe (rbrandt@cboe.com ✓) — CLEAR
+2. Seth Drummond — Fidelity (seth.drummond@fidelity.com ✓) — CLEAR
+3. Rose Serao — Chase (rose.serao@chase.com ⚠ extrapolated) — VERIFY EMAIL FIRST
+4. Brahmaiah Vallabhaneni — Commvault (bvallabhaneni@commvault.com ✓) — CLEAR
+5. Chamath Guneratne — TruStage (HOLD — confirm prior outreach = Shakeel's AE activity)
+6. YouTube — BLOCKED (need US Director+ contact via Sales Nav search)
+
+**All 4 clear-to-send drafts:** `wave1-prospecting-plan-mar9.html` (corrected Mar 10)
 
 ---
 
