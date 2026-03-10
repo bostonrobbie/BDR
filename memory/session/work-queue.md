@@ -10,11 +10,13 @@
 ## Active Tasks
 
 ### TASK-012 | TAM prospecting — Wave 1 Factor accounts
-**Status:** PENDING
+**Status:** IN_PROGRESS (Cowork-10, Mar 9)
 **Priority:** HIGH
 **Due:** This week (Mar 9+)
-**Description:** Begin systematic prospecting into Factor account Wave 1. All 6 accounts need contacts sourced, enriched via Apollo, added to LinkedIn Outbound Q1 sequence. Verify TruStage prior outreach before including.
-**Wave 1 accounts:** Chase, Cboe Global Markets, Commvault, Fidelity Investments, YouTube, TruStage (check first)
+**Description:** Prospecting plan built. T1 InMail drafts ready for 4 of 6 accounts. 2 blockers remain (TruStage prior outreach confirmation, YouTube US contact needed). Rob reviews HTML and sends via Sales Nav.
+**Wave 1 accounts:** Chase ✅, Cboe ✅, Commvault ✅, Fidelity ✅, TruStage ⚠️ (HOLD — confirm prior outreach), YouTube ❌ (no US contact)
+**Deliverable:** `/Work/wave1-prospecting-plan-mar9.html` — full T1 drafts, QA gate, send order checklist, credit tracker
+**Next step:** Rob confirms TruStage + finds YouTube US contact via Sales Nav, then APPROVE SEND to proceed
 **Files:** `memory/target-accounts.md` (Wave 1 section), `tam-coverage-tracker.html`, `memory/sop-send.md`
 
 ---

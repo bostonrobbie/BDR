@@ -9,12 +9,37 @@
 ## Last Session
 
 **Date:** 2026-03-09
-**Agent:** Cowork-9 (Mar 9 — TAM coverage tracker + new prospecting rule)
-**Session title:** Cross-referenced TAM list against MASTER_SENT_LIST; built full TAM coverage tracker (HTML + CSV); codified new prospecting rule.
+**Agent:** Cowork-10 (Mar 9 — Wave 1 Factor account prospecting plan)
+**Session title:** Researched and built full Wave 1 Factor account prospecting plan — Apollo Director+ enrichment for all 6 accounts, 6 T1 InMail drafts written, HTML tracker delivered at `/Work/wave1-prospecting-plan-mar9.html`.
 
 ---
 
 ## What Was Done This Session
+
+### Cowork-10 (Mar 9 — Wave 1 Factor account prospecting plan)
+
+1. **Researched all 6 Wave 1 Factor accounts** using Apollo Director+ enrichment (`person_seniorities: director/vp/c_suite`) + bulk match for contact details. Proof points matched per vertical.
+
+2. **Built Wave 1 prospecting plan HTML** (`/Work/wave1-prospecting-plan-mar9.html`):
+   - Priority matrix table (all 6 accounts ranked by signal freshness + readiness)
+   - Per-account tabs: Nektar signal context, company research angles, primary contact card, T1 InMail draft + copy button, QA gate checklist
+   - Send order tab with pre-send checklist, credit budget tracker, Apollo enrollment instructions, MASTER_SENT_LIST entry templates
+   - ⚠️ 2 action flags surfaced (see Blockers)
+
+3. **Contacts enriched and finalized:**
+   - Cboe → Rick Brandt, Sr. Director QA, rbrandt@cboe.com (verified) ✅
+   - Fidelity → Seth Drummond, VP QA, seth.drummond@fidelity.com (verified) ✅
+   - Chase → Rose Serao, VP QA Manager, rose.serao@chase.com (extrapolated) ⚠️
+   - Commvault → Brahmaiah Vallabhaneni, VP Engineering, bvallabhaneni@commvault.com (verified) ✅
+   - TruStage → Chamath Guneratne, IT Director QE, chamath.guneratne@trustage.com (verified, HOLD) ⚠️
+   - YouTube → No US contact found. Ramona Bobohalma is Zürich-based (disqualified). Need Sales Nav search. ❌
+
+4. **T1 InMail drafts written for all 6 accounts** — All pass QA gate (10/12 MQS, 2 question marks, "what day works" close, no em dashes, under 120 words, reduction framing, proof point in close).
+
+5. **Key findings:**
+   - TruStage prior outreach investigation: All 3 Apollo contacts have zero campaign activity — prior outreach was Shakeel's (AE), not Rob's. Waiting on Rob confirmation before sending.
+   - YouTube email gap: Google employees rarely expose emails in Apollo. Most YouTube contacts lack emails. Only verified email found (Bobohalma) is non-US.
+   - Credit budget: 4 credits available, 6 accounts need T1 → prioritize Cboe/Fidelity/Chase/Commvault first, then replenish or reassess.
 
 ### Cowork-9 (Mar 9 — TAM coverage tracker)
 
@@ -106,7 +131,7 @@
 
 ## Top 3 Priorities for Next Agent
 
-1. **[NEW] Start prospecting into HIGH-priority Factor accounts** — 16 HIGH-fit accounts now documented in `memory/target-accounts.md`. Recommended first targets: Chase, HashiCorp, GEICO, Checkr Inc., Commvault, Electronic Arts, Fidelity Investments, TruStage. For each: (1) check MASTER_SENT_LIST for prior contact, (2) search Apollo for QA/SDET leads, (3) build batch per normal ICP rules. Skip ACCELQ until Rob confirms.
+1. **[READY TO SEND] Wave 1 Factor accounts — T1 InMails** — HTML plan built at `/Work/wave1-prospecting-plan-mar9.html`. Rob reviews, then sends via Sales Nav. Send order: Cboe → Fidelity → Chase → Commvault. Hold TruStage until prior outreach confirmed. Hold YouTube until US contact identified. Enroll each in LinkedIn Outbound Q1 immediately after T1 send. 4 credits cover the first 4 accounts.
 
 2. **[URGENT] Complete TASK-009 — 25 WV Mar 3 Touch 2 emails** — 12 email addresses still missing. Collect from Apollo (people-match by name + domain), draft all 25 using EM-FU-1 formula (max 70 words, "Re: Quick question, [First Name]" subject, different proof point from T1, "what day works" CTA). Present ALL to Rob before sending. NEVER SEND without "APPROVE SEND."
    - Note: TASK-009 uses the OLD EM-FU-1 template — NOT the Variant A formula. Variant A = LinkedIn sequence T2s only.
