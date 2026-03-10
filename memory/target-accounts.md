@@ -14,7 +14,7 @@ All Factor accounts are a subset of the TAM (37 of 38 appear in TAM CSV; PGA of 
 | Status | Count |
 |--------|-------|
 | 🎯 HOT Factor (ready to work) | 33 |
-| ⚠️ Factor — Check Prior Outreach First | 2 (TruStage, Tailored Brands) |
+| ⚠️ Factor — Check Prior Outreach First | 1 (Tailored Brands only — TruStage confirmed clear Mar 9) |
 | 🔥 Warm Lead (active) | 1 (OverDrive) |
 | ✅ Untouched TAM (clean to prospect) | 259 |
 | ⛔ Skip (DNC / Competitor) | 2 (Kapitus, ACCELQ) |
@@ -102,13 +102,126 @@ Rob has three distinct account lists assigned by Testsigma leadership, all store
 
 | Account | Flag | What to Do |
 |---------|------|-----------|
-| **TruStage** | "Outbound Engagement Completed 11" — 11 prior outreach touches tracked | Check SF/Apollo contact history. Who sent these (Rob? Shakeel? Another BDR)? If Shakeel's, may be OK to re-engage fresh. If Rob's, must wait for cooling period. |
-| **Tailored Brands, Inc.** | "Outbound Engagement Completed 7" — 7 prior outreach touches tracked | Same check required. ICP fit is Low (Apparel), so deprioritize anyway. |
+| **TruStage** | ✅ **CONFIRMED CLEAR (Mar 9, 2026)** — 11 prior outreach signals confirmed as Shakeel's (former AE, departed). Apollo audit: all 3 TruStage contacts have zero Rob campaign activity (`emailer_campaign_ids: []`, `last_activity_date: null`). Clear to prospect. | Contact Chamath Guneratne. See Wave 1 contact roster below. |
+| **Tailored Brands, Inc.** | "Outbound Engagement Completed 7" — 7 prior outreach touches tracked. ICP fit Low (Apparel). | Likely Shakeel's (same pattern). Deprioritize — Low ICP. Check Apollo contacts if needed. |
 | **ACCELQ** | Competitor — G2 Event x19 = they are intensively monitoring Testsigma on G2 | Do NOT reach out without checking with leadership/AE first. |
 
 ---
 
-### Recommended Outreach Sequence (Factor Accounts)
+### Enriched Contact Roster — Factor Accounts (Director+ only)
+
+> **PURPOSE:** Permanent lookup table. Any session can read this to know exactly who to reach out to without re-running Apollo. Updated as contacts are researched. Always cross-check MASTER_SENT_LIST before sending.
+>
+> **Email status key:** ✅ Verified (Apollo confirmed) · ⚠️ Extrapolated (domain-pattern, not confirmed) · ❌ Old domain / likely stale
+>
+> **Outreach status:** 🟡 Drafted · ✅ Sent · ⛔ DNC · ⏸ On Hold
+
+---
+
+#### Wave 1 — Enriched Mar 9, 2026
+
+**Cboe Global Markets** (Finance, HIGH ICP, Jan 2026 — Demo x2 + Signup x2)
+
+| Name | Title | Email | Email Status | Priority | Outreach Status |
+|------|-------|-------|-------------|----------|-----------------|
+| Rick Brandt | Senior Director, Quality Assurance Engineering | rbrandt@cboe.com | ✅ Verified | PRIMARY | 🟡 T1 Drafted |
+
+---
+
+**Fidelity Investments** (Finance, HIGH ICP, Aug 2025 — G2 + Use-case page)
+
+| Name | Title | Email | Email Status | Priority | Outreach Status |
+|------|-------|-------|-------------|----------|-----------------|
+| Seth Drummond | Vice President, Quality Assurance | seth.drummond@fidelity.com | ✅ Verified | PRIMARY | 🟡 T1 Drafted |
+| Nithya Arunkumar | Director, Quality Assurance | n.arunkumar@fidelity.com | ✅ Verified | Backup — defer, same-company rule | ⏸ Hold |
+| Chris Pendergast | Director, Quality Assurance | chris.pendergast@fidelity.com | ✅ Verified | Backup — defer, same-company rule | ⏸ Hold |
+
+---
+
+**JPMorgan Chase** (Finance, HIGH ICP, Oct 2025 — Pricing + Signup x2 + Use-case x3 + web x7)
+
+| Name | Title | Email | Email Status | Priority | Outreach Status |
+|------|-------|-------|-------------|----------|-----------------|
+| Rose Serao | Vice President, Quality Assurance Manager | rose.serao@chase.com | ⚠️ Extrapolated | PRIMARY | 🟡 T1 Drafted |
+| Neeraj Tati | Director, Software Engineering | neeraj.tati@chase.com | ✅ Verified | Secondary (Engineering title, not QA) | ⏸ Hold |
+
+> DNC note: Jitesh Biswal (DNC) is at @jpmorgan.com — different domain from @chase.com. No conflict.
+
+---
+
+**Commvault** (Technology, HIGH ICP, Jun 2025 — G2 + Signup x2 + web x6)
+
+| Name | Title | Email | Email Status | Priority | Outreach Status |
+|------|-------|-------|-------------|----------|-----------------|
+| Brahmaiah Vallabhaneni | Vice President of Engineering | bvallabhaneni@commvault.com | ✅ Verified | PRIMARY | 🟡 T1 Drafted |
+| Jennifer Wang | Director of Engineering | jenniferwang@commvault.com | ✅ Verified | Backup — defer, same-company rule | ⏸ Hold |
+
+---
+
+**TruStage** (Finance/Insurance, HIGH ICP, Feb 3 2026 — Demo x1 + Outbound x11)
+
+> ✅ **CONFIRMED CLEAR Mar 9, 2026** — Shakeel (former AE, departed) sent the 11 prior outreach signals. Apollo shows zero Rob campaign activity. Clear to prospect.
+
+| Name | Title | Email | Email Status | Priority | Outreach Status |
+|------|-------|-------|-------------|----------|-----------------|
+| Chamath Guneratne | IT Director, Quality Engineering | chamath.guneratne@trustage.com | ✅ Verified | PRIMARY | 🟡 T1 Drafted |
+| Maggie Redden | Director, Software Engineering | maggie.redden@cunamutual.com | ❌ Old domain (@cunamutual.com = former brand name). Try maggie.redden@trustage.com (unverified) | Secondary | ⏸ Hold |
+| Amanda Hambly | QA Manager | (no email found) | — | Below-Director — skip | ⏸ Hold |
+
+---
+
+**YouTube / Google** (Technology, HIGH ICP, Sep 2025 — Signup + alt page + web x4)
+
+| Name | Title | Email | Email Status | Priority | Outreach Status |
+|------|-------|-------|-------------|----------|-----------------|
+| Ramona Bobohalma | Director of Engineering | bobohalma@youtube.com | ✅ Verified but DISQUALIFIED — Zürich, Switzerland. Non-US fails ICP criterion. | DO NOT CONTACT | ❌ Disqualified (non-US) |
+| **TBD — US contact needed** | Director+ QA or Engineering | — | — | PRIMARY — find via Sales Nav | ❌ No contact yet |
+
+> **Next action for YouTube:** Run Sales Nav search for YouTube/Google employees with Director+ title + United States location filter. Will cost 1 InMail credit. T1 draft is ready (see wave1-prospecting-plan-mar9.html, YouTube tab).
+
+---
+
+**Proof Point Assignments (Wave 1) — for reference:**
+
+| Account | T1 Proof Point | T2 Proof Point (rotation) |
+|---------|---------------|--------------------------|
+| Cboe | Hansard: regression 8→5 weeks | CRED: 90% coverage + 5x velocity |
+| Fidelity | Hansard: regression 8→5 weeks | CRED: 90% coverage + 5x velocity |
+| Chase | Hansard: regression 8→5 weeks | CRED: 90% coverage + 5x velocity |
+| TruStage | Hansard: regression 8→5 weeks | CRED: 90% coverage + 5x velocity |
+| Commvault | Fortune 100: 3X QA productivity | Cisco: 35% regression reduction |
+| YouTube | Nagra DTV: 2,500 tests, 4X faster | Medibuddy: 50% maintenance cut |
+
+---
+
+#### Wave 2 — Not Yet Researched (contacts TBD)
+
+Accounts in Wave 2 still need Apollo Director+ search run. Priority order:
+
+| Account | Signal | Next Action |
+|---------|--------|-------------|
+| HashiCorp | B (web sessions, Aug 2025) | Apollo search: QA/SDET Director+ at hashicorp.com |
+| Datamatics | B (web sessions, Oct 2025) | Apollo search: QA Director+ at datamatics.com |
+| Successive Technologies | B (web sessions, Sep 2025) | Apollo search: QA Director+ at successive.tech |
+| Electronic Arts | B (web x4, blog x3) | Apollo search: QA Director+ at ea.com |
+| GEICO | B (web sessions, Feb 2025) | Apollo search: QA Director+ at geico.com |
+| Checkr, Inc. | B (web sessions, no date) | Apollo search: QA Director+ at checkr.com |
+| OSF HealthCare | A (Signup + web x5, Jan 2025) | Apollo search: QA Director+ at osfhealthcare.org |
+| OneMain Financial | A (G2 x4, Feb 2025) | Apollo search: QA Director+ at onemainfinancial.com |
+| Mindbody | B (web sessions, Sep 2024) | Apollo search: QA Director+ at mindbodyonline.com |
+| Cetera Financial Group | C (Nov 2025, no signals) | Apollo search: QA Director+ at cetera.com |
+
+---
+
+#### Wave 3 — Not Yet Researched (contacts TBD)
+
+| Account | Signal | Note |
+|---------|--------|------|
+| Veradigm | B (no Nektar date) | Healthcare IT — HIGH ICP |
+| Corewell Health | B (no Nektar date) | Healthcare — HIGH ICP |
+| Charlie Health | B (no Nektar date) | Healthcare — HIGH ICP |
+
+---
 
 Start with HIGH ICP + Tier A signals + most recent activity. Cross-check each against MASTER_SENT_LIST first.
 
@@ -118,7 +231,7 @@ Start with HIGH ICP + Tier A signals + most recent activity. Cross-check each ag
 3. **Commvault** — Tech/Enterprise, G2 + Signup x2 + 6 web sessions. Active Jun 2025.
 4. **Fidelity Investments** — Finance/Enterprise, G2 + Use-case page visit. Active Aug 2025.
 5. **YouTube** — Tech/Enterprise, Signup + 4 web sessions. Active Sep 2025.
-6. **TruStage** — Finance/Enterprise, Demo + recent Feb 2026 activity. ⚠️ Verify no prior Rob outreach first.
+6. **TruStage** — Finance/Enterprise, Demo + recent Feb 2026 activity. ✅ Confirmed clear Mar 9 — prior outreach was Shakeel's (former AE, departed). Contact: Chamath Guneratne, IT Director QE.
 
 **Wave 2 — Next (HIGH ICP + Tier B signals):**
 7. **HashiCorp** — Tech/Enterprise, Aug 2025.
