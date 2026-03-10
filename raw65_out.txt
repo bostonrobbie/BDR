@@ -1,0 +1,20 @@
+  -  Davor Milosevic @ IQVIA
+**T2 Proof Point:** Medibuddy (T1=Sanofi)
+**Channel Bridge:** LinkedIn InMail
+**⚠️ SEQUENCING FLAG:** T3 was sent before T2 per INC-001. Rob must decide: send as late T2, skip, or hold for re-engagement trigger.
+
+**Subject:** IQVIA testing, staying ahead of the maintenance curve?
+
+Davor,
+
+It seems like managing QA at a clinical data company means your team is always trying to scale coverage as the platform grows, while keeping the maintenance load from slowing down delivery.
+
+I reached out on LinkedIn about test upkeep for clinical platforms, but thought this was worth a separate note.
+
+One of our customers, Medibuddy, automated 2,500 tests and cut maintenance by 50%. It made me think of what your team is probably navigating at IQVIA.
+
+Is the test maintenance the bigger pressure, or is it building coverage fast enough to keep up with how quickly the platform is expanding?
+
+Rob
+
+---

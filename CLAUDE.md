@@ -228,7 +228,31 @@ If ANY of these are true, rewrite.
 Every prospect gets a 3-touch sequence across two channels: LinkedIn InMail and Email. No cold calls. All written touches follow the same writing style rules. Rob decides exact timing/spacing manually.
 
 **Day 1 - Touch 1 (LinkedIn InMail):** Full message with all 5 elements (subject, opener, context, proof point, close). 80-120 words.
-**Day 5 - Touch 2 (LinkedIn InMail Follow-up):** Shorter, 40-70 words. New angle or new proof point, NOT a rehash of Touch 1. Reference that you reached out before but keep it light ("Circling back quick..."). Add one new piece of value: a different customer story, a specific capability match, or a recent company event. End with a softer but still specific close that ties to the new proof point (e.g., "If cutting regression time in half sounds useful, what day works for a quick look?"). Follow-up closes can be lighter than Touch 1 but must still reference the proof point outcome.
+**Day 5 - Touch 2 (LinkedIn InMail Follow-up or Email):** 90-110 words. Uses the "Business Pressure" formula (see below). Opens with a specific business insight about what the company does or stands for that creates QA/release pressure — NOT a rehash of Touch 1. Acknowledges the prior LinkedIn outreach naturally mid-message ("I reached out on LinkedIn about [T1 topic], but thought this was worth a separate note."). Includes ONE proof point framed with empathy ("it reminded me of the pressure your team is probably navigating"). Closes with a specific, open-ended conversation question — NOT a "what day works" meeting pitch. Must use a DIFFERENT proof point than Touch 1.
+
+#### Touch 2 "Business Pressure" Formula (formalized Mar 9, 2026)
+
+> **[Name],**
+>
+> [Insight line about what their company does or stands for that creates QA/release pressure. Use "It seems like..." or "I imagine..." or "I'd guess..." — softened and curious, not declarative. 2 sentences max. No em dashes, use commas instead.]
+>
+> [LinkedIn bridge — one sentence: "I reached out on LinkedIn about [T1 topic], but thought this was worth a separate note."]
+>
+> [Proof point with empathy frame: "One of our customers, [Customer], was in a similar situation. [Specific outcome with numbers.] It made me think of what your team is probably navigating." — 2-3 sentences max.]
+>
+> [Specific open-ended question that invites a real conversation. Two options they can choose between, or an open question about their experience. NOT a meeting pitch. NOT "what day works."]
+>
+> Rob
+
+**Touch 2 rules:**
+- No "Circling back" — banned as opener. Start with [Name], then the insight.
+- No em dashes anywhere in the message body. Commas only.
+- Opener is an insight, not a question. It shows you understand their business model and how it connects to QA pressure.
+- Proof point framed as empathy, not data. "It reminded me of" not "Here's a stat."
+- Close is a genuine curiosity question. It invites them to confirm, correct, or describe their experience.
+- Close must NOT be "what day works" — that's reserved for Touch 1. Touch 2 opens a dialogue.
+- Each paragraph separated by a blank line. Short paragraphs, max 2-3 sentences each.
+- Length: 90-110 words. Quality over brevity at this stage.
 **Day 10 - Touch 3 (Email):** Short email (if email address is available). 60-100 words. Same rules as InMail but can be slightly more direct since email feels less intrusive. Fresh approach with a different proof point than Touches 1 and 2.
 
 **Sequence rules:**
@@ -2049,6 +2073,51 @@ This section defines the email-only outreach cadence for use in Apollo sequences
 
 ---
 
+## Apollo Task Queue — Canonical Source of Truth for Daily Work
+
+**Established: 2026-03-09.** The Apollo task queue is the authoritative source for determining what email sends are due each day. Do NOT calculate follow-up dates manually from CLAUDE.md send logs — check Apollo first.
+
+### Saved View: "Daily Email Send Queue"
+- **URL:** `https://app.apollo.io/#/tasks?taskTypeCds[]=outreach_manual_email&emailerCampaignIds[]=69a1b3564fa5fa001152eb66`
+- **Filters:** Email Contact task type + "Email Outbound - Website Visitor Tier 1" sequence
+- **Sort:** Due date ascending (most overdue first)
+- **Access:** Click "Daily Email Send Queue" tab on the Apollo Tasks page, or navigate to the URL above
+
+### What the Task Queue Shows
+Each task in the queue represents one email that needs to be sent manually. Tasks surface when a sequence step comes due for a contact. The view shows:
+- Contact name + title
+- Company
+- Source sequence (Email Outbound - Website Visitor Tier 1)
+- Due date
+- Action buttons (send email icon, skip icon)
+
+### How to Use It Each Day
+1. Navigate to the "Daily Email Send Queue" view in Apollo
+2. Read the due dates — tasks due today or earlier are the priority sends
+3. Work through tasks oldest-first (most overdue contacts first)
+4. For each task: click the email icon to open the contact, pull the C2 draft from the relevant batch tracker, and copy-paste to Gmail for Rob to send manually
+5. As emails are sent, mark tasks complete in Apollo (or they'll roll forward to the next day)
+
+### Current Task Inventory (as of Mar 9, 2026)
+| Due Date | Count | Status |
+|----------|-------|--------|
+| March 5 | 34 | OVERDUE (4 days) |
+| March 6 | 5 | OVERDUE (3 days) |
+| March 11 | 49 | Due in 2 days |
+| March 12 | 1 | Due in 3 days |
+| March 16 | 8 | Due in 7 days |
+| **Total** | **97** | |
+
+**All 97 tasks are Touch 2 follow-up emails from the "Email Outbound - Website Visitor Tier 1" sequence.**
+
+### Scope Limitation
+This saved view currently shows only the "Email Outbound - Website Visitor Tier 1" sequence. The "Q1 Priority Accounts" sequence email tasks (Touch 3, Day 10) are NOT surfacing in this view — likely because those InMail steps were sent directly through LinkedIn rather than through the Apollo sequence, so Step 3 (email) never unlocked. Those Touch 3 tasks need to be managed from the batch tracker HTML files and the Follow-Up Schedule table in CLAUDE.md until they surface in Apollo.
+
+### Updating the View
+If new sequences are added or the scope expands, update the URL by adding additional `emailerCampaignIds[]` parameters. To add Q1 Priority Accounts: append `&emailerCampaignIds[]=69a05801fdd140001d3fc014` to the URL and re-save the view.
+
+---
+
 ## "Run the Daily" — Automated Daily Outreach Workflow
 
 **Trigger phrases:** "run the daily", "daily run", "morning run", "start outreach", "run outreach"
@@ -2056,14 +2125,14 @@ This section defines the email-only outreach cadence for use in Apollo sequences
 When Rob says any trigger phrase, Claude executes the full 5-phase daily outreach workflow autonomously. No further questions needed — read the pipeline state and adapt.
 
 ### Phase 1: Intel Scan (~5 min)
-1. Read CLAUDE.md for pipeline state, DNC list, warm leads, send totals, credit count
-2. Read latest batch tracker files (all `outreach-sent-*.html` and `outreach-batch*-unsent.html`) for send dates and statuses
-3. Search Gmail for replies from prospects (filter: recent, to robert.gorham@testsigma.com addresses)
-4. Check Google Calendar for today's meetings (flag any prospect meetings for prep)
-5. Calculate follow-up queue: prospects hitting Day 5 (Touch 2 InMail due) or Day 10 (Touch 3 Email due)
+1. **CHECK APOLLO TASK QUEUE FIRST (canonical source of truth for daily sends).** Navigate to the "Daily Email Send Queue" saved view in Apollo: `https://app.apollo.io/#/tasks?taskTypeCds[]=outreach_manual_email&emailerCampaignIds[]=69a1b3564fa5fa001152eb66` — This view is filtered to Email Contact tasks from the "Email Outbound - Website Visitor Tier 1" sequence, sorted by due date ascending. Read the task list to determine what emails are due today. The Apollo task queue — NOT the Follow-Up Schedule table in CLAUDE.md — is the authoritative source for what needs to be sent. The manual schedule table is for historical reference only.
+2. Read CLAUDE.md for pipeline state, DNC list, warm leads, send totals, credit count
+3. Read latest batch tracker files (all `outreach-sent-*.html` and `outreach-batch*-unsent.html`) for send dates and statuses
+4. Search Gmail for replies from prospects (filter: recent, to robert.gorham@testsigma.com addresses)
+5. Check Google Calendar for today's meetings (flag any prospect meetings for prep)
 6. Check InMail credit budget (report remaining, flag if <10)
 7. **Gmail Draft Audit (MANDATORY, added per INC-001):** Search Gmail drafts from all testsigma.com accounts. Cross-reference each draft against batch tracker TOUCH_ELIGIBLE_DATE fields. Flag and report any: (a) orphan drafts with no tracker entry, (b) premature drafts before eligible date, (c) drafts using old C1/pre-C2 templates, (d) drafts that haven't passed QA Gate. Hold-tag or delete flagged drafts before proceeding.
-**Output:** Intel summary with reply count, follow-up queue, calendar, credit budget, draft audit results.
+**Output:** Intel summary with Apollo task queue count + breakdown by due date, reply count, calendar, credit budget, draft audit results.
 
 ### Phase 2: Reply Processing (~10-20 min)
 *Skip if zero replies found.*
@@ -2124,7 +2193,9 @@ When Rob says any trigger phrase, Claude executes the full 5-phase daily outreac
 
 ---
 
-## Follow-Up Schedule (Computed from Send Dates)
+## Follow-Up Schedule (Historical Reference — Apollo Task Queue is Canonical)
+
+**NOTE (updated 2026-03-09): The Apollo "Daily Email Send Queue" saved view is now the authoritative source for what emails are due. This table is historical reference for understanding cadence context. For actual daily send decisions, always check Apollo first.**
 
 Based on actual Touch 1 send dates and the 3-touch cadence (Day 5 = Touch 2, Day 10 = Touch 3):
 

@@ -1,0 +1,92 @@
+Total contacts loaded: 67
+Batch7 JSON keys: ['batch', 'date', 'channel', 'touch', 'apollo_label', 'apollo_label_id', 'summary', 'prospects']
+Batch7 JSON email pairs found: 28
+  Kirtiraj Sardesai -> ksardesai@dtcc.com
+  Sowmya Kandula -> sowmya.kandula@saks.com
+  Sandy Paray -> sandy.paray@saks.com
+  Drew Davis -> drew.davis@greenwayhealth.com
+  Mike Dombrowski -> mike.dombrowski@verint.com
+After batch7 JSON: 4 emails mapped
+outreach-sent-feb26-batch3.html: +2 emails (total: 6)
+outreach-sent-feb27-batch5a.html: +0 emails (total: 6)
+outreach-sent-feb27-batch5b.html: +0 emails (total: 6)
+outreach-batch6-unsent.html: +0 emails (total: 6)
+batch7-send-tracker.html: +1 emails (total: 7)
+intent-outreach-pipeline-2026-02-26.html: +0 emails (total: 7)
+outreach-sent-feb13-batch1-v2.html: +0 emails (total: 7)
+NOT FOUND: outreach-batch2-v2-unsent.html
+
+=== SEND LIST SUMMARY ===
+READY (have email): 7
+MISSING EMAIL: 58
+DNC (skip): 1
+SEQFLAG (pending Rob decision): 1
+
+MISSING EMAIL contacts:
+  #2 Jeff Barnes @ Digi International
+  #4 Jose Moreno @ Flywire
+  #5 Eyal Luxenburg @ Island
+  #6 Todd Willms @ Bynder
+  #7 Jason Ruan @ Binance
+  #10 Joe Pember @ Riverbed Technology
+  #11 Joyce Lee @ Veeva Systems
+  #13 Tom Bombara @ Extreme Networks
+  #14 Patrick Southall @ GoodRx
+  #15 Eileen Zheng @ Zelis
+  #16 Christie Howard @ LastPass
+  #17 Tim Wiseman @ Upland Software
+  #18 Marc Jarvis @ PAR Technology
+  #19 Thomas Lamontia @ CSG
+  #20 Luis Sanchez @ Drata
+  #21 Michelle Mangio @ Epic Games
+  #22 Ryan Aspleaf @ VIZIO
+  #23 Chris Bell @ Crestron Electronics
+  #24 Carlos Romero @ Dotdash Meredith
+  #25 Ken Dacey @ Discovery Education
+  #26 Andy Roth @ Teaching Strategies
+  #27 Ramya Potaraju @ Dental Intelligence
+  #28 Laura Riley @ Ampersand
+  #29 Ellie Ghodoosian @ OpSec Security
+  #30 Trent Walkup @ RedSail Technologies
+  #32 Kamal Pokharel @ Cedar Gate Technologies
+  #33 Harsha Navaratne @ Interactions LLC
+  #34 Dawn Coen @ OppFi
+  #36 Julie Bozeman @ Color Health
+  #37 Stu Naylor @ Owl Cyber Defense
+  #38 Ellen Puckett @ Invesco
+  #39 Vijaya Belthur @ Bessemer Trust
+  #40 Kimberly Salerno @ Instructure
+  #41 Shalaka Munjal @ HealthEdge
+  #42 Kia Duran @ Fleetio
+  #43 Jonathan Zarnosky @ FreedomPay
+  #44 Sneha Prabhakar @ Aria Systems
+  #45 Kai Esbensen @ Granicus
+  #47 Prashanthi Nettem @ GTreasury
+  #48 Sachin Kumbhar @ Altair
+  #49 Thong Vu @ Hitachi Vantara
+  #50 Jennifer Ades @ Hitachi Vantara
+  #51 Lakshmi Maganthi @ NetApp
+  #52 Pete Draheim @ Best Buy
+  #53 Adhiti Kannan @ IQVIA
+  #54 Anand Kumar @ Synechron
+  #55 Joshua Greig @ Verra Mobility
+  #56 Dan Knox @ G2
+  #57 Peter Seliga @ MedImpact
+  #58 Matthew Smith @ IQVIA
+  #59 Dino Gambone @ IQVIA
+  #60 Mobin Thomas @ UST
+  #61 Sergey Matetskiy @ Orion Innovation
+  #62 Rick Colonello @ NetApp
+  #63 Dena McEwan @ IQVIA
+  #64 Aline Cordier @ IQVIA Biotech
+  #66 Anthony Oluoch @ MedImpact
+  #67 Sandeep Shah @ NetApp
+
+First 10 READY contacts:
+  #1 Andy Nelsen @ Rightworks -> anelsen@rightworks.com
+  #3 Eduardo Menezes @ Fulgent Genetics -> emenezes@fulgentgenetics.com
+  #9 Hibatullah Ahmed @ SPS Commerce -> hahmed@spscommerce.com
+  #12 Amir Aly @ Procore -> amir.aly@procore.com
+  #31 Jenny Li @ ON24 -> katieb@lucid.co
+  #35 Vinayak Singh @ PURE Insurance -> shweta@micro1.ai
+  #46 Mazie Roxx @ Phreesia -> mroxx@phreesia.com
