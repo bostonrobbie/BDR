@@ -47,18 +47,23 @@ TAM outbound runs as a continuous daily pipeline. No wave gating. Batches go out
 - The Apollo task queue manages all follow-up for enrolled contacts. Claude only needs to draft new T1s daily and draft follow-up messages when Apollo tasks come due.
 
 ### What "50/day" means in practice
-50 T1 emails sent = approximately 15-20 accounts per day at ~3 contacts/account average.
+50 T1 sends = however many accounts it takes to get to 50 clean, researched contacts. That number varies:
+- Standard-targeting accounts (1-2 contacts each) → need ~25-50 accounts
+- Mixed batch (Standard + Medium) → typically 20-35 accounts
+- Medium/High-heavy batch → could be 10-15 accounts with 3-6 contacts each
+
+**Never target a number of accounts. Target 50 contacts.** Pull accounts until the contact count reaches 50.
 
 | Component | Estimated time |
 |-----------|---------------|
-| Account sourcing + dedup (15-20 accounts) | ~30 min |
-| Account research blocks (15-20 companies × 5 min) | ~75 min |
-| Contact-level LinkedIn scans (50 contacts × 2 min) | ~100 min |
-| T1 + T2 draft writing (50 × ~3-4 min with shared company context) | ~150 min |
+| Account sourcing + dedup (variable accounts until 50 contacts hit) | ~30 min |
+| Account Research Blocks (variable × 8-12 min each) | ~90-180 min |
+| Contact LinkedIn scans + angle assignment (50 × 5-8 min) | ~250-400 min |
+| ALL research complete → T1 + T2 draft writing (50 × 4-5 min) | ~200-250 min |
 | QA gate + batch summary | ~30 min |
-| **Total per session** | **~6.5 hours** |
+| **Total per session** | **~10 hours (full batch)** |
 
-In practice Claude does research + drafting; Rob reviews and sends. These can run async — Claude builds the batch, presents it, Rob approves and sends when ready.
+**In practice:** Claude does research + drafting; Rob reviews and approves. Split across two sessions if needed — research session first, drafting session second. Never draft until all 50 contacts are fully researched and the research menu is complete for every company.
 
 ---
 
@@ -175,70 +180,130 @@ If dedup clean: proceed. If any flag: document in batch tracker notes, ask Rob b
 
 ## Part 5: Research Protocol (SMYKM-Level) — At Scale
 
-**Efficiency principle at 50/day:** Research the ACCOUNT once, then research each CONTACT briefly. Company context is shared across all contacts at the same account — do not repeat it for each person.
+**Two-layer model:** Company research happens once per account and produces a full research menu. Contact research happens once per person and selects from that menu. Neither replaces the other. Both are required. The efficiency gain is that company-level work (Apollo enrichment, job scan, news scan) is not repeated for each individual at the same company — but each person still gets a thorough individual read.
 
-### The Account Research Block (5-8 min per company — done once, covers all contacts)
+---
 
-**Step 1 — Apollo Org Enrichment (run once per company)**
-Call `apollo_organizations_enrich` for the company domain. Extract and note:
-- Tech stack (`current_technologies`) — testing tools, CI/CD tools, cloud platform
-- Employee count — confirms enterprise tier, sets persona rule (Part 3)
-- Funding / revenue / industry — selects proof point from Part 15 table
+### Layer 1: Account Research Block (8-12 min per company — done once, used for all contacts at that company)
 
-**Step 2 — External Research (5 min per company max)**
-Check in priority order — stop when you have enough for the email:
-1. LinkedIn job postings for open QA/SDET/Automation roles (signals team scaling pain — best trigger)
-2. Engineering blog or tech pages (any velocity, testing culture, migration signals)
-3. Recent news (product launches, acquisitions, platform expansions — implies new test coverage needed)
-4. Glassdoor QA reviews (rare but high signal — mention if highly specific to their pain)
+The goal of this block is to produce enough raw material that each contact at the company can pull a distinct, non-overlapping angle. If you only find one trigger and one proof point, two people at the same company will end up with the same email. Build a menu.
 
-**Stop criteria:** Once you have one strong trigger (job posting OR news item OR tech signal), stop. You do NOT need all four sources if you already have a good hook.
+**Step 1 — Apollo Org Enrichment**
+Call `apollo_organizations_enrich` for the company domain. Log:
+- Tech stack (`current_technologies`) — identify any testing tools (Selenium, Playwright, Cypress, TestNG, etc.), CI/CD tools (Jenkins, GitHub Actions, CircleCI), cloud platform (AWS, GCP, Azure)
+- Employee count — confirms enterprise tier and sets the persona level rule (Part 3)
+- Funding stage / revenue — context for proof point framing (growth stage vs. established)
+- Industry classification — maps directly to proof point table (Part 15)
 
-**Account Research Output (document once, apply to all contacts at that company):**
+**Step 2 — Job Posting Scan (required — this is the #1 signal source)**
+Search LinkedIn for open QA/SDET/Automation/Quality Engineering roles at the company. Log:
+- How many open QA roles? (1-2 = growing, 3-5 = scaling hard, 6+ = major expansion)
+- What level? (SDET = automation gap, QA Lead = building team infrastructure, QA Manager = headcount addition)
+- What skills required? (Playwright? Selenium? Mobile testing? API testing? Specific frameworks?) — this tells you their current tooling and gaps
+- What teams are hiring? (mobile, API, platform, frontend, etc.) — maps to specific contacts at that company
+
+**Step 3 — Engineering / Tech Signal Scan (required where available)**
+Check in this order, stop when you have a signal:
+1. Company engineering blog (tech.company.com, company.substack.com, company.medium.com) — test infrastructure posts, CI/CD posts, release velocity discussions, test framework mentions
+2. Recent news (last 6 months): product launches, acquisitions, platform migrations, public engineering posts
+3. Glassdoor QA/SDET reviews: any specific complaints about flaky tests, slow pipelines, manual overhead
+4. GitHub (if public): test framework presence, test file volume, CI config files
+
+**Step 4 — Build the Research Menu (what you produce from the above)**
+For each company, document this before moving to contact research:
 ```
 Account: [Company]
 Domain: [domain.com]
 Industry: [vertical]
-Employees: [count]
-Tech stack: [Selenium / Playwright / Jenkins / etc.]
-Trigger: [e.g., "3 open QA Automation Engineer roles as of Mar 10" OR "launched mobile app Jan 2026"]
-Proof point (T1): [Hansard / CRED / Fortune 100 / etc.]
-Proof point (T2): [rotation from Part 15]
-Notes: [any special flags — Selenium-heavy, has compliance requirements, etc.]
+Employees: [count] — Persona tier: [Mid / Large / Mega]
+Tech stack confirmed: [Selenium / Playwright / Jenkins / etc. — or "unknown"]
+Funding/stage: [Series X / Public / Revenue range]
+
+TRIGGERS (build at least 2-3 different ones):
+  Trigger A: [e.g., "4 open QA Automation Engineer roles — mobile + API level" → scaling pain]
+  Trigger B: [e.g., "Launched new iOS app Dec 2025 — new coverage surface"]
+  Trigger C: [e.g., "Engineering blog post Feb 2026: 'Our CI pipeline takes 3+ hours'"]
+
+ANGLES AVAILABLE (each contact pulls one):
+  Angle 1: Test maintenance / self-healing (if Selenium-heavy tech stack)
+  Angle 2: Test creation speed / scaling coverage (if hiring SDETs at scale)
+  Angle 3: Regression cycle compression (if release velocity signal found)
+  Angle 4: Coverage expansion for new platform/product (if product launch found)
+
+PROOF POINTS AVAILABLE (assign one to each contact — no repeats per company):
+  T1 options: [Hansard / CRED / MediBuddy / Fortune 100 / Cisco / Nagra DTV]
+  T2 rotations: [Per Part 15 table]
+
+Notes: [Compliance flag, ops vs. software QA concern, domain catchall, etc.]
 ```
 
-### Contact-Level Research (2-3 min per person — LinkedIn only)
+**Minimum to proceed:** You must have at least 2 distinct triggers and 2 distinct angles before drafting any contact at this company. If you only have 1 trigger, do more research before moving on. Generic company context = generic emails = ignored.
 
-**Source: LinkedIn Profile (via Sales Nav)**
-Find and extract ONE of:
-- Role scope signal (what they own: mobile QA? API testing? platform regression? specific product area?)
-- Recent post or activity (commented on testing tools, posted about a launch or a pain point)
-- Tech stack signal in skills or summary (Playwright, Selenium, JIRA-first team vs. mature automation)
-- Duration in role (recent hire under 6 months = building new processes = very open to tools)
+---
 
-**That one detail is your opener.** You do NOT need all four. One specific, role-relevant detail is more powerful than four generic facts.
+### Layer 2: Contact Research (5-8 min per person — LinkedIn + Apollo contact record)
 
-**DO NOT use in messages:** years at company, education, endorsements, certifications, LinkedIn follower count, company tenure.
+**This is separate from company research and still required for every individual.** The Account Research Block tells you what angles are available. Contact research tells you which angle fits this specific person.
+
+**Source 1 — LinkedIn Profile (via Sales Nav, always required)**
+Find and extract ALL of the following:
+- **Role scope:** What do they own? (Mobile QA? API testing? Platform regression? Full-stack quality?) — this determines which company angle they get
+- **Team signals:** Any "team of X" language, org chart hints in summary or job description
+- **Recent posts or activity:** Have they posted about testing tools, CI challenges, a product launch, a role change? If yes: directly reference the topic (not the post) in the opener
+- **Tech stack signals:** Framework names in skills section, mentions of tools in past roles
+- **Tenure in role:** Under 6 months = actively building new processes = highest receptivity. 1-3 years = established but open to optimization. 3+ years = needs a strong reason to change.
+- **Title parsing:** "QA Manager" at a 500-person company vs. a 50,000-person company = very different scope. Parse accordingly.
+
+**Source 2 — Apollo Contact Record**
+Check the contact in Apollo:
+- `email_status` (verified vs. catchall vs. extrapolated)
+- `job_change_date` if flagged — recent job change = building from scratch = very receptive
+- Prior `emailer_campaign_ids` — if populated, flag for Rob before including
+- `direct_dial` or `mobile_phone` — note for call steps later
+
+**Contact Research Output (add to the contact row in the batch tracker):**
+```
+Contact note: [Role scope — e.g., "Owns mobile QA and API testing at Commvault"]
+Tenure signal: [e.g., "8 months in role — likely still setting up automation stack"]
+Tech signal: [e.g., "Selenium + TestNG in skills, no Playwright listed"]
+Assigned trigger: [Trigger A / B / C from company menu]
+Assigned angle: [Angle 1 / 2 / 3 / 4 from company menu]
+Proof point T1: [Specific customer story]
+Proof point T2: [Rotation from Part 15]
+Email note: [✅ verified / ⚠️ catchall / ⚠️ extrapolated]
+```
+
+**Differentiation check (required for Medium and High targeting):**
+Before finalizing the contact's angle, check against all other contacts at the same company. No two contacts should have:
+- The same trigger used in their opener
+- The same proof point in T1
+- The same CTA phrasing
+If there's overlap: go back to the company menu and pull a different angle for one of them.
+
+---
 
 ### Research-to-Message Mapping
-| Research Finding | Feeds Into |
+| Research Finding | Where It Goes |
 |------------------|-------|
-| LinkedIn: QA scope (e.g., "owns mobile + API regression") | Opener — make it specific to their scope |
-| Apollo: Tech stack (e.g., Selenium + Jenkins) | Challenge sentence — frame maintenance pain around their tools |
-| Job posting: open QA automation roles | Theme — scaling challenge = right timing for a conversation |
-| Company news: product launch or platform migration | Theme — new coverage need = natural timing |
-| Engineering blog: CI pipeline pain, test flakiness posts | Proof point angle — tie proof point to their stated problem |
+| LinkedIn: role scope ("owns mobile + API regression") | Challenge sentence — frame pain around their specific area |
+| Apollo: tech stack (Selenium + Jenkins) | Challenge sentence — maintenance framing specific to their tools |
+| Job posting: 4 open QA automation roles | Theme — scaling challenge, right timing |
+| Company news: new product launch or platform migration | Theme — new coverage surface = natural timing |
+| Engineering blog: CI pipeline pain | Proof point angle — tie proof point to their stated problem |
+| Tenure: under 6 months in role | Opener — "building out your automation approach" framing |
+| Recent LinkedIn post on testing tools | Opener — reference the topic (not the post) as shared context |
 
-### Research Quality Gate (same for all batch sizes)
-Before drafting any T1, confirm:
-- [ ] One QA-relevant account trigger (tech stack + one external signal)
-- [ ] One contact-specific detail (scope, focus area, or platform)
-- [ ] Proof point assigned and matches vertical (Part 15 table)
-- [ ] No duplicate with MASTER_SENT_LIST.csv
+---
 
-If the account trigger is missing: run Apollo org enrichment + 5-min web check.
-If the contact detail is missing: do a LinkedIn profile read via Sales Nav.
-Do NOT draft from title + company alone — that produces generic mail that gets ignored.
+### Research Quality Gate (required before any contact moves to drafting)
+- [ ] Account Research Block complete — at least 2 triggers and 2 angles documented
+- [ ] LinkedIn profile read for this specific contact — role scope extracted
+- [ ] Angle assigned (distinct from other contacts at the same company)
+- [ ] Proof point assigned (distinct from other contacts at the same company)
+- [ ] Email status confirmed (verified / catchall / extrapolated — extrapolated flagged in tracker)
+- [ ] MASTER_SENT_LIST.csv check passed (no prior send to this person)
+
+If any check fails: fix it before drafting. Do not draft from title + company alone.
 
 ---
 
@@ -615,23 +680,25 @@ When in doubt: Apollo + batch tracker HTML will tell you everything you need to 
 
 ## Part 20: Daily Batch Cadence — 50/Day Target
 
-This is the repeating daily workflow. Run it every working day to build and execute the 50-contact batch.
+This is the repeating daily workflow. **Critical rule: complete ALL research for all 50 contacts before writing a single draft.** Do not draft as you go. Research the full batch first, then draft everything.
 
-### Phase 1: Account Sourcing (30 min)
+### Phase 1: Account Sourcing — Pull Until You Have 50 Contacts (30 min)
 
-**Goal:** Identify 15-20 accounts for today's batch. These accounts should yield ~50 contacts total.
+**Goal:** Source enough accounts to produce exactly 50 clean contacts for today's batch.
 
 1. Open `tam-coverage-tracker.csv`
 2. Filter: `icp = HIGH`, `status = ✅ Untouched` — sort by employee count descending
-3. Pull the next 15-20 accounts in that ordered list
-4. For each: run a quick Apollo people search to estimate contact count:
-   - If 1-2 QA contacts found → include (Standard targeting)
-   - If 3-6 contacts → include (Medium targeting)
-   - If 7+ contacts → include only the top 5-6 by seniority (High targeting) — do not include 10+ people from one company in a single batch
-5. Mark each selected account in `tam-coverage-tracker.csv` as "🔄 In Progress — [date]" immediately (prevents double-claim across sessions)
-6. Count estimated contacts. If under 45: pull 2-3 more accounts. If over 55: drop the last account or defer lower-seniority contacts to next day's batch.
+3. Pull the first account in that list. Run a quick Apollo people search to count QA/Engineering Director+ contacts:
+   - 1-2 contacts found → Standard targeting. Add to batch.
+   - 3-6 contacts found → Medium targeting. Add all (cap at 6 per company per batch).
+   - 7+ contacts found → High targeting. Take only top 5-6 by seniority. Defer the rest to a future batch.
+4. Mark that account in `tam-coverage-tracker.csv` as "🔄 In Progress — [date]" immediately (prevents double-claim if session breaks)
+5. Keep a running count. Pull the next account, repeat steps 3-4.
+6. **Stop when your running count hits 50.** If the last account would push you to 52-55, defer the lower-seniority contacts from that account to tomorrow's batch.
 
-**Checkpoint:** Target ~50 contacts sourced before moving to Phase 2.
+**The count is the target, not the number of accounts.** Some days you'll need 10 accounts (all Medium/High). Some days you'll need 45 accounts (all Standard 1-contact).
+
+**Checkpoint:** Exactly ~50 contacts listed across however many accounts it took. Every account marked 🔄 In Progress in the tracker.
 
 ### Phase 2: Dedup (20 min — parallel with Phase 1)
 
@@ -643,40 +710,47 @@ For every contact identified in Phase 1:
 
 **Dedup result:** Clean list of ~50 contacts, zero duplicates.
 
-### Phase 3: Account Research Blocks (5-8 min per company — do all accounts before drafting)
+### Phase 3: Account Research Blocks — ALL Companies Before Any Drafting (8-12 min per company)
 
-Run every account through the Account Research Block (Part 5) sequentially:
-1. `apollo_organizations_enrich` for domain → log tech stack + employee count + vertical
-2. Quick external scan (job postings first — single Apollo or Google search) → identify 1 strong trigger
+**Do not start drafting until every account in the batch has a complete research menu.** Research all companies first, then move to contact research, then draft.
 
-Document each account's research block in the batch tracker HTML (create the tracker file now, before drafting).
+For each account:
+1. Run `apollo_organizations_enrich` for the domain → log tech stack, employee count, vertical, funding
+2. LinkedIn job posting scan → count open QA/SDET roles, note levels and skills required
+3. Engineering blog / news scan → find 1-2 additional signals
+4. Build the Research Menu (Part 5 Layer 1 format): document at least 2 triggers and 2 angles
+5. Pre-assign proof point options (T1 and T2) from Part 15 table — list options, don't assign to specific contacts yet
 
-**Checkpoint:** Tracker file exists with all 50 contacts. Account research complete for all companies. No drafts yet.
+Create the batch tracker HTML file now. Add all 50 contact rows with company sections. Research menu for each company goes in the account header row — shared by all contacts at that company.
 
-### Phase 4: Contact LinkedIn Scans (2-3 min per person)
+**Checkpoint:** Tracker file exists. All accounts have a complete research menu (min 2 triggers, 2 angles, proof point options). No contact research yet. No drafts yet.
 
-For each contact in the tracker:
-1. Pull their LinkedIn profile via Sales Nav (or Apollo contact record)
-2. Extract one specific detail (role scope, tech signal, recent post)
-3. Add to their row in the tracker as "Contact note: [detail]"
-4. Assign targeting level (Standard / Medium / High based on company contact count from Phase 1)
-5. Assign proof point from Part 15 table — ensure no two contacts at the same company get the SAME proof point
+### Phase 4: Contact Research — ALL Contacts Before Any Drafting (5-8 min per person)
 
-**Checkpoint:** Every contact row in the tracker has: company trigger + contact detail + proof point assigned.
+Now research each contact individually. For each person in the tracker:
+1. Pull their LinkedIn profile via Sales Nav — extract: role scope, tenure, tech signals, recent posts
+2. Check their Apollo contact record — verify email status, check prior emailer_campaign_ids
+3. Pull one angle from the company's research menu that fits their specific role scope
+4. Assign proof point T1 and T2 from the company options — confirm no two contacts at the same company share the same proof point
+5. Document in their tracker row: role scope note, assigned trigger, assigned angle, assigned proof points, email status flag
 
-### Phase 5: T1 + T2 Draft Writing (150-180 min total)
+**Differentiation check after all contacts at one company are done:** Scan all contacts at that company side by side. If any two have the same trigger or the same proof point, swap one of them to a different menu option before moving on.
 
-Draft in account batches, not random order. Write all contacts at one company consecutively:
-- Keeps the company context fresh in working memory
-- Makes it easy to spot if two contacts at the same company are too similar
+**Checkpoint:** Every contact row in the tracker has: role scope note + assigned trigger + assigned angle + proof point T1 + proof point T2 + email flag. All 50 contacts complete. No drafts yet.
+
+### Phase 5: T1 + T2 Draft Writing — ALL Research Complete First (200-250 min total)
+
+**Start drafting ONLY after Phases 3 and 4 are fully complete for all 50 contacts.** This ensures each draft is written from a complete, differentiated research set — not partially assembled on the fly.
+
+Draft in account batches, not random order. Write all contacts at one company consecutively to catch any overlap:
 
 **Per contact (~4-5 min):**
-1. Write T1 subject (SMYKM format — specific to person/company, NOT generic pain category)
-2. Write T1 body (HC1 intro → challenge observation → proof point → "what day works" CTA, 75-100 words)
-3. Write T2 body (bridge → new angle → new proof point → engagement question, 50-70 words)
-4. Quick self-check: would this read as mass-produced if compared to the next contact at the same company? If yes, revise.
+1. Write T1 subject (SMYKM — specific to this person/company, not a generic pain category)
+2. Write T1 body (HC1 opener → challenge observation tied to their role scope + company trigger → proof point → "what day works" CTA, 75-100 words)
+3. Write T2 body (bridge phrase → new angle → new proof point from T2 rotation → engagement question, 50-70 words)
+4. Self-check: if the next contact at this same company read both their T1 and yours side by side, would they think it was the same template? If yes: revise the opener or the challenge sentence.
 
-**Draft speed target:** ~4-5 min per contact including both T1 and T2 when account research is already done.
+**Draft speed is fast here because all research is pre-done.** You're not thinking "what angle do I use?" — you're filling in a pre-mapped structure.
 
 ### Phase 6: Quality Gate (20-30 min for full batch of 50)
 
@@ -712,22 +786,68 @@ Wait for Rob's APPROVE SEND. Do NOT enroll or send anything before approval.
 
 ### Phase 8: Send + Enroll (after APPROVE SEND)
 
-For each approved contact:
-1. Rob sends T1 email via Apollo task or direct send from robert.gorham@testsigma.com
-2. Claude (or Rob) enrolls contact in TAM Outbound immediately after send (same day — never defer enrollment)
-3. Enrollment: batch of max 5 via `apollo_emailer_campaigns_add_contact_ids`, flags: `sequence_no_email: true`, `sequence_active_in_other_campaigns: true`
-4. After enrollment: update tracker HTML row → Status = "📤 T1 Sent [date] / ✅ Enrolled"
-5. Add row to MASTER_SENT_LIST.csv
+**For each approved contact, three things must happen in this order: Send → Enroll in Apollo → Log everywhere.**
 
-**Enrollment tempo:** Enroll in batches of 5 (Apollo limit). For 50 contacts: 10 batches of 5. Takes ~10-15 min.
+**Step 1 — Send**
+Rob sends T1 email from robert.gorham@testsigma.com (via Apollo task or direct send). Note the exact send date/time.
 
-### Phase 9: Coverage Tracker + Session Close
+**Step 2 — Apollo Enrollment (same session, same day — never defer)**
+1. Confirm the contact exists in Apollo (search by name + company)
+2. Enroll in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) via `apollo_emailer_campaigns_add_contact_ids`
+3. Flags: `sequence_no_email: true`, `sequence_active_in_other_campaigns: true`, `sequence_job_change: true` (if flagged as recent job change)
+4. Email account: `robert.gorham@testsigma.com` (ID: `68e3b53ceaaf74001d36c206`) — .com ONLY
+5. Batch size: max 5 per API call. For 50 contacts: 10 calls of 5. Do not rush — send batches sequentially.
+6. Verify enrollment returned no `skipped_contact_ids`. If any skipped: diagnose reason and retry with appropriate flag before closing the session.
 
-After enrollment:
-1. Update `tam-coverage-tracker.csv`: all enrolled accounts → "📤 In Sequence — [date]"
-2. Update `memory/session/handoff.md` with today's batch count and any flagged contacts
-3. Update `memory/session/work-queue.md` with next batch number
-4. Git add + commit → Rob git pushes from terminal
+**Step 3 — Log in all three databases (do not skip any)**
+
+**Database 1 — Batch Tracker HTML (primary audit trail):**
+- Update contact row Status → `📤 T1 Sent [date] / ✅ Enrolled`
+- Fill in T1 Send Date column
+- Note any enrollment flags (job_change override, catchall email, etc.)
+
+**Database 2 — MASTER_SENT_LIST.csv (dedup source of truth):**
+Add one row per contact:
+```
+[Full Name], [email], [Company], [Title], Email, [YYYY-MM-DD send date], [tamob-batch-YYYYMMDD-N]
+```
+Do this for every contact without exception. This is what prevents double-sends in future batches.
+
+**Database 3 — tam-coverage-tracker.csv (pipeline visibility):**
+For each account where at least one contact was sent:
+- Update status: `✅ Untouched` → `📤 In Sequence — [YYYY-MM-DD]`
+- Add note field: contact name(s) enrolled, sequence step, batch ID
+
+**Enrollment tempo:** 10 batches of 5 for 50 contacts takes ~15-20 min. Do not rush. Verify each batch's response before sending the next.
+
+### Phase 9: Session Close — Confirm All Three Databases Updated
+
+Before ending the session, run this checklist:
+
+**Apollo (Sequence Tasks):**
+- [ ] All approved contacts show as enrolled in TAM Outbound sequence
+- [ ] Zero `skipped_contact_ids` unresolved
+- [ ] Apollo task queue will show Step 2 tasks auto-generated for Day 5 from each T1 send date
+- [ ] If any contacts were NOT sent today (held for Rob): do NOT enroll them yet — enrollment triggers the sequence timer
+
+**MASTER_SENT_LIST.csv:**
+- [ ] One new row added per contact sent today
+- [ ] Batch ID column filled for all rows
+- [ ] No blank email fields
+
+**tam-coverage-tracker.csv:**
+- [ ] All accounts with sends today updated to "📤 In Sequence — [date]"
+- [ ] Accounts where all contacts were deduped out: update to "⛔ Checked — no clean contacts" with note
+
+**Batch tracker HTML:**
+- [ ] All sent contacts: Status = T1 Sent + Enrolled
+- [ ] HOLD contacts: Status = 🚫 HOLD with reason
+- [ ] File saved and committed
+
+**Session memory files:**
+1. Update `memory/session/handoff.md`: new batch count, enrolled total, any flags
+2. Update `memory/session/work-queue.md`: mark today's batch done, queue next batch date
+3. Git add + commit all changed files → Rob git pushes from terminal
 
 ### Daily Metrics to Track
 
@@ -735,7 +855,7 @@ After enrollment:
 |--------|--------|
 | New T1s sent | 50/day |
 | New enrollments | 50/day |
-| Accounts covered | 15-20/day |
+| Accounts covered | However many it takes to hit 50 contacts (typically 10-50) |
 | Extrapolated emails in batch | < 10% of batch (max 5 out of 50) |
 | MQS spot-check pass rate | 100% of checked contacts at 9+ |
 | Dedup removal rate | Track for pattern detection |
@@ -786,5 +906,5 @@ TAM batch [YYYYMMDD]-[N]: [N] contacts across [N] accounts enrolled
 
 ---
 
-*Version 2.0 — Updated Mar 10, 2026 — 50/day rolling cadence added*
+*Version 2.1 — Updated Mar 10, 2026 — Research depth hardened, batch-first drafting enforced, logging protocol airtight*
 *Next review: After first 250 contacts enrolled (est. 5 days at 50/day)*
