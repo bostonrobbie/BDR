@@ -9,12 +9,27 @@
 ## Last Session
 
 **Date:** 2026-03-09
-**Agent:** Cowork-10 (Mar 9 — Wave 1 Factor account prospecting plan)
-**Session title:** Researched and built full Wave 1 Factor account prospecting plan — Apollo Director+ enrichment for all 6 accounts, 6 T1 InMail drafts written, HTML tracker delivered at `/Work/wave1-prospecting-plan-mar9.html`.
+**Agent:** Cowork-11 (Mar 9 — SOP account universe enforcement)
+**Session title:** Hardcoded TAM + Factor authorized prospecting universe into all 5 SOPs. Fixed stale "7 Shakeel accounts" references. All SOPs now gate on Factor (38) + TAM (312) as the only authorized prospect companies.
 
 ---
 
 ## What Was Done This Session
+
+### Cowork-11 (Mar 9 — SOP account universe enforcement)
+
+1. **Updated all 5 SOPs** to enforce the TAM + Factor authorized universe rule as a hard gate — not advisory language:
+   - `sop-daily.md`: Added ⛔ MANDATORY GATE block to Phase 4. Fixed Tier 0 from "7 Shakeel accounts" to "38 Factor accounts (Rob's, Shakeel departed Mar 9)." Suspended Tier 3 (Saved Search Backfill) — only Tier 0 named accounts are authorized. Tiers 1-2 re-scoped as prioritization signals within authorized universe only.
+   - `sop-prospect.md`: New ⛔ AUTHORIZED PROSPECTING UNIVERSE hard rule block added at the very top (above Scope). Named Account Priority updated: 38 accounts, Shakeel departure noted, framing changed from advisory to absolute restriction.
+   - `sop-outreach.md`: Scope section now opens with account restriction notice — draft only for prospects who already passed the gate.
+   - `sop-send.md`: Pre-Batch Build Checklist gains Step 0 (Account Source Validation) that runs before DNC, before dedup, before everything else.
+   - `sop-email.md`: Scope section includes same restriction — T2 email only for prospects in Factor/TAM universe.
+
+2. **Committed** all 5 SOP changes to git (commit 27bb4d9, local).
+
+3. **Push still needed** from Rob's terminal: `git push origin main`
+
+---
 
 ### Cowork-10 (Mar 9 — Wave 1 Factor account prospecting plan)
 
@@ -271,6 +286,14 @@ Sanjay Singh (ServiceTitan), Lance Silverman, Clyde Faulkner (CAMP Systems), Ash
 ---
 
 ## Files Changed This Session
+
+**Mar 9 Cowork-11 — SOP account universe enforcement:**
+- `memory/sop-daily.md` — Phase 4 mandatory gate added, Tier 0 fixed (38 accounts, Shakeel departed), Tier 3 suspended, Tiers 1-2 re-scoped
+- `memory/sop-prospect.md` — Hard ⛔ rule block added at top, Named Account Priority updated to 38 accounts
+- `memory/sop-outreach.md` — Scope section: account restriction added
+- `memory/sop-send.md` — Pre-Batch Checklist Step 0 (Account Source Validation) added
+- `memory/sop-email.md` — Scope section: account restriction added
+- `memory/session/handoff.md` — this file
 
 **Mar 9 Cowork-8 — SF dashboards catalog:**
 - `memory/sf-dashboards.md` — NEW: Full SF dashboards + reports catalog (home page widgets, key reports, Tier 1/2/3 dashboards, folder structure, quick-access links)

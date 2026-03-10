@@ -6,6 +6,15 @@
 
 ---
 
+## 2026-03-09 — Cowork-11 — SOP account universe enforcement (all 5 SOPs updated)
+- Rob confirmed: Factor accounts are all his (Shakeel departed). All Factor + TAM = only authorized universe.
+- Updated all 5 SOPs to hardcode the restriction:
+  - `sop-daily.md`: ⛔ gate added to Phase 4, Tier 0 fixed (38 accounts, not 7), Tier 3 suspended
+  - `sop-prospect.md`: Hard rule block at top, Named Account Priority updated
+  - `sop-outreach.md`, `sop-send.md`, `sop-email.md`: Account restriction added to Scope/Pre-Batch Checklist
+- `sop-send.md` now has Step 0 (Account Source Validation) before DNC and dedup
+- Committed (27bb4d9). Push needs Rob: `git push origin main`
+
 ## 2026-03-09 — Cowork-9 — TAM coverage tracker built; new prospecting rule codified
 - Built `tam-coverage-tracker.html` + `.csv` — 312 accounts, filterable by status/ICP/region
 - Status: 33 HOT Factor | 1 warm lead | 259 untouched | 15 skip/gov/bad data | 2 check-first
