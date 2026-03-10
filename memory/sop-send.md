@@ -11,6 +11,13 @@
 
 Run these checks BEFORE prospects are added to a new batch tracker file. Do not build the batch first and check after.
 
+### Step 0: Account Source Validation ⛔ (MANDATORY — runs before everything else)
+Verify every prospect's company is in one of the two authorized account lists:
+- **Factor Accounts** (38 accounts): `memory/target-accounts.md`
+- **TAM Accounts** (312 accounts): `/Work/tam-accounts-mar26.csv`
+
+If the company is NOT in either list: **remove immediately.** Do not continue checking that prospect. No exceptions without Rob's explicit written approval. This step runs before DNC, before dedup, before any other check — a prospect from an unauthorized company never gets further in the pipeline.
+
 ### Step A: DNC Cross-Reference
 Read CLAUDE.md → Do Not Contact List. Remove any name that appears there. Zero tolerance.
 

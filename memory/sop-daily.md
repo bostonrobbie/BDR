@@ -18,8 +18,15 @@ Skip if zero replies. Classify replies, draft responses per type, generate meeti
 Skip if no Day 5/10 prospects. Draft Touch 2 InMails (new angle, 40-70w) and Touch 3 Emails (fresh proof, 60-100w). Credit budget check. Present sorted by priority.
 
 ## Phase 4: New Pipeline (~60-90 min)
+
+⛔ **AUTHORIZED ACCOUNT UNIVERSE — MANDATORY GATE (Effective Mar 9, 2026)**
+ALL new prospects MUST come from one of two authorized account lists:
+- **Factor Accounts** (38 accounts) — see `memory/target-accounts.md`
+- **TAM Accounts — Oct 2025** (312 accounts) — see `/Work/tam-accounts-mar26.csv`
+NO open Sales Navigator prospecting outside these lists is permitted. If a prospect's company is not in Factor or TAM, do NOT include them in any batch. This rule cannot be overridden without Rob's explicit written approval. When in doubt: check the list, don't guess.
+
 Gate: only if queue <10, credits >10, no unsent batches, not weekend/Monday.
-Pre-Brief → Source 20-25 → Apollo enrich → 3-source research → C2 draft → QA Gate → Build HTML tracker.
+Pre-Brief → Source 20-25 (from Factor/TAM only) → Apollo enrich → 3-source research → C2 draft → QA Gate → Build HTML tracker.
 
 ## Phase 5: Daily Deliverable (~10 min)
 Summary, log updates, tomorrow preview, numbered action items for Rob.
@@ -48,26 +55,26 @@ Summary, log updates, tomorrow preview, numbered action items for Rob.
 ## Batch Sourcing Decision Framework (SOP D)
 Claude follows this waterfall autonomously (never asks Rob which method):
 
-### Tier 0: Named Accounts (Highest — check before everything else)
-Rob's assigned account lists. Always work these first before open Sales Nav prospecting.
-- **Factor Accounts (HOT):** 7 accounts from Shakeel's list — check for unworked contacts first every session.
-- **TAM Accounts (Oct 2025):** Rob's primary NAMER named account list — ICP contacts enriched by LDR team.
+### Tier 0: Named Accounts (THE ONLY AUTHORIZED SOURCE)
+Rob's two assigned account lists. These are the only companies Claude is authorized to prospect into. No other accounts are permitted.
+- **Factor Accounts (HOT):** 38 accounts (Rob's assigned accounts — Shakeel has departed, all Factor accounts are Rob's as of Mar 9, 2026). Check for unworked Director+ contacts first every session. Full roster: `memory/target-accounts.md`.
+- **TAM Accounts (Oct 2025):** Rob's primary NAMER named account list (312 accounts). ICP contacts enriched by LDR team. File: `/Work/tam-accounts-mar26.csv`.
 - **Manual Testers TAM:** Supplemental TAM, coordinate with AEs Tyler + Eshwar.
 - **Farming Accounts:** Active customers. NOT cold outreach. Coordinate with AE/CSM first.
 
-All Salesforce report links + context: `memory/target-accounts.md`
+All Factor account details + enriched contact roster: `memory/target-accounts.md`
 
-### Tier 1: Buyer Intent (High)
-Sales Nav Buyer Intent, website demo requests, webinar attendees (<48 hrs).
+### Tier 1: Buyer Intent (High — within authorized accounts only)
+Buyer intent signals (Sales Nav, demo requests, webinar attendees <48 hrs) are a PRIORITIZATION signal within the Factor/TAM universe. Only valid if the company is already in Factor or TAM. Does NOT authorize outreach to companies outside those lists.
 
-### Tier 2: Re-Engagement (High)
-QA job postings, funding, leadership change, Testsigma feature release, product launch. Must be >60 days since last touch, new angle required.
+### Tier 2: Re-Engagement (High — within authorized accounts only)
+QA job postings, funding, leadership change, Testsigma feature release, product launch. Only valid for companies in Factor/TAM. Must be >60 days since last touch, new angle required.
 
-### Tier 3: Saved Search Backfill (Standard)
-Sales Nav saved searches, "Show X new results" filter, Prospect Mix Ratio.
+### Tier 3: Saved Search Backfill — SUSPENDED
+⛔ Open Sales Nav saved search prospecting (pulling net-new companies from broad searches) is SUSPENDED as of Mar 9, 2026. All prospecting must come from Tier 0 authorized accounts. Saved searches may be used to FIND CONTACTS within Factor/TAM companies, but cannot be used to source companies outside those lists.
 
 ### Tier 4: Specific Account Targeting
-ONLY when Rob explicitly directs.
+ONLY when Rob explicitly directs. Must still be within Factor/TAM unless Rob explicitly authorizes an exception in writing.
 
 ### Batch Size Calculation
 ```

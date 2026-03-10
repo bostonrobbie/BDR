@@ -1,5 +1,20 @@
 # Prospecting SOP — Sales Nav Batch Build
 
+---
+
+## ⛔ AUTHORIZED PROSPECTING UNIVERSE — HARD RULE (Effective Mar 9, 2026)
+
+ALL prospects MUST be sourced from Rob's two authorized account lists ONLY:
+
+1. **Factor Accounts** (38 accounts) — `memory/target-accounts.md`
+2. **TAM Accounts — Oct 2025** (312 accounts) — `/Work/tam-accounts-mar26.csv`
+
+**This is an absolute restriction.** If a prospect's company is not on one of these two lists, DO NOT add them to any batch — regardless of how strong their buyer intent signal, title match, or vertical fit appears. No open Sales Navigator searches sourcing net-new companies outside these lists are authorized.
+
+**How to verify:** Check `memory/target-accounts.md` for Factor accounts. Check `/Work/tam-accounts-mar26.csv` for TAM accounts. Every single prospect added to a batch must trace back to one of these two files. When building a batch, scope all Sales Nav searches to accounts within one of these two lists (use the Account filter in Sales Nav).
+
+---
+
 ## Scope
 This SOP covers the full prospecting workflow: finding prospects on LinkedIn Sales Navigator, qualifying them, enriching via Apollo, and building a batch tracker HTML file ready for Rob's review and APPROVE SEND.
 
@@ -7,16 +22,16 @@ This is Phase 1 of the end-to-end sequence. Everything after batch approval runs
 
 ---
 
-## Named Account Priority (Check Before Any Sales Nav Search)
+## Named Account Priority — The ONLY Authorized Sources
 
-Rob has assigned named account lists that take priority over open Sales Nav prospecting. **Before building a new batch from saved searches, always check:**
+Rob's two assigned account lists are the ONLY authorized prospecting sources. There is no "open Sales Nav" prospecting. Every batch must trace every prospect back to one of these lists.
 
-1. **Factor Accounts (HOT)** — 7 accounts inherited from Shakeel. Highest priority. Check first every session.
-2. **TAM Accounts (Oct 2025)** — Rob's primary named NAMER account universe. ICP-curated by LDR team with enriched contacts already in CRM.
-3. **Manual Testers Footprint TAM** — Supplemental TAM for all BDRs, focused on companies with manual testers. Work in coordination with AEs Tyler + Eshwar.
+1. **Factor Accounts (HOT)** — 38 accounts (Rob's assigned accounts — Shakeel has departed as of Mar 9, 2026, all Factor accounts are Rob's). Highest priority. Check for unworked Director+ contacts before any other sourcing. Full enriched contact roster: `memory/target-accounts.md`.
+2. **TAM Accounts (Oct 2025)** — Rob's primary named NAMER account universe (312 accounts). ICP-curated by LDR team with enriched contacts already in CRM. File: `/Work/tam-accounts-mar26.csv`.
+3. **Manual Testers Footprint TAM** — Supplemental TAM for all BDRs, focused on companies with manual testers. Work in coordination with AEs Tyler + Eshwar. Must be verified against the TAM list.
 4. **Farming Accounts** — ~10 active customers for upsell/cross-sell. NOT cold outreach. Coordinate with AE/CSM first. Separate motion.
 
-**All account names and contacts are in Salesforce.** See `memory/target-accounts.md` for Salesforce report links, context, and usage rules.
+**Rule:** If a company is not in Factor or TAM, it is not an authorized prospect target. Do not source from open Sales Nav searches. See the AUTHORIZED PROSPECTING UNIVERSE gate at the top of this SOP.
 
 ---
 

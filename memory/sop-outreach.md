@@ -5,6 +5,8 @@
 - Do not apply this SOP to email drafting or email sends.
 - Email process lives in `memory/sop-email.md` and should be run independently.
 
+⛔ **AUTHORIZED ACCOUNT RESTRICTION (Effective Mar 9, 2026):** Every prospect in any batch MUST have their company in one of two authorized lists: Factor Accounts (38) in `memory/target-accounts.md`, or TAM Accounts (312) in `/Work/tam-accounts-mar26.csv`. Do NOT draft outreach for any prospect whose company is not on one of these lists. Account source validation is enforced at batch-build time in `sop-prospect.md` and `sop-send.md` — if you are drafting a message, the prospect should already have passed that gate.
+
 ## Writing Style Rules
 - **NO em dashes (—).** Use commas or short hyphens (-) only. Prefer commas.
 - **Minimize hyphens.** Mid-sentence dashes are an AI signature. Replace with commas. Only use hyphens in true compound words (e.g., "self-healing"). Max 1 hyphen in message body.

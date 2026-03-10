@@ -5,6 +5,8 @@
 - Do not use LinkedIn send steps, LinkedIn cadence, or LinkedIn QA from `memory/sop-outreach.md`.
 - LinkedIn InMail/follow-up operations are run separately in `memory/sop-outreach.md`.
 
+⛔ **AUTHORIZED ACCOUNT RESTRICTION (Effective Mar 9, 2026):** Email outreach follows the same account universe restriction as all other channels. Every prospect receiving a T2 email must have their company in the Factor Accounts (38) list at `memory/target-accounts.md` or the TAM Accounts (312) list at `/Work/tam-accounts-mar26.csv`. This is enforced at batch-build time in `sop-prospect.md` and `sop-send.md` — if you are drafting a T2 email, the prospect should already have passed that gate.
+
 ## Multi-Channel T2 Email (After LinkedIn InMail T1) — Locked Formula Mar 9
 
 When email is used as Touch 2 in the LinkedIn Outbound sequence (Day 5 after T1 InMail).
