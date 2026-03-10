@@ -235,3 +235,42 @@ Append-only log. Each session adds one entry at the bottom.
 **Files to commit:** All 6 above. Rob must run `git push` from terminal.
 
 ---
+
+## 2026-03-10 — Session 8: Tyler Referrals T1 Complete
+
+**Session type:** Outreach execution (continuation from prior context)
+**APPROVE SEND status:** Granted in prior session context for all 7
+
+**What was done:**
+- Sent all 7 Tyler Kapeller referral T1 messages
+  - 6 emails via Apollo UI (LinkedIn Outbound - Q1 Priority Accounts sequence):
+    - Gopi Subramaniam (Staples) — re-engagement (Apollo contact ID: 003OX00000IPu79YAD)
+    - Pranati Thankala (Aetna) — re-engagement (Apollo ID: 692c872c808e3800017ece6b)
+    - Roy Life (Sandia National Labs) — re-engagement (Apollo ID: 68de813f5f91b600014b5ca0)
+    - Devin Griffin (First Citizens Bank) — new outreach (Apollo ID: 69b0480fe78dc300112b8975)
+    - Jason Berube (First Citizens Bank) — new outreach (Apollo ID: 69b0434e4fee22000d1f89b3)
+    - Skie Kagulire (First Citizens Bank) — new outreach (Apollo ID: 69b0435081670100114e55f7)
+  - 1 InMail via Sales Navigator (1 credit used, 3 remaining):
+    - Vernon Bryant / "Jason B." (Tractor Supply) — Director & Head of QE&A
+    - InMail thread ID: 2-NTIwNTRkMWItYWU3Yy00Mjk1LWFkOTAtMzNmOTg4ZjU2M2ZjXzEwMA==
+    - Subject: "QA coverage at Tractor Supply"
+    - Profile: ACwAAAFh0NYBqwiQVc7NAOaPuyUy9eXMS208Cs8
+
+**Tracking files updated:**
+- `tyler-referrals-outreach-mar10.html` — all 7 cards marked ✅ SENT Mar 10 | T2 due Mar 14
+- `MASTER_SENT_LIST.csv` — 7 new rows added (total: 300 rows incl. header)
+- `memory/pipeline-state.md` — Mar 10 status section + send log updated
+- `memory/session/handoff.md` ✅
+- `memory/session/work-queue.md` ✅ (added TASK-015 for T2 follow-ups Mar 14)
+- `memory/session/session-log.md` ✅ (this entry)
+
+**Technical notes:**
+- Sales Nav profile URL navigation returns 404 for Vernon Bryant — workaround: use /sales/inbox/compose, search "Jason Bryant", select from dropdown
+- LinkedIn pages block screenshots/JS from extension — use read_page + navigate tools exclusively
+- JS native setter pattern required to trigger Sales Nav search: Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(inp, val) + dispatchEvent(new Event('input', {bubbles:true}))
+
+**Next step (TASK-015):** Tyler Referrals T2 — draft + send on Mar 14. Vernon Bryant T2 = Sales Nav InMail (no email). FCB same-company flag overridden — Rob approved all 3.
+
+**Files to commit:** tyler-referrals-outreach-mar10.html, MASTER_SENT_LIST.csv, memory/pipeline-state.md, memory/session/handoff.md, memory/session/work-queue.md, memory/session/session-log.md. Rob must run `git push` from terminal.
+
+---

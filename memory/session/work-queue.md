@@ -179,6 +179,7 @@ Draft responses per reply handling SOP (Section 13 of Tier1_Intent_Sequence_SOP_
 | touch2_drafts_feb27.md | Mar 7 | 9 Touch 2 emails for Feb 27 contacts, all MQS 10-12/12 |
 | touch2_drafts_batch3_inmail.md | Mar 7 | 4 Touch 2 InMails for INC-001 Batch 3 (Irfan, Katie, Rachana, Giang). MQS 11, 10, 12, 12. All READY TO SEND. |
 | TAM Outbound - Rob Gorham sequence built | Mar 10 | Apollo ID: 69afff8dc8897c0019b78c7e. 7 steps all manual, Day 1/5/10/15/21/28/35. email→email→LI connect→call→call→call→breakup email. Ready for enrollment. |
+| Tyler Referrals T1 — all 7 sent | Mar 10 (Session 8) | 6 emails (Gopi/Staples, Pranati/Aetna, Roy/Sandia, Devin/FCB, Jason B/FCB, Skie/FCB) + 1 InMail (Vernon Bryant/Tractor Supply). T2 due Mar 14. File: tyler-referrals-outreach-mar10.html |
 
 ---
 
@@ -240,6 +241,34 @@ Built full end-to-end SOP covering:
 - Follow-up loop
 - Wave 1 current state (4/6 ready to send, 2 flagged)
 - Proof point vertical matching table
+
+---
+
+### TASK-015: Tyler Referrals T2 — Draft + Send (7 contacts, due Mar 14)
+**Status:** UNCLAIMED
+**Priority:** P1 — T2 due Mar 14 (Day 5 from Mar 10 T1)
+**Effort:** ~45 min
+**Output:** Touch 2 drafts for all 7 Tyler Kapeller referral contacts
+
+All 7 T1 messages sent Mar 10. T2 eligible starting Day 4 (Mar 14). Send on Mar 14 (Day 5).
+
+| # | Name | Company | Channel | T1 Angle | T2 Notes |
+|---|------|---------|---------|---------|---------|
+| 1 | Gopi Subramaniam | Staples | Email (Apollo) | Re-engagement | Re-engage on $50K Park deal + POC done |
+| 2 | Pranati Thankala | Aetna | Email (Apollo) | Re-engagement | Follow up on Dec demo |
+| 3 | Roy Life | Sandia National Labs | Email (Apollo) | Re-engagement | New angle from T1 |
+| 4 | Vernon Bryant | Tractor Supply | InMail (Sales Nav) | Seasonal retail regression | T2 InMail via Sales Nav (thread: 2-NTIwNTRkMWItYWU3Yy00Mjk1LWFkOTAtMzNmOTg4ZjU2M2ZjXzEwMA==). ⚠️ No email — InMail only. |
+| 5 | Devin Griffin | First Citizens Bank | Email (Apollo) | FCB digital banking QA | |
+| 6 | Jason Berube | First Citizens Bank | Email (Apollo) | FCB digital banking QA | |
+| 7 | Skie Kagulire | First Citizens Bank | Email (Apollo) | FCB digital banking QA | |
+
+**Rules:**
+- T2 = 40-70 words, new angle, light reference back to T1
+- Check batch tracker `tyler-referrals-outreach-mar10.html` for T1 content
+- Use C2 formula (new proof point, tie-back, CTA)
+- FCB same-company flag overridden (Tyler referral, Rob approved all 3)
+- Send emails via Apollo UI (LinkedIn Outbound sequence). Vernon Bryant = InMail via Sales Nav.
+- APPROVE SEND required before any sends
 
 ---
 

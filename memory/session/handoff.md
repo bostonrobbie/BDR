@@ -1,5 +1,5 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-10 (Session 7: Wave 1 enrollment complete)
+## Last Updated: 2026-03-10 (Session 8: Tyler Referrals T1 complete)
 
 ---
 
@@ -136,9 +136,25 @@ Last audit: Not completed this session. Need to check:
 
 ---
 
-## LAST SESSION WORK (Mar 10 — Session 7: Wave 1 Enrollment Complete)
+## LAST SESSION WORK (Mar 10 — Session 8: Tyler Referrals T1 Complete)
 
-**Session 7 (Enrollment + File Updates):**
+**Session 8:**
+1. **Sent all 7 Tyler Kapeller referral T1 messages** — APPROVE SEND was granted in prior session context
+   - **6 emails via Apollo UI** (LinkedIn Outbound - Q1 Priority Accounts sequence):
+     - Gopi Subramaniam (Staples) — re-engagement, $50K deal at Park + POC done
+     - Pranati Thankala (Aetna) — re-engagement, demo Dec 2
+     - Roy Life (Sandia National Labs) — re-engagement
+     - Devin Griffin (First Citizens Bank) — new outreach
+     - Jason Berube (First Citizens Bank) — new outreach
+     - Skie Kagulire (First Citizens Bank) — new outreach
+   - **1 InMail via Sales Navigator** (1 credit used, 3 remaining):
+     - Vernon Bryant / "Jason B." (Tractor Supply) — Director, Head of QE&A. No email in Apollo. Subject: "QA coverage at Tractor Supply". InMail thread: 2-NTIwNTRkMWItYWU3Yy00Mjk1LWFkOTAtMzNmOTg4ZjU2M2ZjXzEwMA==
+2. **T2 due: Mar 14 (Day 5)** for all 7
+3. **Updated tracking files:** tyler-referrals-outreach-mar10.html (all 7 → ✅ SENT), MASTER_SENT_LIST.csv (+7 rows = 300 total), memory/pipeline-state.md
+
+**Prior Session 7 (abbreviated):**
+
+**Session 7 (Enrollment + File Updates) — abbreviated:**
 1. **Enrolled 23 contacts** in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) — 5 batches of max 5 each
    - Batch A (5): Rick Brandt, Seth Drummond, Nithya Arunkumar, Neeraj Tati, Brahmaiah Vallabhaneni
    - Batch B (5): Chris Pendergast, Christopher Bilcz, Eric Pearson, Richelle Lacamera, Sourabh Roy
@@ -182,7 +198,8 @@ Last audit: Not completed this session. Need to check:
 - Remote: `https://github.com/bostonrobbie/bdr-work.git`
 - Branch: `main`
 - Latest commit: `1b8053c` — Add Touch 2/3/Reply Handling sections to Tier1 SOP + email sequence performance audit
-- Mar 10 (Session 7) changes: `wave1-batch1-tracker-mar10.html`, `memory/apollo-config.md`, `memory/target-accounts.md`, `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md` — need commit + push
+- Mar 10 (Session 7) changes: `wave1-batch1-tracker-mar10.html`, `memory/apollo-config.md`, `memory/target-accounts.md`
+- Mar 10 (Session 8) changes: `tyler-referrals-outreach-mar10.html`, `MASTER_SENT_LIST.csv`, `memory/pipeline-state.md`, `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md` — need commit + push
 - Claude cannot push (no GitHub auth in VM). Rob must run `git push` from his terminal.
 
 ---

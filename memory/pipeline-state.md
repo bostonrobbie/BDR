@@ -2,6 +2,18 @@
 
 ---
 
+## Mar 10 Status — Tyler Referrals T1 Complete
+
+**Date:** 2026-03-10
+**Action:** All 7 Tyler Kapeller referral T1 messages sent.
+- 6 emails via Apollo UI (LinkedIn Outbound sequence, robert.gorham@testsigma.com ✅)
+- 1 InMail via Sales Navigator (Vernon Bryant, Tractor Supply) — 1 credit used, 3 remaining
+**T2 due:** Mar 14 (Day 5) for all 7
+**Batch tracker:** `tyler-referrals-outreach-mar10.html`
+**MASTER_SENT_LIST.csv:** Updated (299 rows → 299 + 7 = 300 total, including header = 300 lines)
+
+---
+
 ## Mar 9 Status — T2 Drafts Approved (APPROVE SEND Granted)
 
 **Date:** 2026-03-09
@@ -93,6 +105,7 @@
 | Mar 4 | Batch 9 — 11 sent UNTRACKED (discovered Mar 6 via inbox sweep) | 11 | 215 |
 | Mar 6 | Batch 10 — 9 sent (3 free + 6 credit InMails) | 9 | 224 |
 | Mar 6 | Batch 11 — 4 sent (4 credit InMails) | 4 | 228 |
+| Mar 10 | Tyler Referrals T1 — 6 emails + 1 InMail (Vernon Bryant/Tractor Supply) | 7 | 235 |
 
 ### Email Send History
 | Date | Time | Recipients | Type | Status |
@@ -109,6 +122,7 @@
 | Mar 9 | ~2:00–3:06 PM ET | **B9 T2 (16 sent):** Georgii Petrosian (AuditBoard), Mohan Guruswamy (Tavant), Lueanne Fitzhugh (Cerner), Jeremy Cira (Kaseya), Chandana Ray (Persistent Systems), Martha Horns (Greenway Health), David Gustafson (HG Insights), Jiaping Shen (HackerRank), Sravanti Krothapalli (Quorum Software, sent to qbsol.com), Cooper Morrow (Jama Software), Manigandan Kanagasabai (Mediaocean), Leah Coates (Perforce), Kanan Hasanzade (Datto), Azam Quraishi (MTX Group), Grant Anderson (Lucid), Denise Barnett (Progress Software) | B9 Touch 2 — Variant A formula via Apollo UI | SENT — 16 emails. ⚠️ Drafts 1-16 sent from **robert.gorham@testsigma.net** (Apollo default was incorrectly .net — not caught until Draft 26). Rob aware. |
 | Mar 9 | ~2:00–3:06 PM ET | **B10 T2 (6 sent):** Josh Thayer (Jenius Bank), Elena Lysenko (CFSB), Tom Goody (Ncontracts), Francesco Leising (Fairfax Software), Chet West (Tempworks), Clint Parker (Simpro Group) | B10 Touch 2 — Variant A formula via Apollo UI | SENT — 6 emails. ⚠️ Drafts 18, 19, 21, 23, 24, 25 sent from **robert.gorham@testsigma.net** (same .net issue as B9 batch). **3 skipped:** Tim Wiseman (Draft 17) wrong owner/sequence; Jason Poole (Draft 20) wrong owner; LP Guo (Draft 22) no sequences in Apollo. |
 | Mar 9 | ~2:00–3:06 PM ET | **B11 T2 (3 sent):** Brad Askins (Trimble), Dan Heintzelman (Prevail Legal), Madhu Nedunuri (IDB Bank) | B11 Touch 2 — Variant A formula via Apollo UI | SENT — 3 emails from **robert.gorham@testsigma.com** ✅ (From address corrected starting with Draft 26). |
+| Mar 10 | Tyler Referrals T1 — 6 emails: Gopi Subramaniam (Staples), Pranati Thankala (Aetna), Roy Life (Sandia), Devin Griffin (FCB), Jason Berube (FCB), Skie Kagulire (FCB). 1 InMail: Vernon Bryant (Tractor Supply, 1 credit). | Tyler Kapeller referral T1 — LinkedIn Outbound sequence (email) + Sales Nav InMail | SENT — 6 emails via Apollo (robert.gorham@testsigma.com ✅), 1 InMail via Sales Nav. T2 due Mar 14. InMail credits: 3 remaining. Batch tracker: tyler-referrals-outreach-mar10.html |
 
 ### Mar 2 Batch 8 InMails (confirmed)
 | # | Name | Company | Title (Sales Nav) | Subject | Time | Credits |
