@@ -243,18 +243,22 @@ Built full end-to-end SOP covering:
 
 ---
 
-### TASK-014: Draft Wave 1 T1 + T2 Emails — Multi-Contact (6 accounts, 13 contacts)
-**Status:** IN PROGRESS — SOPs updated Mar 10, ready to build batch tracker + drafts
-**Priority:** P0 — ready to build NOW
-**Effort:** ~180 min (13 contacts × ~10 min research + draft each)
-**Output:** `wave1-batch1-tracker-mar10.html` with T1 + T2 drafts for all 13 contacts
+### TASK-014: Draft Wave 1 T1 + T2 Emails — Multi-Contact (6 accounts, 27 contacts)
+**Status:** IN PROGRESS — Steps A+B COMPLETE. Steps C+D (T1/T2 drafts) PENDING.
+**Priority:** P0 — enrollment done, ready to draft NOW
+**Effort:** ~180 min remaining (T1 + T2 drafts for 23 enrolled contacts)
+**Output:** `wave1-batch1-tracker-mar10.html` with T1 + T2 drafts for all 23 contacts
 
 **IMPORTANT:** Old wave1-prospecting-plan-mar9.html drafts are DEPRECATED. InMail drafts deleted. Start fresh email T1 drafts for all accounts. Multi-contact approach — ALL decision-makers in same batch.
 
-**Step A — Build batch tracker HTML first (before any drafts)**
+**✅ Step A COMPLETE (Mar 10, Session 7):** `wave1-batch1-tracker-mar10.html` built with 27 contacts across 6 accounts.
+
+**✅ Step B COMPLETE (Mar 10, Session 7):** 23 contacts enrolled in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e). 4 on HOLD (see below).
+
+**Step A — Build batch tracker HTML first (before any drafts)** ✅ DONE
 Create `wave1-batch1-tracker-mar10.html` with all 13 contacts, using the batch tracker format from sop-tam-outbound.md Part 9.
 
-**Step B — Pre-flight checks before drafting**
+**Step B — Pre-flight checks before drafting** ✅ DONE
 For each contact:
 1. Check MASTER_SENT_LIST.csv — if name+company found, skip
 2. Check DNC list in CLAUDE.md — if found, skip
@@ -266,22 +270,42 @@ Use the Contact Depth Rule from sop-tam-outbound.md Part 3:
 - YouTube (3 contacts) = High targeting — each gets unique product-area angle
 - Others (1-2 contacts) = Standard targeting
 
-**Full contact list with targeting instructions:**
-| # | Name | Account | Email | Targeting Level | T1 Angle |
-|---|------|---------|-------|-----------------|---------|
-| 1 | Rick Brandt | Cboe Global Markets | rbrandt@cboe.com ✅ | Standard | Finance/regression cycle |
-| 2 | Seth Drummond | Fidelity | seth.drummond@fidelity.com ✅ | Medium | Org-level — QA team productivity, Hansard |
-| 3 | Nithya Arunkumar | Fidelity | n.arunkumar@fidelity.com ✅ | Medium | Team-level — test creation/maintenance, CRED |
-| 4 | Chris Pendergast | Fidelity | chris.pendergast@fidelity.com ✅ | Medium | Different from Nithya — Fortune 100 3X story |
-| 5 | Rose Serao | JPMorgan Chase | rose.serao@chase.com ⚠️ VERIFY FIRST | Medium | Risk-based regression at banking scale |
-| 6 | Neeraj Tati | JPMorgan Chase | neeraj.tati@chase.com ✅ | Medium | Engineering/CI angle — different from Rose |
-| 7 | Brahmaiah Vallabhaneni | Commvault | bvallabhaneni@commvault.com ✅ | Medium | Enterprise productivity — Fortune 100 |
-| 8 | Jennifer Wang | Commvault | jenniferwang@commvault.com ✅ | Medium | Different angle — Cisco 35% regression |
-| 9 | Chamath Guneratne | TruStage | chamath.guneratne@trustage.com ✅ | Standard | Insurance/compliance — Hansard |
-| 10 | Maggie Redden | TruStage | maggie.redden@trustage.com ⚠️ VERIFY FIRST | Standard | Different angle from Chamath if verified |
-| 11 | John Harding | YouTube | jharding@youtube.com ✅ catch-all | High | Music platform — Nagra DTV |
-| 12 | Des Keane | YouTube | des@google.com ✅ | High | Infrastructure/reliability angle |
-| 13 | Hrishikesh Aradhye | YouTube | hrishi@google.com ✅ | High | Podcasts/Music subteam angle |
+**Full contact list (27 contacts — 23 enrolled, 4 HOLD):**
+| # | Name | Account | Email | Enrolled | Targeting | T1 Angle |
+|---|------|---------|-------|----------|-----------|---------|
+| 1 | Rick Brandt | Cboe Global Markets | rbrandt@cboe.com ✅ | ✅ | Standard | Finance/regression cycle |
+| 2 | Maurice Saunders | Cboe Global Markets | msaunders@cboe.com ✅ | ✅ | Standard | Same account, different angle |
+| 3 | Snezhana Ruseva | Cboe Global Markets | sruseva@cboe.com ✅ | ✅ | Standard | Same account, different angle |
+| 4 | Seth Drummond | Fidelity | seth.drummond@fidelity.com ✅ | ✅ | Medium | Org-level — QA team productivity, Hansard |
+| 5 | Nithya Arunkumar | Fidelity | n.arunkumar@fidelity.com ✅ | ✅ | Medium | Team-level — test creation/maintenance, CRED |
+| 6 | Chris Pendergast | Fidelity | chris.pendergast@fidelity.com ✅ | ✅ | Medium | Fortune 100 3X story |
+| 7 | Christopher Bilcz | Fidelity | christopher.bilcz@fmr.com ✅ | ✅ | Medium | VP tier, different angle |
+| 8 | Eric Pearson | Fidelity | ep@fidelity.com ✅ | ✅ | Medium | VP tier, different angle |
+| 9 | Richelle Lacamera | Fidelity | richelle.lacamera@fidelity.com ✅ | ✅ | Medium | Director tier |
+| 10 | Sourabh Roy | Fidelity | sourabh.roy2@fmr.com ✅ | ✅ | Medium | Director tier |
+| 11 | Padma Srikanth | Fidelity | padma.srikanth@fmr.com ✅ | ✅ | Medium | Director tier |
+| 12 | Neeraj Tati | JPMorgan Chase | neeraj.tati@chase.com ✅ | ✅ | Medium | Engineering/CI angle |
+| 13 | Rose Serao | JPMorgan Chase | rose.serao@chase.com ⚠️ extrapolated | 🚫 HOLD | Medium | Risk-based regression — verify email first |
+| 14 | Justin Hutchinson | JPMorgan Chase | justin.hutchinson@jpmchase.com ✅ | 🚫 HOLD | Medium | Ops QA concern — confirm software QA |
+| 15 | Nikki Urlaub | JPMorgan Chase | (unverified) | 🚫 HOLD | Medium | Ops QA concern — confirm software QA |
+| 16 | Brahmaiah Vallabhaneni | Commvault | bvallabhaneni@commvault.com ✅ | ✅ | Medium | Enterprise productivity — Fortune 100 |
+| 17 | Jennifer Drangstveit | Commvault | jennifer.drangstveit@cunamutual.com ✅ | ✅ | Medium | Different angle — Cisco 35% regression |
+| 18 | Arun Amarendran | Commvault | aamarendran@commvault.com ✅ | ✅ | Medium | Automation lead angle |
+| 19 | Prasad Alapati | Commvault | palapati@commvault.com ✅ | ✅ | Medium | Director tier |
+| 20 | Sucheth Ramgiri | Commvault | sramgiri@commvault.com ✅ | ✅ | Medium | Manager tier |
+| 21 | Chamath Guneratne | TruStage | chamath.guneratne@trustage.com ✅ | ✅ | Standard | Insurance/compliance — Hansard |
+| 22 | Maggie Redden | TruStage | maggie.redden@cunamutual.com ✅ | ✅ | Standard | Different angle from Chamath |
+| 23 | Jennifer Drangstveit | TruStage | jennifer.drangstveit@cunamutual.com ✅ | ✅ | Standard | Director tier |
+| 24 | Shawn Woods | TruStage | (TBD) | 🚫 HOLD | Standard | Below Director threshold — Rob to decide |
+| 25 | John Harding | YouTube | jharding@youtube.com ✅ catch-all | ✅ | High | Music platform — Nagra DTV |
+| 26 | Des Keane | YouTube | des@google.com ✅ catch-all | ✅ job_change override | High | Infrastructure/reliability angle |
+| 27 | Hrishikesh Aradhye | YouTube | hrishi@google.com ✅ catch-all | ✅ job_change override | High | Podcasts/Music subteam angle |
+
+**HOLD contacts — Rob action required:**
+- Rose Serao: Send or skip? Email extrapolated (rose.serao@chase.com pattern matches domain standard)
+- Justin Hutchinson: Ops QA or software QA? Title "QA Lead" — confirm scope before enrolling
+- Nikki Urlaub: Same ops QA concern
+- Shawn Woods: Below Director threshold — include or skip?
 
 **Step D — Build T2 drafts for same contacts**
 After T1 drafts complete. Use unified email-first formula (sop-tam-outbound.md Part 7): 4 parts, 50-70 words, engagement question CTA, different proof point from T1.
@@ -320,4 +344,4 @@ Review TAM-Outbound-SOP-draft-v1.html (now Draft v2). Check:
 
 ---
 
-*Updated by Claude — 2026-03-10 (Session 5)*
+*Updated by Claude — 2026-03-10 (Session 7)*

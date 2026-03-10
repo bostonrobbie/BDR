@@ -141,3 +141,97 @@ Append-only log. Each session adds one entry at the bottom.
 **Files to commit:** `sop-tam-outbound.md`, `sop-outreach.md`, `wave1-prospecting-plan-mar9.html`, all 3 session files. Rob must run `git push` from terminal.
 
 ---
+
+## 2026-03-10 — Session 5: TAM SOP v2 + YouTube Prospecting
+
+**Session type:** SOP refinement + contact research
+**What was done:**
+- Updated TAM-Outbound-SOP-draft-v1.html → Draft v2 with 4 major changes:
+  - T1 confirmed email-only (old InMail drafts deprecated)
+  - New unified T2 formula designed (email-first, no LinkedIn callback)
+  - TruStage confirmed CLEAN (Apollo: emailer_campaign_ids: [], last_activity_date: null)
+  - YouTube contact shortlist built
+- Apollo search for YouTube/Google Director+ contacts: 19 found, 5 with verified emails
+  - John Harding (VP Eng, YouTube Music & Premium) — jharding@youtube.com — PRIMARY — Apollo ID: 685908e0ad153600113e33a1
+  - Hrishikesh Aradhye (Sr Dir, Music & Podcasts) — hrishi@google.com
+  - Des Keane (Engineering Director, Video Infrastructure) — des@google.com
+  - Nils Krahnstoever (Director, YouTube) — nilsk@google.com
+- TruStage dedup confirmed — no prior BDR outreach
+- Created Apollo contacts for YouTube secondaries (Hrishi, Des)
+
+**Key decisions:**
+- John Harding = primary YouTube contact (direct product-domain fit: Music + Premium)
+- Catch-all domains for YouTube/Google — emails deliverable but not individually verified
+- T1 is email-only for Wave 1 (no InMail credits available)
+
+**Files updated:** TAM-Outbound-SOP-draft-v2, session files
+**Pending:** Wave 1 multi-contact enrollment (expanded roster)
+
+---
+
+## 2026-03-10 — Session 6: TAM SOP v3 + Multi-Contact Rule + Target Accounts Expansion
+
+**Session type:** SOP rules + contact roster expansion
+**What was done:**
+- Added multi-contact rule to sop-tam-outbound.md Part 3 — enroll ALL decision-makers per account in same batch (no more "defer backup contacts")
+- Added Contact Depth Rule — targeting formula: 1-2 contacts = Standard, 3-5 = Medium, 6+ = High
+- Added Apollo Task Queue SOP (Part 18) — Apollo is the primary follow-up controller post-enrollment
+- Added Session Recovery Protocol (Part 19) — exact steps for starting a session mid-wave
+- Updated target-accounts.md — Fidelity (8 contacts), Commvault (5 contacts), Chase (4 contacts), Cboe (3 contacts), TruStage (3 enrolled + 1 hold), YouTube (3 contacts) all expanded
+- Updated work-queue.md TASK-014 — expanded from 13 to 27 contacts, added Contact Depth targeting column
+
+**Key decisions:**
+- Fidelity = 8 contacts total (VP + Director tiers), Medium targeting, different angle per person
+- Commvault = 5 contacts, Medium targeting
+- Cboe = 3 contacts, Standard targeting
+- Maggie Redden (TruStage) email corrected: @trustage.com was extrapolated, actual = @cunamutual.com
+- Jennifer Drangstveit (Commvault) confirmed in Apollo — same name as TruStage contact, different person
+
+**Files updated:** sop-tam-outbound.md, target-accounts.md, work-queue.md, session files
+**Pending:** Build wave1-batch1-tracker-mar10.html + enroll contacts
+
+---
+
+## 2026-03-10 — Session 7: Wave 1 Enrollment Complete
+
+**Session type:** Apollo enrollment + file sync
+**Continued from:** Session 6 (context limit cutoff mid-enrollment)
+
+**What was done:**
+- Built `wave1-batch1-tracker-mar10.html` — 27 contacts across 6 accounts, color-coded rows, flags bar, enrollment + draft status columns
+- Enrolled 23 contacts in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) via robert.gorham@testsigma.com:
+  - Batch A (5): Rick Brandt, Seth Drummond, Nithya Arunkumar, Neeraj Tati, Brahmaiah Vallabhaneni
+  - Batch B (5): Chris Pendergast, Christopher Bilcz, Eric Pearson, Richelle Lacamera, Sourabh Roy
+  - Batch C (5): Padma Srikanth, Prasad Alapati, Maurice Saunders, Snezhana Ruseva, Chamath Guneratne
+  - Batch D (5): Sucheth Ramgiri, Arun Amarendran, Maggie Redden, Jennifer Drangstveit (TruStage)
+  - Batch E (3): John Harding (normal), Hrishikesh Aradhye + Des Keane (sequence_job_change: true override)
+- Updated wave1-batch1-tracker-mar10.html: enrolled count = 23, all Pending → ✅ Enrolled
+- Updated memory/apollo-config.md: added robert.gorham@testsigma.com (ID: 68e3b53ceaaf74001d36c206) as TAM Outbound ONLY
+- Updated memory/target-accounts.md: all 6 Wave 1 accounts with correct enrollment statuses; Maggie Redden email corrected to @cunamutual.com
+- Updated all 3 session files (handoff, work-queue, session-log)
+
+**Key technical notes:**
+- Apollo max 5 contacts per enrollment call — enforced 5-batch structure
+- Hrishi and Des flagged as `contacts_with_job_change` on first Batch E attempt — required retry with `sequence_job_change: true`
+- All enrolled contacts show `status: "paused"`, `inactive_reason: "Sequence inactive"` — expected for fully manual sequence
+- robert.gorham@testsigma.com (.com) is the ONLY email account for TAM Outbound enrollment (ID: 68e3b53ceaaf74001d36c206)
+
+**4 contacts on HOLD (Rob decision required):**
+- Rose Serao (Chase): extrapolated email — send or skip?
+- Justin Hutchinson (Chase): ops QA concern — confirm software QA scope
+- Nikki Urlaub (Chase): same ops QA concern
+- Shawn Woods (TruStage): below Director threshold
+
+**Next step (TASK-014 Steps C+D):** Draft T1 + T2 emails for 23 enrolled contacts. Read sop-tam-outbound.md first. Present BATCH SUMMARY. Wait for APPROVE SEND.
+
+**Files created/updated:**
+- `wave1-batch1-tracker-mar10.html` ✅
+- `memory/apollo-config.md` ✅
+- `memory/target-accounts.md` ✅
+- `memory/session/handoff.md` ✅
+- `memory/session/work-queue.md` ✅
+- `memory/session/session-log.md` ✅ (this entry)
+
+**Files to commit:** All 6 above. Rob must run `git push` from terminal.
+
+---

@@ -13,6 +13,7 @@
 | robert.gorham@testsigma.net | 68f65bdf998c4c0015f3446a | Yes |
 | robert.gorham@testsigmatech.in | 68f65c12ce7de000192da2e3 | No |
 | robert.gorham@testsigmaweb.com | 68f65c3af5fce700197d4f4c | No |
+| robert.gorham@testsigma.com | 68e3b53ceaaf74001d36c206 | **TAM Outbound ONLY** |
 
 ## Rob's Apollo Owner ID
 `68e16f05978e5e000d10a621`

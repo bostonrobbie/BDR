@@ -143,7 +143,9 @@ Rob has three distinct account lists assigned by Testsigma leadership, all store
 
 | Name | Title | Email | Email Status | Priority | Outreach Status |
 |------|-------|-------|-------------|----------|-----------------|
-| Rick Brandt | Senior Director, Quality Assurance Engineering | rbrandt@cboe.com | ✅ Verified | PRIMARY | 🟡 T1 Drafted |
+| Rick Brandt | Senior Director, Quality Assurance Engineering | rbrandt@cboe.com | ✅ Verified | PRIMARY | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Maurice Saunders | Senior Manager, Quality Assurance | msaunders@cboe.com | ✅ Verified | Same batch | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Snezhana Ruseva | Manager, DnA Software Engineering, Test | sruseva@cboe.com | ✅ Verified | Same batch | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
 
 ---
 
@@ -151,9 +153,14 @@ Rob has three distinct account lists assigned by Testsigma leadership, all store
 
 | Name | Title | Email | Email Status | Priority | Outreach Status |
 |------|-------|-------|-------------|----------|-----------------|
-| Seth Drummond | Vice President, Quality Assurance | seth.drummond@fidelity.com | ✅ Verified | PRIMARY | 🟡 Needs fresh email T1 draft |
-| Nithya Arunkumar | Director, Quality Assurance | n.arunkumar@fidelity.com | ✅ Verified | Same batch — different angle from Seth | 🟡 Needs fresh email T1 draft |
-| Chris Pendergast | Director, Quality Assurance | chris.pendergast@fidelity.com | ✅ Verified | Same batch — different proof point from Nithya | 🟡 Needs fresh email T1 draft |
+| Seth Drummond | Vice President, Quality Assurance | seth.drummond@fidelity.com | ✅ Verified | VP tier — PRIMARY | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Chris Pendergast | Vice President, Quality Engineering | chris.pendergast@fidelity.com | ✅ Verified | VP tier — same batch | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Christopher Bilcz | Vice President, Quality Engineering | christopher.bilcz@fmr.com | ✅ Verified | VP tier — same batch | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Eric Pearson | VP, Quality Assurance — Asset Allocation Technology | ep@fidelity.com | ✅ Verified | VP tier — same batch | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Nithya Arunkumar | Director, Quality Assurance | n.arunkumar@fidelity.com | ✅ Verified (Apollo shows stale "Principal SE" title) | Director tier — same batch | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Richelle Lacamera | Director, QA Management | richelle.lacamera@fidelity.com | ✅ Verified | Director tier — same batch | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Sourabh Roy | Director of QA — Green Meadows | sourabh.roy2@fmr.com | ✅ Verified | Director tier — same batch | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Padma Srikanth | Chapter Leader — Director of Quality Assurance | padma.srikanth@fmr.com | ✅ Verified | Director tier — same batch | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
 
 ---
 
@@ -161,8 +168,10 @@ Rob has three distinct account lists assigned by Testsigma leadership, all store
 
 | Name | Title | Email | Email Status | Priority | Outreach Status |
 |------|-------|-------|-------------|----------|-----------------|
-| Rose Serao | Vice President, Quality Assurance Manager | rose.serao@chase.com | ⚠️ Extrapolated | PRIMARY | 🟡 T1 Drafted |
-| Neeraj Tati | Director, Software Engineering | neeraj.tati@chase.com | ✅ Verified | Same batch — Engineering angle (after Rose email verified) | 🟡 Needs fresh email T1 draft |
+| Neeraj Tati | Director, Software Engineering | neeraj.tati@chase.com | ✅ Verified | Clean — enrolled | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Rose Serao | VP Quality Assurance Manager | rose.serao@chase.com | ⚠️ Extrapolated | PRIMARY — HOLD: email not Apollo-confirmed | ⏸ Hold (Rob must approve extrapolated email) |
+| Justin Hutchinson | Executive Director — Quality Analysis | justin.hutchinson@jpmchase.com | ✅ Verified | HOLD: "Quality Analysis" may be ops QA not software QA | ⏸ Hold (Rob must verify role is software testing) |
+| Nikki Urlaub | VP Quality Analysis Manager | nikki.urlaub@chase.com | ✅ Verified | HOLD: Same ops QA concern as Justin | ⏸ Hold (Rob must verify role is software testing) |
 
 > DNC note: Jitesh Biswal (DNC) is at @jpmorgan.com — different domain from @chase.com. No conflict.
 
@@ -172,8 +181,11 @@ Rob has three distinct account lists assigned by Testsigma leadership, all store
 
 | Name | Title | Email | Email Status | Priority | Outreach Status |
 |------|-------|-------|-------------|----------|-----------------|
-| Brahmaiah Vallabhaneni | Vice President of Engineering | bvallabhaneni@commvault.com | ✅ Verified | PRIMARY | 🟡 Needs fresh email T1 draft |
-| Jennifer Wang | Director of Engineering | jenniferwang@commvault.com | ✅ Verified | Same batch — different angle from Brahmaiah | 🟡 Needs fresh email T1 draft |
+| Brahmaiah Vallabhaneni | Vice President of Engineering | bvallabhaneni@commvault.com | ✅ Verified | PRIMARY — VP tier | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Arun Amarendran | Vice President of Engineering | aamarendran@commvault.com | ✅ Verified | VP tier — same batch | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Jennifer Wang | Director of Engineering | jenniferwang@commvault.com | ✅ Verified | Director tier — same batch | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Prasad Alapati | Senior Software QA Manager | palapati@commvault.com | ✅ Verified | Manager tier — same batch | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Sucheth Ramgiri | Principal QA Engineer III — AI & Automation Strategy | sramgiri@commvault.com | ✅ Verified | IC influencer — AI & Automation Strategy role | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
 
 ---
 
@@ -183,9 +195,11 @@ Rob has three distinct account lists assigned by Testsigma leadership, all store
 
 | Name | Title | Email | Email Status | Priority | Outreach Status |
 |------|-------|-------|-------------|----------|-----------------|
-| Chamath Guneratne | IT Director, Quality Engineering | chamath.guneratne@trustage.com | ✅ Verified | PRIMARY | 🟡 Needs fresh email T1 draft |
-| Maggie Redden | Director, Software Engineering | maggie.redden@trustage.com | ⚠️ Extrapolated (@trustage.com domain pattern — old domain was @cunamutual.com) | Same batch — verify email via Apollo enrichment first | ⚠️ Verify then draft |
-| Amanda Hambly | QA Manager | (no email found) | — | Below-Director — skip unless no Directors found | ⏸ Hold |
+| Chamath Guneratne | IT Director, Quality Engineering | chamath.guneratne@trustage.com | ✅ Verified | PRIMARY | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Maggie Redden | Director, Software Engineering | maggie.redden@cunamutual.com | ✅ Verified (Apollo confirmed @cunamutual.com — old domain still active) | Same batch | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Jennifer Drangstveit | IT Director, Solution Delivery | jennifer.drangstveit@cunamutual.com | ✅ Verified | Same batch | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| Shawn Woods | QA / Release Manager | shawn.woods@trustage.com | ✅ Verified | HOLD: below Director threshold (3 Directors already enrolled) | ⏸ Hold (Rob must decide) |
+| Amanda Hambly | QA Manager | (no email found) | — | Below-Director — skip | ⏸ Hold |
 
 ---
 
@@ -194,9 +208,9 @@ Rob has three distinct account lists assigned by Testsigma leadership, all store
 | Name | Title | Email | Email Status | Priority | Outreach Status |
 |------|-------|-------|-------------|----------|-----------------|
 | Ramona Bobohalma | Director of Engineering | bobohalma@youtube.com | ✅ Verified but DISQUALIFIED — Zürich, Switzerland. Non-US fails ICP criterion. | DO NOT CONTACT | ❌ Disqualified (non-US) |
-| **John Harding** | VP Engineering, YouTube Music & Premium | jharding@youtube.com | ✅ Catch-all verified (Google domain). Apollo ID: 685908e0ad153600113e33a1 | PRIMARY | 🟡 Needs fresh email T1 draft |
-| **Des Keane** | Engineering Director, Video Infrastructure | des@google.com | ✅ Verified | Same batch — infrastructure/reliability angle | 🟡 Needs fresh email T1 draft |
-| **Hrishikesh Aradhye** | Sr. Director, Music & Podcasts | hrishi@google.com | ✅ Verified | Same batch if >3 contacts enrolled (High personalization level) | 🟡 Consider for batch |
+| **John Harding** | VP Engineering, YouTube Music & Premium | jharding@youtube.com | ✅ Catch-all verified. Apollo ID: 685908e0ad153600113e33a1 | PRIMARY | 📤 In Sequence (TAM Outbound, enrolled Mar 10) |
+| **Des Keane** | Engineering Director, Video Infrastructure | des@google.com | ✅ Verified (Apollo headline stale "Coach" — real role confirmed) | Same batch — infrastructure/reliability angle | 📤 In Sequence (TAM Outbound, enrolled Mar 10 — job_change flag bypassed) |
+| **Hrishikesh Aradhye** | Sr. Director, Music & Podcasts | hrishi@google.com | ✅ Verified | Same batch — Music & Podcasts angle | 📤 In Sequence (TAM Outbound, enrolled Mar 10 — job_change flag bypassed) |
 
 > **Note:** YouTube/Google is a mega-enterprise (100,000+ employees). Targeting level = HIGH. Each contact must be written to their specific product area. Run expanded Apollo search for additional US-based QA/Eng Directors at YouTube specifically (not just Google broadly).
 
