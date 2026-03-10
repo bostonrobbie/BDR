@@ -77,6 +77,68 @@ Send session ended mid-batch without updating pipeline-state.md. Credits not dec
 
 ---
 
+## INC-004: Wrong Company in Subject Lines — Mar 7 WV Emails (Discovered 2026-03-09)
+**Severity:** MEDIUM
+
+### What Happened
+Two WV (Website Visitor) emails sent Mar 7 contained the wrong company name in the subject line. Template variables were not properly substituted before send.
+
+### Affected Prospects
+| Name | Company | Subject Sent | Wrong Company Referenced |
+|------|---------|-------------|--------------------------|
+| Chris Bell | Crestron | "Regression test coverage during Xero's platform expansion, Chris" | Xero (not Crestron) |
+| Davor Milosevic | IQVIA | "QE load coverage as Vimeo moves beyond B2B, Davor" | Vimeo (not IQVIA) |
+
+### Root Cause
+Subject line templates for WV batch were not checked for wrong-company variable substitution before send. Previous prospect's company name carried over into subject.
+
+### Remediation
+- Cannot unsend. Both contacts are live outreach and may not notice or respond.
+- No corrective email sent — would draw more attention to the error.
+- Monitor for replies. If either responds, handle naturally without referencing the error.
+- Pre-send QA rule: subject line company name must match recipient's company before any email send.
+
+---
+
+## INC-005: Cross-Channel Double-Sends — LinkedIn InMail + WV Email (Discovered 2026-03-09)
+**Severity:** LOW-MEDIUM
+
+### What Happened
+Four prospects received both a LinkedIn InMail (cold outreach) AND a WV email (Website Visitor sequence) — two separate first-touch cold contacts. Dedup check was not run across channels before WV email batch was built.
+
+### Affected Prospects
+| Name | Company | LinkedIn InMail | WV Email | Gap |
+|------|---------|----------------|----------|-----|
+| Jason Schwichtenberg | WebMD | Batch 8, Mar 3 | WV Email Mar 3 | Same day |
+| Jamie Kurt | Vertafore | Batch 5B, Feb 27 | WV Email Mar 3 | 4 days |
+| Kerri McGee | Sapiens | Batch 5A, Feb 27 | WV Email Mar 3 | 4 days |
+| Lyle Landry | Availity | Batch 5B, Feb 27 | WV Email Mar 3 | 4 days |
+
+### Root Cause
+Pre-batch dedup check (sop-send.md Step 0) was applied within LinkedIn batches but not cross-referenced against the WV email build. WV email batch was built against Apollo Website Visitor list without checking MASTER_SENT_LIST for prior LinkedIn InMail sends.
+
+### Remediation
+- Cannot unsend. All four have received both touches.
+- Treat as having consumed T1 and T2 in both channels. Do not send any further follow-ups — they've been contacted twice.
+- Add all four to DNC for future batches.
+- Pre-batch rule update: MASTER_SENT_LIST dedup must apply to ALL channels, not just same-channel, before any batch (LinkedIn or email) is built.
+
+---
+
+## INC-006: Feb 27 WV Email Batch — 11 Contacts Never Added to MASTER_SENT_LIST (Discovered 2026-03-09)
+**Severity:** LOW
+
+### What Happened
+11 contacts emailed Feb 27-28 via WV (Website Visitor) email batch were never logged in MASTER_SENT_LIST. Discovered via Gmail sent audit Mar 9.
+
+### Affected Contacts
+Tom Yang (Versant Media), Jeff Barnes (Digi), Jose Moreno (Flywire), Eyal Luxenburg (Island), Todd Willms (Bynder), Jason Ruan (Binance), Namita Jain (OverDrive), Pallavi Sheshadri (Origami Risk), Gunasekaran Chandrasekaran (FloQast), Andy Nelson (Rightworks — T1 only, T2 Mar 6 was tracked), Eduardo Menezes (Fulgent Genetics — T1 only, T2 Mar 6 was tracked).
+
+### Remediation
+All 11 added to MASTER_SENT_LIST Mar 9 under "WV Email Batch Feb27" / "WV Email Batch Feb28" with "Gmail audit Mar9 (was missing)" notation.
+
+---
+
 ## Draft Safety & Cadence Enforcement Rules
 
 ### Rule 1: Date-Gating

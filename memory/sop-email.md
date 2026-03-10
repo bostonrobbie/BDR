@@ -63,7 +63,7 @@ An engagement question — NOT a meeting ask. Must echo the specific tension est
 - Proof point rotation REQUIRED — T2 customer story must be different from T1 story
 - Word count: 60-90 words (slightly longer than original 40-70 due to fuller structure)
 - Subject line: "[topic] at [Company]" format (e.g., "QA cycles at AuditBoard", "Test maintenance at Kaseya")
-- Send from: robert.gorham@testsigma.com ONLY
+- Send via: **Apollo UI only** — complete the Apollo sequence task to send. robert.gorham@testsigma.com is the linked sending account in Apollo. NEVER send outreach directly through Gmail MCP.
 - NEVER SEND without Rob's explicit "APPROVE SEND"
 
 ### Proof Point Rotation Reference
@@ -87,7 +87,7 @@ An engagement question — NOT a meeting ask. Must echo the specific tension est
 ### Sequence Position
 
 - Step 2 of "LinkedIn Outbound - Q1 Priority Accounts" (Day 5, Manual Email task)
-- Apollo task note instructs: "Send via robert.gorham@testsigma.com. Use T2 locked formula. Do NOT reference T1 InMail directly."
+- Apollo task note instructs: "Send via Apollo UI using robert.gorham@testsigma.com linked account. Use T2 locked formula. Do NOT reference T1 InMail directly."
 - Day count starts from Day 1 InMail send date
 
 ## Canonical References

@@ -62,7 +62,7 @@ Cisco, Samsung, Honeywell, Bosch, Nokia, Nestle, KFC, DHL, Zeiss, Axel Springer,
 |------|--------|-------|
 | LinkedIn Sales Navigator | Primary | Browser automation for prospecting + InMail |
 | Apollo | Connected (MCP) | Enrichment-first. ~6,879 lead credits. |
-| Gmail | Connected (MCP) | **ALWAYS send from robert.gorham@testsigma.com. NEVER use rgorham369@gmail.com for work.** |
+| Gmail | Connected (MCP) | **Read/monitor only via MCP (replies, warm lead tracking). ALL outreach emails must be sent through Apollo UI using the robert.gorham@testsigma.com linked account — NOT directly via Gmail MCP. NEVER use rgorham369@gmail.com for work.** |
 | Google Calendar | Connected (MCP) | Meeting scheduling |
 | Google Drive | Connected (MCP) | File storage, batch trackers |
 | Salesforce | SKIP | Too much 2FA. Use Apollo instead. |
