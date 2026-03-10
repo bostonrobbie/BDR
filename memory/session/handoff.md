@@ -1,5 +1,5 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-10 (Session 8: Tyler Referrals T1 complete)
+## Last Updated: 2026-03-10 (Session 9: Wave 2 drafts complete, Wave 1 sends still blocked)
 
 ---
 
@@ -136,6 +136,34 @@ Last audit: Not completed this session. Need to check:
 
 ---
 
+## TAM OUTBOUND WAVE 2 — CURRENT STATE (Mar 10 — Session 9)
+
+**16 T1 email drafts COMPLETE. Awaiting APPROVE SEND.**
+
+**File:** `tamob-wave2-draft-mar10.html`
+**Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
+
+| Account | Contacts | Enrolled | Status |
+|---------|----------|----------|--------|
+| GEICO | Marcela Fetters, Roberto Bouza, Sambhav Taneja | ❌ Not yet | T1 drafted. Awaiting APPROVE SEND. |
+| Checkr | Chandni Jain, Sarah Kneedler, Krista Moroder, Cristian Brotto | ❌ Not yet | T1 drafted. Awaiting APPROVE SEND. |
+| EA | Yu Jin, Maalika Tadinada | ❌ Not yet | T1 drafted. ea.com = catch-all domain. |
+| Cetera | Richelle Paulsen, Anton Aleksandrov | ❌ Not yet | T1 drafted. Awaiting APPROVE SEND. |
+| OneMain | Saeyed Shamlou | ❌ Not yet | T1 drafted. 12/12 MQS. Top priority. |
+| Mindbody | Karen Teng, Henry Rose, Bipin Bhoite | ❌ Not yet | T1 drafted. Awaiting APPROVE SEND. |
+| HashiCorp | Shyamendra Singh | ❌ Not yet | T1 drafted. LOW priority (IBM acq). |
+
+**Send order:** HIGH first (Saeyed, Marcela, Chandni, Sarah, Richelle, Karen) → MED → LOW
+
+**After APPROVE SEND:**
+1. Create Apollo contacts for any not in system
+2. Enroll all 16 in TAM Outbound (robert.gorham@testsigma.com .com only)
+3. Send T1 emails via Apollo UI
+4. Log 16 rows in MASTER_SENT_LIST.csv
+5. T2 eligible Day 5 from each send date
+
+---
+
 ## LAST SESSION WORK (Mar 10 — Session 8: Tyler Referrals T1 Complete)
 
 **Session 8:**
@@ -199,7 +227,8 @@ Last audit: Not completed this session. Need to check:
 - Branch: `main`
 - Latest commit: `1b8053c` — Add Touch 2/3/Reply Handling sections to Tier1 SOP + email sequence performance audit
 - Mar 10 (Session 7) changes: `wave1-batch1-tracker-mar10.html`, `memory/apollo-config.md`, `memory/target-accounts.md`
-- Mar 10 (Session 8) changes: `tyler-referrals-outreach-mar10.html`, `MASTER_SENT_LIST.csv`, `memory/pipeline-state.md`, `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md` — need commit + push
+- Mar 10 (Session 8) changes: `tyler-referrals-outreach-mar10.html`, `MASTER_SENT_LIST.csv`, `memory/pipeline-state.md`
+- Mar 10 (Session 9) changes: `tamob-wave2-draft-mar10.html`, `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md` — need commit + push
 - Claude cannot push (no GitHub auth in VM). Rob must run `git push` from his terminal.
 
 ---

@@ -274,3 +274,48 @@ Append-only log. Each session adds one entry at the bottom.
 **Files to commit:** tyler-referrals-outreach-mar10.html, MASTER_SENT_LIST.csv, memory/pipeline-state.md, memory/session/handoff.md, memory/session/work-queue.md, memory/session/session-log.md. Rob must run `git push` from terminal.
 
 ---
+
+## 2026-03-10 — Session 9: Wave 2 Prospecting + Drafts Complete
+
+**Session type:** TAM Outbound Wave 2 prospecting + T1 draft creation
+**Continued from:** Session 8 (context limit cutoff; Wave 1 Chrome sends still blocked)
+
+**What was done:**
+- Read sop-outreach.md (Enterprise Email T1 Formula v3, A+ Research Protocol, MQS scoring rules)
+- Read sop-tam-outbound.md (Contact Depth Rule, Research-to-Message Mapping, dedup protocol)
+- Confirmed Wave 1 T1 APPROVE SEND still in effect — blocked on Chrome extension reconnect
+- Identified 16 Wave 2 contacts across 7 Factor/ICP accounts (GEICO, Checkr, EA, Cetera, OneMain, Mindbody, HashiCorp)
+- Ran Apollo bulk org enrichment on all 7 companies (org size, industry)
+- Ran 6 parallel web research searches to build A+ research menus per account
+- Deduped all 16 contacts against MASTER_SENT_LIST.csv (292 rows) — all 16 clean, 0 flags
+- Drafted T1 emails for all 16 contacts following Enterprise Email T1 Formula v3
+- Applied Contact Depth Rule: GEICO (3) = Medium, Checkr (4) = Medium, Mindbody (3) = Medium, others = Standard
+- QA-scored all 16 drafts on 12-point MQS scale — 1 perfect score (Saeyed Shamlou 12/12)
+- **Created** `tamob-wave2-draft-mar10.html` — full batch tracker with all 16 T1 drafts, research menus, per-contact metadata, copy buttons, MQS scores, objection/response pairs, status dropdowns
+
+**Wave 2 roster (16 contacts, 7 accounts):**
+| Account | Contacts | Priority range | MQS range |
+|---------|----------|---------------|-----------|
+| GEICO | Marcela Fetters, Roberto Bouza, Sambhav Taneja | HIGH/MED | 10-11/12 |
+| Checkr | Chandni Jain, Sarah Kneedler, Krista Moroder, Cristian Brotto | HIGH/MED | 10-11/12 |
+| EA | Yu Jin, Maalika Tadinada | MED | 10/12 |
+| Cetera | Richelle Paulsen, Anton Aleksandrov | HIGH/MED | 10-11/12 |
+| OneMain | Saeyed Shamlou | HIGH | 12/12 |
+| Mindbody | Karen Teng, Henry Rose, Bipin Bhoite | HIGH/MED | 10-11/12 |
+| HashiCorp | Shyamendra Singh | LOW | 9/12 |
+
+**Key decisions:**
+- All proof points use vertical-only framing (no named customers per SOP data rule)
+- HashiCorp flagged LOW — IBM acquisition, ICP match weaker. Include but deprioritize.
+- EA catch-all domain (ea.com) — deliverable but not individually verified
+- OneMain email domain confirmed @omf.com (not onemainfinancial.com)
+- All 16 deduped clean against MASTER_SENT_LIST.csv — 0 flags
+
+**Awaiting:** APPROVE SEND from Rob before any enrollment or sends
+
+**Files created:**
+- `tamob-wave2-draft-mar10.html` ✅ (16 T1 drafts, all QA-scored)
+
+**Files to commit:** tamob-wave2-draft-mar10.html, memory/session/handoff.md, memory/session/work-queue.md, memory/session/session-log.md. Rob must run `git push` from terminal.
+
+---

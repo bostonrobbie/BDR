@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-10
+## Last Updated: 2026-03-10 (Session 9 — Wave 2 drafts complete)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 1. `git pull origin main`
@@ -184,27 +184,10 @@ Draft responses per reply handling SOP (Section 13 of Tier1_Intent_Sequence_SOP_
 ---
 
 ### TASK-011: Prospect Wave 1 Factor Enterprise Accounts
-**Status:** IN PROGRESS (Mar 10 — SOP built, drafts ready, awaiting APPROVE SEND)
+**Status:** DONE (Mar 10, Sessions 4-7) — 23 enrolled, 4 on HOLD, T1 drafts PENDING in TASK-014
 **Priority:** P1 — sequence is ready, accounts are identified
 **Effort:** ~90 min
-**Output:** Batch tracker file for Wave 1 TAM prospects
-
-Identify QA/testing leaders at Factor enterprise accounts and enroll in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e).
-
-Priority accounts:
-- JPMorgan Chase (Note: Jitesh Biswal = DNC — skip him)
-- Cboe Global Markets
-- Commvault
-- TruStage
-- Fidelity (confirm right contact)
-- YouTube / Google (confirm right contact)
-
-Rules:
-- Use Apollo enrichment to find QA Manager/Director/Lead titles
-- Dedup against MASTER_SENT_LIST.csv before enrolling
-- Enrollment email: robert.gorham@testsigma.com (.com only)
-- Create batch tracker BEFORE any drafts
-- ALL messages need Rob's "APPROVE SEND" first
+**Output:** `wave1-batch1-tracker-mar10.html` ✅ + 23 contacts enrolled in TAM Outbound
 
 ---
 
@@ -241,6 +224,45 @@ Built full end-to-end SOP covering:
 - Follow-up loop
 - Wave 1 current state (4/6 ready to send, 2 flagged)
 - Proof point vertical matching table
+
+---
+
+### TASK-016: TAM Outbound Wave 2 — Enroll + Send T1 (16 contacts, awaiting APPROVE SEND)
+**Status:** UNCLAIMED — awaiting Rob's APPROVE SEND
+**Priority:** P1 — drafts complete, ready to execute
+**Effort:** ~60 min (Apollo enrollment + Apollo email sends)
+**Output:** Wave 2 contacts enrolled in TAM Outbound; T1 sends logged in MASTER_SENT_LIST.csv
+
+16 T1 email drafts complete in `tamob-wave2-draft-mar10.html`. All deduped clean. All QA-scored.
+
+**Send order:** HIGH first → MED → LOW (skip HashiCorp if credits are tight)
+
+| # | Name | Company | Email | Priority | MQS |
+|---|------|---------|-------|----------|-----|
+| 1 | Saeyed Shamlou | OneMain | saeyed.shamlou@omf.com | HIGH | 12/12 |
+| 2 | Marcela Fetters | GEICO | mfetters@geico.com | HIGH | 11/12 |
+| 3 | Chandni Jain | Checkr | chandni.jain@checkr.com | HIGH | 11/12 |
+| 4 | Sarah Kneedler | Checkr | sarah.kneedler@checkr.com | HIGH | 11/12 |
+| 5 | Richelle Paulsen | Cetera | richelle.paulsen@cetera.com | HIGH | 11/12 |
+| 6 | Karen Teng | Mindbody | karen.teng@mindbodyonline.com | HIGH | 11/12 |
+| 7 | Roberto Bouza | GEICO | rbouza@geico.com | MED | 10/12 |
+| 8 | Sambhav Taneja | GEICO | sambhav_taneja@geico.com | MED | 10/12 |
+| 9 | Krista Moroder | Checkr | krista.moroder@checkr.com | MED | 10/12 |
+| 10 | Cristian Brotto | Checkr | cristian.brotto@checkr.com | MED | 10/12 |
+| 11 | Yu Jin | EA | yjin@ea.com | MED | 10/12 |
+| 12 | Maalika Tadinada | EA | mtadinada@ea.com | MED | 10/12 |
+| 13 | Anton Aleksandrov | Cetera | anton.aleksandrov@cetera.com | MED | 10/12 |
+| 14 | Henry Rose | Mindbody | henry.rose@mindbodyonline.com | MED | 10/12 |
+| 15 | Bipin Bhoite | Mindbody | bipin.bhoite@mindbodyonline.com | MED | 10/12 |
+| 16 | Shyamendra Singh | HashiCorp | shyamendra.singh@hashicorp.com | LOW | 9/12 |
+
+**Steps after APPROVE SEND:**
+1. Create Apollo contacts for any not yet in system
+2. Enroll all 16 in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) via robert.gorham@testsigma.com
+3. Send T1 emails via Apollo UI (copy from tracker)
+4. Log all 16 rows in MASTER_SENT_LIST.csv
+5. Update tamob-wave2-draft-mar10.html: T1 Sent status + date
+6. T2 due Day 5 from send date
 
 ---
 
