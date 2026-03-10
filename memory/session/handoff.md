@@ -97,6 +97,35 @@ Last audit: Not completed this session. Need to check:
 
 ---
 
+## TAM OUTBOUND WAVE 1 — CURRENT STATE (Mar 10 — Session 6)
+
+**Session 6 changes:**
+1. Multi-contact rule added to sop-tam-outbound.md (Part 3) — enroll ALL decision-makers per account, no "defer backup contacts"
+2. Contact Depth Rule added — targeting formula based on contact count (1-2 = standard, 3-5 = medium, 6+ = high)
+3. Apollo Task Queue SOP added (Part 18) — Apollo is the primary follow-up controller; daily: open TAM Outbound → Tasks tab → work tasks due
+4. Session Recovery Protocol added (Part 19) — exact steps for any session that starts mid-wave
+5. target-accounts.md updated — Fidelity/Commvault/Chase backup contacts now "same batch" not "defer"
+6. work-queue.md TASK-014 updated — now covers 13 contacts across 6 accounts with full targeting instructions
+
+**Next action: TASK-014 — Build wave1-batch1-tracker-mar10.html + draft T1/T2 for all 13 contacts**
+
+**Wave 1 summary (13 contacts, 6 accounts):**
+| Account | Contacts | Status |
+|---------|----------|--------|
+| Cboe Global Markets | 1 — Rick Brandt | Needs T1 draft |
+| Fidelity | 3 — Seth, Nithya, Chris | Needs T1 draft (Medium targeting) |
+| JPMorgan Chase | 2 — Rose (verify), Neeraj | Rose email extrapolated — verify first |
+| Commvault | 2 — Brahmaiah, Jennifer | Needs T1 draft (Medium targeting) |
+| TruStage | 2 — Chamath, Maggie (verify) | Chamath clean. Maggie email unverified. |
+| YouTube | 3 — John, Des, Hrishi | High targeting — product-area specific |
+
+**Apollo Sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
+**Enrolled contacts:** 0
+**Steps due in Apollo:** None (nothing enrolled yet)
+**All steps manual. Enrollment email: robert.gorham@testsigma.com (.com ONLY)**
+
+---
+
 ## LAST SESSION WORK (Mar 10 — TAM SOP v2 + YouTube Prospecting)
 
 **Session 3 (TAM Sequence Build):**

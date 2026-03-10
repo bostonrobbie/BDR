@@ -1,14 +1,33 @@
 # Target Accounts — Rob Gorham NAMER
 
-## ⚡ PROSPECTING RULE (Effective Mar 9, 2026)
+## ⚡ PROSPECTING RULES (Effective Mar 10, 2026)
 
 **The TAM list (312 accounts) + Factor accounts (38) are the ONLY authorized prospecting universe.**
 No open Sales Nav prospecting outside these lists. Goal: systematic full coverage of every account to hit intro meeting → demo quota.
 
 All Factor accounts are a subset of the TAM (37 of 38 appear in TAM CSV; PGA of America is Factor-only).
 
+### Multi-Contact Rule (Effective Mar 10, 2026)
+**Find and enroll EVERY decision-maker at each account.** The goal is maximum account coverage — not just one primary contact. Pull ALL QA/Engineering Director+ contacts with findable emails and enroll them in the TAM Outbound sequence in the same batch.
+
+Decision-maker titles (in priority order):
+1. VP/Director of QA, Quality Assurance, Quality Engineering
+2. VP/Director of Engineering (if no QA-specific title found)
+3. QA Manager / Engineering Manager (for mid-size accounts <2,000 employees)
+4. IT Director, Quality Engineering (exact ICP match)
+
+**Targeting formula — personalization scales with account contact count:**
+| Contacts Found | Personalization Level Required |
+|----------------|-------------------------------|
+| 1-2 contacts | Standard — enterprise formula is fine |
+| 3-5 contacts | Medium — unique role scope + different proof points per person |
+| 6+ contacts | High — treat each as an individual campaign; group by subteam if possible |
+
+**No "hold backup contacts" rule.** Old SOP said to defer backup contacts until primary's T1 is sent. This is REMOVED. Enroll all decision-makers in the same batch. Personalize each email to their specific role/scope so they don't read as identical if colleagues compare.
+
 **Coverage tracker:** `/Work/tam-coverage-tracker.html` — interactive dashboard with filters by status, ICP, region
 **Data file:** `/Work/tam-coverage-tracker.csv` — machine-readable version
+**Session recovery:** If starting fresh, check Apollo (TAM Outbound sequence → Tasks tab) for what's currently due, then cross-reference batch tracker HTML files in `/Work/` for draft content. Do NOT re-research contacts already in the enriched roster below.
 
 **Coverage summary as of Mar 9, 2026:**
 | Status | Count |
@@ -132,9 +151,9 @@ Rob has three distinct account lists assigned by Testsigma leadership, all store
 
 | Name | Title | Email | Email Status | Priority | Outreach Status |
 |------|-------|-------|-------------|----------|-----------------|
-| Seth Drummond | Vice President, Quality Assurance | seth.drummond@fidelity.com | ✅ Verified | PRIMARY | 🟡 T1 Drafted |
-| Nithya Arunkumar | Director, Quality Assurance | n.arunkumar@fidelity.com | ✅ Verified | Backup — defer, same-company rule | ⏸ Hold |
-| Chris Pendergast | Director, Quality Assurance | chris.pendergast@fidelity.com | ✅ Verified | Backup — defer, same-company rule | ⏸ Hold |
+| Seth Drummond | Vice President, Quality Assurance | seth.drummond@fidelity.com | ✅ Verified | PRIMARY | 🟡 Needs fresh email T1 draft |
+| Nithya Arunkumar | Director, Quality Assurance | n.arunkumar@fidelity.com | ✅ Verified | Same batch — different angle from Seth | 🟡 Needs fresh email T1 draft |
+| Chris Pendergast | Director, Quality Assurance | chris.pendergast@fidelity.com | ✅ Verified | Same batch — different proof point from Nithya | 🟡 Needs fresh email T1 draft |
 
 ---
 
@@ -143,7 +162,7 @@ Rob has three distinct account lists assigned by Testsigma leadership, all store
 | Name | Title | Email | Email Status | Priority | Outreach Status |
 |------|-------|-------|-------------|----------|-----------------|
 | Rose Serao | Vice President, Quality Assurance Manager | rose.serao@chase.com | ⚠️ Extrapolated | PRIMARY | 🟡 T1 Drafted |
-| Neeraj Tati | Director, Software Engineering | neeraj.tati@chase.com | ✅ Verified | Secondary (Engineering title, not QA) | ⏸ Hold |
+| Neeraj Tati | Director, Software Engineering | neeraj.tati@chase.com | ✅ Verified | Same batch — Engineering angle (after Rose email verified) | 🟡 Needs fresh email T1 draft |
 
 > DNC note: Jitesh Biswal (DNC) is at @jpmorgan.com — different domain from @chase.com. No conflict.
 
@@ -153,8 +172,8 @@ Rob has three distinct account lists assigned by Testsigma leadership, all store
 
 | Name | Title | Email | Email Status | Priority | Outreach Status |
 |------|-------|-------|-------------|----------|-----------------|
-| Brahmaiah Vallabhaneni | Vice President of Engineering | bvallabhaneni@commvault.com | ✅ Verified | PRIMARY | 🟡 T1 Drafted |
-| Jennifer Wang | Director of Engineering | jenniferwang@commvault.com | ✅ Verified | Backup — defer, same-company rule | ⏸ Hold |
+| Brahmaiah Vallabhaneni | Vice President of Engineering | bvallabhaneni@commvault.com | ✅ Verified | PRIMARY | 🟡 Needs fresh email T1 draft |
+| Jennifer Wang | Director of Engineering | jenniferwang@commvault.com | ✅ Verified | Same batch — different angle from Brahmaiah | 🟡 Needs fresh email T1 draft |
 
 ---
 
@@ -164,9 +183,9 @@ Rob has three distinct account lists assigned by Testsigma leadership, all store
 
 | Name | Title | Email | Email Status | Priority | Outreach Status |
 |------|-------|-------|-------------|----------|-----------------|
-| Chamath Guneratne | IT Director, Quality Engineering | chamath.guneratne@trustage.com | ✅ Verified | PRIMARY | 🟡 T1 Drafted |
-| Maggie Redden | Director, Software Engineering | maggie.redden@cunamutual.com | ❌ Old domain (@cunamutual.com = former brand name). Try maggie.redden@trustage.com (unverified) | Secondary | ⏸ Hold |
-| Amanda Hambly | QA Manager | (no email found) | — | Below-Director — skip | ⏸ Hold |
+| Chamath Guneratne | IT Director, Quality Engineering | chamath.guneratne@trustage.com | ✅ Verified | PRIMARY | 🟡 Needs fresh email T1 draft |
+| Maggie Redden | Director, Software Engineering | maggie.redden@trustage.com | ⚠️ Extrapolated (@trustage.com domain pattern — old domain was @cunamutual.com) | Same batch — verify email via Apollo enrichment first | ⚠️ Verify then draft |
+| Amanda Hambly | QA Manager | (no email found) | — | Below-Director — skip unless no Directors found | ⏸ Hold |
 
 ---
 
@@ -175,9 +194,11 @@ Rob has three distinct account lists assigned by Testsigma leadership, all store
 | Name | Title | Email | Email Status | Priority | Outreach Status |
 |------|-------|-------|-------------|----------|-----------------|
 | Ramona Bobohalma | Director of Engineering | bobohalma@youtube.com | ✅ Verified but DISQUALIFIED — Zürich, Switzerland. Non-US fails ICP criterion. | DO NOT CONTACT | ❌ Disqualified (non-US) |
-| **TBD — US contact needed** | Director+ QA or Engineering | — | — | PRIMARY — find via Sales Nav | ❌ No contact yet |
+| **John Harding** | VP Engineering, YouTube Music & Premium | jharding@youtube.com | ✅ Catch-all verified (Google domain). Apollo ID: 685908e0ad153600113e33a1 | PRIMARY | 🟡 Needs fresh email T1 draft |
+| **Des Keane** | Engineering Director, Video Infrastructure | des@google.com | ✅ Verified | Same batch — infrastructure/reliability angle | 🟡 Needs fresh email T1 draft |
+| **Hrishikesh Aradhye** | Sr. Director, Music & Podcasts | hrishi@google.com | ✅ Verified | Same batch if >3 contacts enrolled (High personalization level) | 🟡 Consider for batch |
 
-> **Next action for YouTube:** Run Sales Nav search for YouTube/Google employees with Director+ title + United States location filter. Will cost 1 InMail credit. T1 draft is ready (see wave1-prospecting-plan-mar9.html, YouTube tab).
+> **Note:** YouTube/Google is a mega-enterprise (100,000+ employees). Targeting level = HIGH. Each contact must be written to their specific product area. Run expanded Apollo search for additional US-based QA/Eng Directors at YouTube specifically (not just Google broadly).
 
 ---
 

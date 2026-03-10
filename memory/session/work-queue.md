@@ -1,5 +1,12 @@
 # Work Queue
-## Last Updated: 2026-03-07
+## Last Updated: 2026-03-10
+
+## ⚡ SESSION START PROTOCOL (read every time)
+1. `git pull origin main`
+2. Read this file + handoff.md
+3. Open Apollo → TAM Outbound - Rob Gorham → Tasks tab → check what's due today
+4. Cross-reference batch tracker HTML for draft content
+5. Continue from there. Do NOT re-research anything already in the tracker.
 
 Tasks are sorted by priority. Claim one task at a time by updating status to IN_PROGRESS.
 
@@ -236,30 +243,64 @@ Built full end-to-end SOP covering:
 
 ---
 
-### TASK-014: Draft Wave 1 T1 Email Drafts — Fresh Start (6 accounts)
-**Status:** UNCLAIMED — awaiting next session. Rob must give APPROVE SEND before anything sends.
-**Priority:** P0 — ready to build
-**Effort:** ~120 min (research + draft for 6 accounts)
-**Output:** Wave 1 batch tracker HTML with T1 + T2 drafts for all 6 accounts
+### TASK-014: Draft Wave 1 T1 + T2 Emails — Multi-Contact (6 accounts, 13 contacts)
+**Status:** IN PROGRESS — SOPs updated Mar 10, ready to build batch tracker + drafts
+**Priority:** P0 — ready to build NOW
+**Effort:** ~180 min (13 contacts × ~10 min research + draft each)
+**Output:** `wave1-batch1-tracker-mar10.html` with T1 + T2 drafts for all 13 contacts
 
-**IMPORTANT:** Old wave1-prospecting-plan-mar9.html drafts are DEPRECATED. InMail drafts deleted. Start fresh email T1 drafts for all accounts.
+**IMPORTANT:** Old wave1-prospecting-plan-mar9.html drafts are DEPRECATED. InMail drafts deleted. Start fresh email T1 drafts for all accounts. Multi-contact approach — ALL decision-makers in same batch.
 
-Accounts ready to draft (email T1 via TAM Outbound Step 1):
-1. Rick Brandt — Cboe Global Markets (rbrandt@cboe.com ✓) — needs fresh email T1
-2. Seth Drummond — Fidelity (seth.drummond@fidelity.com ✓) — needs fresh email T1
-3. Rose Serao — JPMorgan Chase (rose.serao@chase.com ⚠ extrapolated) — verify email first, then draft
-4. Brahmaiah Vallabhaneni — Commvault (bvallabhaneni@commvault.com ✓) — needs fresh email T1
-5. Chamath Guneratne — TruStage — ✅ CONFIRMED CLEAN Mar 10. Needs contact enrichment + fresh T1.
-6. John Harding — YouTube — VP Eng YouTube Music & Premium — jharding@youtube.com ✅ verified — Apollo ID: 685908e0ad153600113e33a1. Needs fresh T1.
+**Step A — Build batch tracker HTML first (before any drafts)**
+Create `wave1-batch1-tracker-mar10.html` with all 13 contacts, using the batch tracker format from sop-tam-outbound.md Part 9.
 
-**Formula to use:** Enterprise Email T1 (HC1 intro, SMYKM subject, 75-100 words). See TAM-Outbound-SOP-draft-v1.html Section 7 (Draft v2).
+**Step B — Pre-flight checks before drafting**
+For each contact:
+1. Check MASTER_SENT_LIST.csv — if name+company found, skip
+2. Check DNC list in CLAUDE.md — if found, skip
+3. Verify email status (✅ verified / ⚠️ extrapolated)
 
-**T2 formula to use:** Unified email-first formula (4 parts, 50-70 words, engagement question CTA). See SOP Section 7 / sop-tam-outbound.md Part 7.
+**Step C — Research + draft T1 for each contact**
+Use the Contact Depth Rule from sop-tam-outbound.md Part 3:
+- Fidelity (3 contacts) = Medium targeting — each gets unique role-scope angle + different proof point
+- YouTube (3 contacts) = High targeting — each gets unique product-area angle
+- Others (1-2 contacts) = Standard targeting
 
-**Post-send steps (per account):**
-1. Log to MASTER_SENT_LIST.csv (B_Wave1)
-2. Enroll in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) via Apollo — use Step 1
-3. Step 2 email task due Day 5 from send date
+**Full contact list with targeting instructions:**
+| # | Name | Account | Email | Targeting Level | T1 Angle |
+|---|------|---------|-------|-----------------|---------|
+| 1 | Rick Brandt | Cboe Global Markets | rbrandt@cboe.com ✅ | Standard | Finance/regression cycle |
+| 2 | Seth Drummond | Fidelity | seth.drummond@fidelity.com ✅ | Medium | Org-level — QA team productivity, Hansard |
+| 3 | Nithya Arunkumar | Fidelity | n.arunkumar@fidelity.com ✅ | Medium | Team-level — test creation/maintenance, CRED |
+| 4 | Chris Pendergast | Fidelity | chris.pendergast@fidelity.com ✅ | Medium | Different from Nithya — Fortune 100 3X story |
+| 5 | Rose Serao | JPMorgan Chase | rose.serao@chase.com ⚠️ VERIFY FIRST | Medium | Risk-based regression at banking scale |
+| 6 | Neeraj Tati | JPMorgan Chase | neeraj.tati@chase.com ✅ | Medium | Engineering/CI angle — different from Rose |
+| 7 | Brahmaiah Vallabhaneni | Commvault | bvallabhaneni@commvault.com ✅ | Medium | Enterprise productivity — Fortune 100 |
+| 8 | Jennifer Wang | Commvault | jenniferwang@commvault.com ✅ | Medium | Different angle — Cisco 35% regression |
+| 9 | Chamath Guneratne | TruStage | chamath.guneratne@trustage.com ✅ | Standard | Insurance/compliance — Hansard |
+| 10 | Maggie Redden | TruStage | maggie.redden@trustage.com ⚠️ VERIFY FIRST | Standard | Different angle from Chamath if verified |
+| 11 | John Harding | YouTube | jharding@youtube.com ✅ catch-all | High | Music platform — Nagra DTV |
+| 12 | Des Keane | YouTube | des@google.com ✅ | High | Infrastructure/reliability angle |
+| 13 | Hrishikesh Aradhye | YouTube | hrishi@google.com ✅ | High | Podcasts/Music subteam angle |
+
+**Step D — Build T2 drafts for same contacts**
+After T1 drafts complete. Use unified email-first formula (sop-tam-outbound.md Part 7): 4 parts, 50-70 words, engagement question CTA, different proof point from T1.
+
+**Step E — Present BATCH SUMMARY block to Rob**
+Format per sop-tam-outbound.md Part 10. Wait for "APPROVE SEND."
+
+**Step F — Post-send (after Rob's APPROVE SEND)**
+For each contact sent:
+1. Enroll in TAM Outbound (ID: 69afff8dc8897c0019b78c7e) via Apollo — mark Step 1 complete
+2. Log row in MASTER_SENT_LIST.csv: [Name, email, Company, Title, Email, Send Date, B_Wave1]
+3. Update batch tracker HTML: Status → "T1 Sent [date]"
+4. Update tam-coverage-tracker.csv: account status → "📤 In Sequence"
+
+**Apollo task queue becomes the follow-up controller after enrollment.** Each enrolled contact auto-generates a Step 2 task for Day 5. Check Apollo daily for tasks due.
+
+**T1 formula:** Enterprise Email T1 (HC1 intro, SMYKM subject, 75-100 words). sop-tam-outbound.md Part 6.
+**T2 formula:** Unified email-first (4 parts, 50-70 words, engagement question). sop-tam-outbound.md Part 7.
+**Enrollment email:** robert.gorham@testsigma.com (.com ONLY)
 
 ---
 

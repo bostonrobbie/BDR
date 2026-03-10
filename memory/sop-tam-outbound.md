@@ -101,11 +101,25 @@ Search parameters:
 - Sales Nav is required for LinkedIn InMail sends regardless
 
 **Contact Selection Rules:**
-- Per Rob's instruction: No limit on simultaneous contacts per company
-- Each message will be so tailored it won't appear mass-produced
-- HOWEVER: enroll contacts in prioritized order — most senior first
-- If two contacts have the same seniority: prefer QA-specific title over Engineering generic title
-- Mark additional same-company contacts as "Secondary — enroll after primary's T1 is sent"
+- **Get every decision-maker you can find.** The goal is maximum account coverage, not just one contact. Pull ALL QA/Engineering Director+ contacts with findable emails.
+- No limit on simultaneous contacts per company. Enroll all decision-makers together.
+- Each message must be personalized enough that if two colleagues compare notes, the emails read as distinct and role-specific — not mass-produced.
+- Enroll in order: most senior first, but do NOT hold backups. If Fidelity has a VP and two Directors, all three go in the same batch.
+- If two contacts have the same seniority: prefer QA-specific title over Engineering generic title.
+
+### Contact Depth Rule — Targeting Formula
+
+The number of decision-makers found at an account determines how personalized each message must be. More contacts available = higher risk of internal comparison = higher personalization required.
+
+| Contacts Found | Personalization Level | What "Personalized" Means |
+|----------------|----------------------|--------------------------|
+| 1-2 at company | Standard | Enterprise formula (HC1 + SMYKM) is sufficient. Role + vertical + proof point. No need for hyper-specific detail. |
+| 3-5 at company | Medium | Each email must reference their specific role scope (e.g., "mobile QA" vs "API testing" vs "platform regression"). Different proof points per person. |
+| 6+ at company | High | Each email must be written as if sent only to that individual. Unique opener tied to their team/scope, unique proof point, unique angle. Treat each as a standalone campaign. |
+
+**How to find contact count:** Run the Apollo search (see Part 3 steps above) and count verified + unverified results before drafting. Let the count determine how deep you go on research per person.
+
+**Mega-enterprise note (Google, JPMorgan, Fidelity, EA, etc.):** At 10,000+ employees, you will often find 10-20+ QA/Eng contacts. Still enroll all decision-makers, but group them by subteam/platform if possible (e.g., YouTube Music vs. YouTube Studio vs. YouTube Infrastructure). Each subteam gets a distinct angle.
 
 ---
 
@@ -300,6 +314,8 @@ Before writing ANY draft, create the batch tracker HTML file.
 [Full Name], [email], [Company], [Title], [Channel: LinkedIn InMail or Email], [Send Date], [B_Wave1 or Wave2_BatchN]
 ```
 
+**Apollo task queue is the primary follow-up controller.** The batch tracker HTML is the audit trail and draft storage — it is NOT what drives daily follow-up. After each T1 send, enroll the contact in TAM Outbound (Step 1 complete) and Apollo auto-generates all remaining tasks on the correct days. See Part 18 for full Apollo task control SOP.
+
 ---
 
 ## Part 10: Approval Flow
@@ -375,34 +391,43 @@ After each batch is complete:
 
 ## Part 14: Wave 1 Current State (as of Mar 10, 2026)
 
-| # | Account | Contact | Email | T1 Type | Status |
-|---|---------|---------|-------|---------|--------|
-| 1 | Cboe Global Markets | Rick Brandt, Sr. Dir QA | rbrandt@cboe.com ✓ | InMail | ✅ Draft ready — clear to send |
-| 2 | Fidelity Investments | Seth Drummond, VP QA | seth.drummond@fidelity.com ✓ | InMail | ✅ Draft ready — clear to send |
-| 3 | JPMorgan Chase | Rose Serao, VP QA Manager | rose.serao@chase.com ⚠ extrapolated | InMail | ⚠️ Verify email before sending |
-| 4 | Commvault | Brahmaiah Vallabhaneni, VP Eng | bvallabhaneni@commvault.com ✓ | InMail | ✅ Draft ready — clear to send |
-| 5 | TruStage | Chamath Guneratne, IT Dir QE | chamath.guneratne@trustage.com ✓ | InMail | ⚠️ HOLD — Rob must confirm prior outreach was Shakeel's |
-| 6 | YouTube/Google | US contact TBD | None verified | InMail | ❌ BLOCKED — need US Director |
+**UPDATED STATE — Mar 10, 2026 (multi-contact approach, email T1 only)**
 
-**T1 drafts:** All 4 clear-to-send accounts have complete drafts in `wave1-prospecting-plan-mar9.html` (MQS 9-10/12). Drafts are InMail format, Sales Nav send.
+All T1s are email-only via Apollo Step 1 (robert.gorham@testsigma.com). Old InMail drafts from wave1-prospecting-plan-mar9.html are DEPRECATED. Build fresh email T1 + T2 drafts per TASK-014.
 
-**IMPORTANT — Sequence update:** After Wave 1 T1 sends, enroll contacts in **TAM Outbound - Rob Gorham** (`69afff8dc8897c0019b78c7e`). The old wave1-prospecting-plan-mar9.html says "LinkedIn Outbound Q1" — that is WRONG for TAM accounts. Use TAM Outbound for all Wave 1 accounts.
+| # | Account | Contact | Title | Email | Email Status | Outreach Status |
+|---|---------|---------|-------|-------|-------------|-----------------|
+| 1 | Cboe Global Markets | Rick Brandt | Sr. Director, QA Engineering | rbrandt@cboe.com | ✅ Verified | Needs fresh T1 email draft |
+| 2 | Fidelity Investments | Seth Drummond | VP, Quality Assurance | seth.drummond@fidelity.com | ✅ Verified | Needs fresh T1 email draft |
+| 3 | Fidelity Investments | Nithya Arunkumar | Director, QA | n.arunkumar@fidelity.com | ✅ Verified | Needs fresh T1 email draft (same batch — different angle from Seth) |
+| 4 | Fidelity Investments | Chris Pendergast | Director, QA | chris.pendergast@fidelity.com | ✅ Verified | Needs fresh T1 email draft (same batch — different angle from Seth + Nithya) |
+| 5 | JPMorgan Chase | Rose Serao | VP, QA Manager | rose.serao@chase.com | ⚠️ Extrapolated | Verify email first, then draft |
+| 6 | JPMorgan Chase | Neeraj Tati | Director, SW Engineering | neeraj.tati@chase.com | ✅ Verified | Needs fresh T1 email draft (Engineering title — secondary; enroll same batch after Rose confirmed) |
+| 7 | Commvault | Brahmaiah Vallabhaneni | VP, Engineering | bvallabhaneni@commvault.com | ✅ Verified | Needs fresh T1 email draft |
+| 8 | Commvault | Jennifer Wang | Director, Engineering | jenniferwang@commvault.com | ✅ Verified | Needs fresh T1 email draft (same batch — different angle from Brahmaiah) |
+| 9 | TruStage | Chamath Guneratne | IT Director, QE | chamath.guneratne@trustage.com | ✅ Verified | ✅ Confirmed CLEAN (Shakeel's prior AE outreach). Needs fresh T1 email draft. |
+| 10 | TruStage | Maggie Redden | Director, SW Engineering | maggie.redden@trustage.com | ⚠️ Extrapolated (@trustage.com domain pattern) | Try to verify via Apollo enrichment before including |
+| 11 | YouTube / Google | John Harding | VP Engineering, YouTube Music & Premium | jharding@youtube.com | ✅ Catch-all | Primary YouTube contact. Apollo ID: 685908e0ad153600113e33a1. Needs fresh T1. |
+| 12 | YouTube / Google | Des Keane | Engineering Director, Video Infrastructure | des@google.com | ✅ Verified | Secondary. Enroll same batch. Different angle (infrastructure/reliability). |
+| 13 | YouTube / Google | (search for more US QA/Eng Directors) | — | — | — | Run expanded Apollo search for YouTube/Google US QA titles |
 
-**Credit situation:** 4 InMail credits remaining (as of Mar 6). Wave 1 needs 6. Options:
-- Option A: Send top 4 (Cboe, Fidelity, Chase, Commvault) now via InMail, wait for monthly reset for TruStage + YouTube
-- Option B: Send TruStage via email (verified email exists — chamath.guneratne@trustage.com), save InMail for YouTube US contact once found
-- Recommended: Option A for first 4, then reassess. Check credit reset date in Sales Nav.
+**Fidelity personalization note (3 contacts — Medium targeting level):**
+- Seth (VP QA): Organization-level angle — overall regression strategy, QA team productivity
+- Nithya (Director QA): Team execution angle — test creation speed, maintenance burden
+- Chris (Director QA): Different proof point than Nithya — if Nithya gets Hansard, Chris gets CRED
 
-**Fidelity backup contacts (same-company, defer per wave1 plan):**
-- Nithya Arunkumar, Director QA — n.arunkumar@fidelity.com ✓
-- Chris Pendergast, Director QA — chris.pendergast@fidelity.com ✓
-- Per Rob's "no max per company" instruction: these can be enrolled AFTER Seth's T1 is sent — include in Wave 1 Batch 2
+**Chase personalization note (2 contacts — Medium targeting level):**
+- Rose (VP QA): Executive angle — coverage at scale, risk-based regression
+- Neeraj (Director SW Eng): Engineering angle — CI/CD pipeline test speed, developer productivity
 
-**Chase backup contact:**
-- Neeraj Tati, Director SW Eng — neeraj.tati@chase.com ✓ (Engineering title, not QA — secondary persona, enroll after Rose)
+**Commvault personalization note (2 contacts — Medium targeting level):**
+- Brahmaiah (VP Eng): Executive angle — QA team productivity multiplier, 3X Fortune 100 story
+- Jennifer (Director Eng): Tactical angle — specific platform migration or Cisco 35% regression reduction story
 
-**TruStage backup:**
-- Maggie Redden, Dir SW Eng — maggie.redden@cunamutual.com ⚠ OLD DOMAIN (try @trustage.com pattern unverified)
+**YouTube personalization note (3+ contacts — High targeting level):**
+- John Harding (VP, Music & Premium): Music platform angle — coverage for streaming features, Nagra DTV proof point
+- Des Keane (Director, Video Infrastructure): Infrastructure/reliability angle — test automation for video pipeline
+- Additional contacts found: write to their specific product area
 
 ---
 
@@ -454,6 +479,95 @@ Claude's role for calls:
 - Alert Rob: "[Contact] at [Company] — TAM Outbound Step [4/5/6] call task due today"
 - If Rob asks for a call prep brief: run `sales:call-prep` skill
 - After call: update batch tracker with call outcome (VM / No answer / Connected / Follow-up)
+
+---
+
+---
+
+## Part 18: Apollo Task Queue — Primary Follow-up Controller
+
+**Apollo is the source of truth for what to do next.** Not the batch tracker HTML. Not the work-queue. Apollo.
+
+When a T1 email is sent and the contact is enrolled in TAM Outbound (Step 1 complete), Apollo auto-schedules every subsequent task:
+- Step 2 task auto-created for Day 5 (T2 email)
+- Step 3 task auto-created for Day 10 (LinkedIn connection request)
+- Steps 4-6 auto-created for Days 15/21/28 (calls)
+- Step 7 auto-created for Day 35 (breakup email)
+
+**How to use Apollo as the daily controller:**
+1. Open Apollo → Sequences → TAM Outbound - Rob Gorham
+2. Click "Tasks" tab → filter by "Due Today" or "Due This Week"
+3. For each task: identify the contact, look up their draft in the batch tracker HTML
+4. Present draft to Rob (or confirm it's ready) → Rob gives APPROVE SEND → send
+5. Mark task complete in Apollo → Apollo auto-advances the contact to the next step
+6. After sending: log send date in batch tracker HTML (Status column)
+
+**What to do if Apollo shows 0 tasks:** Either no contacts are enrolled yet, or all active contacts are between steps. Check enrolled contacts list in sequence. This is normal on Day 2-4 (between T1 and T2).
+
+**Apollo enrollment flags for TAM Outbound:**
+```
+sequence_no_email: true
+sequence_active_in_other_campaigns: true
+sequence_finished_in_other_campaigns: true (if contact was in a prior sequence)
+```
+Email account: `robert.gorham@testsigma.com` (.com ONLY — not .net, .in, or .com.in)
+Batch enrollment: max 5 at a time to avoid 500 errors.
+
+**After each T1 send:**
+1. Enroll in TAM Outbound immediately (same session, same day)
+2. Mark Step 1 complete in Apollo
+3. Update batch tracker HTML: Status → "T1 Sent [date]"
+4. Add row to MASTER_SENT_LIST.csv: [Name, email, Company, Title, Email, Send Date, B_Wave1]
+5. Do NOT wait to enroll — if you wait, the task calendar shifts and T2 will be late
+
+**Credit note:** TAM Outbound enrollment uses zero InMail credits. All steps are manual email or phone. Credits are only spent on LinkedIn InMails sent OUTSIDE the sequence.
+
+---
+
+## Part 19: Session Recovery Protocol
+
+Sessions break. When a new session starts mid-wave, this is the exact recovery sequence:
+
+### Step 1 — Always run first (every session)
+```
+git pull origin main
+Read: AGENTS.md
+Read: memory/session/handoff.md
+Read: memory/session/work-queue.md
+```
+
+### Step 2 — Check Apollo task queue
+1. Use Apollo MCP: search contacts in TAM Outbound sequence
+2. Check which steps are due today or overdue
+3. Cross-reference batch tracker HTML (wave[N]-batch[N]-tracker-[date].html) for draft content
+4. If task is due and draft exists → present to Rob for APPROVE SEND
+5. If task is due and draft does NOT exist → draft it now, present, wait for approval
+
+### Step 3 — Check for new replies
+1. Search Gmail for replies from any TAM contact (search by company domain or from:email addresses in batch tracker)
+2. Classify: Positive / Timing / Negative / Curiosity
+3. If positive/curious: update warm-leads.md, hold sequence, handle per reply SOP
+
+### Step 4 — Confirm where TASK-014 stands
+Read work-queue.md TASK-014 status. The task has sub-steps. Check which accounts have:
+- T1 drafted but not sent → re-present batch summary for APPROVE SEND
+- T1 sent but not enrolled in Apollo → enroll immediately
+- T2 task due in Apollo → draft and present
+- No contact found yet → run Apollo search
+
+### What NOT to do on session recovery
+- Do NOT re-research contacts already in the batch tracker
+- Do NOT re-draft T1s already marked "Draft Ready" in the batch tracker
+- Do NOT enroll contacts a second time (check Apollo first — search by name + company)
+- Do NOT re-send emails already sent (check MASTER_SENT_LIST.csv first)
+
+### State is stored in 4 places (in priority order)
+1. **Apollo task queue** — what's due today. Check this first.
+2. **Batch tracker HTML** (wave[N]-batch[N]-tracker-[date].html) — contact details, draft status, email content
+3. **memory/session/handoff.md** — high-level state snapshot from last session
+4. **MASTER_SENT_LIST.csv** — what has already been sent (dedup check)
+
+When in doubt: Apollo + batch tracker HTML will tell you everything you need to continue.
 
 ---
 
