@@ -662,3 +662,47 @@ Y02 Ash Pedgaonkar, Y06 Suchith Chandran, V01 Ted Barker, V04 Aleck Gandel, CH01
 **Commits this session:** Pending (see below)
 **Unpushed commits (Rob must push):** All prior + this session's commit
 **Next priority:** Open Apollo Tasks tab immediately — Wave 1 T2 tasks due Mar 12 (TOMORROW). Tackle TASK-017 first. Then TASK-018 (Sucheth Ramgiri cleanup). Wave 3 T2 = TASK-020, due Mar 16.
+
+---
+
+## 2026-03-11 — Session 20: Wave 3 T1 Sends Complete
+
+**Session type:** Apollo email sends (Wave 3 T1 continuation)
+**What was done:**
+- Continued from Session 19 — resumed at Suchith Chandran (Y06), 5th of 9 remaining Wave 3 T1 tasks
+- Sent all 9 remaining Wave 3 T1 emails via Apollo TAM Outbound Tasks tab (Send Now)
+- All subject lines fixed (Apollo auto-populated wrong subjects — triple-click + retype)
+- All bodies injected via JS `document.execCommand('insertText')` on Quill editor
+- Verified each send with "Changes saved" toast confirmation
+- Stopped at Yu Jin (EA) — Wave 2 T2 task, not Wave 3 T1
+
+**Session 20 sends (9 contacts):**
+| Contact | Company | Email | Subject | Result |
+|---------|---------|-------|---------|--------|
+| Sampson Reider (CH01) | Charlie Health | sam.reider@charliehealth.com | Sam's quality coverage at Charlie Health | ✅ Sent (prior context) |
+| Ted Barker (V01) | Veradigm | ted.barker@veradigm.com | Ted's QA coverage at Veradigm | ✅ Sent (prior context) |
+| Aleck Gandel (V04) | Veradigm | aleck.gandel@allscripts.com | Aleck's QE coverage at Veradigm | ✅ Sent (prior context) |
+| Ash Pedgaonkar (Y02) | Yahoo | ash@yahooinc.com | Ash's test coverage at Yahoo | ✅ Sent (prior context) |
+| Suchith Chandran (Y06) | Yahoo | suchith@yahooinc.com | Suchith's test automation at Yahoo | ✅ Sent |
+| Garrick Scott (L04) | L3Harris | garrick.scott@l3harris.com | Garrick's software testing at L3Harris | ✅ Sent |
+| Ashwin Vaswani (CH04) | Charlie Health | ashwin.vaswani@charliehealth.com | Ashwin's test automation at Charlie Health | ✅ Sent |
+| Rachel Fingeroth (L05) | L3Harris | rachel.fingeroth@l3harris.com | Rachel's engineering coverage at L3Harris | ✅ Sent |
+| Madina Zabran (CH02) | Charlie Health | madina.zabran@charliehealth.com | Madina's test coverage at Charlie Health | ✅ Sent |
+
+**Wave 3 T1 totals:**
+- Sessions 17-18: 21 sent
+- Session 19: 3 sent (Sarah Huang, Matthew Bennett, Madison Waterman)
+- Session 20: 9 sent (above)
+- **Total: 33 of 35 sent. 2 future-dated (Christine Gamache/TELUS, Brooks Foley/GE HealthCare).**
+
+**Technical notes:**
+- Apollo auto-populates subjects from contact name + company — never matches SMYKM draft subjects. Triple-click + retype every time.
+- JS execCommand body injection confirmed reliable for all sends.
+- After Madina Zabran, Apollo advanced to Yu Jin (EA) — Wave 2 T2. Stopped there.
+
+**Files updated:**
+- `memory/session/handoff.md` ✅ — Wave 3 T1 status updated to 33/35, Session 20 sends logged
+- `memory/session/work-queue.md` ✅ — header updated, TASK-017 still P0 (Wave 2 T2 in queue, Wave 1 T2 due Mar 12)
+- `memory/session/session-log.md` ✅ — this entry
+
+**Next priority:** TASK-017 — Wave 2 T2 tasks are NOW in Apollo Tasks tab (12 tasks, overdue). Wave 1 T2 due Mar 12 (tomorrow). Draft T2s and send next session.

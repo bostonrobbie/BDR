@@ -1,5 +1,5 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-11 (Session 19: Wave 3 T1 sends continued. 3 more sent via Apollo Tasks tab — Sarah Huang, Matthew Bennett, Madison Waterman. Total: 24/35 T1 sent. 11 contacts enrolled, future-dated tasks not yet due. Wave 1 T2 URGENT due Mar 12.)
+## Last Updated: 2026-03-11 (Session 20: All 9 remaining Wave 3 T1 tasks sent via Apollo Tasks tab — Sampson Reider, Ted Barker, Aleck Gandel, Ash Pedgaonkar, Suchith Chandran, Garrick Scott, Ashwin Vaswani, Rachel Fingeroth, Madina Zabran. Total: 33/35 T1 sent. 2 still future-dated (Christine Gamache/TELUS, Brooks Foley/GE HealthCare). Wave 2 T2 NOW IN APOLLO QUEUE (12 tasks). Wave 1 T2 due Mar 12.)
 
 ---
 
@@ -226,12 +226,25 @@ Wave 3 T1 enrolled Mar 11. T2 tasks will appear in Apollo ~Mar 15-16. Check Apol
 ## TAM OUTBOUND WAVE 3 — CURRENT STATE (Mar 11 — Sessions 17-19)
 
 **✅ ALL 35 T1 EMAILS ENROLLED — Mar 11, 2026**
-**📧 T1 SEND STATUS (Session 19): 24 of 35 T1 emails sent via Apollo Tasks tab. 11 contacts enrolled, tasks not yet due (future-dated — will appear in Apollo Tasks tab automatically).**
+**📧 T1 SEND STATUS (Session 20): 33 of 35 T1 emails sent via Apollo Tasks tab. 2 enrolled with future-dated T1 tasks (Christine Gamache/TELUS, Brooks Foley/GE HealthCare) — will surface in Apollo automatically. Wave 3 T1 sends are effectively COMPLETE for now.**
 
 **File:** `tamob-batch-20260311-1.html` (172KB — 35 contact cards, MQS 11-12/12, A/B tested)
 **Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
 **T2 due:** Mar 16 (Day 5 from Mar 11 send date) for all 35
 **Step 1 active count after enrollment:** 48 (Wave 3 added 15 net new to Step 1)
+
+**Session 20 sends (Mar 11) — 9 contacts, all via Apollo Tasks tab Send Now:**
+| Contact | Company | Email | Subject | Status |
+|---------|---------|-------|---------|--------|
+| Sampson Reider (CH01) | Charlie Health | sam.reider@charliehealth.com | Sam's quality coverage at Charlie Health | ✅ T1 Sent Mar 11 |
+| Ted Barker (V01) | Veradigm | ted.barker@veradigm.com | Ted's QA coverage at Veradigm | ✅ T1 Sent Mar 11 |
+| Aleck Gandel (V04) | Veradigm | aleck.gandel@allscripts.com | Aleck's QE coverage at Veradigm | ✅ T1 Sent Mar 11 |
+| Ash Pedgaonkar (Y02) | Yahoo | ash@yahooinc.com | Ash's test coverage at Yahoo | ✅ T1 Sent Mar 11 |
+| Suchith Chandran (Y06) | Yahoo | suchith@yahooinc.com | Suchith's test automation at Yahoo | ✅ T1 Sent Mar 11 |
+| Garrick Scott (L04) | L3Harris | garrick.scott@l3harris.com | Garrick's software testing at L3Harris | ✅ T1 Sent Mar 11 |
+| Ashwin Vaswani (CH04) | Charlie Health | ashwin.vaswani@charliehealth.com | Ashwin's test automation at Charlie Health | ✅ T1 Sent Mar 11 |
+| Rachel Fingeroth (L05) | L3Harris | rachel.fingeroth@l3harris.com | Rachel's engineering coverage at L3Harris | ✅ T1 Sent Mar 11 |
+| Madina Zabran (CH02) | Charlie Health | madina.zabran@charliehealth.com | Madina's test coverage at Charlie Health | ✅ T1 Sent Mar 11 |
 
 **Session 19 sends (Mar 11):**
 | Contact | Company | Email | Status |
@@ -240,8 +253,9 @@ Wave 3 T1 enrolled Mar 11. T2 tasks will appear in Apollo ~Mar 15-16. Check Apol
 | Matthew Bennett (V02) | Veradigm | matthew.bennett@allscripts.com | ✅ T1 Sent Mar 11 |
 | Madison Waterman (CH03) | Charlie Health | madison.waterman@charliehealth.com | ✅ T1 Sent Mar 11 |
 
-**11 contacts with future-dated T1 tasks (not yet due):**
-Y02 Ash Pedgaonkar, Y06 Suchith Chandran, V01 Ted Barker, V04 Aleck Gandel, CH01 Sampson Reider, CH02 Madina Zabran, CH04 Ashwin Vaswani, T01 Christine Gamache, GE02 Brooks Foley, L04 Garrick Scott, L05 Rachel Fingeroth — all enrolled, tasks will surface in Apollo when due.
+**2 contacts still future-dated (T1 not yet due in Apollo):**
+- T01 Christine Gamache (TELUS) — enrolled, task will surface automatically
+- GE02 Brooks Foley (GE HealthCare) — enrolled, task will surface automatically
 
 **Gmail audit (Session 19 — newer_than:5d):** 24 of 35 Wave 3 contacts confirmed sent. Apollo Contacts tab: 74 total enrolled, 24 "New" (not yet contacted = still in task queue).
 
