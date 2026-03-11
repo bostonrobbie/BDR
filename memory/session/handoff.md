@@ -282,7 +282,8 @@ Wave 2 T1 was sent earlier Mar 10 (8-11 AM). T2 tasks now appear in Apollo Tasks
 
 - Remote: `https://github.com/bostonrobbie/bdr-work.git`
 - Branch: `main`
-- Latest commit: `1b8053c` — Add Touch 2/3/Reply Handling sections to Tier1 SOP + email sequence performance audit
+- Last pushed commit: `79014b7` — SOP v3.1: Retire Gmail Chrome send method, switch to Apollo UI direct
+- Unpushed commits (2 — Rob must `git push`): `7a15ba7` (Session 16 gap resolutions) + `71331ed` (Session 16 close)
 - Mar 10 (Session 7) changes: `wave1-batch1-tracker-mar10.html`, `memory/apollo-config.md`, `memory/target-accounts.md`
 - Mar 10 (Session 8) changes: `tyler-referrals-outreach-mar10.html`, `MASTER_SENT_LIST.csv`, `memory/pipeline-state.md`
 - Mar 10 (Session 9) changes: `tamob-wave2-draft-mar10.html` (drafts built), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
@@ -311,4 +312,4 @@ Wave 2 T1 was sent earlier Mar 10 (8-11 AM). T2 tasks now appear in Apollo Tasks
 
 ---
 
-*Next session should start with: work-queue.md and pick up Touch 2 drafts for the Feb 27 contacts.*
+*Next session: startup sequence (AGENTS.md → handoff.md → work-queue.md → in-progress.md), then check Apollo Tasks tab. If Wave 1/2 T2 tasks are due → TASK-017. If not → TASK-018 (Sucheth Ramgiri cleanup) or TASK-003 (Gmail draft audit). Apollo is the source of truth for what's due.*

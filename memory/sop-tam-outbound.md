@@ -458,9 +458,8 @@ Accounts: [N] included, [N] deferred, [N] flagged
 Contacts: [N] total across [N] accounts
 DNC check: Clean / [N removed]
 Dedup check: Clean / [N removed — names]
-Email verification: [N] verified / [N] extrapolated (flagged)
-Credit budget: [N] InMail credits needed / [N] remaining
-InMail vs Email split: [N] InMails / [N] emails
+Email verification: [N] verified / [N] catchall (case-by-case flagged) / [N] extrapolated (case-by-case flagged)
+Send method: Apollo UI direct — Step 1 email (robert.gorham@testsigma.com)
 
 Ready for review: [link to HTML tracker file]
 Reply APPROVE SEND to send all, or APPROVE SEND — [name] only, or EDIT [name] with changes.
