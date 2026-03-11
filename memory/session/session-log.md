@@ -579,3 +579,53 @@ The current git-based memory system commits only at session END. If a session cr
 **Commits this session:** `7a15ba7` (gap resolutions)
 **Unpushed commits (Rob must push):** `a824836`, `79014b7`, `7a15ba7`
 **Next priority:** TASK-017 (T2 drafts) when Apollo surfaces Wave 1/2 T2 tasks. TASK-018 (Sucheth Ramgiri cleanup). TASK-003 (Gmail draft audit).
+
+---
+
+## 2026-03-11 — Sessions 17-18: TAM Outbound Wave 3 — Full Autopilot Batch + Enrollment
+
+**Session type:** Full TAM Outbound autopilot (batch build → enrich → research → draft → QA → HTML tracker → enrollment)
+
+**What was done (Sessions 17-18 combined):**
+
+**Session 17 — Batch Build (Steps 1-7):**
+1. Read all pre-flight files: AGENTS.md, handoff.md, work-queue.md, sop-tam-outbound.md, sop-outreach.md, target-accounts.md, MASTER_SENT_LIST.csv, tam-coverage-tracker.csv
+2. Identified 7 Wave 3 accounts from tam-coverage-tracker.csv: Yahoo, Veradigm, Charlie Health, TELUS, GE HealthCare, L3Harris Technologies, Georgia-Pacific
+3. Enriched/created 35 Apollo contacts across all 7 accounts (26 new, 9 pre-existing)
+4. Researched all 35 contacts using A+ protocol — job history, company context, proof point match
+5. Drafted 35 T1 emails: all enterprise formula (HC1 + SMYKM subjects, 82-98 words, 1 CTA), A/B split tested, no HC violations
+6. QA gate: all 35 passed MQS 11-12/12
+7. Built `tamob-batch-20260311-1.html` — 172KB batch tracker with 35 personalized contact cards, status dropdowns, MQS badges, A/B labels
+8. Presented BATCH SUMMARY to Rob → Rob approved with "send"
+9. Began enrollment — completed batches 1-5 and 7 (30 contacts). Batch 6 (L05-L09) omitted in parallel fire — sent separately; L05 Rachel Fingeroth returned `contact_not_found` (ID typo in prior session), L06-L09 returned `already_in_campaign` (pre-existing).
+
+**Session 18 — Enrollment Completion + File Updates:**
+1. Resolved Rachel Fingeroth (L05): searched Apollo, found correct ID `69b17c9ced38d10015b4293c` (prior session had `197f72d5` vs `15b4293c` typo), enrolled successfully
+2. Final enrollment: 35/35 confirmed active in TAM Outbound sequence. Step 1 count: 48 active.
+3. Updated `MASTER_SENT_LIST.csv`: +35 Wave 3 rows (total 374 rows)
+4. Updated `memory/session/handoff.md`, `work-queue.md`, `session-log.md`
+5. Committed + will push
+
+**Wave 3 contacts (35 total):**
+- Yahoo: Sarah Huang, Ash Pedgaonkar, Matthew Lauprete, Robert Israel, Raj Chopde, Suchith Chandran, Sergii Simonov
+- Veradigm: Ted Barker, Matthew Bennett, Sachin Joshi, Aleck Gandel, Bhanu Sunkara, Manpreet Burmi
+- Charlie Health: Sampson Reider, Madina Zabran, Madison Waterman, Ashwin Vaswani
+- TELUS: Christine Gamache, Stephanie Carlos
+- GE HealthCare: Chelsey Erickson, Brooks Foley
+- L3Harris: Nathan French, Pete Grissom, Michael Cahill, Garrick Scott, Rachel Fingeroth, Michael Stringer, Mark Gates, Tracy Beloskur, David Street
+- Georgia-Pacific: Brad Suderman, Tyler Hart, Ryan Filpi, Rafael Amorim, Felecia Brown
+
+**Key decisions/findings:**
+- Rachel Fingeroth correct Apollo ID: `69b17c9ced38d10015b4293c` (corrected from prior session)
+- Wave 3 T2 due: Mar 16 (Day 5 from Mar 11 enrollment)
+- All 7 accounts new to TAM Outbound (first-touch Wave 3 contacts)
+- A/B test split: ~50/50 pain-led vs. proof-led openers across batch
+
+**Files created/updated:**
+- `tamob-batch-20260311-1.html` ✅ NEW — 35-contact Wave 3 batch tracker
+- `MASTER_SENT_LIST.csv` ✅ UPDATED — +35 Wave 3 rows (374 total)
+- `memory/session/handoff.md` ✅ UPDATED — Wave 3 section added, T2 timing updated
+- `memory/session/work-queue.md` ✅ UPDATED — TASK-020 added (Wave 3 T2, due Mar 16)
+- `memory/session/session-log.md` ✅ this entry
+
+**Next priority:** Apollo Tasks tab — Wave 1/2 T2 tasks likely overdue. TASK-017 immediately. Wave 3 T2 = TASK-020 on Mar 16. Then TASK-018 (Sucheth cleanup), TASK-003 (Gmail audit).

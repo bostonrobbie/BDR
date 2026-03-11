@@ -1,5 +1,5 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-11 (Session 16: SOP gap resolutions — catchall policy (case-by-case), T2 scope trimmed from Part 9, TASK-017 send protocol fixed to Apollo UI, tam-coverage-tracker.csv confirmed healthy.)
+## Last Updated: 2026-03-11 (Sessions 17-18: TAM Outbound Wave 3 — full autopilot batch build + enrollment. 35/35 contacts enrolled. MASTER_SENT_LIST updated. T2 due Mar 16.)
 
 ---
 
@@ -137,16 +137,18 @@ Last audit: Not completed this session. Need to check:
 | 22 | John Harding | YouTube | John's engineering at YouTube Music | ✅ Sent |
 | 23 | Hrishikesh Aradhye | YouTube | Hrishi's coverage at YouTube Music | ✅ Sent |
 
-**⚠️ URGENT: Wave 1 T2 due TOMORROW Mar 12 (not Mar 15 as previously noted)**
-Wave 1 T1 was sent at 10:29 PM Mar 10 (after pause/reschedule cycle). Apollo T2 task fires ~24h later = Mar 12 morning.
-Apollo confirmed: Wave 1 contacts show "20h" remaining on Step 2 as of Mar 11 afternoon.
+**⚠️ URGENT: Wave 1 T2 due Mar 12 (T1 sent 10:29 PM Mar 10 — Apollo T2 fires ~24h later)**
+Apollo T2 tasks for Wave 1 should now be visible in Apollo Tasks tab. Check immediately.
 
-**Wave 2 T2 tasks: DUE TODAY (Mar 11) — 13 tasks in Apollo Tasks tab**
-Wave 2 T1 was sent earlier Mar 10 (8-11 AM). T2 tasks now appear in Apollo Tasks, all due today.
+**Wave 2 T2 tasks: OVERDUE (due Mar 11) — check Apollo Tasks tab for outstanding items**
+Wave 2 T1 sent Mar 10 (8-11 AM). T2 tasks were due same day. Complete asap.
 
-**Next action: Build T2 drafts for all 39 contacts (Wave 1 + Wave 2) IMMEDIATELY**
+**Wave 3 T2 tasks: Due Mar 16 (Day 5 from Mar 11 send)**
+Wave 3 T1 enrolled Mar 11. T2 tasks will appear in Apollo ~Mar 15-16. Check Apollo Tasks tab then.
+
+**Next action for T2s:** Open Apollo Tasks tab → execute any due Wave 1/2 tasks → draft + send per TASK-017
 **T2 formula:** sop-tam-outbound.md Part 7 — 50-70 words, engagement question CTA, different proof point from T1
-**Draft files to create:** `tamob-wave1-t2-drafts-mar12.html` and `tamob-wave2-t2-drafts-mar11.html`
+**Draft files to create:** `tamob-wave1-t2-drafts-mar12.html`, `tamob-wave2-t2-drafts.html`, `tamob-wave3-t2-drafts-mar16.html`
 
 **Session 14 tracker fixes applied:**
 - `tamob-wave1-draft-mar10.html`: All 23 badges updated from "Draft Ready" → "T1 Sent Mar 10" ✅
@@ -218,6 +220,36 @@ Wave 2 T1 was sent earlier Mar 10 (8-11 AM). T2 tasks now appear in Apollo Tasks
 **QA gate:** All 16 passed (automated Python script v3 — word count 80-97w, 2 QMs, no banned words, named customer check)
 **MASTER_SENT_LIST.csv:** 16 rows added (batch: "TAM Outbound Wave2 T1 Mar10")
 **T2 schedule:** All 16 due Mar 15 (Day 5). Apollo Step 2 tasks will auto-generate.
+
+---
+
+## TAM OUTBOUND WAVE 3 — CURRENT STATE (Mar 11 — Sessions 17-18)
+
+**✅ ALL 35 T1 EMAILS ENROLLED — Mar 11, 2026**
+
+**File:** `tamob-batch-20260311-1.html` (172KB — 35 contact cards, MQS 11-12/12, A/B tested)
+**Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
+**T2 due:** Mar 16 (Day 5 from Mar 11 send date) for all 35
+**Step 1 active count after enrollment:** 48 (Wave 3 added 15 net new to Step 1)
+
+**Accounts covered (7):**
+| Account | Contacts | Status |
+|---------|----------|--------|
+| Yahoo (YHQ + Sports) | 7 (Y01–Y07) | ✅ All enrolled |
+| Veradigm | 6 (V01–V06) | ✅ All enrolled |
+| Charlie Health | 4 (CH01–CH04) | ✅ All enrolled |
+| TELUS | 2 (T01–T02) | ✅ All enrolled |
+| GE HealthCare | 2 (GE01–GE02) | ✅ All enrolled |
+| L3Harris Technologies | 9 (L01–L09) | ✅ All enrolled |
+| Georgia-Pacific | 5 (GP01–GP05) | ✅ All enrolled |
+
+**Enrollment notes:**
+- Rachel Fingeroth (L05): Correct Apollo ID is `69b17c9ced38d10015b4293c`. Prior session had ID typo (`197f72d5` vs `15b4293c`). Fixed and enrolled this session.
+- L06-L09 (Stringer, Gates, Beloskur, Street): Returned `already_in_campaign` — were pre-existing in sequence from Wave 1/2. Confirmed enrolled.
+- V01 (Ted Barker) + V02 (Matthew Bennett) + V05 (Bhanu Sunkara) + CH04 (Ashwin Vaswani) + T01 (Christine Gamache) + GE02 (Brooks Foley): Pre-existing contacts, enrolled successfully.
+- All 35 contacts use `robert.gorham@testsigma.com` as send-from account.
+
+**MASTER_SENT_LIST.csv:** 35 rows added (batch: "TAM Outbound Wave3 T1 Mar11"). Total now 374 rows.
 
 ---
 
@@ -293,6 +325,7 @@ Wave 2 T1 was sent earlier Mar 10 (8-11 AM). T2 tasks now appear in Apollo Tasks
 - Mar 11 (Session 14) changes: `tamob-wave1-draft-mar10.html` (badges fixed), `MASTER_SENT_LIST.csv` (+23 Wave 1 rows), `memory/sop-tam-outbound.md` (v3.0 — Part 23 added, INC-007 hardening), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Mar 11 (Session 15) changes: `memory/session/in-progress.md` (NEW — crash-recovery checkpoint file), `AGENTS.md` (crash recovery + mid-session commit protocol added), `memory/session/work-queue.md` (TASK-017 deferred, TASK-019 added as DONE), `memory/session/handoff.md`, `memory/session/session-log.md`
 - Mar 11 (Session 16) changes: `memory/sop-tam-outbound.md` (Part 5 catchall case-by-case policy, Part 9 T2 removed from required fields), `memory/session/work-queue.md` (TASK-017 send protocol fixed), `memory/session/handoff.md`, `memory/session/session-log.md`
+- Mar 11 (Sessions 17-18) changes: `tamob-batch-20260311-1.html` (NEW — Wave 3 batch tracker, 35 contacts), `MASTER_SENT_LIST.csv` (+35 Wave 3 rows, 374 total), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Claude cannot push (no GitHub auth in VM). Rob must run `git push` from his terminal.
 
 ---
@@ -312,4 +345,4 @@ Wave 2 T1 was sent earlier Mar 10 (8-11 AM). T2 tasks now appear in Apollo Tasks
 
 ---
 
-*Next session: startup sequence (AGENTS.md → handoff.md → work-queue.md → in-progress.md), then check Apollo Tasks tab. If Wave 1/2 T2 tasks are due → TASK-017. If not → TASK-018 (Sucheth Ramgiri cleanup) or TASK-003 (Gmail draft audit). Apollo is the source of truth for what's due.*
+*Next session: startup sequence (AGENTS.md → handoff.md → work-queue.md → in-progress.md), then check Apollo Tasks tab. Wave 1/2 T2 tasks are likely overdue — tackle TASK-017 immediately. Wave 3 T2 due Mar 16. Also: TASK-018 (Sucheth Ramgiri cleanup) + TASK-003 (Gmail draft audit). Apollo Tasks tab is the source of truth for what's due.*

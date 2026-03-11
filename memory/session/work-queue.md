@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-11 (Session 16 — SOP gap resolutions: catchall policy (case-by-case), Part 9 T2 scope trimmed, TASK-017 send protocol updated to Apollo UI v3.1.)
+## Last Updated: 2026-03-11 (Sessions 17-18 — Wave 3 TAM Outbound batch built + enrolled. 35/35 contacts in sequence. TASK-020 added for Wave 3 T2 due Mar 16.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 1. `git pull origin main`
@@ -73,6 +73,21 @@ Audit Gmail drafts from all testsigma.com accounts:
 ---
 
 ## 🟡 HIGH — Do Soon
+
+### TASK-020: Draft T2 Emails — Wave 3 (35 contacts, due Mar 16)
+**Status:** UNCLAIMED
+**Priority:** P1 — T2 due Mar 16 (Day 5 from Mar 11 T1 send)
+**Effort:** ~120 min (large batch, 7 accounts)
+**Output:** `tamob-wave3-t2-drafts-mar16.html`
+
+35 contacts enrolled in TAM Outbound Mar 11. T2 tasks will appear in Apollo Tasks tab ~Mar 15-16.
+When Apollo surfaces them → draft + send per TASK-017 protocol.
+**Formula:** sop-tam-outbound.md Part 7 — 50-70 words, engagement question CTA, different proof point from T1
+**Check T1 proof points:** `tamob-batch-20260311-1.html` (35 contact T1 drafts with subjects + bodies)
+**Send via:** Apollo UI (Part 23 of sop-tam-outbound.md v3.1) → manually paste → Send Now
+**APPROVE SEND required before any sends**
+
+---
 
 ### TASK-018: Remove Sucheth Ramgiri from TAM Outbound Sequence + Re-enrich Email
 **Status:** UNCLAIMED
