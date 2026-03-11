@@ -1,5 +1,5 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-11 (Session 15: Crash-recovery infrastructure built. in-progress.md + AGENTS.md updated. TASK-017 T2 drafts deferred to natural Apollo cadence.)
+## Last Updated: 2026-03-11 (Session 16: SOP gap resolutions — catchall policy (case-by-case), T2 scope trimmed from Part 9, TASK-017 send protocol fixed to Apollo UI, tam-coverage-tracker.csv confirmed healthy.)
 
 ---
 
@@ -291,6 +291,7 @@ Wave 2 T1 was sent earlier Mar 10 (8-11 AM). T2 tasks now appear in Apollo Tasks
 - Mar 10 (Session 13) changes: `memory/incidents.md` (INC-007 recovery complete), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Mar 11 (Session 14) changes: `tamob-wave1-draft-mar10.html` (badges fixed), `MASTER_SENT_LIST.csv` (+23 Wave 1 rows), `memory/sop-tam-outbound.md` (v3.0 — Part 23 added, INC-007 hardening), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Mar 11 (Session 15) changes: `memory/session/in-progress.md` (NEW — crash-recovery checkpoint file), `AGENTS.md` (crash recovery + mid-session commit protocol added), `memory/session/work-queue.md` (TASK-017 deferred, TASK-019 added as DONE), `memory/session/handoff.md`, `memory/session/session-log.md`
+- Mar 11 (Session 16) changes: `memory/sop-tam-outbound.md` (Part 5 catchall case-by-case policy, Part 9 T2 removed from required fields), `memory/session/work-queue.md` (TASK-017 send protocol fixed), `memory/session/handoff.md`, `memory/session/session-log.md`
 - Claude cannot push (no GitHub auth in VM). Rob must run `git push` from his terminal.
 
 ---

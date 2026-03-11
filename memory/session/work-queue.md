@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-11 (Session 15 — Crash-recovery infrastructure built. TASK-017 deferred to natural Apollo cadence. in-progress.md + AGENTS.md updated.)
+## Last Updated: 2026-03-11 (Session 16 — SOP gap resolutions: catchall policy (case-by-case), Part 9 T2 scope trimmed, TASK-017 send protocol updated to Apollo UI v3.1.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 1. `git pull origin main`

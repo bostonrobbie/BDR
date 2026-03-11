@@ -550,3 +550,32 @@ The current git-based memory system commits only at session END. If a session cr
 - `memory/session/session-log.md` — This entry
 
 **Next priority:** When Rob opens a session next time and Apollo has T2 tasks due, tackle TASK-017. Also TASK-018 (Sucheth Ramgiri cleanup). Then TASK-003 (Gmail draft audit).
+
+---
+
+## 2026-03-11 — Session 16: SOP Gap Resolutions
+
+**Session type:** SOP maintenance + gap resolution
+**What was done:**
+
+1. **Catchall email policy (Gap 2)** — Rob confirmed: evaluate each catchall case-by-case (not a blanket send/skip rule).
+   - Updated `sop-tam-outbound.md` **Part 5 Research Quality Gate**: ✅ Verified → proceed. ⚠️ Catchall or ⚠️ Extrapolated → judge by account fit + contact strength, send if strong, skip if uncertain, flag in tracker.
+
+2. **Part 9 batch tracker spec (T2 scope trim)** — Rob confirmed T2 drafts are out of scope for pre-batch work; draft when Apollo surfaces them (TASK-017).
+   - Removed "T2 body draft" from required fields list in `sop-tam-outbound.md` Part 9.
+   - Updated email flag format to include catchall send/skip decision.
+   - Added note: "T2 drafts are NOT pre-built."
+
+3. **TASK-017 stale reference (Gap 5)** — Fixed `work-queue.md` TASK-017 line: "Gmail Chrome (Part 23 v3.0)" → "Apollo UI (Part 23 v3.1) → Send Now → Apollo marks Done automatically."
+
+4. **tam-coverage-tracker.csv (Gap 4)** — Verified exists. 313 rows (312 accounts). Columns: name, location, domain, icp, is_factor, factor_tier, factor_signal, factor_last, status, note, priority. Status breakdown: 244 Untouched, 22 HOT Factor, 11 Gov Skip, etc. No build needed.
+
+**Files changed:**
+- `memory/sop-tam-outbound.md` — Part 5 catchall policy + Part 9 T2 scope removal
+- `memory/session/work-queue.md` — TASK-017 send protocol + Last Updated
+- `memory/session/handoff.md` — Last Updated + GIT STATUS
+- `memory/session/session-log.md` — This entry
+
+**Commits this session:** `7a15ba7` (gap resolutions)
+**Unpushed commits (Rob must push):** `a824836`, `79014b7`, `7a15ba7`
+**Next priority:** TASK-017 (T2 drafts) when Apollo surfaces Wave 1/2 T2 tasks. TASK-018 (Sucheth Ramgiri cleanup). TASK-003 (Gmail draft audit).
