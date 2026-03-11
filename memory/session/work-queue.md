@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-11 (Sessions 17-18 — Wave 3 TAM Outbound batch built + enrolled. 35/35 contacts in sequence. TASK-020 added for Wave 3 T2 due Mar 16.)
+## Last Updated: 2026-03-11 (Session 19 — Wave 3 T1 sends continued: +3 sent (Sarah Huang, Matthew Bennett, Madison Waterman). 24/35 T1 sent total. 11 future-dated. TASK-017 Wave 1 T2 URGENT due Mar 12.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 1. `git pull origin main`
@@ -98,8 +98,8 @@ Sucheth Ramgiri (Commvault) hard-bounced — sramgiri@commvault.com is invalid (
 ---
 
 ### TASK-017: Draft T2 Emails — Wave 1 (23) + Wave 2 (13)
-**Status:** DEFERRED — tackle when Apollo tasks come due naturally (Rob confirmed Mar 11)
-**Priority:** P1 — T2s are manual Apollo tasks; draft when Apollo surfaces them, not proactively
+**Status:** 🔴 URGENT — Wave 1 T2 due Mar 12. Wave 2 T2 OVERDUE (due Mar 15, now Mar 11). Check Apollo Tasks tab immediately next session.
+**Priority:** P0 — Wave 1 T2 tasks should now be visible in Apollo. Do FIRST next session.
 **Effort:** ~90 min for Wave 1, ~50 min for Wave 2 (templates are similar, batch together)
 **Output:** `tamob-wave1-t2-drafts-mar12.html` and `tamob-wave2-t2-drafts-mar11.html`
 

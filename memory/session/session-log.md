@@ -629,3 +629,36 @@ The current git-based memory system commits only at session END. If a session cr
 - `memory/session/session-log.md` ✅ this entry
 
 **Next priority:** Apollo Tasks tab — Wave 1/2 T2 tasks likely overdue. TASK-017 immediately. Wave 3 T2 = TASK-020 on Mar 16. Then TASK-018 (Sucheth cleanup), TASK-003 (Gmail audit).
+
+---
+
+## 2026-03-11 — Session 19: Wave 3 T1 Sends (Continued)
+
+**Session type:** Outreach execution — Wave 3 T1 sends via Apollo TAM Outbound Tasks tab
+
+**What was done:**
+1. Resumed mid-send from Session 18 context. Next contact in Apollo Tasks queue: Sarah Huang (Y01 — Yahoo)
+2. **Sent 3 Wave 3 T1 emails** via Apollo TAM Outbound sequence (ID: 69afff8dc8897c0019b78c7e):
+   - **Sarah Huang (Y01)** — sarah.huang@yahooinc.com — QA Director, Yahoo — Subject: "Sarah's regression coverage at Yahoo" ✅
+   - **Matthew Bennett (V02)** — matthew.bennett@allscripts.com — Director of Engineering, Veradigm — Subject: "Matthew's engineering velocity at Veradigm" ✅
+   - **Madison Waterman (CH03)** — madison.waterman@charliehealth.com — Engineering Manager, Charlie Health — Subject: "Madison's regression coverage at Charlie Health" ✅
+3. Body injection technique: JS `document.execCommand('insertText')` into Quill editor (clipboard paste was returning "Placeholder" — execCommand is the reliable method, use first going forward)
+4. After Madison Waterman: Apollo advanced to Yu Jin (Electronic Arts) — Wave 2 contact, not Wave 3. Stopped.
+5. Gmail audit (newer_than:5d, maxResults:50): Confirmed 24 of 35 Wave 3 T1 emails sent total
+6. Apollo Contacts tab: 74 enrolled, 24 "New" (not yet contacted). 11 Wave 3 contacts have future-dated tasks not yet due.
+7. Updated handoff.md, work-queue.md, session-log.md
+
+**11 remaining Wave 3 contacts (enrolled, future-dated tasks):**
+Y02 Ash Pedgaonkar, Y06 Suchith Chandran, V01 Ted Barker, V04 Aleck Gandel, CH01 Sampson Reider, CH02 Madina Zabran, CH04 Ashwin Vaswani, T01 Christine Gamache, GE02 Brooks Foley, L04 Garrick Scott, L05 Rachel Fingeroth
+
+**Key technical note:**
+- Clipboard paste (ctrl+a + ctrl+v) returns "Placeholder" in Apollo Quill editor. Use JS `document.execCommand('insertText')` instead — confirmed working on all 3 sends this session.
+
+**Files updated:**
+- `memory/session/handoff.md` ✅ — Wave 3 T1 send status, Session 19 sends logged, 11 future-dated contacts listed
+- `memory/session/work-queue.md` ✅ — TASK-017 escalated to P0 URGENT (Wave 1 T2 due Mar 12)
+- `memory/session/session-log.md` ✅ — this entry
+
+**Commits this session:** Pending (see below)
+**Unpushed commits (Rob must push):** All prior + this session's commit
+**Next priority:** Open Apollo Tasks tab immediately — Wave 1 T2 tasks due Mar 12 (TOMORROW). Tackle TASK-017 first. Then TASK-018 (Sucheth Ramgiri cleanup). Wave 3 T2 = TASK-020, due Mar 16.

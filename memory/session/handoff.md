@@ -1,5 +1,5 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-11 (Sessions 17-18: TAM Outbound Wave 3 — full autopilot batch build + enrollment. 35/35 contacts enrolled. MASTER_SENT_LIST updated. T2 due Mar 16.)
+## Last Updated: 2026-03-11 (Session 19: Wave 3 T1 sends continued. 3 more sent via Apollo Tasks tab — Sarah Huang, Matthew Bennett, Madison Waterman. Total: 24/35 T1 sent. 11 contacts enrolled, future-dated tasks not yet due. Wave 1 T2 URGENT due Mar 12.)
 
 ---
 
@@ -223,14 +223,27 @@ Wave 3 T1 enrolled Mar 11. T2 tasks will appear in Apollo ~Mar 15-16. Check Apol
 
 ---
 
-## TAM OUTBOUND WAVE 3 — CURRENT STATE (Mar 11 — Sessions 17-18)
+## TAM OUTBOUND WAVE 3 — CURRENT STATE (Mar 11 — Sessions 17-19)
 
 **✅ ALL 35 T1 EMAILS ENROLLED — Mar 11, 2026**
+**📧 T1 SEND STATUS (Session 19): 24 of 35 T1 emails sent via Apollo Tasks tab. 11 contacts enrolled, tasks not yet due (future-dated — will appear in Apollo Tasks tab automatically).**
 
 **File:** `tamob-batch-20260311-1.html` (172KB — 35 contact cards, MQS 11-12/12, A/B tested)
 **Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
 **T2 due:** Mar 16 (Day 5 from Mar 11 send date) for all 35
 **Step 1 active count after enrollment:** 48 (Wave 3 added 15 net new to Step 1)
+
+**Session 19 sends (Mar 11):**
+| Contact | Company | Email | Status |
+|---------|---------|-------|--------|
+| Sarah Huang (Y01) | Yahoo | sarah.huang@yahooinc.com | ✅ T1 Sent Mar 11 |
+| Matthew Bennett (V02) | Veradigm | matthew.bennett@allscripts.com | ✅ T1 Sent Mar 11 |
+| Madison Waterman (CH03) | Charlie Health | madison.waterman@charliehealth.com | ✅ T1 Sent Mar 11 |
+
+**11 contacts with future-dated T1 tasks (not yet due):**
+Y02 Ash Pedgaonkar, Y06 Suchith Chandran, V01 Ted Barker, V04 Aleck Gandel, CH01 Sampson Reider, CH02 Madina Zabran, CH04 Ashwin Vaswani, T01 Christine Gamache, GE02 Brooks Foley, L04 Garrick Scott, L05 Rachel Fingeroth — all enrolled, tasks will surface in Apollo when due.
+
+**Gmail audit (Session 19 — newer_than:5d):** 24 of 35 Wave 3 contacts confirmed sent. Apollo Contacts tab: 74 total enrolled, 24 "New" (not yet contacted = still in task queue).
 
 **Accounts covered (7):**
 | Account | Contacts | Status |
