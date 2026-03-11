@@ -1,5 +1,5 @@
 # SOP: TAM Outbound — End-to-End Process
-## Version 4.0 — Updated Mar 11, 2026 (Send protocol corrected: JS execCommand insertText is the confirmed working method. Clipboard paste returns "Placeholder." Subject correction protocol added as Part 24. T2 Send Protocol added as Part 25.)
+## Version 4.1 — Updated Mar 11, 2026 (Send protocol corrected: JS execCommand insertText confirmed working. Clipboard paste returns "Placeholder." Part 24: Subject Correction Protocol. Part 25: T2 Send Protocol — ALL STEPS MANUAL, no auto-send. Part 26: Process Logging and Activity Tracking.)
 
 This SOP governs all outreach to named TAM accounts. It is the authoritative guide for any Claude agent executing the TAM outbound process. Read this file in full before starting any TAM batch.
 
@@ -16,9 +16,10 @@ The TAM outbound process works accounts from a prioritized list, identifies the 
 **Scope:** All accounts in `tam-accounts-mar26.csv` (312 total) — enterprise only. No SMB or commercial.
 
 **Apollo Sequence:** TAM Outbound - Rob Gorham (`69afff8dc8897c0019b78c7e`)
-- 7 steps, all manual, 35-day cadence
+- 7 steps, **ALL MANUAL** — zero auto-send steps. Nothing ever goes out automatically.
 - Step 1: Email T1 (Day 1) · Step 2: Email T2 (Day 5) · Step 3: LinkedIn connection request (Day 10) · Steps 4-6: Phone calls (Day 15/21/28) · Step 7: Breakup email (Day 35)
 - Enrollment email: `robert.gorham@testsigma.com` (.com ONLY — never .net, .in, or .com.in)
+- **Verify before every session:** Apollo → Sequences → TAM Outbound → Edit → confirm all 7 steps = Manual Task. If any step shows "Automated," stop and alert Rob.
 
 **Key constraint:** NEVER send any message without Rob's "APPROVE SEND." Claude drafts. Rob approves. Rob sends (or Claude sends after explicit APPROVE SEND per specific message).
 
@@ -1377,9 +1378,19 @@ The descriptor should match the EMAIL ANGLE, not just the title. If the email is
 
 ---
 
+### ALL STEPS ARE MANUAL SEND — NO AUTO-SEND EVER
+
+> ⚠️ **Critical sequence configuration rule:** The TAM Outbound - Rob Gorham sequence has ALL 7 steps configured as **manual tasks**. Apollo NEVER sends anything automatically. Every step — T1, T2, LinkedIn, calls, breakup — requires Claude to open the task, inject personalized content, verify, and manually click "Send Now."
+>
+> **NEVER change any sequence step from Manual to Automated.** If you see a step showing "Automated" in Apollo sequence settings, STOP and alert Rob immediately — do not send. Check sequence settings before every session: Apollo → Sequences → TAM Outbound - Rob Gorham → Edit Sequence → confirm all 7 steps show "Manual Task."
+>
+> **What "auto-generates" means:** When a contact's Step 1 task is completed (after you click Send Now), Apollo automatically queues the Step 2 task in the Tasks tab. This is a task NOTIFICATION — not an email send. The email does not go out until you manually open the Step 2 task, compose it, and click Send Now yourself. This applies to every step in the sequence.
+
+---
+
 ### When T2 Tasks Appear
 
-Apollo auto-generates the Step 2 (T2) task 4 days after Step 1 (T1) sends. The task appears in the Apollo Tasks tab with the label "Step 2: Follow-up email." T2 tasks surface per-contact, not per-batch.
+Apollo queues the Step 2 (T2) task automatically after Step 1 is marked complete. The task appears in the Apollo Tasks tab with the label "Step 2: Follow-up email" and will show as Due once the Day 5 window arrives. T2 tasks surface per-contact, not per-batch. Nothing is sent until you manually open the task and click Send Now.
 
 **Current T2 pipeline status (as of Mar 11, 2026):**
 - **Wave 1 T2:** Due Mar 12 (tomorrow). ~16 contacts from the Wave 1 batch sent Feb 26-27 area.
@@ -1471,4 +1482,234 @@ If T2 volume exceeds session capacity (> 20 contacts), send the oldest/highest-p
 ---
 
 *Part 25 added V4.0 — Mar 11, 2026. T2s are now active for Waves 1, 2, and 3. Priority: Wave 1 T2 due Mar 12 first.*
+
+
+---
+
+## Part 26: Process Logging and Activity Tracking
+
+*Added V4.0 — Mar 11, 2026. Log everything, every session. This is the data layer that enables performance analysis, error recovery, and continuous improvement.*
+
+---
+
+### Why Log Everything
+
+Every send, every reply, every bounce, every decision point generates data that compounds over time. The goal is a complete audit trail so that any future Claude session can reconstruct exactly what happened, why, and what comes next — without having to re-derive state from Apollo or Gmail.
+
+The logging system has six components: session log, send log (MASTER_SENT_LIST), batch trackers, handoff/work-queue, incidents log, and reply/warm lead tracking.
+
+---
+
+### Component 1: Session Log — `memory/session/session-log.md`
+
+**Updated:** End of every session, without exception.
+**What to log per session:**
+
+```
+## Session [N] — [Date] — [Focus area]
+
+### Sends This Session
+| Contact | ID | Company | Subject | Send Time | Step |
+|---------|----|---------|---------|-----------|------|
+| [Name]  | [Wave ID] | [Co] | [Subject] | [HH:MM] | T1/T2 |
+
+### Wave Totals
+- Wave 1 T1: [N]/[total] sent
+- Wave 2 T1: [N]/[total] sent
+- Wave 3 T1: [N]/[total] sent
+- Wave 1 T2: [N] sent this session
+- Wave 2 T2: [N] sent this session
+
+### Enrollments
+- [N] contacts enrolled in Apollo sequence
+- Any skipped_contact_ids: [list or "none"]
+
+### Key Decisions
+- [Any judgment calls made, dedup decisions, hold decisions, etc.]
+
+### Errors / Incidents
+- [Any INC created, or "none"]
+
+### Session Technical Notes
+- [Any JS failures, Apollo UI quirks, send method observations]
+
+### Next Priority
+- [Exact task for next session, with count and due date]
+```
+
+**Retention:** Never delete session log entries. Session log is a permanent record.
+
+---
+
+### Component 2: Send Log — `MASTER_SENT_LIST.csv`
+
+**Updated:** After every send, same session. Never defer.
+**Schema:** `Full Name, Batch Label, Send Date (YYYY-MM-DD), Channel+Step, Open Count, Batch File, Search Key`
+
+**Example rows:**
+```
+Karen Teng, TAM Outbound Wave2 T1 Mar6, 2026-03-06, Email (Apollo TAM Outbound T1), 0, wave2-batch-mar6.html, karen teng
+Karen Teng T2, TAM Outbound Wave2 T2 Mar11, 2026-03-11, Email (Apollo TAM Outbound T2), 0, wave2-t2-mar11.html, karen teng t2
+```
+
+**Rules:**
+- One row per send event (T1 and T2 are separate rows for the same contact)
+- Batch Label format: `TAM Outbound Wave[N] T[step] [MonDD]`
+- Search Key = lowercase full name (used for dedup lookups)
+- Open Count starts at 0; update when Apollo shows opens (future enhancement)
+- Never delete rows — append only
+
+**Pre-batch dedup query:** Before building any new batch, run:
+```bash
+grep -i "[prospect name]" /sessions/determined-sharp-keller/mnt/Work/MASTER_SENT_LIST.csv
+```
+If a match exists: do NOT add to batch. Skip with note in handoff.md.
+
+---
+
+### Component 3: Batch Tracker HTML — Per-Batch File
+
+**File naming:** `tamob-batch-YYYYMMDD-N.html` (e.g. `tamob-batch-20260311-1.html`)
+**Location:** `/Work/`
+**What it captures per contact:**
+- Name, Title, Company, Email, Apollo ID
+- Priority tier (HIGH / MED / LOW)
+- T1 Subject (SMYKM)
+- T1 Body (full personalized draft)
+- T1 Challenge hook / angle used (for T2 reference)
+- Status badge: Draft Ready → T1 Sent [date] → T2 Sent [date] → Reply → Bounced → DNC
+- Enrollment status and any flags (job_change override, catchall, etc.)
+- T2 draft section (added when T2 is written)
+- Notes field for anything unusual
+
+**Status badge progression:**
+```
+Draft Ready → T1 Sent [Mon DD] → T2 Drafted → T2 Sent [Mon DD] → 
+[Reply ✅] or [LinkedIn Sent] or [Call Attempted] or [Breakup Sent] or [DNC ⛔]
+```
+
+**The batch tracker is the primary per-contact audit trail.** Everything about what was sent to a specific person lives here.
+
+---
+
+### Component 4: Handoff + Work Queue — `memory/session/handoff.md` + `memory/session/work-queue.md`
+
+**Updated:** End of every session, before git commit.
+**Purpose:** Handoff carries the live state so the NEXT Claude session can start without any re-derivation.
+
+**handoff.md must always contain:**
+- Current session number
+- Wave 1/2/3 T1 and T2 send counts with exact totals
+- Any contacts in HOLD, PENDING, or future-dated state
+- Next due date and task (exact — not vague)
+- Any open incidents or errors
+- Last commit hash
+
+**work-queue.md must always contain:**
+- Active tasks with priority and due date
+- Completed tasks (marked done, not deleted)
+- Blocked tasks with explicit blocker reason
+
+---
+
+### Component 5: Incidents Log — `memory/incidents.md`
+
+**Updated:** Immediately when an error occurs. Never defer.
+**Format per incident:**
+
+```
+## INC-[NNN]: [Short title]
+**Date:** YYYY-MM-DD
+**Severity:** P0 (send error) / P1 (data error) / P2 (process deviation)
+**What happened:** [Exact description — what was sent, to whom, what was wrong]
+**Scope:** [How many contacts affected]
+**Root cause:** [Technical or process cause]
+**Immediate action taken:** [What Claude did]
+**Rob decision:** [What Rob decided, if consulted]
+**Prevention:** [What SOP rule was added or updated to prevent recurrence]
+**Status:** Open / Resolved
+```
+
+**What gets an INC:**
+- Any send with wrong content (wrong body, placeholder, wrong recipient)
+- Any double-send (same contact, same step, sent twice)
+- Any enrollment with wrong email account (.net, .in instead of .com)
+- Any sequence step inadvertently set to Automated
+- Any data modification (record deleted, email updated) not explicitly approved by Rob
+- Any bounce or deliverability event
+
+**What does NOT need an INC:**
+- Contacts skipped for dedup (log in handoff.md instead)
+- Apollo enrollment skips due to `skipped_contact_ids` (log in session log and handoff)
+- Future-dated tasks (normal state — log in handoff.md)
+
+---
+
+### Component 6: Reply and Warm Lead Tracking — `memory/warm-leads.md`
+
+**Updated:** When any reply is received or a warm signal observed.
+**What to track:**
+
+```
+## [Name] — [Company]
+**Status:** [Active warm lead / Monitoring / Replied / Booked / DNC]
+**Last Action:** [Most recent thing Claude or Rob did]
+**Reply:** [Full reply text or summary, with date]
+**Thread:** [Gmail thread ID if available]
+**Context:** [Sequence step when they replied, time since T1, tone]
+**Next Action:** [Exact next step, who does it, by when]
+**Notes:** [Anything relevant — referral, pain signals, objections raised]
+```
+
+**Monitoring cadence:** Check Gmail MCP for replies at start of each session.
+**Trigger:** Any reply — positive, negative, or neutral — gets a warm-leads entry.
+
+---
+
+### Activity Metrics to Track (Per Session)
+
+Log these in the session log. They build a dataset over time for performance analysis.
+
+| Metric | How to capture |
+|--------|---------------|
+| T1 sends this session | Count from send table |
+| T2 sends this session | Count from send table |
+| Session duration (approx.) | Note start/end time if known |
+| Dedup removal rate | Contacts researched ÷ contacts skipped for prior sends |
+| QA gate failures | How many emails needed revision before passing |
+| Subject corrections made | Count of times Apollo auto-subject was wrong (should always be 100%) |
+| JS injection retries | Count of times execCommand needed a second attempt |
+| Enrollments with flags | job_change override, catchall, etc. |
+| Skipped_contact_ids | From Apollo enrollment response |
+| Bounces detected | From Gmail MCP or Apollo |
+| Replies detected | From Gmail MCP reply check |
+
+---
+
+### Weekly Rollup (to run every Friday or end of week)
+
+Pull from session logs and MASTER_SENT_LIST to generate:
+- Total T1s sent MTD / WTD
+- Total T2s sent MTD / WTD
+- Reply rate (replies ÷ T1 sends, 14-day window)
+- Bounce rate (bounces ÷ T1 sends)
+- T2 coverage rate (T2s sent ÷ T1s where T2 was due)
+- Accounts touched vs. accounts in TAM total
+- Meetings booked (from warm-leads.md)
+
+File: create `tamob-weekly-rollup-YYYYMMDD.md` in `/Work/memory/` when running.
+
+---
+
+### Log-as-You-Go Rule
+
+**During every send session:** After each send is confirmed ("Changes saved" toast), immediately log it in the session send table before moving to the next contact. Do not batch-log at the end — the risk of missing a send or mis-recording the time is too high.
+
+**During research/drafting sessions:** Log each contact processed (researched, drafted, held, skipped) with reason in the session log. This gives a complete picture of work done even for contacts not yet sent.
+
+**Golden rule:** If it happened, it is logged. If it is not logged, it did not happen.
+
+---
+
+*Part 26 added V4.0 — Mar 11, 2026. Logging is the foundation of the feedback loop. No data = no improvement.*
 
