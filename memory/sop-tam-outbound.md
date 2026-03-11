@@ -300,7 +300,11 @@ If there's overlap: go back to the company menu and pull a different angle for o
 - [ ] LinkedIn profile read for this specific contact — role scope extracted
 - [ ] Angle assigned (distinct from other contacts at the same company)
 - [ ] Proof point assigned (distinct from other contacts at the same company)
-- [ ] Email status confirmed (verified / catchall / extrapolated — extrapolated flagged in tracker)
+- [ ] Email status reviewed case-by-case:
+  - ✅ Verified → proceed
+  - ⚠️ Catchall → evaluate account fit and contact strength; if strong fit, send and flag ⚠️ catchall in tracker; if uncertain, skip and note reason
+  - ⚠️ Extrapolated → same case-by-case judgment; flag in tracker; on any hard bounce, remove and re-enrich
+  - Tracker flag format: `Email note: [✅ verified / ⚠️ catchall — send / ⚠️ catchall — skip / ⚠️ extrapolated — send / ⚠️ extrapolated — skip]`
 - [ ] MASTER_SENT_LIST.csv check passed (no prior send to this person)
 
 If any check fails: fix it before drafting. Do not draft from title + company alone.
@@ -417,19 +421,19 @@ Before writing ANY draft, create the batch tracker HTML file. Tracker files hold
 - Old naming (`wave1-batch1-tracker-mar10.html`) is still valid for Wave 1 specifically
 
 **Required fields per contact row:**
-- Name, title, company, email (with ✅ verified / ⚠️ extrapolated / 🔴 unverified flag)
+- Name, title, company, email (with ✅ verified / ⚠️ catchall / ⚠️ extrapolated / 🔴 unverified flag + send/skip decision)
 - LinkedIn URL
 - Targeting level (Standard / Medium / High per Part 3)
 - Account trigger used (one phrase — what made this company timely)
 - T1 subject line
 - T1 body draft
-- T2 body draft
 - Status: `📝 Draft Ready` / `⏳ Awaiting APPROVE SEND` / `📤 T1 Sent [date]` / `✅ Enrolled` / `↩️ Replied` / `🔴 Bounced` / `⛔ DNC`
 - T1 send date (fill after send)
-- T2 send date (fill after T2 send)
-- Proof points used (T1 / T2)
+- Proof point used (T1)
 - MASTER_SENT_LIST entry pre-formatted (copy-paste ready)
-- Flags: any dedup concerns, extrapolated email warnings, ops QA concerns
+- Flags: any dedup concerns, email status notes, ops QA concerns
+
+Note: T2 drafts are NOT pre-built. Draft T2 when Apollo surfaces the task as due (TASK-017). Proof point T2 rotation is tracked per contact in TASK-017 draft files.
 
 **Company grouping:** Group contacts by account within the tracker file. Color-code by account — makes it easy to verify that all contacts at one company have distinct angles.
 

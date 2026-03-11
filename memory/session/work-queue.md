@@ -92,7 +92,7 @@ Sucheth Ramgiri (Commvault) hard-bounced — sramgiri@commvault.com is invalid (
 **Formula:** sop-tam-outbound.md Part 7 — 50-70 words, engagement question CTA (NOT "what day works"), different proof point from T1.
 **Draft structure:** (1) light callback to T1 send, (2) new angle/proof point, (3) engagement question close
 **Check T1 proof points:** tamob-wave1-draft-mar10.html / tamob-wave2-draft-mar10.html (no repeat per contact)
-**Send via:** Gmail Chrome (Part 23 of sop-tam-outbound.md v3.0) → then "Mark as Done" in Apollo task — NOT "Send Now"
+**Send via:** Apollo UI (Part 23 of sop-tam-outbound.md v3.1) → manually paste subject + body → Send Now → Apollo marks Done and auto-advances automatically
 **APPROVE SEND required before any sends**
 
 ---
