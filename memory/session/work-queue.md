@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-11 (Session 14 — Apollo audit done. Trackers fixed. SOP v3.0 hardened. T2 URGENT: Wave 2 due today, Wave 1 due tomorrow Mar 12.)
+## Last Updated: 2026-03-11 (Session 15 — Crash-recovery infrastructure built. TASK-017 deferred to natural Apollo cadence. in-progress.md + AGENTS.md updated.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 1. `git pull origin main`
@@ -82,16 +82,13 @@ Sucheth Ramgiri (Commvault) hard-bounced — sramgiri@commvault.com is invalid (
 
 ---
 
-### TASK-017: Draft T2 Emails — Wave 1 (23) + Wave 2 (13) — URGENT
-**Status:** UNCLAIMED
-**Priority:** P0 — URGENT. Wave 2 T2 tasks DUE TODAY in Apollo. Wave 1 T2 tasks due TOMORROW Mar 12.
+### TASK-017: Draft T2 Emails — Wave 1 (23) + Wave 2 (13)
+**Status:** DEFERRED — tackle when Apollo tasks come due naturally (Rob confirmed Mar 11)
+**Priority:** P1 — T2s are manual Apollo tasks; draft when Apollo surfaces them, not proactively
 **Effort:** ~90 min for Wave 1, ~50 min for Wave 2 (templates are similar, batch together)
 **Output:** `tamob-wave1-t2-drafts-mar12.html` and `tamob-wave2-t2-drafts-mar11.html`
 
-**⚠️ T2 timing corrected (Session 14 audit):**
-- Wave 1 T1 sent at 10:29 PM Mar 10 → T2 task fires Mar 12 morning (confirmed "20h" in Apollo Mar 11 afternoon)
-- Wave 2 T1 sent 8-11 AM Mar 10 → T2 tasks already in Apollo Tasks tab today (13 tasks due today)
-
+**When to do this:** Open Apollo Tasks tab → when T2 tasks appear as due, THEN draft + send.
 **Formula:** sop-tam-outbound.md Part 7 — 50-70 words, engagement question CTA (NOT "what day works"), different proof point from T1.
 **Draft structure:** (1) light callback to T1 send, (2) new angle/proof point, (3) engagement question close
 **Check T1 proof points:** tamob-wave1-draft-mar10.html / tamob-wave2-draft-mar10.html (no repeat per contact)
@@ -190,6 +187,21 @@ Draft responses per reply handling SOP (Section 13 of Tier1_Intent_Sequence_SOP_
 
 ---
 
+### TASK-019: Crash-Recovery Infrastructure
+**Status:** DONE (2026-03-11, Session 15)
+**Priority:** P0 — infrastructure, unblocks all future sessions
+**Effort:** ~30 min
+**Output:** `memory/session/in-progress.md` ✅ CREATED; `AGENTS.md` ✅ UPDATED
+
+Built persistent crash-recovery system:
+1. `memory/session/in-progress.md` — checkpoint file. Write ACTIVE at task start, check off steps mid-task, set CLEAR on task end. Includes template + crash recovery protocol.
+2. `AGENTS.md` updated — Step 6 reads in-progress.md; full Crash Recovery Protocol section; Mid-Session Commit Protocol (mandatory commit after each file creation, every 5 contacts drafted, every memory/ file update).
+3. `work-queue.md` TASK-017 updated to DEFERRED per Rob (T2 drafts tackled when Apollo surfaces them).
+
+**Next session startup note:** AGENTS.md Step 6 now reads in-progress.md. If Status = ACTIVE on startup = crash was detected — follow crash recovery protocol before doing anything else.
+
+---
+
 ## ✅ COMPLETED
 
 | Task | Completed | Notes |
@@ -206,6 +218,7 @@ Draft responses per reply handling SOP (Section 13 of Tier1_Intent_Sequence_SOP_
 | touch2_drafts_batch3_inmail.md | Mar 7 | 4 Touch 2 InMails for INC-001 Batch 3 (Irfan, Katie, Rachana, Giang). MQS 11, 10, 12, 12. All READY TO SEND. |
 | TAM Outbound - Rob Gorham sequence built | Mar 10 | Apollo ID: 69afff8dc8897c0019b78c7e. 7 steps all manual, Day 1/5/10/15/21/28/35. email→email→LI connect→call→call→call→breakup email. Ready for enrollment. |
 | Tyler Referrals T1 — all 7 sent | Mar 10 (Session 8) | 6 emails (Gopi/Staples, Pranati/Aetna, Roy/Sandia, Devin/FCB, Jason B/FCB, Skie/FCB) + 1 InMail (Vernon Bryant/Tractor Supply). T2 due Mar 14. File: tyler-referrals-outreach-mar10.html |
+| TASK-019: Crash-recovery infrastructure | Mar 11 (Session 15) | Created in-progress.md checkpoint system. Updated AGENTS.md with mid-session commit protocol + crash recovery startup rules. T2 sends for TAMOB Wave 1/2 deferred to natural Apollo task cadence per Rob. |
 
 ---
 

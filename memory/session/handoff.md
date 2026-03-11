@@ -1,5 +1,5 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-11 (Session 14: Post-INC-007 audit complete. Trackers fixed. SOPs hardened. Wave 1 T2 due TOMORROW Mar 12. Wave 2 T2 due TODAY.)
+## Last Updated: 2026-03-11 (Session 15: Crash-recovery infrastructure built. in-progress.md + AGENTS.md updated. TASK-017 T2 drafts deferred to natural Apollo cadence.)
 
 ---
 
@@ -290,6 +290,7 @@ Wave 2 T1 was sent earlier Mar 10 (8-11 AM). T2 tasks now appear in Apollo Tasks
 - Mar 10 (Session 11) changes: `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md` — Wave 1 T1 sends complete
 - Mar 10 (Session 13) changes: `memory/incidents.md` (INC-007 recovery complete), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Mar 11 (Session 14) changes: `tamob-wave1-draft-mar10.html` (badges fixed), `MASTER_SENT_LIST.csv` (+23 Wave 1 rows), `memory/sop-tam-outbound.md` (v3.0 — Part 23 added, INC-007 hardening), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
+- Mar 11 (Session 15) changes: `memory/session/in-progress.md` (NEW — crash-recovery checkpoint file), `AGENTS.md` (crash recovery + mid-session commit protocol added), `memory/session/work-queue.md` (TASK-017 deferred, TASK-019 added as DONE), `memory/session/handoff.md`, `memory/session/session-log.md`
 - Claude cannot push (no GitHub auth in VM). Rob must run `git push` from his terminal.
 
 ---

@@ -505,3 +505,48 @@ Append-only log. Each session adds one entry at the bottom.
 - `memory/session/session-log.md` — This entry
 
 **Next priority:** TASK-017 (T2 drafts — Wave 2 TODAY, Wave 1 TOMORROW) + TASK-018 (Sucheth cleanup)
+
+---
+
+## 2026-03-11 — Session 15: Crash-Recovery Infrastructure
+
+**Session type:** Infrastructure — persistent memory / crash-recovery system
+
+**What happened:**
+- Session started with intent to continue T2 draft work (TASK-017).
+- Rob clarified: T2 drafts are deferred — they're manual Apollo tasks and will be tackled when Apollo surfaces them naturally. No proactive pre-drafting.
+- Rob's actual request: Build crash-recovery infrastructure so that if a Claude session crashes mid-task, the next session can pick up exactly where the last one left off.
+
+**Problem solved:**
+The current git-based memory system commits only at session END. If a session crashes mid-task (e.g., mid-way through building a 23-contact batch tracker), the in-progress work is lost. The next session has no record of what was being done or how far along it got.
+
+**What was built:**
+
+1. **`memory/session/in-progress.md`** (NEW FILE)
+   - A checkpoint file that tracks live task progress
+   - Claude writes ACTIVE status + step list at task START (and commits immediately)
+   - Claude checks off steps as they complete (and commits after each)
+   - Claude sets Status → CLEAR at task END
+   - On session START: if Status = ACTIVE = crash was detected
+   - Includes template, crash recovery protocol instructions, and mid-session commit triggers list
+
+2. **`AGENTS.md`** (UPDATED)
+   - Step 6 added to startup sequence: Read in-progress.md after handoff.md + work-queue.md
+   - Step 7: Crash check — ACTIVE = crash recovery mode, CLEAR = proceed normally
+   - New section: "Crash Recovery Protocol" — full 5-step recovery procedure
+   - New section: "Mid-Session Commit Protocol" — mandatory commit triggers table (file creation, every 5 contacts drafted, MASTER_SENT_LIST update, memory/ file update)
+   - Handoff Protocol updated: clear in-progress.md as step 1
+
+3. **`work-queue.md`** (UPDATED)
+   - TASK-017: Status changed UNCLAIMED → DEFERRED (per Rob, tackle when Apollo tasks come due)
+   - TASK-019: Added as DONE — crash-recovery infrastructure complete
+   - Last Updated line updated
+
+**Files changed:**
+- `memory/session/in-progress.md` — NEW (crash-recovery checkpoint file)
+- `AGENTS.md` — Added crash recovery + mid-session commit protocol
+- `memory/session/work-queue.md` — TASK-017 deferred, TASK-019 added
+- `memory/session/handoff.md` — Date + GIT STATUS updated
+- `memory/session/session-log.md` — This entry
+
+**Next priority:** When Rob opens a session next time and Apollo has T2 tasks due, tackle TASK-017. Also TASK-018 (Sucheth Ramgiri cleanup). Then TASK-003 (Gmail draft audit).
