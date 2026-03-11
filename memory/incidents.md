@@ -201,6 +201,49 @@ After every body injection and before every Send Now click:
 
 ---
 
+---
+
+## INC-008: Two Placeholder Sends — TAM Outbound Wave 3 (2026-03-11)
+**Severity:** HIGH
+
+### What Happened
+Two Wave 3 T1 emails were sent with Apollo's default placeholder body ("Placeholder - replace with personalized email before sending...") instead of real personalized content. Confirmed via Gmail sent folder. Both show real subjects but empty/placeholder bodies.
+
+### Affected Contacts
+| # | Name | Company | Email | Correct Subject |
+|---|------|---------|-------|-----------------|
+| 1 | Michael Cahill | L3Harris | michael.cahill@l3harris.com | Michael's regression coverage at L3Harris |
+| 2 | Manpreet Burmi | Veradigm | manpreet.burmi@allscripts.com | Manpreet's regression coverage at Veradigm |
+
+### Root Cause (two failure modes)
+1. **Silent clipboard paste failure:** After triple-clicking the subject field and typing a new subject, clicking the body area at the wrong coordinate fails to focus the Quill editor. `Ctrl+A → Ctrl+V` executes but targets the wrong element (browser UI, not Quill). The editor still shows "Placeholder" text. No error is visible.
+2. **False-positive verification:** The "Changes saved" toast fires when the subject is saved — NOT when the body is saved. A screenshot of the compose panel can look plausible if the zoom is insufficient. The mandatory JS body readback (`document.querySelector('.ql-editor').innerText`) was NOT executed before Send Now, allowing the placeholder to be sent.
+
+### Remediation
+- Recovery emails sent via Gmail as reply threads (same approach as INC-007). Honest "oops" opener + real intended content.
+- Both contacts remain in the TAM Outbound sequence. Recovery email counts as the real T1. T2 due Day 5 from recovery send.
+- Recovery drafts: see `tamob-batch-20260311-1.html` notes for Michael Cahill (L03) and Manpreet Burmi (V06).
+
+### Permanent Rule Changes (effective immediately)
+**Rule A — Mandatory JS body verification before every Send Now click (TAM Outbound task queue):**
+```javascript
+// Run this BEFORE clicking Send Now. Paste result in session log.
+document.querySelector('.ql-editor').innerText.trim().slice(0, 80)
+```
+Expected result starts with: `Hi [FirstName],` — NOT "Placeholder"
+If result contains "Placeholder": STOP. Re-paste body. Verify again. Do not click Send Now.
+
+**Rule B — Zoom screenshot of body area required:**
+After pasting, take a `zoom` screenshot of the body area (approximately [860, 380] to [1215, 500]) to visually confirm real content before proceeding to Send Now.
+
+**Rule C — "Changes saved" toast does NOT confirm body was set:**
+The toast fires on subject save only. Do not treat it as body confirmation. Body verification (Rule A + Rule B) is always required separately.
+
+**Rule D — Body paste focus recovery:**
+After editing the subject field, click the body at coordinate (1035, 540) — center of the Quill editor — not (514, 407) or (528, 407). Then wait 0.5s before Ctrl+A. If paste fails, try clicking (1035, 480) and repeating.
+
+---
+
 ## Draft Safety & Cadence Enforcement Rules
 
 ### Rule 1: Date-Gating

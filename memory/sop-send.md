@@ -109,6 +109,153 @@ Close InMail window. Navigate back to search. Confirm: "Prospect #X complete. Re
 
 ---
 
+---
+
+## Apollo Task Queue Send — TAM Outbound T1 (Sequence Step 1)
+
+Use this procedure when sending T1 emails via the Apollo sequence task queue ("Send Now" flow). This is the standard method for all TAM Outbound Wave sends.
+
+### Hard Rules (from INC-007 + INC-008 — NON-NEGOTIABLE)
+- **NEVER use Quill setText() JS injection** for task queue sends. Use clipboard paste only.
+- **ALWAYS run JS body verification** before clicking Send Now — every single send, no exceptions.
+- **"Changes saved" toast does NOT confirm body was set.** It only confirms subject was saved.
+- **ALWAYS zoom-screenshot the body area** after paste to visually confirm real content.
+- The placeholder text is: `"Placeholder - replace with personalized email before sending."` — if you see these words anywhere, STOP.
+
+### Step-by-Step Flow
+
+**1. Load the wave3_drafts.json entry for the current contact**
+Match by name/email. Confirm subject and body are loaded into working memory before opening Apollo.
+
+**2. Open the task in Apollo**
+Navigate to: `https://app.apollo.io/#/sequences/69afff8dc8897c0019b78c7e/tasks?emailerCampaignIds[]=69afff8dc8897c0019b78c7e&emailerStepId=69afffcc6dc86e000d692314&sortBy[]=task_due_at.asc`
+Click the task row for the current contact.
+
+**3. Edit subject line**
+Triple-click the Subject field → type exact subject from wave3_drafts.json. Do not press Enter.
+
+**4. Set clipboard and focus body**
+```
+// 1. Set Windows clipboard via MCP (before touching the body editor):
+Clipboard.set(text = [full email body from wave3_drafts.json])
+// 2. Click body editor to focus — use coordinate (1035, 540):
+left_click at (1035, 540)
+// 3. Wait 0.5s
+// 4. Ctrl+A to select all existing content
+key "ctrl+a"
+// 5. Ctrl+V to paste
+key "ctrl+v"
+```
+
+**5. ⛔ MANDATORY JS BODY VERIFICATION (runs before every Send Now — no exceptions)**
+Execute this JavaScript:
+```javascript
+document.querySelector('.ql-editor').innerText.trim().slice(0, 80)
+```
+**Expected:** Starts with `Hi [FirstName],`
+**Failure:** Contains `Placeholder` → STOP immediately. Do NOT click Send Now. Re-focus body and re-paste (try clicking at [1035, 480] instead). Verify again.
+
+**6. Zoom-screenshot body area**
+```
+zoom region: [860, 380, 1215, 500]
+```
+Confirm: real personalized sentence is visible. NOT placeholder text. Log this as "body verified ✓".
+
+**7. Send Now**
+Only after Steps 5 AND 6 both confirm real content. Use `find "Send Now button"` → left_click ref.
+
+**8. Confirm advance**
+Apollo auto-advances to next task or shows success. Take a screenshot to confirm send completed.
+
+**9. Log immediately**
+Update batch tracker + session notes before moving to the next contact.
+
+### Paragraph Spacing Standard (applies to all sent emails)
+Every email body must have a blank line between each paragraph. No walls of text. This is verified as part of the zoom screenshot check in Step 6 — if paragraphs are visually crammed together, STOP and fix before sending.
+
+### Verification Failure Protocol (before send)
+If JS body check returns placeholder text:
+1. Do NOT click Send Now under any circumstances
+2. Close the task modal (press Escape or click X)
+3. Re-open the task from the task list
+4. Repeat Steps 3-6
+5. If paste fails 3 times: STOP session, report to Rob with screenshot
+
+---
+
+## Placeholder Send Recovery Protocol (INC-007 / INC-008)
+
+Use this if a placeholder email was already sent to a prospect. Confirmed via Gmail sent folder — body shows "Placeholder - replace with personalized email before sending."
+
+### Recognition
+- Check Gmail sent folder after every send session
+- Placeholder body starts with: `"Placeholder - replace with personalized email before sending."`
+- If found: STOP all further sends. Log the affected contacts immediately. Report to Rob.
+
+### Recovery Email Template
+Send as a **reply to the original placeholder thread** in Gmail (not a new email).
+
+**Opener (always use this exact format — no variations):**
+> [FirstName], I just sent my draft a few moments ago, I was trying to get ahead of my message before lunch. Here's what I actually meant to say:
+
+**Body:** The full personalized email from wave3_drafts.json — BUT strip the leading "Hi [FirstName]," line since the opener already addresses them. Preserve all paragraph spacing (blank line between each paragraph).
+
+**No em dashes anywhere.** Replace any em dash with a comma.
+
+**Full recovery email structure:**
+```
+[FirstName], I just sent my draft a few moments ago, I was trying to get ahead
+of my message before lunch. Here's what I actually meant to say:
+
+[Paragraph 1 — problem/hook]
+
+[Paragraph 2 — social proof]
+
+[Paragraph 3 — reason for reaching out + CTA question]
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with [persona descriptor] at [vertical] companies.
+```
+
+### Steps
+1. Pull the correct body from `wave3_drafts.json` for the affected contact
+2. Draft the recovery email using the template above
+3. **Present to Rob for APPROVE SEND** — never send without explicit approval
+4. After approval: open Gmail, find the original placeholder thread, reply with the recovery email
+5. Screenshot the sent reply as confirmation
+6. Update the batch tracker: mark as "T1 Sent [date] (recovery)" — T2 eligible date resets to +4 days from recovery send
+7. Log in incidents.md under the relevant INC entry
+
+---
+
+## Gmail Sent Folder Monitor — Required During Every Email Send Session
+
+Run this check at two points in every Apollo Task Queue send session:
+
+### Check 1: Mid-session (after every 5 sends)
+1. Open Gmail sent folder: search `in:sent newer_than:2h`
+2. Scan the last 5 sent emails — preview text should show real personalized content
+3. If ANY show "Placeholder - replace with personalized email before sending": **STOP ALL SENDS IMMEDIATELY**
+4. Identify affected contacts, log them, and follow the Placeholder Send Recovery Protocol above
+5. Fix the paste issue before resuming
+
+### Check 2: End-of-session (mandatory — before closing Apollo)
+1. Open Gmail sent folder: search `in:sent newer_than:4h`
+2. Scan ALL emails sent in the session — preview text must show real content for every send
+3. Log result in session notes: "Gmail sent audit: [N] sends verified clean" or flag any issues
+4. If issues found: log immediately in incidents.md, draft recovery emails, present to Rob
+
+### How to run the Gmail check efficiently
+Use the Gmail MCP tool:
+```
+gmail_search_messages(q="in:sent newer_than:2h", maxResults=20)
+```
+Check the `snippet` field of each result — it shows the first ~100 chars of the email body. Real content will start with "Hi [Name]," — placeholder will show "Placeholder - replace with..."
+
+**This check is non-negotiable.** Do not end a send session without completing Check 2.
+
+---
+
 ## Apollo UI Manual Email Send (Touch 2)
 
 Use this procedure when sending T2 emails via the Apollo contact page (not LinkedIn InMail). This is the standard method for B9/B10/B11 Touch 2 emails.

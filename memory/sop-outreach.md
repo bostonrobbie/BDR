@@ -14,7 +14,7 @@
 - Warm, conversational, low-pressure, specific, respectful.
 - No feature dumping. Focus on a specific solution to something the prospect is already doing.
 - Mobile-friendly: 80-99 words for Touch 1 (data-proven sweet spot). Max 6-8 short lines. Absolute ceiling 120 words.
-- **Paragraph spacing:** Every message must have clear visual breaks. Opener, context, proof point, and close each get their own paragraph. No paragraph exceeds 3 sentences.
+- **Paragraph spacing:** Every message must have a blank line between each paragraph — opener, context, proof point, and close are each their own block with a full empty line separating them. No paragraph exceeds 3 sentences. This applies to all emails, InMails, and recovery messages. No walls of text. No cramming multiple ideas into one block.
 - **Never "show your work."** Do NOT reference LinkedIn, profiles, resume facts, or years at a company.
 - No "I noticed" or "I saw" or "based on your profile." (DATA: -13.4 pp differential)
 - No generic assertions like "you must be doing manual testing." Ask, don't assert.
@@ -380,15 +380,23 @@ Subject: Padma's automation standards at Fidelity
 
 Hi Padma,
 
-Chapter Leader is a distinctive role inside Fidelity's model: setting automation standards across product teams without direct control over their day-to-day execution. When each squad owns its own approach, how do you drive consistency across all of them?
+Chapter Leader is a distinctive role inside Fidelity's model: setting automation
+standards across product teams without direct control over their day-to-day
+execution. When each squad owns its own approach, how do you drive consistency
+across all of them?
 
-One financial services team we work with standardized automation across distributed squads and reduced test maintenance overhead by 70%.
+One financial services team we work with standardized automation across
+distributed squads and reduced test maintenance overhead by 70%.
 
-Thought it would be worth reaching out because that influence-without-authority challenge is specific to the chapter model. Is standardizing automation quality across chapters something you're actively solving for?
+Thought it would be worth reaching out because that influence-without-authority
+challenge is specific to the chapter model. Is standardizing automation quality
+across chapters something you're actively solving for?
 
 Rob Gorham | Testsigma
-We have yet to be properly introduced. I work with QA leaders at enterprise financial services companies.
+We have yet to be properly introduced. I work with QA leaders at enterprise
+financial services companies.
 ```
+*(Note: blank line between every paragraph — this is mandatory in all sent emails.)*
 
 **Example (Cboe — Rick Brandt, dual-stack migration angle):**
 ```
