@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-10 (Session 13 — INC-007 recovery complete. Next: Wave 1+2 T2 drafts due Mar 15)
+## Last Updated: 2026-03-11 (Session 14 — Apollo audit done. Trackers fixed. SOP v3.0 hardened. T2 URGENT: Wave 2 due today, Wave 1 due tomorrow Mar 12.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 1. `git pull origin main`
@@ -82,17 +82,20 @@ Sucheth Ramgiri (Commvault) hard-bounced — sramgiri@commvault.com is invalid (
 
 ---
 
-### TASK-017: Draft Wave 1 T2 Emails (23 contacts — due Mar 15)
+### TASK-017: Draft T2 Emails — Wave 1 (23) + Wave 2 (13) — URGENT
 **Status:** UNCLAIMED
-**Priority:** P1 — T2 due Mar 15 (Day 5 from Mar 10 T1 sends)
-**Effort:** ~90 min
-**Output:** `tamob-wave1-t2-drafts-mar10.html`
+**Priority:** P0 — URGENT. Wave 2 T2 tasks DUE TODAY in Apollo. Wave 1 T2 tasks due TOMORROW Mar 12.
+**Effort:** ~90 min for Wave 1, ~50 min for Wave 2 (templates are similar, batch together)
+**Output:** `tamob-wave1-t2-drafts-mar12.html` and `tamob-wave2-t2-drafts-mar11.html`
 
-All 23 Wave 1 contacts received T1 on Mar 10. T2 eligible Mar 14 (Day 4), send Mar 15 (Day 5).
+**⚠️ T2 timing corrected (Session 14 audit):**
+- Wave 1 T1 sent at 10:29 PM Mar 10 → T2 task fires Mar 12 morning (confirmed "20h" in Apollo Mar 11 afternoon)
+- Wave 2 T1 sent 8-11 AM Mar 10 → T2 tasks already in Apollo Tasks tab today (13 tasks due today)
+
 **Formula:** sop-tam-outbound.md Part 7 — 50-70 words, engagement question CTA (NOT "what day works"), different proof point from T1.
-**Draft structure:** 4 parts — (1) light callback to T1, (2) new angle/proof point, (3) engagement question close
-**Check:** tamob-wave1-draft-mar10.html for T1 subjects and proof points used (no repeat per contact)
-**Send via:** Apollo task queue (same TAM Outbound - Rob Gorham sequence, Step 2 tasks will auto-generate ~Mar 14-15)
+**Draft structure:** (1) light callback to T1 send, (2) new angle/proof point, (3) engagement question close
+**Check T1 proof points:** tamob-wave1-draft-mar10.html / tamob-wave2-draft-mar10.html (no repeat per contact)
+**Send via:** Gmail Chrome (Part 23 of sop-tam-outbound.md v3.0) → then "Mark as Done" in Apollo task — NOT "Send Now"
 **APPROVE SEND required before any sends**
 
 ---

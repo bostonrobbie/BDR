@@ -1,10 +1,10 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-10 (Session 13: INC-007 recovery complete — 24/25 recovery emails sent. 1 hard bounce: Sucheth Ramgiri/Commvault)
+## Last Updated: 2026-03-11 (Session 14: Post-INC-007 audit complete. Trackers fixed. SOPs hardened. Wave 1 T2 due TOMORROW Mar 12. Wave 2 T2 due TODAY.)
 
 ---
 
 ## TODAY'S DATE
-**Tuesday, March 10, 2026**
+**Wednesday, March 11, 2026**
 
 ---
 
@@ -137,9 +137,21 @@ Last audit: Not completed this session. Need to check:
 | 22 | John Harding | YouTube | John's engineering at YouTube Music | ✅ Sent |
 | 23 | Hrishikesh Aradhye | YouTube | Hrishi's coverage at YouTube Music | ✅ Sent |
 
-**Next action: Build T2 drafts for all 23 Wave 1 contacts — due Mar 15 (Day 5)**
+**⚠️ URGENT: Wave 1 T2 due TOMORROW Mar 12 (not Mar 15 as previously noted)**
+Wave 1 T1 was sent at 10:29 PM Mar 10 (after pause/reschedule cycle). Apollo T2 task fires ~24h later = Mar 12 morning.
+Apollo confirmed: Wave 1 contacts show "20h" remaining on Step 2 as of Mar 11 afternoon.
+
+**Wave 2 T2 tasks: DUE TODAY (Mar 11) — 13 tasks in Apollo Tasks tab**
+Wave 2 T1 was sent earlier Mar 10 (8-11 AM). T2 tasks now appear in Apollo Tasks, all due today.
+
+**Next action: Build T2 drafts for all 39 contacts (Wave 1 + Wave 2) IMMEDIATELY**
 **T2 formula:** sop-tam-outbound.md Part 7 — 50-70 words, engagement question CTA, different proof point from T1
-**Draft file to create:** `tamob-wave1-t2-drafts-mar10.html`
+**Draft files to create:** `tamob-wave1-t2-drafts-mar12.html` and `tamob-wave2-t2-drafts-mar11.html`
+
+**Session 14 tracker fixes applied:**
+- `tamob-wave1-draft-mar10.html`: All 23 badges updated from "Draft Ready" → "T1 Sent Mar 10" ✅
+- `MASTER_SENT_LIST.csv`: 23 Wave 1 rows added (total 338 rows) ✅
+- `memory/sop-tam-outbound.md`: Version 3.0 — Part 23 added (Gmail Chrome Send Protocol), Phase 8/Part 11/Part 18 hardened ✅
 
 **Prior Session 7 changes (for reference):**
 1. wave1-batch1-tracker-mar10.html built — 27 contacts across 6 accounts (expanded from 13 in prior planning)
@@ -277,6 +289,7 @@ Last audit: Not completed this session. Need to check:
 - Mar 10 (Session 10) changes: `tamob-wave2-draft-mar10.html` (QA trimmed + status updated), `MASTER_SENT_LIST.csv` (+16 Wave 2 rows), `memory/sop-tam-outbound.md` (Part 22 added), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Mar 10 (Session 11) changes: `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md` — Wave 1 T1 sends complete
 - Mar 10 (Session 13) changes: `memory/incidents.md` (INC-007 recovery complete), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
+- Mar 11 (Session 14) changes: `tamob-wave1-draft-mar10.html` (badges fixed), `MASTER_SENT_LIST.csv` (+23 Wave 1 rows), `memory/sop-tam-outbound.md` (v3.0 — Part 23 added, INC-007 hardening), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Claude cannot push (no GitHub auth in VM). Rob must run `git push` from his terminal.
 
 ---

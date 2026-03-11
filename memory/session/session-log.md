@@ -469,3 +469,39 @@ Append-only log. Each session adds one entry at the bottom.
 
 **Next priority:** TASK-017 (Wave 1+2 T2 drafts — all due Mar 15) + TASK-018 (Sucheth cleanup)
 
+
+---
+
+## 2026-03-11 — Session 14: Post-INC-007 Audit + Tracker Fixes + SOP Hardening
+
+**Session type:** Audit, cleanup, SOP update
+**Objective:** (1) Confirm Apollo reflects all T1 sends, (2) fix internal tracker gaps, (3) harden SOPs to prevent future placeholder send errors
+
+**Apollo audit results:**
+- 39/39 contacts enrolled in TAM Outbound, all Active on Step 2 ✅
+- Wave 2: 13 T2 tasks appearing in Apollo Tasks tab, due TODAY (Mar 11) — T1 was sent 8-11 AM Mar 10 ✅
+- Wave 1: T2 tasks NOT yet visible but scheduled — T1 was sent 10:29 PM Mar 10, "20h" remaining on Step 2 as of Mar 11 afternoon → tasks appear tomorrow Mar 12 ✅
+- Apollo Step 1 body shows "Placeholder" text — expected, recovery was sent via Gmail and is not reflected in Apollo's sequence log ✅ (by design)
+- T2 timing correction: previously noted as "due Mar 15 (Day 5)" — actual timing is ~1 day from T1 send, so Wave 1 T2 is due Mar 12 (not Mar 15) and Wave 2 T2 due today
+
+**Tracker fixes applied:**
+- `tamob-wave1-draft-mar10.html`: All 23 "Draft Ready" badges updated to "T1 Sent Mar 10". T1 Sent stat updated 0→23. T1 Drafts stat updated 23→0. badge-sent CSS class added.
+- `MASTER_SENT_LIST.csv`: 23 Wave 1 contacts added (Rick Brandt, Maurice Saunders, Snezhana Ruseva, Seth Drummond, Chris Pendergast, Christopher Bilcz, Eric Pearson, Nithya Arunkumar, Richelle Lacamera, Sourabh Roy, Padma Srikanth, Neeraj Tati, Brahmaiah Vallabhaneni, Jennifer Wang, Prasad Alapati, Sucheth Ramgiri (bounce note), Arun Amarendran, Chamath Guneratne, Maggie Redden, Jennifer Drangstveit, John Harding, Des Keane, Hrishikesh Aradhye). Total rows now 338.
+
+**SOP updates:**
+- `memory/sop-tam-outbound.md` upgraded to v3.0:
+  - Part 23 added: Gmail Chrome Send Protocol — canonical reference for all email sends
+  - Phase 8 Step 1: Rewrote INC-004 warning as INC-007 hard ban on Apollo "Send Now" with full Gmail protocol
+  - Part 11: Updated T1 enrollment flow to Gmail-first, then enroll, then "Mark as Done"
+  - Part 18: Updated T2 task workflow — "Mark as Done" not "Send Now"
+  - Part 22 pipeline summary: Gmail send step added before enrollment as Step 5
+
+**Files changed:**
+- `tamob-wave1-draft-mar10.html` — badge fixes + stat corrections
+- `MASTER_SENT_LIST.csv` — +23 Wave 1 rows
+- `memory/sop-tam-outbound.md` — v3.0 (Part 23 + hardened parts)
+- `memory/session/handoff.md` — date updated, Wave 1/2 T2 timing corrected, Session 14 in GIT STATUS
+- `memory/session/work-queue.md` — TASK-017 updated (P0 URGENT), Last Updated
+- `memory/session/session-log.md` — This entry
+
+**Next priority:** TASK-017 (T2 drafts — Wave 2 TODAY, Wave 1 TOMORROW) + TASK-018 (Sucheth cleanup)

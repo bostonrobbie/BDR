@@ -1,5 +1,5 @@
 # SOP: TAM Outbound — End-to-End Process
-## Version 2.0 — Updated Mar 10, 2026 (50/day rolling cadence)
+## Version 3.0 — Updated Mar 11, 2026 (INC-007 hardening: Gmail-first send protocol)
 
 This SOP governs all outreach to named TAM accounts. It is the authoritative guide for any Claude agent executing the TAM outbound process. Read this file in full before starting any TAM batch.
 
@@ -476,13 +476,17 @@ Reply APPROVE SEND to send all, or APPROVE SEND — [name] only, or EDIT [name] 
 4. After enrollment: in Apollo, manually skip Step 1 (InMail was T1, already sent)
 5. Step 2 manual email task will appear — due Day 5 from enrollment date
 
-**For contacts whose T1 is email via Step 1:**
-1. Enroll in TAM Outbound sequence with Step 1 as the scheduled action
-2. Email account: `robert.gorham@testsigma.com`
-3. Apollo flags to use: `sequence_no_email: true`, `sequence_active_in_other_campaigns: true`
-4. For finished sequences: add `sequence_finished_in_other_campaigns: true`
+**For contacts whose T1 is email (all TAM Outbound T1s — standard protocol):**
+1. Send T1 via Gmail Chrome automation FIRST (see Part 22) — do NOT enroll before sending
+2. THEN enroll in TAM Outbound - Rob Gorham (`69afff8dc8897c0019b78c7e`) via API
+3. Email account: `robert.gorham@testsigma.com` (ID: `68e3b53ceaaf74001d36c206`)
+4. Apollo flags: `sequence_no_email: true`, `sequence_active_in_other_campaigns: true`
+5. After enrollment: in Apollo, manually mark Step 1 as "Done" (NOT via "Send Now" — that sends the template)
+6. Step 2 task will auto-generate, due ~24 hours after Step 1 is marked done
 
-**Enrollment timing:** Enroll immediately after T1 send (same session). Do NOT wait.
+**Critical:** Send via Gmail BEFORE enrolling. If you enroll first, Apollo creates a Step 1 task and someone might accidentally click "Send Now" — which would send the template placeholder body.
+
+**Enrollment timing:** Enroll immediately after Gmail send confirmation (same session). Do NOT wait.
 
 **Batch size:** Enroll max 5 contacts at a time (larger batches cause 500 errors per prior testing).
 
@@ -601,11 +605,15 @@ When a T1 email is sent and the contact is enrolled in TAM Outbound (Step 1 comp
 
 **How to use Apollo as the daily controller:**
 1. Open Apollo → Sequences → TAM Outbound - Rob Gorham
-2. Click "Tasks" tab → filter by "Due Today" or "Due This Week"
-3. For each task: identify the contact, look up their draft in the batch tracker HTML
-4. Present draft to Rob (or confirm it's ready) → Rob gives APPROVE SEND → send
-5. Mark task complete in Apollo → Apollo auto-advances the contact to the next step
-6. After sending: log send date in batch tracker HTML (Status column)
+2. Click "Tasks" tab → sorted by "Due Date" ascending
+3. For each task: identify the contact, look up their T2 draft in the batch tracker HTML
+4. Present draft to Rob → Rob gives APPROVE SEND
+5. **Send via Gmail Chrome (Part 22) — do NOT click "Send Now" in Apollo**
+6. Return to Apollo → click the task → "Mark as Done" (advances contact to next step)
+7. After sending: update Status in batch tracker HTML → "T2 Sent [date]"
+
+> ⚠️ **"Send Now" in Apollo task = BANNED for all personalized email steps.**
+> Apollo "Send Now" sends the sequence template, not your draft. Always Gmail first, then "Mark as Done."
 
 **What to do if Apollo shows 0 tasks:** Either no contacts are enrolled yet, or all active contacts are between steps. Check enrolled contacts list in sequence. This is normal on Day 2-4 (between T1 and T2).
 
@@ -789,7 +797,29 @@ Wait for Rob's APPROVE SEND. Do NOT enroll or send anything before approval.
 **For each approved contact, three things must happen in this order: Send → Enroll in Apollo → Log everywhere.**
 
 **Step 1 — Send**
-Rob sends T1 email from robert.gorham@testsigma.com (via Apollo task or direct send). Note the exact send date/time.
+
+> 🚨 **INC-007 MANDATORY RULE (updated Mar 11, 2026 — supersedes INC-004):**
+> **NEVER use Apollo's "Send Now" button in sequence task composer for personalized emails.**
+> Apollo sequence tasks ALWAYS send the sequence template body — DOM manipulation via Quill API,
+> execCommand, or any JS injection does NOT change Apollo's actual outbound payload.
+> Even if the compose panel VISUALLY shows your injected content, Apollo sends the template.
+> This caused 39 placeholder emails in INC-007. See `memory/incidents.md` for full post-mortem.
+>
+> **THE ONLY SAFE SEND METHOD FOR TAM OUTBOUND EMAILS:**
+> See Part 22 (Gmail Chrome Send Protocol) for the full procedure. Summary:
+> 1. Open Gmail Chrome (blue/work Chrome profile) at mail.google.com
+> 2. Click Compose → enter recipient email address
+> 3. Enter subject exactly as written in the batch tracker
+> 4. PASTE body text from the batch tracker (do NOT type from memory, do NOT use JS injection)
+> 5. Take a screenshot of the composed email — visually verify subject + body + recipient
+> 6. Confirm body starts with "Hi [Name]," and contains NO "Placeholder" text anywhere
+> 7. Click Send (blue button) — do NOT use Ctrl+Enter auto-send
+> 8. Confirm "Message sent" toast appears before moving to the next contact
+> 9. Return to Apollo → open the sequence task → click "Mark as Done" (NOT "Send Now")
+>
+> **For T2 and all subsequent manual email steps:** same protocol — Gmail send first, Apollo "Mark as Done" second. Never "Send Now."
+
+T1 email is sent from robert.gorham@testsigma.com via Gmail Chrome automation. Note the exact send date/time.
 
 **Step 2 — Apollo Enrollment (same session, same day — never defer)**
 1. Confirm the contact exists in Apollo (search by name + company)
@@ -1095,7 +1125,9 @@ Add `.badge-sent` CSS if not present:
 
 ---
 
-### Full Pipeline Summary (T1 Email Batch — Automated)
+### Full Pipeline Summary (T1 Email Batch — INC-007 Hardened)
+
+> ⚠️ **Step ordering is CRITICAL.** Gmail send MUST come before Apollo enrollment. See Part 23 for Gmail send protocol.
 
 ```
 APPROVE SEND received
@@ -1108,21 +1140,144 @@ APPROVE SEND received
         ↓
 4. Search Apollo for each contact → create if missing (run_dedupe=true)
         ↓
-5. Enroll HIGH → MED → LOW in TAM Outbound sequence (ID: 69afff8dc8897c0019b78c7e)
+5. *** SEND T1 VIA GMAIL CHROME (Part 23) — one contact at a time ***
+   Gmail compose → paste subject from tracker → paste body from tracker
+   → screenshot verify → click Send → confirm "Message sent" toast
+   → repeat for all contacts in batch
         ↓
-6. Verify all contacts show sequence ID in emailer_campaign_ids
+6. Enroll HIGH → MED → LOW in TAM Outbound sequence (ID: 69afff8dc8897c0019b78c7e)
+   Send email from account: robert.gorham@testsigma.com (ID: 68e3b53ceaaf74001d36c206)
         ↓
-7. Append 16 rows to MASTER_SENT_LIST.csv
+7. In Apollo: mark Step 1 as Done for each enrolled contact
+   (do NOT click "Send Now" — T1 was already sent via Gmail in Step 5)
         ↓
-8. Update HTML status badges: Draft Ready → T1 Sent [Date]
+8. Verify all contacts show sequence ID in emailer_campaign_ids
         ↓
-9. Update handoff.md, work-queue.md, session-log.md
+9. Append rows to MASTER_SENT_LIST.csv (one row per contact sent)
         ↓
-10. Git commit + push
+10. Update HTML status badges: Draft Ready → T1 Sent [Date]
+        ↓
+11. Update handoff.md, work-queue.md, session-log.md
+        ↓
+12. Git commit + push
 ```
 
-**T2 follow-up schedule:** T2 due Day 5 from send date. Apollo task queue will auto-generate Step 2 tasks — check daily per sop-daily.md.
+**T2 follow-up schedule:** T2 due ~1 day after Step 1 marked Done in Apollo (Apollo auto-generates task). Check daily per sop-daily.md. T2 also sends via Gmail (Part 23) — never via Apollo "Send Now."
 
 ---
 
 *Part 22 added Mar 10, 2026 — documents automation pipeline built during Wave 2 T1 send session*
+*Part 22 updated Mar 11, 2026 — pipeline summary hardened for INC-007: Gmail send added before enrollment*
+
+---
+
+## Part 23: Gmail Chrome Send Protocol — Canonical Reference
+
+*Added Mar 11, 2026 — Required reading after INC-007. This is the ONLY approved method for sending emails in the TAM Outbound sequence.*
+
+### Why Gmail Chrome (not Apollo "Send Now")
+
+Apollo sequence tasks display a compose panel. When you type or inject content into that panel via JS (Quill API, execCommand, etc.), the DOM updates visually — but Apollo's send payload reads from the **sequence step template**, not the DOM. The result: clicking "Send Now" ALWAYS sends the template body, regardless of what you see on screen.
+
+This caused INC-007: 39 contacts received "Placeholder - replace with personalized email before sending." as their T1 email.
+
+**The only fix is to never use Apollo "Send Now" for any step that requires personalized content.** All email sends go through Gmail Chrome instead.
+
+### Pre-Send Requirements
+
+Before any email session begins:
+- [ ] You are using the **blue/work Chrome profile** (Testsigma account). Never the red/personal profile.
+- [ ] You are logged into `robert.gorham@testsigma.com` Gmail (mail.google.com)
+- [ ] The batch tracker HTML is open and you have the contact list, subjects, and bodies ready to copy
+- [ ] Rob has given **APPROVE SEND** for this specific batch
+
+### Protocol: Sending One Email
+
+For each contact in the batch:
+
+**Step 1 — Open Gmail and start compose**
+1. Navigate to mail.google.com (blue Chrome profile)
+2. Click **Compose** button
+3. Confirm the "From" field shows `robert.gorham@testsigma.com` — if it shows another account, click the From field and switch accounts before proceeding
+
+**Step 2 — Enter recipient**
+1. In the **To** field: type the contact's email address exactly as it appears in the batch tracker
+2. Do NOT use autocomplete if the suggestion doesn't exactly match — clear and retype
+
+**Step 3 — Enter subject**
+1. In the **Subject** field: copy-paste the subject from the batch tracker (do not retype from memory)
+2. Verify it's personalized to this contact (contains their name or company signal, not a generic label)
+
+**Step 4 — Enter body**
+1. In the **body** field: copy-paste the email body from the batch tracker
+2. Do NOT type from memory, do NOT use JS injection
+3. The body should start with "Hi [First Name]," and end with the signature block
+4. Do NOT modify the content after pasting — what's in the tracker is what Rob approved
+
+**Step 5 — Pre-send screenshot verification (mandatory)**
+1. Take a screenshot of the compose window
+2. Verify ALL of the following are visible and correct:
+   - To: correct email address for THIS contact
+   - Subject: matches batch tracker exactly (no "[placeholder]" or generic text)
+   - Body: starts with "Hi [First Name]," — correct first name for THIS contact
+   - Body: does NOT contain the word "Placeholder" anywhere
+   - Body: does NOT contain "[" or "]" bracket placeholders anywhere
+3. If ANY check fails: STOP. Close compose. Debug. Do not send.
+
+**Step 6 — Send**
+1. Click the blue **Send** button (do NOT use Ctrl+Enter)
+2. Wait for the "Message sent" toast notification to appear at the bottom of the screen
+3. If no toast appears within 5 seconds: check Sent folder to confirm — do not assume it sent
+
+**Step 7 — Log and advance**
+1. Note the send time
+2. Return to the batch tracker HTML and update this contact's status: "T1 Sent [date]"
+3. Do NOT proceed to the next contact until the current send is confirmed
+
+### Protocol: Handling the Apollo Task After Gmail Send
+
+For T1 (first send in sequence):
+1. Enroll the contact in Apollo TAM Outbound sequence via API (Part 11)
+2. In Apollo, open the Step 1 task for this contact
+3. Click **"Mark as Done"** — do NOT click "Send Now"
+4. Confirm contact advances to Step 2 (task disappears from active list)
+
+For T2 and later steps (Apollo task already exists):
+1. Open Apollo → TAM Outbound → Tasks tab
+2. Click the task for this contact to expand it
+3. Send the email via Gmail Chrome (steps above) using the T2 draft from the batch tracker
+4. Return to Apollo → click **"Mark as Done"** on the task
+5. Confirm task disappears and contact advances to next step
+
+> ⚠️ The button that sends from Apollo is labeled "Send Now." The button that just marks a task complete without sending is labeled "Mark as Done." These are different. Always use **Mark as Done** after a Gmail send. Never use **Send Now**.
+
+### Handling Contact Popups in Gmail
+
+When searching Gmail for a contact or clicking a contact's email address, Gmail may open a contact card popup that covers the compose window. To dismiss: press **Escape** before clicking anything else. This is expected behavior — always press Escape to clear the popup first.
+
+### Error Scenarios
+
+| Situation | Action |
+|-----------|--------|
+| "Send" button is grayed out | Check for missing recipient or subject. Fix and retry. |
+| No "Message sent" toast | Wait 5 seconds, then check Sent folder. If not in Sent: retry send. |
+| Wrong "From" account shown | Click From field → switch to robert.gorham@testsigma.com → verify → send |
+| Body still shows "[placeholder]" | STOP. Update batch tracker with correct body. Paste again. Screenshot verify. Then send. |
+| Gmail asks to confirm sending to external address | Click "Send anyway" — this is normal for external recipients |
+| Hard bounce (SMTP 550) received | Log in incidents.md as a bounce. Remove from Apollo sequence. Re-enrich email before re-sending. |
+| Gmail blocked by 2FA or session expired | Log out and log back in to robert.gorham@testsigma.com. Never use personal (rgorham369@gmail.com) for work sends. |
+
+### Recovery: If a Send Error Occurs Mid-Batch
+
+If you accidentally send a wrong body (wrong contact, wrong draft, or placeholder text):
+1. STOP immediately — do not continue sending
+2. Log the error in `memory/incidents.md` (INC-XXX) with full detail
+3. Check Gmail Sent folder to understand the exact scope (how many wrong emails sent)
+4. Update `memory/session/handoff.md` with the incident flag
+5. Commit current state immediately
+6. Do NOT attempt self-recovery — inform Rob in the session response so he can decide remediation
+7. Recovery emails follow the same Gmail Chrome protocol (search sent thread → reply with correct content)
+
+---
+
+*Part 23 added Mar 11, 2026 — post-INC-007 canonical Gmail send protocol*
