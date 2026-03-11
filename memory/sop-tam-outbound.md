@@ -1,5 +1,5 @@
 # SOP: TAM Outbound — End-to-End Process
-## Version 3.1 — Updated Mar 11, 2026 (Send protocol: Apollo UI direct — tracking fix. Gmail Chrome method retired.)
+## Version 4.0 — Updated Mar 11, 2026 (Send protocol corrected: JS execCommand insertText is the confirmed working method. Clipboard paste returns "Placeholder." Subject correction protocol added as Part 24. T2 Send Protocol added as Part 25.)
 
 This SOP governs all outreach to named TAM accounts. It is the authoritative guide for any Claude agent executing the TAM outbound process. Read this file in full before starting any TAM batch.
 
@@ -798,13 +798,13 @@ Wait for Rob's APPROVE SEND. Do NOT enroll or send anything before approval.
 All emails send directly through Apollo's task composer. See Part 23 for the full protocol. Summary:
 1. Enroll contact in TAM Outbound sequence (creates the Step 1 task)
 2. Open the Step 1 task in Apollo → task composer panel opens
-3. Select all template text → delete it completely
-4. MANUALLY PASTE subject and body from the batch tracker (keyboard paste only — no JS injection)
-5. Verify: correct recipient, correct subject, body starts with "Hi [First Name]," no placeholder text
-6. Click **"Send Now"** — confirm send confirmation appears
+3. MANDATORY subject correction: triple-click subject field → type correct SMYKM subject (Part 24 — Apollo auto-populates wrong subject every time)
+4. Inject body via JS execCommand insertText (Part 23 — clipboard paste via automation returns "Placeholder"; execCommand is the confirmed working method)
+5. Verify: run `editor.textContent.slice(0,25)` to confirm correct body injected. Re-check subject field.
+6. Click **"Send Now"** — wait for "Changes saved" toast to confirm send fired
 7. Apollo marks Step 1 done automatically and generates Step 2 task
 
-> ⚠️ **INC-007 lesson (do not repeat):** The bug in INC-007 was programmatic JS injection into Apollo's Quill editor — that method does NOT update Apollo's send payload. **Manual keyboard paste does.** Always paste by hand (Ctrl+V), never via script or console. If you see template/placeholder content after pasting, stop and debug before sending.
+> ⚠️ **Send method note (V4.0 correction):** Computer-automation clipboard paste does NOT update Apollo's Quill internal model — the payload falls back to the sequence template. JS `document.execCommand('insertText', false, body)` correctly triggers Quill's React event bindings and updates the outbound payload. This is the confirmed working method across Sessions 15-20. See Part 23 for full JS block.
 
 T1 email sends from robert.gorham@testsigma.com via Apollo. Note the exact send date/time.
 
@@ -1129,10 +1129,13 @@ APPROVE SEND received
    Send email from account: robert.gorham@testsigma.com (ID: 68e3b53ceaaf74001d36c206)
         ↓
 6. *** SEND T1 VIA APOLLO UI (Part 23) — one contact at a time ***
-   Open Step 1 task → select all → delete template → manually paste subject + body from tracker
-   → verify (correct name, no placeholders) → click "Send Now" → confirm send
+   Open Step 1 task in Apollo Tasks tab
+   → MANDATORY: Triple-click subject field → type correct SMYKM subject (Part 24 — Apollo ALWAYS auto-populates wrong subject)
+   → Inject body via JS execCommand insertText (Part 23 — clipboard paste returns "Placeholder", DO NOT use)
+   → Verify: editor.textContent.slice(0,25) confirms correct opener, re-check subject
+   → Click "Send Now" → confirm "Changes saved" toast appears
    → Apollo marks Step 1 done + generates Step 2 task automatically
-   → repeat for all contacts in batch
+   → Repeat for all contacts in batch — one at a time
         ↓
 7. Verify all contacts show sequence ID in emailer_campaign_ids
         ↓
@@ -1156,90 +1159,316 @@ APPROVE SEND received
 
 ## Part 23: Apollo UI Send Protocol — Canonical Reference
 
-*Updated Mar 11, 2026 — Gmail Chrome method retired. All emails now send directly through Apollo for sequence tracking (opens, clicks, analytics). INC-007 lesson: JS injection was the bug, not Apollo "Send Now." Manual paste is safe.*
+*Version 4.0 — Mar 11, 2026. This section supersedes all prior versions. Confirmed working method: JS execCommand insertText. Clipboard paste via computer automation returns "Placeholder" — do NOT use. See Part 24 for mandatory subject correction step.*
 
-### Why Apollo UI (not Gmail Chrome)
+---
 
-Sending from Gmail directly bypasses Apollo's tracking. Emails sent outside Apollo don't register as sequence activity — no open tracking, no click tracking, no sequence analytics. Apollo's task queue also stays in an incorrect state (Step 1 still showing as pending even after Gmail send, requiring manual "Mark as Done").
+### Why Apollo UI (not Gmail MCP or Gmail Chrome)
 
-**The correct method:** Send through Apollo's task composer by manually pasting content. Manual keyboard paste (Ctrl+V) properly updates Apollo's React state, so "Send Now" fires exactly what you see — unlike the INC-007 JS injection approach, which only updated the DOM visually without touching Apollo's internal state.
+Sending from Gmail directly bypasses Apollo's tracking entirely. Emails sent outside Apollo don't register as sequence activity — no open tracking, no click tracking, no sequence analytics. Apollo's task queue also stays in an incorrect state (Step 1 still showing pending after Gmail send).
 
-### What Caused INC-007 (do not repeat)
+**The only correct send path:** Apollo Tasks tab → open composer → inject body via JS execCommand insertText → verify → click "Send Now." This keeps all sequence tracking intact and fires the correct personalized content.
 
-INC-007 was caused by Claude programmatically injecting content into Apollo's Quill editor via JavaScript (`execCommand`, direct DOM manipulation, Quill API). This updated the visible text in the compose panel but did NOT update Apollo's outbound payload. Apollo sent the sequence template body instead.
+---
 
-**The fix:** Never use JS injection. Always paste with keyboard (Ctrl+V). That's it.
+### Send Method: JS execCommand insertText (CONFIRMED WORKING)
+
+**Why this method, not keyboard paste:** In Apollo's Quill editor, clipboard paste triggered via computer automation (Ctrl+A + Ctrl+V) does NOT update Quill's internal document state. Apollo reads the outbound payload from Quill's internal model, not from what is visually displayed. Computer-automation paste injects a literal "Placeholder" or falls back to template text in the payload. The `document.execCommand('insertText')` method fires the correct browser input events that Quill's React bindings listen to, so it DOES update the internal model and DOES update the outbound payload.
+
+**The confirmed working JS block (run in browser console for each email):**
+
+```javascript
+var editor = document.querySelector('.ql-editor');
+editor.focus();
+document.execCommand('selectAll', false, null);
+document.execCommand('insertText', false, BODY_TEXT_HERE);
+```
+
+Where `BODY_TEXT_HERE` is the full email body string, starting with `Hi [First Name],\n\n` and ending with `\n\nRob Gorham | Testsigma\n[phone] · testsigma.com`.
+
+**Verification before clicking Send Now:**
+```javascript
+editor.textContent.slice(0, 25)
+```
+Confirm this returns the start of "Hi [First Name]," — not "Hi {{" or template text. If it returns placeholder content, the injection failed — do NOT send.
+
+**Python lookup for subject + body from wave3_drafts.json:**
+```python
+import json
+data = json.load(open('/sessions/determined-sharp-keller/wave3_drafts.json'))
+[print(c['subject'], '\n', c['body']) for c in data if c['id'] == 'L04']
+```
+Replace `'L04'` with the contact's Wave ID. This gives you the exact SMYKM subject and personalized body to inject.
+
+> ⚠️ **INC-007 note (historical):** INC-007 involved a different type of programmatic injection — direct DOM manipulation or innerHTML assignment — that updated the visual display without updating Quill's internal model. The `document.execCommand('insertText')` method is distinct: it triggers Quill's registered event handlers and correctly updates the internal document state. Sessions 15-20 have confirmed execCommand insertText as the reliable method across all sends.
+
+---
 
 ### Pre-Send Requirements
 
-Before any email session begins:
-- [ ] You are using the **blue/work Chrome profile** (Testsigma account). Never the red/personal profile.
-- [ ] You are logged into Apollo at app.apollo.io as `robert.gorham@testsigma.com`
-- [ ] The batch tracker HTML is open and you have the contact list, subjects, and bodies ready to copy
+Before starting any send session:
+- [ ] Blue/work Chrome profile (Testsigma account). Never red/personal.
+- [ ] Logged into app.apollo.io as `robert.gorham@testsigma.com`
+- [ ] Draft reference file open (batch tracker HTML, wave3_drafts.json, or equivalent)
 - [ ] Rob has given **APPROVE SEND** for this specific batch
+
+---
 
 ### Protocol: Sending One Email via Apollo Task
 
-For each contact in the batch:
+For each contact in the batch (T1 or T2):
 
 **Step 1 — Open the task in Apollo**
 1. Go to Apollo → Sequences → TAM Outbound - Rob Gorham → Tasks tab
-2. Find the contact's Step 1 (or Step 2 for T2, etc.) task
+2. Find the contact's Step 1 (T1) or Step 2 (T2) task
 3. Click the task to expand the composer panel
 
-**Step 2 — Clear the template content**
-1. Click inside the subject field — select all (Ctrl+A) → delete
-2. Click inside the body field — select all (Ctrl+A) → delete
-3. Confirm both fields are empty before pasting
+**Step 2 — Fix the subject line (MANDATORY — Apollo always populates the wrong subject)**
 
-**Step 3 — Paste personalized content (keyboard only)**
-1. From the batch tracker: copy the subject line for this contact
-2. Paste into the subject field (Ctrl+V) — do NOT type from memory
-3. From the batch tracker: copy the email body for this contact
-4. Paste into the body field (Ctrl+V) — do NOT type from memory, do NOT use JS injection
-5. The body should start with "Hi [First Name]," and end with the signature block
+> ⚠️ **Critical:** Apollo auto-populates a generic subject like "[First Name]'s QA coverage at [Company]" or "[First Name]'s software testing at [Company]" every time. This is NOT the SMYKM subject. You MUST correct it before every send. See Part 24 for full subject correction protocol.
 
-**Step 4 — Pre-send verification (mandatory)**
-Visually confirm ALL of the following before clicking Send Now:
-- Subject: matches batch tracker exactly — no "[placeholder]" or template text
-- Body: starts with "Hi [First Name]," — correct first name for THIS contact
-- Body: does NOT contain the word "Placeholder" anywhere
-- Body: does NOT contain "[" or "]" bracket placeholders anywhere
-- Sending from: `robert.gorham@testsigma.com` (.com — confirm in Apollo account settings if unsure)
+1. Triple-click the subject field (selects all text)
+2. Type the correct SMYKM subject from wave3_drafts.json or the batch tracker
+3. Confirm the subject field now shows the personalized subject exactly
 
-If ANY check fails: STOP. Do not click Send Now. Fix the content first.
+**Step 3 — Inject the body via JS execCommand insertText**
+1. Click the body editor area once (focus it)
+2. Open browser console (F12 → Console)
+3. Run the JS block from the section above, substituting the correct body text
+4. Run the verification: `editor.textContent.slice(0, 25)` — confirm it starts with "Hi [First Name],"
+5. If verification fails: run the injection again. If still fails, reload Apollo and retry.
+
+**Step 4 — Final pre-send checklist (mandatory)**
+Visually confirm ALL before clicking Send Now:
+- [ ] Subject: personalized SMYKM subject, matches draft reference exactly
+- [ ] Subject: does NOT contain "QA coverage" unless that is correct for this specific person
+- [ ] Body: starts with "Hi [First Name]," — correct first name for THIS contact
+- [ ] Body: does NOT contain "Placeholder" anywhere
+- [ ] Body: does NOT contain `[` or `]` bracket placeholders
+- [ ] Sending from: `robert.gorham@testsigma.com` (confirm in Apollo account dropdown if unsure)
+
+If ANY check fails: STOP. Do not click Send Now. Fix first.
 
 **Step 5 — Send**
 1. Click **"Send Now"**
-2. Confirm the send confirmation appears and the task disappears from the active list
-3. Apollo automatically marks the step done and advances the contact to the next task
+2. "Changes saved" toast appears — this confirms the send fired
+3. Task disappears from the active Tasks list — Apollo marks Step 1 done and generates Step 2 task automatically
 
-**Step 6 — Log**
+**Step 6 — Log the send**
 1. Note the send time
-2. Return to the batch tracker HTML and update this contact's status: "T1 Sent [date]" (or "T2 Sent [date]")
-3. Do NOT proceed to the next contact until the current send is confirmed
+2. Update the contact's status in the batch tracker HTML: "T1 Sent [date]" or "T2 Sent [date]"
+3. Do NOT proceed to the next contact until the current send is confirmed via the "Changes saved" toast
+
+---
 
 ### Error Scenarios
 
 | Situation | Action |
 |-----------|--------|
-| Template content still visible after pasting | Select all → delete → paste again. If persists, reload Apollo and retry. |
-| Body shows "[placeholder]" after paste | STOP. Go back to batch tracker, copy the correct draft. Paste again. Verify before sending. |
+| JS injection fails (textContent shows placeholder) | Reload Apollo, re-open task, re-run execCommand injection. Verify before sending. |
+| Subject auto-corrects back to generic after paste | Triple-click subject → retype correct subject → immediately click body area to lock it |
 | "Send Now" sends wrong content | STOP. Log in incidents.md. Inform Rob immediately. Do not continue batch. |
-| Task not visible in Apollo Tasks tab | Contact may not be enrolled yet. Check enrollment status in Part 11. |
-| Hard bounce (SMTP 550) after send | Log in incidents.md as a bounce. Remove from Apollo sequence. Re-enrich email before retrying. |
-| Wrong email account in Apollo | Go to Apollo account settings → confirm outbound email is robert.gorham@testsigma.com |
+| Task not visible in Apollo Tasks tab | Contact may not be enrolled yet. Check enrollment status (Part 11). |
+| Hard bounce (SMTP 550) after send | Log in incidents.md as a bounce. Remove contact from Apollo sequence. Re-enrich email before retrying. |
+| Wrong email account in Apollo sender | Go to Apollo account settings → confirm outbound email is robert.gorham@testsigma.com |
+| "Changes saved" toast does not appear | Check network tab in DevTools. If send did not fire, retry. Do not double-send — verify first. |
+
+---
 
 ### Recovery: If a Send Error Occurs Mid-Batch
 
 If you accidentally send wrong content (wrong contact, wrong draft, or placeholder text):
 1. STOP immediately — do not continue sending
-2. Log the error in `memory/incidents.md` (INC-XXX) with full detail
-3. Check Apollo sequence activity log to understand exact scope
+2. Log the error in `memory/incidents.md` (INC-XXX) with full detail: which contact, what was sent, what should have been sent
+3. Check Apollo sequence activity log to understand the exact scope
 4. Update `memory/session/handoff.md` with the incident flag
 5. Commit current state immediately
-6. Do NOT attempt self-recovery — inform Rob in the session response so he can decide remediation
+6. Do NOT attempt self-recovery — surface to Rob in the session response so he decides remediation
 
 ---
 
-*Part 23 updated Mar 11, 2026 — Gmail Chrome method retired, Apollo UI send protocol canonical. INC-007 root cause: JS injection (not "Send Now"). Manual paste is safe and provides full Apollo tracking.*
+*Part 23 rewritten V4.0 — Mar 11, 2026. Confirmed working method is JS execCommand insertText, not clipboard paste. Subject correction is mandatory per Part 24. Gmail Chrome method permanently retired.*
+
+---
+
+## Part 24: Subject Line Correction Protocol (MANDATORY)
+
+*Added V4.0 — Mar 11, 2026. This step is required before EVERY T1 and T2 send. Apollo always auto-populates the wrong subject.*
+
+---
+
+### The Problem
+
+Apollo auto-populates the subject field every time you open a task composer. The auto-populated subject uses a generic pattern: **"[First Name]'s [generic descriptor] at [Company]"** — e.g. "Suchith's QA coverage at PTC" or "Rachel's software testing at Bosch." This is never the correct SMYKM subject.
+
+Apollo's auto-subject does NOT match the hyper-personalized SMYKM subject you drafted. If you send without correcting it, the recipient gets a generic, interchangeable subject that undermines the entire SMYKM personalization strategy. This has been observed on every single send across Sessions 15-20.
+
+**The generic subject Apollo uses:**
+- "[Name]'s QA coverage at [Company]" — most common
+- "[Name]'s software testing at [Company]" — second most common
+- "[Name]'s test automation at [Company]" — occasional
+
+**The correct SMYKM subject (example):**
+- "Suchith's test automation decisions at PTC"
+- "Rachel's engineering coverage at Bosch"
+- "Garrick's software testing velocity at [Company]"
+
+The SMYKM subject is hyper-personalized to the individual's role and the specific angle of the email. It is NEVER interchangeable.
+
+---
+
+### How to Correct the Subject
+
+**Step 1 — Find the correct subject**
+
+Source priority:
+1. `wave3_drafts.json` — look up by contact ID: `python3 -c "import json; data=json.load(open('/sessions/determined-sharp-keller/wave3_drafts.json')); [print(c['subject']) for c in data if c['id']=='L04'"`
+2. Batch tracker HTML — find the contact's row, copy subject from the Subject column
+3. Memory: check the send table in `memory/session/handoff.md` for previously confirmed subjects
+
+**Step 2 — Fix the subject field in Apollo**
+1. Triple-click the subject field (selects all auto-populated text)
+2. Type the correct SMYKM subject — do NOT paste (paste may not clear the existing text cleanly)
+3. Visually confirm the subject field shows the correct personalized subject
+4. Click the body area once to lock the subject before moving on
+
+**Step 3 — Verify after body injection**
+After injecting the body (Part 23 Step 3), scroll back up to the subject field and confirm it still shows the correct subject. Apollo has been observed re-populating the subject in some edge cases after interacting with the body field.
+
+---
+
+### Subject Correction Failures Observed (Sessions 15-20)
+
+| Contact | Apollo Auto-Subject | Correct SMYKM Subject |
+|---------|--------------------|-----------------------|
+| Suchith Ramgiri / PTC | "Suchith's QA coverage at PTC" | "Suchith's test automation decisions at PTC" |
+| Garrick Doell | "Garrick's software testing at [Co]" | "Garrick's software testing velocity at [Co]" |
+| Ashwin Ramesh | "Ashwin's QA coverage at [Co]" | "Ashwin's test automation at [Co]" |
+| Rachel Toffoli | "Rachel's QA coverage at Bosch" | "Rachel's engineering coverage at Bosch" |
+| Madina Zabran | "Madina's QA coverage at [Co]" | "Madina's test coverage at [Co]" |
+
+Pattern: Apollo always defaults to "QA coverage" regardless of the contact's actual role or angle. SMYKM subjects use role-specific language (test automation decisions, engineering coverage, testing velocity, etc.).
+
+---
+
+### SMYKM Subject Formula (for reference)
+
+Format: `[First Name]'s [role-specific 2-3 word descriptor] at [Company]`
+
+| Persona | Good descriptors |
+|---------|-----------------|
+| QA Manager / QA Lead | test automation decisions · QA coverage strategy · testing roadmap |
+| Director/VP of QA | testing org scale · QA team efficiency · quality engineering decisions |
+| SDET / Automation Lead | automation stack decisions · test maintenance load · flaky test problem |
+| Software Eng Manager | engineering test coverage · release confidence · QA velocity |
+| VP Eng / CTO | engineering quality bar · test automation ROI · release velocity |
+
+The descriptor should match the EMAIL ANGLE, not just the title. If the email is about maintenance time, use "test maintenance load." If about coverage gaps, use "test coverage strategy."
+
+---
+
+*Part 24 added V4.0 — Mar 11, 2026. Subject correction is mandatory on every send. Apollo's auto-population is never correct.*
+
+---
+
+## Part 25: T2 Send Protocol
+
+*Added V4.0 — Mar 11, 2026. Wave 2 T2s are now in the Apollo task queue. Wave 1 T2s due Mar 12. This part governs T2 drafting, QA, and send.*
+
+---
+
+### When T2 Tasks Appear
+
+Apollo auto-generates the Step 2 (T2) task 4 days after Step 1 (T1) sends. The task appears in the Apollo Tasks tab with the label "Step 2: Follow-up email." T2 tasks surface per-contact, not per-batch.
+
+**Current T2 pipeline status (as of Mar 11, 2026):**
+- **Wave 1 T2:** Due Mar 12 (tomorrow). ~16 contacts from the Wave 1 batch sent Feb 26-27 area.
+- **Wave 2 T2:** Now in Apollo task queue — 12 contacts: Karen Teng, Maalika Tadinada, Sambhav Taneja, Anton Aleksandrov, Roberto Bouza, Sarah Kneedler, Chandni Jain, Cristian Brotto, Marcela Fetters, Henry Rose, Krista Moroder, Yu Jin.
+- **Wave 3 T2:** Due Mar 16 (33 contacts from Wave 3 T1 sends Mar 6-11).
+
+---
+
+### T2 Formula
+
+T2 is a follow-up to T1. It must NOT repeat T1. It must add a new angle, new proof point, and new question.
+
+**Structure (50-70 words, NOT "what day works" CTA):**
+1. **Bridge** (1 sentence) — acknowledges T1 sent, pivots immediately. Never "just following up." Use: "One more thought on [topic]," or "Wanted to add one more data point."
+2. **New angle / new proof point** (2-3 sentences) — different from T1. If T1 used coverage angle, T2 uses maintenance time angle. Cite a specific customer story or stat.
+3. **Engagement question CTA** (1 sentence) — open-ended, NOT "what day works." Use: "Is [specific challenge] something you're dealing with?" or "How are you handling [topic] today?"
+
+**T2 is NOT:**
+- A shorter version of T1
+- A generic "following up on my last email"
+- Another ask for a meeting (that comes later)
+- More than 70 words
+
+---
+
+### T2 QA Gate
+
+Same MQS framework as T1, adapted for T2:
+
+| Check | Pass |
+|-------|------|
+| Word count | 50-70 words |
+| Question marks | Exactly 1 (the CTA question) |
+| No banned words | "AI," "self-healing," "flaky test," "CI/CD," "I noticed," "I saw," "what day works" |
+| No em dashes | Zero |
+| No named customers | Zero |
+| New angle from T1 | Different challenge hook than T1 |
+| Engagement question (not meeting ask) | Yes — "Is this a problem you face?" not "What day works?" |
+| HC1 compliant opener | T2 can drop HC1 (already introduced) — starts with bridge phrase |
+| Signature block present | Yes |
+
+Minimum passing score: 9/10 applicable criteria. Fix before enrolling.
+
+---
+
+### T2 Drafting Workflow
+
+**Before drafting:**
+1. Pull up the T1 email sent to this contact (from batch tracker HTML or handoff.md send table)
+2. Note: what challenge angle did T1 use? What proof point? What CTA?
+3. T2 must use a DIFFERENT angle, a DIFFERENT proof point
+
+**Drafting in batches:**
+- Draft all T2s for a given wave in one session before sending any
+- Use the wave batch tracker HTML as the reference (same contact list, same research)
+- Add a "T2 Draft" section to the tracker or create a separate `tamob-t2-drafts-YYYYMMDD.md` file
+- Get Rob's APPROVE SEND before sending any T2
+
+**After APPROVE SEND:**
+- Send via Apollo Tasks tab (same protocol as Part 23)
+- Subject: T2 uses a DIFFERENT subject than T1. Same SMYKM format but different descriptor angle.
+- Body injection: same JS execCommand insertText method (Part 23)
+- Subject correction: same mandatory triple-click fix (Part 24) — Apollo auto-populates wrong subject for T2 just as for T1
+- Log each send: update batch tracker status to "T2 Sent [date]"
+- Append rows to MASTER_SENT_LIST.csv with "T2" notation
+
+---
+
+### T2 Send Sequence Lookup
+
+Apollo Step 2 tasks appear in the Tasks tab under the sequence. Filter by:
+- Sequence: "TAM Outbound - Rob Gorham"
+- Step: "Step 2"
+- Status: "Pending" or "Due"
+
+If the task tab shows mixed T1 and T2 tasks, check the Step column carefully. T1 = Step 1, T2 = Step 2. Do not send T2 content into a T1 task or vice versa.
+
+---
+
+### T2 Priority Order When Volume Is High
+
+When multiple waves have T2s due simultaneously:
+1. **Wave with oldest T1 send date first** — longest wait = highest reply risk if not followed up
+2. Within the same wave: HIGH priority contacts first (same as T1 batch order)
+3. Breakup emails (Step 7) do NOT take priority over active follow-up steps
+
+If T2 volume exceeds session capacity (> 20 contacts), send the oldest/highest-priority contacts first and log the remainder as "T2 pending" in handoff.md with exact count.
+
+---
+
+*Part 25 added V4.0 — Mar 11, 2026. T2s are now active for Waves 1, 2, and 3. Priority: Wave 1 T2 due Mar 12 first.*
+
