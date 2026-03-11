@@ -253,18 +253,54 @@
   </ul>
   <p>Enterprise only. No SMB. No commercial. Minimum ~500 employees as a general rule (use judgment — a well-funded 200-person SaaS is fine; a 50-person startup is not).</p>
 
-  <h4>Target Personas (Priority Order)</h4>
+  <h4>Target Personas — Maximum Volume, Minimum Wasted Effort</h4>
+  <p>Goal: reach every person who can evaluate a tool, recommend it internally, or approve a purchase. Cast the widest net possible, but only include titles with actual management authority — no individual contributors, no end users.</p>
+
+  <div class="info-box">
+    <div class="info-title">The DM Authority Rule</div>
+    <p><strong>Include anyone who manages a team, owns a QA/testing scope, or can influence/approve tool purchases.</strong> Exclude anyone who is purely an individual contributor — they can't buy, can't champion, and can't get you a meeting worth having. When uncertain about a title, ask: "Does this person have direct reports or budget influence?" If yes, include. If purely IC, skip.</p>
+  </div>
+
   <table>
     <thead><tr><th>Priority</th><th>Title Patterns</th><th>Notes</th></tr></thead>
     <tbody>
-      <tr><td><strong>P1 — Primary</strong></td><td>QA Manager, QA Lead, Test Engineering Manager, Quality Engineering Manager</td><td>Best reply rate. Owns the day-to-day pain.</td></tr>
-      <tr><td><strong>P2 — Primary</strong></td><td>Director of QA, Director of Quality Engineering, Director of Test Automation, IT Director Quality Engineering</td><td>Budget authority + technical understanding.</td></tr>
-      <tr><td><strong>P3 — Secondary</strong></td><td>VP of QA, VP of Quality Assurance</td><td>Use when no Director-level QA exists. Lower reply rate but high deal value.</td></tr>
-      <tr><td><strong>P4 — Secondary</strong></td><td>VP of Engineering, Software Engineering Manager</td><td>Only if there is confirmed buyer intent (Factor signal). Do not cold-reach at VP Eng without signal.</td></tr>
-      <tr><td><strong>P5 — Influencer</strong></td><td>Senior SDET, Automation Lead, Principal QA Engineer</td><td>High reply rate (39.3%). Use as a secondary contact, not primary T1.</td></tr>
-      <tr><td><strong>Skip</strong></td><td>CTO, CEO, CPO</td><td>Too senior without warm introduction. Do not cold-reach.</td></tr>
+      <tr>
+        <td><strong>P1 — Primary</strong></td>
+        <td>QA Manager · Quality Assurance Manager · Test Engineering Manager · QA Lead · Quality Engineering Manager · Automation Manager · SDET Manager · Senior QA Manager · QA Program Manager · Manager, Quality Engineering · Manager, Test Automation · QA Team Lead</td>
+        <td>Owns day-to-day test automation pain. Closest to the problem. Best reply rate. Always include at every account.</td>
+      </tr>
+      <tr>
+        <td><strong>P2 — Primary</strong></td>
+        <td>Director of QA · Director of Quality Engineering · Director of Quality Assurance · Director of Test Engineering · Director of Test Automation · Director of Testing · Director, Software Quality · IT Director Quality Engineering · Senior Director of QA · Senior Director, Quality Engineering · Head of QA · Head of Quality · Head of Testing · Head of Test Automation · Head of Software Quality</td>
+        <td>Budget authority + technical depth. Always include. If Director AND QA-specific title exists, T1 them before VP Eng.</td>
+      </tr>
+      <tr>
+        <td><strong>P3 — Secondary</strong></td>
+        <td>VP of QA · VP, Quality Assurance · VP of Quality Engineering · VP of Testing · VP, Software Quality Assurance</td>
+        <td>High deal value. Include at every account that has this title — just don't skip Director-level contacts to reach them.</td>
+      </tr>
+      <tr>
+        <td><strong>P4 — Extended</strong></td>
+        <td>VP of Engineering · Director of Engineering · Senior Director of Engineering · Software Development Manager · Engineering Manager · Director of Platform Engineering · Director of Software Engineering</td>
+        <td>Include at TAM Factor accounts (HOT signals = confirmed interest). Engineering-titled contacts own QA at companies that don't have separate QA leadership. For mega-enterprise (20k+ employees): go VP or above — Directors are too many layers out.</td>
+      </tr>
+      <tr>
+        <td><strong>P5 — Influencer</strong></td>
+        <td>Principal QA Engineer · Staff QA Engineer · Lead SDET · Automation Lead · Senior Automation Engineer (lead-level only) · Test Architect · Principal SDET</td>
+        <td>39.3% reply rate — but they can't sign off on purchases. Use as a secondary touch after primary DM, or when no manager-level contact exists. Do NOT use as the only contact at an account.</td>
+      </tr>
+      <tr>
+        <td><strong>Skip Always</strong></td>
+        <td>CTO, CEO, CPO (without warm intro) · SDET · QA Engineer · QA Analyst · Test Engineer · Junior/Associate anything · Individual contributor SDETs with no team lead scope</td>
+        <td>Either too senior (CTO/CEO) or too junior/IC (no budget influence, no team). Time wasted.</td>
+      </tr>
     </tbody>
   </table>
+
+  <div class="warning-box">
+    <div class="warning-title">Volume vs. Quality Balance</div>
+    <p>More contacts per account = more opportunities, NOT more clutter. Each message is tailored enough that reaching 3 people at Chase is fine. Use the SOP research protocol for each contact individually. Never copy-paste one message to multiple contacts at the same company.</p>
+  </div>
 
   <div class="info-box" style="margin-top: 14px;">
     <div class="info-title">Enterprise Persona Rule — Company Size Changes the Target Level</div>
@@ -343,12 +379,25 @@
   <p>Search Apollo with the company domain + QA/test titles + Director or above seniority. Prefer verified emails. Also pull unverified if no verified option exists.</p>
   <div class="code-block">apollo_mixed_people_api_search:
   q_organization_domains_list: ["company.com"]
-  person_titles: ["QA Manager", "QA Lead", "Director of QA", "Director of Quality Engineering",
-                  "VP Quality Assurance", "VP QA", "Test Engineering Manager",
-                  "Quality Engineering Manager", "IT Director Quality Engineering"]
+  person_titles: [
+    "QA Manager", "Quality Assurance Manager", "Test Engineering Manager", "QA Lead",
+    "Quality Engineering Manager", "Automation Manager", "SDET Manager", "Senior QA Manager",
+    "QA Program Manager", "QA Team Lead",
+    "Director of QA", "Director of Quality Engineering", "Director of Quality Assurance",
+    "Director of Test Engineering", "Director of Test Automation", "Director of Testing",
+    "Director Software Quality", "IT Director Quality Engineering", "Senior Director of QA",
+    "Head of QA", "Head of Quality", "Head of Test Automation", "Head of Testing",
+    "VP of QA", "VP Quality Assurance", "VP of Quality Engineering",
+    "VP of Engineering", "Director of Engineering", "Senior Director of Engineering",
+    "Engineering Manager", "Software Development Manager",
+    "Director of Software Engineering", "Director of Platform Engineering"
+  ]
   person_seniorities: ["manager", "director", "vp"]
   person_locations: ["United States"]   # EMEA accounts: remove this filter
-  contact_email_status: ["verified"]</div>
+  # Run once with contact_email_status: ["verified"], then again without to capture extrapolated emails
+  include_similar_titles: true</div>
+
+  <p>Run the search twice if needed: first with <code>contact_email_status: ["verified"]</code> only, then without the filter to capture extrapolated emails (flag them in the batch tracker). Include both verified and extrapolated contacts — just label them clearly so Rob can decide whether to use email or LinkedIn for each.</p>
 
   <h4>Step 2 — Sales Nav (Backup or LinkedIn Enrichment)</h4>
   <p>Use Rob's saved TAM list in Sales Navigator. Filter by company, then by QA/Engineering titles. Sales Nav is also required for Step 3 (LinkedIn connection request) regardless of how T1 was sourced.</p>

@@ -299,9 +299,11 @@ When the pre-batch dedup scan finds 2+ people from the same company, resolve aut
 
 ---
 
-## Enterprise Email T1 Formula (TAM Outbound — Added Mar 10, 2026)
+## Enterprise Email T1 Formula (TAM Outbound — Updated Mar 10, 2026 v3)
 
 Use this formula for ALL email T1 outreach to TAM enterprise accounts (sent via TAM Outbound sequence Step 1). This replaces the standard SMB email formula for enterprise named accounts.
+
+**v3 change (Mar 10):** HC1 intro moved from the opening line to the bottom of the signature. Opens now start with "Hi [Name]," instead. Closes changed from "what day works" meeting ask to open-ended engagement question — goal of T1 is to get a reply, not book a meeting. "What day works" is reserved for T2/T3 after a reply.
 
 ### When to Use This Formula
 - Account is in `tam-accounts-mar26.csv` or is a Factor account
@@ -311,14 +313,15 @@ Use this formula for ALL email T1 outreach to TAM enterprise accounts (sent via 
 ### Key Differences from SMB Email T1
 | Dimension | SMB Email (Tier 1 Intent) | Enterprise Email (TAM) |
 |-----------|--------------------------|----------------------|
-| Opener | Can go straight to challenge observation | MUST use HC1 intro: "We have yet to be properly introduced..." |
+| Opener | Can go straight to challenge observation | "Hi [Name]," then challenge narrative |
 | Research depth | 1 relevant detail from LinkedIn | 3-source research required (LinkedIn + Apollo + external) |
-| Word count | 75-99 words sweet spot | 75-100 words, tighter ceiling (enterprise = time-scarce) |
+| Word count | 75-99 words sweet spot | 80-97 words body only (tight ceiling — enterprise leaders are time-scarce) |
 | Subject | Problem-framed or SMYKM | SMYKM preferred ("Name's QA coverage at Company") |
-| Proof point | Any matching proof point | Match to vertical exactly (see proof point table in sop-tam-outbound.md) |
-| CTA | "What day works" standard | Same, but can ask engagement question for VP+ titles |
+| Proof point | Any matching proof point | Match to vertical exactly. No named customers. Vertical framing only. |
+| CTA | "What day works" standard | Open-ended engagement question — NO meeting ask in T1 |
+| HC1 placement | N/A | BOTTOM of signature (not the opener) |
 
-### Formula Structure
+### Formula Structure (v3)
 
 **Subject line (enterprise SMYKM format):**
 - "[Name]'s QA coverage at [Company]" — person-first SMYKM
@@ -326,33 +329,81 @@ Use this formula for ALL email T1 outreach to TAM enterprise accounts (sent via 
 - "Testing [Company product/platform name]" — product-specific
 - BANNED: "Quick question", "Following up", generic problem frames like "Regression eating release time?"
 
-**Line 1 — HC1-Compliant SMYKM Intro:**
-> "We have yet to be properly introduced, but I'm Rob with Testsigma."
+**Line 1 — Greeting:**
+> "Hi [First name],"
 
-This is NOT optional for enterprise contacts. Director+ titles at enterprise accounts expect a proper introduction. Skipping this reads as mass-produced.
+**Lines 2-3 — Challenge Narrative (includes Q1):**
+State the specific challenge their type of org faces, connected to research-verified detail (their tech stack, org structure, platform they run, regulatory constraint, or a job posting signal). The challenge narrative includes one embedded question (Q1) — this is the first of the 2 required question marks.
 
-**Lines 2-3 — Challenge-Narrative:**
-State the specific challenge their type of org faces. Connect to something research-verified — a platform they run, a regulatory constraint in their vertical, or an org signal (e.g., "At [Company]'s scale..."). Transition to proof point.
+Pattern: "[Role-specific challenge]. [Optional: company-specific context.] [Q1 — relevant to the challenge, not a pitch]?"
 
-Pattern: "The challenge [type of org] hits is [specific problem]. [Customer] was dealing with the same [thing] and [outcome + Testsigma]."
+**Lines 4 — Proof Point (no named customers):**
+ONE proof point using vertical framing only. NEVER name a customer. Use: "one financial services team," "one FinTech team," "one enterprise technology team," "one media platform," etc.
 
-**Lines 4-5 — Close:**
-Standard "what day works" close, tied to proof point outcome. No open-ended questions.
+Framing: "One [vertical] team we work with [outcome with specific number]."
 
-**Example (Fidelity — Seth Drummond):**
+**DATA RULES (mandatory, enforced here):**
+- Named customer in body: **-9.2pp** — use vertical framing ONLY
+- "AI" or "self-healing" or "machine learning": **-9.2pp / -6.2pp** — BANNED
+- "flaky tests": **-11.9pp** — BANNED
+- "CI/CD": **-5.1pp** — BANNED
+- "you're the [title]": **-3.1pp** — BANNED
+- "thought it would be worth": **+12.6pp** — REQUIRED (see Lines 5-6 below)
+- "test maintenance": **+9.0pp** — include in body
+- "release cycles": **+7.4pp** — include when relevant
+- Reduction framing ("75% reduction") beats multiplier framing ("4X faster"): **+6.4pp**
+- Exactly **2 question marks** per email: **34.8% reply rate**
+
+**Lines 5-6 — "Thought it would be worth" + Open-Ended Close (Q2):**
+Two things happen here:
+1. "Thought it would be worth reaching out because [specific trigger for this person/company]." (+12.6pp phrase — mandatory)
+2. Immediately follow with an open-ended engagement question (Q2 — the second question mark). Goal = get a reply, not book a meeting. No "what day works" in T1.
+
+Q2 patterns:
+- "Is that creating [challenge] for your team?"
+- "Is [specific thing] something you're actively solving for?"
+- "What does your current approach to [challenge] look like?"
+- "Does that resonate with where [Company] is right now?"
+- "Is that something you're seeing on your team as well?"
+
+**Signature (bottom of email):**
 ```
-Subject: Seth's regression coverage at Fidelity
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with [QA/Engineering] leaders at [vertical] companies.
+```
 
-We have yet to be properly introduced, but I'm Rob with Testsigma.
+The HC1 line ("We have yet to be properly introduced") is the last line of every enterprise T1 email. It belongs in the signature, not the opener.
 
-At Fidelity's scale, financial platform updates ripple through hundreds of test cases. Most QA leaders at large institutions say test maintenance limits coverage growth more than headcount.
+**Example (Fidelity — Padma Srikanth, MQS 12/12):**
+```
+Subject: Padma's automation standards at Fidelity
 
-Hansard cut their regression cycle from 8 to 5 weeks with our AI self-healing. Tests fix themselves when the UI changes.
+Hi Padma,
 
-If cutting that overhead would help your team, what day works for a quick look at how they did it?
+Chapter Leader is a distinctive role inside Fidelity's model: setting automation standards across product teams without direct control over their day-to-day execution. When each squad owns its own approach, how do you drive consistency across all of them?
 
-Rob Gorham
-Testsigma
+One financial services team we work with standardized automation across distributed squads and reduced test maintenance overhead by 70%.
+
+Thought it would be worth reaching out because that influence-without-authority challenge is specific to the chapter model. Is standardizing automation quality across chapters something you're actively solving for?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise financial services companies.
+```
+
+**Example (Cboe — Rick Brandt, dual-stack migration angle):**
+```
+Subject: Rick's automation stack at Cboe
+
+Hi Rick,
+
+Running Selenium and Playwright side by side through a migration makes sense, but maintaining two stacks at once is usually where test maintenance overhead peaks before it comes back down. Familiar with that tension?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 by having tests automatically update when the UI changed, without manual locator fixes.
+
+Thought it would be worth reaching out because Cboe's been hiring for Playwright on newer clearing systems while Selenium still covers the older stack. Is that transition creating maintenance pressure for your team?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA and engineering leaders at enterprise companies.
 ```
 
 ---
