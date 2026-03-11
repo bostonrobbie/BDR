@@ -139,6 +139,68 @@ All 11 added to MASTER_SENT_LIST Mar 9 under "WV Email Batch Feb27" / "WV Email 
 
 ---
 
+## INC-007: Mass Placeholder Send — TAM Outbound Wave 1 + Wave 2 (2026-03-10)
+**Severity:** HIGH
+
+### What Happened
+All TAM Outbound T1 emails sent via Apollo task queue (both Wave 1, ~22 contacts, and Wave 2 first 2 contacts) went out with Apollo's default placeholder body: "Placeholder - replace with personalized email before sending. Robert Gorham - BDR Robert.gorham@testsigma.com www.testsigma.com" — instead of the real personalized content. Confirmed via Gmail sent folder.
+
+### Root Cause
+The Quill API injection (`quill.setText(...)`) visually updated the compose panel and returned "done" — but Apollo's internal send payload was NOT updated. Apollo was reading from its own sequence template state, not the Quill editor DOM. The body looked correct in the preview but the wrong content was sent.
+
+### Affected Contacts (confirmed via Gmail sent)
+Wave 1 (Session 11): Sucheth, Richelle, Padma, Nithya, Des, Eric, Maurice, Sourabh, Seth, Prasad, Brahmaiah, Arun, Christopher, Chamath, Maggie, Neeraj, Jennifer (TruStage), Snezhana, Rick, Jennifer W., John, Hrishi — ~22 contacts
+Wave 2 (this session): Shyamendra Singh (HashiCorp), Saeyed Shamlou (OneMain) — 2 confirmed
+
+### Remediation — ✅ COMPLETE (2026-03-10, Sessions 12-13)
+
+Recovery emails sent as personalized reply threads — honest "oops" opener + real intended message — via Gmail Chrome automation. All sends screenshot-verified before sending.
+
+**Recovery send summary: 24/25 sent. 1 hard bounce.**
+
+| # | Name | Company | Result |
+|---|------|---------|--------|
+| 0 | Rick Brandt | Cboe | ✅ Sent |
+| 1 | Maurice Saunders | Cboe | ✅ Sent |
+| 2 | Snezhana Ruseva | Cboe | ✅ Sent |
+| 3 | Seth Drummond | Fidelity | ✅ Sent |
+| 4 | Bipin Bhoite | Mindbody | ✅ Sent |
+| 5 | Christopher Bilcz | Fidelity | ✅ Sent |
+| 6 | Eric Pearson | Fidelity | ✅ Sent |
+| 7 | Nithya Arunkumar | Fidelity | ✅ Sent |
+| 8 | Richelle Lacamera | Fidelity | ✅ Sent |
+| 9 | Sourabh Roy | Fidelity | ✅ Sent |
+| 10 | Padma Srikanth | Fidelity | ✅ Sent |
+| 11 | Neeraj Tati | JPMorgan Chase | ✅ Sent |
+| 12 | Brahmaiah Vallabhaneni | Commvault | ✅ Sent |
+| 13 | Jennifer Wang | Commvault | ✅ Sent |
+| 14 | Prasad Alapati | Commvault | ✅ Sent |
+| 15 | Sucheth Ramgiri | Commvault | ⚠️ HARD BOUNCE — sramgiri@commvault.com not found (SMTP 550 5.1.10). Recovery NOT sent. Remove from sequence + re-enrich. |
+| 16 | Arun Amarendran | Commvault | ✅ Sent |
+| 17 | Chamath Guneratne | TruStage | ✅ Sent |
+| 18 | Maggie Redden | TruStage | ✅ Sent |
+| 19 | Jennifer Drangstveit | TruStage | ✅ Sent |
+| 20 | John Harding | YouTube | ✅ Sent |
+| 21 | Des Keane | YouTube | ✅ Sent |
+| 22 | Hrishikesh Aradhye | YouTube | ✅ Sent |
+| 23 | Saeyed Shamlou | OneMain | ✅ Sent |
+| 24 | Shyamendra Singh | HashiCorp | ✅ Sent |
+
+**Action item:** Remove Sucheth Ramgiri from TAM Outbound sequence. Re-enrich email via Apollo or LinkedIn before any future outreach to Commvault.
+
+**Ongoing rules (permanent):**
+- DO NOT use Quill setText() for Apollo task sends
+- Pre-send body verification: read back `.ql-editor` innerText + screenshot before every Send Now click
+- If placeholder still present: STOP. Do not send.
+
+### Rule Added to SOP
+After every body injection and before every Send Now click:
+1. Read back `document.querySelector('.ql-editor').innerText` — confirm real content, not placeholder
+2. Screenshot the compose panel — visually verify subject AND body
+3. If placeholder still present: STOP. Do not send.
+
+---
+
 ## Draft Safety & Cadence Enforcement Rules
 
 ### Rule 1: Date-Gating

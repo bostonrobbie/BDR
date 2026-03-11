@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-10 (Session 11 — Wave 1 T1 sends complete — all 23 sent)
+## Last Updated: 2026-03-10 (Session 13 — INC-007 recovery complete. Next: Wave 1+2 T2 drafts due Mar 15)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 1. `git pull origin main`
@@ -73,6 +73,14 @@ Audit Gmail drafts from all testsigma.com accounts:
 ---
 
 ## 🟡 HIGH — Do Soon
+
+### TASK-018: Remove Sucheth Ramgiri from TAM Outbound Sequence + Re-enrich Email
+**Status:** UNCLAIMED
+**Priority:** P1
+**Effort:** ~10 min
+Sucheth Ramgiri (Commvault) hard-bounced — sramgiri@commvault.com is invalid (SMTP 550 5.1.10). Both the original placeholder T1 and recovery email failed. Remove from Apollo TAM Outbound sequence. Re-enrich via Apollo/LinkedIn if Commvault is still worth pursuing.
+
+---
 
 ### TASK-017: Draft Wave 1 T2 Emails (23 contacts — due Mar 15)
 **Status:** UNCLAIMED
