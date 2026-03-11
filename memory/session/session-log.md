@@ -706,3 +706,57 @@ Y02 Ash Pedgaonkar, Y06 Suchith Chandran, V01 Ted Barker, V04 Aleck Gandel, CH01
 - `memory/session/session-log.md` ✅ — this entry
 
 **Next priority:** TASK-017 — Wave 2 T2 tasks are NOW in Apollo Tasks tab (12 tasks, overdue). Wave 1 T2 due Mar 12 (tomorrow). Draft T2s and send next session.
+
+---
+
+## 2026-03-11 — Session 21: Wave 4 Batch Build Complete
+
+**Session type:** Batch build — account selection → enrichment → dedup → T1 drafts → QA gate → HTML tracker
+**Batch:** tamob-batch-20260311-2 (Wave 4)
+
+**What was done:**
+1. Resumed from prior context (prior session hit token limit mid-build_html.py write)
+2. Verified qa_gate.py intact: 48/48 contacts, all passing MQS ≥9/12
+3. Wrote build_html.py via Bash heredoc (Write tool fails on new files — use Bash instead)
+4. Ran build_html.py: generated tamob-batch-20260311-2.html (134KB)
+5. Updated handoff.md, work-queue.md, session-log.md
+6. Committed session changes
+
+**Batch stats:**
+| Metric | Value |
+|--------|-------|
+| Total contacts | 48 |
+| Companies | 19 |
+| P5 HOT (Director+) | 8 |
+| P4 WARM (Manager) | 9 |
+| P3 STD | 29 |
+| P2 LOW (KKR) | 2 |
+| Group A | 16 |
+| Group B | 32 |
+| Avg MQS | 11.6/12 |
+| QA gate result | 48/48 PASS |
+| WC range | 80-97w (all) |
+| QM | 2 (all) |
+| Dedup removed | 3 |
+
+**Key fixes applied in prior context (documented here for record):**
+- QM:3 bug (46/48 emails): All close lines were "Worth a X? What day works?" (2 QMs) + 1 HC1 opener QM = 3 total. Fixed via regex: `re.sub(r'\? What day works\?', '. What day works?', body)`. All now QM=2.
+- WC >97 on 9 emails: Fixed via targeted string replacements in qa_gate.py. All now ≤97.
+- Poonam Patil (#46): Required second Edit pass (103→94w) — first regex didn't match due to QM already replaced.
+- Michelle Crawford (#47): Same issue (101→96w).
+
+**Technical note (for future sessions):**
+- `Write` tool fails with "File has not been read yet" when creating brand new files. Use `Bash` with cat heredoc to write new scripts.
+- qa_gate.py lives in /sessions/determined-sharp-keller/ (session VM — not persisted). Rebuild from memory/pipeline-state.md if session resets.
+
+**Files created/updated:**
+- `tamob-batch-20260311-2.html` ✅ NEW — Wave 4 batch tracker, 48 contact cards
+- `memory/session/handoff.md` ✅ — Wave 4 section added, header updated
+- `memory/session/work-queue.md` ✅ — TASK-021 added (Wave 4 enroll + send)
+- `memory/session/session-log.md` ✅ — this entry
+
+**Status at session end:**
+- tamob-batch-20260311-2.html: READY FOR ROB REVIEW
+- Awaiting: Rob's APPROVE SEND to proceed with enrollment
+- TASK-017 (Wave 1/2 T2): Still P0, overdue — tackle next session
+

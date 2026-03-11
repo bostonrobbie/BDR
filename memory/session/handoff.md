@@ -315,6 +315,49 @@ Wave 3 T1 enrolled Mar 11. T2 tasks will appear in Apollo ~Mar 15-16. Check Apol
 - Session 5: Updated SOP to Draft v2, identified YouTube contacts (John Harding primary), confirmed TruStage clean
 - Session 6: Multi-contact rule + Contact Depth Rule + Apollo Task Queue SOP added to SOP; target-accounts.md + TASK-014 expanded to 13 contacts
 
+
+---
+
+## TAM OUTBOUND WAVE 4 — CURRENT STATE (Mar 11 — Session 21)
+
+**✅ 48/48 T1 DRAFTS BUILT + QA GATE PASSED**
+**⏳ AWAITING: Rob's APPROVE SEND before enrolling in Apollo**
+
+**File:** `tamob-batch-20260311-2.html` (134KB — 48 contact cards, MQS 9-12/12, A/B tested)
+**Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
+**Step 2 timing:** Day 8 (updated from Day 1 in prior session)
+
+**Batch summary:**
+| Metric | Value |
+|--------|-------|
+| Total contacts | 48 |
+| Companies | 19 |
+| P5 HOT (Director+) | 8 |
+| P4 WARM (Manager) | 9 |
+| P3 STD (Lead/SDET) | 29 |
+| P2 LOW (KKR) | 2 |
+| Group A (MediBuddy/Hansard proof) | 16 |
+| Group B (CRED/Cisco/Nagra proof) | 32 |
+| Avg MQS | 11.6/12 |
+| All WC 80-97 | ✅ |
+| All QM=2 | ✅ |
+| Dedup (removed pre-batch) | 3 (Amir Aly, Sambhav Taneja, Marcela Fetters — in MASTER_SENT_LIST) |
+
+**Companies covered:**
+E*TRADE/Morgan Stanley (1), Broadcom (5), Humana (5), Corewell Health (1), BCBS Illinois (1), Blue Cross MN (1), BCBS Texas (1), Blue Cross KC (1), Mastercard (8), Anaplan (1), DraftKings (2), Cleveland Clinic (1), Microchip Technology (1), GEICO (4), Electronic Arts (6), HashiCorp (2), KKR (2), Datamatics (3), OneMain Financial (2)
+
+**Next steps:**
+1. Rob reviews tamob-batch-20260311-2.html
+2. Rob gives APPROVE SEND
+3. Enroll all 48 in Apollo TAM Outbound (batches of 5)
+4. Send T1 via Apollo Tasks tab (manual, one at a time)
+5. T2 due Day 8 (8 days after T1 send per updated sequence step)
+6. Update MASTER_SENT_LIST.csv (+48 rows)
+
+**QA gate script:** `/sessions/determined-sharp-keller/qa_gate.py` (session VM — rebuild if needed)
+**Build script:** `/sessions/determined-sharp-keller/build_html.py` (session VM)
+
+
 ---
 
 ## TAM OUTBOUND SEQUENCE — READY TO USE

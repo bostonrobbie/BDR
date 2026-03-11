@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-11 (Session 20 — Wave 3 T1 sends COMPLETE: all 9 remaining sent (Suchith Chandran, Garrick Scott, Ashwin Vaswani, Rachel Fingeroth, Madina Zabran + 4 from prior context). 33/35 T1 sent. 2 future-dated. Wave 2 T2 NOW IN APOLLO QUEUE (12 tasks). TASK-017 P0 — Wave 1 T2 due Mar 12.)
+## Last Updated: 2026-03-11 (Session 21 — Wave 4 batch build COMPLETE. 48/48 T1 drafts pass QA gate. tamob-batch-20260311-2.html built. TASK-021 added: enroll + send Wave 4. TASK-017 still P0 — Wave 1/2 T2 overdue.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 1. `git pull origin main`
@@ -13,6 +13,25 @@ Tasks are sorted by priority. Claim one task at a time by updating status to IN_
 ---
 
 ## 🔴 CRITICAL — Do First
+
+### TASK-021: Enroll + Send Wave 4 T1 (48 contacts)
+**Status:** PENDING APPROVE SEND
+**Priority:** P0 — awaiting Rob's APPROVE SEND
+**Effort:** ~90 min
+**Tracker:** `tamob-batch-20260311-2.html`
+**QA gate:** 48/48 passed (MQS ≥9/12, WC 80-97, QM=2)
+
+**Steps (after APPROVE SEND):**
+1. Enroll all 48 in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) — batches of 5
+2. Send T1 via Apollo Tasks tab (manual, one at a time)
+3. Subject + body from tracker HTML (copy buttons)
+4. Update MASTER_SENT_LIST.csv (+48 rows, batch: "TAM Outbound Wave4 T1 Mar11")
+5. Update tamob-batch-20260311-2.html: all Ready → "T1 Sent [date]"
+6. T2 due Day 8 (8 days from send)
+
+**Dedup:** 3 removed pre-build (Amir Aly, Sambhav Taneja, Marcela Fetters).
+**Companies:** E*TRADE/Morgan Stanley, Broadcom (5), Humana (5), BCBS Blues (4), Mastercard (8), Anaplan, DraftKings (2), Cleveland Clinic, Microchip Technology, GEICO (4), Electronic Arts (6), HashiCorp (2), KKR (2), Datamatics (3), OneMain Financial (2)
+
 
 ### TASK-001: Draft Touch 2 Emails for Original 9 Feb 27 Contacts
 **Status:** DONE (2026-03-07)
