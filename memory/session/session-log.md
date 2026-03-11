@@ -390,3 +390,60 @@ Append-only log. Each session adds one entry at the bottom.
 **Files to commit:** All of the above. Rob must run `git push` from terminal.
 
 ---
+
+## 2026-03-10 — Session 11: Wave 1 T1 Sends Complete (All 23)
+
+**Session type:** Outreach execution — Wave 1 T1 email sends via Apollo manual task queue
+**APPROVE SEND status:** Granted in prior session context (carried forward)
+
+**What was done:**
+- Continued from prior session (context limit cutoff after 18/23 sends)
+- Sent remaining 5 Wave 1 T1 emails: Snezhana Ruseva, Rick Brandt, Jennifer Wang, John Harding, Hrishikesh Aradhye
+- All 23 Wave 1 T1 emails now sent ✅
+
+**Full Wave 1 T1 send log (all sent Mar 10):**
+| # | Name | Company | Subject |
+|---|------|---------|---------|
+| 1 | Chris Pendergast | Fidelity | Chris's quality engineering at Fidelity |
+| 2 | Des Keane | YouTube | Des's video infrastructure at YouTube |
+| 3 | Nithya Arunkumar | Fidelity | Nithya's QA coverage at Fidelity |
+| 4 | Padma Srikanth | Fidelity | Padma's QA coverage at Fidelity |
+| 5 | Richelle Lacamera | Fidelity | Richelle's QA coverage at Fidelity |
+| 6 | Sucheth Ramgiri | Commvault | Sucheth's automation strategy at Commvault |
+| 7 | Seth Drummond | Fidelity | Seth's QA coverage at Fidelity |
+| 8 | Prasad Alapati | Commvault | Prasad's QA coverage at Commvault |
+| 9 | Eric Pearson | Fidelity | Eric's QA coverage at Fidelity |
+| 10 | Maurice Saunders | Cboe | Maurice's QA coverage at Cboe |
+| 11 | Sourabh Roy | Fidelity | Sourabh's QA coverage at Fidelity |
+| 12 | Arun Amarendran | Commvault | Arun's engineering coverage at Commvault |
+| 13 | Brahmaiah Vallabhaneni | Commvault | Brahmaiah's engineering at Commvault |
+| 14 | Christopher Bilcz | Fidelity | Christopher's QA coverage at Fidelity |
+| 15 | Chamath Guneratne | TruStage | Chamath's QA coverage at TruStage |
+| 16 | Maggie Redden | TruStage | Maggie's engineering at TruStage |
+| 17 | Neeraj Tati | JPMorgan Chase | Neeraj's QA coverage at Chase |
+| 18 | Jennifer Drangstveit | TruStage | Jennifer's solution delivery at TruStage |
+| 19 | Snezhana Ruseva | Cboe | Snezhana's test automation at Cboe |
+| 20 | Rick Brandt | Cboe | Rick's QA coverage at Cboe |
+| 21 | Jennifer Wang | Commvault | Jennifer's engineering coverage at Commvault |
+| 22 | John Harding | YouTube | John's engineering at YouTube Music |
+| 23 | Hrishikesh Aradhye | YouTube | Hrishi's coverage at YouTube Music |
+
+**Wave 2 skipped (16 contacts — already sent in Session 10):** GEICO, Checkr, EA, Cetera, OneMain, Mindbody, HashiCorp contacts — correctly identified and skipped in task queue.
+
+**Technical notes:**
+- Apollo task queue uses side-panel UI when clicking from task list (narrower than full-screen task view)
+- Subject line in Apollo defaulted to "[Name]'s QA coverage at [Company Full Name]" — corrected to match exact draft file subjects for each contact
+- Hrishikesh Aradhye: Apollo flagged job change alert (YouTube → Google, but role is YouTube Music & Podcasts — same team). Sent to hrishi@google.com as planned.
+- Richelle Paulsen (Cetera, Wave 2) kept appearing as auto-advance target between Wave 1 sends — navigated away each time
+
+**T2 due:** Mar 15 (Day 5) for all 23. Apollo Step 2 tasks will auto-generate in TAM Outbound sequence ~Mar 14-15.
+**TASK-017 added to work-queue.md** — Wave 1 T2 drafts (23 contacts, due Mar 15)
+
+**Files changed this session:**
+- `memory/session/handoff.md` (Wave 1 → all 23 sent)
+- `memory/session/work-queue.md` (TASK-014 → DONE, TASK-017 added)
+- `memory/session/session-log.md` (this entry)
+
+**Files to commit:** All 3 session files. Rob must run `git push` from terminal.
+
+---

@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-10 (Session 10 — Wave 2 T1 sends complete)
+## Last Updated: 2026-03-10 (Session 11 — Wave 1 T1 sends complete — all 23 sent)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 1. `git pull origin main`
@@ -73,6 +73,21 @@ Audit Gmail drafts from all testsigma.com accounts:
 ---
 
 ## 🟡 HIGH — Do Soon
+
+### TASK-017: Draft Wave 1 T2 Emails (23 contacts — due Mar 15)
+**Status:** UNCLAIMED
+**Priority:** P1 — T2 due Mar 15 (Day 5 from Mar 10 T1 sends)
+**Effort:** ~90 min
+**Output:** `tamob-wave1-t2-drafts-mar10.html`
+
+All 23 Wave 1 contacts received T1 on Mar 10. T2 eligible Mar 14 (Day 4), send Mar 15 (Day 5).
+**Formula:** sop-tam-outbound.md Part 7 — 50-70 words, engagement question CTA (NOT "what day works"), different proof point from T1.
+**Draft structure:** 4 parts — (1) light callback to T1, (2) new angle/proof point, (3) engagement question close
+**Check:** tamob-wave1-draft-mar10.html for T1 subjects and proof points used (no repeat per contact)
+**Send via:** Apollo task queue (same TAM Outbound - Rob Gorham sequence, Step 2 tasks will auto-generate ~Mar 14-15)
+**APPROVE SEND required before any sends**
+
+---
 
 ### TASK-004: Draft Touch 3 Emails for Batch 3 Contacts (24 people)
 **Status:** UNCLAIMED
@@ -295,7 +310,7 @@ All 7 T1 messages sent Mar 10. T2 eligible starting Day 4 (Mar 14). Send on Mar 
 ---
 
 ### TASK-014: Draft Wave 1 T1 + T2 Emails — Multi-Contact (6 accounts, 27 contacts)
-**Status:** IN PROGRESS — Steps A+B COMPLETE. Steps C+D (T1/T2 drafts) PENDING.
+**Status:** DONE (Mar 10, Sessions 9+11) — All 23 T1 emails sent. T2 drafts = TASK-017.
 **Priority:** P0 — enrollment done, ready to draft NOW
 **Effort:** ~180 min remaining (T1 + T2 drafts for 23 enrolled contacts)
 **Output:** `wave1-batch1-tracker-mar10.html` with T1 + T2 drafts for all 23 contacts
