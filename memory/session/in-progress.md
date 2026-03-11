@@ -1,100 +1,62 @@
 # In-Progress Checkpoint
 
-**Status: CLEAR**
-*Last cleared: 2026-03-11 (Session 15 — Crash-recovery infrastructure built)*
-
----
-
-No task currently in progress. Safe to start any new task from `work-queue.md`.
-
----
-
-## Purpose
-
-This file is the **crash-recovery mechanism** for this BDR workflow.
-
-| Event | Action |
-|-------|--------|
-| Task START | Claude writes ACTIVE block below + commits immediately |
-| Each sub-step done | Claude checks off step + commits ("Checkpoint: …") |
-| Task END (normal) | Claude sets Status → CLEAR + commits |
-| Session START | Claude reads this file — CLEAR = normal; ACTIVE = crash |
-
-If you open this file at the start of a session and see **Status: ACTIVE**, a prior session crashed mid-task. Follow the Crash Recovery Protocol below.
-
----
-
-## Crash Recovery Protocol (for Claude)
-
-1. **Stop.** Do NOT start a new task.
-2. Tell Rob: *"I found an interrupted task from the last session. [Task name] was in progress. [N of M] steps were completed. The last safe checkpoint was: [step description]. Shall I resume from step [N+1], or restart the task from scratch?"*
-3. Wait for Rob to confirm: resume or restart.
-4. If **resuming**: begin at the step marked `← NEXT`. Check that files listed in "Files in progress" actually exist on disk before assuming their contents.
-5. If **restarting**: set Status → CLEAR, commit, then claim the task fresh from work-queue.md.
-6. **Never redo completed steps** — verify files exist first; if they do, trust the checkpoint.
-
----
-
-## Mid-Session Commit Triggers (mandatory — see AGENTS.md)
-
-These events require an immediate `git add -A && git commit` even in the middle of a session:
-
-- Any new file created in `/Work/` (HTML tracker, draft MD, SOP update, etc.)
-- After each group of 5 contacts drafted in a batch task
-- After any `MASTER_SENT_LIST.csv` update
-- After any `memory/` file update (pipeline-state.md, warm-leads.md, etc.)
-- After each sub-step is checked off in this file
-
-Commit message format:
-- Mid-session: `Checkpoint: [TASK-XXX] — [step name] (step N/M)`
-- Session-end: `Session [date]: [1-line summary]`
-
----
-
-## Template
-
-When starting a multi-step task, **replace this entire file's content** with the block below (fill in the blanks):
-
-```
-# In-Progress Checkpoint
-
 **Status: ACTIVE**
-*Started: [YYYY-MM-DD] Session [N]*
+*Started: 2026-03-11 Session 16 (continued)*
 
 ---
 
-## Task: [TASK-XXX] — [Task name]
+## Task: BATCH-001 — TAM Outbound Wave 3 (Factor accounts only, ~50 contacts, T1 drafts)
 
-**What I'm doing:** [One sentence]
+**What I'm doing:** Building a fresh 50-contact T1 batch from remaining untouched Factor accounts. Account selection → Apollo enrichment → Account Research → Contact Research → T1 drafts → QA gate → HTML tracker → BATCH SUMMARY.
 
 ## Steps
 
-- [x] Step 1: [description] ✅ [time/commit]
-- [x] Step 2: [description] ✅ [time/commit]
-- [ ] **Step 3: [description] ← NEXT**
-- [ ] Step 4: [description]
-- [ ] Step 5: Clear this file + update handoff.md + work-queue.md
+- [ ] Step 1: Account selection (remaining Factor accounts, prioritized) ← NEXT
+- [ ] Step 2: Apollo contact search for each selected account
+- [ ] Step 3: MASTER_SENT_LIST dedup check per contact
+- [ ] Step 4: Account Research Block per account (triggers, angles, proof points)
+- [ ] Step 5: Contact Research per person (LinkedIn scope, angle assignment)
+- [ ] Step 6: Write T1 drafts (all contacts)
+- [ ] Step 7: QA Gate — MQS >= 9/12 for each draft
+- [ ] Step 8: Build batch tracker HTML (tamob-batch-20260311-1.html)
+- [ ] Step 9: Post BATCH SUMMARY → wait for APPROVE SEND
+- [ ] Step 10: Clear in-progress.md + update handoff.md + commit
 
 ## Files in progress
 
 | File | Location | Current state |
 |------|----------|---------------|
-| [filename.html] | /Work/ | Exists. [N]/[M] contacts added. |
-| [other file] | /Work/memory/ | In progress — [description] |
+| tamob-batch-20260311-1.html | /Work/ | Not yet created |
+| tam-coverage-tracker.csv | /Work/ | Exists. Updating as accounts claimed. |
+| MASTER_SENT_LIST.csv | /Work/ | 338 rows. Adding after sends. |
 
 ## Last commit
 
-`[hash]` — "Checkpoint: [TASK-XXX] — step [N/M]"
+`ef9bcaa` — Push-prep: CLAUDE.md date, handoff cleanup, SOP Part 10 template fix
 
 ## Resume instructions
 
-**Start from:** Step [N+1]
-**Specifically:** [Exact instruction — e.g., "Draft T2 for Seth Drummond (#4). T1 used Hansard proof point. Next proof point: CRED."]
-**Do NOT redo:** Steps 1–[N] (files already exist on disk)
-**Critical context:** [Any facts next session needs — e.g., proof point rotation rules, Apollo task IDs, open decisions]
-```
+**Start from:** Step 2 (Apollo contact search) — account list is locked below
+**Critical context:**
+- 10 target accounts selected (see Selected Accounts block below)
+- All Factor accounts only (Rob's filter)
+- Dedup Wave 1+2 contacts already sent (Cboe, Fidelity, Chase, Commvault, TruStage, YouTube, GEICO, Checkr, EA, Cetera, OneMain, Mindbody, HashiCorp)
+- Apollo sequence: TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
+- Send email: robert.gorham@testsigma.com (.com ONLY)
 
----
+## Selected Accounts (locked)
 
-*File created: 2026-03-11 (Session 15 — crash-recovery infrastructure)*
-*See AGENTS.md for full protocol rules*
+| # | Account | ICP | Signal Tier | Why |
+|---|---------|-----|------------|-----|
+| 1 | OSF HealthCare | HIGH | A (Signup x1, web x5, Jan 2025) | Healthcare system, strong intent |
+| 2 | Yahoo | HIGH | B (Aug 2025) | Tech enterprise, good fit |
+| 3 | Datamatics | HIGH | B (Oct 2025) | Tech services, recent activity |
+| 4 | Successive Technologies | HIGH | B (Sep 2025) | Mid-market SaaS |
+| 5 | Veradigm | HIGH | B | Healthcare IT, no Nektar date yet |
+| 6 | Corewell Health | HIGH | B | Healthcare system, large |
+| 7 | Charlie Health | HIGH | B | Mental health tech, HIGH ICP |
+| 8 | TELUS | Medium | A (G2+Demo, Feb 2025) | Telecom, Tier A intent signal |
+| 9 | GE | Medium | A (Pricing Page, Jul 2025) | Manufacturing, buying intent |
+| 10 | Winsupply | Medium | A (Signup x1, Oct 2025) | Retail, signup signal |
+
+*If contact count falls short of 50: add Microchip Technology, L3Harris, Charles River Labs.*
