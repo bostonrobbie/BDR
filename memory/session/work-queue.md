@@ -4,9 +4,11 @@
 ## ⚡ SESSION START PROTOCOL (read every time)
 1. `git pull origin main`
 2. Read this file + handoff.md
-3. Open Apollo → TAM Outbound - Rob Gorham → Tasks tab → check what's due today
-4. Cross-reference batch tracker HTML for draft content
-5. Continue from there. Do NOT re-research anything already in the tracker.
+3. Check Gmail MCP for replies to robert.gorham@testsigma.com — warm leads jump the queue
+4. Check warm-leads.md for overdue follow-ups
+5. **Start the new TAM T1 batch — this is the first priority every day**
+6. After T1 batch work is done: check Apollo Tasks tab for T2s due
+7. Do NOT re-research anything already in the tracker.
 
 Tasks are sorted by priority. Claim one task at a time by updating status to IN_PROGRESS.
 

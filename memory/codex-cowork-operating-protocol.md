@@ -120,29 +120,38 @@ Before any draft creation, enrollment, or send:
 
 ## 8) Daily Operating Sequence
 
+**Priority directive (Mar 12, 2026): New T1 batch prospecting is the #1 daily priority. Steps 4-5 below are the core of every session. Follow-up (T2s) happens after.**
+
 1. Identity and environment check.
 - Confirm blue/work Chrome profile for Sales Nav.
 - Confirm Gmail identity is `robert.gorham@testsigma.com`.
 
 2. Intel scan.
-- Replies, warm leads, today calendar, credit state, draft audit, follow-up eligibility.
+- Replies, warm leads (process immediately if found), today calendar.
+- Quick Apollo Tasks tab check — note T2s due, do NOT process yet.
 
 3. Preflight report.
-- DNC, dedup, cadence, same-company, credit budget, anomalies.
+- DNC, dedup, cadence, anomalies.
 
-4. Draft production.
-- Build C2-compliant drafts with one CTA and MQS target.
+4. New TAM T1 batch — FIRST PRIORITY.
+- Source from tam-accounts-mar26.csv (ICP=HIGH first).
+- Research accounts + contacts. Build batch tracker HTML.
+- Build C2-compliant T1 drafts with SMYKM subject and MQS target.
 
 5. Approval gate.
 - Pause for explicit `APPROVE SEND` instruction.
 
 6. Execution and logging.
-- Execute approved items.
-- Write JSON + CSV logs with run ID.
+- Enroll in TAM Outbound sequence, send Step 1 via Apollo UI.
+- Log all sends in MASTER_SENT_LIST.csv + batch tracker.
 - Append outcomes to trackers without overwriting prior rows.
 
-7. Post-run report.
-- Succeeded, failed, skipped, credits used, next due actions.
+7. T2 follow-up processing (after T1 batch work is complete).
+- Open Apollo Tasks tab. For each due task: pull draft, get approval, send.
+- If time runs out: log pending T2s in handoff.md and handle next session.
+
+8. Post-run report.
+- T1s sent, T2s sent, warm leads flagged, next due actions.
 
 ## 9) Logging Standard
 

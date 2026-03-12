@@ -183,6 +183,9 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 - "What day works" as default CTA (40.4% reply rate)
 - 75-99 words sweet spot for Touch 1 (39.0% reply rate)
 
+## Current Operating Directive (Mar 12, 2026)
+**Maximize new T1 pipeline volume.** Start every session with a new TAM T1 batch — source, research, draft, send. T2s and follow-up processing happen after T1 work is complete. Apollo handles the follow-up cadence automatically; the T1 pipeline requires active daily effort. Target: 25-50 new contacts enrolled every send day.
+
 ## Google Drive Knowledge Base
 | Document | ID |
 |----------|-----|

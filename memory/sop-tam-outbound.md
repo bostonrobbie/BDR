@@ -7,6 +7,8 @@ This SOP governs all outreach to named TAM accounts. It is the authoritative gui
 **Method:** Rolling daily batches. Account-first research (one company pass covers all contacts at that company). Continuous pipeline — no wave gating.
 **Sequence:** TAM Outbound - Rob Gorham (`69afff8dc8897c0019b78c7e`) — enrollment email: `robert.gorham@testsigma.com`
 
+**Daily priority directive (Mar 12, 2026):** New T1 batch work is the #1 daily priority. Start every session by sourcing and sending new contacts. T2s are handled after T1 batch is complete. Apollo manages the follow-up cadence automatically — the T1 pipeline is what requires active daily effort.
+
 ---
 
 ## Overview
@@ -1475,6 +1477,8 @@ If the task tab shows mixed T1 and T2 tasks, check the Step column carefully. T1
 
 ### T2 Priority Order When Volume Is High
 
+**⚠️ Operating directive (Mar 12, 2026): New T1 batch work comes before T2s every day.** T2s are handled after T1 batch is complete, or in remaining session time. The only exception: 20+ T2s overdue simultaneously — in that case, clear the backlog first, then resume T1 batching.
+
 When multiple waves have T2s due simultaneously:
 1. **Wave with oldest T1 send date first** — longest wait = highest reply risk if not followed up
 2. Within the same wave: HIGH priority contacts first (same as T1 batch order)
@@ -1484,7 +1488,7 @@ If T2 volume exceeds session capacity (> 20 contacts), send the oldest/highest-p
 
 ---
 
-*Part 25 added V4.0 — Mar 11, 2026. T2s are now active for Waves 1, 2, and 3. Priority: Wave 1 T2 due Mar 12 first.*
+*Part 25 added V4.0 — Mar 11, 2026. Updated Mar 12, 2026: T1 batch prospecting takes daily priority over T2 processing per current pipeline volume directive.*
 
 
 ---
