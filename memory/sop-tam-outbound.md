@@ -360,30 +360,122 @@ Testsigma
 
 ---
 
-## Part 7: T2 Draft Rules (Unified Email-First Formula — Updated Mar 10)
+## Part 7: T2 Draft Rules (Multi-Template Formula — Updated Mar 12)
 
 T2 sends on Day 5 from T1. Via Apollo TAM Outbound Step 2 (manual email task).
 
-**Unified T2 Formula (4 parts, 50-70 words) — Designed from scratch for email-first sequences:**
+**Word count:** 50-65 words. Tighter than T1 (75-100w). Don't pad to hit a floor — if it reads clean at 50w, leave it.
 
-1. **Bridge** (1 sentence): Light reference to T1 without "following up" or "circling back." Use: "One more angle from my last note." or "Different lens on the same problem." or "Thought this was worth adding."
-2. **New trigger/observation** (1 sentence): Completely different angle from T1. If T1 = maintenance/self-healing, T2 = test creation speed or coverage gaps. If T1 = speed, T2 = maintenance.
-3. **New proof point** (1-2 sentences): Different customer story from T1. Tie back to the new angle.
-4. **Engagement question CTA** (1 sentence): NOT "what day works" — ask a qualifying question that lets them confirm their own pain. Examples: "Is test creation time or maintenance more of the pain point right now?" / "Are you mostly Selenium-based, or have you moved to something newer?"
+**BANNED openers (do NOT use these):**
+- "Different lens from my last note" — overused across batches
+- "One more angle worth adding/sharing" — overused across batches
+- "Following up" / "Circling back" — too passive
 
-**Rules:**
-- 50-70 words
-- NO "following up" / "circling back" — use bridge language above
-- NO LinkedIn callback (this is email-first)
-- NEW angle — different from T1 theme
+---
+
+### T2 Structural Templates (pick one per contact based on role + company)
+
+**Template A — Direct observation lead** (enterprise, VPs, Directors at large companies)
+No bridge. Open with a company/context-specific insight and go straight into proof point.
+Structure: [Company/industry insight, 1 sentence] → [Proof point, 1-2 sentences] → [CTA]
+Example openers:
+- "At [Company]'s release cadence, [pain] isn't just a QA problem, it [business consequence]."
+- "[Company]'s [platform complexity] means [specific challenge most teams miss]."
+- "For a platform at [Company]'s scale, [pain framing]."
+Best for: Fidelity, JPMorgan, YouTube, Mastercard, large enterprises
+
+**Template B — Problem framing lead** (QA Managers, Director of Engineering, mid-size SaaS)
+Open with a punchy 1-sentence description of the pain, no bridge.
+Structure: [Pain statement, punchy] → [Proof point as solution] → [CTA]
+Example openers:
+- "[Specific pain pattern] at [Company]'s pace."
+- "The [pain] problem doesn't fix itself at [release velocity / team size]."
+- "[Situation] is rough. [Quick setup]. [Proof point]. [CTA]."
+Best for: QA Managers, Directors at mid-size SaaS, Checkr-scale companies
+
+**Template C — Casual and specific** (SDETs, automation leads, younger/scrappier orgs)
+Plain language, short sentences, minimal jargon. Closest to how a real person would write.
+Structure: [1-2 casual setup sentences] → [Proof point, plain language] → [Short CTA]
+Example openers:
+- "Quick add from my last note."
+- "One thing I didn't mention: [insight]."
+- "[Post-acquisition / migration / scaling] QA is rough. [Specific reason]."
+Best for: SDETs, senior automation engineers, companies < 1,000 employees, Checkr, Mindbody, Charlie Health
+
+**Template D — Proof point lead** (when customer story is a strong match to their situation)
+Open with the customer story directly, then tie it to their specific context.
+Structure: [Customer result as hook] → [Why it applies to them specifically] → [CTA]
+Example openers:
+- "One of the [industry/size] teams we work with [result]. The trigger was [insight]."
+- "[Customer] was in a similar spot: [brief situation]. [Result] after using Testsigma."
+- "Quick stat worth sharing: [Customer] [result]."
+Best for: Any role when the proof point maps tightly to their company's exact situation
+
+---
+
+### CTA Selection by Persona
+
+**Tech ICs (SDETs, automation leads, senior engineers):** Short specific question that forces a real answer.
+- "Still running Selenium, or have you moved to something else?"
+- "What does your current test framework look like?"
+- "Any Playwright or Cypress in the mix yet, or still Selenium-based?"
+- "Are you writing tests in code, or have you explored plain-language authoring?"
+
+**Managers / Directors:** Broader qualifying question that lets them self-identify pain.
+- "Is test creation or maintenance more of the drag right now?"
+- "How much of your team's capacity goes to keeping existing tests green versus writing new coverage?"
+- "Is the maintenance backlog shrinking or growing quarter over quarter?"
+
+**VPs / heads of engineering:** Business-level framing question.
+- "Is regression cycle time affecting release confidence on your side?"
+- "What does coverage completeness look like as a delivery gate for your team?"
+- "How are you thinking about test coverage as your roadmap accelerates?"
+
+---
+
+---
+
+### Reference Examples (validated Mar 12)
+
+**Template A — Rick Brandt, Director, Cboe Global Markets:**
+Subject: Rick — coverage vs. headcount at Cboe scale
+Body: At Cboe's trading volume, coverage gaps aren't just a QA problem, they become a release risk that builds quietly. CRED hit 90% regression coverage 5x faster than their prior toolchain by shifting to NLP-driven test creation with Testsigma, no existing tests rewritten. Is coverage breadth the bigger constraint for your team right now, or cycle time?
+*56 words*
+
+**Template B — Sarah Kneedler, QA Manager, Checkr:**
+Subject: Sarah — maintenance queue at Checkr's release pace
+Body: The maintenance backlog doesn't clear itself at Checkr's release velocity, it compounds with every sprint. MediBuddy broke that pattern by cutting test maintenance 50% after deploying Testsigma's AI self-healer across their full suite. Is your maintenance queue actually shrinking quarter over quarter, or still growing faster than the team can address it?
+*52 words*
+
+**Template C — Chandni Jain (SDET/lead), Checkr:**
+Subject: Chandni — inherited test debt after the acquisition
+Body: Post-acquisition QA is rough. Two codebases, two toolchains, and the maintenance overhead doubles before you can consolidate anything. MediBuddy got ahead of that by cutting test maintenance 50% with Testsigma's AI healer across their combined suite. How much of your team's bandwidth is going to keeping acquired product tests green right now?
+*52 words*
+
+**Template D — Arun Amarendran, Automation Lead, Commvault:**
+Subject: Arun — multi-product coverage gaps at Commvault
+Body: One of the enterprise storage teams we work with had uneven coverage across a 6-product suite. No one was failing, but whole product lines had gaps no one was tracking. They closed those gaps 5x faster using Testsigma's NLP-driven authoring. Is coverage depth consistent across all of Commvault's product lines today, or are some areas thinner than others?
+*58 words*
+
+---
+
+### Rules (all templates)
+- 50-65 words — don't pad to hit a floor
+- NO banned openers: "Different lens from my last note" / "One more angle worth adding/sharing" / "Following up" / "Circling back"
+- NO LinkedIn callback (email-first)
+- NEW angle — different from T1 theme (if T1 = maintenance, T2 = coverage/creation; if T1 = speed, T2 = maintenance)
 - NEW proof point — do not repeat T1's customer story
-- CTA = engagement question, NOT "what day works" (save meeting ask for breakup)
+- Plain language — cut enterprise-speak and jargon
 - No em dashes
+- CTA = question only (NOT "what day works" — save meeting ask for breakup email)
+- Template selection: A = enterprise/senior, B = manager/QA lead, C = IC/SDET/smaller company, D = tight proof point match
 
 **Proof point rotation (T1 → T2):**
 - T1: Hansard (regression 8→5 weeks) → T2: CRED (90% coverage, 5x faster) or MediBuddy (50% maintenance cut)
 - T1: Fortune 100 / 3x productivity → T2: Cisco (35% regression reduction) or Hansard
 - T1: Nagra DTV (2,500 tests, 4x faster) → T2: CRED or MediBuddy
+- T1: CRED → T2: Hansard or MediBuddy
+- T1: MediBuddy → T2: CRED or Cisco
 
 ---
 
