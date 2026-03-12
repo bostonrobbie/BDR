@@ -481,6 +481,7 @@ Reply APPROVE SEND to send all, or APPROVE SEND — [name] only, or EDIT [name] 
 5. Step 2 manual email task will appear — due Day 5 from enrollment date
 
 **For contacts whose T1 is email (all TAM Outbound T1s — standard protocol):**
+0. **Pre-enrollment email quality check:** Before enrolling, check if the Apollo contact record has custom field `678901dcd836ab01b09a6110 = "invalid"`. This is Apollo's internal email quality flag and reliably predicts hard bounces (see INC-009). If present: **do NOT enroll in email sequence.** Add note in batch tracker. Use LinkedIn InMail when credits are available instead.
 1. Enroll in TAM Outbound - Rob Gorham (`69afff8dc8897c0019b78c7e`) via API
 2. Email account: `robert.gorham@testsigma.com` (ID: `68e3b53ceaaf74001d36c206`)
 3. Apollo flags: `sequence_no_email: true`, `sequence_active_in_other_campaigns: true`
@@ -623,6 +624,8 @@ sequence_finished_in_other_campaigns: true (if contact was in a prior sequence)
 ```
 Email account: `robert.gorham@testsigma.com` (.com ONLY — not .net, .in, or .com.in)
 Batch enrollment: max 5 at a time to avoid 500 errors.
+
+**Apollo auto-send behavior (observed Wave 4, Mar 11):** In rare cases, Apollo may automatically advance a contact to Step 2 immediately upon enrollment, sending Step 1 without generating a Task. This appears to happen when Apollo detects certain conditions (possibly CRM sync or prior contact history). Signs: contact shows `current_step_id` = Step 2 ID (not Step 1) shortly after enrollment, no Step 1 task ever appeared. When this happens: the T1 email WAS sent (check Gmail sent folder to confirm). Log as "auto-sent" in batch tracker, add to MASTER_SENT_LIST, and treat T2 due date from auto-send date.
 
 **After each T1 send:**
 1. Enroll in TAM Outbound immediately (same session, same day)

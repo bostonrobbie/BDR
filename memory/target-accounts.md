@@ -229,32 +229,73 @@ Rob has three distinct account lists assigned by Testsigma leadership, all store
 
 ---
 
-#### Wave 2 — Not Yet Researched (contacts TBD)
+#### Wave 2 — ✅ T1 SENT Mar 10, 2026 (16 contacts)
 
-Accounts in Wave 2 still need Apollo Director+ search run. Priority order:
+**File:** `tamob-wave2-draft-mar10.html` | **T2 due:** Mar 15 | **Sequence:** TAM Outbound - Rob Gorham
 
-| Account | Signal | Next Action |
-|---------|--------|-------------|
-| HashiCorp | B (web sessions, Aug 2025) | Apollo search: QA/SDET Director+ at hashicorp.com |
-| Datamatics | B (web sessions, Oct 2025) | Apollo search: QA Director+ at datamatics.com |
-| Successive Technologies | B (web sessions, Sep 2025) | Apollo search: QA Director+ at successive.tech |
-| Electronic Arts | B (web x4, blog x3) | Apollo search: QA Director+ at ea.com |
-| GEICO | B (web sessions, Feb 2025) | Apollo search: QA Director+ at geico.com |
-| Checkr, Inc. | B (web sessions, no date) | Apollo search: QA Director+ at checkr.com |
-| OSF HealthCare | A (Signup + web x5, Jan 2025) | Apollo search: QA Director+ at osfhealthcare.org |
-| OneMain Financial | A (G2 x4, Feb 2025) | Apollo search: QA Director+ at onemainfinancial.com |
-| Mindbody | B (web sessions, Sep 2024) | Apollo search: QA Director+ at mindbodyonline.com |
-| Cetera Financial Group | C (Nov 2025, no signals) | Apollo search: QA Director+ at cetera.com |
+| Contact | Company | Apollo ID | Status |
+|---------|---------|-----------|--------|
+| Marcela Fetters | GEICO | 69b077c4c0da4900152bb736 | ✅ T1 Sent Mar 10 |
+| Roberto Bouza | GEICO | 69b0780dc0da4900152bb7d2 | ✅ T1 Sent Mar 10 |
+| Sambhav Taneja | GEICO | 69b07814d45f4e00155d218b | ✅ T1 Sent Mar 10 |
+| Chandni Jain | Checkr | 68f512c8398b310001070cb1 | ✅ T1 Sent Mar 10 |
+| Sarah Kneedler | Checkr | 6992d954404e44000165dd64 | ✅ T1 Sent Mar 10 |
+| Krista Moroder | Checkr | 68f512c8398b310001070cad | ✅ T1 Sent Mar 10 |
+| Cristian Brotto | Checkr | 69b07821e4be74000d6bb911 | ✅ T1 Sent Mar 10 |
+| Yu Jin | EA | 69b07827c0da49000dc24361 | ✅ T1 Sent Mar 10 |
+| Maalika Tadinada | EA | 69b0783bd45f4e00155d21a4 | ✅ T1 Sent Mar 10 |
+| Richelle Paulsen | Cetera | 68e69f9fb4d41000012370b0 | ✅ T1 Sent Mar 10 |
+| Anton Aleksandrov | Cetera | 68caf92e67f171002139f184 | ✅ T1 Sent Mar 10 |
+| Saeyed Shamlou | OneMain | 69371da04a3327000178a607 | ✅ T1 Sent Mar 10 |
+| Karen Teng | Mindbody | 69b077ebc0da4900152bb77c | ✅ T1 Sent Mar 10 |
+| Henry Rose | Mindbody | 69b07848c0da4900152bb7fd | ✅ T1 Sent Mar 10 |
+| Bipin Bhoite | Mindbody | 69b0784fc0da49000dc24371 | ✅ T1 Sent Mar 10 |
+| Shyamendra Singh | HashiCorp | 68af1cf6944539000183af4c | ✅ T1 Sent Mar 10 |
+
+*Successive Technologies, OSF HealthCare — deferred to future wave*
 
 ---
 
-#### Wave 3 — Not Yet Researched (contacts TBD)
+#### Wave 3 — ✅ T1 SENT Mar 11, 2026 (35 contacts, 7 accounts)
 
-| Account | Signal | Note |
-|---------|--------|------|
-| Veradigm | B (no Nektar date) | Healthcare IT — HIGH ICP |
-| Corewell Health | B (no Nektar date) | Healthcare — HIGH ICP |
-| Charlie Health | B (no Nektar date) | Healthcare — HIGH ICP |
+**File:** `tamob-batch-20260311-1.html` | **T2 due:** Mar 16 | **Sequence:** TAM Outbound - Rob Gorham
+⚠️ INC-008: Michael Cahill (L3Harris) + Manpreet Burmi (Veradigm) received placeholder sends — recovery emails sent same day. Recovery counts as real T1.
+
+| Account | Contacts | Status |
+|---------|----------|--------|
+| Yahoo (YHQ + Sports) | 7 (Y01 Sarah Huang, Y02 Ash Pedgaonkar, Y03–Y07) | ✅ All T1 Sent Mar 11 |
+| Veradigm | 6 (V01 Ted Barker, V02 Matthew Bennett, V03–V06 incl Manpreet Burmi recovery) | ✅ All T1 Sent Mar 11 |
+| Charlie Health | 4 (CH01 Sampson Reider, CH02 Madina Zabran, CH03 Madison Waterman, CH04 Ashwin Vaswani) | ✅ All T1 Sent Mar 11 |
+| TELUS | 2 (T01 Christine Gamache — future-dated, T02) | T01 pending (auto-surface) |
+| GE HealthCare | 2 (GE01, GE02 Brooks Foley — future-dated) | GE02 pending (auto-surface) |
+| L3Harris Technologies | 9 (L01–L09 incl Michael Cahill recovery) | ✅ All T1 Sent Mar 11 |
+| Georgia-Pacific | 5 (GP01–GP05) | ✅ All T1 Sent Mar 11 |
+
+#### Wave 4 — ✅ T1 SENT Mar 11, 2026 (37/48 confirmed, 19 accounts)
+
+**File:** `tamob-batch-20260311-2.html` | **T2 due:** Mar 19 | **Sequence:** TAM Outbound - Rob Gorham
+
+| Account | Contacts sent | Notes |
+|---------|--------------|-------|
+| E*TRADE / Morgan Stanley | Brett Linde, Chyehar Tyler | ✅ Sent |
+| Broadcom | Hai Su, Jeremy Sabin | ✅ Sent |
+| Humana | Justin Yune, Piyamas Sattaboot | ✅ Sent |
+| Corewell Health | Aswini Nagabooshanam, Vibha Singh, Samatha Gangyshetty | ✅ Sent |
+| Blue Cross MN | Ahmet Cakar | ✅ Sent |
+| BCBS Texas | Sakib Alam, Ganesh Mallina | ✅ Sent |
+| Blue Cross KC | Kris Berg, Ranjith Reddy | ✅ Sent |
+| Mastercard | Yvonne Stephen, Vijay Durairaj, Ketan Rathod, Geethavani Dodda, Koushal Ram, Glen Hudson (auto), Sibghatullah Veedy (auto) | ✅ 7 sent. Yvonne Oliver blocked (ownership). Ksenia Shchelkonogova bounced. |
+| Anaplan | Mike Seal + Irina Baxter (pending task) | 1 sent, 1 pending |
+| DraftKings | Francky Sergile, David Schraff | ✅ Sent |
+| Cleveland Clinic | Ted Machicek, Satish Krishnan | ✅ Sent |
+| Microchip Technology | April Brenay, Manohar Shrestha | ✅ Sent |
+| GEICO (W4 contacts) | Ketan Peddabachi | ✅ Sent |
+| Electronic Arts (W4 contacts) | Ed Yiu, William Xie + Divya Sathish/Jiadong Shen/Simon Crawford (pending tasks) | 2 sent, 3 pending |
+| HashiCorp (W4 contacts) | Janel Jolly + Adit Shah (pending task) | 1 sent, 1 pending |
+| KKR | Devashish Patel, Josh Klesel | ✅ Sent |
+| Datamatics (W4 contacts) | Kenny Qi, Michelle Crawford + Mohan Raj/Shilendra Sharma/Poonam Patil (pending tasks) | 2 sent, 3 pending |
+| OneMain Financial (W4 contacts) | Jessica Harris | ✅ Sent |
+| BCBS Illinois | Valerie Jefferies | 🚫 Blocked — job change flag |
 
 ---
 
@@ -268,18 +309,21 @@ Start with HIGH ICP + Tier A signals + most recent activity. Cross-check each ag
 5. **YouTube** — Tech/Enterprise, Signup + 4 web sessions. Active Sep 2025.
 6. **TruStage** — Finance/Enterprise, Demo + recent Feb 2026 activity. ✅ Confirmed clear Mar 9 — prior outreach was Shakeel's (former AE, departed). Contact: Chamath Guneratne, IT Director QE.
 
-**Wave 2 — Next (HIGH ICP + Tier B signals):**
-7. **HashiCorp** — Tech/Enterprise, Aug 2025.
-8. **Datamatics** — Tech/Enterprise, Oct 2025.
-9. **Successive Technologies** — Tech/Mid-Market, Sep 2025.
-10. **Electronic Arts** — Entertainment/Enterprise, 4 web sessions.
-11. **GEICO** — Insurance/Enterprise. Good ICP even with older signals.
-12. **Checkr, Inc.** — Tech/Enterprise. No Nektar date but HOT flagged.
+**Wave 2 — ✅ SENT Mar 10 (16 contacts):**
+7. **HashiCorp** — 1 contact (Shyamendra Singh). T2 due Mar 15.
+8. **Datamatics** — covered in Wave 4 (separate contacts). Wave 2 = HashiCorp + GEICO + Checkr + EA + OneMain + Mindbody + Cetera.
+9. ~~Successive Technologies~~ — deferred.
+10. **Electronic Arts** — 2 contacts Wave 2 (Yu Jin, Maalika Tadinada). Additional 5 in Wave 4.
+11. **GEICO** — 3 contacts Wave 2 (Marcela Fetters, Roberto Bouza, Sambhav Taneja). 1 more in Wave 4.
+12. **Checkr, Inc.** — 4 contacts (Chandni Jain, Sarah Kneedler, Krista Moroder, Cristian Brotto). T2 due Mar 15.
 
-**Wave 3 — HIGH ICP + newly added (no Nektar history yet):**
-13. Veradigm (Healthcare IT)
-14. Corewell Health (Healthcare & Life Sciences)
-15. Charlie Health (Healthcare & Life Sciences)
+**Wave 3 — ✅ SENT Mar 11 (35 contacts):**
+13. Veradigm (6 contacts). T2 due Mar 16.
+14. Corewell Health — covered in Wave 4 (3 contacts). Wave 3 Corewell = zero; Wave 3 had Yahoo, Charlie Health, TELUS, GE HealthCare, L3Harris, Georgia-Pacific.
+15. Charlie Health (4 contacts). T2 due Mar 16.
+
+**Wave 4 — ✅ SENT Mar 11 (37/48 sent, 9 pending, 19 accounts):**
+16+ E*TRADE/Morgan Stanley, Broadcom, Humana, Corewell Health, Blue Cross MN/TX/KC, Mastercard, Anaplan, DraftKings, Cleveland Clinic, Microchip, GEICO (W4), EA (W4), HashiCorp (W4), KKR, Datamatics (W4), OneMain (W4), BCBS IL. T2 due Mar 19.
 
 **Deprioritize / skip for now:**
 - ACCELQ — competitor, needs clearance

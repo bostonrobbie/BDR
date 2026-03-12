@@ -244,6 +244,35 @@ After editing the subject field, click the body at coordinate (1035, 540) — ce
 
 ---
 
+## INC-009: Wave 4 Email Bounce + Invalid Email Flag (2026-03-11)
+**Severity:** LOW
+
+### What Happened
+During TAM Outbound Wave 4 enrollment and task execution (Mar 11), two contacts surfaced with problematic email addresses:
+
+1. **Ksenia Shchelkonogova (Mastercard)** — Apollo email `kshchelkonogova@mastercard.com` triggered a bounce/failure. Apollo showed contact in TAM Outbound sequence with `status: failed` / `inactive_reason: email_invalid`. Email was not successfully delivered.
+
+2. **Divya Sathish (EA / Electronic Arts)** — Apollo contact record contained custom field `"678901dcd836ab01b09a6110": "invalid"` — the same "email_invalid" flag marker seen on Ksenia's record before her bounce. Apollo custom field `678901dcd836ab01b09a6110` = email quality flag = "invalid" when set.
+
+### Root Cause
+Apollo marks email addresses as invalid when bounce signals or verification checks flag them. The custom field `678901dcd836ab01b09a6110 = "invalid"` is Apollo's internal email quality indicator. Contacts with this flag are at high risk of bounce. This flag was not checked during Wave 4 enrichment/enrollment.
+
+### Affected Contacts
+| Name | Company | Email | Status | Action |
+|------|---------|-------|--------|--------|
+| Ksenia Shchelkonogova | Mastercard | kshchelkonogova@mastercard.com | ⛔ Bounced/Failed | Re-enrich. Try LinkedIn InMail when credits available. |
+| Divya Sathish | EA | divya.sathish@ea.com | ⚠️ Invalid flag — T1 task pending | Check if task sends. If bounce, re-enrich via LinkedIn. |
+
+### Remediation
+- Ksenia: Remove from TAM Outbound sequence. Do not attempt email follow-up until re-enriched with a valid address. Use LinkedIn InMail when credits available.
+- Divya: Monitor Wave 4 pending tasks. If Step 1 task sends and bounces, remove from sequence + re-enrich.
+- Both contacts still in tamob-batch-20260311-2.html as "Ready" (pending T1 tasks).
+
+### Permanent Rule Added
+Before enrolling any contact in TAM Outbound (or any Apollo email sequence), check for Apollo custom field `678901dcd836ab01b09a6110 = "invalid"`. If present, skip email enrollment and use LinkedIn InMail instead. This field is an Apollo email quality flag and reliably predicts hard bounces.
+
+---
+
 ## Draft Safety & Cadence Enforcement Rules
 
 ### Rule 1: Date-Gating
