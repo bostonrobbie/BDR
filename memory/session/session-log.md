@@ -843,3 +843,46 @@ Y02 Ash Pedgaonkar, Y06 Suchith Chandran, V01 Ted Barker, V04 Aleck Gandel, CH01
 - `memory/session/session-log.md` — this entry
 
 **Git commit needed (with prior changes from Sessions 22-24)**
+
+---
+
+## Session 25 — End-of-Session Tracker Audit (2026-03-12)
+**Task:** Comprehensive end-of-session tracker audit — update all stale files after TAM Outbound Waves 1-4
+
+**Changes made:**
+
+### CLAUDE.md
+- Pipeline Status header updated: "Mar 7" → "Mar 11"
+- Pipeline Status table completely rewritten: TAM Outbound T1 (111 unique contacts), MASTER_SENT_LIST (412 rows), T2 schedule (Wave1/2: Mar 15, Wave3: Mar 16, Wave4: Mar 19), bounces, enrollments
+- Total Emails sent updated: "49 confirmed" → "~300+"
+- Incident log reference: "INC-001 through INC-003" → "INC-001 through INC-008"
+- TAM Outbound wave files section added
+- currentDate: 2026-03-11 → 2026-03-12
+
+### memory/pipeline-state.md
+- Master Send Log: 4 new rows added for Wave 1/2/3/4 T1 sends
+- Pipeline Metrics section completely rewritten with TAM Outbound metrics
+- New "TAM Outbound Batch Files" section added
+
+### memory/target-accounts.md
+- Wave 2 section: updated from "TBD" → "✅ T1 SENT Mar 10" with full contact table
+- Wave 3 section: updated from "TBD" → "✅ T1 SENT Mar 11" with account-level status table
+- Wave 4 section: newly created with 19-account breakdown
+
+### memory/incidents.md
+- INC-009 added: Ksenia Shchelkonogova bounce (Mastercard, kshchelkonogova@mastercard.com) + Divya Sathish invalid email flag (EA, divya.sathish@ea.com). Apollo custom field `678901dcd836ab01b09a6110 = "invalid"` identified as reliable bounce predictor.
+
+### memory/sop-tam-outbound.md
+- Part 11: Pre-enrollment email quality check added (step 0 — check custom field 678901dcd836ab01b09a6110 before enrolling any contact)
+- Part 18: Apollo auto-send behavior documented (contacts jumping to step 2 on enrollment = T1 auto-sent; verified via Gmail sent folder)
+
+**Git commit:** `1d727c3` — "Session 25: End-of-session tracker audit complete"
+**Total commits unpushed:** 6 — Rob must run `git push` from terminal
+
+**Next session priorities:**
+1. 🔴 Wave 1 T2 due Mar 12 (TODAY) — check Apollo Tasks tab immediately
+2. 🟡 Wave 2 T2 due Mar 15
+3. 🟡 Wave 3 T2 due Mar 16
+4. 🟢 Wave 4 pending T1 tasks (8 contacts) — send when they surface in Tasks tab
+5. ⚠️ Divya Sathish (EA) — monitor for bounce when Wave 4 T1 task surfaces
+
