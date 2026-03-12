@@ -27,7 +27,7 @@ STEP 9:  Parallel check — ls memory/session/active/ → read each .json file
 STEP 10: Register yourself in memory/session/active/{session-number}.json
 STEP 11: Check Gmail MCP for replies to robert.gorham@testsigma.com (warm leads jump queue)
 STEP 12: Claim a task (avoid conflicts with active sessions) OR ask Rob what to work on
-STEP 13: Read relevant playbooks from memory/playbooks/ for your task
+STEP 13: Read ONLY the playbooks mapped to your claimed task (see Playbook System table below — do NOT read all playbooks)
 STEP 14: Report current state to Rob
 ```
 
@@ -175,6 +175,31 @@ When claiming a task from work-queue.md:
 4. Only claim ONE task at a time unless Rob asks for parallel work
 5. Update status to `DONE` when complete
 6. Write `in-progress.md` BEFORE starting any file-creation or API work
+
+---
+
+## Task Sizing & Context Budget
+
+Sessions have limited context windows. Hitting the limit causes compaction (loss of earlier context), which leads to repeated work and mistakes. Follow these rules to stay within budget.
+
+**Task sizing guidelines:**
+
+| Task Type | Target Size | Max Tool Calls | When to Checkpoint & Hand Off |
+|-----------|-------------|----------------|-------------------------------|
+| T1 batch (source + draft + enroll) | 8-12 contacts | ~60 | After enrollment. Don't add T2 drafts in same session. |
+| T2 batch (draft only) | 15-20 contacts | ~40 | After QA gate pass. |
+| Apollo sends (Tasks tab) | 15-20 sends | ~30 | After all sends confirmed. |
+| Bounce cleanup / incident | 1 incident | ~25 | After MASTER_SENT_LIST + incidents.md updated. |
+| Infrastructure / SOP work | 1 focused change | ~40 | After verification step. |
+
+**Context budget rules:**
+
+1. **Read selectively at startup.** Don't read every file. Read AGENTS.md + CLAUDE.md (auto-loaded) + handoff.md + work-queue.md + in-progress.md + messages.md. Then ONLY read the playbooks mapped to your claimed task (see Playbook System below).
+2. **Never read a file you don't need.** If your task is bounce cleanup, don't read tam-t1-batch.md or qa-gate.md.
+3. **If you've made 50+ tool calls, start wrapping up.** Checkpoint your progress, update handoff files, and hand off remaining work as a new task.
+4. **If context gets compacted, don't re-read everything.** Trust in-progress.md for crash recovery. Read only the files needed to continue the current step.
+5. **One task per session.** Don't chain tasks (e.g., "build batch then also do T2 drafts"). Complete one, hand off, let the next session pick up the other.
+6. **Batch HTML trackers are large.** When reading trackers, read only the sections you need (use offset/limit). Don't read 500-line HTML files in full unless necessary.
 
 ---
 

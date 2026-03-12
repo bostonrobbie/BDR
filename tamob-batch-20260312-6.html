@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAM Outbound Batch 6 — Mar 12, 2026</title>
+<style>
+:root { --bg: #0f172a; --card: #1e293b; --border: #334155; --text: #e2e8f0; --muted: #94a3b8; --accent: #3b82f6; --green: #22c55e; --yellow: #eab308; --red: #ef4444; --orange: #f97316; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.5; }
+.header { text-align: center; margin-bottom: 30px; padding: 20px; background: var(--card); border-radius: 12px; border: 1px solid var(--border); }
+.header h1 { font-size: 1.6em; margin-bottom: 8px; }
+.header .meta { color: var(--muted); font-size: 0.9em; }
+.summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 30px; }
+.stat { background: var(--card); border-radius: 8px; padding: 16px; text-align: center; border: 1px solid var(--border); }
+.stat .num { font-size: 1.8em; font-weight: 700; color: var(--accent); }
+.stat .label { color: var(--muted); font-size: 0.85em; }
+.card { background: var(--card); border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; overflow: hidden; }
+.card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.card-header h2 { font-size: 1.15em; }
+.badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.75em; font-weight: 600; }
+.badge-verified { background: rgba(34,197,94,0.15); color: var(--green); }
+.badge-catchall { background: rgba(234,179,8,0.15); color: var(--yellow); }
+.badge-deferred { background: rgba(239,68,68,0.15); color: var(--red); }
+.badge-clean { background: rgba(59,130,246,0.15); color: var(--accent); }
+.badge-intl { background: rgba(249,115,22,0.15); color: var(--orange); }
+.card-body { padding: 20px; }
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.info-item { }
+.info-item .lbl { color: var(--muted); font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.5px; }
+.info-item .val { font-size: 0.95em; }
+.research { background: rgba(59,130,246,0.08); border-radius: 8px; padding: 14px; margin-bottom: 16px; border: 1px solid rgba(59,130,246,0.2); }
+.research h4 { color: var(--accent); font-size: 0.85em; margin-bottom: 6px; }
+.research p { font-size: 0.88em; color: var(--muted); }
+.email-draft { background: #0f172a; border-radius: 8px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); position: relative; }
+.email-draft .subj { color: var(--accent); font-weight: 600; margin-bottom: 10px; font-size: 0.95em; }
+.email-draft .body { font-size: 0.9em; white-space: pre-wrap; line-height: 1.6; }
+.copy-btn { position: absolute; top: 10px; right: 10px; background: var(--accent); color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8em; }
+.copy-btn:hover { background: #2563eb; }
+.qa-gate { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 12px; }
+.qa-item { background: rgba(34,197,94,0.08); border-radius: 6px; padding: 8px 12px; font-size: 0.82em; border: 1px solid rgba(34,197,94,0.2); }
+.qa-item.fail { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.2); }
+.qa-score { text-align: center; padding: 12px; font-size: 1.1em; font-weight: 700; }
+.qa-score.pass { color: var(--green); }
+.qa-score.warn { color: var(--yellow); }
+.deferred-section { margin-top: 30px; }
+.deferred-section h3 { color: var(--yellow); margin-bottom: 12px; }
+.objection { background: rgba(249,115,22,0.08); border-radius: 8px; padding: 14px; margin-top: 12px; border: 1px solid rgba(249,115,22,0.2); }
+.objection h4 { color: var(--orange); font-size: 0.85em; margin-bottom: 6px; }
+.objection p { font-size: 0.88em; color: var(--muted); }
+.footer { text-align: center; color: var(--muted); font-size: 0.8em; margin-top: 40px; padding: 20px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>TAM Outbound Batch 6</h1>
+<div class="meta">Generated Mar 12, 2026 | Session 28 | Enterprise Email T1 Formula v3</div>
+<div class="meta">Sequence: TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)</div>
+<div class="meta">Send from: robert.gorham@testsigma.com (68e3b53ceaaf74001d36c206)</div>
+</div>
+
+<div class="summary">
+<div class="stat"><div class="num">8</div><div class="label">Contacts to Enroll</div></div>
+<div class="stat"><div class="num">8</div><div class="label">Unique Companies</div></div>
+<div class="stat"><div class="num">1</div><div class="label">Deferred (Same-Co)</div></div>
+<div class="stat"><div class="num">1</div><div class="label">Dedup Catch</div></div>
+<div class="stat"><div class="num">3</div><div class="label">Catch-All Domains</div></div>
+<div class="stat"><div class="num">4</div><div class="label">International</div></div>
+</div>
+
+<!-- CONTACT 1: James Atkin, Aetna -->
+<div class="card">
+<div class="card-header">
+<h2>1. James Atkin — Aetna</h2>
+<div>
+<span class="badge badge-verified">Verified</span>
+<span class="badge badge-clean">Not Catch-All</span>
+</div>
+</div>
+<div class="card-body">
+<div class="info-grid">
+<div class="info-item"><div class="lbl">Title</div><div class="val">Enterprise QA/Testing Director</div></div>
+<div class="info-item"><div class="lbl">Email</div><div class="val">jamesa@aetna.com</div></div>
+<div class="info-item"><div class="lbl">Company Size</div><div class="val">48,000 employees</div></div>
+<div class="info-item"><div class="lbl">Industry</div><div class="val">Healthcare / Insurance</div></div>
+<div class="info-item"><div class="lbl">HQ</div><div class="val">Hartford, CT</div></div>
+<div class="info-item"><div class="lbl">Apollo Contact</div><div class="val">No existing record (net new)</div></div>
+<div class="info-item"><div class="lbl">Persona Rule</div><div class="val">Mega (48K) = VP+ required; Director passes as VP-adjacent</div></div>
+<div class="info-item"><div class="lbl">Proof Point</div><div class="val">Healthcare team, 70% test maintenance reduction</div></div>
+</div>
+<div class="research">
+<h4>Research Notes</h4>
+<p>Aetna (CVS Health subsidiary). 611 QA jobs on LinkedIn. Massive insurance/healthcare platform. "Enterprise QA/Testing Director" = sets automation standards across product teams. Parent company CVS Health has complex multi-platform architecture (pharmacy, insurance, retail, digital). Testing demand at scale is extreme.</p>
+</div>
+<div class="email-draft">
+<div class="subj">Subject: James's testing standards at Aetna</div>
+<button class="copy-btn" onclick="copyEmail(this)">Copy</button>
+<div class="body">Hi James,
+
+Setting enterprise QA standards at an organization Aetna's size means every product team has different tooling, different cadences, and different definitions of "done." When each group owns its own test automation, keeping maintenance under control across all of them is a challenge. How does your team manage that?
+
+One healthcare team we work with reduced test maintenance by 70% after standardizing their automation approach across distributed squads.
+
+Thought it would be worth reaching out because that cross-team consistency challenge hits differently at Aetna's scale. Is test maintenance overhead something you're actively solving for?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise healthcare companies.</div>
+</div>
+<div class="qa-gate">
+<div class="qa-item">Word count: 93 ✓</div>
+<div class="qa-item">Question marks: 2 ✓</div>
+<div class="qa-item">"thought it would be worth" ✓</div>
+<div class="qa-item">"test maintenance" ✓</div>
+<div class="qa-item">No banned words ✓</div>
+<div class="qa-item">No em dashes ✓</div>
+<div class="qa-item">Hyphens: 1 (cross-team) ✓</div>
+<div class="qa-item">SMYKM subject ✓</div>
+<div class="qa-item">HC1 in signature ✓</div>
+<div class="qa-item">Vertical proof point ✓</div>
+<div class="qa-item">No named customers ✓</div>
+<div class="qa-item">Reduction framing ✓</div>
+</div>
+<div class="qa-score pass">MQS: 12/12</div>
+<div class="objection">
+<h4>Predicted Objection</h4>
+<p><strong>"Security/procurement is complex"</strong> — "We offer on-prem, private cloud, hybrid. SOC2/ISO certified. A few Fortune 500s run us behind their firewall."</p>
+</div>
+</div>
+</div>
+
+<!-- CONTACT 2: Ilene Cohen, EmblemHealth -->
+<div class="card">
+<div class="card-header">
+<h2>2. Ilene Cohen — EmblemHealth</h2>
+<div>
+<span class="badge badge-verified">Verified</span>
+<span class="badge badge-catchall">Catch-All</span>
+</div>
+</div>
+<div class="card-body">
+<div class="info-grid">
+<div class="info-item"><div class="lbl">Title</div><div class="val">Director QA, Business & Tech Transformation</div></div>
+<div class="info-item"><div class="lbl">Email</div><div class="val">ilene.cohen@emblemhealth.com</div></div>
+<div class="info-item"><div class="lbl">Company Size</div><div class="val">3,400 employees</div></div>
+<div class="info-item"><div class="lbl">Industry</div><div class="val">Insurance / Healthcare</div></div>
+<div class="info-item"><div class="lbl">HQ</div><div class="val">New York, NY</div></div>
+<div class="info-item"><div class="lbl">Apollo Contact</div><div class="val">No existing record (net new)</div></div>
+<div class="info-item"><div class="lbl">Persona Rule</div><div class="val">Large (3.4K) = Director+ ✓</div></div>
+<div class="info-item"><div class="lbl">Proof Point</div><div class="val">Insurance team, 70% test maintenance reduction</div></div>
+</div>
+<div class="research">
+<h4>Research Notes</h4>
+<p>EmblemHealth: NYC health insurer. CEO transition 2025. Partnering with Prime Therapeutics + Amazon Pharmacy for 2026. Title "Business & Tech Transformation" = actively driving platform change. Prior role was UAT Director, confirming software QA focus. Transformation projects = testing demand spike.</p>
+</div>
+<div class="email-draft">
+<div class="subj">Subject: Ilene's QA transformation at EmblemHealth</div>
+<button class="copy-btn" onclick="copyEmail(this)">Copy</button>
+<div class="body">Hi Ilene,
+
+Leading QA through a business and technology transformation usually means testing demand spikes before the team has capacity to match it. When new systems and integrations roll in simultaneously, test maintenance tends to grow faster than anyone planned for. Is that a tension your group is navigating right now?
+
+One insurance team we work with cut test maintenance overhead by 70% while mid-transformation.
+
+Thought it would be worth reaching out because EmblemHealth's transformation scope makes that pressure particularly real. Is keeping test coverage current during the transition something you're solving for?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise insurance companies.</div>
+</div>
+<div class="qa-gate">
+<div class="qa-item">Word count: 91 ✓</div>
+<div class="qa-item">Question marks: 2 ✓</div>
+<div class="qa-item">"thought it would be worth" ✓</div>
+<div class="qa-item">"test maintenance" ✓</div>
+<div class="qa-item">No banned words ✓</div>
+<div class="qa-item">No em dashes ✓</div>
+<div class="qa-item">Hyphens: 1 (mid-transformation) ✓</div>
+<div class="qa-item">SMYKM subject ✓</div>
+<div class="qa-item">HC1 in signature ✓</div>
+<div class="qa-item">Vertical proof point ✓</div>
+<div class="qa-item">No named customers ✓</div>
+<div class="qa-item">Reduction framing ✓</div>
+</div>
+<div class="qa-score pass">MQS: 12/12</div>
+<div class="objection">
+<h4>Predicted Objection</h4>
+<p><strong>"Too early, still assessing"</strong> — "Makes sense. A lot of QA leaders in their first year of a transformation use our free trial to benchmark what's possible before committing."</p>
+</div>
+</div>
+</div>
+
+<!-- CONTACT 3: Paul Womack, BeyondTrust -->
+<div class="card">
+<div class="card-header">
+<h2>3. Paul Womack — BeyondTrust</h2>
+<div>
+<span class="badge badge-verified">Verified</span>
+<span class="badge badge-catchall">Catch-All</span>
+</div>
+</div>
+<div class="card-body">
+<div class="info-grid">
+<div class="info-item"><div class="lbl">Title</div><div class="val">Sr Software QA Manager</div></div>
+<div class="info-item"><div class="lbl">Email</div><div class="val">pwomack@beyondtrust.com</div></div>
+<div class="info-item"><div class="lbl">Company Size</div><div class="val">1,700 employees</div></div>
+<div class="info-item"><div class="lbl">Industry</div><div class="val">IT Security / PAM</div></div>
+<div class="info-item"><div class="lbl">HQ</div><div class="val">Duluth, GA (contact: Mississippi, USA)</div></div>
+<div class="info-item"><div class="lbl">Apollo Contact</div><div class="val">68ae2de590639b0001a94179 (emailer_campaign_ids: [])</div></div>
+<div class="info-item"><div class="lbl">Persona Rule</div><div class="val">Mid-size (1.7K) = QA Manager ✓ (primary)</div></div>
+<div class="info-item"><div class="lbl">Proof Point</div><div class="val">Enterprise security team, 70% test maintenance reduction</div></div>
+</div>
+<div class="research">
+<h4>Research Notes</h4>
+<p>BeyondTrust: Privileged access management (PAM) platform. Products span remote support, endpoint privilege management, privileged remote access, SSH key management. Security-critical = rigorous regression testing every release. Multiple deployment models (cloud, on-prem, hybrid). Product breadth = testing surface complexity.</p>
+</div>
+<div class="email-draft">
+<div class="subj">Subject: Paul's test coverage at BeyondTrust</div>
+<button class="copy-btn" onclick="copyEmail(this)">Copy</button>
+<div class="body">Hi Paul,
+
+Managing QA across a privileged access management platform means every release cycle touches security-critical workflows. When the product surface keeps expanding, test maintenance overhead usually grows right alongside it, especially across multiple deployment models. Is that something your team is feeling right now?
+
+One enterprise security team we work with reduced test maintenance by 70% while expanding coverage across their full product suite.
+
+Thought it would be worth reaching out because BeyondTrust's product breadth makes that test upkeep challenge specific. Is managing test maintenance across the platform something you're actively working on?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.</div>
+</div>
+<div class="qa-gate">
+<div class="qa-item">Word count: 92 ✓</div>
+<div class="qa-item">Question marks: 2 ✓</div>
+<div class="qa-item">"thought it would be worth" ✓</div>
+<div class="qa-item">"test maintenance" ✓</div>
+<div class="qa-item">No banned words ✓</div>
+<div class="qa-item">No em dashes ✓</div>
+<div class="qa-item">Hyphens: 1 (security-critical) ✓</div>
+<div class="qa-item">SMYKM subject ✓</div>
+<div class="qa-item">HC1 in signature ✓</div>
+<div class="qa-item">Vertical proof point ✓</div>
+<div class="qa-item">No named customers ✓</div>
+<div class="qa-item">Reduction framing ✓</div>
+</div>
+<div class="qa-score pass">MQS: 12/12</div>
+<div class="objection">
+<h4>Predicted Objection</h4>
+<p><strong>"We already have a tool"</strong> — "Totally fair. A lot of teams we work with had existing tools too. The gap they kept hitting was test maintenance growing with every release. Worth comparing?"</p>
+</div>
+</div>
+</div>
+
+<!-- CONTACT 4: Maryna Tatsenko, Aura -->
+<div class="card">
+<div class="card-header">
+<h2>4. Maryna Tatsenko — Aura</h2>
+<div>
+<span class="badge badge-verified">Verified</span>
+<span class="badge badge-catchall">Catch-All</span>
+<span class="badge badge-intl">Poland</span>
+</div>
+</div>
+<div class="card-body">
+<div class="info-grid">
+<div class="info-item"><div class="lbl">Title</div><div class="val">Head of QA</div></div>
+<div class="info-item"><div class="lbl">Email</div><div class="val">maryna.tatsenko@aura.com</div></div>
+<div class="info-item"><div class="lbl">Company Size</div><div class="val">1,200 employees</div></div>
+<div class="info-item"><div class="lbl">Industry</div><div class="val">Cybersecurity / Identity Protection</div></div>
+<div class="info-item"><div class="lbl">HQ</div><div class="val">Boston, MA (contact: Poland)</div></div>
+<div class="info-item"><div class="lbl">Apollo Contact</div><div class="val">68f512c8398b310001070c1d (emailer_campaign_ids: [], custom: "valid")</div></div>
+<div class="info-item"><div class="lbl">Persona Rule</div><div class="val">Mid-size (1.2K) = QA Manager ✓ (Head of QA)</div></div>
+<div class="info-item"><div class="lbl">Proof Point</div><div class="val">Technology team, 2,500 tests + 50% maintenance cut</div></div>
+</div>
+<div class="research">
+<h4>Research Notes</h4>
+<p>Aura: Digital security platform (identity theft protection, VPN, password manager, credit monitoring, parental controls). Multi-product surface = multi-platform testing (mobile iOS/Android + web + API + browser extensions). US HQ, global team. "Head of QA" = top QA leader. Founded 2017, rapid growth.</p>
+</div>
+<div class="email-draft">
+<div class="subj">Subject: Maryna's QA coverage at Aura</div>
+<button class="copy-btn" onclick="copyEmail(this)">Copy</button>
+<div class="body">Hi Maryna,
+
+Leading QA for a platform that spans identity protection, VPN, password management, and financial monitoring means coverage requirements multiply with every new surface. When each product line has its own release pace, keeping test maintenance from growing out of proportion is a real challenge. How does your team approach that?
+
+One technology team we work with automated 2,500 tests and cut maintenance by 50% across a multi-product platform.
+
+Thought it would be worth reaching out because Aura's product breadth creates a specific version of that challenge. Is managing coverage across all those surfaces something you're solving for?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.</div>
+</div>
+<div class="qa-gate">
+<div class="qa-item">Word count: 97 ✓</div>
+<div class="qa-item">Question marks: 2 ✓</div>
+<div class="qa-item">"thought it would be worth" ✓</div>
+<div class="qa-item">"test maintenance" ✓</div>
+<div class="qa-item">No banned words ✓</div>
+<div class="qa-item">No em dashes ✓</div>
+<div class="qa-item">Hyphens: 1 (multi-product) ✓</div>
+<div class="qa-item">SMYKM subject ✓</div>
+<div class="qa-item">HC1 in signature ✓</div>
+<div class="qa-item">Vertical proof point ✓</div>
+<div class="qa-item">No named customers ✓</div>
+<div class="qa-item">Reduction framing ✓</div>
+</div>
+<div class="qa-score pass">MQS: 12/12</div>
+<div class="objection">
+<h4>Predicted Objection</h4>
+<p><strong>"We already have a tool"</strong> — "Totally fair. The gap most multi-product teams hit is maintaining tests across all those surfaces without a dedicated team per product. Worth comparing approaches?"</p>
+</div>
+</div>
+</div>
+
+<!-- CONTACT 5: Rayna Pomakova, DraftKings -->
+<div class="card">
+<div class="card-header">
+<h2>5. Rayna Pomakova — DraftKings</h2>
+<div>
+<span class="badge badge-verified">Verified</span>
+<span class="badge badge-clean">Not Catch-All</span>
+<span class="badge badge-intl">Bulgaria</span>
+</div>
+</div>
+<div class="card-body">
+<div class="info-grid">
+<div class="info-item"><div class="lbl">Title</div><div class="val">Sr Quality Assurance Manager</div></div>
+<div class="info-item"><div class="lbl">Email</div><div class="val">r.pomakova@draftkings.com</div></div>
+<div class="info-item"><div class="lbl">Company Size</div><div class="val">5,100 employees</div></div>
+<div class="info-item"><div class="lbl">Industry</div><div class="val">Gaming / Sports Betting (DKNG)</div></div>
+<div class="info-item"><div class="lbl">HQ</div><div class="val">Boston, MA (contact: Bulgaria)</div></div>
+<div class="info-item"><div class="lbl">Apollo Contact</div><div class="val">No existing record (net new)</div></div>
+<div class="info-item"><div class="lbl">Persona Rule</div><div class="val">Large (5.1K) = Director+; Sr Manager acceptable for first contact</div></div>
+<div class="info-item"><div class="lbl">Proof Point</div><div class="val">Technology team, 40% regression reduction + 70% maintenance reduction</div></div>
+</div>
+<div class="research">
+<h4>Research Notes</h4>
+<p>DraftKings: Publicly traded (NASDAQ: DKNG) sports betting and gaming platform. Regulated industry = compliance-heavy releases. Actively hiring QA Automation Engineers (Selenium, Playwright, Cypress, Jest, Postman). Multiple test frameworks in parallel = maintenance complexity. Career page shows QA engineering as a core function with dedicated content ("A Typical Day in QA Engineering").</p>
+</div>
+<div class="email-draft">
+<div class="subj">Subject: Rayna's test automation at DraftKings</div>
+<button class="copy-btn" onclick="copyEmail(this)">Copy</button>
+<div class="body">Hi Rayna,
+
+Running QA for a regulated gaming platform means every release needs to pass both speed and compliance bars. When the team works across multiple frameworks like Selenium and Playwright, test maintenance tends to compound fast. How does your team keep that under control?
+
+One technology team we work with cut regression cycles by 40% while reducing test maintenance overhead by 70%.
+
+Thought it would be worth reaching out because DraftKings is actively hiring QA automation engineers, which usually signals demand outpacing capacity. Is that something you're seeing on your team as well?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.</div>
+</div>
+<div class="qa-gate">
+<div class="qa-item">Word count: 92 ✓</div>
+<div class="qa-item">Question marks: 2 ✓</div>
+<div class="qa-item">"thought it would be worth" ✓</div>
+<div class="qa-item">"test maintenance" ✓</div>
+<div class="qa-item">No banned words ✓</div>
+<div class="qa-item">No em dashes ✓</div>
+<div class="qa-item">Hyphens: 0 ✓</div>
+<div class="qa-item">SMYKM subject ✓</div>
+<div class="qa-item">HC1 in signature ✓</div>
+<div class="qa-item">Vertical proof point ✓</div>
+<div class="qa-item">No named customers ✓</div>
+<div class="qa-item">Reduction framing ✓</div>
+</div>
+<div class="qa-score pass">MQS: 12/12</div>
+<div class="objection">
+<h4>Predicted Objection</h4>
+<p><strong>"We already have a tool"</strong> — "Totally fair. A lot of teams using Selenium + Playwright hit the wall when maintaining tests across both. The teams switching to us usually do it for the maintenance reduction specifically."</p>
+</div>
+</div>
+</div>
+
+<!-- CONTACT 6: Kavitha Daggupati, Clinisys -->
+<div class="card">
+<div class="card-header">
+<h2>6. Kavitha Daggupati — Clinisys</h2>
+<div>
+<span class="badge badge-verified">Verified</span>
+<span class="badge badge-intl">India</span>
+</div>
+</div>
+<div class="card-body">
+<div class="info-grid">
+<div class="info-item"><div class="lbl">Title</div><div class="val">QA Manager</div></div>
+<div class="info-item"><div class="lbl">Email</div><div class="val">kavitha.daggupati@clinisys.com</div></div>
+<div class="info-item"><div class="lbl">Company Size</div><div class="val">1,800 employees</div></div>
+<div class="info-item"><div class="lbl">Industry</div><div class="val">Healthcare IT / Laboratory Information Systems</div></div>
+<div class="info-item"><div class="lbl">HQ</div><div class="val">North East, MD (contact: Bengaluru, India)</div></div>
+<div class="info-item"><div class="lbl">Apollo Contact</div><div class="val">No existing record (net new)</div></div>
+<div class="info-item"><div class="lbl">Persona Rule</div><div class="val">Mid-size (1.8K) = QA Manager ✓ (primary)</div></div>
+<div class="info-item"><div class="lbl">Proof Point</div><div class="val">Healthcare technology team, 60% regression reduction + compliance</div></div>
+</div>
+<div class="research">
+<h4>Research Notes</h4>
+<p>Clinisys: Laboratory information system (LIS/LIMS) vendor. Released CLS v2025.1 (Aug 2025) and v2025.2 with new genomics capabilities and embedded AI support agent. Regulated healthcare software = CLIA, CAP, HIPAA, ISO 15189 compliance required. Rapid release cadence means testing pressure is high. New API endpoints and integration features expand the testing surface.</p>
+</div>
+<div class="email-draft">
+<div class="subj">Subject: Kavitha's QA coverage at Clinisys</div>
+<button class="copy-btn" onclick="copyEmail(this)">Copy</button>
+<div class="body">Hi Kavitha,
+
+Shipping multiple major platform releases per year while maintaining CLIA, CAP, and HIPAA compliance means the testing surface grows faster than most teams can keep up with. When every release has regulatory documentation requirements baked in, test maintenance can quietly become the biggest time drain. Is that something you're seeing at Clinisys?
+
+One healthcare technology team we work with cut regression testing by 60% while maintaining full compliance documentation coverage.
+
+Thought it would be worth reaching out because Clinisys's release pace in 2025 has been aggressive. Is managing test maintenance alongside compliance requirements something you're solving for?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.</div>
+</div>
+<div class="qa-gate">
+<div class="qa-item">Word count: 97 ✓</div>
+<div class="qa-item">Question marks: 2 ✓</div>
+<div class="qa-item">"thought it would be worth" ✓</div>
+<div class="qa-item">"test maintenance" ✓</div>
+<div class="qa-item">No banned words ✓</div>
+<div class="qa-item">No em dashes ✓</div>
+<div class="qa-item">Hyphens: 0 ✓</div>
+<div class="qa-item">SMYKM subject ✓</div>
+<div class="qa-item">HC1 in signature ✓</div>
+<div class="qa-item">Vertical proof point ✓</div>
+<div class="qa-item">No named customers ✓</div>
+<div class="qa-item">Reduction framing ✓</div>
+</div>
+<div class="qa-score pass">MQS: 12/12</div>
+<div class="objection">
+<h4>Predicted Objection</h4>
+<p><strong>"Compliance requirements"</strong> — "We work with healthcare teams under HIPAA and ISO requirements. Happy to walk through our compliance story, including SOC2 and on-prem options."</p>
+</div>
+</div>
+</div>
+
+<!-- CONTACT 7: Youssef Menkhour, Alithya -->
+<div class="card">
+<div class="card-header">
+<h2>7. Youssef Menkhour — Alithya</h2>
+<div>
+<span class="badge badge-verified">Verified</span>
+<span class="badge badge-intl">Canada</span>
+</div>
+</div>
+<div class="card-body">
+<div class="info-grid">
+<div class="info-item"><div class="lbl">Title</div><div class="val">Director of QA Expertise</div></div>
+<div class="info-item"><div class="lbl">Email</div><div class="val">youssef.menkhour@alithya.com</div></div>
+<div class="info-item"><div class="lbl">Company Size</div><div class="val">2,500 employees</div></div>
+<div class="info-item"><div class="lbl">Industry</div><div class="val">IT Consulting / Digital Transformation</div></div>
+<div class="info-item"><div class="lbl">HQ</div><div class="val">Montreal, QC, Canada (contact: Toronto, ON)</div></div>
+<div class="info-item"><div class="lbl">Apollo Contact</div><div class="val">No existing record (net new)</div></div>
+<div class="info-item"><div class="lbl">Persona Rule</div><div class="val">Large (2.5K) = Director+ ✓</div></div>
+<div class="info-item"><div class="lbl">Proof Point</div><div class="val">Enterprise technology team, 70% test maintenance reduction</div></div>
+</div>
+<div class="research">
+<h4>Research Notes</h4>
+<p>Alithya: IT consulting firm (2,500 emp). Just launched "Alithya Rapid QA" on Microsoft Partner Center (QA testing platform for clients). Won Microsoft AI Business Solutions Inner Circle 2025-2026. Youssef's headline: "15+ yrs driving excellence in finance, media & telecom / Expert in reducing costs & streamlining processes / Building modern test solutions." He LEADS their QA practice and client delivery. QA is Alithya's service offering.</p>
+</div>
+<div class="email-draft">
+<div class="subj">Subject: Youssef's QA practice at Alithya</div>
+<button class="copy-btn" onclick="copyEmail(this)">Copy</button>
+<div class="body">Hi Youssef,
+
+Leading QA expertise for a firm that just launched Rapid QA on the Microsoft Partner Center means the delivery speed bar keeps rising. When your team scales automation across client environments, keeping maintenance manageable while quality stays consistent is a real challenge. How do you approach that?
+
+One enterprise technology team we work with reduced test maintenance by 70% while standardizing automation across multiple environments.
+
+Thought it would be worth reaching out because Alithya's QA practice is clearly expanding. Is keeping test maintenance under control across client work something you're solving for?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.</div>
+</div>
+<div class="qa-gate">
+<div class="qa-item">Word count: 92 ✓</div>
+<div class="qa-item">Question marks: 2 ✓</div>
+<div class="qa-item">"thought it would be worth" ✓</div>
+<div class="qa-item">"test maintenance" ✓</div>
+<div class="qa-item">No banned words ✓</div>
+<div class="qa-item">No em dashes ✓</div>
+<div class="qa-item">Hyphens: 0 ✓</div>
+<div class="qa-item">SMYKM subject ✓</div>
+<div class="qa-item">HC1 in signature ✓</div>
+<div class="qa-item">Vertical proof point ✓</div>
+<div class="qa-item">No named customers ✓</div>
+<div class="qa-item">Reduction framing ✓</div>
+</div>
+<div class="qa-score pass">MQS: 12/12</div>
+<div class="objection">
+<h4>Predicted Objection</h4>
+<p><strong>"We have our own QA platform"</strong> — "Makes sense, given Rapid QA. A lot of QA practices we work with use us alongside their own tools to accelerate client delivery timelines. Worth comparing approaches?"</p>
+</div>
+</div>
+</div>
+
+<!-- CONTACT 8: Iain Duffield, Anaplan -->
+<div class="card">
+<div class="card-header">
+<h2>8. Iain Duffield — Anaplan</h2>
+<div>
+<span class="badge badge-verified">Verified</span>
+<span class="badge badge-catchall">Catch-All</span>
+<span class="badge badge-intl">UK</span>
+</div>
+</div>
+<div class="card-body">
+<div class="info-grid">
+<div class="info-item"><div class="lbl">Title</div><div class="val">QA Manager</div></div>
+<div class="info-item"><div class="lbl">Email</div><div class="val">iain.duffield@anaplan.com</div></div>
+<div class="info-item"><div class="lbl">Company Size</div><div class="val">2,800 employees</div></div>
+<div class="info-item"><div class="lbl">Industry</div><div class="val">Enterprise SaaS / Planning Platform</div></div>
+<div class="info-item"><div class="lbl">HQ</div><div class="val">Miami, FL (contact: York, UK)</div></div>
+<div class="info-item"><div class="lbl">Apollo Contact</div><div class="val">692eac5afe34d90001fd92e9 (emailer_campaign_ids: [], custom: "catch-all")</div></div>
+<div class="info-item"><div class="lbl">Persona Rule</div><div class="val">Large (2.8K) = Director+; QA Manager acceptable as first contact at this size</div></div>
+<div class="info-item"><div class="lbl">Proof Point</div><div class="val">Enterprise SaaS team, 70% test maintenance reduction</div></div>
+</div>
+<div class="research">
+<h4>Research Notes</h4>
+<p>Anaplan: Cloud planning platform (NASDAQ delisted, PE-owned by Thoma Bravo since 2022). 2,400+ customers including Coca-Cola, LinkedIn, Adobe, Bayer. Hiring Senior QA Engineers (SF) and Lead QA AI Engineer. Tech stack: Selenium, Puppeteer, Cucumber BDD, Jenkins, Docker, K8s, TestRail, Postman. R&D centers in SF, York (UK), London. The Selenium + Puppeteer stack = legacy test maintenance challenge.</p>
+</div>
+<div class="email-draft">
+<div class="subj">Subject: Iain's test automation at Anaplan</div>
+<button class="copy-btn" onclick="copyEmail(this)">Copy</button>
+<div class="body">Hi Iain,
+
+Managing QA for a connected planning platform that serves 2,400+ customers means the test suite has grown right alongside the product. Keeping regression coverage comprehensive without test maintenance spiraling is a challenge that compounds with every release. How does your team manage that today?
+
+One enterprise SaaS team we work with reduced test maintenance overhead by 70% while expanding regression coverage across their platform.
+
+Thought it would be worth reaching out because Anaplan is hiring QA engineers, which usually signals testing demand outpacing the team. Is that something you're seeing as well?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise SaaS companies.</div>
+</div>
+<div class="qa-gate">
+<div class="qa-item">Word count: 92 ✓</div>
+<div class="qa-item">Question marks: 2 ✓</div>
+<div class="qa-item">"thought it would be worth" ✓</div>
+<div class="qa-item">"test maintenance" ✓</div>
+<div class="qa-item">No banned words ✓</div>
+<div class="qa-item">No em dashes ✓</div>
+<div class="qa-item">Hyphens: 0 ✓</div>
+<div class="qa-item">SMYKM subject ✓</div>
+<div class="qa-item">HC1 in signature ✓</div>
+<div class="qa-item">Vertical proof point ✓</div>
+<div class="qa-item">No named customers ✓</div>
+<div class="qa-item">Reduction framing ✓</div>
+</div>
+<div class="qa-score pass">MQS: 12/12</div>
+<div class="objection">
+<h4>Predicted Objection</h4>
+<p><strong>"We already have a tool"</strong> — "Totally fair. Teams on Selenium + Puppeteer usually hit the wall on maintenance overhead as the suite grows. The teams switching to us usually do it for the maintenance reduction, not to replace everything overnight."</p>
+</div>
+</div>
+</div>
+
+<!-- DEFERRED SECTION -->
+<div class="deferred-section">
+<h3>Deferred Contacts</h3>
+<div class="card">
+<div class="card-header">
+<h2>Jacob Rexstraw — BeyondTrust</h2>
+<span class="badge badge-deferred">Deferred: Same-Company</span>
+</div>
+<div class="card-body">
+<div class="info-grid">
+<div class="info-item"><div class="lbl">Title</div><div class="val">Director, Quality Assurance</div></div>
+<div class="info-item"><div class="lbl">Email</div><div class="val">jacob.rexstraw@beyondtrust.com</div></div>
+<div class="info-item"><div class="lbl">Location</div><div class="val">UK</div></div>
+<div class="info-item"><div class="lbl">Reason</div><div class="val">Same-company as Paul Womack. Mid-size persona rule favors QA Manager (Paul). US location tips tiebreaker. Candidate for Batch 7.</div></div>
+</div>
+</div>
+</div>
+<div class="card">
+<div class="card-header">
+<h2>Suresh Vincent — Farmers Insurance</h2>
+<span class="badge badge-deferred">Dedup Catch: Already in Sequence</span>
+</div>
+<div class="card-body">
+<div class="info-grid">
+<div class="info-item"><div class="lbl">Title</div><div class="val">Director QA & Systems, Guidewire</div></div>
+<div class="info-item"><div class="lbl">Reason</div><div class="val">emailer_campaign_ids: ["68f2723ef174870019958d31"] — already enrolled in another sequence. Cannot double-enroll.</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ENROLLMENT DATA -->
+<div class="card" style="margin-top:30px;">
+<div class="card-header">
+<h2>Enrollment Reference</h2>
+</div>
+<div class="card-body">
+<table style="width:100%; border-collapse:collapse; font-size:0.9em;">
+<tr style="border-bottom:1px solid var(--border);">
+<th style="text-align:left;padding:8px;color:var(--muted);">#</th>
+<th style="text-align:left;padding:8px;color:var(--muted);">Name</th>
+<th style="text-align:left;padding:8px;color:var(--muted);">Email</th>
+<th style="text-align:left;padding:8px;color:var(--muted);">Apollo Person ID</th>
+<th style="text-align:left;padding:8px;color:var(--muted);">Apollo Contact ID</th>
+<th style="text-align:left;padding:8px;color:var(--muted);">Status</th>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+<td style="padding:8px;">1</td><td style="padding:8px;">James Atkin</td><td style="padding:8px;">jamesa@aetna.com</td><td style="padding:8px;">—</td><td style="padding:8px;">Needs creation</td><td style="padding:8px;">Ready</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+<td style="padding:8px;">2</td><td style="padding:8px;">Ilene Cohen</td><td style="padding:8px;">ilene.cohen@emblemhealth.com</td><td style="padding:8px;">—</td><td style="padding:8px;">Needs creation</td><td style="padding:8px;">Ready</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+<td style="padding:8px;">3</td><td style="padding:8px;">Paul Womack</td><td style="padding:8px;">pwomack@beyondtrust.com</td><td style="padding:8px;">—</td><td style="padding:8px;">68ae2de590639b0001a94179</td><td style="padding:8px;">Ready (exists)</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+<td style="padding:8px;">4</td><td style="padding:8px;">Maryna Tatsenko</td><td style="padding:8px;">maryna.tatsenko@aura.com</td><td style="padding:8px;">—</td><td style="padding:8px;">68f512c8398b310001070c1d</td><td style="padding:8px;">Ready (exists, valid)</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+<td style="padding:8px;">5</td><td style="padding:8px;">Rayna Pomakova</td><td style="padding:8px;">r.pomakova@draftkings.com</td><td style="padding:8px;">—</td><td style="padding:8px;">Needs creation</td><td style="padding:8px;">Ready</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+<td style="padding:8px;">6</td><td style="padding:8px;">Kavitha Daggupati</td><td style="padding:8px;">kavitha.daggupati@clinisys.com</td><td style="padding:8px;">5fe92b65101cd200015f934b</td><td style="padding:8px;">Needs creation</td><td style="padding:8px;">Ready</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+<td style="padding:8px;">7</td><td style="padding:8px;">Youssef Menkhour</td><td style="padding:8px;">youssef.menkhour@alithya.com</td><td style="padding:8px;">661e888c7c2f1b0007c6f91c</td><td style="padding:8px;">Needs creation</td><td style="padding:8px;">Ready</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+<td style="padding:8px;">8</td><td style="padding:8px;">Iain Duffield</td><td style="padding:8px;">iain.duffield@anaplan.com</td><td style="padding:8px;">67014adbb55c3e00016411b0</td><td style="padding:8px;">692eac5afe34d90001fd92e9</td><td style="padding:8px;">Ready (exists, catch-all)</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="footer">
+<p>TAM Outbound Batch 6 | Session 28 | Mar 12, 2026</p>
+<p>Sequence: TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) | Send from: robert.gorham@testsigma.com</p>
+</div>
+
+<script>
+function copyEmail(btn) {
+  const draft = btn.parentElement;
+  const subj = draft.querySelector('.subj').textContent;
+  const body = draft.querySelector('.body').textContent;
+  const text = subj + '\n\n' + body;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+</script>
+</body>
+</html>

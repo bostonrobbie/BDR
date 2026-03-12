@@ -1,25 +1,7 @@
 # Memory
 
 ## Multi-Agent Session System
-This repo is worked on by multiple Claude agents across different machines. Full protocol: `AGENTS.md` (v2.0).
-
-**Startup (14 steps — see AGENTS.md):**
-1. `git pull origin main`
-2. Read `AGENTS.md` (collaboration protocol)
-3. Read `CLAUDE.md` (this file — SOP, memory, rules)
-4. Read `memory/session/handoff.md` (pipeline state)
-5. Read `memory/session/work-queue.md` (task queue)
-6. Read `memory/session/in-progress.md` (crash checkpoint)
-7. Read `memory/session/messages.md` (inter-session messages)
-8. Crash check — if in-progress.md Status = ACTIVE → crash recovery
-9. Parallel check — ls `memory/session/active/` → check for conflicts
-10. Register in `memory/session/active/{session-number}.json`
-11. Check Gmail MCP for replies to robert.gorham@testsigma.com
-12. Claim a task (avoid conflicts with active sessions)
-13. Read relevant playbooks from `memory/playbooks/`
-14. Report current state to Rob
-
-**End of EVERY session:** Follow `memory/playbooks/session-handoff.md` — update handoff.md + work-queue.md + session-log.md, deregister from active sessions, release locks, leave [DONE] message, commit.
+This repo is worked on by multiple Claude agents. Full startup protocol (14 steps) is in `AGENTS.md` (v2.0). Read it first every session. End-of-session handoff protocol is in `memory/playbooks/session-handoff.md`.
 
 ---
 
@@ -103,6 +85,9 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 - All drafts must use C2 structure and pass QA Gate (MQS >= 9/12)
 - See `memory/incidents.md` for full cadence enforcement rules
 
+### TAM-Only Prospecting
+Only prospect from TAM (312) + Factor (38) accounts. Verify every contact's company domain against `tam-accounts-mar26.csv` before enrollment. See `sop-tam-outbound.md` Part 11 for the pre-enrollment verification gate.
+
 ---
 
 ## Do Not Contact List
@@ -118,81 +103,28 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 
 ---
 
-## Active Warm Leads
-| Name | Company | Status | Last Action |
-|------|---------|--------|-------------|
-| Namita Jain | OverDrive | Monitoring for reply | Touch 1 email sent Feb 27. Follow-up due ~Mar 4. |
-| Pallavi Sheshadri | Origami Risk | Warm reply | Rob replied Mar 2. Monitoring for response. |
-
-→ Full details: `memory/warm-leads.md`
-
----
-
-## Pipeline Status (Updated Mar 12 — post Batch 5 enrollment + audit)
-| Metric | Value |
-|--------|-------|
-| Legacy batch prospects contacted (InMail/LI) | **206** (202 pre-Batch11 + 4 Batch 11 Mar 6) |
-| TAM Outbound T1 sent (unique contacts) | **111** (Wave1: 23, Wave2: 16, Wave3: 35, Wave4: 37) + 9 Wave4 tasks pending + 5 Batch5 enrolled (pending T1) |
-| MASTER_SENT_LIST.csv rows | **412** (updated Mar 11) |
-| Total InMail sends (inc. double-sends) | 198 tracked + 17 untracked B9 + 9 Batch 10 + 4 Batch 11 = **228** |
-| Total Emails sent | **~300+** — 74 pre-Mar10 + TAM Outbound Wave 1-4 (~135+ sends). See pipeline-state.md for detail. |
-| InMail credits remaining | **4** (last updated Mar 6) |
-| Batch 9 remaining | **2 to send** (Jyothi Kudithipudi, Axel Kerksiek — deferred) |
-| Double-sends (cannot unsend) | Chuck Smith, Rick Kowaleski, Christie Howard, Mohan Gummadi, Yassi Dastan (Abe Blanco = DNC) |
-| LinkedIn Outbound - Q1 Priority Accounts | **316 enrolled** (315 pre-Mar7 + 1 Gil Taub Mar 7) |
-| TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) | **~130 enrolled** (Waves 1-4 + 5 Batch 5). 122 active, 10 bounced, 1 finished, 2 not sent. |
-| Q1 QA Outreach - US | **RETIRED Mar 6** — 26 clean contacts migrated to LI Outbound, sequence archived |
-| TAM Outbound bounces | Sucheth Ramgiri (Wave1 — SMTP 550), Ksenia Shchelkonogova (Wave4 — email invalid) |
-| TAM Outbound T2 schedule | Wave1: **Mar 15** | Wave2: **Mar 15** | Wave3: **Mar 16** | Wave4: **Mar 19** |
-| Yogesh Garg (Check Point) | Enrollment blocked — Apollo `contacts_without_ownership_permission` error. Needs manual ownership assignment in Apollo UI. |
-
-**TAM Outbound wave files:**
-- Wave1: `wave1-batch1-tracker-mar10.html` — Wave2: `tamob-wave2-draft-mar10.html`
-- Wave3: `tamob-batch-20260311-1.html` — Wave4: `tamob-batch-20260311-2.html`
-- Batch5: `tamob-batch-20260312-4.html` (13 drafted, 5 enrolled, 5 non-TAM removed, 2 phone-contact excluded, 1 ownership-blocked)
-
-**Legacy batch notes:**
-- Batch 9 duplicates removed: Jennifer Tune, Bhavani Neerathilingam, Sandy Paray (all in Batch 7 Feb 28)
-- DNC violations (cannot unsend, monitor): Sanjay Singh + Lance Silverman sent in Batch 5B (Feb 27)
-- Same-company flags: Saks Global (Batch 7), Greenway Health (Batches 7 + 9)
-- Master sent list: `/Work/MASTER_SENT_LIST.csv` — cross-reference before every new batch build.
-
-→ Full send log, batch index, follow-up schedule: `memory/pipeline-state.md`
-→ Pre-batch dedup rules: `memory/sop-send.md` (Pre-Batch Build Checklist)
-→ Incident log: `memory/incidents.md` (INC-001 through INC-008)
-→ Full Mar 7 audit report: `/Work/audit-report-mar6.html`
-
----
-
-## Reference Files (read on-demand when doing specific tasks)
+## Reference Files (read on-demand per task)
 
 | Task | File to Read |
 |------|-------------|
-| **Session startup (any task)** | `AGENTS.md` → `memory/session/handoff.md` → `memory/session/work-queue.md` → `memory/session/in-progress.md` → `memory/session/messages.md` |
-| **Session closing (any task)** | `memory/playbooks/session-handoff.md` — update handoff.md, work-queue.md, session-log.md, deregister, commit |
-| **Parallel session coordination** | `memory/session/active/_protocol.md` (session registry), `.locks/_protocol.md` (file locking), `memory/session/messages.md` (message board) |
-| **New T1 batch** | `memory/playbooks/tam-t1-batch.md`, `memory/playbooks/apollo-enrollment.md`, `memory/playbooks/dedup-protocol.md`, `memory/playbooks/qa-gate.md`, `memory/playbooks/batch-tracker-html.md` |
-| **T2 follow-ups** | `memory/playbooks/t2-followup.md`, `memory/playbooks/qa-gate.md` |
-| **Apollo enrollment** | `memory/playbooks/apollo-enrollment.md`, `memory/playbooks/dedup-protocol.md` |
-| **Apollo task queue sends** | `memory/playbooks/apollo-task-queue-sends.md` |
-| **Sales Nav sourcing** | `memory/playbooks/sales-nav-deep-sweep.md` |
-| **Error handling** | `memory/playbooks/error-recovery.md` |
-| **Catchall domain decisions** | `memory/playbooks/catchall-domains.md` |
-| **All playbooks (index)** | `memory/playbooks/_index.md` |
-| Draft outreach messages | `memory/sop-outreach.md` |
-| Send InMails via Sales Nav | `memory/sop-send.md` |
-| Pre-batch dedup check | `MASTER_SENT_LIST.csv` + `memory/sop-send.md` Pre-Batch Checklist + `memory/playbooks/dedup-protocol.md` |
-| Run the Daily workflow | `memory/sop-daily.md` |
-| Check data-backed rules | `memory/data-rules.md` |
-| Match proof points / objections | `memory/proof-points.md` |
-| Check pipeline state / send log | `memory/pipeline-state.md` |
-| Apollo sequences / email config | `memory/apollo-config.md` |
-| Draft safety / incidents | `memory/incidents.md` |
-| Warm lead handling | `memory/warm-leads.md` |
-| Scoring, A/B, feedback loops | `memory/scoring-feedback.md` |
-| Named accounts (TAM, Factors, Farming) | `memory/target-accounts.md` |
+| **Session startup** | `AGENTS.md` → `memory/session/handoff.md` → `memory/session/work-queue.md` → `memory/session/in-progress.md` → `memory/session/messages.md` |
+| **Session closing** | `memory/playbooks/session-handoff.md` |
+| **Parallel sessions** | `memory/session/active/_protocol.md`, `.locks/_protocol.md`, `memory/session/messages.md` |
+| **All playbooks** | `memory/playbooks/_index.md` (index with use-when guidance for all 11 playbooks) |
+| **Pipeline state** | `memory/session/handoff.md` (snapshot) + `memory/pipeline-state.md` (full log) |
+| Draft outreach | `memory/sop-outreach.md` |
+| Send InMails | `memory/sop-send.md` |
+| Pre-batch dedup | `MASTER_SENT_LIST.csv` + `memory/playbooks/dedup-protocol.md` |
+| Daily workflow | `memory/sop-daily.md` |
+| Data rules | `memory/data-rules.md` |
+| Proof points | `memory/proof-points.md` |
+| Apollo config | `memory/apollo-config.md` |
+| Incidents | `memory/incidents.md` |
+| Warm leads | `memory/warm-leads.md` |
+| Scoring/feedback | `memory/scoring-feedback.md` |
+| Target accounts | `memory/target-accounts.md` |
 
-**Cowork Skills** (invoke as complete workflows):
+**Cowork Skills** (repeatable workflows):
 
 | Skill | Location | Use When |
 |-------|----------|----------|
@@ -200,7 +132,7 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 | TAM T1 Batch | `skills/tam-t1-batch/SKILL.md` | Building new outreach batches |
 | Apollo Enroll | `skills/apollo-enroll/SKILL.md` | Creating contacts + enrolling in sequences |
 
-**Rule:** Always read the relevant memory file(s) and playbooks BEFORE starting a task. Don't rely on cached knowledge from prior sessions.
+**Rule:** Always read the relevant files BEFORE starting a task. Don't rely on cached knowledge from prior sessions.
 
 ---
 
@@ -212,10 +144,8 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 - "What day works" as default CTA (40.4% reply rate)
 - 75-99 words sweet spot for Touch 1 (39.0% reply rate)
 
-## Current Operating Directive (Mar 12, 2026)
-**Maximize new T1 pipeline volume. Factor accounts (intent) are HIGHEST priority.** Start every session with a new TAM T1 batch — source, research, draft, send. Prioritize untouched Factor accounts first, then TAM ICP=HIGH, then Medium. T2s and follow-up processing happen after T1 work is complete. Apollo handles the follow-up cadence automatically; the T1 pipeline requires active daily effort. Target: 25-50 new contacts enrolled every send day.
-
-**⛔ TAM-ONLY RULE:** Only prospect from TAM (312) + Factor (38) accounts. Verify every contact's company domain against `tam-accounts-mar26.csv` before enrollment. See `sop-tam-outbound.md` Part 11 for the pre-enrollment verification gate.
+## Current Operating Directive
+**Maximize new T1 pipeline volume. Factor accounts (intent) are HIGHEST priority.** Start every session with a new TAM T1 batch. Prioritize Factor accounts first, then TAM ICP=HIGH, then Medium. T2s and follow-ups happen after T1 work. Target: 25-50 new contacts enrolled every send day.
 
 ## Google Drive Knowledge Base
 | Document | ID |

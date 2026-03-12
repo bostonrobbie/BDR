@@ -79,14 +79,16 @@ Run at the START of every new session, before doing any other work.
 15. Update your active session registration with the claimed task_id and companies_claimed.
 16. Update work-queue.md task status to IN_PROGRESS.
 
-### Phase 7: Read Relevant Playbooks
+### Phase 7: Read Relevant Playbooks (SELECTIVE — not all)
 
-17. Based on your task, read the relevant playbook from `memory/playbooks/`:
-   - TAM T1 batch work → `playbooks/tam-t1-batch.md` + `playbooks/apollo-enrollment.md` + `playbooks/dedup-protocol.md`
-   - T2 follow-up drafting → `playbooks/t2-followup.md` + `playbooks/qa-gate.md`
-   - Apollo sends → `playbooks/apollo-task-queue-sends.md`
-   - Error recovery → `playbooks/error-recovery.md`
-   - Full index → `playbooks/_index.md`
+17. Read ONLY the playbooks mapped to your claimed task. Do NOT read all playbooks — this wastes context budget.
+   - TAM T1 batch work → `tam-t1-batch.md` + `apollo-enrollment.md` + `dedup-protocol.md`
+   - T2 follow-up drafting → `t2-followup.md` + `qa-gate.md`
+   - Apollo sends → `apollo-task-queue-sends.md`
+   - Bounce/error recovery → `error-recovery.md`
+   - If unsure which playbooks apply → read `_index.md` (index only, ~30 lines) then pick
+
+**Context budget:** By this point you should have read 6-8 files. Add 1-3 playbooks max. Total startup reads should be 7-11 files. If you're reading more, you're loading too much.
 
 ### Phase 8: Report to Rob
 
