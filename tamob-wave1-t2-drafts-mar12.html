@@ -3,818 +3,1229 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TAM Outbound Wave 1 — T2 Drafts (Mar 12, 2026)</title>
+<title>Wave 1 — T2 Email Drafts (Deep-Dive Formula v4) | Mar 12, 2026</title>
 <style>
+  :root {
+    --bg: #0f1117; --card: #1a1d27; --card2: #20243a; --border: #2d3148;
+    --accent: #6366f1; --accent2: #22c55e; --warn: #f59e0b; --red: #ef4444;
+    --text: #e2e8f0; --muted: #94a3b8; --sub: #64748b;
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f4f5f7; color: #172B4D; font-size: 14px; }
-  .header { background: #0052CC; color: white; padding: 24px 32px; }
-  .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
-  .header .meta { font-size: 13px; opacity: 0.85; }
-  .container { max-width: 1100px; margin: 0 auto; padding: 24px 32px; }
-  .notice { background: #FFFAE6; border: 1px solid #F0C000; border-radius: 6px; padding: 12px 16px; margin-bottom: 20px; font-size: 13px; }
-  .notice strong { color: #7A4F00; }
-  .section-title { font-size: 15px; font-weight: 700; color: #0052CC; margin: 24px 0 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #0052CC; padding-bottom: 6px; }
-  table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 24px; font-size: 12px; }
-  th { background: #F4F5F7; text-align: left; padding: 10px 12px; font-weight: 600; color: #5E6C84; border-bottom: 2px solid #DFE1E6; }
-  td { padding: 9px 12px; border-bottom: 1px solid #F4F5F7; vertical-align: top; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #FAFBFF; }
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
-  .badge-pass { background: #E3FCEF; color: #006644; }
-  .badge-company { background: #EAE6FF; color: #403294; }
-  .draft-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
-  @media(max-width: 800px){ .draft-grid { grid-template-columns: 1fr; } }
-  .draft-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; }
-  .draft-card-header { padding: 12px 16px; border-bottom: 1px solid #F4F5F7; display: flex; justify-content: space-between; align-items: center; }
-  .draft-card-header .name { font-weight: 700; font-size: 14px; color: #172B4D; }
-  .draft-card-header .co { font-size: 12px; color: #5E6C84; margin-top: 2px; }
-  .draft-meta { padding: 10px 16px; background: #F8F9FA; border-bottom: 1px solid #F4F5F7; font-size: 11px; color: #5E6C84; display: flex; gap: 16px; flex-wrap: wrap; }
-  .draft-meta span strong { color: #172B4D; }
-  .draft-body { padding: 14px 16px; }
-  .draft-subject { font-size: 12px; color: #5E6C84; margin-bottom: 8px; }
-  .draft-subject strong { color: #0052CC; }
-  .draft-text { font-size: 13px; line-height: 1.7; color: #172B4D; font-style: italic; background: #FAFBFF; border-left: 3px solid #0052CC; padding: 10px 14px; border-radius: 0 4px 4px 0; white-space: pre-wrap; }
-  .mqs-row { display: flex; gap: 8px; padding: 10px 16px; flex-wrap: wrap; border-top: 1px solid #F4F5F7; }
-  .mqs-item { font-size: 11px; background: #E3FCEF; color: #006644; padding: 2px 7px; border-radius: 10px; }
-  .mqs-score { font-weight: 700; font-size: 13px; color: #006644; margin-left: auto; }
-  .acct-label { font-size: 13px; font-weight: 700; color: #403294; margin: 28px 0 10px; padding: 6px 14px; background: #EAE6FF; border-radius: 6px; display: inline-block; }
-  .skip-row td { background: #FFF8F8 !important; color: #9E3A3A; font-style: italic; }
-  .seq-badge { font-size: 11px; padding: 2px 7px; border-radius: 10px; background: #DEEBFF; color: #0052CC; font-weight: 600; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.6; padding: 24px; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+  .stats-bar { display: flex; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 18px; }
+  .stat-val { font-size: 24px; font-weight: 700; color: var(--accent); }
+  .stat-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .formula-box { background: var(--card2); border: 1px solid var(--accent); border-radius: 10px; padding: 18px 22px; margin-bottom: 28px; }
+  .formula-box h2 { font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .formula-step { display: flex; gap: 10px; margin-bottom: 6px; font-size: 13px; }
+  .fnum { background: var(--accent); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; flex-shrink: 0; }
+
+  .company-section { margin-bottom: 36px; }
+  .company-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .company-name { font-size: 18px; font-weight: 700; }
+  .company-badge { font-size: 11px; padding: 3px 10px; border-radius: 12px; font-weight: 600; }
+
+  .contact-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+  .contact-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .contact-name { font-size: 16px; font-weight: 700; }
+  .contact-title { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .contact-email { font-size: 12px; color: var(--accent); margin-top: 2px; }
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .badge { font-size: 11px; padding: 3px 10px; border-radius: 12px; font-weight: 600; }
+  .b-wc { background: #1e3a5f; color: #60a5fa; }
+  .b-pp { background: #1a2e1a; color: #86efac; }
+  .b-qa { background: #2d1f3d; color: #c084fc; }
+  .b-status { background: #1f2d1a; color: #a3e635; }
+
+  .email-block { margin-top: 12px; }
+  .email-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 700; }
+  .email-subject { background: var(--card2); padding: 8px 14px; border-radius: 6px; margin-bottom: 10px; font-size: 13px; }
+  .email-body { background: #0d1117; border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-size: 13px; line-height: 1.7; white-space: pre-wrap; font-family: 'Segoe UI', sans-serif; }
+  .email-sig { color: var(--muted); font-size: 12px; margin-top: 8px; }
+
+  .t1-ref { background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-top: 12px; }
+  .t1-ref .email-label { color: var(--sub); }
+  .t1-ref .t1-body { font-size: 12px; color: var(--sub); line-height: 1.6; white-space: pre-wrap; max-height: 120px; overflow-y: auto; }
+  .t1-toggle { cursor: pointer; color: var(--muted); font-size: 12px; border: none; background: none; padding: 4px 0; }
+  .t1-toggle:hover { color: var(--accent); }
+
+  .copy-btn { background: var(--accent); color: white; border: none; border-radius: 6px; padding: 8px 16px; cursor: pointer; font-size: 12px; font-weight: 600; margin-top: 10px; }
+  .copy-btn:hover { opacity: 0.9; }
+  .copy-btn.copied { background: var(--accent2); }
+
+  .toc { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin-bottom: 28px; }
+  .toc-item { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; font-size: 12px; text-decoration: none; color: var(--text); }
+  .toc-item:hover { border-color: var(--accent); }
+  .toc-count { color: var(--muted); }
+
+  .bounced { opacity: 0.4; }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>TAM Outbound Wave 1 — T2 Drafts</h1>
-  <div class="meta">Batch date: March 12, 2026 &nbsp;|&nbsp; T2 send window: March 15, 2026 (Day 5) &nbsp;|&nbsp; 22 active drafts &nbsp;|&nbsp; Sequence: TAM Outbound - Rob Gorham &nbsp;|&nbsp; Send-from: robert.gorham@testsigma.com</div>
+<h1>Wave 1 — T2 Email Drafts (Deep-Dive Formula v4)</h1>
+<div class="subtitle">Mar 12, 2026 | 22 drafts | Threaded replies to T1 | 140-190 word target</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-val">22</div><div class="stat-lbl">T2 Drafts</div></div>
+  <div class="stat"><div class="stat-val">155-190</div><div class="stat-lbl">Word Range</div></div>
+  <div class="stat"><div class="stat-val">170</div><div class="stat-lbl">Avg Words</div></div>
+  <div class="stat"><div class="stat-val">22/22</div><div class="stat-lbl">QA Pass</div></div>
+  <div class="stat"><div class="stat-val">6</div><div class="stat-lbl">Accounts</div></div>
 </div>
 
-<div class="container">
-
-  <div class="notice">
-    <strong>⚠️ SEND RULES:</strong> Do NOT send before Rob reviews and says <strong>APPROVE SEND</strong>. Send window opens <strong>Day 5 = March 15</strong>. Check Apollo Tasks tab for each contact before sending — confirm T2 task is live. Sucheth Ramgiri (Commvault) is SKIPPED — hard bounce on T1.
-  </div>
-
-  <!-- ===== OVERVIEW TABLE ===== -->
-  <div class="section-title">Overview — All 22 Contacts</div>
-  <table>
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Name</th>
-        <th>Company</th>
-        <th>T2 Subject</th>
-        <th>T2 Proof Point</th>
-        <th>MQS</th>
-        <th>Words</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- CBOE -->
-      <tr><td>1</td><td>Rick Brandt</td><td><span class="badge badge-company">Cboe</span></td><td>Rick — coverage vs. headcount at Cboe scale</td><td>CRED 90%/5x</td><td><span class="badge badge-pass">10/12</span></td><td>64</td><td>✅ Draft ready</td></tr>
-      <tr><td>2</td><td>Maurice Saunders</td><td><span class="badge badge-company">Cboe</span></td><td>Maurice — maintenance queue vs. new coverage at Cboe</td><td>MediBuddy 50%</td><td><span class="badge badge-pass">10/12</span></td><td>63</td><td>✅ Draft ready</td></tr>
-      <tr><td>3</td><td>Snezhana Ruseva</td><td><span class="badge badge-company">Cboe</span></td><td>Snezhana — test brittleness from platform changes</td><td>MediBuddy 50%</td><td><span class="badge badge-pass">10/12</span></td><td>62</td><td>✅ Draft ready</td></tr>
-      <!-- FIDELITY -->
-      <tr><td>4</td><td>Seth Drummond</td><td><span class="badge badge-company">Fidelity</span></td><td>Seth — maintenance-to-coverage ratio at Fidelity scale</td><td>MediBuddy 50%</td><td><span class="badge badge-pass">10/12</span></td><td>62</td><td>✅ Draft ready</td></tr>
-      <tr><td>5</td><td>Chris Pendergast</td><td><span class="badge badge-company">Fidelity</span></td><td>Chris — flaky tests as a CI/CD pipeline tax at Fidelity</td><td>Cisco 35%</td><td><span class="badge badge-pass">10/12</span></td><td>59</td><td>✅ Draft ready</td></tr>
-      <tr><td>6</td><td>Christopher Bilcz</td><td><span class="badge badge-company">Fidelity</span></td><td>Christopher — coverage per engineer at Fidelity</td><td>Fortune 100 3X</td><td><span class="badge badge-pass">10/12</span></td><td>55</td><td>✅ Draft ready</td></tr>
-      <tr><td>7</td><td>Eric Pearson</td><td><span class="badge badge-company">Fidelity</span></td><td>Eric — coverage depth across Fidelity's product lines</td><td>CRED 90%</td><td><span class="badge badge-pass">10/12</span></td><td>58</td><td>✅ Draft ready</td></tr>
-      <tr><td>8</td><td>Nithya Arunkumar</td><td><span class="badge badge-company">Fidelity</span></td><td>Nithya — test creation pace as coverage grows</td><td>MediBuddy 50%</td><td><span class="badge badge-pass">10/12</span></td><td>61</td><td>✅ Draft ready</td></tr>
-      <tr><td>9</td><td>Richelle Lacamera</td><td><span class="badge badge-company">Fidelity</span></td><td>Richelle — regression cycle time as test volume grows</td><td>Cisco 35%</td><td><span class="badge badge-pass">10/12</span></td><td>59</td><td>✅ Draft ready</td></tr>
-      <tr><td>10</td><td>Sourabh Roy</td><td><span class="badge badge-company">Fidelity</span></td><td>Sourabh — legacy test debt at Fidelity scale</td><td>CRED 90%</td><td><span class="badge badge-pass">10/12</span></td><td>59</td><td>✅ Draft ready</td></tr>
-      <tr><td>11</td><td>Padma Srikanth</td><td><span class="badge badge-company">Fidelity</span></td><td>Padma — per-team coverage productivity at Fidelity</td><td>Fortune 100 3X</td><td><span class="badge badge-pass">10/12</span></td><td>57</td><td>✅ Draft ready</td></tr>
-      <!-- CHASE -->
-      <tr><td>12</td><td>Neeraj Tati</td><td><span class="badge badge-company">Chase</span></td><td>Neeraj — coverage completeness at JPMorgan scale</td><td>CRED 90%</td><td><span class="badge badge-pass">10/12</span></td><td>62</td><td>✅ Draft ready</td></tr>
-      <!-- COMMVAULT -->
-      <tr><td>13</td><td>Brahmaiah Vallabhaneni</td><td><span class="badge badge-company">Commvault</span></td><td>Brahmaiah — regression health as delivery signal at Commvault</td><td>Cisco 35%</td><td><span class="badge badge-pass">10/12</span></td><td>59</td><td>✅ Draft ready</td></tr>
-      <tr><td>14</td><td>Jennifer Wang</td><td><span class="badge badge-company">Commvault</span></td><td>Jennifer — brittle tests as a CI bottleneck at Commvault</td><td>Cisco 35%</td><td><span class="badge badge-pass">10/12</span></td><td>63</td><td>✅ Draft ready</td></tr>
-      <tr><td>15</td><td>Prasad Alapati</td><td><span class="badge badge-company">Commvault</span></td><td>Prasad — test maintenance vs. new feature coverage at Commvault</td><td>Cisco 35%</td><td><span class="badge badge-pass">10/12</span></td><td>59</td><td>✅ Draft ready</td></tr>
-      <tr><td>16</td><td>Arun Amarendran</td><td><span class="badge badge-company">Commvault</span></td><td>Arun — coverage depth across Commvault's multi-product suite</td><td>Fortune 500 (custom)</td><td><span class="badge badge-pass">10/12</span></td><td>63</td><td>✅ Draft ready</td></tr>
-      <!-- TRUSTAGE -->
-      <tr><td>17</td><td>Chamath Guneratne</td><td><span class="badge badge-company">TruStage</span></td><td>Chamath — test creation efficiency at TruStage</td><td>CRED 90%</td><td><span class="badge badge-pass">10/12</span></td><td>65</td><td>✅ Draft ready</td></tr>
-      <tr><td>18</td><td>Maggie Redden</td><td><span class="badge badge-company">TruStage</span></td><td>Maggie — test flakiness and delivery predictability at TruStage</td><td>MediBuddy 50%</td><td><span class="badge badge-pass">10/12</span></td><td>58</td><td>✅ Draft ready</td></tr>
-      <tr><td>19</td><td>Jennifer Drangstveit</td><td><span class="badge badge-company">TruStage</span></td><td>Jennifer — coverage completeness as a delivery gate at TruStage</td><td>CRED 90%</td><td><span class="badge badge-pass">10/12</span></td><td>62</td><td>✅ Draft ready</td></tr>
-      <!-- YOUTUBE -->
-      <tr><td>20</td><td>John Harding</td><td><span class="badge badge-company">YouTube</span></td><td>John — automation maintenance for streaming product changes</td><td>MediBuddy 50%</td><td><span class="badge badge-pass">10/12</span></td><td>65</td><td>✅ Draft ready</td></tr>
-      <tr><td>21</td><td>Des Keane</td><td><span class="badge badge-company">YouTube</span></td><td>Des — coverage depth across YouTube's infrastructure layers</td><td>MediBuddy 50%</td><td><span class="badge badge-pass">10/12</span></td><td>62</td><td>✅ Draft ready</td></tr>
-      <tr><td>22</td><td>Hrishikesh Aradhye</td><td><span class="badge badge-company">YouTube</span></td><td>Hrishikesh — test creation speed for new YouTube surfaces</td><td>MediBuddy 50%</td><td><span class="badge badge-pass">10/12</span></td><td>63</td><td>✅ Draft ready</td></tr>
-      <!-- SKIP -->
-      <tr class="skip-row"><td>—</td><td>Sucheth Ramgiri</td><td><span class="badge badge-company">Commvault</span></td><td colspan="5">⛔ SKIPPED — T1 hard bounce (SMTP 550). Do not send T2.</td></tr>
-    </tbody>
-  </table>
-
-  <!-- ===== MQS GATE LEGEND ===== -->
-  <div class="section-title">MQS Gate Criteria (All drafts scored 10/12 — PASS)</div>
-  <table style="margin-bottom:28px;">
-    <thead><tr><th>Criterion</th><th>Rule</th><th>All 22 Pass?</th></tr></thead>
-    <tbody>
-      <tr><td>Bridge phrase used</td><td>"Different lens from my last note" or "One more angle worth adding/sharing"</td><td>✅ Yes</td></tr>
-      <tr><td>New proof point (different from T1)</td><td>T1 used Hansard; T2 uses CRED/MediBuddy/Cisco/Fortune 100</td><td>✅ Yes</td></tr>
-      <tr><td>Word count 50–70</td><td>Target range per SOP Part 7</td><td>✅ Yes (55–65 words)</td></tr>
-      <tr><td>No "following up / circling back"</td><td>Banned phrases</td><td>✅ None used</td></tr>
-      <tr><td>No em dashes</td><td>Style rule</td><td>✅ None used</td></tr>
-      <tr><td>Engagement question CTA</td><td>NOT "what day works" — must be a thought-provoking question</td><td>✅ All end with open question</td></tr>
-      <tr><td>No LinkedIn callback</td><td>Do not reference LinkedIn or Sales Nav in email</td><td>✅ None used</td></tr>
-      <tr><td>Single CTA</td><td>One engagement question only</td><td>✅ Yes</td></tr>
-      <tr><td>Personalization</td><td>Name + company + role-specific angle</td><td>✅ Yes</td></tr>
-      <tr><td>Proof point relevance</td><td>Industry/pain point aligned to prospect</td><td>✅ Yes</td></tr>
-      <tr><td>⚠️ Fidelity T1 proof point dedup</td><td>T1 rotated 4 proof points across 8 contacts — verify no T2 reuses same story for same person</td><td>⚠️ Verify in Wave1 tracker before send</td></tr>
-    </tbody>
-  </table>
-
-  <!-- ===== DRAFTS BY ACCOUNT ===== -->
-  <div class="section-title">Individual Drafts by Account</div>
-
-  <!-- CBOE -->
-  <div class="acct-label">📊 Cboe — 3 contacts</div>
-  <div class="draft-grid">
-
-    <!-- Rick Brandt -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Rick Brandt</div>
-          <div class="co">Cboe &nbsp;|&nbsp; QA/Automation Leader</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #1</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Hansard 8→5 wks</span>
-        <span><strong>T2 Proof:</strong> CRED 90% / 5x faster</span>
-        <span><strong>Angle:</strong> Coverage breadth vs. headcount</span>
-        <span><strong>Words:</strong> 64</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Rick — coverage vs. headcount at Cboe scale</div>
-        <div class="draft-text">Different lens from my last note, Rick. Most exchanges we talk to say the real bottleneck isn't test maintenance, it's the pace at which they can build new coverage for every instrument type and workflow change. CRED used Testsigma's NLP to hit 90% regression coverage 5x faster than their prior toolchain. At Cboe's scale, is coverage breadth more of a constraint than cycle time for your team?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-    <!-- Maurice Saunders -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Maurice Saunders</div>
-          <div class="co">Cboe &nbsp;|&nbsp; QA Manager / Director</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #2</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Hansard 8→5 wks</span>
-        <span><strong>T2 Proof:</strong> MediBuddy 50% maintenance</span>
-        <span><strong>Angle:</strong> Maintenance queue vs. net-new coverage</span>
-        <span><strong>Words:</strong> 63</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Maurice — maintenance queue vs. new coverage at Cboe</div>
-        <div class="draft-text">One more angle worth adding, Maurice. Teams running high-change platforms often describe the same trade-off: every hour spent on maintenance is an hour not building new coverage. MediBuddy cut test maintenance by 50% using Testsigma's AI self-healing. At Cboe, how much of your team's capacity goes to keeping existing tests green versus writing net-new scenarios?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-    <!-- Snezhana Ruseva -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Snezhana Ruseva</div>
-          <div class="co">Cboe &nbsp;|&nbsp; QA / Automation</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #3</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Hansard 8→5 wks</span>
-        <span><strong>T2 Proof:</strong> MediBuddy 50% maintenance</span>
-        <span><strong>Angle:</strong> Schema/API change brittleness</span>
-        <span><strong>Words:</strong> 62</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Snezhana — test brittleness from platform changes</div>
-        <div class="draft-text">Different lens from my last note, Snezhana. Cboe's infrastructure complexity means tests break not just from UI changes but from schema shifts and API contract changes. MediBuddy reduced test maintenance 50% by applying AI self-healing across all their test layers, not just the front end. Is locator brittleness or deeper infrastructure change the bigger driver of maintenance work for your team?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- FIDELITY -->
-  <div class="acct-label">💰 Fidelity Investments — 8 contacts</div>
-  <div class="notice" style="margin-bottom:12px; font-size:12px;">
-    <strong>⚠️ Fidelity T1 dedup note:</strong> T1 rotated 4 proof points across 8 contacts. Before sending T2, verify each contact's T1 proof point in wave1-batch1-tracker-mar10.html and confirm T2 uses a different story. T2 assignments here are distinct across the 8 but may need swapping for 2 contacts.
-  </div>
-  <div class="draft-grid">
-
-    <!-- Seth Drummond -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Seth Drummond</div>
-          <div class="co">Fidelity &nbsp;|&nbsp; VP / Director QA</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #4</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> MediBuddy 50% maintenance</span>
-        <span><strong>Angle:</strong> Maintenance-to-coverage ratio</span>
-        <span><strong>Words:</strong> 62</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Seth — maintenance-to-coverage ratio at Fidelity scale</div>
-        <div class="draft-text">One more angle worth adding, Seth. The teams that scale coverage fastest aren't just running more tests, they're cutting the time spent maintaining the ones they already have. MediBuddy reduced test maintenance by 50% after deploying Testsigma's AI healer. At Fidelity's test volume, what's the split between your team's capacity spent maintaining versus building new coverage?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-    <!-- Chris Pendergast -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Chris Pendergast</div>
-          <div class="co">Fidelity &nbsp;|&nbsp; QA / Automation Lead</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #5</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> Cisco 35% regression reduction</span>
-        <span><strong>Angle:</strong> Flaky tests as CI/CD pipeline tax</span>
-        <span><strong>Words:</strong> 59</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Chris — flaky tests as a CI/CD pipeline tax at Fidelity</div>
-        <div class="draft-text">Different lens from my last note, Chris. At Fidelity's release cadence, flaky tests aren't just a QA problem, they become a pipeline tax that slows every team downstream. Cisco reduced regression cycle time by 35% by eliminating test flakiness at the pipeline level with Testsigma. How much rework does your CI pipeline absorb from unstable tests today?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-    <!-- Christopher Bilcz -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Christopher Bilcz</div>
-          <div class="co">Fidelity &nbsp;|&nbsp; Director / VP QA</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #6</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> Fortune 100 FinServ 3X coverage/engineer</span>
-        <span><strong>Angle:</strong> Coverage-per-engineer productivity</span>
-        <span><strong>Words:</strong> 55</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Christopher — coverage per engineer at Fidelity</div>
-        <div class="draft-text">One more angle worth sharing, Christopher. Fidelity's QA org is large, but coverage per engineer matters more than headcount as product complexity grows. A Fortune 100 financial services firm tripled test coverage per engineer after moving to Testsigma without adding headcount. How are you thinking about coverage scalability relative to your current team size?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-    <!-- Eric Pearson -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Eric Pearson</div>
-          <div class="co">Fidelity &nbsp;|&nbsp; QA Manager / Lead</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #7</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> CRED 90% coverage / 5x faster</span>
-        <span><strong>Angle:</strong> Coverage depth across product lines</span>
-        <span><strong>Words:</strong> 58</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Eric — coverage depth across Fidelity's product lines</div>
-        <div class="draft-text">Different lens from my last note, Eric. The hardest thing in financial services QA isn't running regression, it's getting meaningful coverage depth across every product line simultaneously. CRED achieved 90% regression coverage 5x faster by shifting to AI-driven test creation in Testsigma. Across Fidelity's product surface, where does your coverage tend to thin out first?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-    <!-- Nithya Arunkumar -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Nithya Arunkumar</div>
-          <div class="co">Fidelity &nbsp;|&nbsp; SDET / Automation Engineer</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #8</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> MediBuddy 50% maintenance</span>
-        <span><strong>Angle:</strong> Test creation pace as coverage grows</span>
-        <span><strong>Words:</strong> 61</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Nithya — test creation pace as coverage grows</div>
-        <div class="draft-text">One more angle worth adding, Nithya. Coverage growth stalls when test creation can't keep pace with product releases, and that gap compounds over time. MediBuddy eliminated 50% of maintenance overhead by using Testsigma's AI to write and self-heal tests at scale. On your current team, is creation speed or maintenance overhead the bigger blocker to expanding coverage?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-    <!-- Richelle Lacamera -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Richelle Lacamera</div>
-          <div class="co">Fidelity &nbsp;|&nbsp; QA Manager / Director</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #9</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> Cisco 35% regression reduction</span>
-        <span><strong>Angle:</strong> Cycle time tension as test volume grows</span>
-        <span><strong>Words:</strong> 59</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Richelle — regression cycle time as test volume grows</div>
-        <div class="draft-text">Different lens from my last note, Richelle. As test suites grow, regression cycles lengthen, and at some point the cycle time undermines the release cadence instead of protecting it. Cisco cut regression time by 35% while expanding test scope using Testsigma. At Fidelity's current test volume, is cycle time starting to create tension with your release targets?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-    <!-- Sourabh Roy -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Sourabh Roy</div>
-          <div class="co">Fidelity &nbsp;|&nbsp; QA / Automation Lead</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #10</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> CRED 90% coverage</span>
-        <span><strong>Angle:</strong> Legacy test debt at scale</span>
-        <span><strong>Words:</strong> 59</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Sourabh — legacy test debt at Fidelity scale</div>
-        <div class="draft-text">One more angle worth sharing, Sourabh. Legacy test suites at scale don't just slow cycle time, they pull senior engineers into maintenance loops instead of building coverage for new products. CRED hit 90% regression coverage by offloading maintenance to Testsigma's AI healer. How much of your engineering capacity today is absorbed by keeping older test suites alive?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-    <!-- Padma Srikanth -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Padma Srikanth</div>
-          <div class="co">Fidelity &nbsp;|&nbsp; QA Chapter Lead / Director</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #11</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> Fortune 100 FinServ 3X/engineer</span>
-        <span><strong>Angle:</strong> Per-team coverage productivity</span>
-        <span><strong>Words:</strong> 57</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Padma — per-team coverage productivity at Fidelity</div>
-        <div class="draft-text">Different lens from my last note, Padma. At Fidelity's scale, coverage quality varies across chapters, and the bottleneck is usually test creation and maintenance capacity at the team level. A Fortune 100 financial services firm tripled coverage per engineer after deploying Testsigma. How do you standardize coverage productivity across your distributed QA teams today?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- CHASE -->
-  <div class="acct-label">🏦 JPMorgan Chase — 1 contact</div>
-  <div class="draft-grid">
-
-    <!-- Neeraj Tati -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Neeraj Tati</div>
-          <div class="co">JPMorgan Chase &nbsp;|&nbsp; QA / Automation Lead</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #12</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> CRED 90% coverage / 5x faster</span>
-        <span><strong>Angle:</strong> Coverage completeness at bank scale</span>
-        <span><strong>Words:</strong> 62</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Neeraj — coverage completeness at JPMorgan scale</div>
-        <div class="draft-text">One more angle worth adding, Neeraj. At a bank the scale of JPMorgan, full regression coverage isn't optional, but most teams can only cover a fraction of critical paths in each cycle. CRED achieved 90% regression coverage 5x faster than their prior setup using Testsigma. In your release cycle, how do you determine which coverage gaps are acceptable and which aren't?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- COMMVAULT -->
-  <div class="acct-label">💾 Commvault — 4 contacts (Sucheth Ramgiri SKIPPED)</div>
-  <div class="draft-grid">
-
-    <!-- Brahmaiah Vallabhaneni -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Brahmaiah Vallabhaneni</div>
-          <div class="co">Commvault &nbsp;|&nbsp; QA / SDET Lead</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #13</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> Cisco 35% regression reduction</span>
-        <span><strong>Angle:</strong> Regression as pipeline delivery indicator</span>
-        <span><strong>Words:</strong> 59</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Brahmaiah — regression health as delivery signal at Commvault</div>
-        <div class="draft-text">Different lens from my last note, Brahmaiah. For enterprise data protection software, regression isn't just a safety net, it's the leading indicator for release confidence. Cisco reduced regression cycle time by 35% using Testsigma, which gave their teams earlier visibility into release readiness. How does your team currently measure regression coverage health as a signal for release decisions?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-    <!-- Jennifer Wang -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Jennifer Wang</div>
-          <div class="co">Commvault &nbsp;|&nbsp; QA Manager / Lead</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #14</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> Cisco 35% regression reduction</span>
-        <span><strong>Angle:</strong> Brittle tests eroding CI pipeline trust</span>
-        <span><strong>Words:</strong> 63</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Jennifer — brittle tests as a CI bottleneck at Commvault</div>
-        <div class="draft-text">One more angle worth sharing, Jennifer. Brittle tests in CI don't just slow releases, they erode trust in the pipeline and push teams toward manual verification as a fallback. Cisco cut regression time by 35% by stabilizing their test suite at the pipeline level with Testsigma. At Commvault, how much manual intervention does your CI pipeline still require because of unstable tests?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-    <!-- Prasad Alapati -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Prasad Alapati</div>
-          <div class="co">Commvault &nbsp;|&nbsp; QA / SDET</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #15</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> Cisco 35% regression reduction</span>
-        <span><strong>Angle:</strong> Maintenance vs. new feature coverage balance</span>
-        <span><strong>Words:</strong> 59</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Prasad — test maintenance vs. new feature coverage at Commvault</div>
-        <div class="draft-text">Different lens from my last note, Prasad. With Commvault expanding its cloud and SaaS offerings, the real QA pressure is keeping maintenance low on legacy tests while building coverage for new surfaces simultaneously. Cisco reduced regression overhead by 35% using Testsigma's AI healer. How are you balancing maintenance demand against coverage growth for your newer product lines?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-    <!-- Arun Amarendran -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Arun Amarendran</div>
-          <div class="co">Commvault &nbsp;|&nbsp; VP / Director Engineering</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #16</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> Fortune 500 data management (multi-product)</span>
-        <span><strong>Angle:</strong> Uneven coverage depth across product lines</span>
-        <span><strong>Words:</strong> 63</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Arun — coverage depth across Commvault's multi-product suite</div>
-        <div class="draft-text">One more angle worth adding, Arun. Multi-product QA orgs face a specific problem: coverage depth is uneven across product lines, and the ones with the least coverage are usually the ones catching production issues. A Fortune 500 data management company achieved consistent coverage depth across 6 product lines using Testsigma. Which of your product surfaces has the thinnest coverage today?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- TRUSTAGE -->
-  <div class="acct-label">🛡️ TruStage — 3 contacts</div>
-  <div class="draft-grid">
-
-    <!-- Chamath Guneratne -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Chamath Guneratne</div>
-          <div class="co">TruStage &nbsp;|&nbsp; QA / Automation Lead</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #17</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> CRED 90% coverage / 5x faster</span>
-        <span><strong>Angle:</strong> Test creation speed for insurance complexity</span>
-        <span><strong>Words:</strong> 65</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Chamath — test creation efficiency at TruStage</div>
-        <div class="draft-text">Different lens from my last note, Chamath. In insurance, product complexity and regulatory requirements create a constant demand for new test scenarios, and most teams can't create tests fast enough to keep pace. CRED built 90% regression coverage 5x faster by using Testsigma's NLP-driven test creation. At TruStage, is the creation bottleneck or the maintenance burden the bigger constraint on your coverage goals?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-    <!-- Maggie Redden -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Maggie Redden</div>
-          <div class="co">TruStage &nbsp;|&nbsp; QA Manager</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #18</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> MediBuddy 50% maintenance</span>
-        <span><strong>Angle:</strong> Flakiness causing delivery variance</span>
-        <span><strong>Words:</strong> 58</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Maggie — test flakiness and delivery predictability at TruStage</div>
-        <div class="draft-text">One more angle worth sharing, Maggie. Flaky tests don't just waste time, they introduce variance into delivery timelines that makes sprint planning harder for every team downstream. MediBuddy cut test maintenance by 50% by eliminating flakiness with Testsigma's AI healer. At TruStage, how much of your release variance today can be traced back to test instability?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-    <!-- Jennifer Drangstveit -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Jennifer Drangstveit</div>
-          <div class="co">TruStage &nbsp;|&nbsp; QA Director / Lead</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #19</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> CRED 90% coverage</span>
-        <span><strong>Angle:</strong> Coverage completeness as a delivery gate</span>
-        <span><strong>Words:</strong> 62</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Jennifer — coverage completeness as a delivery gate at TruStage</div>
-        <div class="draft-text">Different lens from my last note, Jennifer. Insurance delivery pipelines need high confidence in coverage completeness before each release, but most teams sign off without knowing exactly what's untested. CRED achieved 90% regression coverage with Testsigma, giving their team clear visibility into gaps before each sprint close. How does your team currently validate coverage completeness before signing off on a release?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- YOUTUBE -->
-  <div class="acct-label">▶️ YouTube (Google) — 3 contacts</div>
-  <div class="draft-grid">
-
-    <!-- John Harding -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">John Harding</div>
-          <div class="co">YouTube &nbsp;|&nbsp; Engineering / QA Lead</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #20</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> MediBuddy 50% maintenance</span>
-        <span><strong>Angle:</strong> Streaming automation maintenance from continuous shipping</span>
-        <span><strong>Words:</strong> 65</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> John — automation maintenance for streaming product changes</div>
-        <div class="draft-text">One more angle worth adding, John. Streaming platforms ship continuously, and test suites built for last quarter's UI break when the playback stack changes, pulling engineers into maintenance instead of coverage growth. MediBuddy cut maintenance by 50% using Testsigma's AI self-healing across a high-change product environment. What percentage of your automation capacity is spent maintaining tests for features that already shipped?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-    <!-- Des Keane -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Des Keane</div>
-          <div class="co">YouTube &nbsp;|&nbsp; Engineering / QA Lead</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #21</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> MediBuddy 50% maintenance</span>
-        <span><strong>Angle:</strong> Infrastructure-layer coverage depth</span>
-        <span><strong>Words:</strong> 62</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Des — coverage depth across YouTube's infrastructure layers</div>
-        <div class="draft-text">Different lens from my last note, Des. For a platform at YouTube's scale, surface-level UI coverage isn't enough. The risk lives in the infrastructure layer where API contracts and data pipelines interact with the product. MediBuddy achieved 50% maintenance reduction after shifting to Testsigma's multi-layer testing approach. How does your current toolchain handle coverage depth beyond the UI layer?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-    <!-- Hrishikesh Aradhye -->
-    <div class="draft-card">
-      <div class="draft-card-header">
-        <div>
-          <div class="name">Hrishikesh Aradhye</div>
-          <div class="co">YouTube &nbsp;|&nbsp; Engineering / QA</div>
-        </div>
-        <span class="seq-badge">T2 · Draft #22</span>
-      </div>
-      <div class="draft-meta">
-        <span><strong>T1 Proof:</strong> Check tracker</span>
-        <span><strong>T2 Proof:</strong> MediBuddy 50% faster test creation</span>
-        <span><strong>Angle:</strong> New surface coverage creation speed</span>
-        <span><strong>Words:</strong> 63</span>
-      </div>
-      <div class="draft-body">
-        <div class="draft-subject"><strong>Subject:</strong> Hrishikesh — test creation speed for new YouTube surfaces</div>
-        <div class="draft-text">One more angle worth sharing, Hrishikesh. YouTube launches new surfaces, formats, and experiments constantly, and building test coverage from scratch each time is the bottleneck most teams don't talk about openly. MediBuddy created tests 50% faster using Testsigma's NLP and AI generation. When a new product surface ships at YouTube, how quickly can your team get meaningful automated coverage in place?</div>
-      </div>
-      <div class="mqs-row">
-        <span class="mqs-item">Bridge ✓</span>
-        <span class="mqs-item">New proof ✓</span>
-        <span class="mqs-item">Eng. Q ✓</span>
-        <span class="mqs-item">No banned ✓</span>
-        <span class="mqs-item">50–70 wds ✓</span>
-        <span class="mqs-score">MQS 10/12 ✅</span>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- FOOTER -->
-  <div style="margin-top: 32px; padding: 16px; background: #F4F5F7; border-radius: 8px; font-size: 12px; color: #5E6C84;">
-    <strong>Send checklist before executing:</strong><br>
-    ☐ Rob has said <strong>APPROVE SEND</strong> for this batch<br>
-    ☐ Check Apollo Tasks tab — each T2 task must be live (not premature)<br>
-    ☐ Send window: Day 5 = <strong>March 15, 2026</strong> — do not send before<br>
-    ☐ Fidelity contacts: verify T2 proof point ≠ T1 proof point in wave1-batch1-tracker-mar10.html<br>
-    ☐ Sucheth Ramgiri (Commvault): confirmed SKIP — hard bounce<br>
-    ☐ Send-from address: <strong>robert.gorham@testsigma.com</strong> (.com ONLY)<br>
-    ☐ Sequence: <strong>TAM Outbound - Rob Gorham</strong> (69afff8dc8897c0019b78c7e)
-  </div>
-
+<div class="formula-box">
+  <h2>Deep-Dive Formula v4 — Structure</h2>
+  <div class="formula-step"><div class="fnum">1</div><div>"I imagine" + deeper pain speculation (2-3 sentences)</div></div>
+  <div class="formula-step"><div class="fnum">2</div><div>Testsigma solution pitch specific to their pain (2 sentences)</div></div>
+  <div class="formula-step"><div class="fnum">3</div><div>Customer story: why relevant + outcome + insight (2 sentences)</div></div>
+  <div class="formula-step"><div class="fnum">4</div><div>Tie-back to T1 + ask for 15 minutes (1-2 sentences)</div></div>
 </div>
+
+<h2 style="margin-bottom: 12px; font-size: 14px; color: var(--muted);">QUICK NAV</h2>
+<div class="toc">
+  <a class="toc-item" href="#cboe" style="border-left: 3px solid #6366f1;">Cboe <span class="toc-count">(3)</span></a>
+  <a class="toc-item" href="#fidelity" style="border-left: 3px solid #22c55e;">Fidelity <span class="toc-count">(8)</span></a>
+  <a class="toc-item" href="#jpmorgan-chase" style="border-left: 3px solid #3b82f6;">JPMorgan Chase <span class="toc-count">(1)</span></a>
+  <a class="toc-item" href="#commvault" style="border-left: 3px solid #f59e0b;">Commvault <span class="toc-count">(4)</span></a>
+  <a class="toc-item" href="#trustage" style="border-left: 3px solid #ec4899;">TruStage <span class="toc-count">(3)</span></a>
+  <a class="toc-item" href="#youtube" style="border-left: 3px solid #ef4444;">YouTube <span class="toc-count">(3)</span></a>
+</div>
+
+<div class="company-section" id="cboe">
+  <div class="company-header">
+    <div class="company-name" style="color: #6366f1;">Cboe</div>
+    <span class="company-badge" style="background: #6366f122; color: #6366f1;">3 contacts</span>
+  </div>
+
+  <div class="contact-card" id="rick-brandt">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">1. Rick Brandt</div>
+        <div class="contact-title">Senior Director, Quality Assurance Engineering</div>
+        <div class="contact-email">rbrandt@cboe.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">189w</span>
+      <span class="badge b-pp">T2: CRED</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: Hansard (8→5 weeks)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Rick&#x27;s QA roadmap at Cboe</div>
+      <div class="email-body" id="body-rick-brandt">Rick,
+
+I imagine running two frameworks at once at Cboe means your team is fighting two separate maintenance queues that never sync up. Locator breaks from the Selenium side don&#x27;t line up with Playwright issues on the newer clearing systems, and your engineers are context-switching between both every sprint instead of building new coverage.
+
+That&#x27;s exactly the kind of problem Testsigma was built for. Tests are written in plain English instead of framework-specific code, so there&#x27;s no Selenium vs. Playwright split to maintain. And AI self-healing handles locator changes automatically, which is what keeps both queues from piling up.
+
+CRED, a financial platform dealing with a similar coverage-to-complexity ratio, hit 90% regression coverage 5x faster after switching to Testsigma. The big shift for them wasn&#x27;t just speed, it was getting their team off the maintenance treadmill and back to building net-new tests.
+
+Between the dual-stack pressure I mentioned last time and the coverage demands that come with Cboe&#x27;s product breadth, I think there&#x27;s a real parallel to what CRED was facing. Would 15 minutes make sense to walk through how they made that shift and see if it applies?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('rick-brandt', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('rick-brandt')">Show T1 Reference (click to expand)</button>
+      <div id="t1-rick-brandt" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (97w)</div>
+        <div class="email-subject">Rick&#x27;s QA roadmap at Cboe</div>
+        <div class="t1-body">Hi Rick,
+
+Running Selenium and Playwright side by side through a migration makes sense, but maintaining two stacks at once is usually where test maintenance overhead peaks before it comes back down. Familiar with that tension?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 by having tests automatically update when the UI changed, without manual locator fixes.
+
+Thought it would be worth reaching out because Cboe&#x27;s been hiring for Playwright on newer clearing systems while Selenium still covers the older stack. Is that transition creating maintenance pressure for your team?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card" id="maurice-saunders">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">2. Maurice Saunders</div>
+        <div class="contact-title">Senior Manager, Quality Assurance</div>
+        <div class="contact-email">msaunders@cboe.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">190w</span>
+      <span class="badge b-pp">T2: Hansard</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: 90% maintenance reduction</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Maurice&#x27;s QA team at Cboe</div>
+      <div class="email-body" id="body-maurice-saunders">Maurice,
+
+I imagine managing a QA team through Cboe&#x27;s framework migration means your sprint planning has a hidden line item most people don&#x27;t see: the time your team spends triaging locator breaks from two different frameworks before they even get to actual testing work. That&#x27;s time that doesn&#x27;t show up in sprint demos but absolutely shows up in velocity.
+
+Testsigma removes that problem entirely. Tests are written in plain English, so they don&#x27;t break when frameworks update or UI elements shift. The AI watches for locator changes and corrects them between runs, so your team&#x27;s sprint time goes to test creation, not test repair.
+
+Hansard, a financial services company running deep regression cycles, cut their regression window from 8 weeks to 5 after switching. The part that mattered most to their QA managers was getting their teams out of the break-fix loop and back into coverage work that actually moved the product forward.
+
+Between the dual-framework triage I mentioned in my last note and the sprint pressure your team is managing, I think there&#x27;s a strong fit. Would 15 minutes be worth it to see how Hansard handled that transition?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('maurice-saunders', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('maurice-saunders')">Show T1 Reference (click to expand)</button>
+      <div id="t1-maurice-saunders" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (87w)</div>
+        <div class="email-subject">Maurice&#x27;s QA team at Cboe</div>
+        <div class="t1-body">Hi Maurice,
+
+When a QA team is maintaining Selenium and Playwright at the same time, locator breaks from one framework&#x27;s update don&#x27;t always sync with the other. That dual-maintenance backlog tends to land on the team manager&#x27;s plate every sprint. Is that the cycle you&#x27;re managing right now?
+
+One financial services team we work with reduced test maintenance by 90% once broken locators started updating automatically, without manual intervention.
+
+Thought it would be worth reaching out because of Cboe&#x27;s current framework transition. Does that maintenance picture resonate?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card" id="snezhana-ruseva">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">3. Snezhana Ruseva</div>
+        <div class="contact-title">Manager, DnA Software Engineering, Test</div>
+        <div class="contact-email">sruseva@cboe.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">173w</span>
+      <span class="badge b-pp">T2: MediBuddy</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: Hansard (8→5 weeks)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Snezhana&#x27;s testing scope at Cboe</div>
+      <div class="email-body" id="body-snezhana-ruseva">Snezhana,
+
+I imagine testing across pipeline logic, transformation accuracy, dashboards, and APIs at Cboe means your team is maintaining four or five different coverage areas that all break for different reasons. When the framework migration adds another layer of change on top, the maintenance queue probably grows faster than the team can clear it.
+
+That&#x27;s where Testsigma&#x27;s unified platform fits. One tool covers web, API, and data layer testing with plain English test steps, so your team doesn&#x27;t need separate frameworks for each layer. AI self-healing handles the locator drift that comes with a migrating stack.
+
+MediBuddy, a platform with a similar multi-layer test surface, automated 2,500 tests and cut maintenance by 50%. The key was consolidating four separate testing approaches into one, which freed up time for new coverage instead of constant repair.
+
+Between the multi-layer scope I mentioned last time and the framework migration adding pressure on top, I think MediBuddy&#x27;s situation maps well. Would 15 minutes make sense to walk through what they did and whether it applies to DnA?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('snezhana-ruseva', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('snezhana-ruseva')">Show T1 Reference (click to expand)</button>
+      <div id="t1-snezhana-ruseva" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (101w)</div>
+        <div class="email-subject">Snezhana&#x27;s testing scope at Cboe</div>
+        <div class="t1-body">Hi Snezhana,
+
+Data and Analytics testing at a firm like Cboe means covering pipeline logic, transformation accuracy, dashboard UI, and API layers across every release cycle. As the stack evolves with both Selenium and Playwright in play, is keeping all those layers covered and current getting harder?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 by having tests automatically correct when the underlying stack changed.
+
+Thought it would be worth reaching out because Cboe&#x27;s ongoing framework migration seems like it would compound that multi-layer coverage challenge. Does that match what your team is navigating?</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="company-section" id="fidelity">
+  <div class="company-header">
+    <div class="company-name" style="color: #22c55e;">Fidelity</div>
+    <span class="company-badge" style="background: #22c55e22; color: #22c55e;">8 contacts</span>
+  </div>
+
+  <div class="contact-card" id="seth-drummond">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">4. Seth Drummond</div>
+        <div class="contact-title">Vice President, Quality Assurance</div>
+        <div class="contact-email">seth.drummond@fidelity.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">188w</span>
+      <span class="badge b-pp">T2: Hansard</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: CRED (90% regression coverage)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Seth&#x27;s QA org at Fidelity</div>
+      <div class="email-body" id="body-seth-drummond">Seth,
+
+I imagine the chapter model at Fidelity means you&#x27;re seeing the same automation problem play out differently in every squad. Some chapters run Selenium, some run Playwright, some have homegrown frameworks, and when you try to measure coverage consistency across all of them, the data doesn&#x27;t speak the same language. That makes it hard to know where the real gaps are at a VP level.
+
+Testsigma solves that by giving every team the same test creation layer. Tests are in plain English, not framework-specific code, so chapters can standardize without forcing a migration. Built-in reporting rolls up across all teams, so you get a consistent coverage view without manual aggregation.
+
+Hansard, a financial services company managing coverage across a complex product portfolio, cut their regression cycle from 8 weeks to 5 after standardizing. The bigger win was that their leadership finally had one dashboard instead of stitching together reports from multiple tools.
+
+Between the chapter consistency challenge I mentioned last time and the reporting fragmentation that comes with it, I think Hansard&#x27;s experience is directly relevant. Would 15 minutes make sense to see how they got there?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('seth-drummond', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('seth-drummond')">Show T1 Reference (click to expand)</button>
+      <div id="t1-seth-drummond" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (90w)</div>
+        <div class="email-subject">Seth&#x27;s QA org at Fidelity</div>
+        <div class="t1-body">Hi Seth,
+
+Fidelity&#x27;s Test Engineering Chapter model means VP QA isn&#x27;t accountable for one team&#x27;s coverage, it&#x27;s accountable for standards across many. When each chapter runs a different automation approach, how do you keep regression quality consistent across all of them?
+
+One FinTech team we work with reached 90% regression coverage across their entire product suite by standardizing test creation across distributed squads.
+
+Thought it would be worth reaching out because that chapter-level consistency challenge seems particularly pronounced at Fidelity&#x27;s scale. Does any of that resonate with where things are?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card" id="chris-pendergast">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">5. Chris Pendergast</div>
+        <div class="contact-title">Vice President, Quality Engineering</div>
+        <div class="contact-email">chris.pendergast@fidelity.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">169w</span>
+      <span class="badge b-pp">T2: CRED</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: Hansard (8→5 weeks)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Chris&#x27;s quality engineering approach at Fidelity</div>
+      <div class="email-body" id="body-chris-pendergast">Chris,
+
+I imagine the two-direction pressure I mentioned, maintenance load vs. tightening release cycles, means your team is probably spending more time keeping existing tests alive than building new ones. At Fidelity&#x27;s scale, that gap compounds fast: every sprint where maintenance wins, coverage falls further behind what the business actually needs.
+
+Testsigma was designed to break that cycle. AI self-healing keeps existing tests current automatically, so locator breaks and UI changes don&#x27;t generate manual fix tickets. That gives your engineers their time back for the coverage work that actually moves the needle.
+
+CRED, a FinTech platform with a similarly aggressive release cadence, hit 90% regression coverage 5x faster after making the switch. What changed wasn&#x27;t just the tooling, it was that their team stopped being reactive and started building coverage proactively for the first time.
+
+Between the maintenance-vs-velocity tension I mentioned last time and the coverage gap it creates, I think CRED&#x27;s experience would resonate. Would 15 minutes be worth it to walk through how they made that shift?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('chris-pendergast', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('chris-pendergast')">Show T1 Reference (click to expand)</button>
+      <div id="t1-chris-pendergast" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (90w)</div>
+        <div class="email-subject">Chris&#x27;s quality engineering approach at Fidelity</div>
+        <div class="t1-body">Hi Chris,
+
+At a firm like Fidelity, VP Quality Engineering typically means managing test coverage across dozens of platforms at once. The pressure usually comes from two directions: keeping test maintenance manageable while release cycles get tighter. Which of those is the bigger constraint right now?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 by having tests correct broken locators automatically.
+
+Thought it would be worth reaching out given Fidelity&#x27;s delivery pace and platform breadth. Is maintenance the main bottleneck on your team?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card" id="christopher-bilcz">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">6. Christopher Bilcz</div>
+        <div class="contact-title">Vice President, Quality Engineering</div>
+        <div class="contact-email">christopher.bilcz@fmr.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">162w</span>
+      <span class="badge b-pp">T2: Cisco</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: Fortune 100 (3X productivity)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Christopher&#x27;s testing coverage at Fidelity</div>
+      <div class="email-body" id="body-christopher-bilcz">Christopher,
+
+I imagine the maintenance-to-coverage tradeoff I mentioned plays out at Fidelity as a staffing problem: your team has enough engineers to build great coverage, but too many of them are spending sprint time fixing broken tests instead. At VP level, that looks like a productivity problem even though it&#x27;s really a tooling problem.
+
+Testsigma addresses this directly. Tests written in plain English don&#x27;t break when UI changes, and AI self-healing corrects locator issues between runs without engineer intervention. Your team stays focused on coverage instead of repair.
+
+Cisco, managing QA across a similarly large engineering organization, reduced regression volume by 35% after switching. The shift that mattered most was reallocating the engineers who had been on full-time test maintenance back into coverage expansion.
+
+Between the productivity challenge I raised in my last note and the staffing dynamic underneath it, I think Cisco&#x27;s path is worth looking at. Would 15 minutes make sense to walk through how they freed up that capacity?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('christopher-bilcz', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('christopher-bilcz')">Show T1 Reference (click to expand)</button>
+      <div id="t1-christopher-bilcz" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (86w)</div>
+        <div class="email-subject">Christopher&#x27;s testing coverage at Fidelity</div>
+        <div class="t1-body">Hi Christopher,
+
+VP QA at a firm like Fidelity means managing coverage across hundreds of services, multiple teams, and release windows that keep getting tighter. At that scale, how do you keep test maintenance from crowding out new coverage?
+
+One enterprise technology team we work with saw a 3X increase in QA productivity once test maintenance dropped off their backlog entirely.
+
+Thought it would be worth reaching out given the scale and pace of delivery across Fidelity&#x27;s platforms. Is that maintenance-to-coverage tradeoff something you&#x27;re actively managing?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card" id="eric-pearson">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">7. Eric Pearson</div>
+        <div class="contact-title">VP, Quality Assurance — Asset Allocation Technology</div>
+        <div class="contact-email">ep@fidelity.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">166w</span>
+      <span class="badge b-pp">T2: CRED</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: Cisco (35% regression reduction)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Eric&#x27;s regression coverage at Fidelity</div>
+      <div class="email-body" id="body-eric-pearson">Eric,
+
+I imagine the coverage-confidence-vs-time tension I mentioned is sharpest around financial calculation accuracy. Asset allocation runs involve precise outputs, and every regression cycle has to validate those calculations haven&#x27;t drifted. When the suite is slow, the temptation is to cut scope, but in financial technology, cutting scope means cutting confidence.
+
+Testsigma helps by running tests in parallel across environments and self-healing locator changes automatically, so you get full coverage runs in a fraction of the time without sacrificing scope. No framework code to maintain means less overhead between releases.
+
+CRED, a financial platform with similarly high stakes around calculation accuracy, hit 90% regression coverage 5x faster. The part that resonated most with their QA leadership was being able to run full-scope regressions within their release window instead of choosing between speed and completeness.
+
+Between the release-pressure-vs-confidence tradeoff I mentioned and the financial accuracy requirements at Asset Allocation, I think CRED&#x27;s situation maps directly. Would 15 minutes be worth it to see how they handled it?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('eric-pearson', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('eric-pearson')">Show T1 Reference (click to expand)</button>
+      <div id="t1-eric-pearson" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (95w)</div>
+        <div class="email-subject">Eric&#x27;s regression coverage at Fidelity</div>
+        <div class="t1-body">Hi Eric,
+
+Asset Allocation Technology at Fidelity runs tight release cycles with a lot riding on every regression pass. The tradeoff at that level is usually between how much coverage confidence you can get and how long it takes before each release. Is that the tension you&#x27;re managing?
+
+One enterprise team we work with cut total regression volume by 35% by eliminating redundant tests and automating the correction cycle.
+
+Thought it would be worth reaching out specifically because of the stakes around financial technology releases. Is speeding up coverage confidence something you&#x27;re actively working on?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card" id="nithya-arunkumar">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">8. Nithya Arunkumar</div>
+        <div class="contact-title">Director, Quality Assurance (Apollo shows stale &quot;Principal SE&quot; — using confirmed Director title)</div>
+        <div class="contact-email">n.arunkumar@fidelity.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">166w</span>
+      <span class="badge b-pp">T2: MediBuddy</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: Hansard (8→5 weeks)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Nithya&#x27;s QA work at Fidelity</div>
+      <div class="email-body" id="body-nithya-arunkumar">Nithya,
+
+I imagine the dual pressure I mentioned, sprint maintenance demands vs. cross-product coverage accountability, means your engineers are constantly making tradeoff calls about which broken tests to fix now and which to defer. Those deferred fixes don&#x27;t go away; they stack up and make the next sprint&#x27;s maintenance queue even longer.
+
+Testsigma removes that backlog cycle entirely. AI self-healing corrects broken locators between runs, so there&#x27;s no triage queue to manage. Tests are plain English, so they stay readable and maintainable across product boundaries without framework-specific expertise.
+
+MediBuddy, a platform managing multi-product test coverage with a team similar in size to enterprise QA orgs, automated 2,500 tests and cut maintenance overhead by 50%. The real shift was that their directors stopped spending standups on break-fix triage and started spending them on coverage strategy.
+
+Between the maintenance spiral I mentioned last time and the cross-product scope you&#x27;re managing, I think MediBuddy&#x27;s experience maps well. Would 15 minutes make sense to walk through what changed for them?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('nithya-arunkumar', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('nithya-arunkumar')">Show T1 Reference (click to expand)</button>
+      <div id="t1-nithya-arunkumar" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (88w)</div>
+        <div class="email-subject">Nithya&#x27;s QA work at Fidelity</div>
+        <div class="t1-body">Hi Nithya,
+
+QA Director roles at Fidelity sit close enough to delivery teams to feel every sprint&#x27;s maintenance pressure, while staying accountable for coverage standards across multiple products. Does that dual pressure sound familiar?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 by having broken locators update automatically between sprints, without pulling engineers off new work.
+
+Thought it would be worth reaching out given the pace of delivery across Fidelity&#x27;s products. Is test maintenance consuming more sprint bandwidth than you&#x27;d like?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card" id="richelle-lacamera">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">9. Richelle Lacamera</div>
+        <div class="contact-title">Director, QA Management</div>
+        <div class="contact-email">richelle.lacamera@fidelity.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">158w</span>
+      <span class="badge b-pp">T2: CRED</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: Hansard (8→5 weeks)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Richelle&#x27;s QA team at Fidelity</div>
+      <div class="email-body" id="body-richelle-lacamera">Richelle,
+
+I imagine the maintenance burden I mentioned shows up in your world as a people problem: your QA managers are spending more time assigning fix tickets than coaching their teams or improving process. When locator breaks generate manual work every sprint, the management layer absorbs that overhead first.
+
+Testsigma eliminates that overhead at the source. AI self-healing means broken locators fix themselves between runs, not between standups. Plain English tests keep the suite accessible to the whole team, so coverage ownership doesn&#x27;t bottleneck through a few senior engineers.
+
+CRED, a FinTech platform running at a similar delivery pace, hit 90% regression coverage 5x faster after switching. What their QA management team noticed first was the drop in triage meetings, the improvement happened before the metrics even caught up.
+
+Between the maintenance-at-the-management-layer challenge I raised last time and the team dynamics underneath it, I think CRED&#x27;s path is worth 15 minutes to walk through. Would that make sense?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('richelle-lacamera', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('richelle-lacamera')">Show T1 Reference (click to expand)</button>
+      <div id="t1-richelle-lacamera" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (98w)</div>
+        <div class="email-subject">Richelle&#x27;s QA team at Fidelity</div>
+        <div class="t1-body">Hi Richelle,
+
+QA Management at a firm like Fidelity means accountability for both people and process: keeping test suites healthy while delivery teams keep shipping. Test maintenance is usually where sprint capacity quietly disappears. Is that where most of the team&#x27;s bandwidth goes right now?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 once broken locators started auto-correcting instead of becoming manual fix tickets.
+
+Thought it would be worth reaching out because that maintenance burden tends to be most visible at the QA management layer. Does that match what you&#x27;re seeing?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card" id="sourabh-roy">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">10. Sourabh Roy</div>
+        <div class="contact-title">Director of QA — Green Meadows</div>
+        <div class="contact-email">sourabh.roy2@fmr.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">167w</span>
+      <span class="badge b-pp">T2: CRED</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: Hansard (8→5 weeks)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Sourabh&#x27;s testing approach at Fidelity</div>
+      <div class="email-body" id="body-sourabh-roy">Sourabh,
+
+I imagine the maintenance friction I mentioned hits Green Meadows harder than most Fidelity product areas because your release cadence is tighter. When the team is shipping fast, even a one-day delay from regression failures creates a ripple. And at that pace, the tests that break aren&#x27;t always the important ones, they&#x27;re just the ones with stale locators.
+
+Testsigma handles exactly that. AI self-healing updates stale locators automatically between test runs, so your suite stays clean without manual intervention. Tests are in plain English, so new team members can contribute to coverage on day one instead of learning framework syntax.
+
+CRED, a FinTech team shipping at a similar velocity, reached 90% regression coverage 5x faster. The shift that mattered most for their release cadence was eliminating the locator-break bottleneck that had been delaying every other release.
+
+Between the pace at Green Meadows and the maintenance friction I mentioned, I think CRED&#x27;s experience is directly applicable. Would 15 minutes make sense to walk through what they did?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('sourabh-roy', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('sourabh-roy')">Show T1 Reference (click to expand)</button>
+      <div id="t1-sourabh-roy" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (96w)</div>
+        <div class="email-subject">Sourabh&#x27;s testing approach at Fidelity</div>
+        <div class="t1-body">Hi Sourabh,
+
+The Green Meadows team at Fidelity moves fast. In a product area with tight release cycles, keeping regression coverage solid without slowing the team down is usually the sharpest tension QA directors feel. Is test maintenance creating friction in your release cadence?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 by having tests automatically correct when the UI changed, without sprint time spent on manual fixes.
+
+Thought it would be worth reaching out specifically because Green Meadows is one of Fidelity&#x27;s faster-moving product areas. Does that resonate?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card" id="padma-srikanth">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">11. Padma Srikanth</div>
+        <div class="contact-title">Chapter Leader — Director of Quality Assurance</div>
+        <div class="contact-email">padma.srikanth@fmr.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">167w</span>
+      <span class="badge b-pp">T2: Hansard</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: 70% maintenance reduction</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Padma&#x27;s chapter leadership at Fidelity</div>
+      <div class="email-body" id="body-padma-srikanth">Padma,
+
+I imagine the influence-without-authority challenge I mentioned gets hardest around tooling decisions. If every chapter picks its own framework, you end up with fragmented coverage data, inconsistent quality bars, and no way to compare maturity across teams. Standardizing automation is the obvious answer, but imposing a coding framework on teams that didn&#x27;t choose it creates adoption resistance.
+
+Testsigma sidesteps that resistance entirely. Tests are in plain English, so there&#x27;s no framework learning curve. Any team can adopt it without rewriting their existing tests from scratch, and AI self-healing means the tests stay current without ongoing framework maintenance.
+
+Hansard, a financial services organization that had similar cross-team standardization challenges, cut regression from 8 weeks to 5 after unifying on one platform. The part that mattered most to their leadership was getting consistent metrics across teams for the first time.
+
+Between the chapter-model standardization challenge I raised and the adoption resistance that usually follows, I think Hansard&#x27;s approach is worth 15 minutes to walk through. Would that work?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('padma-srikanth', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('padma-srikanth')">Show T1 Reference (click to expand)</button>
+      <div id="t1-padma-srikanth" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (87w)</div>
+        <div class="email-subject">Padma&#x27;s chapter leadership at Fidelity</div>
+        <div class="t1-body">Hi Padma,
+
+Chapter Leader is a distinctive role inside Fidelity&#x27;s model: setting automation standards across product teams without direct control over their day-to-day execution. When each squad owns its own approach, how do you drive consistency across all of them?
+
+One financial services team we work with standardized automation across distributed squads and reduced test maintenance overhead by 70%.
+
+Thought it would be worth reaching out because that influence-without-authority challenge is specific to the chapter model. Is standardizing automation quality across chapters something you&#x27;re actively solving for?</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="company-section" id="jpmorgan-chase">
+  <div class="company-header">
+    <div class="company-name" style="color: #3b82f6;">JPMorgan Chase</div>
+    <span class="company-badge" style="background: #3b82f622; color: #3b82f6;">1 contacts</span>
+  </div>
+
+  <div class="contact-card" id="neeraj-tati">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">12. Neeraj Tati</div>
+        <div class="contact-title">Director, Software Engineering — Cloud Platform · IAM · SRE · DevOps</div>
+        <div class="contact-email">neeraj.tati@chase.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">167w</span>
+      <span class="badge b-pp">T2: CRED</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: Hansard (8→5 weeks)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Neeraj&#x27;s testing coverage at Chase</div>
+      <div class="email-body" id="body-neeraj-tati">Neeraj,
+
+I imagine the multi-domain scope I mentioned, cloud platform, IAM, SRE, and DevOps, means your test suite isn&#x27;t one suite at all. It&#x27;s probably several suites maintained by different teams, each with their own frameworks and their own maintenance overhead. When a platform change touches multiple domains, the regression work multiplies across all of them at once.
+
+Testsigma consolidates that. One platform covers web, API, and infrastructure testing with plain English test steps, so cross-domain changes don&#x27;t require coordinating fixes across multiple frameworks. AI self-healing keeps locators current automatically as the platform evolves underneath.
+
+CRED, a financial platform managing similarly complex cross-system dependencies, hit 90% regression coverage 5x faster after standardizing. The key wasn&#x27;t just speed, it was that cross-domain regressions stopped being multi-team coordination exercises and became single-pipeline runs.
+
+Between the multi-domain compounding I mentioned last time and the coordination overhead it creates, I think CRED&#x27;s approach maps well to what you&#x27;re managing. Would 15 minutes make sense to walk through how they simplified it?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('neeraj-tati', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('neeraj-tati')">Show T1 Reference (click to expand)</button>
+      <div id="t1-neeraj-tati" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (100w)</div>
+        <div class="email-subject">Neeraj&#x27;s testing coverage at Chase</div>
+        <div class="t1-body">Hi Neeraj,
+
+Engineering Director scope covering cloud platform, IAM, and SRE at Chase means test coverage has to keep pace with a lot of moving parts at once. As the stack evolves, maintenance tends to compound across platform services, security workflows, and infrastructure changes. Is that somewhere you&#x27;re feeling the friction?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 by having tests automatically correct when the underlying platform changed.
+
+Thought it would be worth reaching out because that broad platform coverage challenge is particularly acute in multi-domain engineering director roles. Does that resonate?</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="company-section" id="commvault">
+  <div class="company-header">
+    <div class="company-name" style="color: #f59e0b;">Commvault</div>
+    <span class="company-badge" style="background: #f59e0b22; color: #f59e0b;">4 contacts</span>
+  </div>
+
+  <div class="contact-card" id="brahmaiah-vallabhaneni">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">13. Brahmaiah Vallabhaneni</div>
+        <div class="contact-title">Vice President of Engineering</div>
+        <div class="contact-email">bvallabhaneni@commvault.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">171w</span>
+      <span class="badge b-pp">T2: Cisco</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: Fortune 100 (3X productivity)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Brahmaiah&#x27;s engineering org at Commvault</div>
+      <div class="email-body" id="body-brahmaiah-vallabhaneni">Brahmaiah,
+
+I imagine the wide test surface I mentioned, data protection, backup, recovery across enterprise environments, means every customer configuration creates a new test permutation your team has to cover. At VP level, the productivity challenge isn&#x27;t about individual engineers being slow, it&#x27;s about the sheer volume of test scenarios multiplying faster than the team can automate them.
+
+Testsigma addresses that directly. Plain English test creation means your team can build tests significantly faster than coding them in a framework. AI self-healing keeps those tests current across configuration changes, so the suite grows without the maintenance overhead growing alongside it.
+
+Cisco, managing QA across a similarly broad enterprise product portfolio, reduced their regression volume by 35%. What mattered most at their VP level was that the engineering headcount previously absorbed by maintenance was redirected into new product coverage.
+
+Between the platform complexity I mentioned and the permutation volume it creates, I think Cisco&#x27;s experience is a strong parallel. Would 15 minutes make sense to walk through how they handled that scale?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('brahmaiah-vallabhaneni', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('brahmaiah-vallabhaneni')">Show T1 Reference (click to expand)</button>
+      <div id="t1-brahmaiah-vallabhaneni" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (94w)</div>
+        <div class="email-subject">Brahmaiah&#x27;s engineering org at Commvault</div>
+        <div class="t1-body">Hi Brahmaiah,
+
+Commvault&#x27;s platform spans data protection, backup, and recovery across some of the most complex enterprise environments in the market. At VP Engineering level, owning a wide test surface and tight release windows at the same time is a real operational challenge. Is test coverage keeping pace with the platform&#x27;s growth?
+
+One enterprise technology team we work with saw a 3X increase in QA productivity once manual test maintenance dropped off their backlog.
+
+Thought it would be worth reaching out given Commvault&#x27;s platform complexity and customer reliability expectations. Does any of that resonate?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card" id="arun-amarendran">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">14. Arun Amarendran</div>
+        <div class="contact-title">Vice President of Engineering</div>
+        <div class="contact-email">aamarendran@commvault.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">164w</span>
+      <span class="badge b-pp">T2: MediBuddy</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: Cisco (35% regression reduction)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Arun&#x27;s QA coverage at Commvault</div>
+      <div class="email-body" id="body-arun-amarendran">Arun,
+
+I imagine the coverage-vs-velocity tension I mentioned plays out as a release gating problem. When the regression suite is slow and the coverage bar is high because customers depend on Commvault for data protection, pushing a release means either waiting longer or accepting more risk. Neither option is great for a VP trying to ship reliably.
+
+Testsigma changes that math. Parallel execution across environments compresses regression runs, and AI self-healing eliminates the locator breaks that slow down every cycle. Tests stay current as the product evolves, so coverage doesn&#x27;t degrade between releases.
+
+MediBuddy, a platform where reliability is similarly non-negotiable for their users, automated 2,500 tests and cut maintenance overhead by 50%. The shift that mattered most was that their release gating process went from a bottleneck to a formality because the suite was always current.
+
+Between the release gating pressure I mentioned and the reliability standards Commvault&#x27;s customers expect, I think MediBuddy&#x27;s path is worth looking at. Would 15 minutes make sense?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('arun-amarendran', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('arun-amarendran')">Show T1 Reference (click to expand)</button>
+      <div id="t1-arun-amarendran" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (90w)</div>
+        <div class="email-subject">Arun&#x27;s QA coverage at Commvault</div>
+        <div class="t1-body">Hi Arun,
+
+Commvault&#x27;s reliability promise to customers puts a lot of weight on every regression pass. VP Engineering at a data protection platform typically means balancing comprehensive coverage with release velocity, two things that tend to push against each other. Is that the main tension you&#x27;re managing?
+
+One enterprise platform team we work with cut total regression volume by 35% by eliminating redundant tests and automating the correction cycle.
+
+Thought it would be worth reaching out given how much Commvault&#x27;s customers depend on release quality. Does that dynamic sound familiar?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card" id="jennifer-wang">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">15. Jennifer Wang</div>
+        <div class="contact-title">Director of Engineering</div>
+        <div class="contact-email">jenniferwang@commvault.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">168w</span>
+      <span class="badge b-pp">T2: Cisco</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: 90% maintenance reduction</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Jennifer&#x27;s test coverage at Commvault</div>
+      <div class="email-body" id="body-jennifer-wang">Jennifer,
+
+I imagine the configuration-coverage challenge I mentioned gets hardest around system integration scenarios. Commvault&#x27;s customers run different storage backends, cloud providers, and backup policies, and each combination needs its own regression path. Your team is probably spending as much time updating existing tests for new configurations as they are writing tests for new features.
+
+Testsigma was built for exactly that kind of matrix. Plain English tests make it fast to spin up new configuration variants, and AI self-healing keeps them working as the underlying systems change. One platform covers the full stack: web UI, API, and backend layers.
+
+Cisco, managing a similarly configuration-heavy test surface across their enterprise portfolio, reduced total regression volume by 35%. What their engineering directors noticed first was how much faster new configuration coverage went live once maintenance stopped eating the team&#x27;s capacity.
+
+Between the configuration complexity I mentioned and the maintenance overhead it creates, I think Cisco&#x27;s experience maps well. Would 15 minutes be worth it to walk through what they did?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('jennifer-wang', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('jennifer-wang')">Show T1 Reference (click to expand)</button>
+      <div id="t1-jennifer-wang" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (104w)</div>
+        <div class="email-subject">Jennifer&#x27;s test coverage at Commvault</div>
+        <div class="t1-body">Hi Jennifer,
+
+Engineering Director roles at Commvault sit close to the codebase and feel every regression cycle. Data protection software means the test suite has to cover a wide range of system configurations, and keeping that coverage current as the platform evolves is a significant ongoing commitment. Sound like a familiar problem?
+
+One enterprise engineering team we work with reduced test maintenance overhead by 90% once broken tests started correcting automatically between releases.
+
+Thought it would be worth reaching out because that configuration-coverage challenge is particularly demanding at a platform like Commvault. Is test maintenance where most of the overhead lands for your team?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card" id="prasad-alapati">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">16. Prasad Alapati</div>
+        <div class="contact-title">Senior QA Manager</div>
+        <div class="contact-email">palapati@commvault.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">179w</span>
+      <span class="badge b-pp">T2: CRED</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: MediBuddy (2500 tests, 50% maintenance cut)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Prasad&#x27;s QA workflow at Commvault</div>
+      <div class="email-body" id="body-prasad-alapati">Prasad,
+
+I imagine the break-fix cycle I mentioned is the thing that makes sprint planning unpredictable for your team. You go into a sprint with a plan for new test coverage, but by mid-sprint half the automation engineers are pulled into triaging broken tests from the last release. That pattern is hard to break with traditional frameworks because the maintenance is baked into the architecture.
+
+Testsigma breaks that pattern at the architecture level. AI self-healing handles locator breaks between test runs, so they never become sprint work items. Plain English tests mean your team doesn&#x27;t need framework specialists to maintain or extend the suite.
+
+CRED, a financial platform with a similarly wide test surface and aggressive release pace, hit 90% regression coverage 5x faster. The part that resonated most with their QA managers was finally being able to plan a sprint around new coverage instead of reactive maintenance.
+
+Between the break-fix cycle I mentioned and the sprint disruption it creates, I think CRED&#x27;s experience is directly relevant. Would 15 minutes make sense to walk through how they got there?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('prasad-alapati', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('prasad-alapati')">Show T1 Reference (click to expand)</button>
+      <div id="t1-prasad-alapati" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (91w)</div>
+        <div class="email-subject">Prasad&#x27;s QA workflow at Commvault</div>
+        <div class="t1-body">Hi Prasad,
+
+QA teams at Commvault have a particularly wide test surface: storage, cloud, backup, disaster recovery, and everything in between. At the manager level, the challenge usually isn&#x27;t whether to automate more, it&#x27;s how to keep what&#x27;s already automated from breaking every sprint. Is that the cycle you&#x27;re managing?
+
+One team at a similarly complex platform automated 2,500 tests and cut ongoing maintenance by 50%, without adding headcount.
+
+Thought it would be worth reaching out because that maintenance-at-scale challenge is most visible at the QA manager layer. Does that resonate?</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="company-section" id="trustage">
+  <div class="company-header">
+    <div class="company-name" style="color: #ec4899;">TruStage</div>
+    <span class="company-badge" style="background: #ec489922; color: #ec4899;">3 contacts</span>
+  </div>
+
+  <div class="contact-card" id="chamath-guneratne">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">17. Chamath Guneratne</div>
+        <div class="contact-title">IT Director, Quality Engineering</div>
+        <div class="contact-email">chamath.guneratne@trustage.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">170w</span>
+      <span class="badge b-pp">T2: CRED</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: Hansard (8→5 weeks)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Chamath&#x27;s QE approach at TruStage</div>
+      <div class="email-body" id="body-chamath-guneratne">Chamath,
+
+I imagine the intersection I mentioned, compliance checkpoints, coverage breadth, and tightening release windows, means your QE team is getting squeezed from all sides at once. Insurance compliance requirements don&#x27;t get lighter when release velocity increases, they just create more regression scenarios that all need to pass before anything ships.
+
+Testsigma handles that by making test creation and maintenance dramatically faster. Plain English tests mean compliance scenarios are readable by auditors and buildable by anyone on the team. AI self-healing keeps the suite current as the platform evolves, so you&#x27;re not re-validating tests that broke from UI changes rather than actual defects.
+
+CRED, a financial platform navigating similar compliance-and-velocity pressure, hit 90% regression coverage 5x faster. What changed for their QE leadership was that compliance regression stopped being the bottleneck and became a background process that just ran.
+
+Between the three-way pressure I mentioned and the compliance demands specific to insurance, I think CRED&#x27;s experience would resonate. Would 15 minutes make sense to walk through how they managed it?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('chamath-guneratne', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('chamath-guneratne')">Show T1 Reference (click to expand)</button>
+      <div id="t1-chamath-guneratne" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (90w)</div>
+        <div class="email-subject">Chamath&#x27;s QE approach at TruStage</div>
+        <div class="t1-body">Hi Chamath,
+
+Insurance and financial services platforms carry deep regression requirements: compliance checkpoints, wide coverage breadth, and tightening release windows, all at once. Is building a scalable automation approach that meets all three one of the current priorities for your QE team?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5, with no additional QA headcount.
+
+Thought it would be worth reaching out because TruStage sits at exactly that intersection of insurance requirements and delivery pressure. Does that resonate with what you&#x27;re working on?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card" id="maggie-redden">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">18. Maggie Redden</div>
+        <div class="contact-title">Director, Software Engineering</div>
+        <div class="contact-email">maggie.redden@cunamutual.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">155w</span>
+      <span class="badge b-pp">T2: MediBuddy</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: Hansard (8→5 weeks)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Maggie&#x27;s testing workflow at TruStage</div>
+      <div class="email-body" id="body-maggie-redden">Maggie,
+
+I imagine the delivery-quality tradeoff I mentioned shows up in your world as a recurring conversation: the business wants faster releases, QA needs more regression time, and the compromise usually means less coverage per cycle rather than more efficiency. In insurance, that coverage gap carries real compliance risk.
+
+Testsigma changes the terms of that conversation. AI self-healing eliminates the maintenance overhead that eats regression time, and plain English tests mean the team can build new coverage faster without framework expertise. You get speed and thoroughness instead of choosing between them.
+
+MediBuddy, a platform managing a similar balance of delivery speed and coverage depth, automated 2,500 tests and cut maintenance by 50%. What changed for their engineering directors was that release cycles shortened without anyone having to argue for less testing.
+
+Between the delivery-quality tension I mentioned and the insurance-specific risks of cutting coverage, I think MediBuddy&#x27;s path is worth 15 minutes. Would that work?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('maggie-redden', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('maggie-redden')">Show T1 Reference (click to expand)</button>
+      <div id="t1-maggie-redden" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (93w)</div>
+        <div class="email-subject">Maggie&#x27;s testing workflow at TruStage</div>
+        <div class="t1-body">Hi Maggie,
+
+Software Engineering Director roles at TruStage carry accountability for both delivery speed and quality. Insurance platforms tend to have deep regression requirements, and test maintenance usually ends up being where release velocity gets compromised first. Is that a tradeoff you&#x27;re navigating?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 by having tests automatically update when the UI changed.
+
+Thought it would be worth reaching out because TruStage&#x27;s insurance scope makes that delivery-quality tension particularly acute. Is test maintenance contributing to release friction right now?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card" id="jennifer-drangstveit">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">19. Jennifer Drangstveit</div>
+        <div class="contact-title">IT Director, Solution Delivery</div>
+        <div class="contact-email">jennifer.drangstveit@cunamutual.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">169w</span>
+      <span class="badge b-pp">T2: CRED</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: Hansard (8→5 weeks)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Jennifer&#x27;s delivery quality at TruStage</div>
+      <div class="email-body" id="body-jennifer-drangstveit">Jennifer,
+
+I imagine the coverage-velocity gap I mentioned becomes most visible when a release delay traces back to regression failures that could have been caught earlier. As IT Director for Solution Delivery, you&#x27;re accountable for what ships, but the upstream testing process is where the delays actually originate. That&#x27;s a hard position to manage from.
+
+Testsigma gives delivery leaders upstream visibility and speed. Tests run in parallel and self-heal when UI changes break locators, so regression cycles compress without sacrificing coverage. Plain English tests mean the suite is transparent to anyone reviewing release readiness, not just the QA engineers who wrote it.
+
+CRED, a financial platform where delivery accountability sat similarly close to the testing process, hit 90% regression coverage 5x faster. The shift their delivery leadership valued most was having consistent release confidence instead of last-minute regression surprises.
+
+Between the coverage gap I mentioned and the delivery accountability pressure at TruStage, I think CRED&#x27;s experience maps well. Would 15 minutes make sense to walk through what they did?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('jennifer-drangstveit', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('jennifer-drangstveit')">Show T1 Reference (click to expand)</button>
+      <div id="t1-jennifer-drangstveit" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (89w)</div>
+        <div class="email-subject">Jennifer&#x27;s delivery quality at TruStage</div>
+        <div class="t1-body">Hi Jennifer,
+
+IT Director for Solution Delivery means accountability for what actually ships. When regression coverage doesn&#x27;t keep pace with delivery velocity, the gap shows up as release delays or escaped defects. Is that a gap you&#x27;re managing right now?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5, without expanding the QA team.
+
+Thought it would be worth reaching out because TruStage&#x27;s insurance complexity and delivery pace make that coverage challenge particularly real. Does any of that resonate with where things stand?</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="company-section" id="youtube">
+  <div class="company-header">
+    <div class="company-name" style="color: #ef4444;">YouTube</div>
+    <span class="company-badge" style="background: #ef444422; color: #ef4444;">3 contacts</span>
+  </div>
+
+  <div class="contact-card" id="john-harding">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">20. John Harding</div>
+        <div class="contact-title">VP Engineering, YouTube Music &amp;amp; Premium</div>
+        <div class="contact-email">jharding@youtube.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">166w</span>
+      <span class="badge b-pp">T2: CRED</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: Nagra DTV (2500 tests, 4x faster)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: John&#x27;s testing coverage at YouTube</div>
+      <div class="email-body" id="body-john-harding">John,
+
+I imagine the subscriber-facing release pressure I mentioned means your team can&#x27;t afford the &quot;ship and patch&quot; approach that works for free products. When a Music or Premium release has a regression bug, paying subscribers notice immediately, and the cost isn&#x27;t just engineering time, it&#x27;s churn risk. That raises the bar on every regression cycle.
+
+Testsigma was built for that kind of high-stakes release cadence. AI self-healing keeps tests current as the product evolves, so your suite stays reliable without consuming engineering bandwidth. Parallel execution across environments means full regressions finish in a fraction of the time.
+
+CRED, a financial platform where every release carries similar user-trust stakes, hit 90% regression coverage 5x faster. The shift that mattered most to their VP team was moving from &quot;hope the suite catches it&quot; to &quot;the suite always catches it&quot; as a default state.
+
+Between the subscriber-facing stakes I mentioned and the velocity YouTube Music demands, I think CRED&#x27;s experience is worth 15 minutes. Would that make sense?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('john-harding', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('john-harding')">Show T1 Reference (click to expand)</button>
+      <div id="t1-john-harding" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (95w)</div>
+        <div class="email-subject">John&#x27;s testing coverage at YouTube</div>
+        <div class="t1-body">Hi John,
+
+VP Engineering for YouTube Music and Premium means every release touches a product paying subscribers notice immediately. Automation at that scale needs to keep up with feature velocity and stay low-maintenance at the same time. Is the test suite keeping pace with the release cadence?
+
+One media platform we work with automated 2,500 tests and cut execution time by 75%, covering both UI and API layers.
+
+Thought it would be worth reaching out because Music and Premium&#x27;s subscriber experience makes release quality particularly high-stakes. Does that resonate with the challenges on your team?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card" id="des-keane">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">21. Des Keane</div>
+        <div class="contact-title">Engineering Director, Video Infrastructure</div>
+        <div class="contact-email">des@google.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">179w</span>
+      <span class="badge b-pp">T2: MediBuddy</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: Nagra DTV (2500 tests, 4x faster)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Des&#x27;s infrastructure testing at YouTube</div>
+      <div class="email-body" id="body-des-keane">Des,
+
+I imagine the infrastructure-level testing challenge I mentioned is compounded by the blast radius of changes at your layer. When video infrastructure touches billions of streams, even a minor regression can cascade across products that depend on your services. That means your test suite can&#x27;t just be thorough, it has to be fast enough to run on every change without becoming a bottleneck.
+
+Testsigma handles both. Parallel test execution across environments compresses full regression runs, and AI self-healing keeps the suite current as infrastructure APIs and interfaces evolve. Plain English tests mean infrastructure scenarios are buildable by any engineer, not just automation specialists.
+
+MediBuddy, a platform managing a similarly high-volume backend test surface, automated 2,500 tests and cut maintenance by 50%. The key insight for their team was that infrastructure-level tests need the most frequent runs and the least maintenance overhead, which is exactly what AI self-healing provides.
+
+Between the blast-radius pressure I mentioned and the throughput demands at YouTube&#x27;s scale, I think MediBuddy&#x27;s approach maps well. Would 15 minutes make sense to walk through what they did?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('des-keane', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('des-keane')">Show T1 Reference (click to expand)</button>
+      <div id="t1-des-keane" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (97w)</div>
+        <div class="email-subject">Des&#x27;s infrastructure testing at YouTube</div>
+        <div class="t1-body">Hi Des,
+
+Engineering Director for Video Infrastructure means changes at your layer ripple across billions of streams. Regression coverage at that scale has to be both comprehensive and fast enough to match release cycles. Is the speed of the test suite ever the constraint holding up a release?
+
+One media platform we work with built a 2,500-test automation suite in 8 months and cut execution time by 75%, across UI and API layers.
+
+Thought it would be worth reaching out because infrastructure-level testing at YouTube&#x27;s scale is a genuinely unique coverage challenge. Does any of that resonate?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card" id="hrishikesh-aradhye">
+    <div class="contact-header">
+      <div>
+        <div class="contact-name">22. Hrishikesh Aradhye</div>
+        <div class="contact-title">Sr. Director, Music &amp;amp; Podcasts</div>
+        <div class="contact-email">hrishi@google.com</div>
+      </div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-wc">177w</span>
+      <span class="badge b-pp">T2: CRED</span>
+      <span class="badge b-pp" style="background: #1f2d1a; color: #86efac80;">T1: MediBuddy (50% maintenance cut)</span>
+      <span class="badge b-qa">QA: PASS</span>
+      <span class="badge b-status">Threaded Reply</span>
+    </div>
+    <div class="email-block">
+      <div class="email-label">T2 DRAFT (reply in thread)</div>
+      <div class="email-subject">RE: Hrishi&#x27;s testing approach at YouTube</div>
+      <div class="email-body" id="body-hrishikesh-aradhye">Hrishi,
+
+I imagine the multi-stream release complexity I mentioned, music catalog, podcast platform, and monetization all shipping in parallel, means your team isn&#x27;t running one regression suite, they&#x27;re running three. Each stream has its own release cadence and its own set of test scenarios that need to stay current. When one stream&#x27;s tests break, it can hold up a release that the other streams are ready for.
+
+Testsigma unifies that. One platform covers web, mobile, and API testing with plain English test steps, so all three streams share the same automation layer. AI self-healing keeps tests current across all of them simultaneously, so one stream&#x27;s changes don&#x27;t break another stream&#x27;s suite.
+
+CRED, a financial platform managing similarly parallel product releases, hit 90% regression coverage 5x faster. The shift that mattered most was that cross-stream regressions stopped being coordination bottlenecks and started running as a single pipeline.
+
+Between the multi-stream pressure I mentioned and the coordination overhead it creates, I think CRED&#x27;s approach is directly relevant. Would 15 minutes make sense to walk through how they handled it?
+
+Rob Gorham
+Testsigma</div>
+      <button class="copy-btn" onclick="copyBody('hrishikesh-aradhye', this)">Copy T2 Body</button>
+    </div>
+    <div class="t1-ref">
+      <button class="t1-toggle" onclick="toggleT1('hrishikesh-aradhye')">Show T1 Reference (click to expand)</button>
+      <div id="t1-hrishikesh-aradhye" style="display: none;">
+        <div class="email-label" style="margin-top: 8px;">ORIGINAL T1 (90w)</div>
+        <div class="email-subject">Hrishi&#x27;s testing approach at YouTube</div>
+        <div class="t1-body">Hi Hrishi,
+
+Sr. Director for Music and Podcasts at YouTube means releases hit from multiple angles: music catalog improvements, podcast platform updates, and monetization changes all shipping in parallel. Is keeping up with that multi-stream cadence a challenge for the test suite?
+
+One media platform we work with reduced ongoing test maintenance by 50% while scaling coverage across new product areas.
+
+Thought it would be worth reaching out because that multi-stream release complexity seems like it puts particular pressure on regression quality. Is test maintenance adding to the release pressure?</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="company-section">
+  <div class="company-header">
+    <div class="company-name" style="color: var(--red);">Skipped</div>
+  </div>
+  <div class="contact-card bounced">
+    <div class="contact-name">Sucheth Ramgiri — Principal QA Engineer III, Commvault</div>
+    <div class="contact-title" style="color: var(--red);">BOUNCED on T1 (SMTP 550) — No T2 drafted</div>
+  </div>
+</div>
+
+<script>
+function copyBody(id, btn) {
+  const el = document.getElementById('body-' + id);
+  const text = el.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy T2 Body'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+function toggleT1(id) {
+  const el = document.getElementById('t1-' + id);
+  const btn = el.previousElementSibling;
+  if (el.style.display === 'none') {
+    el.style.display = 'block';
+    btn.textContent = 'Hide T1 Reference';
+  } else {
+    el.style.display = 'none';
+    btn.textContent = 'Show T1 Reference (click to expand)';
+  }
+}
+</script>
 </body>
 </html>

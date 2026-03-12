@@ -886,3 +886,44 @@ Y02 Ash Pedgaonkar, Y06 Suchith Chandran, V01 Ted Barker, V04 Aleck Gandel, CH01
 4. 🟢 Wave 4 pending T1 tasks (8 contacts) — send when they surface in Tasks tab
 5. ⚠️ Divya Sathish (EA) — monitor for bounce when Wave 4 T1 task surfaces
 
+
+---
+
+## 2026-03-12 — Session 26: Wave 5 Batch 4 (Sales Nav sourced, 9 contacts enrolled)
+
+**Session type:** TAM Outbound — Sales Nav deep sweep + Apollo enrollment
+**What was done:**
+- Continued from prior session: Sales Nav review of Epicor, BeyondTrust, Northern Trust (pages 2-3)
+- Built Wave 5 Batch 4 tracker: `tamob-batch-20260312-4.html` — 9 contacts with full T1 email drafts
+- Apollo bulk enrichment (2 rounds) to find verified emails for Sales Nav contacts
+- Proof point rotation verified against Batches 1-3 — zero repeats per company
+- Created 9 Apollo contacts (5 new, 4 existing from Salesforce/Chrome extension imports)
+- Enrolled all 9 in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
+  - Batch A (5): Jason Lieberman, Les Stickney, Holly Shubaly, Tony MacLean, Michael Sutherland
+  - Batch B (3): Theepa Balakrishnan, Alnis Cers, Padma Suresh
+  - Batch C (1): Moiz Meer (required sequence_active_in_other_campaigns override — was in failed Shakeel sequence)
+- MASTER_SENT_LIST.csv: +9 rows (420 total)
+- Canada contacts included: Les Stickney (BC), Holly Shubaly (NS), Tony MacLean (NS), Michael Sutherland (NS)
+
+**Contacts enrolled (Wave 5 / Batch 4):**
+| # | Name | Company | Apollo ID | Email | Status |
+|---|------|---------|-----------|-------|--------|
+| 1 | Jason Lieberman | Epicor | 69b2d0daef825800190a560d | jlieberman@epicor.com | ✅ Enrolled Step 1 |
+| 2 | Les Stickney | Epicor | 69b2d0dcdb169c0019c2b2d3 | lstickney@epicor.com | ✅ Enrolled Step 1 |
+| 3 | Holly Shubaly | BeyondTrust | 69b2d0dedb169c000ded89e0 | hshubaly@beyondtrust.com | ✅ Enrolled Step 1 |
+| 4 | Tony MacLean | BeyondTrust | 68ae9f27539d060001dbcbe2 | tmaclean@beyondtrust.com | ✅ Enrolled Step 1 |
+| 5 | Michael Sutherland | BeyondTrust | 68ae8ab4dbf6140001477de9 | msutherland@beyondtrust.com | ✅ Enrolled Step 1 |
+| 6 | Theepa Balakrishnan | BeyondTrust | 69b2d0f1db169c000ded89fa | tbalakrishnan@beyondtrust.com | ✅ Enrolled Step 1 |
+| 7 | Alnis Cers | Northern Trust | 69b2d0f3db169c0011a2ffe7 | ac376@ntrs.com | ✅ Enrolled Step 1 |
+| 8 | Moiz Meer | Northern Trust | 660e4579521a4a0301a6dff9 | moiz_meer@ntrs.com | ✅ Enrolled Step 1 |
+| 9 | Padma Suresh | Northern Trust | 660e4579521a4a0301a6e00c | psuresh@northerntrust.com | ✅ Enrolled Step 1 |
+
+**Backlog (14 contacts without verified emails):** Noted in tracker HTML. Candidates for Apollo Chrome extension import in future session.
+
+**Notes:**
+- BeyondTrust and Northern Trust are catchall domains — emails are extrapolated but deliverable
+- Epicor (epicor.com) is NOT catchall — Jason and Les emails are verified
+- Moiz Meer was previously in Shakeel's failed sequence — enrolled with override, no prior sends from our account
+- T1 sends pending: Apollo Step 1 tasks will surface in Tasks tab. APPROVE SEND required before executing.
+
+**Files changed:** MASTER_SENT_LIST.csv (+9 rows), tamob-batch-20260312-4.html (created), session-log.md, handoff.md, work-queue.md

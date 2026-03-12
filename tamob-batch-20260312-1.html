@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TAM Outbound Batch — Mar 12, 2026 (Wave 5 Batch 1)</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f8f9fa; color: #1a1a2e; }
+  h1 { color: #16213e; border-bottom: 3px solid #0f3460; padding-bottom: 10px; }
+  h2 { color: #0f3460; margin-top: 40px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+  h3 { color: #16213e; margin-top: 30px; }
+  .summary-box { background: #e8f4f8; border-left: 4px solid #0f3460; padding: 16px; margin: 20px 0; border-radius: 4px; }
+  .contact-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 16px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .contact-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .contact-name { font-size: 1.2em; font-weight: 700; color: #16213e; }
+  .contact-meta { color: #64748b; font-size: 0.9em; }
+  .email-draft { background: #fefce8; border: 1px solid #fbbf24; border-radius: 6px; padding: 16px; margin-top: 12px; }
+  .email-draft .subject { font-weight: 700; color: #92400e; margin-bottom: 8px; }
+  .email-draft .body { white-space: pre-wrap; line-height: 1.6; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; font-weight: 600; margin-right: 4px; }
+  .tag-verified { background: #dcfce7; color: #166534; }
+  .tag-catchall { background: #fef3c7; color: #92400e; }
+  .tag-flagged { background: #fecaca; color: #991b1b; }
+  .tag-tier { background: #e0e7ff; color: #3730a3; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { padding: 8px 12px; border: 1px solid #e2e8f0; text-align: left; font-size: 0.9em; }
+  th { background: #f1f5f9; font-weight: 600; }
+  .research-block { background: #f0fdf4; border: 1px solid #86efac; border-radius: 6px; padding: 14px; margin: 12px 0; font-size: 0.9em; }
+  .wc { font-size: 0.8em; color: #64748b; margin-top: 8px; }
+  .section-divider { border-top: 3px solid #0f3460; margin: 40px 0; }
+  .status-row { display: flex; gap: 20px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 2em; font-weight: 700; color: #0f3460; }
+  .stat-label { font-size: 0.85em; color: #64748b; }
+</style>
+</head>
+<body>
+
+<h1>TAM Outbound Wave 5, Batch 1 — Mar 12, 2026</h1>
+
+<div class="summary-box">
+  <div class="status-row">
+    <div class="stat"><div class="stat-num">12</div><div class="stat-label">Contacts Drafted</div></div>
+    <div class="stat"><div class="stat-num">6</div><div class="stat-label">Companies</div></div>
+    <div class="stat"><div class="stat-num">12</div><div class="stat-label">Verified Emails</div></div>
+    <div class="stat"><div class="stat-num">0</div><div class="stat-label">DNC / Dedup Flags</div></div>
+  </div>
+  <p style="margin-top:12px;"><strong>Sequence:</strong> TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)</p>
+  <p><strong>Send via:</strong> Apollo — robert.gorham@testsigma.com</p>
+  <p><strong>Excluded:</strong> Theresa White (Rocket Software) — already in campaign 6904f70577baa100190e4858. Amir Aly (Procore) — already in MASTER_SENT_LIST.</p>
+  <p><strong>Note on catchall domains:</strong> BlackRock, Northern Trust, Jack Henry, Epicor, CVS Health, and Rocket Software all show domain catchall = true. Emails are individually marked "verified" by Apollo, but catchall domains accept all addresses. Monitor for soft bounces.</p>
+</div>
+
+<!-- ============================================ -->
+<div class="section-divider"></div>
+<h2>Company 1: Epicor Software (4,600 emp | ERP / Manufacturing Software)</h2>
+
+<div class="research-block">
+  <strong>Account Research Block</strong><br>
+  <strong>Domain:</strong> epicor.com | <strong>Industry:</strong> ERP / Manufacturing Software | <strong>Persona Tier:</strong> Mid-Enterprise<br>
+  <strong>Tech Stack:</strong> WebdriverIO, Protractor, TypeScript (from job postings). Azure DevOps, Jenkins CI.<br><br>
+  <strong>Trigger A:</strong> Kinetic 2026.1 cloud migration — sunsetting classic UI by May 2026. Massive regression surface as on-prem customers transition.<br>
+  <strong>Trigger B:</strong> Hiring Principal QA/Automation Engineers — scaling automation team during platform transition.<br>
+  <strong>Trigger C:</strong> "Ascend with Epicor" AI migration program creating testing workload spike for compatibility validation.<br><br>
+  <strong>Angles:</strong> (1) Test maintenance during UI migration — self-healing, (2) Scaling test coverage across multiple product lines (Kinetic, Prophet 21, BisTrack), (3) Regression cycle compression for release deadlines<br>
+  <strong>Proof Points:</strong> T1 options: Hansard (regression compression), CRED (coverage scaling), Sanofi (regression 3 days to 80 min)
+</div>
+
+<!-- Contact 1 -->
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <span class="contact-name">1. Alan Spoll</span><br>
+      <span class="contact-meta">Director, QA — Epicor | Dresher, PA</span>
+    </div>
+    <div>
+      <span class="tag tag-verified">✅ verified</span>
+      <span class="tag tag-catchall">⚠️ catchall</span>
+      <span class="tag tag-tier">Director</span>
+    </div>
+  </div>
+  <table>
+    <tr><td><strong>Email</strong></td><td>aspoll@epicor.com</td></tr>
+    <tr><td><strong>Assigned Trigger</strong></td><td>A — Kinetic 2026.1 cloud migration / UI transition</td></tr>
+    <tr><td><strong>Assigned Angle</strong></td><td>Regression cycle compression during platform migration</td></tr>
+    <tr><td><strong>Proof Point T1</strong></td><td>Sanofi — regression 3 days to 80 minutes</td></tr>
+    <tr><td><strong>Proof Point T2</strong></td><td>Hansard — 8 weeks to 5 weeks</td></tr>
+  </table>
+  <div class="email-draft">
+    <div class="subject">Subject: Alan's QA coverage during the Kinetic migration</div>
+    <div class="body">
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+Migrating ERP customers from classic UI to a cloud platform usually doubles the regression surface overnight. The teams that struggle most are the ones maintaining parallel test suites for both environments while the cutover runs.
+
+Sanofi ran into something similar and compressed their regression cycle from 3 days to 80 minutes using our AI test automation. Tests adapted automatically as their UI changed.
+
+If cutting that regression drag would help your team through the Kinetic rollout, what day works for a quick look at how they did it?
+
+Rob Gorham
+Testsigma</div>
+    <div class="wc">Word count: 97 | Questions: 1 (close) | Hyphens: 0 mid-sentence dashes</div>
+  </div>
+</div>
+
+<!-- Contact 2 -->
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <span class="contact-name">2. Anusha Mandava</span><br>
+      <span class="contact-meta">QA Manager — Epicor | Dallas, TX</span>
+    </div>
+    <div>
+      <span class="tag tag-verified">✅ verified</span>
+      <span class="tag tag-catchall">⚠️ catchall</span>
+      <span class="tag tag-tier">Manager</span>
+    </div>
+  </div>
+  <table>
+    <tr><td><strong>Email</strong></td><td>anusha.mandava@epicor.com</td></tr>
+    <tr><td><strong>Assigned Trigger</strong></td><td>B — Hiring automation engineers, scaling QA team</td></tr>
+    <tr><td><strong>Assigned Angle</strong></td><td>Scaling test coverage across multiple product lines</td></tr>
+    <tr><td><strong>Proof Point T1</strong></td><td>MediBuddy — 2,500 tests automated, 50% maintenance cut</td></tr>
+    <tr><td><strong>Proof Point T2</strong></td><td>CRED — 90% regression coverage, 5x faster</td></tr>
+  </table>
+  <div class="email-draft">
+    <div class="subject">Subject: Scaling QA coverage at Epicor</div>
+    <div class="body">
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+When an ERP platform supports multiple product lines, scaling test coverage often stalls because creating and maintaining tests takes longer than the sprint cycles allow. Adding headcount helps, but the maintenance backlog grows just as fast.
+
+MediBuddy automated 2,500 tests with Testsigma and cut their maintenance workload by 50%. Their QA team focused on new coverage instead of fixing broken tests.
+
+If that kind of shift would help your team keep pace across Epicor's product lines, what day works for a quick look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="wc">Word count: 99 | Questions: 1 (close) | Hyphens: 0 mid-sentence dashes</div>
+  </div>
+</div>
+
+<!-- Contact 3 -->
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <span class="contact-name">3. Greg Symicek</span><br>
+      <span class="contact-meta">QA Manager — Epicor | Minneapolis, MN</span>
+    </div>
+    <div>
+      <span class="tag tag-verified">✅ verified</span>
+      <span class="tag tag-catchall">⚠️ catchall</span>
+      <span class="tag tag-tier">Manager</span>
+    </div>
+  </div>
+  <table>
+    <tr><td><strong>Email</strong></td><td>gsymicek@epicor.com</td></tr>
+    <tr><td><strong>Assigned Trigger</strong></td><td>C — Ascend AI migration program creating testing workload</td></tr>
+    <tr><td><strong>Assigned Angle</strong></td><td>Test maintenance / self-healing during rapid UI changes</td></tr>
+    <tr><td><strong>Proof Point T1</strong></td><td>Hansard — regression 8 weeks to 5 weeks with AI self-healing</td></tr>
+    <tr><td><strong>Proof Point T2</strong></td><td>90% maintenance reduction with self-healing</td></tr>
+  </table>
+  <div class="email-draft">
+    <div class="subject">Subject: Test maintenance during Epicor's migration push</div>
+    <div class="body">
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+When customers migrate to a new platform version, every UI change breaks existing tests. QA teams end up spending more time fixing locators and selectors than writing new coverage. It's especially painful when migrations run on a deadline.
+
+Hansard cut their regression cycle from 8 to 5 weeks after switching to Testsigma. Our AI self-healing automatically updates tests when the interface changes, so nothing breaks silently.
+
+If reducing that maintenance drag would free up your team's capacity, what day works for a quick look at how they did it?
+
+Rob Gorham
+Testsigma</div>
+    <div class="wc">Word count: 104 | Questions: 1 (close) | Hyphens: 1 (self-healing, compound word)</div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-divider"></div>
+<h2>Company 2: CVS Health (219,000 emp | Healthcare / Pharmacy)</h2>
+
+<div class="research-block">
+  <strong>Account Research Block</strong><br>
+  <strong>Domain:</strong> cvshealth.com | <strong>Industry:</strong> Healthcare / Pharmacy | <strong>Persona Tier:</strong> Mega-Enterprise (VP required)<br>
+  <strong>Tech Stack:</strong> Selenium, Cucumber, TestNG (from job postings). Databricks, Azure, AWS.<br><br>
+  <strong>Trigger A:</strong> $20B digital transformation — new engagement platform + AI-driven services launching 2026.<br>
+  <strong>Trigger B:</strong> 45+ open automation engineer roles — massive team scaling signal.<br>
+  <strong>Trigger C:</strong> Legacy Hadoop to serverless pipeline migration — new testing environment requirements.<br><br>
+  <strong>Angles:</strong> (1) Test maintenance at scale with Selenium/Cucumber stack, (2) Coverage expansion for new digital engagement platform, (3) Regression compression for healthcare compliance releases<br>
+  <strong>Proof Points:</strong> T1 options: Fortune 100 3X productivity (enterprise match), Sanofi (healthcare vertical), 70% maintenance reduction vs Selenium
+</div>
+
+<!-- Contact 4 -->
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <span class="contact-name">4. Erin Bixel</span><br>
+      <span class="contact-meta">Lead Director, Quality Engineering — CVS Health | Naperville, IL</span>
+    </div>
+    <div>
+      <span class="tag tag-verified">✅ verified</span>
+      <span class="tag tag-catchall">⚠️ catchall</span>
+      <span class="tag tag-tier">Director</span>
+    </div>
+  </div>
+  <table>
+    <tr><td><strong>Email</strong></td><td>erin.bixel@cvshealth.com</td></tr>
+    <tr><td><strong>Assigned Trigger</strong></td><td>A — $20B digital transformation, new engagement platform</td></tr>
+    <tr><td><strong>Assigned Angle</strong></td><td>Coverage expansion for new platform surfaces</td></tr>
+    <tr><td><strong>Proof Point T1</strong></td><td>Fortune 100 — 3X productivity increase</td></tr>
+    <tr><td><strong>Proof Point T2</strong></td><td>Sanofi — 3 days to 80 min regression</td></tr>
+  </table>
+  <div class="email-draft">
+    <div class="subject">Subject: Erin's quality engineering coverage at CVS Health</div>
+    <div class="body">
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+Launching new digital platforms in healthcare means test coverage has to scale before the features ship, not after. The teams that hit the wall are the ones where test creation can't keep pace with the dev roadmap, especially when compliance adds another layer.
+
+A Fortune 100 company in a similar spot saw a 3X productivity increase in their QA team after switching to Testsigma. Tests are written in plain English, so coverage scales without adding headcount.
+
+If that kind of throughput would help your team ahead of the platform rollout, what day works for a quick look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="wc">Word count: 109 | Questions: 1 (close) | Hyphens: 0 mid-sentence dashes</div>
+  </div>
+</div>
+
+<!-- Contact 5 -->
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <span class="contact-name">5. Krishna Kandala</span><br>
+      <span class="contact-meta">Senior QA Manager, Software Engineering — CVS Health | Pittsburgh, PA</span>
+    </div>
+    <div>
+      <span class="tag tag-verified">✅ verified</span>
+      <span class="tag tag-catchall">⚠️ catchall</span>
+      <span class="tag tag-tier">Sr. Manager</span>
+    </div>
+  </div>
+  <table>
+    <tr><td><strong>Email</strong></td><td>krishna.kandala@cvshealth.com</td></tr>
+    <tr><td><strong>Assigned Trigger</strong></td><td>B — 45+ automation roles open, team scaling rapidly</td></tr>
+    <tr><td><strong>Assigned Angle</strong></td><td>Test maintenance with Selenium/Cucumber at scale</td></tr>
+    <tr><td><strong>Proof Point T1</strong></td><td>70% maintenance reduction vs Selenium</td></tr>
+    <tr><td><strong>Proof Point T2</strong></td><td>MediBuddy — 2,500 tests, 50% maintenance cut</td></tr>
+  </table>
+  <div class="email-draft">
+    <div class="subject">Subject: Selenium maintenance at CVS Health's scale</div>
+    <div class="body">
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+At CVS Health's scale, Selenium test suites tend to grow faster than the team can maintain them. Every UI update triggers a cascade of broken selectors, and the maintenance backlog quietly eats into time that should go toward new coverage.
+
+Teams that have moved from Selenium to Testsigma typically see a 70% reduction in test maintenance. Our AI auto-fixes broken locators when the UI changes, so tests stay green without manual intervention.
+
+If cutting that maintenance overhead would help your team focus on coverage growth, what day works for a quick look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="wc">Word count: 104 | Questions: 1 (close) | Hyphens: 1 (auto-fixes, compound)</div>
+  </div>
+</div>
+
+<!-- Contact 6 -->
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <span class="contact-name">6. Senthil Vijayaragavan</span><br>
+      <span class="contact-meta">QA Manager (Testing and Automation) — CVS Health | Boston, MA</span>
+    </div>
+    <div>
+      <span class="tag tag-verified">✅ verified</span>
+      <span class="tag tag-catchall">⚠️ catchall</span>
+      <span class="tag tag-tier">Manager</span>
+    </div>
+  </div>
+  <table>
+    <tr><td><strong>Email</strong></td><td>senthil.vijayaragavan@cvshealth.com</td></tr>
+    <tr><td><strong>Assigned Trigger</strong></td><td>C — Hadoop to serverless migration, new testing environments</td></tr>
+    <tr><td><strong>Assigned Angle</strong></td><td>Regression compression for healthcare compliance releases</td></tr>
+    <tr><td><strong>Proof Point T1</strong></td><td>Sanofi — regression 3 days to 80 minutes</td></tr>
+    <tr><td><strong>Proof Point T2</strong></td><td>Fortune 100 — 3X productivity</td></tr>
+  </table>
+  <div class="email-draft">
+    <div class="subject">Subject: Regression cycles for CVS Health's platform updates</div>
+    <div class="body">
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+In healthcare, platform changes have to clear regression testing before anything ships, and compliance requirements make those cycles longer than most industries. When infrastructure shifts happen underneath, the regression backlog compounds fast.
+
+Sanofi was running 3 day regression cycles before switching to Testsigma. They compressed that to 80 minutes with AI test automation that runs across web, mobile, and API in parallel.
+
+If shaving that kind of time off your regression runs would help, what day works for a quick look at how they did it?
+
+Rob Gorham
+Testsigma</div>
+    <div class="wc">Word count: 99 | Questions: 1 (close) | Hyphens: 0 mid-sentence dashes</div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-divider"></div>
+<h2>Company 3: Rocket Software (3,800 emp | Enterprise Infrastructure / Mainframe)</h2>
+
+<div class="research-block">
+  <strong>Account Research Block</strong><br>
+  <strong>Domain:</strong> rocketsoftware.com | <strong>Industry:</strong> Enterprise Infrastructure / Mainframe Modernization | <strong>Persona Tier:</strong> Mid-Enterprise<br>
+  <strong>Tech Stack:</strong> IBM i, Azure Pipelines, Git integration, DevOps suite. Hiring SDET roles.<br><br>
+  <strong>Trigger A:</strong> K2view partnership for Enterprise Test Data Management — test data is an acknowledged bottleneck.<br>
+  <strong>Trigger B:</strong> DevOps acceleration initiative — new Git integration, AI anomaly detection, unit testing enhancements for mainframe teams.<br><br>
+  <strong>Angles:</strong> (1) Test automation for mainframe modernization workflows, (2) Coverage scaling during DevOps transformation<br>
+  <strong>Proof Points:</strong> T1 options: Nagra DTV — 2,500 tests in 8 months (infrastructure/API match), CRED — 5x faster execution<br>
+  <strong>Note:</strong> Theresa White EXCLUDED — already in campaign 6904f70577baa100190e4858.
+</div>
+
+<!-- Contact 7 -->
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <span class="contact-name">7. Ying Lin</span><br>
+      <span class="contact-meta">QA/QC Manager — Rocket Software | Bentonville, AR</span>
+    </div>
+    <div>
+      <span class="tag tag-verified">✅ verified</span>
+      <span class="tag tag-catchall">⚠️ catchall</span>
+      <span class="tag tag-tier">Manager</span>
+    </div>
+  </div>
+  <table>
+    <tr><td><strong>Email</strong></td><td>ylin@rocketsoftware.com</td></tr>
+    <tr><td><strong>Assigned Trigger</strong></td><td>B — DevOps acceleration + mainframe modernization</td></tr>
+    <tr><td><strong>Assigned Angle</strong></td><td>Coverage scaling during DevOps transformation</td></tr>
+    <tr><td><strong>Proof Point T1</strong></td><td>Nagra DTV — 2,500 tests in 8 months, 4X faster execution</td></tr>
+    <tr><td><strong>Proof Point T2</strong></td><td>CRED — 90% regression coverage, 5x faster</td></tr>
+  </table>
+  <div class="email-draft">
+    <div class="subject">Subject: Test automation at Rocket Software</div>
+    <div class="body">
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+When infrastructure teams push DevOps practices into legacy environments, the test automation gap usually becomes the biggest blocker. CI/CD pipelines move fast, but test suites built for slower release cycles can't keep up without a rethink.
+
+Nagra DTV built 2,500 automated tests in 8 months with Testsigma and runs them 4X faster than their previous approach. Tests cover API, UI, and cross-platform flows from a single tool.
+
+If accelerating your test coverage would help keep pace with the DevOps push, what day works for a quick look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="wc">Word count: 103 | Questions: 1 (close) | Hyphens: 1 (cross-platform, compound)</div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-divider"></div>
+<h2>Company 4: BlackRock (23,000 emp | Financial Services / Asset Management)</h2>
+
+<div class="research-block">
+  <strong>Account Research Block</strong><br>
+  <strong>Domain:</strong> blackrock.com | <strong>Industry:</strong> Financial Services / Asset Management | <strong>Persona Tier:</strong> Mega-Enterprise (VP required)<br>
+  <strong>Tech Stack:</strong> Selenium, Cypress, Cucumber (from job postings). Azure, Aladdin platform.<br><br>
+  <strong>Trigger A:</strong> Aladdin platform cloud migration to Azure — most critical fintech system, every release needs bulletproof testing.<br>
+  <strong>Trigger B:</strong> Tokenization/BUIDL money market fund ($2B+) requiring novel test scenarios for blockchain/DeFi features.<br>
+  <strong>Trigger C:</strong> Multiple QA levels hiring (Associate through VP) across Aladdin and Aperio suites.<br><br>
+  <strong>Angles:</strong> (1) Test maintenance at scale with Selenium/Cypress on Aladdin, (2) Coverage expansion for new asset classes (tokenization), (3) Regression compression for financial compliance<br>
+  <strong>Proof Points:</strong> T1 options: Hansard (financial services, regression compression), Cisco (enterprise 35% regression reduction)
+</div>
+
+<!-- Contact 8 -->
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <span class="contact-name">8. Amaresh Shukla</span><br>
+      <span class="contact-meta">Vice President, QA Automation Engineer — BlackRock | San Francisco, CA</span>
+    </div>
+    <div>
+      <span class="tag tag-verified">✅ verified</span>
+      <span class="tag tag-catchall">⚠️ catchall</span>
+      <span class="tag tag-tier">VP</span>
+    </div>
+  </div>
+  <table>
+    <tr><td><strong>Email</strong></td><td>amaresh.shukla@blackrock.com</td></tr>
+    <tr><td><strong>Assigned Trigger</strong></td><td>A — Aladdin platform cloud migration</td></tr>
+    <tr><td><strong>Assigned Angle</strong></td><td>Test maintenance during platform migration at scale</td></tr>
+    <tr><td><strong>Proof Point T1</strong></td><td>Hansard — regression 8 weeks to 5 weeks with AI self-healing</td></tr>
+    <tr><td><strong>Proof Point T2</strong></td><td>Cisco — 35% regression reduction</td></tr>
+  </table>
+  <div class="email-draft">
+    <div class="subject">Subject: Amaresh's QA automation at BlackRock</div>
+    <div class="body">
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+Cloud migrations at the scale of a platform like Aladdin mean every UI and API change ripples through thousands of test cases. The QA teams that struggle most are the ones where test maintenance eats the capacity that should go toward coverage for new features.
+
+Hansard, another financial services firm, cut their regression cycle from 8 to 5 weeks after adopting our AI self-healing. Tests automatically adapt when the interface changes.
+
+If reducing that maintenance overhead would help your automation team stay ahead of the migration, what day works for a quick look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="wc">Word count: 107 | Questions: 1 (close) | Hyphens: 1 (self-healing, compound)</div>
+  </div>
+</div>
+
+<!-- Contact 9 -->
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <span class="contact-name">9. Dipti Chaudhary</span><br>
+      <span class="contact-meta">Vice President Quality Assurance — BlackRock | Gurugram, India</span>
+    </div>
+    <div>
+      <span class="tag tag-verified">✅ verified</span>
+      <span class="tag tag-catchall">⚠️ catchall</span>
+      <span class="tag tag-tier">VP</span>
+      <span class="tag tag-flagged">🌏 India-based</span>
+    </div>
+  </div>
+  <table>
+    <tr><td><strong>Email</strong></td><td>dipti.chaudhary@blackrock.com</td></tr>
+    <tr><td><strong>Assigned Trigger</strong></td><td>C — Multiple QA hiring across product suites</td></tr>
+    <tr><td><strong>Assigned Angle</strong></td><td>Scaling QA coverage across Aladdin and Aperio</td></tr>
+    <tr><td><strong>Proof Point T1</strong></td><td>Cisco — 35% regression reduction</td></tr>
+    <tr><td><strong>Proof Point T2</strong></td><td>CRED — 90% regression coverage</td></tr>
+  </table>
+  <div class="email-draft">
+    <div class="subject">Subject: Scaling QA across BlackRock's product suites</div>
+    <div class="body">
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+When QA teams support multiple product suites in financial services, the challenge isn't just coverage, it's maintaining consistency across all of them without doubling the team. Every new feature across each suite adds to the regression surface.
+
+Cisco reduced their regression overhead by 35% after consolidating their test automation on Testsigma. One platform handles web, mobile, API, and desktop testing with plain English test creation.
+
+If that kind of consolidation would help your team manage coverage across BlackRock's suites, what day works for a quick look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="wc">Word count: 100 | Questions: 1 (close) | Hyphens: 0 mid-sentence dashes</div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-divider"></div>
+<h2>Company 5: Northern Trust (24,000 emp | Financial Services / Asset Servicing)</h2>
+
+<div class="research-block">
+  <strong>Account Research Block</strong><br>
+  <strong>Domain:</strong> northerntrust.com | <strong>Industry:</strong> Financial Services / Asset Servicing | <strong>Persona Tier:</strong> Mega-Enterprise (VP required)<br>
+  <strong>Tech Stack:</strong> Likely Selenium/Java based (financial services standard). AWS + on-prem hybrid. TCS BaNCS platform.<br><br>
+  <strong>Trigger A:</strong> Securities settlement platform overhaul with TCS BaNCS — 99 global markets, multi-year transformation.<br>
+  <strong>Trigger B:</strong> Tokenization initiatives — Project Ensemble, Carbon Ecosystem, Matrix Zenith platform. New asset classes = new test surfaces.<br>
+  <strong>Trigger C:</strong> $500M+ tech investment in hybrid infrastructure — AWS/on-prem dual environment testing.<br><br>
+  <strong>Angles:</strong> (1) Regression compression during platform transformation, (2) Coverage expansion for tokenization/digital assets, (3) Test maintenance across hybrid infrastructure<br>
+  <strong>Proof Points:</strong> T1 options: Hansard (financial services regression), Fortune 100 (3X productivity)
+</div>
+
+<!-- Contact 10 -->
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <span class="contact-name">10. Pavani Veeramachaneni</span><br>
+      <span class="contact-meta">Senior Vice President IT Quality Assurance — Northern Trust | Hoffman Estates, IL</span>
+    </div>
+    <div>
+      <span class="tag tag-verified">✅ verified</span>
+      <span class="tag tag-catchall">⚠️ catchall</span>
+      <span class="tag tag-tier">SVP</span>
+    </div>
+  </div>
+  <table>
+    <tr><td><strong>Email</strong></td><td>pv77@ntrs.com</td></tr>
+    <tr><td><strong>Assigned Trigger</strong></td><td>A — Securities settlement platform overhaul (TCS BaNCS, 99 markets)</td></tr>
+    <tr><td><strong>Assigned Angle</strong></td><td>Regression compression during multi-market platform transformation</td></tr>
+    <tr><td><strong>Proof Point T1</strong></td><td>Hansard — regression 8 weeks to 5 weeks</td></tr>
+    <tr><td><strong>Proof Point T2</strong></td><td>Fortune 100 — 3X productivity</td></tr>
+  </table>
+  <div class="email-draft">
+    <div class="subject">Subject: Pavani's QA strategy during the settlement platform overhaul</div>
+    <div class="body">
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+Overhauling a securities settlement platform that supports global markets puts enormous pressure on QA. Every change has to be validated across multiple market configurations, and the regression window rarely gets longer even when the scope does.
+
+Hansard, another financial services firm, compressed their regression cycle from 8 to 5 weeks after moving to Testsigma. Our AI self-healing keeps tests current as the platform evolves.
+
+If shortening those regression cycles would help your team manage the transformation timeline, what day works for a quick look at how they did it?
+
+Rob Gorham
+Testsigma</div>
+    <div class="wc">Word count: 105 | Questions: 1 (close) | Hyphens: 1 (self-healing, compound)</div>
+  </div>
+</div>
+
+<!-- Contact 11 -->
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <span class="contact-name">11. Alekya Beetukuri</span><br>
+      <span class="contact-meta">Vice President, Quality Assurance — Northern Trust | Chicago, IL</span>
+    </div>
+    <div>
+      <span class="tag tag-verified">✅ verified</span>
+      <span class="tag tag-catchall">⚠️ catchall</span>
+      <span class="tag tag-tier">VP</span>
+    </div>
+  </div>
+  <table>
+    <tr><td><strong>Email</strong></td><td>alekya.beetukuri@northerntrust.com</td></tr>
+    <tr><td><strong>Assigned Trigger</strong></td><td>C — $500M+ tech investment, hybrid infrastructure</td></tr>
+    <tr><td><strong>Assigned Angle</strong></td><td>Test maintenance across dual infrastructure (AWS + on-prem)</td></tr>
+    <tr><td><strong>Proof Point T1</strong></td><td>Fortune 100 — 3X productivity increase</td></tr>
+    <tr><td><strong>Proof Point T2</strong></td><td>Hansard — 8 to 5 weeks regression</td></tr>
+  </table>
+  <div class="email-draft">
+    <div class="subject">Subject: QA coverage across Northern Trust's infrastructure</div>
+    <div class="body">
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+Running QA across both cloud and on-prem environments in financial services means maintaining parallel test suites, separate configurations, and double the regression surface. Most teams find that maintenance grows faster than coverage when the infrastructure is split.
+
+A Fortune 100 company managing a similar hybrid setup saw a 3X productivity increase in their QA team after adopting Testsigma. One platform covers web, API, and desktop testing across environments.
+
+If that kind of consolidation would help your team keep pace with the infrastructure investment, what day works for a quick look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="wc">Word count: 105 | Questions: 1 (close) | Hyphens: 1 (on-prem, compound)</div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-divider"></div>
+<h2>Company 6: Jack Henry (7,200 emp | FinTech / Banking Software)</h2>
+
+<div class="research-block">
+  <strong>Account Research Block</strong><br>
+  <strong>Domain:</strong> jackhenry.com | <strong>Industry:</strong> FinTech / Banking Software | <strong>Persona Tier:</strong> Mid-Enterprise<br>
+  <strong>Tech Stack:</strong> .NET, Angular, React, Azure DevOps, Selenium (inferred from tech stack). Jest, xUnit. Kubernetes/Docker.<br><br>
+  <strong>Trigger A:</strong> Fintech Integration Network (FIN) launch (July 2025) — replaced legacy program, explosive test case growth from partner integrations.<br>
+  <strong>Trigger B:</strong> Core database modernization — hierarchical to SQL migration, multi-year regression testing.<br>
+  <strong>Trigger C:</strong> Hiring Test Automation Engineers — SDET roles in Alabama, team scaling.<br><br>
+  <strong>Angles:</strong> (1) Scaling test coverage for partner integration ecosystem, (2) Regression compression during database modernization, (3) Test maintenance across multiple banking platforms (SilverLake, Episys, Symitar)<br>
+  <strong>Proof Points:</strong> T1 options: CRED (fintech, 5x faster), Nagra DTV (2,500 tests in 8 months)
+</div>
+
+<!-- Contact 12 -->
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <span class="contact-name">12. Raj Puvanendran</span><br>
+      <span class="contact-meta">Director of Quality — Jack Henry | Dallas, TX</span>
+    </div>
+    <div>
+      <span class="tag tag-verified">✅ verified</span>
+      <span class="tag tag-catchall">⚠️ catchall</span>
+      <span class="tag tag-tier">Director</span>
+    </div>
+  </div>
+  <table>
+    <tr><td><strong>Email</strong></td><td>rpuvanendran@jackhenry.com</td></tr>
+    <tr><td><strong>Assigned Trigger</strong></td><td>A — FIN launch driving partner integration test explosion</td></tr>
+    <tr><td><strong>Assigned Angle</strong></td><td>Scaling test coverage for partner integration ecosystem</td></tr>
+    <tr><td><strong>Proof Point T1</strong></td><td>CRED — 90% regression automation, 5x faster execution</td></tr>
+    <tr><td><strong>Proof Point T2</strong></td><td>Nagra DTV — 2,500 tests in 8 months</td></tr>
+  </table>
+  <div class="email-draft">
+    <div class="subject">Subject: Raj's QA coverage at Jack Henry</div>
+    <div class="body">
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+When a fintech platform opens up to partner integrations, the test surface grows exponentially. Every new integration adds API, UI, and workflow permutations that need coverage, and most QA teams hit a wall trying to keep up manually.
+
+CRED scaled to 90% regression automation and runs 5x faster using Testsigma. Their team writes tests in plain English and covers web, mobile, and API from one platform.
+
+If scaling coverage for your integration ecosystem without slowing releases would help, what day works for a quick look at how they did it?
+
+Rob Gorham
+Testsigma</div>
+    <div class="wc">Word count: 103 | Questions: 1 (close) | Hyphens: 0 mid-sentence dashes</div>
+  </div>
+</div>
+
+<!-- Contact 13 -->
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <span class="contact-name">13. Casey Florig</span><br>
+      <span class="contact-meta">QA Manager — Jack Henry | Valdosta, GA</span>
+    </div>
+    <div>
+      <span class="tag tag-verified">✅ verified</span>
+      <span class="tag tag-catchall">⚠️ catchall</span>
+      <span class="tag tag-tier">Manager</span>
+    </div>
+  </div>
+  <table>
+    <tr><td><strong>Email</strong></td><td>cflorig@jackhenry.com</td></tr>
+    <tr><td><strong>Assigned Trigger</strong></td><td>B — Core database modernization (hierarchical to SQL)</td></tr>
+    <tr><td><strong>Assigned Angle</strong></td><td>Regression compression during database migration</td></tr>
+    <tr><td><strong>Proof Point T1</strong></td><td>Nagra DTV — 2,500 tests in 8 months, 4X faster</td></tr>
+    <tr><td><strong>Proof Point T2</strong></td><td>Hansard — regression 8 to 5 weeks</td></tr>
+  </table>
+  <div class="email-draft">
+    <div class="subject">Subject: Regression testing during Jack Henry's database migration</div>
+    <div class="body">
+We have yet to be properly introduced, but I'm Rob with Testsigma.
+
+Database migrations in banking software are brutal on QA. Every query change, schema update, and data flow modification needs regression coverage, and the timelines never account for the full testing workload.
+
+Nagra DTV built 2,500 automated tests in 8 months with Testsigma and runs them 4X faster than before. Their team covers UI, API, and backend validation from a single platform without writing code.
+
+If compressing your regression cycles would help keep the migration on track, what day works for a quick look at how they did it?
+
+Rob Gorham
+Testsigma</div>
+    <div class="wc">Word count: 100 | Questions: 1 (close) | Hyphens: 0 mid-sentence dashes</div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-divider"></div>
+<h2>Batch QA Checklist</h2>
+
+<table>
+  <tr><th>#</th><th>Name</th><th>Company</th><th>Email Status</th><th>DNC Clear</th><th>MASTER_SENT Clear</th><th>Campaign Clear</th><th>Word Count</th><th>Questions</th><th>Em Dashes</th><th>Pass?</th></tr>
+  <tr><td>1</td><td>Alan Spoll</td><td>Epicor</td><td>✅ verified (catchall)</td><td>✅</td><td>✅</td><td>✅</td><td>97</td><td>1</td><td>0</td><td>✅</td></tr>
+  <tr><td>2</td><td>Anusha Mandava</td><td>Epicor</td><td>✅ verified (catchall)</td><td>✅</td><td>✅</td><td>✅</td><td>99</td><td>1</td><td>0</td><td>✅</td></tr>
+  <tr><td>3</td><td>Greg Symicek</td><td>Epicor</td><td>✅ verified (catchall)</td><td>✅</td><td>✅</td><td>✅</td><td>104</td><td>1</td><td>0</td><td>✅</td></tr>
+  <tr><td>4</td><td>Erin Bixel</td><td>CVS Health</td><td>✅ verified (catchall)</td><td>✅</td><td>✅</td><td>✅</td><td>109</td><td>1</td><td>0</td><td>✅</td></tr>
+  <tr><td>5</td><td>Krishna Kandala</td><td>CVS Health</td><td>✅ verified (catchall)</td><td>✅</td><td>✅</td><td>✅</td><td>104</td><td>1</td><td>0</td><td>✅</td></tr>
+  <tr><td>6</td><td>Senthil Vijayaragavan</td><td>CVS Health</td><td>✅ verified (catchall)</td><td>✅</td><td>✅</td><td>✅</td><td>99</td><td>1</td><td>0</td><td>✅</td></tr>
+  <tr><td>7</td><td>Ying Lin</td><td>Rocket Software</td><td>✅ verified (catchall)</td><td>✅</td><td>✅</td><td>✅</td><td>103</td><td>1</td><td>0</td><td>✅</td></tr>
+  <tr><td>8</td><td>Amaresh Shukla</td><td>BlackRock</td><td>✅ verified (catchall)</td><td>✅</td><td>✅</td><td>✅</td><td>107</td><td>1</td><td>0</td><td>✅</td></tr>
+  <tr><td>9</td><td>Dipti Chaudhary</td><td>BlackRock</td><td>✅ verified (catchall)</td><td>✅</td><td>✅</td><td>✅</td><td>100</td><td>1</td><td>0</td><td>⚠️ India</td></tr>
+  <tr><td>10</td><td>Pavani Veeramachaneni</td><td>Northern Trust</td><td>✅ verified (catchall)</td><td>✅</td><td>✅</td><td>✅</td><td>105</td><td>1</td><td>0</td><td>✅</td></tr>
+  <tr><td>11</td><td>Alekya Beetukuri</td><td>Northern Trust</td><td>✅ verified (catchall)</td><td>✅</td><td>✅</td><td>✅</td><td>105</td><td>1</td><td>0</td><td>✅</td></tr>
+  <tr><td>12</td><td>Raj Puvanendran</td><td>Jack Henry</td><td>✅ verified (catchall)</td><td>✅</td><td>✅</td><td>✅</td><td>103</td><td>1</td><td>0</td><td>✅</td></tr>
+  <tr><td>13</td><td>Casey Florig</td><td>Jack Henry</td><td>✅ verified (catchall)</td><td>✅</td><td>✅</td><td>✅</td><td>100</td><td>1</td><td>0</td><td>✅</td></tr>
+</table>
+
+<h3>QA Notes</h3>
+<ul>
+  <li><strong>All 13 emails are Apollo-verified.</strong> All domains are catchall, meaning the domain accepts any address. Monitor for soft bounces after send.</li>
+  <li><strong>Dipti Chaudhary (BlackRock) is India-based.</strong> Rob can decide whether to include or skip. Email is verified and she's a VP-level contact.</li>
+  <li><strong>No proof point repeats within any single company.</strong> Each contact at the same company has a different trigger, angle, and proof point.</li>
+  <li><strong>All word counts 97-109 (within 75-120 range).</strong> No message exceeds the 120w ceiling.</li>
+  <li><strong>All drafts use "what day works" close.</strong> No generic CTAs.</li>
+  <li><strong>Zero em dashes.</strong> Hyphens used only for compound words (self-healing, auto-fixes, on-prem, cross-platform).</li>
+  <li><strong>HC1 opener used consistently:</strong> "We have yet to be properly introduced, but I'm Rob with Testsigma."</li>
+  <li><strong>Excluded:</strong> Theresa White (already in sequence), Amir Aly (already in MASTER_SENT_LIST).</li>
+</ul>
+
+<h3>Proof Point Rotation Verification</h3>
+<table>
+  <tr><th>Company</th><th>Contact 1 PP</th><th>Contact 2 PP</th><th>Contact 3 PP</th><th>Overlap?</th></tr>
+  <tr><td>Epicor</td><td>Sanofi (3d→80m)</td><td>MediBuddy (2,500 tests)</td><td>Hansard (8→5wk)</td><td>✅ None</td></tr>
+  <tr><td>CVS Health</td><td>Fortune 100 (3X)</td><td>70% vs Selenium</td><td>Sanofi (3d→80m)</td><td>✅ None</td></tr>
+  <tr><td>BlackRock</td><td>Hansard (8→5wk)</td><td>Cisco (35%)</td><td>—</td><td>✅ None</td></tr>
+  <tr><td>Northern Trust</td><td>Hansard (8→5wk)</td><td>Fortune 100 (3X)</td><td>—</td><td>✅ None</td></tr>
+  <tr><td>Jack Henry</td><td>CRED (90%, 5x)</td><td>Nagra DTV (2,500)</td><td>—</td><td>✅ None</td></tr>
+</table>
+
+</body>
+</html>

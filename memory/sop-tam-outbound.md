@@ -360,115 +360,66 @@ Testsigma
 
 ---
 
-## Part 7: T2 Draft Rules (Multi-Template Formula — Updated Mar 12)
+## Part 7: T2 Draft Rules (Deep-Dive Formula v4 — Updated Mar 12)
 
 T2 sends on Day 5 from T1. Via Apollo TAM Outbound Step 2 (manual email task).
 
-**Word count:** 50-65 words. Tighter than T1 (75-100w). Don't pad to hit a floor — if it reads clean at 50w, leave it.
+**Threading:** T2 should be sent as a reply to the T1 thread when possible. The T2 builds directly on T1 content, so having T1 visible in the thread adds context and improves open rates.
 
-**BANNED openers (do NOT use these):**
-- "Different lens from my last note" — overused across batches
-- "One more angle worth adding/sharing" — overused across batches
-- "Following up" / "Circling back" — too passive
+**Word count:** 140-190 words. This is intentionally longer than T1. The T2 goes deeper on pain, pitches the solution, and tells a customer story. Every word must earn its spot.
 
----
+**Tone:** Casual, direct, plain language. No enterprise-speak. Write like a real person, not a template.
 
-### T2 Structural Templates (pick one per contact based on role + company)
-
-**Template A — Direct observation lead** (enterprise, VPs, Directors at large companies)
-No bridge. Open with a company/context-specific insight and go straight into proof point.
-Structure: [Company/industry insight, 1 sentence] → [Proof point, 1-2 sentences] → [CTA]
-Example openers:
-- "At [Company]'s release cadence, [pain] isn't just a QA problem, it [business consequence]."
-- "[Company]'s [platform complexity] means [specific challenge most teams miss]."
-- "For a platform at [Company]'s scale, [pain framing]."
-Best for: Fidelity, JPMorgan, YouTube, Mastercard, large enterprises
-
-**Template B — Problem framing lead** (QA Managers, Director of Engineering, mid-size SaaS)
-Open with a punchy 1-sentence description of the pain, no bridge.
-Structure: [Pain statement, punchy] → [Proof point as solution] → [CTA]
-Example openers:
-- "[Specific pain pattern] at [Company]'s pace."
-- "The [pain] problem doesn't fix itself at [release velocity / team size]."
-- "[Situation] is rough. [Quick setup]. [Proof point]. [CTA]."
-Best for: QA Managers, Directors at mid-size SaaS, Checkr-scale companies
-
-**Template C — Casual and specific** (SDETs, automation leads, younger/scrappier orgs)
-Plain language, short sentences, minimal jargon. Closest to how a real person would write.
-Structure: [1-2 casual setup sentences] → [Proof point, plain language] → [Short CTA]
-Example openers:
-- "Quick add from my last note."
-- "One thing I didn't mention: [insight]."
-- "[Post-acquisition / migration / scaling] QA is rough. [Specific reason]."
-Best for: SDETs, senior automation engineers, companies < 1,000 employees, Checkr, Mindbody, Charlie Health
-
-**Template D — Proof point lead** (when customer story is a strong match to their situation)
-Open with the customer story directly, then tie it to their specific context.
-Structure: [Customer result as hook] → [Why it applies to them specifically] → [CTA]
-Example openers:
-- "One of the [industry/size] teams we work with [result]. The trigger was [insight]."
-- "[Customer] was in a similar spot: [brief situation]. [Result] after using Testsigma."
-- "Quick stat worth sharing: [Customer] [result]."
-Best for: Any role when the proof point maps tightly to their company's exact situation
+**BANNED phrases:**
+- "Different lens from my last note" / "One more angle worth adding/sharing"
+- "Following up" / "Circling back" / "Reaching back out"
+- "Thought this was worth adding"
+- Any bridge/opener that apologizes for taking up space
 
 ---
 
-### CTA Selection by Persona
+### T2 Structure (4 parts, every email follows this)
 
-**Tech ICs (SDETs, automation leads, senior engineers):** Short specific question that forces a real answer.
-- "Still running Selenium, or have you moved to something else?"
-- "What does your current test framework look like?"
-- "Any Playwright or Cypress in the mix yet, or still Selenium-based?"
-- "Are you writing tests in code, or have you explored plain-language authoring?"
+**Part 1 — "I imagine" + deeper pain speculation (~2-3 sentences)**
+Build directly on the T1 angle but go one level deeper. T1 named the problem; T2 describes what that problem actually feels like day-to-day for THIS person in THIS role at THIS company. Use "I imagine" to show you've thought about their specific situation.
+- Reference specific details from T1 (their tech stack, migration, team structure)
+- Speculate on the downstream consequences they're living with
+- Make it specific enough that they think "yeah, that's exactly right"
 
-**Managers / Directors:** Broader qualifying question that lets them self-identify pain.
-- "Is test creation or maintenance more of the drag right now?"
-- "How much of your team's capacity goes to keeping existing tests green versus writing new coverage?"
-- "Is the maintenance backlog shrinking or growing quarter over quarter?"
+**Part 2 — Testsigma solution pitch (~2 sentences)**
+NOT a generic pitch. Directly answer the specific pain from Part 1. Explain what Testsigma does that solves THEIR problem, in plain language. Connect the feature to the pain so the "why" is obvious.
+- Plain English tests (no framework lock-in) — use when pain is framework migration or dual-stack maintenance
+- AI self-healing (auto-fixes locators) — use when pain is maintenance overhead or test brittleness
+- NLP test creation (write tests in English) — use when pain is test creation speed or coverage gaps
+- Unified platform (web, mobile, API, desktop) — use when pain is toolchain fragmentation
 
-**VPs / heads of engineering:** Business-level framing question.
-- "Is regression cycle time affecting release confidence on your side?"
-- "What does coverage completeness look like as a delivery gate for your team?"
-- "How are you thinking about test coverage as your roadmap accelerates?"
+**Part 3 — Customer story (~2 sentences)**
+Name a specific Testsigma customer that maps to their situation. Explain WHY this customer is relevant (similar industry, similar challenge, similar scale), give the outcome, and add one insight about what changed for them beyond the headline metric.
 
----
-
----
-
-### Reference Examples (validated Mar 12)
-
-**Template A — Rick Brandt, Director, Cboe Global Markets:**
-Subject: Rick — coverage vs. headcount at Cboe scale
-Body: At Cboe's trading volume, coverage gaps aren't just a QA problem, they become a release risk that builds quietly. CRED hit 90% regression coverage 5x faster than their prior toolchain by shifting to NLP-driven test creation with Testsigma, no existing tests rewritten. Is coverage breadth the bigger constraint for your team right now, or cycle time?
-*56 words*
-
-**Template B — Sarah Kneedler, QA Manager, Checkr:**
-Subject: Sarah — maintenance queue at Checkr's release pace
-Body: The maintenance backlog doesn't clear itself at Checkr's release velocity, it compounds with every sprint. MediBuddy broke that pattern by cutting test maintenance 50% after deploying Testsigma's AI self-healer across their full suite. Is your maintenance queue actually shrinking quarter over quarter, or still growing faster than the team can address it?
-*52 words*
-
-**Template C — Chandni Jain (SDET/lead), Checkr:**
-Subject: Chandni — inherited test debt after the acquisition
-Body: Post-acquisition QA is rough. Two codebases, two toolchains, and the maintenance overhead doubles before you can consolidate anything. MediBuddy got ahead of that by cutting test maintenance 50% with Testsigma's AI healer across their combined suite. How much of your team's bandwidth is going to keeping acquired product tests green right now?
-*52 words*
-
-**Template D — Arun Amarendran, Automation Lead, Commvault:**
-Subject: Arun — multi-product coverage gaps at Commvault
-Body: One of the enterprise storage teams we work with had uneven coverage across a 6-product suite. No one was failing, but whole product lines had gaps no one was tracking. They closed those gaps 5x faster using Testsigma's NLP-driven authoring. Is coverage depth consistent across all of Commvault's product lines today, or are some areas thinner than others?
-*58 words*
+**Part 4 — Tie-back CTA (~1-2 sentences)**
+Connect T1 + T2 together. Reference "what I mentioned last time" or the T1 topic explicitly. Then ask for 15 minutes to walk through the customer story and see if it applies to their situation.
 
 ---
 
-### Rules (all templates)
-- 50-65 words — don't pad to hit a floor
-- NO banned openers: "Different lens from my last note" / "One more angle worth adding/sharing" / "Following up" / "Circling back"
-- NO LinkedIn callback (email-first)
-- NEW angle — different from T1 theme (if T1 = maintenance, T2 = coverage/creation; if T1 = speed, T2 = maintenance)
+### CTA phrasing (15-minute meeting ask)
+- "Would 15 minutes make sense to walk through how [Customer] made that shift and see if it applies?"
+- "Would 15 minutes be worth it to see how [Customer] handled [their exact problem] and whether there's a fit?"
+- "If [pain from Part 1] is real for your team, would 15 minutes make sense to walk through what [Customer] did?"
+
+---
+
+### Rules
+- 140-190 words — substantially longer than T1, every part must be present
+- Reply in same thread as T1 (when possible)
+- Must reference T1 content explicitly (the pain, the tech stack, the trigger)
+- "I imagine" opener to go deeper on pain — NOT a repeat of T1
+- Testsigma pitch must be specific to their pain (not generic product overview)
+- Customer story must explain WHY that customer is relevant to them
+- CTA = 15 minutes, tied to customer story + their situation
 - NEW proof point — do not repeat T1's customer story
-- Plain language — cut enterprise-speak and jargon
 - No em dashes
-- CTA = question only (NOT "what day works" — save meeting ask for breakup email)
-- Template selection: A = enterprise/senior, B = manager/QA lead, C = IC/SDET/smaller company, D = tight proof point match
+- Plain language throughout
+- Sign-off: Rob Gorham / Testsigma
 
 **Proof point rotation (T1 → T2):**
 - T1: Hansard (regression 8→5 weeks) → T2: CRED (90% coverage, 5x faster) or MediBuddy (50% maintenance cut)
@@ -476,6 +427,29 @@ Body: One of the enterprise storage teams we work with had uneven coverage acros
 - T1: Nagra DTV (2,500 tests, 4x faster) → T2: CRED or MediBuddy
 - T1: CRED → T2: Hansard or MediBuddy
 - T1: MediBuddy → T2: CRED or Cisco
+
+---
+
+### Reference Example (validated Mar 12)
+
+**Rick Brandt — Director of QA, Cboe Global Markets**
+T1 angle: Dual Selenium/Playwright migration, maintenance overhead peaking, hiring for Playwright on newer clearing systems
+T1 proof point: Hansard (8→5 week regression)
+
+**T2 (threaded reply, 168w):**
+
+Rick,
+
+I imagine running two frameworks at once at Cboe means your team is fighting two separate maintenance queues that never sync up. Locator breaks from the Selenium side don't line up with Playwright issues on the newer clearing systems, and your engineers are context-switching between both every sprint instead of building new coverage.
+
+That's exactly the kind of problem Testsigma was built for. Tests are written in plain English instead of framework-specific code, so there's no Selenium vs. Playwright split to maintain. And AI self-healing handles locator changes automatically, which is what keeps both queues from piling up.
+
+CRED, a financial platform dealing with a similar coverage-to-complexity ratio, hit 90% regression coverage 5x faster after switching to Testsigma. The big shift for them wasn't just speed, it was getting their team off the maintenance treadmill and back to building net-new tests.
+
+Between the dual-stack pressure I mentioned last time and the coverage demands that come with Cboe's product breadth, I think there's a real parallel to what CRED was facing. Would 15 minutes make sense to walk through how they made that shift and see if it applies?
+
+Rob Gorham
+Testsigma
 
 ---
 

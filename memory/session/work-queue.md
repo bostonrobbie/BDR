@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-12 (Session 25 end — End-of-session tracker audit complete. All memory files updated. INC-009 logged. sop-tam-outbound.md updated with email invalid flag check + Apollo auto-send behavior docs. Final commit: 1d727c3. 6 commits unpushed — Rob must git push.)
+## Last Updated: 2026-03-12 (Session 26 end — Wave 5 Batch 4: 9 contacts enrolled in TAM Outbound from Epicor/BeyondTrust/Northern Trust. MASTER_SENT_LIST 420 rows. T1 sends pending APPROVE SEND. Wave 5 T2 task added.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 1. `git pull origin main`
@@ -33,6 +33,34 @@ Tasks are sorted by priority. Claim one task at a time by updating status to IN_
 - 🚫 Yvonne Oliver (Mastercard) — blocked: ownership error. LinkedIn InMail alternative?
 
 **Wave 4 T2 due:** Mar 19 (Day 8 from Mar 11 send) — add TASK-022 when ready to draft.
+
+### TASK-023: Send Wave 5 Batch 4 T1 Emails (9 contacts — pending APPROVE SEND)
+**Status:** UNCLAIMED — waiting for Rob's APPROVE SEND
+**Priority:** P0 — contacts enrolled, T1 tasks will appear in Apollo Tasks tab
+**Effort:** ~15 min (paste drafts from tracker into Apollo)
+**Output:** 9 T1 emails sent via Apollo Tasks tab
+
+All 9 contacts enrolled in TAM Outbound Step 1. When Apollo surfaces the manual email tasks:
+1. Open Apollo Tasks tab
+2. For each contact: paste subject + body from `tamob-batch-20260312-4.html`
+3. Send Now
+4. Update tracker HTML badges to "T1 Sent"
+5. MASTER_SENT_LIST.csv already updated (420 rows)
+
+**Contacts:** Jason Lieberman (Epicor), Les Stickney (Epicor), Holly Shubaly (BeyondTrust), Tony MacLean (BeyondTrust), Michael Sutherland (BeyondTrust), Theepa Balakrishnan (BeyondTrust), Alnis Cers (Northern Trust), Moiz Meer (Northern Trust), Padma Suresh (Northern Trust)
+
+**APPROVE SEND required before any sends**
+
+### TASK-024: Draft T2 Emails — Wave 5 Batch 4 (9 contacts, due ~Mar 19-20)
+**Status:** UNCLAIMED
+**Priority:** P1 — T2 due ~Mar 19-20 (Day 5-8 from T1 send)
+**Effort:** ~30 min
+**Output:** T2 drafts added to `tamob-batch-20260312-4.html` or separate file
+
+9 contacts from Wave 5 Batch 4. T2 tasks will appear in Apollo ~Day 5 from T1 send.
+**Formula:** sop-tam-outbound.md Part 7 — 50-70 words, engagement question CTA, different proof point from T1
+**Check T1 proof points:** `tamob-batch-20260312-4.html` (9 contact T1 drafts)
+**APPROVE SEND required before any sends**
 
 ### TASK-022: Draft T2 Emails — Wave 4 (35 contacts, due Mar 19)
 **Status:** UNCLAIMED

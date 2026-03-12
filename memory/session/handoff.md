@@ -1,5 +1,5 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-12 (Session 25 end — Full end-of-session tracker audit complete. All 5 memory files updated + committed. INC-009 logged. sop-tam-outbound.md: email invalid flag + Apollo auto-send behavior rules added. 6 commits ahead of origin/main — Rob must git push.)
+## Last Updated: 2026-03-12 (Session 26 — Wave 5 Batch 4: 9 contacts from Epicor/BeyondTrust/Northern Trust created + enrolled in TAM Outbound. MASTER_SENT_LIST 420 rows. Canada territory expansion active. All 9 T1 tasks pending in Apollo queue — APPROVE SEND needed. Handoff complete.)
 
 ---
 
@@ -364,6 +364,47 @@ All 11 contacts checked via Apollo MCP. Findings:
 **Companies covered (sent to):**
 E*TRADE/Morgan Stanley, Broadcom, Humana, Corewell Health, Blue Cross MN, BCBS Texas, Blue Cross KC, Mastercard (7/8 sent — Yvonne Oliver blocked), Anaplan, DraftKings, Cleveland Clinic, Microchip Technology, GEICO, Electronic Arts, HashiCorp, KKR, Datamatics, OneMain Financial
 
+
+---
+
+## TAM OUTBOUND WAVE 5 BATCH 4 — CURRENT STATE (Mar 12 — Session 26)
+
+**✅ ALL 9 CONTACTS CREATED IN APOLLO + ENROLLED IN TAM OUTBOUND**
+**⏳ T1 SENDS PENDING — APPROVE SEND NEEDED**
+
+**File:** `tamob-batch-20260312-4.html` (9 contact cards with T1 email drafts, QA gate checklists)
+**Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
+**T2 due:** Mar 19-20 (Day 5-8 from send date, depending on when T1 is sent)
+**MASTER_SENT_LIST.csv:** 9 rows added (batch: "TAM Outbound Wave5 T1 Mar12"). Total now 420 rows.
+**Canada territory expansion:** 4 of 9 contacts are Canadian — now in-territory per new directive.
+
+| # | Name | Company | Apollo ID | Email | Location | Status |
+|---|------|---------|-----------|-------|----------|--------|
+| 1 | Jason Lieberman | Epicor | 69b2d0daef825800190a560d | jlieberman@epicor.com | Austin, TX | ✅ Enrolled, T1 pending |
+| 2 | Les Stickney | Epicor | 69b2d0dcdb169c0019c2b2d3 | lstickney@epicor.com | Austin, TX | ✅ Enrolled, T1 pending |
+| 3 | Holly Shubaly | BeyondTrust | 69b2d0dedb169c000ded89e0 | hshubaly@beyondtrust.com | Canada | ✅ Enrolled, T1 pending |
+| 4 | Tony MacLean | BeyondTrust | 68ae9f27539d060001dbcbe2 | tmaclean@beyondtrust.com | Canada | ✅ Enrolled, T1 pending |
+| 5 | Michael Sutherland | BeyondTrust | 68ae8ab4dbf6140001477de9 | msutherland@beyondtrust.com | Canada | ✅ Enrolled, T1 pending |
+| 6 | Theepa Balakrishnan | BeyondTrust | 69b2d0f1db169c000ded89fa | tbalakrishnan@beyondtrust.com | Canada | ✅ Enrolled, T1 pending |
+| 7 | Alnis Cers | Northern Trust | 69b2d0f3db169c0011a2ffe7 | ac376@ntrs.com | Chicago, IL | ✅ Enrolled, T1 pending |
+| 8 | Moiz Meer | Northern Trust | 660e4579521a4a0301a6dff9 | moiz_meer@ntrs.com | Chicago, IL | ✅ Enrolled, T1 pending (required sequence_active_in_other_campaigns override) |
+| 9 | Padma Suresh | Northern Trust | 660e4579521a4a0301a6e00c | psuresh@northerntrust.com | Tempe, AZ | ✅ Enrolled, T1 pending |
+
+**Domain notes:**
+- beyondtrust.com: Catchall domain (extrapolated emails deliverable but not verified)
+- northerntrust.com: Catchall domain (extrapolated emails deliverable but not verified)
+- epicor.com: NOT catchall (emails verified)
+
+**Enrollment notes:**
+- 5 new contacts created (Jason Lieberman, Les Stickney, Holly Shubaly, Theepa Balakrishnan, Alnis Cers)
+- 4 pre-existing contacts (Tony MacLean, Michael Sutherland from Salesforce import; Moiz Meer, Padma Suresh from Chrome extension)
+- Moiz Meer required `sequence_active_in_other_campaigns: true` override — was in Shakeel's old dead sequence (6810e96760f685000de960d5, status failed/user_deleted)
+- All enrolled via robert.gorham@testsigma.com (68e3b53ceaaf74001d36c206)
+- Enrollment done in 3 batches: 5 + 4 + 1 (Moiz retry)
+
+**Backlog (from Sales Nav sweep):** 14 contacts without verified emails — candidates for Apollo Chrome extension import in future session. See tracker HTML for details.
+
+**Next action:** Rob gives APPROVE SEND → T1 emails from tracker HTML get pasted into Apollo Tasks tab → send → log.
 
 ---
 
