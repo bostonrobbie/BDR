@@ -1,11 +1,19 @@
 # Target Accounts — Rob Gorham NAMER
 
-## ⚡ PROSPECTING RULES (Effective Mar 10, 2026)
+## ⚡ PROSPECTING RULES (Updated Mar 12, 2026)
 
 **The TAM list (312 accounts) + Factor accounts (38) are the ONLY authorized prospecting universe.**
 No open Sales Nav prospecting outside these lists. Goal: systematic full coverage of every account to hit intro meeting → demo quota.
 
 All Factor accounts are a subset of the TAM (37 of 38 appear in TAM CSV; PGA of America is Factor-only).
+
+### Factor Account Prioritization (Effective Mar 12, 2026)
+**Factor accounts = intent accounts. They are the HIGHEST priority prospects in the pipeline.** Factor accounts show active buying signals (demo visits, G2 research, signup attempts, pricing page views). Always work Factor accounts before non-Factor TAM accounts. In every batch, Factor accounts that haven't been contacted yet should be included first.
+
+**Priority hierarchy (immutable):** Factor HOT (Signal Tier A) > Factor (Signal Tier B/C) > TAM ICP=HIGH > TAM ICP=Medium > TAM ICP=Low
+
+### Pre-Enrollment Domain Verification (Effective Mar 12, 2026)
+Before enrolling ANY contact in ANY sequence, verify their company domain is in `tam-accounts-mar26.csv` or Factor accounts list. See `sop-tam-outbound.md` Part 11 for the full verification gate. This check was added after a near-miss where 5 contacts from non-TAM companies (DocuSign, Bentley Systems) were included in a batch but caught before enrollment.
 
 ### Multi-Contact Rule (Effective Mar 10, 2026)
 **Find and enroll EVERY decision-maker at each account.** The goal is maximum account coverage — not just one primary contact. Pull ALL QA/Engineering Director+ contacts with findable emails and enroll them in the TAM Outbound sequence in the same batch.

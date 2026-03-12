@@ -117,27 +117,28 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 
 ---
 
-## Pipeline Status (Updated Mar 11 — post TAM Outbound Wave 4 sends)
+## Pipeline Status (Updated Mar 12 — post Batch 5 enrollment + audit)
 | Metric | Value |
 |--------|-------|
 | Legacy batch prospects contacted (InMail/LI) | **206** (202 pre-Batch11 + 4 Batch 11 Mar 6) |
-| TAM Outbound T1 sent (unique contacts) | **111** (Wave1: 23, Wave2: 16, Wave3: 35, Wave4: 37) + 9 Wave4 tasks pending in Apollo queue |
+| TAM Outbound T1 sent (unique contacts) | **111** (Wave1: 23, Wave2: 16, Wave3: 35, Wave4: 37) + 9 Wave4 tasks pending + 5 Batch5 enrolled (pending T1) |
 | MASTER_SENT_LIST.csv rows | **412** (updated Mar 11) |
 | Total InMail sends (inc. double-sends) | 198 tracked + 17 untracked B9 + 9 Batch 10 + 4 Batch 11 = **228** |
 | Total Emails sent | **~300+** — 74 pre-Mar10 + TAM Outbound Wave 1-4 (~135+ sends). See pipeline-state.md for detail. |
 | InMail credits remaining | **4** (last updated Mar 6) |
-| Batch 1 (Feb 23) | 23 people — sent as **LinkedIn connection requests, NOT InMails** (no Sales Nav threads, no credits used) |
 | Batch 9 remaining | **2 to send** (Jyothi Kudithipudi, Axel Kerksiek — deferred) |
 | Double-sends (cannot unsend) | Chuck Smith, Rick Kowaleski, Christie Howard, Mohan Gummadi, Yassi Dastan (Abe Blanco = DNC) |
 | LinkedIn Outbound - Q1 Priority Accounts | **316 enrolled** (315 pre-Mar7 + 1 Gil Taub Mar 7) |
-| TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) | ~120+ enrolled across Waves 1-4 |
+| TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) | **~130 enrolled** (Waves 1-4 + 5 Batch 5). 122 active, 10 bounced, 1 finished, 2 not sent. |
 | Q1 QA Outreach - US | **RETIRED Mar 6** — 26 clean contacts migrated to LI Outbound, sequence archived |
 | TAM Outbound bounces | Sucheth Ramgiri (Wave1 — SMTP 550), Ksenia Shchelkonogova (Wave4 — email invalid) |
 | TAM Outbound T2 schedule | Wave1: **Mar 15** | Wave2: **Mar 15** | Wave3: **Mar 16** | Wave4: **Mar 19** |
+| Yogesh Garg (Check Point) | Enrollment blocked — Apollo `contacts_without_ownership_permission` error. Needs manual ownership assignment in Apollo UI. |
 
 **TAM Outbound wave files:**
 - Wave1: `wave1-batch1-tracker-mar10.html` — Wave2: `tamob-wave2-draft-mar10.html`
 - Wave3: `tamob-batch-20260311-1.html` — Wave4: `tamob-batch-20260311-2.html`
+- Batch5: `tamob-batch-20260312-4.html` (13 drafted, 5 enrolled, 5 non-TAM removed, 2 phone-contact excluded, 1 ownership-blocked)
 
 **Legacy batch notes:**
 - Batch 9 duplicates removed: Jennifer Tune, Bhavani Neerathilingam, Sandy Paray (all in Batch 7 Feb 28)
@@ -184,7 +185,9 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 - 75-99 words sweet spot for Touch 1 (39.0% reply rate)
 
 ## Current Operating Directive (Mar 12, 2026)
-**Maximize new T1 pipeline volume.** Start every session with a new TAM T1 batch — source, research, draft, send. T2s and follow-up processing happen after T1 work is complete. Apollo handles the follow-up cadence automatically; the T1 pipeline requires active daily effort. Target: 25-50 new contacts enrolled every send day.
+**Maximize new T1 pipeline volume. Factor accounts (intent) are HIGHEST priority.** Start every session with a new TAM T1 batch — source, research, draft, send. Prioritize untouched Factor accounts first, then TAM ICP=HIGH, then Medium. T2s and follow-up processing happen after T1 work is complete. Apollo handles the follow-up cadence automatically; the T1 pipeline requires active daily effort. Target: 25-50 new contacts enrolled every send day.
+
+**⛔ TAM-ONLY RULE:** Only prospect from TAM (312) + Factor (38) accounts. Verify every contact's company domain against `tam-accounts-mar26.csv` before enrollment. See `sop-tam-outbound.md` Part 11 for the pre-enrollment verification gate.
 
 ## Google Drive Knowledge Base
 | Document | ID |

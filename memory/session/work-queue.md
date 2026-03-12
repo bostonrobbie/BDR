@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-12 (Session 26 end — Wave 5 Batch 4: 9 contacts enrolled in TAM Outbound from Epicor/BeyondTrust/Northern Trust. MASTER_SENT_LIST 420 rows. T1 sends pending APPROVE SEND. Wave 5 T2 task added.)
+## Last Updated: 2026-03-12 (Session 27 end — TAM-only audit complete. Batch 5: 5 enrolled (13 drafted, 5 non-TAM removed INC-010, 2 phone-excluded, 1 ownership-blocked). Sequence CLEAN. SOPs hardened. TASK-025 added for Batch 5 T1 sends.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 1. `git pull origin main`
@@ -50,6 +50,36 @@ All 9 contacts enrolled in TAM Outbound Step 1. When Apollo surfaces the manual 
 **Contacts:** Jason Lieberman (Epicor), Les Stickney (Epicor), Holly Shubaly (BeyondTrust), Tony MacLean (BeyondTrust), Michael Sutherland (BeyondTrust), Theepa Balakrishnan (BeyondTrust), Alnis Cers (Northern Trust), Moiz Meer (Northern Trust), Padma Suresh (Northern Trust)
 
 **APPROVE SEND required before any sends**
+
+### TASK-025: Send Batch 5 T1 Emails (5 contacts — pending APPROVE SEND)
+**Status:** UNCLAIMED — waiting for Rob's APPROVE SEND
+**Priority:** P0 — contacts enrolled, T1 tasks will appear in Apollo Tasks tab
+**Effort:** ~10 min (paste drafts from tracker into Apollo)
+**Output:** 5 T1 emails sent via Apollo Tasks tab
+
+5 contacts from Batch 5 enrolled in TAM Outbound Step 1. When Apollo surfaces the manual email tasks:
+1. Open Apollo Tasks tab
+2. For each contact: paste subject + body from `tamob-batch-20260312-4.html`
+3. Send Now
+4. Update tracker HTML badges to "T1 Sent"
+5. Update MASTER_SENT_LIST.csv with send rows
+
+**Contacts:** (from Infor/Zebra/Check Point/FactSet — see tamob-batch-20260312-4.html Batch 5 section)
+
+**Yogesh Garg (Check Point):** NOT enrolled — ownership blocked. Rob must assign ownership in Apollo UI first. After ownership fixed, enroll + add to this send batch.
+
+**APPROVE SEND required before any sends**
+
+### TASK-026: TAM-Only Enforcement — Ongoing
+**Status:** ✅ DONE (2026-03-12, Session 27) — SOPs updated, audit complete
+**Priority:** P0 — compliance
+**What was done:**
+- Audited TAM Outbound sequence: CLEAN (no non-TAM contacts enrolled)
+- Added Pre-Enrollment Domain Verification Gate to sop-tam-outbound.md Part 11
+- Added Factor Account Prioritization to target-accounts.md
+- Updated CLAUDE.md operating directive with TAM-ONLY RULE
+- Logged INC-010 in incidents.md (5 non-TAM contacts caught before enrollment)
+- Added Rule 8 (Pre-Enrollment Domain Verification) to incidents.md
 
 ### TASK-024: Draft T2 Emails — Wave 5 Batch 4 (9 contacts, due ~Mar 19-20)
 **Status:** UNCLAIMED

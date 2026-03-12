@@ -299,3 +299,42 @@ Every daily session: search drafts, cross-reference eligible dates, flag orphans
 
 ### Rule 7: Batch 7+ Tracker Requirements
 Must include: touch1_sent_date, touch2/3_eligible_date, current_touch, cadence_status (ON_TRACK/AHEAD/BEHIND/COMPLETE).
+
+### Rule 8: Pre-Enrollment Domain Verification (INC-010)
+Before any Apollo enrollment API call, verify the contact's email domain against `tam-accounts-mar26.csv`. Non-TAM contacts must never be enrolled. See `sop-tam-outbound.md` Part 11 for the full gate.
+
+---
+
+## INC-010: Non-TAM Contacts in TAM Outbound Batch (2026-03-12)
+**Severity:** MEDIUM (near-miss, caught before enrollment)
+
+### What Happened
+During TAM Outbound Batch 5 construction (tamob-batch-20260312-4.html), Apollo People Search returned contacts from 6 companies. 2 of the 6 companies (DocuSign, Bentley Systems) were NOT in Rob's TAM list. 5 contacts from these companies were included in the draft batch.
+
+### Affected Contacts (NEVER ENROLLED)
+| Name | Company | Domain | Status |
+|------|---------|--------|--------|
+| Koji Nakajima | DocuSign | docusign.com | Removed before enrollment |
+| Lakshmi Nittala | DocuSign | docusign.com | Removed before enrollment |
+| Andrew Ngo | DocuSign | docusign.com | Removed before enrollment |
+| Bruce Bader | Bentley Systems | bentley.com | Removed before enrollment |
+| Esther Barwick | Bentley Systems | bentley.com | Removed before enrollment |
+
+### Root Cause
+Apollo People Search was used with title + location filters but without restricting to TAM organization IDs or domains. The search returned matching contacts from ANY company, not just TAM accounts.
+
+### Resolution
+1. All 5 contacts removed from batch before any enrollment API call
+2. No emails were sent — zero impact on prospects
+3. Pre-Enrollment Domain Verification Gate added to `sop-tam-outbound.md` Part 11
+4. `target-accounts.md` updated with explicit Factor prioritization and domain verification rules
+5. `CLAUDE.md` updated with TAM-ONLY RULE callout
+
+### Prevention
+- ALWAYS use `organization_ids` or `q_organization_domains_list` when using Apollo People Search
+- Verify every contact's company domain against `tam-accounts-mar26.csv` before enrollment
+- See Rule 8 above
+
+### Additional Issues Found During Batch 5
+- **Yogesh Garg (Check Point):** Enrollment repeatedly skipped by Apollo API with `contacts_without_ownership_permission` error despite flag being set. Contact has null `owner_id`. Needs manual ownership assignment in Apollo UI by Rob, then re-enrollment.
+- **Mirza Hasan & Daniela Young (Infor):** Excluded from enrollment because Apollo `inactive_reason` showed "talked on phone" — they had phone conversations during a prior sequence. Only contacts with no phone contact or replies were enrolled per Rob's instruction.

@@ -541,15 +541,29 @@ Reply APPROVE SEND to send all, or APPROVE SEND — [name] only, or EDIT [name] 
 
 ## Part 11: Apollo Enrollment
 
+### ⛔ Pre-Enrollment Domain Verification Gate (MANDATORY — Added Mar 12, 2026)
+Before enrolling ANY contact, verify their company domain exists in the authorized account universe:
+1. Extract the contact's email domain (e.g., `jsmith@acme.com` → `acme.com`)
+2. Check domain against `/Work/tam-accounts-mar26.csv` (column 4: Website Domain)
+3. Also check subsidiary/alternate domains: some TAM companies use different email domains than their primary (e.g., Fidelity = `fidelity.com` but employees use `fmr.com`, YouTube employees use `google.com`, OneMain uses `omf.com`). If the organization name clearly maps to a TAM account, it passes.
+4. If the domain does NOT match any TAM or Factor account: **STOP. Do not enroll. Remove from batch.**
+5. Log any removed contacts in the batch tracker with reason "NON-TAM COMPANY — removed before enrollment."
+
+**Lesson learned (Mar 12, 2026):** Batch 5 contained 5 contacts from DocuSign and Bentley Systems, which are NOT in Rob's TAM list. Caught during pre-enrollment verification. All 5 excluded before any enrollment API call. Root cause: Apollo People Search returned contacts from non-TAM companies when searching by title/location without restricting to TAM organization IDs.
+
+**Prevention:** When using Apollo People Search to find prospects, ALWAYS filter by `organization_ids` or `q_organization_domains_list` from the TAM/Factor account lists. Never use open title+location searches that could return contacts from any company.
+
 **For contacts whose T1 was sent as InMail (outside the sequence):**
-1. Add contact to Apollo (or confirm they exist as a contact)
-2. Enroll in TAM Outbound - Rob Gorham (`69afff8dc8897c0019b78c7e`)
-3. Email account: `robert.gorham@testsigma.com` (NOT .net or .in)
-4. After enrollment: in Apollo, manually skip Step 1 (InMail was T1, already sent)
-5. Step 2 manual email task will appear — due Day 5 from enrollment date
+1. Run Pre-Enrollment Domain Verification Gate (above)
+2. Add contact to Apollo (or confirm they exist as a contact)
+3. Enroll in TAM Outbound - Rob Gorham (`69afff8dc8897c0019b78c7e`)
+4. Email account: `robert.gorham@testsigma.com` (NOT .net or .in)
+5. After enrollment: in Apollo, manually skip Step 1 (InMail was T1, already sent)
+6. Step 2 manual email task will appear — due Day 5 from enrollment date
 
 **For contacts whose T1 is email (all TAM Outbound T1s — standard protocol):**
-0. **Pre-enrollment email quality check:** Before enrolling, check if the Apollo contact record has custom field `678901dcd836ab01b09a6110 = "invalid"`. This is Apollo's internal email quality flag and reliably predicts hard bounces (see INC-009). If present: **do NOT enroll in email sequence.** Add note in batch tracker. Use LinkedIn InMail when credits are available instead.
+0a. **Pre-enrollment domain verification:** Run the Domain Verification Gate above. Do not proceed if domain is not in TAM/Factor list.
+0b. **Pre-enrollment email quality check:** Before enrolling, check if the Apollo contact record has custom field `678901dcd836ab01b09a6110 = "invalid"`. This is Apollo's internal email quality flag and reliably predicts hard bounces (see INC-009). If present: **do NOT enroll in email sequence.** Add note in batch tracker. Use LinkedIn InMail when credits are available instead.
 1. Enroll in TAM Outbound - Rob Gorham (`69afff8dc8897c0019b78c7e`) via API
 2. Email account: `robert.gorham@testsigma.com` (ID: `68e3b53ceaaf74001d36c206`)
 3. Apollo flags: `sequence_no_email: true`, `sequence_active_in_other_campaigns: true`

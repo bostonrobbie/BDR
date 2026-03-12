@@ -927,3 +927,54 @@ Y02 Ash Pedgaonkar, Y06 Suchith Chandran, V01 Ted Barker, V04 Aleck Gandel, CH01
 - T1 sends pending: Apollo Step 1 tasks will surface in Tasks tab. APPROVE SEND required before executing.
 
 **Files changed:** MASTER_SENT_LIST.csv (+9 rows), tamob-batch-20260312-4.html (created), session-log.md, handoff.md, work-queue.md
+
+---
+
+## 2026-03-12 — Session 27: TAM-Only Audit + SOP Enforcement + Batch 5 Cleanup
+
+**Session type:** Compliance audit + SOP hardening + batch cleanup
+**What was done:**
+
+1. **Yogesh Garg (Check Point) enrollment verification:**
+   - Apollo contact ID: `6673ad6e2ea319038c6525c3`
+   - NOT enrolled — `emailer_campaign_ids: []`
+   - Re-enrollment attempt with `contacts_without_ownership_permission: true` → skipped
+   - Root cause: `owner_id: null`, `creator_id: 655ecb6c164f6a00a3396e46` (not Rob)
+   - Apollo contact update API doesn't expose `owner_id` field — cannot fix via API
+   - **Resolution:** Flagged for Rob to manually assign ownership in Apollo UI
+
+2. **TAM Outbound sequence audit:**
+   - Extracted all email domains from 8 batch tracker HTML files via Python script
+   - Cross-referenced against 311 TAM domains from tam-accounts-mar26.csv
+   - Identified subsidiary/alternate domain mappings (fmr.com→Fidelity, omf.com→OneMain, etc.)
+   - **Result: CLEAN** — all enrolled contacts are from TAM companies
+   - Only non-TAM domains (docusign.com, bentley.com) were in Batch 5 tracker, caught before enrollment
+
+3. **Batch 5 cleanup (INC-010):**
+   - 13 contacts originally drafted
+   - 5 non-TAM contacts removed: Koji Nakajima, Lakshmi Nittala, Andrew Ngo (DocuSign), Bruce Bader, Esther Barwick (Bentley)
+   - 2 Infor contacts excluded: Mirza Hasan, Daniela Young (phone contact, not email)
+   - 1 Yogesh Garg blocked (ownership error)
+   - 5 contacts successfully enrolled (from Infor/Zebra/Check Point/FactSet)
+
+4. **SOP updates:**
+   - `sop-tam-outbound.md` Part 11: Added Pre-Enrollment Domain Verification Gate (5-step process)
+   - `target-accounts.md`: Added Factor Account Prioritization hierarchy (Signal Tier A > B/C > TAM ICP HIGH > Medium > Low)
+   - `target-accounts.md`: Added Pre-Enrollment Domain Verification reference
+   - `CLAUDE.md`: Updated operating directive with TAM-ONLY RULE + Factor priority
+   - `CLAUDE.md`: Updated pipeline status (Mar 12 — post Batch 5 enrollment + audit)
+   - `incidents.md`: Added INC-010 (severity MEDIUM, near-miss) + Rule 8 (domain verification)
+   - `pipeline-state.md`: Added Mar 12 Batch 5 send log entry
+
+5. **Session file updates:**
+   - Updated handoff.md with audit results, Batch 5 status, SOP changes, git log
+   - Updated work-queue.md: Added TASK-025 (Batch 5 T1 sends) + TASK-026 (TAM enforcement — DONE)
+   - Updated session-log.md (this entry)
+
+**Key decisions:**
+- TAM-only prospecting enforced at SOP level — all future batches must pass domain verification gate
+- Factor accounts get highest priority in prospecting queue
+- Yogesh Garg requires manual Apollo UI fix before enrollment
+- Non-TAM contacts (DocuSign, Bentley) permanently excluded from TAM Outbound
+
+**Files changed:** `memory/sop-tam-outbound.md`, `memory/target-accounts.md`, `CLAUDE.md`, `memory/incidents.md`, `memory/pipeline-state.md`, `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`

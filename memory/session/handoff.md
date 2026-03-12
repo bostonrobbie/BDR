@@ -1,5 +1,5 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-12 (Session 26 — Wave 5 Batch 4: 9 contacts from Epicor/BeyondTrust/Northern Trust created + enrolled in TAM Outbound. MASTER_SENT_LIST 420 rows. Canada territory expansion active. All 9 T1 tasks pending in Apollo queue — APPROVE SEND needed. Handoff complete.)
+## Last Updated: 2026-03-12 (Session 27 — TAM-only audit + SOP enforcement. Batch 5: 5 enrolled (of 13 drafted, 5 non-TAM removed per INC-010, 2 Infor phone-contact excluded, 1 Yogesh Garg ownership-blocked). Sequence audit CLEAN — no non-TAM contacts in TAM Outbound. SOPs hardened: domain verification gate, Factor prioritization. MASTER_SENT_LIST 420 rows. Handoff complete.)
 
 ---
 
@@ -367,16 +367,39 @@ E*TRADE/Morgan Stanley, Broadcom, Humana, Corewell Health, Blue Cross MN, BCBS T
 
 ---
 
-## TAM OUTBOUND WAVE 5 BATCH 4 — CURRENT STATE (Mar 12 — Session 26)
+## TAM OUTBOUND WAVE 5 BATCH 4 — CURRENT STATE (Mar 12 — Sessions 26-27)
 
-**✅ ALL 9 CONTACTS CREATED IN APOLLO + ENROLLED IN TAM OUTBOUND**
-**⏳ T1 SENDS PENDING — APPROVE SEND NEEDED**
+**✅ 9 CONTACTS FROM BATCH 4 ENROLLED (Session 26)**
+**✅ 5 CONTACTS FROM BATCH 5 ENROLLED (Session 27)**
+**⏳ ALL 14 T1 SENDS PENDING — APPROVE SEND NEEDED**
 
-**File:** `tamob-batch-20260312-4.html` (9 contact cards with T1 email drafts, QA gate checklists)
+**Batch 4 File:** `tamob-batch-20260312-4.html` (9 contact cards with T1 email drafts)
+**Batch 5 File:** `tamob-batch-20260312-4.html` (same file — 5 additional contacts from Infor/Zebra/Check Point/FactSet)
 **Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
 **T2 due:** Mar 19-20 (Day 5-8 from send date, depending on when T1 is sent)
-**MASTER_SENT_LIST.csv:** 9 rows added (batch: "TAM Outbound Wave5 T1 Mar12"). Total now 420 rows.
-**Canada territory expansion:** 4 of 9 contacts are Canadian — now in-territory per new directive.
+**MASTER_SENT_LIST.csv:** Total 420 rows (Batch 4: 9 rows + Batch 5: pending T1 send).
+**Canada territory expansion:** 4 of 9 Batch 4 contacts are Canadian.
+
+### ⚠️ SESSION 27 — TAM-ONLY AUDIT + SOP ENFORCEMENT
+
+**Batch 5 audit results (INC-010):**
+- 13 contacts originally drafted
+- 5 non-TAM contacts REMOVED before enrollment: Koji Nakajima, Lakshmi Nittala, Andrew Ngo (DocuSign), Bruce Bader, Esther Barwick (Bentley)
+- 2 Infor contacts excluded (Mirza Hasan, Daniela Young — phone contact, not email)
+- 1 Yogesh Garg (Check Point) — BLOCKED: Apollo `contacts_without_ownership_permission` error. `owner_id: null`, `creator_id: 655ecb6c164f6a00a3396e46` (not Rob). **Rob must manually assign ownership in Apollo UI, then re-enroll.**
+- 5 clean contacts enrolled: details in Batch 5 section below
+
+**TAM Outbound sequence audit result: ✅ CLEAN**
+- Audited all ~135 enrolled contacts across 8 batch tracker HTML files
+- Cross-referenced email domains against 311 TAM domains from tam-accounts-mar26.csv
+- Only non-TAM domains found (docusign.com, bentley.com) were in Batch 5 tracker — caught BEFORE enrollment
+- No non-TAM contacts exist in the live sequence
+
+**SOP updates applied (Session 27):**
+1. `sop-tam-outbound.md` Part 11: Added Pre-Enrollment Domain Verification Gate (5-step verification process)
+2. `target-accounts.md`: Added Factor Account Prioritization hierarchy + Pre-Enrollment Domain Verification reference
+3. `CLAUDE.md`: Updated operating directive with TAM-ONLY RULE + Factor priority. Updated pipeline status.
+4. `incidents.md`: Added INC-010 (Non-TAM Contacts in TAM Outbound Batch) + Rule 8 (Pre-Enrollment Domain Verification)
 
 | # | Name | Company | Apollo ID | Email | Location | Status |
 |---|------|---------|-----------|-------|----------|--------|
@@ -446,6 +469,7 @@ E*TRADE/Morgan Stanley, Broadcom, Humana, Corewell Health, Blue Cross MN, BCBS T
 - Mar 11 (Sessions 17-18) changes: `tamob-batch-20260311-1.html` (NEW — Wave 3 batch tracker, 35 contacts), `MASTER_SENT_LIST.csv` (+35 Wave 3 rows, 374 total), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Mar 11 (Sessions 22-24) changes: `tamob-batch-20260311-2.html` (badges updated: 35 T1SentMar11, 2 Blocked, 11 Ready), `MASTER_SENT_LIST.csv` (+35 Wave 4 rows, 410 total), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Mar 11 (Session 25) changes: `tamob-batch-20260311-2.html` (Glen Hudson + Sibghatullah Veedy → T1SentMar11, now 37/2/9), `MASTER_SENT_LIST.csv` (+2 rows, 412 total), `memory/session/handoff.md` (11 no-task investigation findings), `memory/session/work-queue.md`, `memory/session/session-log.md`
+- Mar 12 (Session 27) changes: `memory/sop-tam-outbound.md` (Part 11 domain verification gate), `memory/target-accounts.md` (Factor prioritization + domain verification), `CLAUDE.md` (TAM-ONLY rule + pipeline status), `memory/incidents.md` (INC-010 + Rule 8), `memory/pipeline-state.md` (Batch 5 log), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Claude cannot push (no GitHub auth in VM). Rob must run `git push` from his terminal.
 
 ---
@@ -465,4 +489,10 @@ E*TRADE/Morgan Stanley, Broadcom, Humana, Corewell Health, Blue Cross MN, BCBS T
 
 ---
 
-*Next session: startup sequence (AGENTS.md → handoff.md → work-queue.md → in-progress.md), then check Apollo Tasks tab. Wave 1/2 T2 tasks are likely overdue — tackle TASK-017 immediately. Wave 3 T2 due Mar 16. Also: TASK-018 (Sucheth Ramgiri cleanup) + TASK-003 (Gmail draft audit). Apollo Tasks tab is the source of truth for what's due.*
+*Next session: startup sequence (AGENTS.md → handoff.md → work-queue.md → in-progress.md), then:*
+*1. **New TAM T1 batch** — source, research, draft new contacts from Factor/TAM accounts (operating directive: T1 pipeline first)*
+*2. **APPROVE SEND check** — Batch 4 (9 contacts) + Batch 5 (5 contacts) T1 sends pending Rob's approval*
+*3. **Yogesh Garg** — Rob must manually assign ownership in Apollo UI, then re-enroll*
+*4. **Apollo Tasks tab** — Wave 1/2 T2 tasks overdue, Wave 3 T2 due Mar 16, Wave 4 T2 due Mar 19*
+*5. **TASK-018** (Sucheth Ramgiri cleanup) + **TASK-003** (Gmail draft audit)*
+*Apollo Tasks tab is the source of truth for what's due.*

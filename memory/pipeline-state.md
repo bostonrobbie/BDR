@@ -110,6 +110,7 @@
 | Mar 10 | TAM Outbound Wave 2 T1 — 16 sent via Apollo Tasks (robert.gorham@testsigma.com) | 16 | 298 |
 | Mar 11 | TAM Outbound Wave 3 T1 — 35 enrolled, 33 sent via Apollo Tasks + 2 future-dated (Christine Gamache/TELUS, Brooks Foley/GE HealthCare). ⚠️ INC-008: 2 placeholder sends (Michael Cahill L3Harris, Manpreet Burmi Veradigm) — recovery emails sent. | 33 (+2 pending) | 331 |
 | Mar 11 | TAM Outbound Wave 4 T1 — 48 enrolled. 37 sent (35 via Apollo Tasks + 2 auto-sent by Apollo: Glen Hudson + Sibghatullah Veedy). 2 blocked (Valerie Jefferies job change, Yvonne Oliver ownership error). 1 bounced (Ksenia Shchelkonogova). 9 step 1 tasks pending in Apollo queue. | 37 | 368 |
+| Mar 12 | TAM Outbound Batch 5 — 5 enrolled (of 13 drafted). 5 non-TAM (DocuSign, Bentley) removed per INC-010. 2 Infor contacts (Mirza Hasan, Daniela Young) excluded (prior phone contact). 1 (Yogesh Garg, Check Point) enrollment blocked by Apollo ownership error — needs manual fix. | 5 enrolled (pending T1 send) | 368 |
 
 ### Email Send History
 | Date | Time | Recipients | Type | Status |
