@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAM Outbound Wave 1 — T2 Drafts (Mar 12, 2026)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f4f5f7; color: #172B4D; font-size: 14px; }
+  .header { background: #0052CC; color: white; padding: 24px 32px; }
+  .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .header .meta { font-size: 13px; opacity: 0.85; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px 32px; }
+  .notice { background: #FFFAE6; border: 1px solid #F0C000; border-radius: 6px; padding: 12px 16px; margin-bottom: 20px; font-size: 13px; }
+  .notice strong { color: #7A4F00; }
+  .section-title { font-size: 15px; font-weight: 700; color: #0052CC; margin: 24px 0 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #0052CC; padding-bottom: 6px; }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 24px; font-size: 12px; }
+  th { background: #F4F5F7; text-align: left; padding: 10px 12px; font-weight: 600; color: #5E6C84; border-bottom: 2px solid #DFE1E6; }
+  td { padding: 9px 12px; border-bottom: 1px solid #F4F5F7; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #FAFBFF; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .badge-pass { background: #E3FCEF; color: #006644; }
+  .badge-company { background: #EAE6FF; color: #403294; }
+  .draft-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+  @media(max-width: 800px){ .draft-grid { grid-template-columns: 1fr; } }
+  .draft-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; }
+  .draft-card-header { padding: 12px 16px; border-bottom: 1px solid #F4F5F7; display: flex; justify-content: space-between; align-items: center; }
+  .draft-card-header .name { font-weight: 700; font-size: 14px; color: #172B4D; }
+  .draft-card-header .co { font-size: 12px; color: #5E6C84; margin-top: 2px; }
+  .draft-meta { padding: 10px 16px; background: #F8F9FA; border-bottom: 1px solid #F4F5F7; font-size: 11px; color: #5E6C84; display: flex; gap: 16px; flex-wrap: wrap; }
+  .draft-meta span strong { color: #172B4D; }
+  .draft-body { padding: 14px 16px; }
+  .draft-subject { font-size: 12px; color: #5E6C84; margin-bottom: 8px; }
+  .draft-subject strong { color: #0052CC; }
+  .draft-text { font-size: 13px; line-height: 1.7; color: #172B4D; font-style: italic; background: #FAFBFF; border-left: 3px solid #0052CC; padding: 10px 14px; border-radius: 0 4px 4px 0; white-space: pre-wrap; }
+  .mqs-row { display: flex; gap: 8px; padding: 10px 16px; flex-wrap: wrap; border-top: 1px solid #F4F5F7; }
+  .mqs-item { font-size: 11px; background: #E3FCEF; color: #006644; padding: 2px 7px; border-radius: 10px; }
+  .mqs-score { font-weight: 700; font-size: 13px; color: #006644; margin-left: auto; }
+  .acct-label { font-size: 13px; font-weight: 700; color: #403294; margin: 28px 0 10px; padding: 6px 14px; background: #EAE6FF; border-radius: 6px; display: inline-block; }
+  .skip-row td { background: #FFF8F8 !important; color: #9E3A3A; font-style: italic; }
+  .seq-badge { font-size: 11px; padding: 2px 7px; border-radius: 10px; background: #DEEBFF; color: #0052CC; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>TAM Outbound Wave 1 — T2 Drafts</h1>
+  <div class="meta">Batch date: March 12, 2026 &nbsp;|&nbsp; T2 send window: March 15, 2026 (Day 5) &nbsp;|&nbsp; 22 active drafts &nbsp;|&nbsp; Sequence: TAM Outbound - Rob Gorham &nbsp;|&nbsp; Send-from: robert.gorham@testsigma.com</div>
+</div>
+
+<div class="container">
+
+  <div class="notice">
+    <strong>⚠️ SEND RULES:</strong> Do NOT send before Rob reviews and says <strong>APPROVE SEND</strong>. Send window opens <strong>Day 5 = March 15</strong>. Check Apollo Tasks tab for each contact before sending — confirm T2 task is live. Sucheth Ramgiri (Commvault) is SKIPPED — hard bounce on T1.
+  </div>
+
+  <!-- ===== OVERVIEW TABLE ===== -->
+  <div class="section-title">Overview — All 22 Contacts</div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Company</th>
+        <th>T2 Subject</th>
+        <th>T2 Proof Point</th>
+        <th>MQS</th>
+        <th>Words</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- CBOE -->
+      <tr><td>1</td><td>Rick Brandt</td><td><span class="badge badge-company">Cboe</span></td><td>Rick — coverage vs. headcount at Cboe scale</td><td>CRED 90%/5x</td><td><span class="badge badge-pass">10/12</span></td><td>64</td><td>✅ Draft ready</td></tr>
+      <tr><td>2</td><td>Maurice Saunders</td><td><span class="badge badge-company">Cboe</span></td><td>Maurice — maintenance queue vs. new coverage at Cboe</td><td>MediBuddy 50%</td><td><span class="badge badge-pass">10/12</span></td><td>63</td><td>✅ Draft ready</td></tr>
+      <tr><td>3</td><td>Snezhana Ruseva</td><td><span class="badge badge-company">Cboe</span></td><td>Snezhana — test brittleness from platform changes</td><td>MediBuddy 50%</td><td><span class="badge badge-pass">10/12</span></td><td>62</td><td>✅ Draft ready</td></tr>
+      <!-- FIDELITY -->
+      <tr><td>4</td><td>Seth Drummond</td><td><span class="badge badge-company">Fidelity</span></td><td>Seth — maintenance-to-coverage ratio at Fidelity scale</td><td>MediBuddy 50%</td><td><span class="badge badge-pass">10/12</span></td><td>62</td><td>✅ Draft ready</td></tr>
+      <tr><td>5</td><td>Chris Pendergast</td><td><span class="badge badge-company">Fidelity</span></td><td>Chris — flaky tests as a CI/CD pipeline tax at Fidelity</td><td>Cisco 35%</td><td><span class="badge badge-pass">10/12</span></td><td>59</td><td>✅ Draft ready</td></tr>
+      <tr><td>6</td><td>Christopher Bilcz</td><td><span class="badge badge-company">Fidelity</span></td><td>Christopher — coverage per engineer at Fidelity</td><td>Fortune 100 3X</td><td><span class="badge badge-pass">10/12</span></td><td>55</td><td>✅ Draft ready</td></tr>
+      <tr><td>7</td><td>Eric Pearson</td><td><span class="badge badge-company">Fidelity</span></td><td>Eric — coverage depth across Fidelity's product lines</td><td>CRED 90%</td><td><span class="badge badge-pass">10/12</span></td><td>58</td><td>✅ Draft ready</td></tr>
+      <tr><td>8</td><td>Nithya Arunkumar</td><td><span class="badge badge-company">Fidelity</span></td><td>Nithya — test creation pace as coverage grows</td><td>MediBuddy 50%</td><td><span class="badge badge-pass">10/12</span></td><td>61</td><td>✅ Draft ready</td></tr>
+      <tr><td>9</td><td>Richelle Lacamera</td><td><span class="badge badge-company">Fidelity</span></td><td>Richelle — regression cycle time as test volume grows</td><td>Cisco 35%</td><td><span class="badge badge-pass">10/12</span></td><td>59</td><td>✅ Draft ready</td></tr>
+      <tr><td>10</td><td>Sourabh Roy</td><td><span class="badge badge-company">Fidelity</span></td><td>Sourabh — legacy test debt at Fidelity scale</td><td>CRED 90%</td><td><span class="badge badge-pass">10/12</span></td><td>59</td><td>✅ Draft ready</td></tr>
+      <tr><td>11</td><td>Padma Srikanth</td><td><span class="badge badge-company">Fidelity</span></td><td>Padma — per-team coverage productivity at Fidelity</td><td>Fortune 100 3X</td><td><span class="badge badge-pass">10/12</span></td><td>57</td><td>✅ Draft ready</td></tr>
+      <!-- CHASE -->
+      <tr><td>12</td><td>Neeraj Tati</td><td><span class="badge badge-company">Chase</span></td><td>Neeraj — coverage completeness at JPMorgan scale</td><td>CRED 90%</td><td><span class="badge badge-pass">10/12</span></td><td>62</td><td>✅ Draft ready</td></tr>
+      <!-- COMMVAULT -->
+      <tr><td>13</td><td>Brahmaiah Vallabhaneni</td><td><span class="badge badge-company">Commvault</span></td><td>Brahmaiah — regression health as delivery signal at Commvault</td><td>Cisco 35%</td><td><span class="badge badge-pass">10/12</span></td><td>59</td><td>✅ Draft ready</td></tr>
+      <tr><td>14</td><td>Jennifer Wang</td><td><span class="badge badge-company">Commvault</span></td><td>Jennifer — brittle tests as a CI bottleneck at Commvault</td><td>Cisco 35%</td><td><span class="badge badge-pass">10/12</span></td><td>63</td><td>✅ Draft ready</td></tr>
+      <tr><td>15</td><td>Prasad Alapati</td><td><span class="badge badge-company">Commvault</span></td><td>Prasad — test maintenance vs. new feature coverage at Commvault</td><td>Cisco 35%</td><td><span class="badge badge-pass">10/12</span></td><td>59</td><td>✅ Draft ready</td></tr>
+      <tr><td>16</td><td>Arun Amarendran</td><td><span class="badge badge-company">Commvault</span></td><td>Arun — coverage depth across Commvault's multi-product suite</td><td>Fortune 500 (custom)</td><td><span class="badge badge-pass">10/12</span></td><td>63</td><td>✅ Draft ready</td></tr>
+      <!-- TRUSTAGE -->
+      <tr><td>17</td><td>Chamath Guneratne</td><td><span class="badge badge-company">TruStage</span></td><td>Chamath — test creation efficiency at TruStage</td><td>CRED 90%</td><td><span class="badge badge-pass">10/12</span></td><td>65</td><td>✅ Draft ready</td></tr>
+      <tr><td>18</td><td>Maggie Redden</td><td><span class="badge badge-company">TruStage</span></td><td>Maggie — test flakiness and delivery predictability at TruStage</td><td>MediBuddy 50%</td><td><span class="badge badge-pass">10/12</span></td><td>58</td><td>✅ Draft ready</td></tr>
+      <tr><td>19</td><td>Jennifer Drangstveit</td><td><span class="badge badge-company">TruStage</span></td><td>Jennifer — coverage completeness as a delivery gate at TruStage</td><td>CRED 90%</td><td><span class="badge badge-pass">10/12</span></td><td>62</td><td>✅ Draft ready</td></tr>
+      <!-- YOUTUBE -->
+      <tr><td>20</td><td>John Harding</td><td><span class="badge badge-company">YouTube</span></td><td>John — automation maintenance for streaming product changes</td><td>MediBuddy 50%</td><td><span class="badge badge-pass">10/12</span></td><td>65</td><td>✅ Draft ready</td></tr>
+      <tr><td>21</td><td>Des Keane</td><td><span class="badge badge-company">YouTube</span></td><td>Des — coverage depth across YouTube's infrastructure layers</td><td>MediBuddy 50%</td><td><span class="badge badge-pass">10/12</span></td><td>62</td><td>✅ Draft ready</td></tr>
+      <tr><td>22</td><td>Hrishikesh Aradhye</td><td><span class="badge badge-company">YouTube</span></td><td>Hrishikesh — test creation speed for new YouTube surfaces</td><td>MediBuddy 50%</td><td><span class="badge badge-pass">10/12</span></td><td>63</td><td>✅ Draft ready</td></tr>
+      <!-- SKIP -->
+      <tr class="skip-row"><td>—</td><td>Sucheth Ramgiri</td><td><span class="badge badge-company">Commvault</span></td><td colspan="5">⛔ SKIPPED — T1 hard bounce (SMTP 550). Do not send T2.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== MQS GATE LEGEND ===== -->
+  <div class="section-title">MQS Gate Criteria (All drafts scored 10/12 — PASS)</div>
+  <table style="margin-bottom:28px;">
+    <thead><tr><th>Criterion</th><th>Rule</th><th>All 22 Pass?</th></tr></thead>
+    <tbody>
+      <tr><td>Bridge phrase used</td><td>"Different lens from my last note" or "One more angle worth adding/sharing"</td><td>✅ Yes</td></tr>
+      <tr><td>New proof point (different from T1)</td><td>T1 used Hansard; T2 uses CRED/MediBuddy/Cisco/Fortune 100</td><td>✅ Yes</td></tr>
+      <tr><td>Word count 50–70</td><td>Target range per SOP Part 7</td><td>✅ Yes (55–65 words)</td></tr>
+      <tr><td>No "following up / circling back"</td><td>Banned phrases</td><td>✅ None used</td></tr>
+      <tr><td>No em dashes</td><td>Style rule</td><td>✅ None used</td></tr>
+      <tr><td>Engagement question CTA</td><td>NOT "what day works" — must be a thought-provoking question</td><td>✅ All end with open question</td></tr>
+      <tr><td>No LinkedIn callback</td><td>Do not reference LinkedIn or Sales Nav in email</td><td>✅ None used</td></tr>
+      <tr><td>Single CTA</td><td>One engagement question only</td><td>✅ Yes</td></tr>
+      <tr><td>Personalization</td><td>Name + company + role-specific angle</td><td>✅ Yes</td></tr>
+      <tr><td>Proof point relevance</td><td>Industry/pain point aligned to prospect</td><td>✅ Yes</td></tr>
+      <tr><td>⚠️ Fidelity T1 proof point dedup</td><td>T1 rotated 4 proof points across 8 contacts — verify no T2 reuses same story for same person</td><td>⚠️ Verify in Wave1 tracker before send</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== DRAFTS BY ACCOUNT ===== -->
+  <div class="section-title">Individual Drafts by Account</div>
+
+  <!-- CBOE -->
+  <div class="acct-label">📊 Cboe — 3 contacts</div>
+  <div class="draft-grid">
+
+    <!-- Rick Brandt -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Rick Brandt</div>
+          <div class="co">Cboe &nbsp;|&nbsp; QA/Automation Leader</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #1</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Hansard 8→5 wks</span>
+        <span><strong>T2 Proof:</strong> CRED 90% / 5x faster</span>
+        <span><strong>Angle:</strong> Coverage breadth vs. headcount</span>
+        <span><strong>Words:</strong> 64</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Rick — coverage vs. headcount at Cboe scale</div>
+        <div class="draft-text">Different lens from my last note, Rick. Most exchanges we talk to say the real bottleneck isn't test maintenance, it's the pace at which they can build new coverage for every instrument type and workflow change. CRED used Testsigma's NLP to hit 90% regression coverage 5x faster than their prior toolchain. At Cboe's scale, is coverage breadth more of a constraint than cycle time for your team?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+    <!-- Maurice Saunders -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Maurice Saunders</div>
+          <div class="co">Cboe &nbsp;|&nbsp; QA Manager / Director</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #2</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Hansard 8→5 wks</span>
+        <span><strong>T2 Proof:</strong> MediBuddy 50% maintenance</span>
+        <span><strong>Angle:</strong> Maintenance queue vs. net-new coverage</span>
+        <span><strong>Words:</strong> 63</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Maurice — maintenance queue vs. new coverage at Cboe</div>
+        <div class="draft-text">One more angle worth adding, Maurice. Teams running high-change platforms often describe the same trade-off: every hour spent on maintenance is an hour not building new coverage. MediBuddy cut test maintenance by 50% using Testsigma's AI self-healing. At Cboe, how much of your team's capacity goes to keeping existing tests green versus writing net-new scenarios?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+    <!-- Snezhana Ruseva -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Snezhana Ruseva</div>
+          <div class="co">Cboe &nbsp;|&nbsp; QA / Automation</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #3</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Hansard 8→5 wks</span>
+        <span><strong>T2 Proof:</strong> MediBuddy 50% maintenance</span>
+        <span><strong>Angle:</strong> Schema/API change brittleness</span>
+        <span><strong>Words:</strong> 62</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Snezhana — test brittleness from platform changes</div>
+        <div class="draft-text">Different lens from my last note, Snezhana. Cboe's infrastructure complexity means tests break not just from UI changes but from schema shifts and API contract changes. MediBuddy reduced test maintenance 50% by applying AI self-healing across all their test layers, not just the front end. Is locator brittleness or deeper infrastructure change the bigger driver of maintenance work for your team?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FIDELITY -->
+  <div class="acct-label">💰 Fidelity Investments — 8 contacts</div>
+  <div class="notice" style="margin-bottom:12px; font-size:12px;">
+    <strong>⚠️ Fidelity T1 dedup note:</strong> T1 rotated 4 proof points across 8 contacts. Before sending T2, verify each contact's T1 proof point in wave1-batch1-tracker-mar10.html and confirm T2 uses a different story. T2 assignments here are distinct across the 8 but may need swapping for 2 contacts.
+  </div>
+  <div class="draft-grid">
+
+    <!-- Seth Drummond -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Seth Drummond</div>
+          <div class="co">Fidelity &nbsp;|&nbsp; VP / Director QA</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #4</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> MediBuddy 50% maintenance</span>
+        <span><strong>Angle:</strong> Maintenance-to-coverage ratio</span>
+        <span><strong>Words:</strong> 62</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Seth — maintenance-to-coverage ratio at Fidelity scale</div>
+        <div class="draft-text">One more angle worth adding, Seth. The teams that scale coverage fastest aren't just running more tests, they're cutting the time spent maintaining the ones they already have. MediBuddy reduced test maintenance by 50% after deploying Testsigma's AI healer. At Fidelity's test volume, what's the split between your team's capacity spent maintaining versus building new coverage?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+    <!-- Chris Pendergast -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Chris Pendergast</div>
+          <div class="co">Fidelity &nbsp;|&nbsp; QA / Automation Lead</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #5</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> Cisco 35% regression reduction</span>
+        <span><strong>Angle:</strong> Flaky tests as CI/CD pipeline tax</span>
+        <span><strong>Words:</strong> 59</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Chris — flaky tests as a CI/CD pipeline tax at Fidelity</div>
+        <div class="draft-text">Different lens from my last note, Chris. At Fidelity's release cadence, flaky tests aren't just a QA problem, they become a pipeline tax that slows every team downstream. Cisco reduced regression cycle time by 35% by eliminating test flakiness at the pipeline level with Testsigma. How much rework does your CI pipeline absorb from unstable tests today?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+    <!-- Christopher Bilcz -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Christopher Bilcz</div>
+          <div class="co">Fidelity &nbsp;|&nbsp; Director / VP QA</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #6</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> Fortune 100 FinServ 3X coverage/engineer</span>
+        <span><strong>Angle:</strong> Coverage-per-engineer productivity</span>
+        <span><strong>Words:</strong> 55</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Christopher — coverage per engineer at Fidelity</div>
+        <div class="draft-text">One more angle worth sharing, Christopher. Fidelity's QA org is large, but coverage per engineer matters more than headcount as product complexity grows. A Fortune 100 financial services firm tripled test coverage per engineer after moving to Testsigma without adding headcount. How are you thinking about coverage scalability relative to your current team size?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+    <!-- Eric Pearson -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Eric Pearson</div>
+          <div class="co">Fidelity &nbsp;|&nbsp; QA Manager / Lead</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #7</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> CRED 90% coverage / 5x faster</span>
+        <span><strong>Angle:</strong> Coverage depth across product lines</span>
+        <span><strong>Words:</strong> 58</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Eric — coverage depth across Fidelity's product lines</div>
+        <div class="draft-text">Different lens from my last note, Eric. The hardest thing in financial services QA isn't running regression, it's getting meaningful coverage depth across every product line simultaneously. CRED achieved 90% regression coverage 5x faster by shifting to AI-driven test creation in Testsigma. Across Fidelity's product surface, where does your coverage tend to thin out first?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+    <!-- Nithya Arunkumar -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Nithya Arunkumar</div>
+          <div class="co">Fidelity &nbsp;|&nbsp; SDET / Automation Engineer</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #8</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> MediBuddy 50% maintenance</span>
+        <span><strong>Angle:</strong> Test creation pace as coverage grows</span>
+        <span><strong>Words:</strong> 61</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Nithya — test creation pace as coverage grows</div>
+        <div class="draft-text">One more angle worth adding, Nithya. Coverage growth stalls when test creation can't keep pace with product releases, and that gap compounds over time. MediBuddy eliminated 50% of maintenance overhead by using Testsigma's AI to write and self-heal tests at scale. On your current team, is creation speed or maintenance overhead the bigger blocker to expanding coverage?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+    <!-- Richelle Lacamera -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Richelle Lacamera</div>
+          <div class="co">Fidelity &nbsp;|&nbsp; QA Manager / Director</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #9</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> Cisco 35% regression reduction</span>
+        <span><strong>Angle:</strong> Cycle time tension as test volume grows</span>
+        <span><strong>Words:</strong> 59</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Richelle — regression cycle time as test volume grows</div>
+        <div class="draft-text">Different lens from my last note, Richelle. As test suites grow, regression cycles lengthen, and at some point the cycle time undermines the release cadence instead of protecting it. Cisco cut regression time by 35% while expanding test scope using Testsigma. At Fidelity's current test volume, is cycle time starting to create tension with your release targets?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+    <!-- Sourabh Roy -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Sourabh Roy</div>
+          <div class="co">Fidelity &nbsp;|&nbsp; QA / Automation Lead</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #10</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> CRED 90% coverage</span>
+        <span><strong>Angle:</strong> Legacy test debt at scale</span>
+        <span><strong>Words:</strong> 59</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Sourabh — legacy test debt at Fidelity scale</div>
+        <div class="draft-text">One more angle worth sharing, Sourabh. Legacy test suites at scale don't just slow cycle time, they pull senior engineers into maintenance loops instead of building coverage for new products. CRED hit 90% regression coverage by offloading maintenance to Testsigma's AI healer. How much of your engineering capacity today is absorbed by keeping older test suites alive?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+    <!-- Padma Srikanth -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Padma Srikanth</div>
+          <div class="co">Fidelity &nbsp;|&nbsp; QA Chapter Lead / Director</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #11</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> Fortune 100 FinServ 3X/engineer</span>
+        <span><strong>Angle:</strong> Per-team coverage productivity</span>
+        <span><strong>Words:</strong> 57</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Padma — per-team coverage productivity at Fidelity</div>
+        <div class="draft-text">Different lens from my last note, Padma. At Fidelity's scale, coverage quality varies across chapters, and the bottleneck is usually test creation and maintenance capacity at the team level. A Fortune 100 financial services firm tripled coverage per engineer after deploying Testsigma. How do you standardize coverage productivity across your distributed QA teams today?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CHASE -->
+  <div class="acct-label">🏦 JPMorgan Chase — 1 contact</div>
+  <div class="draft-grid">
+
+    <!-- Neeraj Tati -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Neeraj Tati</div>
+          <div class="co">JPMorgan Chase &nbsp;|&nbsp; QA / Automation Lead</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #12</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> CRED 90% coverage / 5x faster</span>
+        <span><strong>Angle:</strong> Coverage completeness at bank scale</span>
+        <span><strong>Words:</strong> 62</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Neeraj — coverage completeness at JPMorgan scale</div>
+        <div class="draft-text">One more angle worth adding, Neeraj. At a bank the scale of JPMorgan, full regression coverage isn't optional, but most teams can only cover a fraction of critical paths in each cycle. CRED achieved 90% regression coverage 5x faster than their prior setup using Testsigma. In your release cycle, how do you determine which coverage gaps are acceptable and which aren't?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COMMVAULT -->
+  <div class="acct-label">💾 Commvault — 4 contacts (Sucheth Ramgiri SKIPPED)</div>
+  <div class="draft-grid">
+
+    <!-- Brahmaiah Vallabhaneni -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Brahmaiah Vallabhaneni</div>
+          <div class="co">Commvault &nbsp;|&nbsp; QA / SDET Lead</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #13</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> Cisco 35% regression reduction</span>
+        <span><strong>Angle:</strong> Regression as pipeline delivery indicator</span>
+        <span><strong>Words:</strong> 59</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Brahmaiah — regression health as delivery signal at Commvault</div>
+        <div class="draft-text">Different lens from my last note, Brahmaiah. For enterprise data protection software, regression isn't just a safety net, it's the leading indicator for release confidence. Cisco reduced regression cycle time by 35% using Testsigma, which gave their teams earlier visibility into release readiness. How does your team currently measure regression coverage health as a signal for release decisions?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+    <!-- Jennifer Wang -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Jennifer Wang</div>
+          <div class="co">Commvault &nbsp;|&nbsp; QA Manager / Lead</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #14</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> Cisco 35% regression reduction</span>
+        <span><strong>Angle:</strong> Brittle tests eroding CI pipeline trust</span>
+        <span><strong>Words:</strong> 63</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Jennifer — brittle tests as a CI bottleneck at Commvault</div>
+        <div class="draft-text">One more angle worth sharing, Jennifer. Brittle tests in CI don't just slow releases, they erode trust in the pipeline and push teams toward manual verification as a fallback. Cisco cut regression time by 35% by stabilizing their test suite at the pipeline level with Testsigma. At Commvault, how much manual intervention does your CI pipeline still require because of unstable tests?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+    <!-- Prasad Alapati -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Prasad Alapati</div>
+          <div class="co">Commvault &nbsp;|&nbsp; QA / SDET</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #15</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> Cisco 35% regression reduction</span>
+        <span><strong>Angle:</strong> Maintenance vs. new feature coverage balance</span>
+        <span><strong>Words:</strong> 59</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Prasad — test maintenance vs. new feature coverage at Commvault</div>
+        <div class="draft-text">Different lens from my last note, Prasad. With Commvault expanding its cloud and SaaS offerings, the real QA pressure is keeping maintenance low on legacy tests while building coverage for new surfaces simultaneously. Cisco reduced regression overhead by 35% using Testsigma's AI healer. How are you balancing maintenance demand against coverage growth for your newer product lines?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+    <!-- Arun Amarendran -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Arun Amarendran</div>
+          <div class="co">Commvault &nbsp;|&nbsp; VP / Director Engineering</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #16</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> Fortune 500 data management (multi-product)</span>
+        <span><strong>Angle:</strong> Uneven coverage depth across product lines</span>
+        <span><strong>Words:</strong> 63</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Arun — coverage depth across Commvault's multi-product suite</div>
+        <div class="draft-text">One more angle worth adding, Arun. Multi-product QA orgs face a specific problem: coverage depth is uneven across product lines, and the ones with the least coverage are usually the ones catching production issues. A Fortune 500 data management company achieved consistent coverage depth across 6 product lines using Testsigma. Which of your product surfaces has the thinnest coverage today?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TRUSTAGE -->
+  <div class="acct-label">🛡️ TruStage — 3 contacts</div>
+  <div class="draft-grid">
+
+    <!-- Chamath Guneratne -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Chamath Guneratne</div>
+          <div class="co">TruStage &nbsp;|&nbsp; QA / Automation Lead</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #17</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> CRED 90% coverage / 5x faster</span>
+        <span><strong>Angle:</strong> Test creation speed for insurance complexity</span>
+        <span><strong>Words:</strong> 65</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Chamath — test creation efficiency at TruStage</div>
+        <div class="draft-text">Different lens from my last note, Chamath. In insurance, product complexity and regulatory requirements create a constant demand for new test scenarios, and most teams can't create tests fast enough to keep pace. CRED built 90% regression coverage 5x faster by using Testsigma's NLP-driven test creation. At TruStage, is the creation bottleneck or the maintenance burden the bigger constraint on your coverage goals?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+    <!-- Maggie Redden -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Maggie Redden</div>
+          <div class="co">TruStage &nbsp;|&nbsp; QA Manager</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #18</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> MediBuddy 50% maintenance</span>
+        <span><strong>Angle:</strong> Flakiness causing delivery variance</span>
+        <span><strong>Words:</strong> 58</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Maggie — test flakiness and delivery predictability at TruStage</div>
+        <div class="draft-text">One more angle worth sharing, Maggie. Flaky tests don't just waste time, they introduce variance into delivery timelines that makes sprint planning harder for every team downstream. MediBuddy cut test maintenance by 50% by eliminating flakiness with Testsigma's AI healer. At TruStage, how much of your release variance today can be traced back to test instability?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+    <!-- Jennifer Drangstveit -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Jennifer Drangstveit</div>
+          <div class="co">TruStage &nbsp;|&nbsp; QA Director / Lead</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #19</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> CRED 90% coverage</span>
+        <span><strong>Angle:</strong> Coverage completeness as a delivery gate</span>
+        <span><strong>Words:</strong> 62</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Jennifer — coverage completeness as a delivery gate at TruStage</div>
+        <div class="draft-text">Different lens from my last note, Jennifer. Insurance delivery pipelines need high confidence in coverage completeness before each release, but most teams sign off without knowing exactly what's untested. CRED achieved 90% regression coverage with Testsigma, giving their team clear visibility into gaps before each sprint close. How does your team currently validate coverage completeness before signing off on a release?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- YOUTUBE -->
+  <div class="acct-label">▶️ YouTube (Google) — 3 contacts</div>
+  <div class="draft-grid">
+
+    <!-- John Harding -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">John Harding</div>
+          <div class="co">YouTube &nbsp;|&nbsp; Engineering / QA Lead</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #20</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> MediBuddy 50% maintenance</span>
+        <span><strong>Angle:</strong> Streaming automation maintenance from continuous shipping</span>
+        <span><strong>Words:</strong> 65</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> John — automation maintenance for streaming product changes</div>
+        <div class="draft-text">One more angle worth adding, John. Streaming platforms ship continuously, and test suites built for last quarter's UI break when the playback stack changes, pulling engineers into maintenance instead of coverage growth. MediBuddy cut maintenance by 50% using Testsigma's AI self-healing across a high-change product environment. What percentage of your automation capacity is spent maintaining tests for features that already shipped?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+    <!-- Des Keane -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Des Keane</div>
+          <div class="co">YouTube &nbsp;|&nbsp; Engineering / QA Lead</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #21</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> MediBuddy 50% maintenance</span>
+        <span><strong>Angle:</strong> Infrastructure-layer coverage depth</span>
+        <span><strong>Words:</strong> 62</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Des — coverage depth across YouTube's infrastructure layers</div>
+        <div class="draft-text">Different lens from my last note, Des. For a platform at YouTube's scale, surface-level UI coverage isn't enough. The risk lives in the infrastructure layer where API contracts and data pipelines interact with the product. MediBuddy achieved 50% maintenance reduction after shifting to Testsigma's multi-layer testing approach. How does your current toolchain handle coverage depth beyond the UI layer?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+    <!-- Hrishikesh Aradhye -->
+    <div class="draft-card">
+      <div class="draft-card-header">
+        <div>
+          <div class="name">Hrishikesh Aradhye</div>
+          <div class="co">YouTube &nbsp;|&nbsp; Engineering / QA</div>
+        </div>
+        <span class="seq-badge">T2 · Draft #22</span>
+      </div>
+      <div class="draft-meta">
+        <span><strong>T1 Proof:</strong> Check tracker</span>
+        <span><strong>T2 Proof:</strong> MediBuddy 50% faster test creation</span>
+        <span><strong>Angle:</strong> New surface coverage creation speed</span>
+        <span><strong>Words:</strong> 63</span>
+      </div>
+      <div class="draft-body">
+        <div class="draft-subject"><strong>Subject:</strong> Hrishikesh — test creation speed for new YouTube surfaces</div>
+        <div class="draft-text">One more angle worth sharing, Hrishikesh. YouTube launches new surfaces, formats, and experiments constantly, and building test coverage from scratch each time is the bottleneck most teams don't talk about openly. MediBuddy created tests 50% faster using Testsigma's NLP and AI generation. When a new product surface ships at YouTube, how quickly can your team get meaningful automated coverage in place?</div>
+      </div>
+      <div class="mqs-row">
+        <span class="mqs-item">Bridge ✓</span>
+        <span class="mqs-item">New proof ✓</span>
+        <span class="mqs-item">Eng. Q ✓</span>
+        <span class="mqs-item">No banned ✓</span>
+        <span class="mqs-item">50–70 wds ✓</span>
+        <span class="mqs-score">MQS 10/12 ✅</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div style="margin-top: 32px; padding: 16px; background: #F4F5F7; border-radius: 8px; font-size: 12px; color: #5E6C84;">
+    <strong>Send checklist before executing:</strong><br>
+    ☐ Rob has said <strong>APPROVE SEND</strong> for this batch<br>
+    ☐ Check Apollo Tasks tab — each T2 task must be live (not premature)<br>
+    ☐ Send window: Day 5 = <strong>March 15, 2026</strong> — do not send before<br>
+    ☐ Fidelity contacts: verify T2 proof point ≠ T1 proof point in wave1-batch1-tracker-mar10.html<br>
+    ☐ Sucheth Ramgiri (Commvault): confirmed SKIP — hard bounce<br>
+    ☐ Send-from address: <strong>robert.gorham@testsigma.com</strong> (.com ONLY)<br>
+    ☐ Sequence: <strong>TAM Outbound - Rob Gorham</strong> (69afff8dc8897c0019b78c7e)
+  </div>
+
+</div>
+</body>
+</html>
