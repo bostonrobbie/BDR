@@ -1,5 +1,5 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-11 (Session 20: All 9 remaining Wave 3 T1 tasks sent via Apollo Tasks tab — Sampson Reider, Ted Barker, Aleck Gandel, Ash Pedgaonkar, Suchith Chandran, Garrick Scott, Ashwin Vaswani, Rachel Fingeroth, Madina Zabran. Total: 33/35 T1 sent. 2 still future-dated (Christine Gamache/TELUS, Brooks Foley/GE HealthCare). Wave 2 T2 NOW IN APOLLO QUEUE (12 tasks). Wave 1 T2 due Mar 12.)
+## Last Updated: 2026-03-11 (Sessions 22-24: Wave 4 T1 sends COMPLETE. 35/48 sent via Apollo Tasks tab. 2 blocked (Valerie Jefferies/BCBS IL job change, Yvonne Oliver/Mastercard ownership error). 11 contacts had no Apollo email tasks generated — need Rob guidance. MASTER_SENT_LIST.csv updated: 374→410 rows. tamob-batch-20260311-2.html updated with T1 Sent Mar11 / Blocked / Ready statuses.)
 
 ---
 
@@ -318,44 +318,35 @@ Wave 3 T1 enrolled Mar 11. T2 tasks will appear in Apollo ~Mar 15-16. Check Apol
 
 ---
 
-## TAM OUTBOUND WAVE 4 — CURRENT STATE (Mar 11 — Session 21)
+## TAM OUTBOUND WAVE 4 — CURRENT STATE (Mar 11 — Sessions 22-24)
 
-**✅ 48/48 T1 DRAFTS BUILT + QA GATE PASSED**
-**⏳ AWAITING: Rob's APPROVE SEND before enrolling in Apollo**
+**✅ WAVE 4 T1 SENDS COMPLETE (35/48 sent)**
+**⚠️ 2 BLOCKED — requires Rob awareness**
+**⚠️ 11 CONTACTS WITH NO APOLLO EMAIL TASKS — requires Rob guidance**
 
-**File:** `tamob-batch-20260311-2.html` (134KB — 48 contact cards, MQS 9-12/12, A/B tested)
+**File:** `tamob-batch-20260311-2.html` — updated: 35 "T1 Sent Mar11 ✓", 2 "Blocked ✗", 11 "Ready" (no-task)
 **Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
-**Step 2 timing:** Day 8 (updated from Day 1 in prior session)
+**T2 due:** Day 8 from Mar 11 send = **Mar 19** for all 35 confirmed sent contacts
+**MASTER_SENT_LIST.csv:** 35 rows added (batch: "TAM Outbound Wave4 T1 Mar11") — total now 410 rows
 
-**Batch summary:**
-| Metric | Value |
-|--------|-------|
-| Total contacts | 48 |
-| Companies | 19 |
-| P5 HOT (Director+) | 8 |
-| P4 WARM (Manager) | 9 |
-| P3 STD (Lead/SDET) | 29 |
-| P2 LOW (KKR) | 2 |
-| Group A (MediBuddy/Hansard proof) | 16 |
-| Group B (CRED/Cisco/Nagra proof) | 32 |
-| Avg MQS | 11.6/12 |
-| All WC 80-97 | ✅ |
-| All QM=2 | ✅ |
-| Dedup (removed pre-batch) | 3 (Amir Aly, Sambhav Taneja, Marcela Fetters — in MASTER_SENT_LIST) |
+**Send summary:**
+| Status | Count | Names |
+|--------|-------|-------|
+| ✅ T1 Sent Mar 11 | 35 | Brett Linde, Chyehar Tyler, Hai Su, Jeremy Sabin, Justin Yune, Piyamas Sattaboot, Aswini Nagabooshanam, Vibha Singh, Samatha Gangyshetty, Ahmet Cakar, Sakib Alam, Ganesh Mallina, Kris Berg, Ranjith Reddy, Yvonne Stephen, Vijay Durairaj, Ketan Rathod, Geethavani Dodda, Koushal Ram, Mike Seal, Francky Sergile, David Schraff, Ted Machicek, Satish Krishnan, April Brenay, Manohar Shrestha, Ketan Peddabachi, Ed Yiu, William Xie, Janel Jolly, Devashish Patel, Josh Klesel, Kenny Qi, Michelle Crawford, Jessica Harris |
+| 🚫 BLOCKED | 2 | **Valerie Jefferies** (BCBS Illinois — job change flag in Apollo), **Yvonne Oliver** (Mastercard — ownership permission error: "You are not the owner of this contact or account." Task 14 of 14.) |
+| ⚠️ NO TASK GENERATED | 11 | Ksenia Shchelkonogova, Glen Hudson, Sibghatullah Veedy, Irina Baxter, Divya Sathish, Jiadong Shen, Simon Crawford, Adit Shah, Mohan Raj, Shilendra Sharma, Poonam Patil |
 
-**Companies covered:**
-E*TRADE/Morgan Stanley (1), Broadcom (5), Humana (5), Corewell Health (1), BCBS Illinois (1), Blue Cross MN (1), BCBS Texas (1), Blue Cross KC (1), Mastercard (8), Anaplan (1), DraftKings (2), Cleveland Clinic (1), Microchip Technology (1), GEICO (4), Electronic Arts (6), HashiCorp (2), KKR (2), Datamatics (3), OneMain Financial (2)
+**Blocked — action needed:**
+- **Valerie Jefferies (BCBS Illinois):** Apollo blocked due to job change. Was she enrolled in the sequence? Check Apollo. If enrolled but task blocked, either skip or re-enrich with current employer.
+- **Yvonne Oliver (Mastercard):** Apollo "not owner" error — permanently blocked via Apollo. Consider LinkedIn InMail as alternative if Mastercard is still a priority account.
 
-**Next steps:**
-1. Rob reviews tamob-batch-20260311-2.html
-2. Rob gives APPROVE SEND
-3. Enroll all 48 in Apollo TAM Outbound (batches of 5)
-4. Send T1 via Apollo Tasks tab (manual, one at a time)
-5. T2 due Day 8 (8 days after T1 send per updated sequence step)
-6. Update MASTER_SENT_LIST.csv (+48 rows)
+**11 no-task contacts — Rob guidance needed:**
+These 11 contacts appear in the HTML batch but Apollo never generated Step 1 email tasks for them. Possible causes: enrolled under a different sequence, enrolled in "paused" Step 1 with a different send_from account, or never enrolled. Check Apollo Contacts tab for each name to determine status. They may need to be re-enrolled or enrolled for the first time.
 
-**QA gate script:** `/sessions/determined-sharp-keller/qa_gate.py` (session VM — rebuild if needed)
-**Build script:** `/sessions/determined-sharp-keller/build_html.py` (session VM)
+**QA process used:** QA gate on every single email before sending. No placeholder text or mixed-up drafts sent. All 35 confirmed-sent emails passed: WC 80-97, QM=2, no placeholders, proof point with real numbers, Testsigma mentioned, "What day works?" CTA.
+
+**Companies covered (sent to):**
+E*TRADE/Morgan Stanley, Broadcom, Humana, Corewell Health, Blue Cross MN, BCBS Texas, Blue Cross KC, Mastercard (7/8 sent — Yvonne Oliver blocked), Anaplan, DraftKings, Cleveland Clinic, Microchip Technology, GEICO, Electronic Arts, HashiCorp, KKR, Datamatics, OneMain Financial
 
 
 ---
@@ -396,6 +387,7 @@ E*TRADE/Morgan Stanley (1), Broadcom (5), Humana (5), Corewell Health (1), BCBS 
 - Mar 11 (Session 15) changes: `memory/session/in-progress.md` (NEW — crash-recovery checkpoint file), `AGENTS.md` (crash recovery + mid-session commit protocol added), `memory/session/work-queue.md` (TASK-017 deferred, TASK-019 added as DONE), `memory/session/handoff.md`, `memory/session/session-log.md`
 - Mar 11 (Session 16) changes: `memory/sop-tam-outbound.md` (Part 5 catchall case-by-case policy, Part 9 T2 removed from required fields), `memory/session/work-queue.md` (TASK-017 send protocol fixed), `memory/session/handoff.md`, `memory/session/session-log.md`
 - Mar 11 (Sessions 17-18) changes: `tamob-batch-20260311-1.html` (NEW — Wave 3 batch tracker, 35 contacts), `MASTER_SENT_LIST.csv` (+35 Wave 3 rows, 374 total), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
+- Mar 11 (Sessions 22-24) changes: `tamob-batch-20260311-2.html` (badges updated: 35 T1SentMar11, 2 Blocked, 11 Ready), `MASTER_SENT_LIST.csv` (+35 Wave 4 rows, 410 total), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Claude cannot push (no GitHub auth in VM). Rob must run `git push` from his terminal.
 
 ---

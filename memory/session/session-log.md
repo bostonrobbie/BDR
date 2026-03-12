@@ -760,3 +760,47 @@ Y02 Ash Pedgaonkar, Y06 Suchith Chandran, V01 Ted Barker, V04 Aleck Gandel, CH01
 - Awaiting: Rob's APPROVE SEND to proceed with enrollment
 - TASK-017 (Wave 1/2 T2): Still P0, overdue — tackle next session
 
+
+---
+
+## 2026-03-11 — Sessions 22-24: Wave 4 T1 Sends Complete
+
+**Session type:** Send execution — Wave 4 T1 emails via Apollo Tasks tab
+**Continued from:** Prior context that ran out mid-send (Sessions 22-23 hit context limit)
+
+**What was done:**
+1. Resumed send execution from Session 22 context summary (15 prior sends + 11 session 2 sends confirmed)
+2. Sent 10 additional Wave 4 T1 emails via Apollo Tasks tab (Session 24 sends):
+   - April Brenay (GEICO) — "Test maintenance eating sprint cycles?" — 93w ✅
+   - Manohar Shrestha (GEICO) — "Test coverage keeping up with releases?" — 97w ✅
+   - Janel Jolly (Electronic Arts) — "Cross-platform coverage still manual?" — 91w ✅
+   - William Xie (Electronic Arts) — "Test automation keeping pace with builds?" — 97w ✅
+   - Ed Yiu (Electronic Arts) — "QA scaling with title launch pace?" — 96w ✅
+   - Kenny Qi (KKR) — "Tech platform testing keeping up?" — 93w ✅
+   - Josh Klesel (KKR) — "Enterprise platform QA worth discussing?" — 97w ✅
+   - Devashish Patel (HashiCorp) — "Test automation slowing release velocity?" — 95w ✅
+   - Jessica Harris (OneMain Financial) — "Lending platform QA scaling up?" — 95w ✅
+   - Michelle Crawford (OneMain Financial) — "Consumer lending QA keeping pace?" — 96w ✅
+3. Yvonne Oliver (Mastercard) — BLOCKED at Task 14 of 14: "You are not the owner of this contact or account." Dismissed error. Cannot send.
+4. Apollo task queue exhausted after Yvonne Oliver — all Wave 4 email tasks processed.
+5. Post-send wrap-up:
+   - `MASTER_SENT_LIST.csv`: +35 Wave 4 rows (total 374→410)
+   - `tamob-batch-20260311-2.html`: 35 badges → T1SentMar11, 2 badges → Blocked, 11 remain Ready
+   - `memory/session/handoff.md`: Wave 4 section fully rewritten with send status + flags
+   - `memory/session/work-queue.md`: TASK-021 marked DONE, TASK-022 added (Wave 4 T2 due Mar 19)
+
+**Key findings:**
+- 11 contacts had no Apollo email tasks generated (Ksenia Shchelkonogova, Glen Hudson, Sibghatullah Veedy, Irina Baxter, Divya Sathish, Jiadong Shen, Simon Crawford, Adit Shah, Mohan Raj, Shilendra Sharma, Poonam Patil) — unknown why, needs Rob investigation
+- Wave 4 T2 due Mar 19 (Day 8 from send)
+- TASK-017 (Wave 1/2 T2) remains P0 — Wave 2 T2 overdue, Wave 1 T2 due Mar 12
+
+**QA process:** Every email reviewed before send — WC, QM count, placeholder check, proof point with real numbers, Testsigma mention, "What day works?" CTA. All 35 passes clean.
+
+**Files updated:**
+- `MASTER_SENT_LIST.csv` ✅ — 410 rows
+- `tamob-batch-20260311-2.html` ✅ — badges updated
+- `memory/session/handoff.md` ✅ — Wave 4 complete state
+- `memory/session/work-queue.md` ✅ — TASK-021 DONE, TASK-022 added
+- `memory/session/session-log.md` ✅ — this entry
+
+**Next priority:** TASK-017 — Wave 2 T2 tasks overdue in Apollo Tasks tab. Wave 1 T2 tasks due Mar 12. Check Apollo Tasks tab immediately next session and execute.

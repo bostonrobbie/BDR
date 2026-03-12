@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-11 (Session 21 — Wave 4 batch build COMPLETE. 48/48 T1 drafts pass QA gate. tamob-batch-20260311-2.html built. TASK-021 added: enroll + send Wave 4. TASK-017 still P0 — Wave 1/2 T2 overdue.)
+## Last Updated: 2026-03-11 (Sessions 22-24 — Wave 4 T1 sends COMPLETE. 35/48 sent. 2 blocked. 11 no-task contacts need guidance. TASK-021 DONE. TASK-017 still P0 — Wave 1/2 T2 overdue. Wave 4 T2 due Mar 19.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 1. `git pull origin main`
@@ -15,22 +15,29 @@ Tasks are sorted by priority. Claim one task at a time by updating status to IN_
 ## 🔴 CRITICAL — Do First
 
 ### TASK-021: Enroll + Send Wave 4 T1 (48 contacts)
-**Status:** PENDING APPROVE SEND
-**Priority:** P0 — awaiting Rob's APPROVE SEND
-**Effort:** ~90 min
-**Tracker:** `tamob-batch-20260311-2.html`
-**QA gate:** 48/48 passed (MQS ≥9/12, WC 80-97, QM=2)
+**Status:** ✅ DONE (2026-03-11, Sessions 22-24)
+**Result:** 35/48 T1 emails sent via Apollo Tasks tab. QA gate passed on every email before send.
+**MASTER_SENT_LIST.csv:** 35 rows added (410 total). tamob-batch-20260311-2.html badges updated.
 
-**Steps (after APPROVE SEND):**
-1. Enroll all 48 in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) — batches of 5
-2. Send T1 via Apollo Tasks tab (manual, one at a time)
-3. Subject + body from tracker HTML (copy buttons)
-4. Update MASTER_SENT_LIST.csv (+48 rows, batch: "TAM Outbound Wave4 T1 Mar11")
-5. Update tamob-batch-20260311-2.html: all Ready → "T1 Sent [date]"
-6. T2 due Day 8 (8 days from send)
+**Outstanding items (need Rob action):**
+- 🚫 Valerie Jefferies (BCBS Illinois) — blocked: job change flag. Check Apollo enrollment status.
+- 🚫 Yvonne Oliver (Mastercard) — blocked: ownership permission error. Consider LinkedIn InMail alternative.
+- ⚠️ 11 no-task contacts: Ksenia Shchelkonogova, Glen Hudson, Sibghatullah Veedy, Irina Baxter, Divya Sathish, Jiadong Shen, Simon Crawford, Adit Shah, Mohan Raj, Shilendra Sharma, Poonam Patil — Apollo never generated Step 1 tasks. Check Apollo Contacts tab for each; may need re-enrollment.
 
-**Dedup:** 3 removed pre-build (Amir Aly, Sambhav Taneja, Marcela Fetters).
-**Companies:** E*TRADE/Morgan Stanley, Broadcom (5), Humana (5), BCBS Blues (4), Mastercard (8), Anaplan, DraftKings (2), Cleveland Clinic, Microchip Technology, GEICO (4), Electronic Arts (6), HashiCorp (2), KKR (2), Datamatics (3), OneMain Financial (2)
+**Wave 4 T2 due:** Mar 19 (Day 8 from Mar 11 send) — add TASK-022 when ready to draft.
+
+### TASK-022: Draft T2 Emails — Wave 4 (35 contacts, due Mar 19)
+**Status:** UNCLAIMED
+**Priority:** P1 — T2 due Mar 19 (Day 8 from Mar 11 T1 send)
+**Effort:** ~120 min (large batch, 19 companies)
+**Output:** `tamob-wave4-t2-drafts-mar19.html`
+
+35 contacts enrolled in TAM Outbound Mar 11. T2 tasks will appear in Apollo Tasks tab ~Mar 18-19.
+When Apollo surfaces them → draft + send per TASK-017 protocol.
+**Formula:** sop-tam-outbound.md Part 7 — 50-70 words, engagement question CTA, different proof point from T1
+**Check T1 proof points:** `tamob-batch-20260311-2.html` (35 contact T1 drafts with subjects + bodies)
+**Send via:** Apollo UI (Part 23 of sop-tam-outbound.md v3.1) → manually paste → Send Now
+**APPROVE SEND required before any sends**
 
 
 ### TASK-001: Draft Touch 2 Emails for Original 9 Feb 27 Contacts
