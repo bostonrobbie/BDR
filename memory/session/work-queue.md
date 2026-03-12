@@ -546,3 +546,57 @@ Review TAM-Outbound-SOP-draft-v1.html (now Draft v2). Check:
 ---
 
 *Updated by Claude — 2026-03-10 (Session 7)*
+
+### TASK-027: Send Wave 5B T1 Emails (5 contacts — pending APPROVE SEND)
+**Status:** UNCLAIMED — waiting for Rob's APPROVE SEND
+**Priority:** P0 — contacts enrolled, T1 tasks will appear in Apollo Tasks tab
+**Effort:** ~10 min (paste drafts from tracker into Apollo)
+**Output:** 5 T1 emails sent via Apollo Tasks tab
+
+5 contacts from Wave 5B (account expansion sweep) enrolled in TAM Outbound Step 1. When Apollo surfaces the manual email tasks:
+1. Open Apollo Tasks tab
+2. For each contact: paste subject + body from `tamob-batch-20260312-5.html`
+3. Send Now
+4. Update tracker HTML badges to "T1 Sent"
+5. MASTER_SENT_LIST.csv already updated (432 rows)
+
+**Contacts:** Divyesh Jain (GEICO), Altaf Shariff (OneMain), Geo Sarria (EA), Clifton Wilcox (EA), Christie Burkhead (Humana)
+
+**Donald Jackson (Chase):** NOT enrolled — ownership blocked. Rob must assign ownership in Apollo UI first. After ownership fixed, enroll + add to this send batch.
+
+**APPROVE SEND required before any sends**
+
+### TASK-028: Fix Apollo Ownership for Donald Jackson (Chase) + Yogesh Garg (Check Point)
+**Status:** UNCLAIMED — requires Rob manual action in Apollo UI
+**Priority:** P1 — blocking 2 contacts from enrollment
+**Effort:** ~5 min
+**What:** Both contacts get `contacts_without_ownership_permission` error during enrollment. Rob needs to:
+1. Go to Apollo > Contacts > search each name
+2. Assign ownership to Rob's account
+3. Then re-enroll via API or manually add to TAM Outbound sequence
+
+### TASK-029: Sales Nav Deep Sweep — Backlog Contacts (5 no-email + HashiCorp)
+**Status:** UNCLAIMED
+**Priority:** P2 — expansion pipeline
+**Effort:** ~45 min
+**What:** Use Sales Navigator browser automation to find emails for:
+- Partha Pattanaik (Humana, Dir QA) — no Apollo email
+- David Macdonald (OneMain, VP/MD QE) — no Apollo email
+- Graig Taylor (EA/Respawn, QA Dir) — no Apollo email
+- Brent Kong (EA, Dir QE) — no Apollo email
+- Jaideep Mukherjee (GEICO, QA Eng Mgr) — no Apollo email
+- HashiCorp — 0 Apollo results for any QA titles, full Sales Nav sweep needed
+- Brian Vanhoose + Marion Stewart (JPMorgan) — verify if software QA vs operations QA
+
+**Method:** Sales Nav search + Apollo Chrome Extension import for contacts without emails. See `memory/playbooks/sales-nav-deep-sweep.md`.
+
+### TASK-030: Enrich + Prospect New Untouched Accounts (BlackRock, CVS, Citizens, Bungie)
+**Status:** UNCLAIMED
+**Priority:** P2 — new account pipeline
+**Effort:** ~60 min
+**What:** Session 29 partially enriched contacts at these HIGH ICP accounts (not yet enrolled):
+- BlackRock: 4 contacts identified (Darin Koenig, Gil Leong, Nate Sewell, Amaresh Shukla — all verified emails, catchall domain)
+- CVS Health: 2 contacts (Erin Bixel, Avani Vaidya — verified, non-catchall)
+- Citizens Bank: 3 contacts with obfuscated names (need enrichment by Apollo ID)
+- Bungie: 4 contacts with obfuscated names (3 QA Directors + 1 Sr QA Manager)
+Complete dedup, draft T1s, enroll in TAM Outbound.

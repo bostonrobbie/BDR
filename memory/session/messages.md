@@ -15,6 +15,8 @@ Append-only communication channel between concurrent Cowork sessions. Sessions l
 
 ## Messages
 
+[2026-03-12T16:30:00Z] Session 29: [CLAIM] Enrolled 7 contacts from Batch 6 in TAM Outbound (Aetna, EmblemHealth, BeyondTrust, Aura, DraftKings, Clinisys, Alithya). MASTER_SENT_LIST.csv rows 421-427. Iain Duffield (Anaplan) SKIPPED due to ownership conflict, needs manual reassignment in Apollo UI. Do not re-prospect these companies.
+
 [2026-03-12T15:00:00Z] Session 28: [INFO] Message board created. All sessions should check this file on startup for inter-session coordination notes.
 
 [2026-03-12T14:44:18Z] Session 26: [CLAIM] Enrolled 9 contacts from Epicor, BeyondTrust, Northern Trust in TAM Outbound. These companies are logged in MASTER_SENT_LIST.csv (rows 412-420). Do not re-prospect these contacts.
@@ -29,3 +31,5 @@ Append-only communication channel between concurrent Cowork sessions. Sessions l
 
 ### 2026-03-12 14:45 — Session 28b
 **[DONE]** Multi-agent infrastructure build complete. 19 new files: 12 playbooks (memory/playbooks/), 3 Cowork skills (skills/), active session registry (memory/session/active/_protocol.md), file locking (.locks/_protocol.md), message board (this file). AGENTS.md rewritten to v2.0. CLAUDE.md reference table expanded. All files verified — no placeholders. Future sessions: follow 14-step startup in AGENTS.md.
+
+[2026-03-12T16:32:00Z] Session 29: [DONE] Deep-sweep of Wave 1-4 accounts complete. 5 new contacts enrolled in TAM Outbound (Divyesh Jain/GEICO, Altaf Shariff/OneMain, Geo Sarria/EA, Clifton Wilcox/EA, Christie Burkhead/Humana). Donald Jackson (Chase) blocked by ownership error. T1 drafts in tamob-batch-20260312-5.html. MASTER_SENT_LIST.csv now 432 rows. Backlog: 5 Sales Nav candidates (no email), HashiCorp needs Sales Nav sweep, 2 uncertain JPM contacts. Do not re-prospect these contacts.

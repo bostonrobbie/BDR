@@ -1074,3 +1074,49 @@ Y02 Ash Pedgaonkar, Y06 Suchith Chandran, V01 Ted Barker, V04 Aleck Gandel, CH01
 - Rob must `git push` to sync to remote
 
 **Next:** New TAM T1 batch (operating directive), APPROVE SEND for Batch 4+5, Wave 1/2 T2 overdue
+
+---
+
+## Session 29 — 2026-03-12
+
+**Task:** Deep-sweep existing Wave 1-4 accounts for additional untouched contacts
+
+**What was done:**
+1. Built master account-contact map across all 35 Wave 1-4 accounts with gap analysis (employees/contacts ratio)
+2. Apollo People Search + Enrichment across high-gap accounts: Chase/JPMorgan, GEICO, OneMain, EA, Humana, Cleveland Clinic, HashiCorp
+3. Full 6-point dedup on all candidates (MASTER_SENT_LIST, DNC, Apollo contacts, batch check, same-company, TAM domain)
+4. Created 2 new Apollo contacts (Divyesh Jain at GEICO, Geo Sarria at EA)
+5. Identified 2 existing contacts ready to enroll (Altaf Shariff at OneMain, Clifton Wilcox at EA)
+6. Enrolled 5 contacts into TAM Outbound sequence (1 blocked by ownership: Donald Jackson at Chase)
+7. Drafted T1 emails for all 6 contacts (MQS 12/12 on all)
+8. Built batch tracker: tamob-batch-20260312-5.html
+9. Updated MASTER_SENT_LIST.csv (420 → 432 rows, +5 enrolled + 7 from prior in session)
+
+**Contacts enrolled (Wave 5B):**
+
+| Name | Company | Email | Apollo ID | Proof Point |
+|------|---------|-------|-----------|-------------|
+| Divyesh Jain | GEICO | divyeshjain@geico.com | 69b2e998964931000dbc4730 | CRED |
+| Altaf Shariff | OneMain | altaf.shariff@onemainfinancial.com | 67191a0dfa4c1002b65c0973 | Medibuddy |
+| Geo Sarria | EA | gsarria@ea.com | 69b2e99aaa30fe0011517c70 | Cisco |
+| Clifton Wilcox | EA | clifton@ea.com | 64f5d88e32372500ba1261d2 | CRED |
+| Christie Burkhead | Humana | cburkhead@humana.com | 6945706b98e651001d3ba9c1 | Sanofi |
+
+**Blocked:**
+- Donald Jackson (Chase) — ownership permission error (same as Yogesh Garg)
+- David Schraff (Cleveland Clinic) — already in TAM Outbound, bounced
+- Satish Krishnan (GEICO) — already active in TAM Outbound
+- Satish Gopal (JPMorgan) — previously contacted in archived sequence
+
+**Key findings documented:**
+- Subsidiary domain patterns: Chase/jpmorgan.com, OneMain/omf.com, Cleveland Clinic/ccf.org
+- Healthcare QA filtering: most QA titles at hospitals are medical/clinical, not software
+- Catchall domains: chase.com, jpmorgan.com, geico.com
+- Enterprise persona filtering: use "Software/Automation/Test/SDET" keywords, avoid "Compliance/Clinical/Operations"
+- Stale Apollo employment data: verify current employer before adding
+
+**Backlog (Sales Nav candidates):** 5 contacts with no email (Partha Pattanaik, David Macdonald, Graig Taylor, Brent Kong, Jaideep Mukherjee), HashiCorp (0 Apollo results), 2 uncertain JPM contacts (Brian Vanhoose, Marion Stewart)
+
+**Files created/modified:**
+- `tamob-batch-20260312-5.html` (new batch tracker)
+- `MASTER_SENT_LIST.csv` (+5 rows = 432 total)
