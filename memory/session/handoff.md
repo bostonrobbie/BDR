@@ -1,5 +1,5 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-12 (Session 27 — TAM-only audit + SOP enforcement. Batch 5: 5 enrolled (of 13 drafted, 5 non-TAM removed per INC-010, 2 Infor phone-contact excluded, 1 Yogesh Garg ownership-blocked). Sequence audit CLEAN — no non-TAM contacts in TAM Outbound. SOPs hardened: domain verification gate, Factor prioritization. MASTER_SENT_LIST 420 rows. Handoff complete.)
+## Last Updated: 2026-03-12 (Session 28 — Bounce cleanup. INC-011: 9 Wave 4 bounces + 1 Wave 1 bounce (Arun Amarendran) discovered via Gmail scan. All 9 Wave 4 auto-stopped by Apollo. Arun manually stopped via API. MASTER_SENT_LIST updated (10 rows marked HARD BOUNCE, 420 rows total). Total TAM Outbound bounces: 12/109 = 11.0%. Humana flagged as unreliable domain (3/3 bounced). INC-011 logged. Pipeline-state updated.)
 
 ---
 
@@ -9,6 +9,23 @@
 ---
 
 ## CRITICAL ISSUES (Action Required)
+
+### 🟡 INC-011: Wave 4 + Wave 1 Bounces (2026-03-12, Session 28)
+9 Wave 4 bounces + 1 Wave 1 bounce (Arun Amarendran) discovered via Gmail scan Mar 12.
+
+**Cleanup completed:**
+- 9 Wave 4 contacts auto-marked failed/bounced by Apollo — no manual action needed
+- Arun Amarendran (Commvault, Wave 1) manually stopped via Apollo API — was still `active, step 2, paused` despite bounce
+- MASTER_SENT_LIST.csv: 10 rows marked HARD BOUNCE
+- INC-011 logged in incidents.md with full contact table + pattern analysis
+
+**Bounced contacts:** Jessica Harris (OneMain), William Xie (EA), David Schraff (Cleveland Clinic), Mike Seal (DraftKings), Koushal Ram (Mastercard), Sakib Alam (Humana), Samatha Gangyshetty (Humana), Ahmet Cakar (Humana), Arun Amarendran (Commvault)
+
+**Domain patterns:** Humana 3/3 bounced (100%), Commvault 2/5 bounced (40%), Mastercard 2/8 bounced (25%)
+
+**Total TAM Outbound bounces: 12/109 sent = 11.0%**
+
+---
 
 ### ✅ RESOLVED: INC-007 Recovery Emails (2026-03-10, Sessions 12-13)
 24 of 25 recovery emails sent via Gmail Chrome automation. 1 hard bounce: Sucheth Ramgiri (sramgiri@commvault.com — SMTP 550, address not found). Recovery for Sucheth NOT sent and NOT needed — original placeholder also bounced. Remove from TAM Outbound sequence.
@@ -124,7 +141,7 @@ Last audit: Not completed this session. Need to check:
 | 9 | Eric Pearson | Fidelity | Eric's QA coverage at Fidelity | ✅ Sent |
 | 10 | Maurice Saunders | Cboe | Maurice's QA coverage at Cboe | ✅ Sent |
 | 11 | Sourabh Roy | Fidelity | Sourabh's QA coverage at Fidelity | ✅ Sent |
-| 12 | Arun Amarendran | Commvault | Arun's engineering coverage at Commvault | ✅ Sent |
+| 12 | Arun Amarendran | Commvault | Arun's engineering coverage at Commvault | ⛔ BOUNCED (INC-011) — manually stopped Mar 12 |
 | 13 | Brahmaiah Vallabhaneni | Commvault | Brahmaiah's engineering at Commvault | ✅ Sent |
 | 14 | Christopher Bilcz | Fidelity | Christopher's QA coverage at Fidelity | ✅ Sent |
 | 15 | Chamath Guneratne | TruStage | Chamath's QA coverage at TruStage | ✅ Sent |
@@ -324,7 +341,7 @@ Wave 3 T1 enrolled Mar 11. T2 tasks will appear in Apollo ~Mar 15-16. Check Apol
 **⚠️ 2 BLOCKED — requires Rob awareness**
 **⚠️ 11 CONTACTS WITH NO APOLLO EMAIL TASKS — requires Rob guidance**
 
-**File:** `tamob-batch-20260311-2.html` — updated: 37 "T1 Sent Mar11 ✓", 2 "Blocked ✗", 9 "Ready" (pending Step 1 tasks)
+**File:** `tamob-batch-20260311-2.html` — updated: 37 "T1 Sent Mar11 ✓" (8 of which BOUNCED — see INC-011), 2 "Blocked ✗", 9 "Ready" (pending Step 1 tasks). **Wave 4 bounces: 10 total** (Ksenia Shchelkonogova from INC-009 + 8 new from INC-011).
 **Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
 **T2 due:** Day 8 from Mar 11 send = **Mar 19** for all 37 confirmed sent contacts
 **MASTER_SENT_LIST.csv:** 37 rows added (batch: "TAM Outbound Wave4 T1 Mar11") — total now 412 rows

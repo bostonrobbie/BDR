@@ -273,6 +273,51 @@ Before enrolling any contact in TAM Outbound (or any Apollo email sequence), che
 
 ---
 
+## INC-011: Wave 4 Mass Bounces + Wave 1 Arun Amarendran Bounce (2026-03-12)
+**Severity:** MEDIUM
+
+### What Happened
+Gmail scan on Mar 12 revealed 9 new hard bounces from Wave 4 T1 sends (Mar 11) plus 1 bounce from Wave 1 (Arun Amarendran, Commvault). All 9 Wave 4 contacts were auto-marked as `status: failed, inactive_reason: bounced` by Apollo. Arun Amarendran was NOT auto-marked — still showed `status: active, step 2, paused` — and required manual stop via Apollo API.
+
+### Affected Contacts
+| # | Name | Company | Email | Wave | Apollo Status | Action |
+|---|------|---------|-------|------|--------------|--------|
+| 1 | Jessica Harris | OneMain Financial | jessica.harris@onemainfinancial.com | Wave 4 | failed/bounced ✅ | Auto-handled |
+| 2 | William Xie | EA | william.xie@ea.com | Wave 4 | failed/bounced ✅ | Auto-handled |
+| 3 | David Schraff | Cleveland Clinic | schraffd@ccf.org | Wave 4 | failed/bounced ✅ | Auto-handled |
+| 4 | Mike Seal | DraftKings | mseal@draftkings.com | Wave 4 | failed/bounced ✅ | Auto-handled |
+| 5 | Koushal Ram | Mastercard | koushal.ram@mastercard.com | Wave 4 | failed/bounced ✅ | Auto-handled |
+| 6 | Sakib Alam | Humana | salam6@humana.com | Wave 4 | failed/bounced ✅ | Auto-handled |
+| 7 | Samatha Gangyshetty | Humana | sgangyshetty@humana.com | Wave 4 | failed/bounced ✅ | Auto-handled |
+| 8 | Ahmet Cakar | Humana | ahmet.cakar@humana.com | Wave 4 | failed/bounced ✅ | Auto-handled |
+| 9 | Arun Amarendran | Commvault | aamarendran@commvault.com | Wave 1 | ⚠️ Was active — manually stopped | Stopped via API Mar 12 |
+
+### Pattern Analysis
+- **Humana:** 3/3 contacts bounced (100% failure). Humana email patterns may be wrong in Apollo or domain blocks external cold email. Flag Humana as unreliable for email outreach.
+- **Mastercard:** 2 bounces total (Ksenia Shchelkonogova from INC-009 + Koushal Ram). 2 of 8 Mastercard contacts bounced.
+- **Commvault:** 2 bounces total (Sucheth Ramgiri from INC-007 + Arun Amarendran). 2 of 5 Commvault contacts bounced.
+
+### Root Cause
+Apollo email data for some enterprise domains is unreliable. Bounces are expected at ~5-10% for cold outbound, but domain-level patterns (Humana 100%, Commvault 40%) suggest systemic issues with those specific domains.
+
+### Remediation
+1. All 9 Wave 4 contacts auto-stopped by Apollo (status: failed/bounced)
+2. Arun Amarendran manually stopped via `apollo_emailer_campaigns_remove_or_stop_contact_ids` API — status: finished, inactive_reason: manually finished
+3. MASTER_SENT_LIST.csv updated — all 10 rows marked "HARD BOUNCE"
+4. Do NOT attempt email re-contact for any of these 10 without re-enrichment + verified new email
+5. For Humana: consider LinkedIn InMail only for future outreach
+
+### Total Bounce Count (TAM Outbound lifetime)
+| Wave | Bounced | Total Sent | Bounce Rate |
+|------|---------|-----------|-------------|
+| Wave 1 | 2 (Sucheth Ramgiri, Arun Amarendran) | 23 | 8.7% |
+| Wave 2 | 0 | 16 | 0% |
+| Wave 3 | 0 | 33 | 0% |
+| Wave 4 | 10 (Ksenia + 9 new) | 37 | 27.0% |
+| **Total** | **12** | **109** | **11.0%** |
+
+---
+
 ## Draft Safety & Cadence Enforcement Rules
 
 ### Rule 1: Date-Gating

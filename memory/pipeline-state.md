@@ -109,7 +109,7 @@
 | Mar 10 | TAM Outbound Wave 1 T1 — 23 sent via Apollo Tasks (⚠️ INC-007: all placeholder sends. Recovery: 24/25 real emails sent via Gmail Chrome same day) | 23 placeholder + 24 recovery | 282 |
 | Mar 10 | TAM Outbound Wave 2 T1 — 16 sent via Apollo Tasks (robert.gorham@testsigma.com) | 16 | 298 |
 | Mar 11 | TAM Outbound Wave 3 T1 — 35 enrolled, 33 sent via Apollo Tasks + 2 future-dated (Christine Gamache/TELUS, Brooks Foley/GE HealthCare). ⚠️ INC-008: 2 placeholder sends (Michael Cahill L3Harris, Manpreet Burmi Veradigm) — recovery emails sent. | 33 (+2 pending) | 331 |
-| Mar 11 | TAM Outbound Wave 4 T1 — 48 enrolled. 37 sent (35 via Apollo Tasks + 2 auto-sent by Apollo: Glen Hudson + Sibghatullah Veedy). 2 blocked (Valerie Jefferies job change, Yvonne Oliver ownership error). 1 bounced (Ksenia Shchelkonogova). 9 step 1 tasks pending in Apollo queue. | 37 | 368 |
+| Mar 11 | TAM Outbound Wave 4 T1 — 48 enrolled. 37 sent (35 via Apollo Tasks + 2 auto-sent by Apollo: Glen Hudson + Sibghatullah Veedy). 2 blocked (Valerie Jefferies job change, Yvonne Oliver ownership error). **10 bounced** (Ksenia Shchelkonogova + Jessica Harris, William Xie, David Schraff, Mike Seal, Koushal Ram, Sakib Alam, Samatha Gangyshetty, Ahmet Cakar — all discovered Mar 12 Gmail scan). 9 step 1 tasks pending in Apollo queue. | 37 | 368 |
 | Mar 12 | TAM Outbound Batch 5 — 5 enrolled (of 13 drafted). 5 non-TAM (DocuSign, Bentley) removed per INC-010. 2 Infor contacts (Mirza Hasan, Daniela Young) excluded (prior phone contact). 1 (Yogesh Garg, Check Point) enrollment blocked by Apollo ownership error — needs manual fix. | 5 enrolled (pending T1 send) | 368 |
 
 ### Email Send History
@@ -304,7 +304,7 @@ Ron Trachman, Laurie Nielsen, Alan Gutherz, Derek Stanley, Nihal Elsayed, Sarah 
 | Blocked (Terene Lee) | 1 |
 | DNC | 7 (Sanjay Singh, Lance Silverman, Clyde Faulkner, Ashok Prasad, Abe Blanco, Chuck Smith, Jitesh Biswal) |
 | Double-sends (cannot unsend) | 6: Chuck Smith, Abe Blanco, Rick Kowaleski, Christie Howard, Mohan Gummadi, Yassi Dastan |
-| TAM Outbound bounces | Sucheth Ramgiri (Wave1, SMTP 550), Ksenia Shchelkonogova (Wave4, email invalid) |
+| TAM Outbound bounces | **12 total:** Wave1: Sucheth Ramgiri (SMTP 550), Arun Amarendran (postmaster bounce, manually stopped Mar 12). Wave4: Ksenia Shchelkonogova (email invalid) + 9 new Mar 12: Jessica Harris (OneMain), William Xie (EA), David Schraff (Cleveland Clinic), Mike Seal (DraftKings), Koushal Ram (Mastercard), Sakib Alam (Humana), Samatha Gangyshetty (Humana), Ahmet Cakar (Humana). See INC-011. |
 | Wave T2 schedule | Wave1: Mar 15. Wave2: Mar 15. Wave3: Mar 16. Wave4: Mar 19. |
 
 ### Enrollment Audit (Mar 3)

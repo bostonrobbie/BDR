@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-12 (Session 27 end — TAM-only audit complete. Batch 5: 5 enrolled (13 drafted, 5 non-TAM removed INC-010, 2 phone-excluded, 1 ownership-blocked). Sequence CLEAN. SOPs hardened. TASK-025 added for Batch 5 T1 sends.)
+## Last Updated: 2026-03-12 (Session 28 — INC-011 bounce cleanup. 9 Wave 4 + 1 Wave 1 bounce. Arun Amarendran manually stopped. MASTER_SENT_LIST updated. Total TAM Outbound bounces: 12/109 = 11.0%.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 1. `git pull origin main`

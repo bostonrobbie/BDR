@@ -978,3 +978,47 @@ Y02 Ash Pedgaonkar, Y06 Suchith Chandran, V01 Ted Barker, V04 Aleck Gandel, CH01
 - Non-TAM contacts (DocuSign, Bentley) permanently excluded from TAM Outbound
 
 **Files changed:** `memory/sop-tam-outbound.md`, `memory/target-accounts.md`, `CLAUDE.md`, `memory/incidents.md`, `memory/pipeline-state.md`, `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
+
+---
+
+## 2026-03-12 — Session 28: Bounce Cleanup (INC-011)
+
+**Session type:** Incident response — bounce detection + cleanup
+**What was done:**
+
+1. **Gmail scan:** Detected 9 new Wave 4 hard bounces + 1 Wave 1 bounce (Arun Amarendran, Commvault)
+2. **Apollo verification:** All 9 Wave 4 contacts confirmed auto-marked `status: failed, inactive_reason: bounced`
+3. **Arun Amarendran exception:** Apollo still showed `status: active, step 2, paused` despite bounce. Manually stopped via `apollo_emailer_campaigns_remove_or_stop_contact_ids` API — now `status: finished, inactive_reason: manually finished`
+4. **MASTER_SENT_LIST.csv:** 10 rows updated with "HARD BOUNCE" notation (420 rows unchanged, just channel field updated)
+5. **INC-011 logged** in incidents.md — full contact table, pattern analysis (Humana 3/3 bounced, Commvault 2/5, Mastercard 2/8), lifetime bounce stats (12/109 = 11.0%)
+6. **Pipeline-state.md updated:** Wave 4 entry updated from "1 bounced" to "10 bounced", TAM Outbound bounces metric updated to 12 total
+7. **Handoff.md updated:** INC-011 section added, Wave 4 file note updated, Wave 1 Arun Amarendran marked BOUNCED
+
+**Bounced contacts (full list):**
+| # | Name | Company | Email | Wave |
+|---|------|---------|-------|------|
+| 1 | Jessica Harris | OneMain Financial | jessica.harris@onemainfinancial.com | Wave 4 |
+| 2 | William Xie | EA | william.xie@ea.com | Wave 4 |
+| 3 | David Schraff | Cleveland Clinic | schraffd@ccf.org | Wave 4 |
+| 4 | Mike Seal | DraftKings | mseal@draftkings.com | Wave 4 |
+| 5 | Koushal Ram | Mastercard | koushal.ram@mastercard.com | Wave 4 |
+| 6 | Sakib Alam | Humana | salam6@humana.com | Wave 4 |
+| 7 | Samatha Gangyshetty | Humana | sgangyshetty@humana.com | Wave 4 |
+| 8 | Ahmet Cakar | Humana | ahmet.cakar@humana.com | Wave 4 |
+| 9 | Arun Amarendran | Commvault | aamarendran@commvault.com | Wave 1 |
+
+**Domain patterns flagged:**
+- Humana: 3/3 bounced = 100% → flag as unreliable for email outreach
+- Commvault: 2/5 bounced = 40% (Sucheth Ramgiri from INC-007 + Arun Amarendran)
+- Mastercard: 2/8 bounced = 25% (Ksenia from INC-009 + Koushal Ram)
+
+**Files changed:**
+- `MASTER_SENT_LIST.csv` — 10 rows marked HARD BOUNCE
+- `memory/incidents.md` — INC-011 added
+- `memory/pipeline-state.md` — Wave 4 bounce count + metrics updated
+- `memory/session/handoff.md` — INC-011 section + Wave 4/Wave 1 bounce notes
+- `memory/session/session-log.md` — this entry
+
+**HTML tracker updates deferred** — badge changes for tamob-batch-20260311-2.html and tamob-wave1-draft-mar10.html not done this session (low priority, contacts already stopped in Apollo).
+
+**Next priority:** New TAM T1 batch (operating directive), Wave 1/2 T2 (overdue), Batch 4/5 T1 sends (pending APPROVE SEND)
