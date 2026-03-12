@@ -1,14 +1,25 @@
 # Memory
 
 ## Multi-Agent Session System
-This repo is worked on by multiple Claude agents across different machines. At the start of EVERY session:
-1. `git pull origin main`
-2. Read `AGENTS.md` (collaboration rules)
-3. Read `memory/session/handoff.md` (current state)
-4. Read `memory/session/work-queue.md` (task queue)
-5. Claim your task before starting work
+This repo is worked on by multiple Claude agents across different machines. Full protocol: `AGENTS.md` (v2.0).
 
-At the end of EVERY session: update handoff.md + work-queue.md + session-log.md, then commit + push.
+**Startup (14 steps — see AGENTS.md):**
+1. `git pull origin main`
+2. Read `AGENTS.md` (collaboration protocol)
+3. Read `CLAUDE.md` (this file — SOP, memory, rules)
+4. Read `memory/session/handoff.md` (pipeline state)
+5. Read `memory/session/work-queue.md` (task queue)
+6. Read `memory/session/in-progress.md` (crash checkpoint)
+7. Read `memory/session/messages.md` (inter-session messages)
+8. Crash check — if in-progress.md Status = ACTIVE → crash recovery
+9. Parallel check — ls `memory/session/active/` → check for conflicts
+10. Register in `memory/session/active/{session-number}.json`
+11. Check Gmail MCP for replies to robert.gorham@testsigma.com
+12. Claim a task (avoid conflicts with active sessions)
+13. Read relevant playbooks from `memory/playbooks/`
+14. Report current state to Rob
+
+**End of EVERY session:** Follow `memory/playbooks/session-handoff.md` — update handoff.md + work-queue.md + session-log.md, deregister from active sessions, release locks, leave [DONE] message, commit.
 
 ---
 
@@ -157,11 +168,20 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 
 | Task | File to Read |
 |------|-------------|
-| **Session startup (any task)** | `AGENTS.md` → `memory/session/handoff.md` → `memory/session/work-queue.md` |
-| **Session closing (any task)** | Update `handoff.md`, `work-queue.md`, `session-log.md` → commit → push |
+| **Session startup (any task)** | `AGENTS.md` → `memory/session/handoff.md` → `memory/session/work-queue.md` → `memory/session/in-progress.md` → `memory/session/messages.md` |
+| **Session closing (any task)** | `memory/playbooks/session-handoff.md` — update handoff.md, work-queue.md, session-log.md, deregister, commit |
+| **Parallel session coordination** | `memory/session/active/_protocol.md` (session registry), `.locks/_protocol.md` (file locking), `memory/session/messages.md` (message board) |
+| **New T1 batch** | `memory/playbooks/tam-t1-batch.md`, `memory/playbooks/apollo-enrollment.md`, `memory/playbooks/dedup-protocol.md`, `memory/playbooks/qa-gate.md`, `memory/playbooks/batch-tracker-html.md` |
+| **T2 follow-ups** | `memory/playbooks/t2-followup.md`, `memory/playbooks/qa-gate.md` |
+| **Apollo enrollment** | `memory/playbooks/apollo-enrollment.md`, `memory/playbooks/dedup-protocol.md` |
+| **Apollo task queue sends** | `memory/playbooks/apollo-task-queue-sends.md` |
+| **Sales Nav sourcing** | `memory/playbooks/sales-nav-deep-sweep.md` |
+| **Error handling** | `memory/playbooks/error-recovery.md` |
+| **Catchall domain decisions** | `memory/playbooks/catchall-domains.md` |
+| **All playbooks (index)** | `memory/playbooks/_index.md` |
 | Draft outreach messages | `memory/sop-outreach.md` |
 | Send InMails via Sales Nav | `memory/sop-send.md` |
-| Pre-batch dedup check | `MASTER_SENT_LIST.csv` + `memory/sop-send.md` Pre-Batch Checklist |
+| Pre-batch dedup check | `MASTER_SENT_LIST.csv` + `memory/sop-send.md` Pre-Batch Checklist + `memory/playbooks/dedup-protocol.md` |
 | Run the Daily workflow | `memory/sop-daily.md` |
 | Check data-backed rules | `memory/data-rules.md` |
 | Match proof points / objections | `memory/proof-points.md` |
@@ -172,7 +192,15 @@ NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Ro
 | Scoring, A/B, feedback loops | `memory/scoring-feedback.md` |
 | Named accounts (TAM, Factors, Farming) | `memory/target-accounts.md` |
 
-**Rule:** Always read the relevant memory file(s) BEFORE starting a task. Don't rely on cached knowledge from prior sessions.
+**Cowork Skills** (invoke as complete workflows):
+
+| Skill | Location | Use When |
+|-------|----------|----------|
+| Session Start | `skills/session-start/SKILL.md` | Every session startup |
+| TAM T1 Batch | `skills/tam-t1-batch/SKILL.md` | Building new outreach batches |
+| Apollo Enroll | `skills/apollo-enroll/SKILL.md` | Creating contacts + enrolling in sequences |
+
+**Rule:** Always read the relevant memory file(s) and playbooks BEFORE starting a task. Don't rely on cached knowledge from prior sessions.
 
 ---
 

@@ -1,5 +1,5 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-12 (Session 28 — Bounce cleanup. INC-011: 9 Wave 4 bounces + 1 Wave 1 bounce (Arun Amarendran) discovered via Gmail scan. All 9 Wave 4 auto-stopped by Apollo. Arun manually stopped via API. MASTER_SENT_LIST updated (10 rows marked HARD BOUNCE, 420 rows total). Total TAM Outbound bounces: 12/109 = 11.0%. Humana flagged as unreliable domain (3/3 bounced). INC-011 logged. Pipeline-state updated.)
+## Last Updated: 2026-03-12 (Session 28b — Multi-agent infrastructure build. 19 new files: 12 playbooks, 3 Cowork skills, active session registry, file locking, message board. AGENTS.md rewritten to v2.0. CLAUDE.md reference table expanded. All files verified, no placeholders.)
 
 ---
 
@@ -506,7 +506,32 @@ E*TRADE/Morgan Stanley, Broadcom, Humana, Corewell Health, Blue Cross MN, BCBS T
 
 ---
 
-*Next session: startup sequence (AGENTS.md → handoff.md → work-queue.md → in-progress.md), then:*
+## Session 28b — Multi-Agent Infrastructure Build (2026-03-12)
+
+**What was built:**
+Complete parallel session infrastructure for multi-agent collaboration. 19 new files, 3 updated files.
+
+**New infrastructure:**
+
+| System | Files | Purpose |
+|--------|-------|---------|
+| Active Session Registry | `memory/session/active/_protocol.md` | Tracks concurrent sessions, prevents conflicts |
+| File Locking | `.locks/_protocol.md` | Prevents two sessions writing same file |
+| Message Board | `memory/session/messages.md` | Append-only inter-session communication |
+| Playbook System | `memory/playbooks/*.md` (12 files incl index) | Captured knowledge from 27 sessions |
+| Cowork Skills | `skills/*/SKILL.md` (3 skills) | Repeatable workflow definitions |
+
+**Playbooks created:** _index.md, apollo-enrollment.md, apollo-task-queue-sends.md, batch-tracker-html.md, catchall-domains.md, dedup-protocol.md, error-recovery.md, qa-gate.md, sales-nav-deep-sweep.md, session-handoff.md, t2-followup.md, tam-t1-batch.md
+
+**Skills created:** session-start, tam-t1-batch, apollo-enroll
+
+**Updated files:** AGENTS.md (v2.0 rewrite), CLAUDE.md (reference table expanded), handoff.md, work-queue.md
+
+**Verification:** All files scanned for placeholder text (TODO, TBD, FIXME, etc.) — none found. All template patterns (TASK-XXX) are intentional format instructions.
+
+---
+
+*Next session: Follow the 14-step startup in AGENTS.md (v2.0), then:*
 *1. **New TAM T1 batch** — source, research, draft new contacts from Factor/TAM accounts (operating directive: T1 pipeline first)*
 *2. **APPROVE SEND check** — Batch 4 (9 contacts) + Batch 5 (5 contacts) T1 sends pending Rob's approval*
 *3. **Yogesh Garg** — Rob must manually assign ownership in Apollo UI, then re-enroll*

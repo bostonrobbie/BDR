@@ -1,14 +1,18 @@
 # Work Queue
-## Last Updated: 2026-03-12 (Session 28 — INC-011 bounce cleanup. 9 Wave 4 + 1 Wave 1 bounce. Arun Amarendran manually stopped. MASTER_SENT_LIST updated. Total TAM Outbound bounces: 12/109 = 11.0%.)
+## Last Updated: 2026-03-12 (Session 28b — Multi-agent infrastructure complete. 12 playbooks, 3 skills, session registry, file locking, message board all built. AGENTS.md v2.0. CLAUDE.md updated.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
+Follow the 14-step startup in `AGENTS.md` (v2.0). Key steps:
 1. `git pull origin main`
-2. Read this file + handoff.md
-3. Check Gmail MCP for replies to robert.gorham@testsigma.com — warm leads jump the queue
-4. Check warm-leads.md for overdue follow-ups
-5. **Start the new TAM T1 batch — this is the first priority every day**
-6. After T1 batch work is done: check Apollo Tasks tab for T2s due
-7. Do NOT re-research anything already in the tracker.
+2. Read AGENTS.md → CLAUDE.md → handoff.md → this file → in-progress.md → messages.md
+3. Crash check (in-progress.md Status = ACTIVE → crash recovery)
+4. Parallel check (ls `memory/session/active/` → avoid conflicts)
+5. Register in `memory/session/active/{session-number}.json`
+6. Check Gmail MCP for replies to robert.gorham@testsigma.com — warm leads jump the queue
+7. Check warm-leads.md for overdue follow-ups
+8. Read relevant playbooks from `memory/playbooks/` before starting work
+9. **Start the new TAM T1 batch — this is the first priority every day**
+10. After T1 batch work is done: check Apollo Tasks tab for T2s due
 
 Tasks are sorted by priority. Claim one task at a time by updating status to IN_PROGRESS.
 

@@ -1,0 +1,11 @@
+{
+  "session_number": 29,
+  "started_at": "2026-03-12T16:30:00Z",
+  "last_heartbeat": "2026-03-12T16:30:00Z",
+  "status": "active",
+  "task": "Deep-sweep existing Wave 1-4 accounts for additional untouched contacts + Sales Nav prospecting",
+  "claimed_companies": ["BlackRock", "CVS Health", "Citizens Bank", "Bungie", "EmblemHealth", "Couchbase", "plus Wave 1-4 account expansion"],
+  "files_editing": [],
+  "agent_type": "cowork",
+  "notes": "Expanding contact coverage at already-worked accounts. Also sourcing from new untouched HIGH ICP accounts. Using Apollo + Sales Nav."
+}

@@ -1022,3 +1022,55 @@ Y02 Ash Pedgaonkar, Y06 Suchith Chandran, V01 Ted Barker, V04 Aleck Gandel, CH01
 **HTML tracker updates deferred** — badge changes for tamob-batch-20260311-2.html and tamob-wave1-draft-mar10.html not done this session (low priority, contacts already stopped in Apollo).
 
 **Next priority:** New TAM T1 batch (operating directive), Wave 1/2 T2 (overdue), Batch 4/5 T1 sends (pending APPROVE SEND)
+
+---
+
+## Session 28b — Multi-Agent Infrastructure Build (2026-03-12)
+
+**Task:** Ad-hoc — Rob requested parallel session infrastructure
+**Duration:** ~60 min (continuation of Session 28)
+**What was done:**
+- Built complete parallel session coordination infrastructure (19 new files, 3 updated)
+- Created Active Session Registry (`memory/session/active/_protocol.md`) with JSON schema, conflict detection, stale session handling (2h threshold)
+- Created File Locking protocol (`.locks/_protocol.md`) with race condition prevention, stale lock handling (30min threshold), nested lock guidance
+- Created Inter-Session Message Board (`memory/session/messages.md`) with category tags ([CLAIM], [DONE], [WARN], [CONFLICT], [ASK], [INFO])
+- Created 12 playbooks capturing institutional knowledge from 27 sessions: _index.md, apollo-enrollment.md, apollo-task-queue-sends.md, batch-tracker-html.md, catchall-domains.md, dedup-protocol.md, error-recovery.md, qa-gate.md, sales-nav-deep-sweep.md, session-handoff.md, t2-followup.md, tam-t1-batch.md
+- Created 3 Cowork skills: session-start, tam-t1-batch, apollo-enroll
+- Rewrote AGENTS.md to v2.0 (14-step startup, parallel session protocol, playbook system, Cowork skills section)
+- Updated CLAUDE.md Reference Files table with all new playbooks, skills, and infrastructure references
+- Verified all files for placeholder text — none found
+
+**Files created:**
+- `memory/session/active/_protocol.md`
+- `.locks/_protocol.md`
+- `memory/session/messages.md`
+- `memory/playbooks/_index.md`
+- `memory/playbooks/apollo-enrollment.md`
+- `memory/playbooks/apollo-task-queue-sends.md`
+- `memory/playbooks/batch-tracker-html.md`
+- `memory/playbooks/catchall-domains.md`
+- `memory/playbooks/dedup-protocol.md`
+- `memory/playbooks/error-recovery.md`
+- `memory/playbooks/qa-gate.md`
+- `memory/playbooks/sales-nav-deep-sweep.md`
+- `memory/playbooks/session-handoff.md`
+- `memory/playbooks/t2-followup.md`
+- `memory/playbooks/tam-t1-batch.md`
+- `skills/session-start/SKILL.md`
+- `skills/tam-t1-batch/SKILL.md`
+- `skills/apollo-enroll/SKILL.md`
+
+**Files updated:**
+- `AGENTS.md` — full rewrite to v2.0
+- `CLAUDE.md` — Multi-Agent section expanded (14 steps), Reference Files table expanded with playbooks/skills/infrastructure
+- `memory/session/handoff.md` — header + Session 28b section added
+- `memory/session/work-queue.md` — header + startup protocol updated to 14-step
+- `memory/session/session-log.md` — this entry
+
+**Notes:**
+- All playbooks contain real production knowledge (not filler) extracted from SOPs, incidents, and 27 sessions of practice
+- All template patterns like TASK-XXX are intentional format instructions, not placeholders
+- Infrastructure is file-based (no persistent processes) — works within Claude VM constraints
+- Rob must `git push` to sync to remote
+
+**Next:** New TAM T1 batch (operating directive), APPROVE SEND for Batch 4+5, Wave 1/2 T2 overdue
