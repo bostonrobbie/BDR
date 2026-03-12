@@ -1,5 +1,5 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-11 (Sessions 22-24: Wave 4 T1 sends COMPLETE. 35/48 sent via Apollo Tasks tab. 2 blocked (Valerie Jefferies/BCBS IL job change, Yvonne Oliver/Mastercard ownership error). 11 contacts had no Apollo email tasks generated — need Rob guidance. MASTER_SENT_LIST.csv updated: 374→410 rows. tamob-batch-20260311-2.html updated with T1 Sent Mar11 / Blocked / Ready statuses.)
+## Last Updated: 2026-03-11 (Sessions 22-25: Wave 4 T1 sends COMPLETE. 37/48 confirmed sent. 2 blocked. 9 pending Step 1 tasks in Apollo queue. MASTER_SENT_LIST.csv: 374→412 rows. All 11 no-task contacts investigated — full findings below.)
 
 ---
 
@@ -324,24 +324,40 @@ Wave 3 T1 enrolled Mar 11. T2 tasks will appear in Apollo ~Mar 15-16. Check Apol
 **⚠️ 2 BLOCKED — requires Rob awareness**
 **⚠️ 11 CONTACTS WITH NO APOLLO EMAIL TASKS — requires Rob guidance**
 
-**File:** `tamob-batch-20260311-2.html` — updated: 35 "T1 Sent Mar11 ✓", 2 "Blocked ✗", 11 "Ready" (no-task)
+**File:** `tamob-batch-20260311-2.html` — updated: 37 "T1 Sent Mar11 ✓", 2 "Blocked ✗", 9 "Ready" (pending Step 1 tasks)
 **Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
-**T2 due:** Day 8 from Mar 11 send = **Mar 19** for all 35 confirmed sent contacts
-**MASTER_SENT_LIST.csv:** 35 rows added (batch: "TAM Outbound Wave4 T1 Mar11") — total now 410 rows
+**T2 due:** Day 8 from Mar 11 send = **Mar 19** for all 37 confirmed sent contacts
+**MASTER_SENT_LIST.csv:** 37 rows added (batch: "TAM Outbound Wave4 T1 Mar11") — total now 412 rows
 
 **Send summary:**
 | Status | Count | Names |
 |--------|-------|-------|
-| ✅ T1 Sent Mar 11 | 35 | Brett Linde, Chyehar Tyler, Hai Su, Jeremy Sabin, Justin Yune, Piyamas Sattaboot, Aswini Nagabooshanam, Vibha Singh, Samatha Gangyshetty, Ahmet Cakar, Sakib Alam, Ganesh Mallina, Kris Berg, Ranjith Reddy, Yvonne Stephen, Vijay Durairaj, Ketan Rathod, Geethavani Dodda, Koushal Ram, Mike Seal, Francky Sergile, David Schraff, Ted Machicek, Satish Krishnan, April Brenay, Manohar Shrestha, Ketan Peddabachi, Ed Yiu, William Xie, Janel Jolly, Devashish Patel, Josh Klesel, Kenny Qi, Michelle Crawford, Jessica Harris |
-| 🚫 BLOCKED | 2 | **Valerie Jefferies** (BCBS Illinois — job change flag in Apollo), **Yvonne Oliver** (Mastercard — ownership permission error: "You are not the owner of this contact or account." Task 14 of 14.) |
-| ⚠️ NO TASK GENERATED | 11 | Ksenia Shchelkonogova, Glen Hudson, Sibghatullah Veedy, Irina Baxter, Divya Sathish, Jiadong Shen, Simon Crawford, Adit Shah, Mohan Raj, Shilendra Sharma, Poonam Patil |
+| ✅ T1 Sent Mar 11 | 37 | Brett Linde, Chyehar Tyler, Hai Su, Jeremy Sabin, Justin Yune, Piyamas Sattaboot, Aswini Nagabooshanam, Vibha Singh, Samatha Gangyshetty, Ahmet Cakar, Sakib Alam, Ganesh Mallina, Kris Berg, Ranjith Reddy, Yvonne Stephen, Vijay Durairaj, Ketan Rathod, Geethavani Dodda, Koushal Ram, Mike Seal, Francky Sergile, David Schraff, Ted Machicek, Satish Krishnan, April Brenay, Manohar Shrestha, Ketan Peddabachi, Ed Yiu, William Xie, Janel Jolly, Devashish Patel, Josh Klesel, Kenny Qi, Michelle Crawford, Jessica Harris + Glen Hudson (auto-sent) + Sibghatullah Veedy (auto-sent) |
+| 🚫 BLOCKED | 2 | **Valerie Jefferies** (BCBS Illinois — job change flag in Apollo), **Yvonne Oliver** (Mastercard — ownership permission error) |
+| ⏳ PENDING (tasks queued) | 9 | Irina Baxter (Anaplan), Jiadong Shen (EA), Simon Crawford (EA), Adit Shah (HashiCorp), Mohan Raj (Datamatics), Shilendra Sharma (Datamatics), Poonam Patil (Datamatics), Ksenia Shchelkonogova (BOUNCED — skip), Divya Sathish (EA — email marked invalid, high bounce risk) |
+
+**11 no-task investigation — COMPLETE (Session 25):**
+All 11 contacts checked via Apollo MCP. Findings:
+
+| Contact | Company | Apollo Status | Finding | Action |
+|---------|---------|--------------|---------|--------|
+| Glen Hudson | Mastercard | active, step 2 | T1 auto-sent by Apollo during enrollment | ✅ CSV + HTML updated |
+| Sibghatullah Veedy | Mastercard | active, step 2 | T1 auto-sent by Apollo during enrollment | ✅ CSV + HTML updated |
+| Ksenia Shchelkonogova | Mastercard | failed, step 1 | Email bounced (kshchelkonogova@mastercard.com marked invalid) | ⛔ Skip — do not retry |
+| Irina Baxter | Anaplan | active, step 1 | Enrolled, Step 1 task pending in Apollo queue | ⏳ Send when task surfaces |
+| Divya Sathish | EA | active, step 1 | Enrolled, Step 1 task pending — email divya.sathish@ea.com marked "invalid" custom field | ⚠️ Watch — likely bounce |
+| Jiadong Shen | EA | active, step 1 | Enrolled, Step 1 task pending | ⏳ Send when task surfaces |
+| Simon Crawford | EA (not Datamatics) | active, step 1 | Enrolled, Step 1 task pending — based in Stockholm | ⏳ Send when task surfaces |
+| Adit Shah | HashiCorp | active, step 1 | Enrolled, Step 1 task pending | ⏳ Send when task surfaces |
+| Mohan Raj | Datamatics | active, step 1 | Enrolled, Step 1 task pending | ⏳ Send when task surfaces |
+| Shilendra Sharma | Datamatics | active, step 1 | Enrolled, Step 1 task pending | ⏳ Send when task surfaces |
+| Poonam Patil | Datamatics | active, step 1 | Enrolled (created today), Step 1 task pending, email verified | ⏳ Send when task surfaces |
+
+**Root cause:** Apollo schedules Step 1 tasks with a delay after enrollment. These tasks simply hadn't surfaced yet when the send session ran. They WILL appear in the Apollo Tasks tab — check back and send them when they do.
 
 **Blocked — action needed:**
-- **Valerie Jefferies (BCBS Illinois):** Apollo blocked due to job change. Was she enrolled in the sequence? Check Apollo. If enrolled but task blocked, either skip or re-enrich with current employer.
-- **Yvonne Oliver (Mastercard):** Apollo "not owner" error — permanently blocked via Apollo. Consider LinkedIn InMail as alternative if Mastercard is still a priority account.
-
-**11 no-task contacts — Rob guidance needed:**
-These 11 contacts appear in the HTML batch but Apollo never generated Step 1 email tasks for them. Possible causes: enrolled under a different sequence, enrolled in "paused" Step 1 with a different send_from account, or never enrolled. Check Apollo Contacts tab for each name to determine status. They may need to be re-enrolled or enrolled for the first time.
+- **Valerie Jefferies (BCBS Illinois):** Apollo blocked due to job change flag. Re-enrich with current employer or skip.
+- **Yvonne Oliver (Mastercard):** Apollo "not owner" error — permanently blocked via Apollo. LinkedIn InMail alternative if Mastercard is still priority.
 
 **QA process used:** QA gate on every single email before sending. No placeholder text or mixed-up drafts sent. All 35 confirmed-sent emails passed: WC 80-97, QM=2, no placeholders, proof point with real numbers, Testsigma mentioned, "What day works?" CTA.
 
@@ -388,6 +404,7 @@ E*TRADE/Morgan Stanley, Broadcom, Humana, Corewell Health, Blue Cross MN, BCBS T
 - Mar 11 (Session 16) changes: `memory/sop-tam-outbound.md` (Part 5 catchall case-by-case policy, Part 9 T2 removed from required fields), `memory/session/work-queue.md` (TASK-017 send protocol fixed), `memory/session/handoff.md`, `memory/session/session-log.md`
 - Mar 11 (Sessions 17-18) changes: `tamob-batch-20260311-1.html` (NEW — Wave 3 batch tracker, 35 contacts), `MASTER_SENT_LIST.csv` (+35 Wave 3 rows, 374 total), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Mar 11 (Sessions 22-24) changes: `tamob-batch-20260311-2.html` (badges updated: 35 T1SentMar11, 2 Blocked, 11 Ready), `MASTER_SENT_LIST.csv` (+35 Wave 4 rows, 410 total), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
+- Mar 11 (Session 25) changes: `tamob-batch-20260311-2.html` (Glen Hudson + Sibghatullah Veedy → T1SentMar11, now 37/2/9), `MASTER_SENT_LIST.csv` (+2 rows, 412 total), `memory/session/handoff.md` (11 no-task investigation findings), `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Claude cannot push (no GitHub auth in VM). Rob must run `git push` from his terminal.
 
 ---

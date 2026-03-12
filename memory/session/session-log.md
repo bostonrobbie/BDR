@@ -804,3 +804,42 @@ Y02 Ash Pedgaonkar, Y06 Suchith Chandran, V01 Ted Barker, V04 Aleck Gandel, CH01
 - `memory/session/session-log.md` ✅ — this entry
 
 **Next priority:** TASK-017 — Wave 2 T2 tasks overdue in Apollo Tasks tab. Wave 1 T2 tasks due Mar 12. Check Apollo Tasks tab immediately next session and execute.
+
+---
+
+## Session 25 — 2026-03-11
+
+**Task:** Complete 11 no-task contact investigation (started Sessions 22-24)
+
+**Work done:**
+1. Searched Apollo Contacts for all 11 no-task Wave 4 contacts via MCP
+2. Found correct Poonam Patil (Datamatics, ID: 69b1c3f231bddd00114bc78a) — enrolled in TAM Outbound today, active step 1
+3. Investigated all 11 — root cause: Apollo schedules Step 1 tasks with a delay after enrollment; tasks simply hadn't surfaced yet
+4. Updated tamob-batch-20260311-2.html: Glen Hudson + Sibghatullah Veedy → T1SentMar11 (now 37/2/9 split)
+5. Updated MASTER_SENT_LIST.csv: +2 rows for Glen + Sibghatullah (412 total)
+6. Updated handoff.md with full findings table for all 11 contacts
+7. Updated work-queue.md TASK-021 with resolved status
+
+**Full 11-contact findings:**
+| Contact | Company | Status | Finding |
+|---------|---------|--------|---------|
+| Glen Hudson | Mastercard | active step 2 | T1 auto-sent — ✅ updated |
+| Sibghatullah Veedy | Mastercard | active step 2 | T1 auto-sent — ✅ updated |
+| Ksenia Shchelkonogova | Mastercard | failed step 1 | Bounced — skip |
+| Irina Baxter | Anaplan | active step 1 | Task pending |
+| Divya Sathish | EA | active step 1 | Task pending + email invalid flag |
+| Jiadong Shen | EA | active step 1 | Task pending |
+| Simon Crawford | EA | active step 1 | Task pending (Stockholm) |
+| Adit Shah | HashiCorp | active step 1 | Task pending |
+| Mohan Raj | Datamatics | active step 1 | Task pending |
+| Shilendra Sharma | Datamatics | active step 1 | Task pending |
+| Poonam Patil | Datamatics | active step 1 | Task pending (created today, email verified) |
+
+**Files changed:**
+- `tamob-batch-20260311-2.html` — Glen + Sibghatullah badges updated
+- `MASTER_SENT_LIST.csv` — 2 rows added (412 total)
+- `memory/session/handoff.md` — Wave 4 section + header updated
+- `memory/session/work-queue.md` — TASK-021 updated, header updated
+- `memory/session/session-log.md` — this entry
+
+**Git commit needed (with prior changes from Sessions 22-24)**

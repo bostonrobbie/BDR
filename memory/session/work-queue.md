@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-11 (Sessions 22-24 — Wave 4 T1 sends COMPLETE. 35/48 sent. 2 blocked. 11 no-task contacts need guidance. TASK-021 DONE. TASK-017 still P0 — Wave 1/2 T2 overdue. Wave 4 T2 due Mar 19.)
+## Last Updated: 2026-03-11 (Session 25 — 11 no-task contacts fully investigated. 2 were auto-sent (Glen Hudson, Sibghatullah Veedy). 1 bounced (Ksenia). 1 invalid email flag (Divya Sathish). 8 active step 1 tasks pending in Apollo queue. HTML + CSV updated. Total confirmed Wave 4 sent: 37. MASTER_SENT_LIST: 412 rows.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 1. `git pull origin main`
@@ -15,14 +15,20 @@ Tasks are sorted by priority. Claim one task at a time by updating status to IN_
 ## 🔴 CRITICAL — Do First
 
 ### TASK-021: Enroll + Send Wave 4 T1 (48 contacts)
-**Status:** ✅ DONE (2026-03-11, Sessions 22-24)
-**Result:** 35/48 T1 emails sent via Apollo Tasks tab. QA gate passed on every email before send.
-**MASTER_SENT_LIST.csv:** 35 rows added (410 total). tamob-batch-20260311-2.html badges updated.
+**Status:** ✅ DONE (2026-03-11, Sessions 22-25)
+**Result:** 37/48 T1 emails sent (35 via Tasks tab + 2 auto-sent by Apollo). QA gate passed on every manual send.
+**MASTER_SENT_LIST.csv:** 37 rows added (412 total). tamob-batch-20260311-2.html: 37 T1SentMar11, 2 Blocked, 9 Ready.
 
-**Outstanding items (need Rob action):**
-- 🚫 Valerie Jefferies (BCBS Illinois) — blocked: job change flag. Check Apollo enrollment status.
-- 🚫 Yvonne Oliver (Mastercard) — blocked: ownership permission error. Consider LinkedIn InMail alternative.
-- ⚠️ 11 no-task contacts: Ksenia Shchelkonogova, Glen Hudson, Sibghatullah Veedy, Irina Baxter, Divya Sathish, Jiadong Shen, Simon Crawford, Adit Shah, Mohan Raj, Shilendra Sharma, Poonam Patil — Apollo never generated Step 1 tasks. Check Apollo Contacts tab for each; may need re-enrollment.
+**11 no-task contacts — RESOLVED (Session 25):**
+- ✅ Glen Hudson (Mastercard) — T1 auto-sent during enrollment (step 2). CSV + HTML updated.
+- ✅ Sibghatullah Veedy (Mastercard) — T1 auto-sent during enrollment (step 2). CSV + HTML updated.
+- ⛔ Ksenia Shchelkonogova (Mastercard) — email bounced (invalid). Skip permanently.
+- ⚠️ Divya Sathish (EA) — enrolled, step 1 pending, email marked "invalid" — watch for bounce when task surfaces.
+- ⏳ 8 others (Irina Baxter, Jiadong Shen, Simon Crawford, Adit Shah, Mohan Raj, Shilendra Sharma, Poonam Patil + Divya Sathish) — enrolled, Step 1 tasks queued in Apollo, will surface. Send normally when they appear.
+
+**Still need Rob action:**
+- 🚫 Valerie Jefferies (BCBS Illinois) — blocked: job change flag. Re-enrich or skip.
+- 🚫 Yvonne Oliver (Mastercard) — blocked: ownership error. LinkedIn InMail alternative?
 
 **Wave 4 T2 due:** Mar 19 (Day 8 from Mar 11 send) — add TASK-022 when ready to draft.
 
