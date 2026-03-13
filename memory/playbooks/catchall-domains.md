@@ -72,4 +72,7 @@ Per `sop-tam-outbound.md` Part 5: Catchall domains are handled case-by-case. The
 
 ---
 
-*Last updated: 2026-03-12 — consolidated from Sessions 7, 16, 26*
+---
+*Version: 1.0 — 2026-03-12*
+*Change log: v1.0 (Mar 12, 2026) — consolidated from Sessions 7, 16, 26*
+*When updating: increment version, add change log entry with date and what changed.*

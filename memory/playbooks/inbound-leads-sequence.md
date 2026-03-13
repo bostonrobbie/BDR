@@ -196,4 +196,7 @@ Evely is at Step 2 in the sequence. Touch 2 task (~Mar 16) must be SKIPPED (mark
 
 ---
 
-*Created: 2026-03-12 (Session — inbound lead bulk enrollment)*
+---
+*Version: 1.0 — 2026-03-12*
+*Change log: v1.0 (Mar 12, 2026) — initial creation from inbound lead bulk enrollment session*
+*When updating: increment version, add change log entry with date and what changed.*

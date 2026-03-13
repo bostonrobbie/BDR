@@ -1,0 +1,39 @@
+file_name,path,date,type,wave_batch_id,contact_count,t2_due_date,status,notes
+wave1-batch1-tracker-mar10.html,wave1-batch1-tracker-mar10.html,2026-03-10,T1-tracker,Wave1-B1,23,2026-03-15,active,Canonical Wave 1 tracker — 23 contacts enrolled Mar 10
+tamob-wave1-draft-mar10.html,tamob-wave1-draft-mar10.html,2026-03-10,T1-draft,Wave1,23,,active,Wave 1 final draft file (pre-enrollment)
+tamob-wave2-draft-mar10.html,tamob-wave2-draft-mar10.html,2026-03-10,T1-draft,Wave2,16,,active,Wave 2 draft — 16 contacts enrolled Mar 10
+tamob-batch-20260311-1.html,tamob-batch-20260311-1.html,2026-03-11,T1-tracker,Wave3,35,2026-03-16,active,Wave 3 — 35 contacts enrolled Mar 11
+tamob-batch-20260311-2.html,tamob-batch-20260311-2.html,2026-03-11,T1-tracker,Wave4,37,2026-03-19,active,Wave 4 — 37 contacts enrolled Mar 11
+tamob-wave1-t2-drafts-mar12.html,tamob-wave1-t2-drafts-mar12.html,2026-03-12,T2-draft,Wave1-T2,,2026-03-15,active,Wave 1 T2 drafts — due Mar 15
+tamob-wave2-t2-drafts-mar12.html,tamob-wave2-t2-drafts-mar12.html,2026-03-12,T2-draft,Wave2-T2,,2026-03-15,active,Wave 2 T2 drafts — due Mar 15
+tamob-batch-20260312-1.html,tamob-batch-20260312-1.html,2026-03-12,T1-tracker,Wave5A-B1,unknown,,active,Mar 12 batch 1 — check file for contact count and wave
+tamob-batch-20260312-2.html,tamob-batch-20260312-2.html,2026-03-12,T1-tracker,Wave5A-B2,unknown,,active,Mar 12 batch 2 — check file for contact count and wave
+tamob-batch-20260312-3.html,tamob-batch-20260312-3.html,2026-03-12,T1-tracker,Wave5B-B1,unknown,,active,Mar 12 batch 3 — check file for contact count and wave
+tamob-batch-20260312-4.html,tamob-batch-20260312-4.html,2026-03-12,T1-tracker,Wave5B-B2,unknown,,active,Mar 12 batch 4 — check file for contact count and wave
+tamob-batch-20260312-5.html,tamob-batch-20260312-5.html,2026-03-12,T1-tracker,Wave5B-B3,unknown,,active,Mar 12 batch 5 — check file for contact count and wave
+tamob-batch-20260312-6.html,tamob-batch-20260312-6.html,2026-03-12,T1-tracker,Wave5B-B4,unknown,,active,Mar 12 batch 6 — check file for contact count and wave
+tamob-batch-20260312-7.html,tamob-batch-20260312-7.html,2026-03-12,T1-tracker,Wave5B-B5,unknown,,active,Mar 12 batch 7 — check file for contact count and wave
+tamob-wave6-batch1-20260312.html,tamob-wave6-batch1-20260312.html,2026-03-12,T1-tracker,Wave6-B1,unknown,,active,Wave 6 Batch 1 — Mar 12 send
+tamob-batch-20260313-1.html,tamob-batch-20260313-1.html,2026-03-13,T1-tracker,Wave7-B1,unknown,,active,Mar 13 batch 1 — most recent send
+prospect-outreach-batch8-20260302.html,prospect-outreach-batch8-20260302.html,2026-03-02,T1-tracker,Batch8,unknown,,active,Batch 8 prospect outreach — Mar 2
+outreach-batch10-draft-mar6.html,outreach-batch10-draft-mar6.html,2026-03-06,T1-draft,Batch10,unknown,,active,Batch 10 draft file
+outreach-batch10-sent-mar6.html,outreach-batch10-sent-mar6.html,2026-03-06,T1-tracker,Batch10,unknown,,active,Batch 10 sent tracker — Mar 6
+outreach-batch11-draft-mar6.html,outreach-batch11-draft-mar6.html,2026-03-06,T1-draft,Batch11,unknown,,active,Batch 11 draft — Mar 6
+wave1-t1-drafts-mar10.html,wave1-t1-drafts-mar10.html,2026-03-10,T1-draft,Wave1-v1,,,superseded,Wave 1 drafts v1 (superseded by v3)
+wave1-t1-drafts-v2-mar10.html,wave1-t1-drafts-v2-mar10.html,2026-03-10,T1-draft,Wave1-v2,,,superseded,Wave 1 drafts v2 (superseded by v3)
+wave1-t1-drafts-v3-mar10.html,wave1-t1-drafts-v3-mar10.html,2026-03-10,T1-draft,Wave1-v3,,,superseded,Wave 1 drafts v3 (canonical replaced by wave1-batch1-tracker-mar10)
+wave1-prospecting-plan-mar9.html,wave1-prospecting-plan-mar9.html,2026-03-09,prospecting,Wave1,,,reference,Wave 1 prospecting plan — research only not a send tracker
+tam-coverage-tracker.html,tam-coverage-tracker.html,,coverage,TAM,,,active,TAM account coverage tracker — not a send batch; tracks all 312 accounts
+batch7-send-tracker.html,archive/batch-reports/batch7-send-tracker.html,,,T1-tracker,Batch7,unknown,,archived,Batch 7 send tracker (archived)
+outreach-sent-feb13-batch1.html,archive/old-batches/outreach-sent-feb13-batch1.html,2026-02-13,T1-tracker,Batch1,unknown,,archived,Batch 1 sends Feb 13 (legacy LinkedIn era)
+outreach-sent-feb13-batch1-v2.html,archive/old-outreach-html/outreach-sent-feb13-batch1-v2.html,2026-02-13,T1-tracker,Batch1-v2,unknown,,archived,Batch 1 v2 Feb 13 (legacy)
+outreach-sent-feb26-batch3.html,archive/old-outreach-html/outreach-sent-feb26-batch3.html,2026-02-26,T1-tracker,Batch3,unknown,,archived,Batch 3 sends Feb 26 (legacy)
+outreach-sent-feb27-batch5a.html,archive/old-outreach-html/outreach-sent-feb27-batch5a.html,2026-02-27,T1-tracker,Batch5A,unknown,,archived,Batch 5A sends Feb 27
+outreach-sent-feb27-batch5b.html,archive/old-outreach-html/outreach-sent-feb27-batch5b.html,2026-02-27,T1-tracker,Batch5B,unknown,,archived,Batch 5B sends Feb 27
+send-batch-5a-2026-02-27.html,archive/intermediate/send-batch-5a-2026-02-27.html,2026-02-27,T1-draft,Batch5A-draft,,,archived,Batch 5A intermediate draft (pre-send)
+outreach-batch2-unsent.html,archive/old-batches/outreach-batch2-unsent.html,,,T1-draft,Batch2,unknown,,archived,Batch 2 unsent — draft only never sent
+outreach-batch7-unsent.html,archive/old-batches/outreach-batch7-unsent.html,,,T1-draft,Batch7-unsent,unknown,,archived,Batch 7 unsent draft
+outreach-batch6-unsent.html,archive/old-outreach-html/outreach-batch6-unsent.html,,,T1-draft,Batch6,unknown,,archived,Batch 6 unsent draft
+outreach-batch8-unsent.html,archive/old-outreach-html/outreach-batch8-unsent.html,,,T1-draft,Batch8-unsent,unknown,,archived,Batch 8 unsent draft (separate from prospect-outreach-batch8-20260302)
+intent-batch-2026-02-26.html,archive/research-intel/intent-batch-2026-02-26.html,2026-02-26,research,intent-feb26,,,archived,Intent signal research batch — not a send tracker
+prospect-inmails-batch1-2026-02-23.html,archive/old-batches/prospect-inmails-batch1-2026-02-23.html,2026-02-23,T1-tracker,Batch1-InMail,unknown,,archived,Batch 1 LinkedIn InMail sends (legacy)

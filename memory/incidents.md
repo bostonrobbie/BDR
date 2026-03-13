@@ -439,3 +439,32 @@ Before executing ANY Apollo task send (individual or batch), re-read the relevan
 Rob's "APPROVE SEND" approves the MESSAGE CONTENT. It does NOT authorize clicking "Send Now" without completing Rule 12-C verification. Content approval and send-click approval are two separate gates.
 
 ---
+
+## Incident Post-Mortem SLA
+
+### Required Timeline
+Every new incident MUST be documented within **one session** of discovery.
+
+| Step | Deadline | Action |
+|------|----------|--------|
+| Detect incident | Session it occurs | Flag immediately. Stop affected workflow. |
+| Document in incidents.md | Same session | Add INC entry with date, severity, affected contacts, root cause, remediation |
+| Add prevention rule | Same session | Append rule to "Draft Safety & Cadence Enforcement Rules" or inline in the incident |
+| Update affected SOPs/playbooks | Next session | Reflect the new rule in any SOP or playbook covering the broken workflow |
+| Verify remediation | Within 2 sessions | Confirm fix applied; check MASTER_SENT_LIST, batch trackers, affected contacts |
+
+### Incident Numbering
+- Always use the next sequential number: INC-001, INC-002, ...
+- Before writing a new incident, read this file to confirm the highest existing number
+- Never leave an incident undocumented because it "might fix itself"
+
+### Required Fields (every INC entry)
+- **Date:** YYYY-MM-DD
+- **Severity:** LOW / MEDIUM / HIGH
+- **What Happened:** 2-4 sentences — what the user/agent observed
+- **Root Cause:** What specifically failed — not what the effect was
+- **Affected Contacts:** Table with name, company, status, action
+- **Remediation:** What was done to address the current case
+- **Permanent Rule Added:** Specific rule preventing recurrence (added to rules section or CLAUDE.md)
+
+---

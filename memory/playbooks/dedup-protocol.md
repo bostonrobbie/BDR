@@ -180,4 +180,7 @@ The following 7 names appear twice in MASTER_SENT_LIST.csv from batches BEFORE t
 
 ---
 
-*Last updated: 2026-03-12 (Session 30 audit) — batch naming standard, DONE verification, legacy duplicates documented*
+---
+*Version: 1.0 — 2026-03-12*
+*Change log: v1.0 (Mar 12, 2026) — batch naming standard, DONE verification, legacy duplicates documented (Session 30 audit)*
+*When updating: increment version, add change log entry with date and what changed.*

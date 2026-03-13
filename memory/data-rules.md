@@ -155,6 +155,30 @@ Thresholds: 10-12=ready, 7-9=improve, <7=MUST rewrite.
 13. Close structure dedup: rotate 5 close patterns
 14. Research depth: all 3 sources present
 
+## MASTER_SENT_LIST.csv Schema
+
+**Current schema (updated 2026-03-13):**
+```
+name,company_domain,batch,send_date,channel,credits,file,norm
+```
+
+| Column | Required | Notes |
+|--------|----------|-------|
+| name | ✅ | Full name as it appears on LinkedIn |
+| company_domain | ✅ for new rows | Email domain (e.g., `epicor.com`). Historical rows (pre-Mar 13) have this empty — backfill pending. NEW rows MUST include it. |
+| batch | ✅ | Full standard format — see AGENTS.md batch naming |
+| send_date | ✅ | YYYY-MM-DD |
+| channel | ✅ | `Apollo Email`, `LinkedIn InMail`, `LinkedIn Connection`, etc. |
+| credits | ✅ | 0 for non-credit channels |
+| file | ✅ | Batch tracker filename |
+| norm | ✅ | Lowercase full name (for grep dedup matching) |
+
+**Why company_domain matters:** Enables automated TAM verification via `grep -i "domain" tam-accounts-mar26.csv`. Without it, every contact requires manual lookup to confirm they're in TAM before re-engagement or bulk dedup.
+
+**For new row appends:** Always include `company_domain` extracted from the contact's email address (the part after @).
+
+---
+
 ## Reply Patterns (for response handling)
 | Type | % | Action |
 |------|---|--------|

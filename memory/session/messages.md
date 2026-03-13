@@ -10,7 +10,8 @@ Append-only communication channel between concurrent Cowork sessions. Sessions l
 - **Format:** `[ISO timestamp] Session {N}: [TAG] {message}`
 - **Timestamp MUST be real current time.** Run `date -u +%Y-%m-%dT%H:%M:%SZ` immediately before writing. Do NOT reuse a timestamp from earlier in your session.
 - **Check on startup:** Every session reads this file during startup to catch any alerts from other sessions.
-- **Categories:** Use a tag prefix for quick scanning: `[INFO]`, `[WARN]`, `[CLAIM]`, `[DONE]`, `[CONFLICT]`, `[ASK]`, `[CORRECTION]`
+- **Categories:** Use a tag prefix for quick scanning: `[INFO]`, `[WARN]`, `[CLAIM]`, `[DONE]`, `[CONFLICT]`, `[ASK]`, `[CORRECTION]`, `[IN_FLIGHT]`
+- **[IN_FLIGHT] usage:** Post when your session is blocked waiting for Rob's input and another session should NOT duplicate your work. Format: `[IN_FLIGHT] Waiting on Rob to APPROVE SEND for {batch/contact}. Do not enroll these contacts: {list}. Decision pending since {timestamp}.` When Rob responds, update the relevant work-queue task and post `[DONE]` or `[CLAIM]` with resolution.
 - **DONE/CLAIM accuracy:** Always include: exact MASTER_SENT_LIST row count (run `wc -l` first), companies, contact count, any enrollment overrides, tracker filename.
 - **If you spot an error in a prior message:** Do NOT edit it. Append a `[CORRECTION]` message referencing the wrong one.
 

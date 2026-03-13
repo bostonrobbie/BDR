@@ -99,4 +99,7 @@ Same process as T1, but:
 
 ---
 
-*Last updated: 2026-03-12 — consolidated from Sessions 11, 19-20, 22-24*
+---
+*Version: 1.0 — 2026-03-12*
+*Change log: v1.0 (Mar 12, 2026) — initial consolidation from Sessions 11, 19-20, 22-24*
+*When updating: increment version, add change log entry with date and what changed.*

@@ -8,6 +8,9 @@ Covers Steps 1-4 of the TAM T1 Batch workflow: source accounts by priority (Fact
 - Called as Steps 1-3 of `skills/tam-t1-batch/SKILL.md`
 - Run on-demand: "enrich [company]", "find QA contacts at [domain]"
 
+## Note on Playbooks
+> **Index-first rule:** If you need to read a playbook during this skill, check `memory/playbooks/_index.md` first. It maps tasks to specific files. Only load the playbook you actually need.
+
 ## ⛔ APPROVE SEND RULE
 This skill does NOT draft or send anything. It finds and validates contacts only. Output goes to `skills/tam-t1-batch/SKILL.md` for drafting. All sends require Rob's explicit APPROVE SEND.
 

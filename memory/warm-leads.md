@@ -27,6 +27,28 @@
 - After 2 unanswered follow-ups: "Dormant - Was Warm"
 - Re-engage only on new trigger event
 
+### Escalation Rules (Added 2026-03-13)
+
+**Stale Flag (7-day rule):** Any warm lead with a "Next Steps" date more than 7 days in the past is STALE. On session startup, the reply-classifier skill should flag stale warm leads. A stale warm lead must be reviewed before any new T1 batch work proceeds.
+
+**Priority Escalation:**
+| Lead Status | Action |
+|-------------|--------|
+| Positive reply / "tell me more" | P0 — respond same session, before any T1 work |
+| Curiosity / question | P0 — draft response this session |
+| Referral | P0 — draft T1 for referred person same session |
+| Polite / "thanks" | P1 — respond within 24 hours |
+| Timing / "next quarter" | P2 — set re-engage date, note trigger needed |
+| No response after 2 follow-ups | Archive as "Dormant — Was Warm" |
+
+**Re-Engage Schedule (post-dormancy):**
+- Timing leads ("next quarter") → re-engage in 60-90 days with a trigger event (QA job posting, funding, product launch)
+- Polite leads (no reply after 2 nudges) → re-engage in 30-45 days with a completely new angle
+- Do NOT re-engage within 30 days of last touch regardless of category
+
+**Lifecycle Cross-Reference:**
+For any warm lead that proceeds to a meeting or advanced conversation, log the full timeline in `memory/contact-lifecycle.md`. The warm-leads.md entry serves as the trigger point; contact-lifecycle.md is the long-term record.
+
 ---
 
 ## Namita Jain — OverDrive

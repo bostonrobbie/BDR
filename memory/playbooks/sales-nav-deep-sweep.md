@@ -122,4 +122,7 @@ Note: Claude cannot operate the Chrome extension directly. This is a manual step
 
 ---
 
-*Last updated: 2026-03-12 — consolidated from Sessions 18, 26 (Wave 3 + Wave 5 sourcing)*
+---
+*Version: 1.0 — 2026-03-12*
+*Change log: v1.0 (Mar 12, 2026) — consolidated from Sessions 18, 26 (Wave 3 + Wave 5 sourcing)*
+*When updating: increment version, add change log entry with date and what changed.*

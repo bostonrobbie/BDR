@@ -112,4 +112,7 @@ For large T2 batches (20+ contacts):
 
 ---
 
-*Last updated: 2026-03-12 — consolidated from Sessions 11, 20, 22, sop-tam-outbound.md Part 7*
+---
+*Version: 1.0 — 2026-03-12*
+*Change log: v1.0 (Mar 12, 2026) — consolidated from Sessions 11, 20, 22, sop-tam-outbound.md Part 7*
+*When updating: increment version, add change log entry with date and what changed.*

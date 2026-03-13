@@ -112,4 +112,7 @@ If multiple sessions are running simultaneously:
 
 ---
 
-*Last updated: 2026-03-12 (Session 30 audit) — added 5 new common mistakes from audit, strengthened Step 2 with self-check, added priority order for context-constrained sessions*
+---
+*Version: 1.0 — 2026-03-12*
+*Change log: v1.0 (Mar 12, 2026) — added 5 new common mistakes from Session 30 audit, strengthened Step 2 with self-check, added priority order for context-constrained sessions*
+*When updating: increment version, add change log entry with date and what changed.*

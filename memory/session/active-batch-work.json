@@ -1,0 +1,52 @@
+{
+  "_schema_version": "1.0",
+  "_description": "Tracks parallel batch work across sessions. When a session claims a subset of accounts for research/drafting, it registers here. Other sessions query this before claiming accounts to avoid duplication.",
+  "_usage": "Before claiming accounts for a new batch, check this file. If accounts you want are not in active_claims, add yours. Clear your entry when your subset is done (merged into the batch tracker).",
+
+  "active_batch": null,
+  "active_claims": [],
+  "completed_subsets": [],
+
+  "_example_active_batch": {
+    "batch_id": "mar13-batch-1",
+    "total_target_contacts": 50,
+    "total_accounts": 15,
+    "status": "in_progress",
+    "initiated_by_session": 32,
+    "initiated_at": "2026-03-13T14:00:00Z",
+    "expected_completion": "2026-03-13T18:00:00Z",
+    "output_tracker_file": "tamob-batch-20260313-1.html"
+  },
+
+  "_example_active_claims": [
+    {
+      "session_id": 32,
+      "batch_id": "mar13-batch-1",
+      "phase": "research_and_draft",
+      "accounts_claimed": ["Epicor", "BeyondTrust", "Northern Trust"],
+      "contacts_in_subset": 12,
+      "status": "drafting",
+      "claimed_at": "2026-03-13T14:05:00Z",
+      "last_updated": "2026-03-13T14:45:00Z",
+      "note": "Epicor x2, BeyondTrust x4, Northern Trust x6"
+    },
+    {
+      "session_id": 33,
+      "batch_id": "mar13-batch-1",
+      "phase": "research_and_draft",
+      "accounts_claimed": ["Infor", "Zebra Technologies", "Check Point"],
+      "contacts_in_subset": 10,
+      "status": "researching",
+      "claimed_at": "2026-03-13T14:10:00Z",
+      "last_updated": "2026-03-13T14:30:00Z",
+      "note": ""
+    }
+  ],
+
+  "_parallelization_rules": {
+    "t1_build_and_t2_draft": "T1 batch building and T2 drafting for OLD batches (5+ days ago) CAN run in parallel — no file conflicts. T2 drafting reads static files; T1 building creates new files.",
+    "t1_send_and_t2_draft": "T1 sending (Apollo Tasks tab) and T2 drafting CAN run in parallel. T1 sends update MASTER_SENT_LIST + tracker badges; T2 drafting reads different tracker files.",
+    "two_t1_sessions_same_batch": "Two sessions cannot research/draft for the SAME accounts in the same batch. Use this file to claim account subsets.",
+    "enrollment_serialized": "Apollo enrollment (API calls) must be serialized — one session at a time. Use file lock on MASTER_SENT_LIST.csv."
+  }
+}

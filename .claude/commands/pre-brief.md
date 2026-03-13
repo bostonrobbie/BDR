@@ -1,77 +1,63 @@
 # Pre-Brief - Analyze past batches before building a new one
 
-You are Rob's BDR assistant. Before building a new batch, analyze all previous batch data to surface what's working.
+You are Rob's BDR assistant. Before building a new batch, analyze available data to surface what's working.
 
-## Files to Load
-- `work/results.json` — aggregated analytics from prior batches
-- `work/reply-log.csv` — reply data with tags
-- `work/pipeline-state.json` — batch statuses, send totals
-- All batch files in `work/` and `batches/`
+---
+
+## Authoritative Files to Read First
+
+| File | Purpose |
+|------|---------|
+| `memory/scoring-feedback.md` | Empirical reply rate data by word count, CTA, persona, vertical |
+| `memory/data-rules.md` | Hard Constraints + Strong Preferences derived from real data |
+| `memory/session/lessons-learned.md` | Patterns from 31+ sessions — what's worked, what hasn't |
+| `MASTER_SENT_LIST.csv` | Full send history (496+ rows) for batch-level analysis |
+| `memory/target-accounts.md` | Account-level proof point rotation (what's already been used) |
+| `memory/warm-leads.md` | Warm leads — which angles, proof points, or verticals triggered replies |
+| `batch-trackers-index.csv` | Registry of all batch tracker files for reference |
+
+---
 
 ## Process
 
-### Step 1: Try the Python pre-brief first
-Run: `python scripts/pre_brief.py`
+### Step 1: Read the empirical data
+Read `memory/scoring-feedback.md` for current known performance data:
+- Reply rate by word count (75-99 words = 39.0%)
+- Reply rate by CTA ("What day" = 40.4%)
+- Reply rate by persona (SDET/Automation Lead = 39.3%, Manager/Lead = 26.8%)
+- Any vertical or proof point data available
 
-If it produces output, display it and proceed to Step 4.
-If it fails or data is insufficient, fall back to manual analysis.
+### Step 2: Check recent batch outcomes
+Read `memory/warm-leads.md` for the most recent warm leads — note which companies, personas, and proof points triggered positive replies. Also check `memory/session/lessons-learned.md` Session Architecture section for patterns.
 
-### Step 2: Read all previous data
-- Read all batch files in `batches/` and `work/` (batch-*-outreach.md, prospect-outreach-*.html)
-- Read `work/reply-log.csv` for reply data
-- Read `work/results.json` for previously aggregated metrics
-- Read `work/pipeline-state.json` for batch statuses
+### Step 3: Check proof point rotation
+Read `memory/target-accounts.md` for accounts being targeted this batch. Note which proof points have already been used per account — do not repeat.
 
-### Step 3: Generate the 5-line "What's Working" summary
+### Step 4: Generate the 5-point "What's Working" summary
 
-1. **Best persona** — Which title/level is replying most?
-   Example: "Directors of QA are replying at 3x the rate of VP Eng"
+Present:
+1. **Best persona** — Highest reply rate from data (SDETs 39.3%, prioritize in next batch)
+2. **Best proof point** — Which customer story appears in warm leads? Which is underused?
+3. **Best vertical** — Which industry is generating warm leads?
+4. **Best pattern** — Word count, CTA style, opener style working best per data-rules.md
+5. **Stop doing** — One thing to adjust (e.g., VP Eng without Buyer Intent = 11.9% reply rate)
 
-2. **Best proof point** — Which customer story appears in the most replied-to messages?
-   Example: "Sanofi 3-day-to-80-min resonates with compliance-heavy prospects"
-
-3. **Best vertical** — Which industry is warmest?
-   Example: "FinServ is 2x warmer than SaaS"
-
-4. **Best pattern** — Any opener/ask/length pattern standing out?
-   Example: "Question-led openers outperform company-metric openers"
-
-5. **Stop doing** — One thing to drop or change
-   Example: "VP Eng at 50K+ companies: 0 replies across 3 batches, stop including"
-
-### Step 4: Generate tactical recommendations
-Based on the data:
-- Which proof points to prioritize in the next batch
-- Which personas to over-index on
-- Which verticals to target
-- What to A/B test next
-- Any adjustments to writing style
-
-### Step 5: Save and update
-Save pre-brief to `work/pre-brief-batch-[N+1].md`
-
-Update `work/results.json` with the latest aggregate data:
-```json
-{
-  "last_updated": "YYYY-MM-DD",
-  "batches_analyzed": N,
-  "total_prospects_contacted": X,
-  "total_replies": Y,
-  "overall_reply_rate": Z,
-  "by_persona": {},
-  "by_vertical": {},
-  "by_proof_point": {},
-  "by_personalization_score": {},
-  "ab_test_results": [],
-  "insights": {}
-}
-```
+### Step 5: Generate tactical recommendations for the next batch
+Based on data:
+- Which proof points to prioritize (match to next batch's vertical mix)
+- Which personas to over-index on (Automation Leads are underpriced at 39.3%)
+- Which Factor accounts to prioritize (check `memory/target-accounts.md` for untouched Factor accounts)
+- What to A/B test (note in `memory/scoring-feedback.md` after the batch)
 
 ### Step 6: Show Rob the brief
-Display the 5-line summary and recommendations. Ask if there are any adjustments before building the next batch.
+Display 5-point summary and recommendations. Then proceed to `/prospect` or `skills/tam-t1-batch/SKILL.md`.
+
+---
 
 ## Rules
-- If this is the first batch (no prior data), say so and use defaults from outreach data in CLAUDE.md
-- Never fabricate data. If sample sizes are too small, say so.
-- Be honest about statistical significance. n=3 per group is not enough to declare a winner.
-- The pre-brief should be actionable. "What should we do differently?"
+- Never fabricate data. If sample sizes are too small (n < 10), say so.
+- Be honest about statistical significance — 496 rows total but not all segmentable.
+- Primary data source is `memory/scoring-feedback.md` and `memory/data-rules.md` — not this command file.
+- Factor accounts are always highest priority regardless of what the pre-brief shows.
+
+*Last updated: 2026-03-13 (rewritten — replaces deprecated work/results.json, work/reply-log.csv, work/pipeline-state.json, scripts/pre_brief.py paths)*

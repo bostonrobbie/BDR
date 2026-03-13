@@ -8,6 +8,9 @@ When a reply comes in (from `skills/reply-classifier/SKILL.md` or Rob directly),
 - Run on-demand: "draft reply for [name]", "how should I respond to [reply]", "handle this objection"
 - Rob pastes a reply and says "help me respond to this"
 
+## Note on Playbooks
+> **Index-first rule:** Before loading objection docs or playbooks, check `memory/playbooks/_index.md` to confirm which file handles your specific reply type.
+
 ## ⛔ APPROVE SEND RULE
 This skill DRAFTS ONLY. It does NOT send anything. Rob reviews every draft and sends manually via Apollo UI or Gmail. "APPROVE SEND ≠ APPROVE CLICK" — content approval and sending are two separate steps. NEVER use Gmail MCP to send.
 

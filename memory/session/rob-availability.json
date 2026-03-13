@@ -1,0 +1,35 @@
+{
+  "_description": "Tracks whether Rob's attention is currently claimed by a specific session's decision request. Other sessions check this on startup to understand if Rob is mid-decision. If Rob is occupied, start with tasks that don't need immediate approval.",
+  "_usage": "Write to this file when blocking on a Rob decision (warm lead, APPROVE SEND, etc.). Clear it when Rob responds. Other sessions read it during Phase 5 of startup.",
+
+  "status": "available",
+  "current_request": null,
+
+  "_statuses": ["available", "busy", "unknown"],
+
+  "_example_busy": {
+    "status": "busy",
+    "current_request": {
+      "type": "warm_lead_priority",
+      "requested_by_session": 32,
+      "timestamp": "2026-03-13T14:22:00Z",
+      "context": "Seth Drummond @ Northern Trust replied positively — should I prioritize warm lead response or continue T1 batch?",
+      "options": ["prioritize_warm_lead", "continue_batch"],
+      "priority": "high"
+    }
+  },
+
+  "_example_approve_send": {
+    "status": "busy",
+    "current_request": {
+      "type": "approve_send",
+      "requested_by_session": 33,
+      "timestamp": "2026-03-13T15:00:00Z",
+      "context": "Batch 8 — 9 contacts ready for APPROVE SEND review. See tamob-batch-20260313-1.html",
+      "options": ["approve", "reject_and_revise"],
+      "priority": "normal"
+    }
+  },
+
+  "_guidance_for_sessions": "If rob-availability.status is 'busy', pick a task that doesn't require immediate Rob input: T2 drafting, compliance gate checks, batch tracker HTML building, context window optimization work. Post an [INFO] message in messages.md: 'Session X online — noted Rob is working with Session Y on [type]. Starting Task-Z meanwhile.'"
+}

@@ -8,6 +8,9 @@ Auto-generates the end-of-session handoff documentation by analyzing the current
 - LAST skill called before deregistering
 - Run even if the session was short — always document
 
+## Note on Playbooks
+> **Index-first rule:** If referencing any playbook during handoff, check `memory/playbooks/_index.md` first. For session close, the primary file is `memory/playbooks/session-handoff.md` — read only that.
+
 ## ⛔ APPROVE SEND RULE
 Any outreach pending Rob's APPROVE SEND must be explicitly listed in the handoff summary and work-queue.md as a pending item. The next session must NOT send anything without going through the full approval process again. Pending sends do not carry over automatically.
 

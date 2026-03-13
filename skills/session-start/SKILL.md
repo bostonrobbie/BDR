@@ -43,7 +43,7 @@ Run at the START of every new session, before doing any other work.
 
 ### Phase 4: Register This Session
 
-7. Determine your session number: check the last entry in `memory/session/session-log.md` and increment by 1.
+7. Determine your session number: read `memory/session/.last-session-number` → increment `last_session_number` by 1 → write back the new value. (Fallback: check the last entry in `memory/session/session-log.md` if the file is missing.)
 8. Create `memory/session/active/{session-number}.json`:
    ```json
    {
@@ -52,13 +52,14 @@ Run at the START of every new session, before doing any other work.
      "last_heartbeat": "{ISO timestamp}",
      "task_id": "pending",
      "task_description": "Starting up, awaiting task assignment",
-     "companies_claimed": [],
+     "contacts_claimed": [],
      "files_editing": [],
      "status": "active",
      "agent_type": "cowork",
      "machine": "cowork-instance"
    }
    ```
+   Note: use `contacts_claimed` (array of `{name, company, exclusive_until}` objects), NOT `companies_claimed`. See `memory/session/active/_protocol.md` for the full schema.
 
 ### Phase 5: Check for Warm Leads and Urgent Items
 
@@ -74,13 +75,25 @@ Run at the START of every new session, before doing any other work.
 11. If P0 warm leads found (positive reply or curiosity): tell Rob immediately, run `skills/reply-router/SKILL.md` to draft response, and prioritize above all other tasks.
 12. Check `memory/contact-lifecycle.md` for any contacts with T2 due dates today.
 
-### Phase 6: Claim a Task
+### Phase 6: Factor Account Priority Check + Claim a Task
 
-12. Review `memory/session/work-queue.md` for available tasks (status: UNCLAIMED).
-13. Pick the highest-priority unclaimed task that doesn't conflict with other active sessions.
-14. Or ask Rob what to work on.
-15. Update your active session registration with the claimed task_id and companies_claimed.
-16. Update work-queue.md task status to IN_PROGRESS.
+12. **Factor account check (ALWAYS do this before claiming a T1 batch task):**
+    Read `memory/target-accounts.md` → look for Factor accounts (tagged [FACTOR]) with status "Untouched" or "0 contacts enrolled." Factor accounts have buyer intent signal and are ALWAYS highest priority for T1 batch work.
+
+    Quick check:
+    ```bash
+    grep -i "factor" memory/target-accounts.md | grep -i "untouched\|0 enrolled\|not yet"
+    ```
+
+    If untouched Factor accounts exist → your T1 batch MUST start with those accounts. Tell Rob: "Found N untouched Factor accounts — prioritizing for this batch: [list]."
+
+    If no untouched Factor accounts → proceed to highest ICP=HIGH TAM accounts.
+
+13. Review `memory/session/work-queue.md` for available tasks (status: UNCLAIMED).
+14. Pick the highest-priority unclaimed task that doesn't conflict with other active sessions.
+15. Or ask Rob what to work on.
+16. Update your active session registration with the claimed task_id and contacts_claimed.
+17. Update work-queue.md task status to IN_PROGRESS.
 
 ### Phase 7: Read Relevant Playbooks and Skills (SELECTIVE — not all)
 
@@ -130,10 +143,11 @@ Run at the START of every new session, before doing any other work.
 [ ] Read AGENTS.md, CLAUDE.md, handoff.md, work-queue.md, in-progress.md, messages.md
 [ ] Crash check (in-progress.md Status)
 [ ] Active session check (ls memory/session/active/)
-[ ] Register in active/ directory
+[ ] Register in active/ directory (use .last-session-number for session number)
 [ ] Run skills/reply-classifier/SKILL.md (full Gmail reply check + warm lead update)
 [ ] Check contact-lifecycle.md for T2 due today
-[ ] Claim task + update registration
+[ ] Factor account check: grep memory/target-accounts.md for untouched Factor accounts — prioritize in batch
+[ ] Claim task + update registration (contacts_claimed, not companies_claimed)
 [ ] Read relevant playbooks/skills (see Phase 7)
 [ ] Report to Rob
 ```

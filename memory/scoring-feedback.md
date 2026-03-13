@@ -58,6 +58,40 @@ Per-prospect log: pre-flight checks, send data, outcome, next step.
 
 Weekly metrics: sends/week (target 20-25), success rate (>90%), avg time per prospect (<3 min), friction rate (<10%), reply rate (>25% target), meeting rate (>5% target).
 
+## Proof Point Rotation Effectiveness Tracking
+
+Track which proof points are driving replies vs. being ignored. Update this after every batch of 10+ replies comes in.
+
+### Current Tracking (update as reply data accumulates)
+
+| Proof Point | Customer | Key Stat | Times Used | Replies | Reply Rate | Verdict |
+|-------------|----------|----------|-----------|---------|-----------|---------|
+| Regression speed | Hansard | 8→5 weeks | — | — | — | Pending data |
+| Test coverage | CRED | 90% coverage, 5x faster | — | — | — | Pending data |
+| Test maintenance | Medibuddy | 2,500 tests, 50% cut | — | — | — | Pending data |
+| Enterprise regression | Cisco | 35% time reduction | — | — | — | Pending data |
+| Scale coverage | Fortune 100 | 3x coverage in 4 months | — | — | — | Pending data |
+| Cross-platform | Samsung | cross-platform coverage | — | — | — | Pending data |
+| Healthcare compliance | Oscar Health | compliance-critical coverage | — | — | — | Pending data |
+| Retail regression | NTUC Fairprice | retail regression | — | — | — | Pending data |
+
+**How to update:** After each batch, count emails per proof point (`Times Used`). When a reply comes in, check the T1 email in the batch tracker to see which proof point was used. Increment `Replies` for that row. `Reply Rate = Replies / Times Used`.
+
+**Why this matters:** If CRED drives 3x more replies than Hansard per send, CRED should lead T1s for high-priority accounts. This converts proof point rotation from a fairness rule into a performance lever.
+
+### Vertical Best-Fit (update from reply data — current best guess)
+
+| Vertical | Best Proof Point | Second Choice | Rationale |
+|----------|-----------------|---------------|-----------|
+| FinTech / Financial Services | Hansard | CRED | Insurance/FS regression cycles resonate |
+| HealthTech / Healthcare | Medibuddy | Oscar Health | Test scale + compliance |
+| SaaS / Tech | CRED | Cisco | Speed + coverage framing |
+| Enterprise (>10K employees) | Fortune 100 | Cisco | Enterprise scale proof |
+| Retail / E-Commerce | NTUC Fairprice | CRED | Retail regression cycles |
+| Telecom | Nokia (if available) | Samsung | Hardware/platform depth |
+
+---
+
 ## Meeting Booked Handoff
 When status = Meeting Booked, auto-generate prep card:
 1. Company snapshot

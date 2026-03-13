@@ -128,4 +128,7 @@ When any error occurs that affects data quality or outreach integrity:
 
 ---
 
-*Last updated: 2026-03-12 — consolidated from INC-001 through INC-010, Sessions 1-27*
+---
+*Version: 1.0 — 2026-03-12*
+*Change log: v1.0 (Mar 12, 2026) — consolidated from INC-001 through INC-010, Sessions 1-27*
+*When updating: increment version, add change log entry with date and what changed.*

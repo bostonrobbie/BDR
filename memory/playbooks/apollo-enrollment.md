@@ -43,6 +43,21 @@ Check the created/found contact for:
 - `email_status`: "verified" is ideal. "extrapolated" works for catchall domains but note the risk.
 - `email`: Confirm it matches what you expect. Apollo sometimes has stale data.
 
+### 2b. Phase 2 Dedup — Re-Run Immediately Before This Call
+
+Before calling `apollo_emailer_campaigns_add_contact_ids`, re-grep every contact name against MASTER_SENT_LIST:
+
+```bash
+for name in "Jason Lieberman" "Les Stickney" "Holly Shubaly"; do
+  result=$(grep -i "$name" /Work/MASTER_SENT_LIST.csv)
+  [ -n "$result" ] && echo "RACE CONFLICT — $name already logged, remove from batch" || echo "OK: $name"
+done
+```
+
+**Why:** Another concurrent session may have enrolled the same contact between when you ran compliance gate (Phase 1) and when you're about to enroll. This check takes 5 seconds and prevents the most likely multi-session duplicate scenario.
+
+If a contact is now found: remove them from `contact_ids`, post `[WARN]` in messages.md, continue with the rest.
+
 ### 3. Enroll in the Sequence
 
 ```
@@ -132,4 +147,7 @@ After enrolling contacts:
 
 ---
 
-*Last updated: 2026-03-12 — consolidated from Sessions 7, 18, 25, 26, 27*
+---
+*Version: 1.0 — 2026-03-12*
+*Change log: v1.0 (Mar 12, 2026) — initial consolidation from Sessions 7, 18, 25, 26, 27*
+*When updating: increment version, add change log entry with date and what changed.*

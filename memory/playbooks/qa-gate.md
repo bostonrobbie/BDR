@@ -150,4 +150,7 @@ Each contact card in the batch tracker should include a QA checklist:
 
 ---
 
-*Last updated: 2026-03-12 — consolidated from Sessions 4-27, data-rules.md, sop-outreach.md*
+---
+*Version: 1.0 — 2026-03-12*
+*Change log: v1.0 (Mar 12, 2026) — consolidated from Sessions 4-27, data-rules.md, sop-outreach.md*
+*When updating: increment version, add change log entry with date and what changed.*

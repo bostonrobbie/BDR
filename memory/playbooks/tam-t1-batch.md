@@ -194,4 +194,7 @@ Tell Rob:
 
 ---
 
-*Last updated: 2026-03-12 — consolidated from Sessions 4-27*
+---
+*Version: 1.0 — 2026-03-12*
+*Change log: v1.0 (Mar 12, 2026) — consolidated from Sessions 4-27*
+*When updating: increment version, add change log entry with date and what changed.*

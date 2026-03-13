@@ -54,6 +54,7 @@ All 9 contacts enrolled in TAM Outbound Step 1. When Apollo surfaces the manual 
 **Contacts:** Jason Lieberman (Epicor), Les Stickney (Epicor), Holly Shubaly (BeyondTrust), Tony MacLean (BeyondTrust), Michael Sutherland (BeyondTrust), Theepa Balakrishnan (BeyondTrust), Alnis Cers (Northern Trust), Moiz Meer (Northern Trust), Padma Suresh (Northern Trust)
 
 **APPROVE SEND required before any sends**
+**Can run in parallel with:** TASK-024 (T2 drafting), TASK-022 (T2 drafting Wave 4), TASK-020 (T2 drafting Wave 3) — T2 drafting in a second concurrent session is safe while this session handles T1 sends
 
 ### TASK-025: Send Batch 5 T1 Emails (5 contacts — pending APPROVE SEND)
 **Status:** UNCLAIMED — waiting for Rob's APPROVE SEND
@@ -95,6 +96,7 @@ All 9 contacts enrolled in TAM Outbound Step 1. When Apollo surfaces the manual 
 **Formula:** sop-tam-outbound.md Part 7 — 50-70 words, engagement question CTA, different proof point from T1
 **Check T1 proof points:** `tamob-batch-20260312-4.html` (9 contact T1 drafts)
 **APPROVE SEND required before any sends**
+**Can run in parallel with:** TASK-023/025 (T1 sends in a concurrent session), TASK-022 (T2 drafting Wave 4 in a third session if separate contacts)
 
 ### TASK-022: Draft T2 Emails — Wave 4 (35 contacts, due Mar 19)
 **Status:** UNCLAIMED
@@ -108,7 +110,7 @@ When Apollo surfaces them → draft + send per TASK-017 protocol.
 **Check T1 proof points:** `tamob-batch-20260311-2.html` (35 contact T1 drafts with subjects + bodies)
 **Send via:** Apollo UI (Part 23 of sop-tam-outbound.md v3.1) → manually paste → Send Now
 **APPROVE SEND required before any sends**
-
+**Can run in parallel with:** TASK-020 (T2 drafting Wave 3), TASK-023/025 (T1 sends) — different waves, no file conflicts
 
 ### TASK-001: Draft Touch 2 Emails for Original 9 Feb 27 Contacts
 **Status:** DONE (2026-03-07)
@@ -182,6 +184,7 @@ When Apollo surfaces them → draft + send per TASK-017 protocol.
 **Check T1 proof points:** `tamob-batch-20260311-1.html` (35 contact T1 drafts with subjects + bodies)
 **Send via:** Apollo UI (Part 23 of sop-tam-outbound.md v3.1) → manually paste → Send Now
 **APPROVE SEND required before any sends**
+**Can run in parallel with:** TASK-022 (T2 drafting Wave 4), TASK-023/025 (T1 sends) — different waves, no file conflicts
 
 ---
 

@@ -3,6 +3,8 @@
 ## Description
 6-point dedup check (from `memory/playbooks/dedup-protocol.md`) plus 2 additional safety checks before any contact goes into the TAM Outbound Apollo sequence. Run this for every contact, every time. No exceptions. Since March 10, 2026 (protocol active), zero duplicates in TAM Outbound. This skill keeps it that way.
 
+**Two-Phase Dedup Protocol:** Run the 8 checks during batch build (Phase 1). Then immediately before each enrollment API call, re-run Check 1 (MASTER_SENT_LIST grep) as Phase 2. Concurrent sessions can enroll the same contact between Phase 1 and Phase 2. Phase 2 takes under 2 seconds and prevents race-condition duplicates.
+
 ## Trigger
 - Before enrolling ANY contact in Apollo
 - Called from `skills/enrichment-pipeline/SKILL.md` (Step 4) and `skills/apollo-enroll/SKILL.md` (Step 1)
@@ -29,7 +31,9 @@ Edge cases:
 - Same name, different company: check the batch column to confirm different person before clearing
 
 ### Check 2: DNC List
-Located in `CLAUDE.md` under "Do Not Contact List." Current entries (Mar 12, 2026):
+**⚠️ ALWAYS read the live DNC list from `CLAUDE.md` — do NOT rely on any cached copy.** The list below was accurate as of Mar 12, 2026 but new entries are added after every negative reply. The authoritative source is `CLAUDE.md` → "Do Not Contact List" section. Read it fresh every session.
+
+Current entries as of Mar 12, 2026 (verify against CLAUDE.md):
 - Sanjay Singh (ServiceTitan) — hostile reply. Permanent.
 - Lance Silverman (Batch 5B) — polite decline, re-engage after 60+ days with new trigger only
 - Clyde Faulkner (CAMP Systems) — mabl-era customer. Permanent.
@@ -38,7 +42,7 @@ Located in `CLAUDE.md` under "Do Not Contact List." Current entries (Mar 12, 202
 - Chuck Smith (Aventiv Technologies) — double-send incident. Permanent.
 - Jitesh Biswal (JPMorgan Chase) — declined InMail Nov 4. Permanent.
 
-**If found:** BLOCKED. Do not contact.
+**If found:** BLOCKED. Do not contact. For "re-engage after 60+ days" entries, verify the last contact date in MASTER_SENT_LIST before proceeding.
 
 ### Check 3: Apollo Contacts Search
 ```
@@ -176,13 +180,53 @@ VERDICT: ❌ BLOCKED — do not enroll, do not contact
 
 ---
 
+## Phase 2 Dedup — Run Immediately Before Each Enrollment API Call
+
+This is the second dedup check. Phase 1 (the 8 checks above) runs during batch build. Phase 2 runs at commit time — right before the `apollo_emailer_campaigns_add_contact_ids` call — to catch concurrent-session conflicts.
+
+For each contact in the enrollment batch:
+```bash
+grep -i "jason lieberman" /Work/MASTER_SENT_LIST.csv
+```
+
+If any name is now found (wasn't found in Phase 1): **STOP. Skip that contact. Post `[WARN]` in messages.md.** Another session enrolled them since your Phase 1 check. Continue enrolling the rest of the batch without them.
+
+This adds ~5 seconds per batch and prevents the worst-case duplicate: two sessions simultaneously building batches from the same account pool.
+
+---
+
+## Batch Name Validation Gate (Pre-Log Check)
+
+Before logging any row to MASTER_SENT_LIST.csv, validate the batch name you're about to write:
+
+**Valid format:** `TAM Outbound Batch {N} {Mon}{DD}`
+- ✅ `TAM Outbound Batch 8 Mar13`
+- ✅ `TAM Outbound Batch 8 T2 Mar18`
+- ❌ `B8` — abbreviation, rejected
+- ❌ `Wave6B1` — non-standard, rejected
+- ❌ `Mar13 Batch` — wrong order, rejected
+
+```bash
+# Quick self-check: does your batch name match this pattern?
+# TAM Outbound Batch [number] [Mon][DD] (optionally " T2")
+echo "TAM Outbound Batch 8 Mar13" | grep -E "^TAM Outbound Batch [0-9]+ (T[0-9]+ )?[A-Z][a-z]{2}[0-9]{1,2}$"
+# Output should be non-empty. If empty, the name is invalid — fix before logging.
+```
+
+**If the batch name is invalid:** Correct it before writing the row. Never log with an abbreviation.
+
+---
+
 ## After Enrollment: Post-Logging (Required)
 
 Once enrollment succeeds, immediately:
-1. Append row to `MASTER_SENT_LIST.csv`: `name,batch,send_date,channel,credits,file,norm`
+1. Validate batch name format (see gate above)
+2. Append row to `MASTER_SENT_LIST.csv`: `name,company_domain,batch,send_date,channel,credits,file,norm`
    - Batch name format: `TAM Outbound Batch {N} Mar{DD}` — NEVER abbreviations like "B7" or "W6B1"
+   - `company_domain` = email domain extracted from contact's email (e.g., `epicor.com` from `jason@epicor.com`) — **required for all new rows as of 2026-03-13**
    - `norm` column = lowercase full name (for grep matching)
-2. Verify row count: `wc -l MASTER_SENT_LIST.csv` and state the exact count in the DONE/CLAIM message
+   - Example row: `Jason Lieberman,epicor.com,TAM Outbound Batch 8 Mar13,2026-03-13,Apollo Email,0,tamob-batch-20260313-1.html,jason lieberman`
+3. Verify row count: `wc -l MASTER_SENT_LIST.csv` and state the exact count in the DONE/CLAIM message
 
 ---
 

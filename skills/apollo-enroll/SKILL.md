@@ -7,6 +7,8 @@ Creates contacts in Apollo and enrolls them in the TAM Outbound sequence. Handle
 Use when you have a list of contacts ready to enroll in the TAM Outbound Apollo sequence. Usually called as part of the TAM T1 Batch workflow (Step 8).
 
 ## Prerequisites
+> **Index-first rule:** Before loading any playbook, check `memory/playbooks/_index.md` first to confirm which file you need.
+
 - Read `memory/playbooks/apollo-enrollment.md` (full process with all error handling)
 - **Run `skills/compliance-gate/SKILL.md` FIRST** — all 8 checks must pass before ANY contact is enrolled. This replaces the old 6-point dedup-protocol.md check and adds DNC, reply history, and cadence checks.
 - All contacts must have passed the 8-point compliance gate

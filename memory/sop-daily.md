@@ -163,6 +163,93 @@ When credits allow (>10): check work-queue for overdue T2/T3 InMails from legacy
 
 ---
 
+## Channel Selection Decision Tree
+
+Use this to decide whether to reach out via Apollo email or LinkedIn InMail for a given contact.
+
+```
+Does the contact have a verified or catchall email in Apollo?
+├── YES → Default to Apollo email (TAM Outbound sequence)
+│   └── Is it a catchall domain?
+│       ├── YES → Proceed with Apollo email, note "catchall" in tracker
+│       └── NO → Proceed normally
+└── NO (no email, extrapolated only, or email invalid)
+    └── Do we have InMail credits? (Check apollo-config.md for current count)
+        ├── YES (>10 credits) → Use LinkedIn InMail
+        │   └── Is this a Factor account or warm lead? → Prioritize InMail
+        └── NO (<10 credits or suspended)
+            └── Add to backlog. Research for alternate email.
+                Use Apollo Chrome Extension or Sales Nav for email enrichment.
+```
+
+**Current channel priority (as of Mar 12, 2026):**
+- Apollo email is primary for all TAM Outbound sends
+- LinkedIn InMail suspended (4 credits remaining) — warm leads only
+- When InMail recovers: use InMail for contacts with no email + Factor/HIGH priority accounts
+
+---
+
+## InMail Credit Recovery SOP
+
+**Situation:** InMail credits drop below 5 or are suspended.
+
+**Immediate actions:**
+1. Stop all InMail sends — Apollo email only
+2. Note "InMail suspended" in handoff.md and work-queue.md
+3. Add pending InMail contacts to backlog section of batch trackers (don't drop them — they'll get InMail when credits recover)
+
+**Recovery options:**
+- LinkedIn Premium resets InMail credits monthly (typically 50 credits/month on Sales Navigator)
+- Unused credits roll over up to 3 months
+- InMail recovery date: end of current billing cycle
+
+**When credits recover (>10 available):**
+1. Check warm-leads.md for any contacts who got no email and are InMail-only — prioritize these
+2. Check backlog sections of batch trackers for InMail-pending contacts
+3. Resume normal InMail sends for Factor accounts without verified emails
+4. Update sop-daily.md Adaptive Logic table to reflect InMail available
+
+**Credit tracking:** Current InMail credit count is in `memory/apollo-config.md`. Update it after each InMail send batch.
+
+---
+
+## Weekly Retrospective (Friday or end of last session each week)
+
+Run this every week to capture learnings and update rules. Takes ~10 minutes.
+
+### Questions to Answer
+
+**Performance:**
+1. How many T1s were sent this week? (count from MASTER_SENT_LIST.csv)
+2. How many replies came in? (check Gmail + warm-leads.md)
+3. Reply rate for this week: N replies / N T1s sent = X%
+4. Any meetings booked?
+
+**What worked:**
+5. Which proof point appeared most in replied emails? (check batch trackers for replied contacts)
+6. Which company/vertical had the best response?
+7. Which subject line style got the most replies?
+
+**What to stop:**
+8. Any pattern in the non-replies? (proof point, word count, angle?)
+9. Any hard constraint violations this week? (If yes, note for training)
+
+**Updates:**
+10. Does scoring-feedback.md proof point tracking need updating?
+11. Does data-rules.md have any new patterns from this week's replies?
+12. Any new DNC entries needed in CLAUDE.md?
+
+### Output
+Update the relevant files:
+- If a new pattern emerges → update `memory/data-rules.md` Strong Preferences
+- If a proof point is clearly winning → update `memory/scoring-feedback.md` rotation table
+- If a new DNC → add to CLAUDE.md
+- If a rule needs adjusting → update the relevant playbook or SOP + increment version
+
+Log the retrospective summary in session-log.md under the last session of the week.
+
+---
+
 ## Account Authorization Rules
 
 ⛔ **MANDATORY — All new prospects must come from authorized lists only.**

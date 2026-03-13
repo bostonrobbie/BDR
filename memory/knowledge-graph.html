@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BDR Knowledge Graph — Testsigma Outreach</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/standalone/umd/vis-network.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1117; color: #e1e4e8; height: 100vh; display: flex; flex-direction: column; }
+
+  header { padding: 12px 16px; background: #161b22; border-bottom: 1px solid #30363d; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  header h1 { font-size: 15px; font-weight: 600; color: #58a6ff; white-space: nowrap; }
+  header .subtitle { font-size: 12px; color: #8b949e; }
+
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+  .filter-btn { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 500; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; }
+  .filter-btn.active { opacity: 1; }
+  .filter-btn.inactive { opacity: 0.35; filter: grayscale(0.5); }
+
+  .main { display: flex; flex: 1; overflow: hidden; }
+
+  #graph-canvas { flex: 1; background: #0d1117; }
+
+  .sidebar { width: 280px; background: #161b22; border-left: 1px solid #30363d; display: flex; flex-direction: column; overflow: hidden; }
+  .sidebar-header { padding: 12px 14px; font-size: 12px; font-weight: 600; color: #8b949e; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #30363d; }
+
+  #node-detail { flex: 1; padding: 14px; overflow-y: auto; }
+  #node-detail .empty { color: #484f58; font-size: 12px; font-style: italic; }
+  #node-detail .node-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  #node-detail .node-type-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px; }
+  #node-detail .prop { margin-bottom: 6px; font-size: 12px; }
+  #node-detail .prop label { color: #8b949e; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; display: block; margin-bottom: 2px; }
+  #node-detail .prop value { color: #e1e4e8; }
+  #node-detail .connections { margin-top: 12px; }
+  #node-detail .connections h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: #8b949e; margin-bottom: 6px; }
+  #node-detail .conn-item { font-size: 11px; padding: 4px 0; border-bottom: 1px solid #21262d; display: flex; gap: 6px; align-items: center; }
+  #node-detail .conn-arrow { color: #484f58; }
+  #node-detail .conn-label { color: #8b949e; font-style: italic; font-size: 10px; }
+
+  .legend { padding: 10px 14px; border-top: 1px solid #30363d; display: flex; flex-wrap: wrap; gap: 6px; }
+  .legend-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: #8b949e; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  .search-box { padding: 8px 14px; border-bottom: 1px solid #30363d; }
+  .search-box input { width: 100%; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 5px 8px; font-size: 12px; color: #e1e4e8; outline: none; }
+  .search-box input:focus { border-color: #58a6ff; }
+  .search-box input::placeholder { color: #484f58; }
+
+  .stats-bar { padding: 6px 14px; background: #0d1117; border-bottom: 1px solid #21262d; display: flex; gap: 12px; font-size: 11px; color: #8b949e; }
+  .stat { display: flex; gap: 4px; }
+  .stat strong { color: #58a6ff; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>BDR Knowledge Graph</h1>
+    <div class="subtitle">Testsigma Outreach — All entities and connections</div>
+  </div>
+  <div class="filters" id="filters"></div>
+</header>
+
+<div class="main">
+  <div id="graph-canvas"></div>
+
+  <div class="sidebar">
+    <div class="sidebar-header">Node Inspector</div>
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="Search nodes...">
+    </div>
+    <div class="stats-bar">
+      <div class="stat"><strong id="stat-nodes">0</strong> nodes</div>
+      <div class="stat"><strong id="stat-edges">0</strong> edges</div>
+    </div>
+    <div id="node-detail">
+      <div class="empty">Click any node to inspect it.<br><br>Scroll and zoom the graph to explore.<br>Double-click a node to focus on its connections.</div>
+    </div>
+    <div class="legend" id="legend"></div>
+  </div>
+</div>
+
+<script>
+// ===== NODE DATA =====
+const nodeData = [
+
+  // ACCOUNTS
+  { id: 'acc-overdrive', label: 'OverDrive', group: 'account', detail: { Company: 'OverDrive (overdrive.com)', Size: '~540 employees', Revenue: '$420M', Owner: 'KKR-owned', Apps: 'Libby, Sora, Kanopy (web+iOS+Android)', Signal: 'Killed legacy app Jan 2025. Hiring QA Analyst.', Tool: 'No visible automation tool', ICP: 'HIGH' } },
+  { id: 'acc-origami', label: 'Origami Risk', group: 'account', detail: { Company: 'Origami Risk', Vertical: 'Risk management SaaS', ICP: 'HIGH' } },
+  { id: 'acc-progress', label: 'Progress Software', group: 'account', detail: { Company: 'Progress Software', Note: 'Batch 3 T3 premature send (INC-001)' } },
+  { id: 'acc-lucid', label: 'Lucid Software', group: 'account', detail: { Company: 'Lucid Software', Note: 'Batch 3 T3 premature send (INC-001)' } },
+  { id: 'acc-housecall', label: 'Housecall Pro', group: 'account', detail: { Company: 'Housecall Pro', Vertical: 'Home services SaaS' } },
+  { id: 'acc-epicor', label: 'Epicor', group: 'account', detail: { Company: 'Epicor', Vertical: 'ERP software' } },
+  { id: 'acc-floqast', label: 'FloQast', group: 'account', detail: { Company: 'FloQast', Vertical: 'Accounting SaaS' } },
+
+  // CONTACTS (warm leads in separate group)
+  { id: 'con-namita', label: 'Namita Jain', group: 'warmLead', detail: { Name: 'Namita Jain', Title: 'Software Quality Assurance', Company: 'OverDrive', Email: 'njain@overdrive.com', Phone: '+1 216-573-6886', LinkedIn: 'linkedin.com/in/namita-jain-81b26b45', LeadType: 'Warm inbound — attended 2 webinars (Aug 2025 + Feb 2026)', Priority: 'P1', T1Sent: 'Feb 27 (coverage angle)', Status: 'Awaiting reply. T2 InMail due if no reply by Mar 4' } },
+  { id: 'con-pallavi', label: 'Pallavi Sheshadri', group: 'warmLead', detail: { Name: 'Pallavi Sheshadri', Title: 'QA', Company: 'Origami Risk', LeadType: 'Warm reply — responded to premature Touch 3 (INC-001)', Priority: 'P2', Note: 'Rob sent follow-up Mar 2 with Hansard proof point', Status: 'Awaiting reply. Nudge if no response by Mar 7' } },
+  { id: 'con-irfan', label: 'Irfan Syed', group: 'contact', detail: { Name: 'Irfan Syed', Company: 'Progress Software', Batch: 'Batch 3', Note: 'INC-001 affected — premature T3. Continue normal T2 on schedule.' } },
+  { id: 'con-katie', label: 'Katie Barlow Hotard', group: 'contact', detail: { Name: 'Katie Barlow Hotard', Company: 'Lucid Software', Batch: 'Batch 3', Note: 'INC-001 affected — premature T3.' } },
+  { id: 'con-rachana', label: 'Rachana Jagetia', group: 'contact', detail: { Name: 'Rachana Jagetia', Company: 'Housecall Pro', Batch: 'Batch 3', Note: 'INC-001 affected — premature T3.' } },
+  { id: 'con-chuck', label: 'Chuck Smith (DNC)', group: 'dnc', detail: { Name: 'Chuck Smith', Company: 'Aventiv Technologies', Status: 'DO NOT CONTACT', Reason: 'Double-send: B1 connection + B5B InMail. Rob decision Mar 4.', DNC_Date: '2026-03-04' } },
+  { id: 'con-abe', label: 'Abe Blanco (DNC)', group: 'dnc', detail: { Name: 'Abe Blanco', Company: 'Kapitus', Status: 'DO NOT CONTACT', Reason: 'Replied "not interested" Mar 4 (Batch 8 send).', DNC_Date: '2026-03-04' } },
+  { id: 'con-jitesh', label: 'Jitesh Biswal (DNC)', group: 'dnc', detail: { Name: 'Jitesh Biswal', Company: 'JPMorgan Chase', Status: 'DO NOT CONTACT', Reason: 'Declined InMail Nov 4 (pre-campaign Oct 27 send).', DNC_Date: '2026-03-06' } },
+
+  // PROOF POINTS
+  { id: 'pp-hansard', label: 'Hansard\n8wk→5wk', group: 'proofPoint', detail: { Customer: 'Hansard', Result: 'Regression cycle 8 weeks → 5 weeks via AI auto-heal', BestFor: 'Insurance, financial services, long regression cycles', Angle: 'Maintenance', ReplyRateStat: 'Prefer % framing: use "38% reduction" not "1.6x faster"' } },
+  { id: 'pp-medibuddy', label: 'Medibuddy\n2,500 tests', group: 'proofPoint', detail: { Customer: 'Medibuddy', Result: '2,500 tests automated, 50% maintenance cut', BestFor: 'Healthcare, mid-size teams, scaling coverage', Angle: 'Scale/Coverage' } },
+  { id: 'pp-cred', label: 'CRED\n90% coverage', group: 'proofPoint', detail: { Customer: 'CRED', Result: '90% regression automation, 5x faster execution', BestFor: 'FinTech, high-velocity teams', Angle: 'Velocity' } },
+  { id: 'pp-sanofi', label: 'Sanofi\n3d→80min', group: 'proofPoint', detail: { Customer: 'Sanofi', Result: 'Regression 3 days → 80 minutes', BestFor: 'Pharma, compliance-heavy, healthcare', Angle: 'Velocity' } },
+  { id: 'pp-f100', label: 'Fortune 100\n3X productivity', group: 'proofPoint', detail: { Customer: 'Fortune 100 (unnamed)', Result: '3X productivity increase', BestFor: 'Enterprise, VP-level, large tech', Angle: 'Productivity' } },
+  { id: 'pp-nagra', label: 'Nagra DTV\n2,500 in 8mo', group: 'proofPoint', detail: { Customer: 'Nagra DTV', Result: '2,500 tests in 8 months, 4X faster', BestFor: 'Media, streaming, API + UI testing', Angle: 'Scale/Coverage' } },
+  { id: 'pp-spendflo', label: 'Spendflo\n50% manual cut', group: 'proofPoint', detail: { Customer: 'Spendflo', Result: '50% manual testing cut', BestFor: 'SaaS, smaller teams, quick wins', Angle: 'Productivity' } },
+  { id: 'pp-cisco', label: 'Cisco\n35% reduction', group: 'proofPoint', detail: { Customer: 'Cisco', Result: '35% regression reduction', BestFor: 'Enterprise, large-scale QA teams', Angle: 'Scale' } },
+  { id: 'pp-selenium', label: '70% less\nmaintenance vs\nSelenium', group: 'proofPoint', detail: { Result: '70% maintenance reduction vs Selenium', BestFor: 'Teams on Selenium/Cypress/Playwright', Angle: 'Maintenance' } },
+  { id: 'pp-selfheal', label: '90% maintenance\nreduction\n(self-healing)', group: 'proofPoint', detail: { Result: '90% maintenance reduction with AI self-healing', BestFor: 'Anyone with flaky/brittle test complaints', Angle: 'Maintenance' } },
+  { id: 'pp-meesho', label: 'Meesho\n4X faster scaling', group: 'proofPoint', detail: { Customer: 'Meesho', Result: '4X faster automation scaling', BestFor: 'E-commerce, rapid growth', Angle: 'Velocity' } },
+
+  // SKILLS
+  { id: 'sk-session-start', label: 'session-start', group: 'skill', detail: { Name: 'Session Start', Schedule: 'Every session — MANDATORY first step', Steps: '14-step startup protocol', Handles: 'git pull, context load, crash detection, parallel session check, task claim', Output: 'Session registered in active/, task claimed from work-queue.md' } },
+  { id: 'sk-tam-t1-batch', label: 'tam-t1-batch', group: 'skill', detail: { Name: 'TAM T1 Batch', Trigger: 'Building new outreach batches', Calls: 'enrichment-pipeline → compliance-gate → draft-qa → apollo-enroll → handoff-auto', Output: '5-10 new contacts enrolled in Apollo sequence' } },
+  { id: 'sk-apollo-enroll', label: 'apollo-enroll', group: 'skill', detail: { Name: 'Apollo Enroll', Trigger: 'Creating contacts + enrolling in sequences', KeyRule: 'Two-gate send safety: APPROVE SEND ≠ APPROVE CLICK', KeyRule2: 'JS readback verification before every send click', HardenedBy: 'INC-007, INC-008, INC-012' } },
+  { id: 'sk-reply-classifier', label: 'reply-classifier', group: 'skill', detail: { Name: 'Reply Classifier', Schedule: 'Weekdays 9am,11am,1pm,3pm,5pm (auto)', Trigger: 'Check Gmail for new replies', Classifies: 'Positive / Polite / Curiosity / Referral / Has Tool / Timing / Negative', Output: 'Updates warm-leads.md, flags P0 items' } },
+  { id: 'sk-compliance-gate', label: 'compliance-gate', group: 'skill', detail: { Name: 'Compliance Gate', Points: '8-point safety check before any enrollment', Checks: 'TAM verify, MASTER_SENT_LIST dedup, DNC check, email verify, batch name format, TAM domain match', HardenedBy: 'INC-001, INC-002' } },
+  { id: 'sk-draft-qa', label: 'draft-qa', group: 'skill', detail: { Name: 'Draft QA', Trigger: 'Auto-score drafts against 12-point MQS rubric', Threshold: 'Pass: ≥9/12. Auto-reject: HC violations', Dimensions: 'Opener Clarity, CTA Confidence, Personalization Density, Friction' } },
+  { id: 'sk-enrichment-pipeline', label: 'enrichment-pipeline', group: 'skill', detail: { Name: 'Enrichment Pipeline', Trigger: 'TAM verify + Apollo enrich + compliance in one flow', Steps: '1. Domain verify against tam-accounts-mar26.csv\n2. Apollo people_match enrichment\n3. compliance-gate 8-point check' } },
+  { id: 'sk-reply-router', label: 'reply-router', group: 'skill', detail: { Name: 'Reply Router', Trigger: 'Match reply to objection doc, draft response', Calls: 'competitors/[tool].md for Has-Tool replies', Output: 'Drafted response matched to intent type + warm-leads.md update' } },
+  { id: 'sk-handoff-auto', label: 'handoff-auto', group: 'skill', detail: { Name: 'Handoff Auto', Trigger: 'Auto-generate session handoff at end of session', Output: 'Updated handoff.md with current pipeline snapshot', KeyFile: 'memory/playbooks/session-handoff.md' } },
+  { id: 'sk-trigger-monitor', label: 'trigger-monitor', group: 'skill', detail: { Name: 'Trigger Monitor', Schedule: 'Mon/Wed/Fri 8am (auto)', Scans: 'QA job postings, funding announcements, leadership changes', Output: 'Trigger events for accounts in target-accounts.md' } },
+  { id: 'sk-analytics-engine', label: 'analytics-engine', group: 'skill', detail: { Name: 'Analytics Engine', Status: 'Designed but not fully operational', Output: 'Reply rate analytics by persona, vertical, proof point', Feeds: '/Work/BDR/outreach.db (SQLite — not yet live)' } },
+  { id: 'sk-lifecycle-tracker', label: 'lifecycle-tracker', group: 'skill', detail: { Name: 'Lifecycle Tracker', Status: 'Initialized Mar 12, 3 records — not at scale yet', Output: 'Unified contact timeline from discovery to outcome', File: 'memory/contact-lifecycle.md' } },
+  { id: 'sk-batch-dashboard', label: 'batch-dashboard', group: 'skill', detail: { Name: 'Batch Dashboard', Trigger: 'Consolidated pipeline view across all batches', Output: 'Work/pipeline-dashboard.html (regenerate on demand)' } },
+
+  // INCIDENTS
+  { id: 'inc-001', label: 'INC-001\nPremature T3', group: 'incident', detail: { ID: 'INC-001', Date: '2026-02-28', Severity: 'HIGH', What: '6 Touch 3 emails sent 7-8 days early, skipping Touch 2 entirely', RootCause: 'Gmail drafts created without date-gating. Old templates with HC1 violations. 2 orphan contacts.', Rule: 'Never send T2 before Day 4. T3 before Day 9. Contact must exist in batch tracker BEFORE drafts created.', Affected: 'Pallavi Sheshadri, Irfan Syed, Katie Barlow Hotard, Rachana Jagetia, Giang Hoang, Gunasekaran C.' } },
+  { id: 'inc-002', label: 'INC-002\nDouble-sends', group: 'incident', detail: { ID: 'INC-002', Date: '2026-03-04', Severity: 'HIGH', What: 'Five prospects sent LinkedIn InMails twice across different batches', RootCause: 'No cross-batch dedup check before Batch 8 was built', Rule: 'MASTER_SENT_LIST.csv created as dedup source of truth. Mandatory pre-batch dedup check added.', Affected: 'Chuck Smith, Abe Blanco, Rick Kowaleski, Christie Howard, Mohan Gummadi' } },
+  { id: 'inc-003', label: 'INC-003\nUntracked sends', group: 'incident', detail: { ID: 'INC-003', Date: '2026-03-03', Severity: 'MEDIUM', What: '6 Batch 9 InMails sent — session ended without logging. 5-credit discrepancy discovered.', RootCause: 'Send session ended mid-batch without updating pipeline-state.md. Credits not decremented.', Rule: 'Same-session logging rule — log DURING the session, not after.' } },
+  { id: 'inc-004', label: 'INC-004\nWrong company\nin subject', group: 'incident', detail: { ID: 'INC-004', Date: '2026-03-09', Severity: 'MEDIUM', What: 'Wrong company name in subject lines (Mar 7 WV emails)', Note: 'Details in incidents.md' } },
+  { id: 'inc-007', label: 'INC-007\nWrong-body send', group: 'incident', detail: { ID: 'INC-007', Date: 'Early March', Severity: 'CRITICAL', What: 'Quill API injection (dangerouslyPasteHTML) caused wrong email body to be sent in Apollo', RootCause: 'Quill DOM is disconnected from Apollo send payload — API writes to DOM but Apollo reads from internal state', Rule: 'NEVER use Quill API injection for Apollo sends. JS readback + zoom screenshot before every Send Now click.', Affects: 'apollo-enroll skill — two-gate send safety protocol' } },
+  { id: 'inc-012', label: 'INC-012\nWrong-body (3rd)', group: 'incident', detail: { ID: 'INC-012', Date: 'March', Severity: 'CRITICAL', What: 'Third wrong-body send — same root cause as INC-007/008', Rule: 'APPROVE SEND ≠ APPROVE CLICK. Content approval and send-click are two SEPARATE gates. Rules 12-A through 12-E.', Note: 'This is the hardest enforced rule in the entire repo.' } },
+
+  // DATA FILES
+  { id: 'data-master-sent', label: 'MASTER_SENT_\nLIST.csv', group: 'dataFile', detail: { File: 'MASTER_SENT_LIST.csv', Rows: '495+ (all-time sends)', Purpose: 'Single source of truth for dedup. Append-only.', KeyColumns: 'name, normalized_name, company, channel, send_date, batch', Gap: 'No company_domain column — TAM compliance check is manual' } },
+  { id: 'data-handoff', label: 'handoff.md', group: 'dataFile', detail: { File: 'memory/session/handoff.md', Length: '635 lines', Purpose: 'Current pipeline snapshot — enrolled contacts, T2 due dates, wave status', Risk: 'Can go stale across sessions if handoff-auto skill not run at close' } },
+  { id: 'data-warm-leads', label: 'warm-leads.md', group: 'dataFile', detail: { File: 'memory/warm-leads.md', Purpose: 'Active warm leads with priority levels and next steps', Updated: 'By reply-classifier skill (auto) and reply-router skill' } },
+  { id: 'data-target-accounts', label: 'target-accounts.md', group: 'dataFile', detail: { File: 'memory/target-accounts.md', Purpose: 'Account rosters with contact lists, proof point rotation, Factor account tags', UsedBy: 'tam-t1-batch skill for account selection, compliance-gate for verification' } },
+  { id: 'data-incidents', label: 'incidents.md', group: 'dataFile', detail: { File: 'memory/incidents.md', Count: '12 incidents (INC-001 through INC-012)', Purpose: 'Every error logged with root cause + remediation + new rule. Rules cited by incident number in CLAUDE.md.' } },
+  { id: 'data-scoring', label: 'scoring-feedback.md', group: 'dataFile', detail: { File: 'memory/scoring-feedback.md', Purpose: 'Empirical reply rate data by word count, CTA style, persona, vertical', KeyData: '75-99 words: 39.0% reply rate. "What day" CTA: 40.4%. SDETs: 39.3%' } },
+
+  // VERTICALS
+  { id: 'vert-fintech', label: 'FinTech', group: 'vertical', detail: { Vertical: 'FinTech', BestProofPoint: 'CRED (90% coverage, 5x faster)', Notes: 'High-velocity teams. Fast-shipping.' } },
+  { id: 'vert-healthcare', label: 'Healthcare', group: 'vertical', detail: { Vertical: 'Healthcare / Digital Health', BestProofPoint: 'Medibuddy (2,500 tests, 50% cut)', Notes: 'Mid-size teams scaling coverage.' } },
+  { id: 'vert-saas', label: 'SaaS/Tech', group: 'vertical', detail: { Vertical: 'SaaS / Tech', BestProofPoint: 'Spendflo (50% manual cut)', Notes: 'Top vertical. Most accounts.' } },
+  { id: 'vert-enterprise', label: 'Enterprise', group: 'vertical', detail: { Vertical: 'Enterprise', BestProofPoint: 'Fortune 100 (3X productivity), Cisco (35% reduction)', Notes: 'VP/CTO outreach only with Buyer Intent signal.' } },
+  { id: 'vert-insurance', label: 'Insurance/FinServ', group: 'vertical', detail: { Vertical: 'Insurance / Financial Services', BestProofPoint: 'Hansard (8wk→5wk regression)', Notes: 'Long regression cycles — self-healing angle strongest.' } },
+  { id: 'vert-pharma', label: 'Pharma', group: 'vertical', detail: { Vertical: 'Pharma / Life Sciences', BestProofPoint: 'Sanofi (3 days → 80 min)', Notes: 'Compliance-heavy. Sanofi + Oscar Health customer stories.' } },
+  { id: 'vert-media', label: 'Media/Streaming', group: 'vertical', detail: { Vertical: 'Media / Streaming', BestProofPoint: 'Nagra DTV (2,500 tests, 4X faster)', Notes: 'API + UI testing complexity.' } },
+  { id: 'vert-ecommerce', label: 'E-Commerce', group: 'vertical', detail: { Vertical: 'E-Commerce / Retail', BestProofPoint: 'Meesho (4X faster scaling)', Notes: 'Rapid growth teams.' } },
+
+  // RULES/CONSTRAINTS (key ones from data-rules.md)
+  { id: 'rule-hc1', label: 'HC1: No\n"I noticed"', group: 'rule', detail: { Rule: 'HC1 Hard Constraint', Text: 'No "I noticed" / "I saw" / "I see" as opener', Impact: '-13.4 percentage points on reply rate', Source: 'memory/data-rules.md' } },
+  { id: 'rule-hc3', label: 'HC3: Max\n120 words', group: 'rule', detail: { Rule: 'HC3 Hard Constraint', Text: 'No messages over 120 words', Impact: 'Auto-fail in MQS scoring', Source: 'memory/data-rules.md' } },
+  { id: 'rule-hc5', label: 'HC5: No\nbullet dumps', group: 'rule', detail: { Rule: 'HC5 Hard Constraint', Text: 'No bullet-point or numbered-list feature dumps', Impact: 'Auto-fail in MQS scoring', Source: 'memory/data-rules.md' } },
+  { id: 'rule-hc8', label: 'HC8: No\n"reaching out"', group: 'rule', detail: { Rule: 'HC8 Hard Constraint', Text: 'No "reaching out" / "wanted to connect"', Impact: '-7.1 percentage points on reply rate', Source: 'memory/data-rules.md' } },
+];
+
+// ===== EDGE DATA =====
+const edgeData = [
+  // Contact → Account
+  { from: 'con-namita', to: 'acc-overdrive', label: 'works at', arrows: 'to' },
+  { from: 'con-pallavi', to: 'acc-origami', label: 'works at', arrows: 'to' },
+  { from: 'con-irfan', to: 'acc-progress', label: 'works at', arrows: 'to' },
+  { from: 'con-katie', to: 'acc-lucid', label: 'works at', arrows: 'to' },
+  { from: 'con-rachana', to: 'acc-housecall', label: 'works at', arrows: 'to' },
+  { from: 'con-chuck', to: 'acc-epicor', label: '', arrows: 'to' },
+
+  // Contact → Proof Point
+  { from: 'con-namita', to: 'pp-medibuddy', label: 'T1 used', arrows: 'to', dashes: true },
+  { from: 'con-namita', to: 'pp-cred', label: 'matched', arrows: 'to', dashes: true },
+  { from: 'con-pallavi', to: 'pp-hansard', label: 'T2 used', arrows: 'to', dashes: true },
+
+  // Contact → Incident
+  { from: 'con-pallavi', to: 'inc-001', label: 'affected by', arrows: 'to' },
+  { from: 'con-irfan', to: 'inc-001', label: 'affected by', arrows: 'to' },
+  { from: 'con-katie', to: 'inc-001', label: 'affected by', arrows: 'to' },
+  { from: 'con-rachana', to: 'inc-001', label: 'affected by', arrows: 'to' },
+  { from: 'con-chuck', to: 'inc-002', label: 'affected by', arrows: 'to' },
+  { from: 'con-abe', to: 'inc-002', label: 'affected by', arrows: 'to' },
+
+  // Account → Vertical
+  { from: 'acc-overdrive', to: 'vert-saas', label: '', arrows: 'to' },
+  { from: 'acc-origami', to: 'vert-saas', label: '', arrows: 'to' },
+  { from: 'acc-epicor', to: 'vert-saas', label: '', arrows: 'to' },
+  { from: 'acc-housecall', to: 'vert-saas', label: '', arrows: 'to' },
+
+  // Proof Point → Vertical
+  { from: 'pp-hansard', to: 'vert-insurance', label: 'best for', arrows: 'to', dashes: true },
+  { from: 'pp-medibuddy', to: 'vert-healthcare', label: 'best for', arrows: 'to', dashes: true },
+  { from: 'pp-cred', to: 'vert-fintech', label: 'best for', arrows: 'to', dashes: true },
+  { from: 'pp-sanofi', to: 'vert-pharma', label: 'best for', arrows: 'to', dashes: true },
+  { from: 'pp-f100', to: 'vert-enterprise', label: 'best for', arrows: 'to', dashes: true },
+  { from: 'pp-nagra', to: 'vert-media', label: 'best for', arrows: 'to', dashes: true },
+  { from: 'pp-spendflo', to: 'vert-saas', label: 'best for', arrows: 'to', dashes: true },
+  { from: 'pp-cisco', to: 'vert-enterprise', label: 'best for', arrows: 'to', dashes: true },
+  { from: 'pp-meesho', to: 'vert-ecommerce', label: 'best for', arrows: 'to', dashes: true },
+
+  // Skill → Skill (call chain)
+  { from: 'sk-tam-t1-batch', to: 'sk-enrichment-pipeline', label: 'calls', arrows: 'to', color: { color: '#8E44AD' } },
+  { from: 'sk-enrichment-pipeline', to: 'sk-compliance-gate', label: 'calls', arrows: 'to', color: { color: '#8E44AD' } },
+  { from: 'sk-tam-t1-batch', to: 'sk-draft-qa', label: 'calls', arrows: 'to', color: { color: '#8E44AD' } },
+  { from: 'sk-tam-t1-batch', to: 'sk-apollo-enroll', label: 'calls', arrows: 'to', color: { color: '#8E44AD' } },
+  { from: 'sk-tam-t1-batch', to: 'sk-handoff-auto', label: 'calls', arrows: 'to', color: { color: '#8E44AD' } },
+  { from: 'sk-session-start', to: 'sk-reply-classifier', label: 'calls', arrows: 'to', color: { color: '#8E44AD' } },
+
+  // Skill → Data File
+  { from: 'sk-compliance-gate', to: 'data-master-sent', label: 'reads', arrows: 'to', dashes: true },
+  { from: 'sk-compliance-gate', to: 'data-target-accounts', label: 'reads', arrows: 'to', dashes: true },
+  { from: 'sk-handoff-auto', to: 'data-handoff', label: 'writes', arrows: 'to' },
+  { from: 'sk-reply-classifier', to: 'data-warm-leads', label: 'updates', arrows: 'to' },
+  { from: 'sk-reply-router', to: 'data-warm-leads', label: 'writes', arrows: 'to' },
+  { from: 'sk-draft-qa', to: 'data-scoring', label: 'reads', arrows: 'to', dashes: true },
+
+  // Incident → Skill (hardened by)
+  { from: 'inc-001', to: 'sk-compliance-gate', label: 'hardened', arrows: 'to', color: { color: '#E74C3C' } },
+  { from: 'inc-002', to: 'sk-compliance-gate', label: 'hardened', arrows: 'to', color: { color: '#E74C3C' } },
+  { from: 'inc-007', to: 'sk-apollo-enroll', label: 'hardened', arrows: 'to', color: { color: '#E74C3C' } },
+  { from: 'inc-012', to: 'sk-apollo-enroll', label: 'hardened', arrows: 'to', color: { color: '#E74C3C' } },
+
+  // Incident → Data File
+  { from: 'inc-002', to: 'data-master-sent', label: 'created', arrows: 'to' },
+  { from: 'inc-001', to: 'data-incidents', label: 'logged in', arrows: 'to', dashes: true },
+  { from: 'inc-007', to: 'data-incidents', label: 'logged in', arrows: 'to', dashes: true },
+
+  // Rules → MQS scoring
+  { from: 'rule-hc1', to: 'sk-draft-qa', label: 'enforced by', arrows: 'to' },
+  { from: 'rule-hc3', to: 'sk-draft-qa', label: 'enforced by', arrows: 'to' },
+  { from: 'rule-hc5', to: 'sk-draft-qa', label: 'enforced by', arrows: 'to' },
+  { from: 'rule-hc8', to: 'sk-draft-qa', label: 'enforced by', arrows: 'to' },
+
+  // Data warm leads → warm lead contacts
+  { from: 'data-warm-leads', to: 'con-namita', label: 'tracks', arrows: 'to', dashes: true },
+  { from: 'data-warm-leads', to: 'con-pallavi', label: 'tracks', arrows: 'to', dashes: true },
+];
+
+// ===== GROUP CONFIG =====
+const groups = {
+  account:    { color: { background: '#1f4e8c', border: '#4A90D9', highlight: { background: '#2563ab', border: '#74b4f4' } }, font: { color: '#a8d4ff', size: 12 }, shape: 'box' },
+  contact:    { color: { background: '#1a3d27', border: '#27AE60', highlight: { background: '#215a35', border: '#4ed880' } }, font: { color: '#90e8a0', size: 12 }, shape: 'ellipse' },
+  warmLead:   { color: { background: '#5a3800', border: '#F39C12', highlight: { background: '#7a4d00', border: '#ffc242' } }, font: { color: '#ffd080', size: 12 }, shape: 'star' },
+  dnc:        { color: { background: '#3d1a1a', border: '#7f1f1f', highlight: { background: '#521f1f', border: '#c0392b' } }, font: { color: '#c08080', size: 11 }, shape: 'triangle' },
+  proofPoint: { color: { background: '#5a3000', border: '#E67E22', highlight: { background: '#7a4200', border: '#ffaa55' } }, font: { color: '#ffcc99', size: 11 }, shape: 'diamond' },
+  skill:      { color: { background: '#2d1a3d', border: '#8E44AD', highlight: { background: '#3d2557', border: '#b07ae0' } }, font: { color: '#d0a8ff', size: 12 }, shape: 'roundRect' },
+  incident:   { color: { background: '#3d0d0d', border: '#E74C3C', highlight: { background: '#5a1212', border: '#ff7070' } }, font: { color: '#ff9999', size: 12 }, shape: 'hexagon' },
+  dataFile:   { color: { background: '#1f2630', border: '#5c6a7a', highlight: { background: '#2a3540', border: '#8ba0b5' } }, font: { color: '#a8b8c8', size: 11 }, shape: 'database' },
+  vertical:   { color: { background: '#0f3a36', border: '#16A085', highlight: { background: '#154f4a', border: '#2ec4b6' } }, font: { color: '#80dfd8', size: 12 }, shape: 'box' },
+  rule:       { color: { background: '#3d0020', border: '#C0392B', highlight: { background: '#520030', border: '#e05060' } }, font: { color: '#ff9090', size: 11 }, shape: 'triangle' },
+};
+
+const groupMeta = {
+  account:    { label: 'Accounts', color: '#4A90D9' },
+  contact:    { label: 'Contacts', color: '#27AE60' },
+  warmLead:   { label: 'Warm Leads', color: '#F39C12' },
+  dnc:        { label: 'DNC', color: '#7f1f1f' },
+  proofPoint: { label: 'Proof Points', color: '#E67E22' },
+  skill:      { label: 'Skills', color: '#8E44AD' },
+  incident:   { label: 'Incidents', color: '#E74C3C' },
+  dataFile:   { label: 'Data Files', color: '#5c6a7a' },
+  vertical:   { label: 'Verticals', color: '#16A085' },
+  rule:       { label: 'HC Rules', color: '#C0392B' },
+};
+
+// ===== BUILD NETWORK =====
+let network, allNodes, allEdges, hiddenGroups = new Set();
+
+function buildNetwork() {
+  const nodes = new vis.DataSet(nodeData.map(n => ({
+    ...n,
+    title: n.label,
+    font: groups[n.group]?.font,
+    color: groups[n.group]?.color,
+    shape: groups[n.group]?.shape || 'ellipse',
+  })));
+
+  const edges = new vis.DataSet(edgeData.map((e, i) => ({
+    ...e,
+    id: i,
+    font: { size: 9, color: '#484f58', strokeWidth: 0, align: 'middle' },
+    color: e.color || { color: '#30363d', highlight: '#58a6ff' },
+    smooth: { type: 'continuous' },
+    width: 1,
+    selectionWidth: 2,
+  })));
+
+  allNodes = nodes;
+  allEdges = edges;
+
+  document.getElementById('stat-nodes').textContent = nodes.length;
+  document.getElementById('stat-edges').textContent = edges.length;
+
+  const container = document.getElementById('graph-canvas');
+  const data = { nodes, edges };
+  const options = {
+    physics: {
+      enabled: true,
+      barnesHut: {
+        gravitationalConstant: -12000,
+        centralGravity: 0.1,
+        springLength: 160,
+        springConstant: 0.04,
+        damping: 0.2,
+      },
+      stabilization: { iterations: 300 }
+    },
+    interaction: {
+      hover: true,
+      tooltipDelay: 300,
+      navigationButtons: false,
+      keyboard: true,
+      zoomView: true,
+    },
+    edges: {
+      font: { size: 9, color: '#484f58', strokeWidth: 0 },
+      smooth: { type: 'curvedCW', roundness: 0.1 },
+    },
+    nodes: {
+      borderWidth: 1.5,
+      borderWidthSelected: 2.5,
+      font: { size: 12, color: '#e1e4e8', face: '-apple-system, sans-serif' },
+      margin: 6,
+    },
+  };
+
+  network = new vis.Network(container, data, options);
+
+  network.on('click', function(params) {
+    if (params.nodes.length > 0) {
+      const nodeId = params.nodes[0];
+      showNodeDetail(nodeId);
+    } else {
+      clearNodeDetail();
+    }
+  });
+
+  network.on('doubleClick', function(params) {
+    if (params.nodes.length > 0) {
+      const nodeId = params.nodes[0];
+      focusOnNode(nodeId);
+    }
+  });
+}
+
+function showNodeDetail(nodeId) {
+  const node = nodeData.find(n => n.id === nodeId);
+  if (!node) return;
+
+  const group = groupMeta[node.group];
+  const detail = node.detail || {};
+
+  // Find connected nodes
+  const connectedEdges = allEdges.get({ filter: e => e.from === nodeId || e.to === nodeId });
+  const connections = connectedEdges.map(e => {
+    const otherId = e.from === nodeId ? e.to : e.from;
+    const otherNode = nodeData.find(n => n.id === otherId);
+    const direction = e.from === nodeId ? '→' : '←';
+    return { node: otherNode, edge: e, direction };
+  });
+
+  let html = `
+    <div class="node-title">${node.label.replace(/\n/g, ' ')}</div>
+    <div class="node-type-badge" style="background:${group?.color}22;color:${group?.color};border:1px solid ${group?.color}55">${group?.label || node.group}</div>
+  `;
+
+  for (const [key, val] of Object.entries(detail)) {
+    html += `<div class="prop"><label>${key}</label><value>${val}</value></div>`;
+  }
+
+  if (connections.length > 0) {
+    html += `<div class="connections"><h3>Connections (${connections.length})</h3>`;
+    connections.forEach(c => {
+      if (!c.node) return;
+      const cGroup = groupMeta[c.node.group];
+      html += `<div class="conn-item">
+        <span style="color:${cGroup?.color}">${c.node.label.replace(/\n/g, ' ')}</span>
+        <span class="conn-label">${c.direction} ${c.edge.label || ''}</span>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  document.getElementById('node-detail').innerHTML = html;
+}
+
+function clearNodeDetail() {
+  document.getElementById('node-detail').innerHTML = '<div class="empty">Click any node to inspect it.</div>';
+}
+
+function focusOnNode(nodeId) {
+  const connectedEdges = allEdges.get({ filter: e => e.from === nodeId || e.to === nodeId });
+  const connectedNodeIds = new Set([nodeId]);
+  connectedEdges.forEach(e => { connectedNodeIds.add(e.from); connectedNodeIds.add(e.to); });
+
+  const update = nodeData.map(n => ({
+    id: n.id,
+    opacity: connectedNodeIds.has(n.id) ? 1 : 0.08,
+  }));
+  allNodes.update(update);
+
+  setTimeout(() => {
+    const resetUpdate = nodeData.map(n => ({ id: n.id, opacity: hiddenGroups.has(n.group) ? 0 : 1 }));
+    allNodes.update(resetUpdate);
+  }, 4000);
+}
+
+// ===== FILTERS =====
+function buildFilters() {
+  const container = document.getElementById('filters');
+  const legend = document.getElementById('legend');
+
+  Object.entries(groupMeta).forEach(([group, meta]) => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn active';
+    btn.textContent = meta.label;
+    btn.style.background = meta.color + '22';
+    btn.style.color = meta.color;
+    btn.style.borderColor = meta.color + '55';
+    btn.dataset.group = group;
+
+    btn.addEventListener('click', () => {
+      if (hiddenGroups.has(group)) {
+        hiddenGroups.delete(group);
+        btn.classList.remove('inactive');
+        btn.classList.add('active');
+      } else {
+        hiddenGroups.add(group);
+        btn.classList.remove('active');
+        btn.classList.add('inactive');
+      }
+      applyGroupFilter();
+    });
+
+    container.appendChild(btn);
+
+    // Legend item
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `<div class="legend-dot" style="background:${meta.color}"></div><span>${meta.label}</span>`;
+    legend.appendChild(item);
+  });
+}
+
+function applyGroupFilter() {
+  const update = nodeData.map(n => ({
+    id: n.id,
+    hidden: hiddenGroups.has(n.group),
+  }));
+  allNodes.update(update);
+}
+
+// ===== SEARCH =====
+document.getElementById('search-input').addEventListener('input', function(e) {
+  const query = e.target.value.toLowerCase().trim();
+  if (!query) {
+    const reset = nodeData.map(n => ({ id: n.id, opacity: hiddenGroups.has(n.group) ? 0 : 1 }));
+    allNodes.update(reset);
+    return;
+  }
+
+  const update = nodeData.map(n => {
+    const text = (n.label + JSON.stringify(n.detail || '')).toLowerCase();
+    const match = text.includes(query);
+    return { id: n.id, opacity: match ? 1 : 0.08 };
+  });
+  allNodes.update(update);
+
+  const matches = nodeData.filter(n => {
+    const text = (n.label + JSON.stringify(n.detail || '')).toLowerCase();
+    return text.includes(query);
+  });
+
+  if (matches.length === 1) {
+    showNodeDetail(matches[0].id);
+    network.focus(matches[0].id, { scale: 1.4, animation: true });
+  }
+});
+
+// ===== INIT =====
+buildFilters();
+buildNetwork();
+</script>
+</body>
+</html>

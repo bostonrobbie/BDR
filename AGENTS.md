@@ -18,6 +18,8 @@ STEP 1:  git pull origin main           (may fail if no creds — note and conti
 STEP 2:  Read AGENTS.md                 (this file — the collaboration protocol)
 STEP 3:  Read CLAUDE.md                 (full BDR SOP, memory, rules, DNC list)
 STEP 4:  Read memory/session/handoff.md (current pipeline state)
+         ↳ FRESHNESS CHECK: Confirm the "Last Updated: Session N" header matches the most recent session in session-log.md.
+           If it's 2+ sessions stale, note this to Rob and treat pipeline state as approximate until verified.
 STEP 5:  Read memory/session/work-queue.md (task queue with priorities)
 STEP 6:  Read memory/session/in-progress.md (crash checkpoint)
 STEP 7:  Read memory/session/messages.md (inter-session message board)
@@ -97,7 +99,7 @@ Every running session maintains a registration file in `memory/session/active/`.
 
 **Conflict detection:** Before claiming any company or file, check all active registrations for overlap. First-registered wins. If conflict exists, pick different work or ask Rob.
 
-**Stale detection:** If another session's `last_heartbeat` is more than 2 hours old and status is still "active", it likely crashed. Follow the stale session protocol in `_protocol.md`.
+**Stale detection:** If another session's `last_heartbeat` is more than **45 minutes** old and status is still "active", it likely crashed. Follow the stale session protocol in `_protocol.md`.
 
 ### File Locking
 
@@ -114,7 +116,7 @@ Before writing to any shared file, create a lock in `.locks/`. Full protocol: `.
 - `memory/session/messages.md`
 - Any `tamob-*.html` tracker file
 
-**Lock lifecycle:** Check for existing lock → Acquire lock → Write file → Release lock. Stale locks (>30 min) can be overridden.
+**Lock lifecycle:** Check for existing lock → Acquire lock → Write file → Release lock. Stale locks (>45 min) can be overridden. See `.locks/_protocol.md` for full race condition mitigation steps.
 
 **Multiple files:** Lock ALL needed files before starting writes. Release ALL after writes complete. This prevents deadlocks.
 
@@ -153,7 +155,8 @@ Before writing to any shared file, create a lock in `.locks/`. Full protocol: `.
 
 ### On crash detection (Status = ACTIVE)
 1. STOP. Do not start a new task.
-2. Tell Rob: "The last session crashed mid-task. [Task name] was in progress. [N of M] steps completed. Last checkpoint: [description]. Resume from step [N+1], or restart?"
+2. Check the timestamp on the Status line — if ACTIVE was set more than 60 minutes ago, the session almost certainly crashed.
+3. Tell Rob: "The last session crashed mid-task. [Task name] was in progress. [N of M] steps completed. Last checkpoint: [description]. ACTIVE was set at [timestamp]. Resume from step [N+1], or restart?"
 3. Wait for Rob's decision.
 4. If resuming: Start at the step marked `next`. Verify files listed in "Files in progress" actually exist on disk before trusting their contents.
 5. If restarting: Set in-progress.md Status to CLEAR, commit, then claim the task fresh.
@@ -163,7 +166,11 @@ Before writing to any shared file, create a lock in `.locks/`. Full protocol: `.
 Before starting any task involving file creation or multiple API calls:
 1. Open `in-progress.md` and set Status to ACTIVE
 2. Fill in: Task ID, task name, step list, files to be created
-3. Commit immediately
+3. **Add a timestamp and tool call counter to the Status line:** `Status: ACTIVE — set 2026-03-13T14:22:00Z — tool_calls: 0`
+   This lets the next session determine how long ago work started (crash detection requires knowing when ACTIVE was written).
+4. Commit immediately
+
+**Tool call counter:** After each major checkpoint, update the `tool_calls` count in the Status line: `tool_calls: ~35`. This is an estimate, not exact. When it reaches ~50, the session should wrap up and hand off, not try to squeeze in more work.
 
 ### During a task (mid-session checkpoints)
 After completing each sub-step:
@@ -225,7 +232,7 @@ Sessions have limited context windows. Hitting the limit causes compaction (loss
 
 1. **Read selectively at startup.** Don't read every file. Read AGENTS.md + CLAUDE.md (auto-loaded) + handoff.md + work-queue.md + in-progress.md + messages.md. Then ONLY read the playbooks mapped to your claimed task (see Playbook System below).
 2. **Never read a file you don't need.** If your task is bounce cleanup, don't read tam-t1-batch.md or qa-gate.md.
-3. **If you've made 50+ tool calls, start wrapping up.** Checkpoint your progress, update handoff files, and hand off remaining work as a new task.
+3. **Track your tool call count.** Write your running tool call count in `in-progress.md` after every checkpoint (e.g., "Tool calls so far: ~35"). When you hit 50, start wrapping up regardless of how much work remains. Checkpoint your progress, update handoff files, and hand off remaining work as a new task.
 4. **If context gets compacted, don't re-read everything.** Trust in-progress.md for crash recovery. Read only the files needed to continue the current step.
 5. **One task per session.** Don't chain tasks (e.g., "build batch then also do T2 drafts"). Complete one, hand off, let the next session pick up the other.
 6. **Batch HTML trackers are large.** When reading trackers, read only the sections you need (use offset/limit). Don't read 500-line HTML files in full unless necessary.
@@ -237,7 +244,9 @@ Sessions have limited context windows. Hitting the limit causes compaction (loss
 At the END of every session, BEFORE stopping, Claude MUST complete ALL 9 steps. **No exceptions. No "I'll let the next session handle it."** Session 30 audit found handoff.md 4+ sessions stale because sessions skipped Step 2.
 
 1. Clear `in-progress.md` Status to CLEAR (if a task was completed)
-2. **Update `memory/session/handoff.md`** with current pipeline state — add a FULL section for any batch/wave work done this session (contact table, Apollo IDs, status, T2 due dates). Update the `Last Updated` header. **If you enrolled contacts, the handoff MUST include them.**
+2. **Update `memory/session/handoff.md`** with current pipeline state — add a FULL section for any batch/wave work done this session (contact table, Apollo IDs, status, T2 due dates). Update the `Last Updated` header to: `Last Updated: Session N — YYYY-MM-DD — [N contacts enrolled / N T2s drafted / audit / etc]`. **If you enrolled contacts, the handoff MUST include them.**
+   - Version stamp format: `## Last Updated: Session 32 — 2026-03-13 — 18 contacts enrolled, Wave 5 T2s drafted`
+   - The next session's STEP 4 freshness check compares this against session-log.md. If you skip this update, the next session will flag it and treat pipeline state as stale.
 3. Update `memory/session/work-queue.md` — mark completed tasks DONE, add new ones
 4. Append a session entry to `memory/session/session-log.md` (with contact table if applicable)
 5. Set your active session registration to `status: "completed"`, then delete the file
@@ -278,9 +287,26 @@ Repeatable workflow definitions live in `skills/*/SKILL.md`. These are more stru
 
 | Skill | Location | Use When |
 |-------|----------|----------|
-| Session Start | `skills/session-start/SKILL.md` | Every session startup |
-| TAM T1 Batch | `skills/tam-t1-batch/SKILL.md` | Building new outreach batches |
+| Session Start | `skills/session-start/SKILL.md` | Every session startup — runs the 14-step startup protocol |
+| TAM T1 Batch | `skills/tam-t1-batch/SKILL.md` | Building new outreach batches (orchestrates enrichment → compliance → draft-qa → handoff-auto) |
 | Apollo Enroll | `skills/apollo-enroll/SKILL.md` | Creating contacts + enrolling in sequences |
+| Reply Classifier | `skills/reply-classifier/SKILL.md` | Check Gmail for new replies, classify by type, surface warm leads |
+| Batch Dashboard | `skills/batch-dashboard/SKILL.md` | Consolidated pipeline view across all active batches |
+| Enrichment Pipeline | `skills/enrichment-pipeline/SKILL.md` | TAM verify + Apollo enrich + compliance gate in one flow |
+| Trigger Monitor | `skills/trigger-monitor/SKILL.md` | Scan accounts for QA hiring, funding, leadership changes |
+| Draft QA | `skills/draft-qa/SKILL.md` | Auto-score drafts against 12-point MQS rubric (pass ≥9/12) |
+| Reply Router | `skills/reply-router/SKILL.md` | Match reply to objection doc, draft contextual response |
+| Lifecycle Tracker | `skills/lifecycle-tracker/SKILL.md` | Unified contact history from enrichment to reply/outcome |
+| Analytics Engine | `skills/analytics-engine/SKILL.md` | Reply rate analytics by persona, vertical, proof point |
+| Handoff Auto | `skills/handoff-auto/SKILL.md` | Auto-generate session handoff docs at end of session |
+| Compliance Gate | `skills/compliance-gate/SKILL.md` | 8-point safety check before any contact enrollment |
+
+**Skill execution logging:** After running any skill, append a one-line note to `memory/session/messages.md`:
+```
+[SKILL] Session N — {skill-name} — {result summary} — {timestamp}
+```
+Example: `[SKILL] Session 32 — compliance-gate — 8/8 contacts CLEAR — 2026-03-13T14:30:00Z`
+This creates a lightweight execution log for auditing which skills ran and whether they succeeded.
 
 ---
 

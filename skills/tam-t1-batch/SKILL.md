@@ -7,6 +7,8 @@ End-to-end workflow for building a new batch of TAM Outbound T1 email outreach. 
 Use when Rob says "build a new batch", "T1 batch", "prospect new contacts", "TAM outreach", or when the operating directive calls for new T1 pipeline volume.
 
 ## Prerequisites
+> **Index-first rule:** Before loading any playbook, check `memory/playbooks/_index.md` first. It maps each task to the specific playbook file you need. This prevents loading full playbooks you don't need and saves context budget.
+
 - Read `memory/playbooks/tam-t1-batch.md` for the full 10-step process
 - Read `memory/playbooks/dedup-protocol.md` for the 6-point dedup check
 - Read `memory/playbooks/apollo-enrollment.md` for enrollment gotchas

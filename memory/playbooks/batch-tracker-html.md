@@ -146,4 +146,7 @@ Every tracker HTML MUST include:
 
 ---
 
-*Last updated: 2026-03-12 — template standardized from Waves 1-5 tracker formats*
+---
+*Version: 1.0 — 2026-03-12*
+*Change log: v1.0 (Mar 12, 2026) — template standardized from Waves 1-5 tracker formats*
+*When updating: increment version, add change log entry with date and what changed.*
