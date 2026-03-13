@@ -5,15 +5,24 @@ Append-only communication channel between concurrent Cowork sessions. Sessions l
 
 ## Rules
 - **Append only.** Never edit or delete existing messages.
-- **New messages go at the TOP** of the Messages section (right below the divider).
+- **New messages go at the TOP** of the Messages section (right below the `## Messages` line).
 - **Lock before writing:** Acquire `.locks/messages.md.lock`, append your message, release lock immediately.
-- **Format:** `[ISO timestamp] Session {N}: {message}`
+- **Format:** `[ISO timestamp] Session {N}: [TAG] {message}`
+- **Timestamp MUST be real current time.** Run `date -u +%Y-%m-%dT%H:%M:%SZ` immediately before writing. Do NOT reuse a timestamp from earlier in your session.
 - **Check on startup:** Every session reads this file during startup to catch any alerts from other sessions.
-- **Categories:** Use a tag prefix for quick scanning: `[INFO]`, `[WARN]`, `[CLAIM]`, `[DONE]`, `[CONFLICT]`, `[ASK]`
+- **Categories:** Use a tag prefix for quick scanning: `[INFO]`, `[WARN]`, `[CLAIM]`, `[DONE]`, `[CONFLICT]`, `[ASK]`, `[CORRECTION]`
+- **DONE/CLAIM accuracy:** Always include: exact MASTER_SENT_LIST row count (run `wc -l` first), companies, contact count, any enrollment overrides, tracker filename.
+- **If you spot an error in a prior message:** Do NOT edit it. Append a `[CORRECTION]` message referencing the wrong one.
 
 ---
 
 ## Messages
+
+[2026-03-12T17:18:42Z] Session 31: [DONE] Audit + SOP hardening complete. No enrollment this session. 5 protocol files updated (AGENTS.md v2.1, dedup-protocol.md, session-handoff.md, tam-t1-batch SKILL.md, messages.md rules). Handoff.md brought current through Sessions 29-31. MASTER_SENT_LIST.csv verified at 496 rows. 8 audit findings documented. TASK-032 created for batch name cleanup (5 non-standard names). 3 contacts remain blocked by Apollo ownership (Yogesh Garg, Donald Jackson, Iain Duffield) — Rob manual action needed.
+
+[2026-03-12T16:55:00Z] Session 30: [DONE] Batch 6 complete. 26 contacts enrolled in TAM Outbound across 12 companies (BlackRock 5, Citizens 3, Celonis 1, Bungie 2, CVS Health 7, Caterpillar 2, BCBS 1, Cash App 1, Andersen 1, Allianz 2, Successive 1). Tracker: tamob-batch-20260312-6.html. MASTER_SENT_LIST.csv now 469 rows. Tamas Sueli and Ivana Zivkovic enrolled with sequence_active_in_other_campaigns override (were in paused sequence 68fa2bb0939898000d3b489b). Do not re-prospect these contacts.
+
+[2026-03-12T17:45:00Z] Session 30: [CLAIM] Enrolled 5 contacts from Batch 7 in TAM Outbound (GAIG, Selective Insurance, Pacific Life, Allianz Life, BlackRock). MASTER_SENT_LIST.csv rows 441-445. All 5 confirmed active at step 1. Daksha Kantaria and Shital Shisode required sequence_finished_in_other_campaigns override. Batch tracker: tamob-batch-20260312-7.html. Do not re-prospect these contacts.
 
 [2026-03-12T16:30:00Z] Session 29: [CLAIM] Enrolled 7 contacts from Batch 6 in TAM Outbound (Aetna, EmblemHealth, BeyondTrust, Aura, DraftKings, Clinisys, Alithya). MASTER_SENT_LIST.csv rows 421-427. Iain Duffield (Anaplan) SKIPPED due to ownership conflict, needs manual reassignment in Apollo UI. Do not re-prospect these companies.
 

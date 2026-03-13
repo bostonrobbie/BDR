@@ -2,6 +2,70 @@
 
 ---
 
+## Mar 12 Status — Inbound Lead: Evely Perrella (Aetna/CVS Health)
+
+**Date:** 2026-03-12
+**Sequence:** Inbound Leads - Rob Gorham (`69b2ae589d6bd10017d4be89`) — ACTIVE, all 3 steps MANUAL email
+**Contact ID:** `69b1dae03e09b90001402481`
+**Lead Source:** Google Ads branded search (high intent)
+**Title:** Leader Director Quality Assurance (ZoomInfo) / QA Analyst (Apollo)
+
+### Send History
+- **Touch 1 (Day 1):** SENT Mar 12 — but WRONG BODY delivered (INC-012). Old template sent instead of Rob's approved V-C draft.
+- **Rob's manual follow-up:** SENT Mar 12 — Rob sent his own correction/follow-up directly via Gmail.
+
+### SKIP RULES
+- **Touch 2 (Day 4, ~Mar 16): SKIP.** Rob already sent his own follow-up. Do NOT send Step 2. When the manual task appears, mark it as skipped/finished without sending.
+- **Touch 3 (Day 7, ~Mar 19): FIRST ELIGIBLE re-contact.** Personalize before sending. Must get Rob's approval.
+
+### Account Context
+Aetna is an ACTIVE account. Existing deal thread: Pranati Thankala (contact), Tyler Kapeller (AE), demo Dec 2025. Evely had ZERO prior contact with Testsigma before Mar 12.
+
+### Other Inbound Leads — NOW ENROLLED (see bulk enrollment section below)
+
+---
+
+## Mar 12 Status — Inbound Leads Bulk Enrollment
+
+**Date:** 2026-03-12
+**Sequence:** Inbound Leads - Rob Gorham (`69b2ae589d6bd10017d4be89`)
+**Action:** Enrolled all assignable inbound leads from Dec 2025–Mar 2026 per Rob's instruction.
+**Emails sent:** NONE. Rob directed "do not send the emails, just enroll them for now."
+
+### Enrolled (7 total, all at Step 1 except Evely)
+
+| # | Name | Company | Title | Contact ID | Step | Notes |
+|---|------|---------|-------|-----------|------|-------|
+| 1 | Evely Perrella | Aetna/CVS Health | Leader Dir QA | `69b1dae03e09b90001402481` | Step 2 | T1 sent (INC-012), Rob sent manual follow-up. Skip T2, T3 first eligible. |
+| 2 | Divesh Puri | BlackRock | QA Engineering | `6967725630d8730011484d33` | Step 1 | NOT sent |
+| 3 | Brian Aronowitz | StubHub | VP Engineering | `696927e0bbfdf7000154dfc1` | Step 1 | NOT sent |
+| 4 | Jayaraj Anthraj | Nokia | QA Lead | `698c0aef3610c1000146d224` | Step 1 | NOT sent |
+| 5 | Theresa Lawrence | CVS Health | Not QA persona | `698f7705a92c6400015dd93b` | Step 1 | NOT sent |
+| 6 | Jason Dudley | Baird | No title in Apollo | `69a861c7ef019400011c5d9c` | Step 1 | NOT sent |
+| 7 | Soumyajit Banerjee | Mastercard | India-based | `69a007a960de600001faf2fe` | Step 1 | NOT sent |
+
+### Blocked by Ownership Permissions (2)
+
+| Name | Company | Title | Contact ID | Issue |
+|------|---------|-------|-----------|-------|
+| Joe Casale | Lexia Learning | Sr. Director QA | `654cd17dfda39700a3967f76` | `contacts_without_ownership_permission` — owned by another team member. **BEST persona fit of all inbound leads.** Needs manual UI enrollment or ownership reassignment. |
+| Pedro dsf | Infinera | SDE (Portugal) | `699c8189c8db810001e94d4f` | `contacts_without_ownership_permission` — owned by another team member. Low priority (junk name, non-US). |
+
+### Not Enrollable (3)
+
+| Name | Company | Reason |
+|------|---------|--------|
+| Pranati Thankala | Aetna/CVS Health | Active deal thread (Tyler Kapeller AE, demo Dec 2025). Do NOT cold-sequence. |
+| Peter Chen | Walmart | Not found in Apollo contacts. Would need manual contact creation first. |
+| (Razorpay lead) | Razorpay | Junk/invalid lead data. |
+
+### Next Actions
+- **No emails to send right now.** All enrolled contacts sit at Step 1 with manual tasks pending.
+- **Joe Casale** is the highest-priority blocked contact. Rob needs to either enroll him via Apollo UI or reassign ownership.
+- Before sending ANY emails from this sequence, personalize the 3 step templates (currently generic placeholder copy).
+
+---
+
 ## Mar 10 Status — Tyler Referrals T1 Complete
 
 **Date:** 2026-03-10

@@ -26,15 +26,35 @@ Captured knowledge from real production work across 27+ sessions. Each playbook 
 | Batch Tracker HTML | `batch-tracker-html.md` | Building and maintaining HTML batch tracker files |
 | T2 Follow-Up Drafting | `t2-followup.md` | Writing Touch 2 follow-up emails |
 | Session Handoff | `session-handoff.md` | Properly closing a session and handing off to the next |
+| Inbound Leads Sequence | `inbound-leads-sequence.md` | Identifying, qualifying, enrolling, and sending to inbound Salesforce-assigned leads |
 
 ---
 
-## Skill Candidates (for Cowork skill formalization)
-These playbooks are stable enough to become formal Cowork skills:
-1. `tam-t1-batch.md` — most-used workflow, highly repeatable
-2. `apollo-enrollment.md` — specific API sequence, error-prone without guidance
-3. `dedup-protocol.md` — safety-critical, must be consistent
+## New Skills (added 2026-03-12)
+
+10 new Cowork skills built to extend the workflow. Read these SKILL.md files directly — they are invokable as Cowork skills and follow the same format as playbooks:
+
+| Skill | Location | Use When |
+|-------|----------|----------|
+| Reply Classifier | `skills/reply-classifier/SKILL.md` | Checking Gmail for replies — classifies by type, updates warm-leads.md |
+| Batch Dashboard | `skills/batch-dashboard/SKILL.md` | Generating pipeline overview across all batches |
+| Enrichment Pipeline | `skills/enrichment-pipeline/SKILL.md` | Pre-batch prep — TAM verify, enrich, dedup, compliance in one flow |
+| Trigger Monitor | `skills/trigger-monitor/SKILL.md` | Scanning accounts for QA hiring, funding, leadership changes |
+| Draft QA | `skills/draft-qa/SKILL.md` | Auto-scoring drafts against the 12-point MQS rubric |
+| Reply Router | `skills/reply-router/SKILL.md` | Routing replies to the right objection doc and drafting responses |
+| Lifecycle Tracker | `skills/lifecycle-tracker/SKILL.md` | Building and maintaining unified contact history |
+| Analytics Engine | `skills/analytics-engine/SKILL.md` | Weekly performance analytics by persona, vertical, proof point |
+| Handoff Auto | `skills/handoff-auto/SKILL.md` | Auto-generating session handoff docs at end of session |
+| Compliance Gate | `skills/compliance-gate/SKILL.md` | 8-point safety check before any contact enrollment |
 
 ---
 
-*Last updated: 2026-03-12 (Session 28 — initial build from 27 sessions of accumulated knowledge)*
+## Skill Candidates (formalized)
+All original candidates are now live skills:
+1. `tam-t1-batch.md` ✅ `skills/tam-t1-batch/SKILL.md`
+2. `apollo-enrollment.md` ✅ `skills/apollo-enroll/SKILL.md`
+3. `dedup-protocol.md` ✅ Embedded in `skills/compliance-gate/SKILL.md`
+
+---
+
+*Last updated: 2026-03-12 (Session 30 — 12 playbooks + 10 new skills added)*

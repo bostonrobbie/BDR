@@ -62,14 +62,17 @@ Run at the START of every new session, before doing any other work.
 
 ### Phase 5: Check for Warm Leads and Urgent Items
 
-9. Search Gmail MCP for replies to robert.gorham@testsigma.com (warm leads jump the queue):
+9. **Run `skills/reply-classifier/SKILL.md`** — this handles the full Gmail check, classifies all replies, updates warm-leads.md, and surfaces priority items. It replaces the manual Gmail search below.
+
+   Manual fallback (if reply-classifier unavailable): Search Gmail MCP:
    ```
    Tool: gmail_search_messages
    q: "to:robert.gorham@testsigma.com is:unread"
    maxResults: 10
    ```
 10. Check `memory/warm-leads.md` for any overdue follow-ups.
-11. If warm leads found: tell Rob immediately and prioritize response.
+11. If P0 warm leads found (positive reply or curiosity): tell Rob immediately, run `skills/reply-router/SKILL.md` to draft response, and prioritize above all other tasks.
+12. Check `memory/contact-lifecycle.md` for any contacts with T2 due dates today.
 
 ### Phase 6: Claim a Task
 
@@ -79,14 +82,23 @@ Run at the START of every new session, before doing any other work.
 15. Update your active session registration with the claimed task_id and companies_claimed.
 16. Update work-queue.md task status to IN_PROGRESS.
 
-### Phase 7: Read Relevant Playbooks (SELECTIVE — not all)
+### Phase 7: Read Relevant Playbooks and Skills (SELECTIVE — not all)
 
-17. Read ONLY the playbooks mapped to your claimed task. Do NOT read all playbooks — this wastes context budget.
+17. Read ONLY the playbooks/skills mapped to your claimed task. Do NOT read all — this wastes context budget.
+
+   **Playbooks:**
    - TAM T1 batch work → `tam-t1-batch.md` + `apollo-enrollment.md` + `dedup-protocol.md`
    - T2 follow-up drafting → `t2-followup.md` + `qa-gate.md`
    - Apollo sends → `apollo-task-queue-sends.md`
    - Bounce/error recovery → `error-recovery.md`
-   - If unsure which playbooks apply → read `_index.md` (index only, ~30 lines) then pick
+   - If unsure → read `_index.md` (index only, ~30 lines) then pick
+
+   **New Skills (read instead of or alongside playbooks):**
+   - Building a batch → `skills/enrichment-pipeline/SKILL.md` + `skills/compliance-gate/SKILL.md` + `skills/draft-qa/SKILL.md`
+   - Handling replies → `skills/reply-router/SKILL.md`
+   - Pipeline view → `skills/batch-dashboard/SKILL.md`
+   - Account research → `skills/trigger-monitor/SKILL.md`
+   - Closing session → `skills/handoff-auto/SKILL.md`
 
 **Context budget:** By this point you should have read 6-8 files. Add 1-3 playbooks max. Total startup reads should be 7-11 files. If you're reading more, you're loading too much.
 
@@ -119,8 +131,9 @@ Run at the START of every new session, before doing any other work.
 [ ] Crash check (in-progress.md Status)
 [ ] Active session check (ls memory/session/active/)
 [ ] Register in active/ directory
-[ ] Gmail warm lead check
+[ ] Run skills/reply-classifier/SKILL.md (full Gmail reply check + warm lead update)
+[ ] Check contact-lifecycle.md for T2 due today
 [ ] Claim task + update registration
-[ ] Read relevant playbooks
+[ ] Read relevant playbooks/skills (see Phase 7)
 [ ] Report to Rob
 ```

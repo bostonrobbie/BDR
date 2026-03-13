@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-12 (Session 28b — Multi-agent infrastructure complete. 12 playbooks, 3 skills, session registry, file locking, message board all built. AGENTS.md v2.0. CLAUDE.md updated.)
+## Last Updated: 2026-03-12 (Session 31 — Audit + SOP hardening complete. 5 files updated. Handoff.md brought current. MASTER_SENT_LIST.csv 496 rows.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 Follow the 14-step startup in `AGENTS.md` (v2.0). Key steps:
@@ -330,6 +330,8 @@ Built persistent crash-recovery system:
 | TAM Outbound - Rob Gorham sequence built | Mar 10 | Apollo ID: 69afff8dc8897c0019b78c7e. 7 steps all manual, Day 1/5/10/15/21/28/35. email→email→LI connect→call→call→call→breakup email. Ready for enrollment. |
 | Tyler Referrals T1 — all 7 sent | Mar 10 (Session 8) | 6 emails (Gopi/Staples, Pranati/Aetna, Roy/Sandia, Devin/FCB, Jason B/FCB, Skie/FCB) + 1 InMail (Vernon Bryant/Tractor Supply). T2 due Mar 14. File: tyler-referrals-outreach-mar10.html |
 | TASK-019: Crash-recovery infrastructure | Mar 11 (Session 15) | Created in-progress.md checkpoint system. Updated AGENTS.md with mid-session commit protocol + crash recovery startup rules. T2 sends for TAMOB Wave 1/2 deferred to natural Apollo task cadence per Rob. |
+| TASK-026: TAM-Only Enforcement | Mar 12 (Session 27) | SOPs updated, audit complete, no non-TAM contacts in live sequence |
+| TASK-031: Comprehensive Audit + SOP Hardening | Mar 12 (Session 31) | 8 audit findings, 5 files updated (AGENTS.md v2.1, dedup-protocol.md, session-handoff.md, tam-t1-batch SKILL.md, messages.md). Handoff.md brought current. |
 
 ---
 
@@ -574,6 +576,21 @@ Review TAM-Outbound-SOP-draft-v1.html (now Draft v2). Check:
 1. Go to Apollo > Contacts > search each name
 2. Assign ownership to Rob's account
 3. Then re-enroll via API or manually add to TAM Outbound sequence
+
+### TASK-032: Fix Non-Standard Batch Names in MASTER_SENT_LIST.csv
+**Status:** UNCLAIMED
+**Priority:** P3 — cosmetic but improves traceability
+**Effort:** ~15 min
+**Output:** Updated MASTER_SENT_LIST.csv
+
+5 non-standard batch names from today's sessions need correction:
+- "B6" (24 rows) → "TAM Outbound Batch 6 Mar12"
+- "B7" (5 rows) → "TAM Outbound Batch 7 Mar12"
+- "W6B1" (8 rows) → "TAM Outbound Wave 6 Batch 1 Mar12"
+- "W6B2" (27 rows) → "TAM Outbound Wave 6 Batch 2 Mar12"
+- "W5B-S29" (5 rows) → "TAM Outbound Batch 5B Mar12"
+
+Use sed or awk to do bulk replace. Verify row count unchanged after edit.
 
 ### TASK-029: Sales Nav Deep Sweep — Backlog Contacts (5 no-email + HashiCorp)
 **Status:** UNCLAIMED

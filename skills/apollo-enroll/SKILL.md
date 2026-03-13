@@ -8,8 +8,8 @@ Use when you have a list of contacts ready to enroll in the TAM Outbound Apollo 
 
 ## Prerequisites
 - Read `memory/playbooks/apollo-enrollment.md` (full process with all error handling)
-- Read `memory/playbooks/dedup-protocol.md` (must dedup BEFORE enrolling)
-- All contacts must have passed the 6-point dedup check
+- **Run `skills/compliance-gate/SKILL.md` FIRST** — all 8 checks must pass before ANY contact is enrolled. This replaces the old 6-point dedup-protocol.md check and adds DNC, reply history, and cadence checks.
+- All contacts must have passed the 8-point compliance gate
 - All contacts must have TAM domain verification (domain in tam-accounts-mar26.csv)
 - Batch tracker HTML must exist with contact details
 
@@ -77,6 +77,7 @@ Check `emailer_campaign_ids` contains the sequence ID and `contact_campaign_stat
 - Update batch tracker HTML badges: "Draft Ready" → "Enrolled"
 - Append to session-log.md with all Apollo IDs
 - Leave message in messages.md: `[CLAIM] Enrolled N contacts from {companies}`
+- **Update `memory/contact-lifecycle.md`**: Add/update contact records with stage = ENROLLED, Apollo ID, and enrollment timestamp (per `skills/lifecycle-tracker/SKILL.md`)
 
 ## Error Handling
 Full error catalog in `memory/playbooks/error-recovery.md` and `memory/playbooks/apollo-enrollment.md`.

@@ -78,6 +78,16 @@ NEVER modify, delete, alter, or overwrite existing company data. Read and enrich
 ### Send Approval
 NEVER send any outreach without Rob's explicit "APPROVE SEND." Claude drafts, Rob reviews and executes. Exception: Rob explicitly says "APPROVE SEND" for a specific message.
 
+### Apollo Send Safety (INC-007/008/012 — CRITICAL)
+**NEVER use Quill API injection** (dangerouslyPasteHTML, setText, setContents) for Apollo email sends. Quill DOM is disconnected from Apollo's send payload. This has caused wrong-body sends THREE TIMES.
+**Before EVERY "Send Now" click in Apollo:**
+1. JS readback: `document.querySelector('.ql-editor').innerText.trim().slice(0, 120)` — must match approved draft
+2. Zoom screenshot of body area — present to Rob
+3. Wait for Rob's explicit "looks good" / "send it" (separate from content APPROVE SEND)
+4. After send: verify via Gmail MCP within 60 seconds
+**APPROVE SEND ≠ APPROVE CLICK.** Content approval and send-click are two separate gates.
+Full rules: `memory/incidents.md` → INC-012, Rules 12-A through 12-E.
+
 ### Draft Safety (from INC-001)
 - Touch 2 drafts: NOT before Day 4 of sequence
 - Touch 3 drafts: NOT before Day 9 of sequence
@@ -105,24 +115,35 @@ Only prospect from TAM (312) + Factor (38) accounts. Verify every contact's comp
 
 ## Reference Files (read on-demand per task)
 
+**Full SOP/playbook navigation:** `memory/README.md` — always start here if unsure which file to read.
+
 | Task | File to Read |
 |------|-------------|
 | **Session startup** | `AGENTS.md` → `memory/session/handoff.md` → `memory/session/work-queue.md` → `memory/session/in-progress.md` → `memory/session/messages.md` |
 | **Session closing** | `memory/playbooks/session-handoff.md` |
 | **Parallel sessions** | `memory/session/active/_protocol.md`, `.locks/_protocol.md`, `memory/session/messages.md` |
-| **All playbooks** | `memory/playbooks/_index.md` (index with use-when guidance for all 11 playbooks) |
+| **All playbooks** | `memory/playbooks/_index.md` (index with use-when guidance for all 12 playbooks) |
 | **Pipeline state** | `memory/session/handoff.md` (snapshot) + `memory/pipeline-state.md` (full log) |
-| Draft outreach | `memory/sop-outreach.md` |
-| Send InMails | `memory/sop-send.md` |
-| Pre-batch dedup | `MASTER_SENT_LIST.csv` + `memory/playbooks/dedup-protocol.md` |
 | Daily workflow | `memory/sop-daily.md` |
+| TAM outbound (end-to-end) | `memory/sop-tam-outbound.md` |
+| Prospecting / batch build | `memory/sop-prospect.md` + `memory/playbooks/tam-t1-batch.md` |
+| Draft LinkedIn outreach | `memory/sop-outreach.md` |
+| Draft email outreach | `memory/sop-email.md` |
+| Send InMails | `memory/sop-send.md` |
+| Inbound Salesforce leads | `memory/playbooks/inbound-leads-sequence.md` |
+| Enroll contacts in Apollo | `memory/playbooks/apollo-enrollment.md` |
+| Send via Apollo task queue | `memory/playbooks/apollo-task-queue-sends.md` |
+| Write T2 follow-ups | `memory/playbooks/t2-followup.md` |
+| Pre-batch dedup | `MASTER_SENT_LIST.csv` + `memory/playbooks/dedup-protocol.md` |
+| Post-call follow-up email | `memory/sop-post-call-followup.md` |
+| Handle warm reply | `memory/warm-leads.md` |
 | Data rules | `memory/data-rules.md` |
 | Proof points | `memory/proof-points.md` |
 | Apollo config | `memory/apollo-config.md` |
 | Incidents | `memory/incidents.md` |
-| Warm leads | `memory/warm-leads.md` |
 | Scoring/feedback | `memory/scoring-feedback.md` |
 | Target accounts | `memory/target-accounts.md` |
+| Email analytics | `memory/email-analytics-sop.md` |
 
 **Cowork Skills** (repeatable workflows):
 
@@ -131,6 +152,30 @@ Only prospect from TAM (312) + Factor (38) accounts. Verify every contact's comp
 | Session Start | `skills/session-start/SKILL.md` | Every session startup |
 | TAM T1 Batch | `skills/tam-t1-batch/SKILL.md` | Building new outreach batches |
 | Apollo Enroll | `skills/apollo-enroll/SKILL.md` | Creating contacts + enrolling in sequences |
+| Reply Classifier | `skills/reply-classifier/SKILL.md` | Check Gmail for new replies, classify, surface warm leads |
+| Batch Dashboard | `skills/batch-dashboard/SKILL.md` | Consolidated pipeline view across all batches |
+| Enrichment Pipeline | `skills/enrichment-pipeline/SKILL.md` | TAM verify + Apollo enrich + compliance in one flow |
+| Trigger Monitor | `skills/trigger-monitor/SKILL.md` | Scan accounts for QA hiring, funding, leadership changes |
+| Draft QA | `skills/draft-qa/SKILL.md` | Auto-score drafts against 12-point MQS rubric |
+| Reply Router | `skills/reply-router/SKILL.md` | Match reply to objection doc, draft response |
+| Lifecycle Tracker | `skills/lifecycle-tracker/SKILL.md` | Unified contact history from enrichment to outcome |
+| Analytics Engine | `skills/analytics-engine/SKILL.md` | Reply rate analytics by persona, vertical, proof point |
+| Handoff Auto | `skills/handoff-auto/SKILL.md` | Auto-generate session handoff docs at end of session |
+| Compliance Gate | `skills/compliance-gate/SKILL.md` | 8-point safety check before any enrollment |
+
+**Scheduled Tasks** (run automatically):
+
+| Task | Schedule | Purpose |
+|------|----------|---------|
+| reply-classifier | Weekdays 9am,11am,1pm,3pm,5pm | Auto-check Gmail for new replies |
+| trigger-monitor | Mon/Wed/Fri 8am | Scan accounts for trigger events |
+
+**New Data Files** (initialized Mar 12, 2026):
+
+| File | Purpose |
+|------|---------|
+| `memory/contact-lifecycle.md` | Unified contact timeline from discovery to outcome |
+| `Work/pipeline-dashboard.html` | Generated by batch-dashboard skill (regenerate on demand) |
 
 **Rule:** Always read the relevant files BEFORE starting a task. Don't rely on cached knowledge from prior sessions.
 

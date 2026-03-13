@@ -1,5 +1,5 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-12 (Session 28b — Multi-agent infrastructure build. 19 new files: 12 playbooks, 3 Cowork skills, active session registry, file locking, message board. AGENTS.md rewritten to v2.0. CLAUDE.md reference table expanded. All files verified, no placeholders.)
+## Last Updated: 2026-03-12 (Session 31 — Comprehensive audit of all tracking files + SOP hardening. 5 protocol files updated (AGENTS.md v2.1, dedup-protocol.md, session-handoff.md, tam-t1-batch SKILL.md, messages.md rules). MASTER_SENT_LIST.csv now 496 rows. Handoff.md brought current through Sessions 29-31.)
 
 ---
 
@@ -448,6 +448,99 @@ E*TRADE/Morgan Stanley, Broadcom, Humana, Corewell Health, Blue Cross MN, BCBS T
 
 ---
 
+## TAM OUTBOUND WAVE 5B — DEEP SWEEP (Mar 12 — Session 29)
+
+**✅ 5 CONTACTS ENROLLED FROM ACCOUNT EXPANSION SWEEP**
+**⏳ T1 SENDS PENDING — APPROVE SEND NEEDED (TASK-027)**
+
+**File:** `tamob-batch-20260312-5.html`
+**Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
+**MASTER_SENT_LIST.csv:** 5 rows added (batch: "W5B-S29" — ⚠️ non-standard name, should be "TAM Outbound Batch 5B Mar12")
+
+**Contacts enrolled:**
+| # | Name | Company | Status |
+|---|------|---------|--------|
+| 1 | Divyesh Jain | GEICO | ✅ Enrolled, T1 pending |
+| 2 | Altaf Shariff | OneMain | ✅ Enrolled, T1 pending |
+| 3 | Geo Sarria | EA | ✅ Enrolled, T1 pending |
+| 4 | Clifton Wilcox | EA | ✅ Enrolled, T1 pending |
+| 5 | Christie Burkhead | Humana | ✅ Enrolled, T1 pending |
+
+**Blocked:** Donald Jackson (Chase) — ownership error. Rob must assign ownership in Apollo UI (TASK-028).
+
+---
+
+## TAM OUTBOUND BATCH 6 — (Mar 12 — Sessions 29-30)
+
+**✅ 31 CONTACTS ENROLLED ACROSS TWO CONCURRENT SESSIONS**
+**⏳ T1 SENDS PENDING — APPROVE SEND NEEDED**
+
+Session 29 enrolled 7 contacts (Aetna, EmblemHealth, BeyondTrust, Aura, DraftKings, Clinisys, Alithya). Iain Duffield (Anaplan) SKIPPED — ownership conflict, needs manual reassignment.
+Session 30 enrolled 24 contacts (BlackRock 5, Citizens 3, Celonis 1, Bungie 2, CVS Health 7, Caterpillar 2, BCBS 1, Cash App 1, Andersen 1, Allianz 2, Successive 1).
+
+**File:** `tamob-batch-20260312-6.html`
+**Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
+**MASTER_SENT_LIST.csv:** 24 rows (B6 batch name — ⚠️ non-standard, should be "TAM Outbound Batch 6 Mar12")
+
+**Enrollment overrides used:**
+- Tamas Sueli + Ivana Zivkovic: `sequence_active_in_other_campaigns` override (were in paused sequence 68fa2bb0939898000d3b489b)
+
+**Blocked:** Iain Duffield (Anaplan) — ownership conflict. Rob must reassign in Apollo UI, then re-enroll.
+
+---
+
+## TAM OUTBOUND BATCH 7 — (Mar 12 — Session 30)
+
+**✅ 5 CONTACTS ENROLLED**
+**⏳ T1 SENDS PENDING — APPROVE SEND NEEDED**
+
+**File:** `tamob-batch-20260312-7.html` (badge: Enrolled)
+**Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
+**MASTER_SENT_LIST.csv:** 5 rows (B7 batch name — ⚠️ non-standard, should be "TAM Outbound Batch 7 Mar12")
+
+**Contacts enrolled:**
+| # | Name | Company | Status |
+|---|------|---------|--------|
+| 1 | Cathy Kauffman | GAIG | ✅ Enrolled |
+| 2 | Daksha Kantaria | Selective Insurance | ✅ Enrolled (sequence_finished override) |
+| 3 | Shital Shisode | Pacific Life | ✅ Enrolled (sequence_finished override) |
+| 4 | Aaron Sinz | Allianz Life | ✅ Enrolled |
+| 5 | Gil Leong | BlackRock | ✅ Enrolled |
+
+---
+
+## WAVE 6 BATCH 1 + BATCH 2 — (Mar 12 — Concurrent Sessions)
+
+**Wave 6 Batch 1:** 8 contacts (W6B1 batch name in MASTER_SENT_LIST.csv). Tracker: `tamob-wave6-batch1-20260312.html`
+**Wave 6 Batch 2:** 27 contacts (W6B2 batch name in MASTER_SENT_LIST.csv). Tracker: `prospect-outreach-w6b2-mar12.html`
+
+These were added by concurrent sessions. See messages.md for session-specific DONE/CLAIM details. ⚠️ Both use non-standard batch names.
+
+---
+
+## SESSION 31 — AUDIT + SOP HARDENING (Mar 12)
+
+**No enrollment this session.** Focused on file integrity audit and protocol improvements.
+
+**Audit findings (8 items):**
+1. 7 legacy duplicates in MASTER_SENT_LIST.csv (all pre-March 10, documented in dedup-protocol.md)
+2. DNC compliance: CLEAN (all 7 entries respected)
+3. 30+ non-standard batch names across all sessions (B6, B7, W6B1, W5B-S29, etc.)
+4. Messages.md: some timestamps estimated rather than real-time
+5. Session registration: Session 29 registered but Session 30 never registered
+6. Handoff.md was 4+ sessions stale (fixed now)
+7. In-progress.md was CLEAR (correct)
+8. All enrollment overrides properly documented
+
+**5 files updated with protocol improvements:**
+1. `AGENTS.md` v2.1: Session registration enforcement, handoff strengthening, message board rules, batch naming standard
+2. `memory/playbooks/dedup-protocol.md`: Batch naming standard table (6 formats), post-logging `wc -l` verification, legacy duplicates documented
+3. `memory/playbooks/session-handoff.md`: Step 2 as "MOST CRITICAL STEP" with self-check, 10 common mistakes (was 5)
+4. `skills/tam-t1-batch/SKILL.md`: Step 9 rewritten with 6 mandatory sub-steps + verification commands
+5. `memory/session/messages.md`: Rules section updated with accuracy requirements
+
+---
+
 ## TAM OUTBOUND SEQUENCE — READY TO USE
 | Sequence | ID | Status |
 |----------|-----|--------|
@@ -531,10 +624,11 @@ Complete parallel session infrastructure for multi-agent collaboration. 19 new f
 
 ---
 
-*Next session: Follow the 14-step startup in AGENTS.md (v2.0), then:*
-*1. **New TAM T1 batch** — source, research, draft new contacts from Factor/TAM accounts (operating directive: T1 pipeline first)*
-*2. **APPROVE SEND check** — Batch 4 (9 contacts) + Batch 5 (5 contacts) T1 sends pending Rob's approval*
-*3. **Yogesh Garg** — Rob must manually assign ownership in Apollo UI, then re-enroll*
-*4. **Apollo Tasks tab** — Wave 1/2 T2 tasks overdue, Wave 3 T2 due Mar 16, Wave 4 T2 due Mar 19*
-*5. **TASK-018** (Sucheth Ramgiri cleanup) + **TASK-003** (Gmail draft audit)*
-*Apollo Tasks tab is the source of truth for what's due.*
+*Next session: Follow the 14-step startup in AGENTS.md (v2.1), then:*
+*1. **APPROVE SEND check** — Multiple batches pending Rob's approval: Batch 4 (9), Batch 5 (5), Batch 5B (5), Batch 6 (31), Batch 7 (5)*
+*2. **New TAM T1 batch** — source, research, draft new contacts from Factor/TAM accounts (operating directive: T1 pipeline first)*
+*3. **Rob manual actions needed:** Yogesh Garg (Check Point) + Donald Jackson (Chase) + Iain Duffield (Anaplan) — all ownership blocked in Apollo*
+*4. **T2 drafts due:** Wave 1/2 T2 OVERDUE (TASK-017), Wave 3 T2 due Mar 16 (TASK-020), Wave 4 T2 due Mar 19 (TASK-022)*
+*5. **Batch name cleanup:** 5 non-standard names in today's batches (B6, B7, W6B1, W5B-S29, W6B2) — low priority but should be corrected*
+*6. **TASK-018** (Sucheth Ramgiri cleanup) + **TASK-003** (Gmail draft audit)*
+*MASTER_SENT_LIST.csv: 496 rows. Apollo Tasks tab is the source of truth for what's due.*

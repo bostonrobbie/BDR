@@ -72,11 +72,28 @@ For the full detailed startup skill with error handling, see: `skills/session-st
 
 Every running session maintains a registration file in `memory/session/active/`. Full protocol: `memory/session/active/_protocol.md`.
 
-**On start:** Create `memory/session/active/{session-number}.json` with your session ID, task, claimed companies, and files being edited.
+**⚠️ REGISTRATION IS NON-NEGOTIABLE.** Session 30 audit found concurrent sessions operating without registration, causing untracked parallel writes to MASTER_SENT_LIST.csv and messages.md ordering issues. Registration MUST happen before any work begins.
+
+**On start (STEP 10 — do not skip):**
+1. Determine your session number: check session-log.md for the last session number and increment by 1
+2. Create `memory/session/active/{session-number}.json` with:
+   ```json
+   {
+     "session_number": N,
+     "started_at": "ISO timestamp",
+     "last_heartbeat": "ISO timestamp",
+     "status": "active",
+     "task": "description of what you're working on",
+     "claimed_companies": ["Company1", "Company2"],
+     "files_editing": ["MASTER_SENT_LIST.csv", "tamob-batch-*.html"],
+     "agent_type": "cowork"
+   }
+   ```
+3. If you cannot determine a session number, use the current Unix timestamp as a temporary ID
 
 **During work:** Update `last_heartbeat` whenever you complete a major step (file write, API call batch, etc.).
 
-**On finish:** Delete your registration file and release all file locks.
+**On finish:** Set status to "completed", add a `notes` field with summary. Do NOT delete the file until you've completed the full handoff protocol (Steps 1-9 below). Then delete.
 
 **Conflict detection:** Before claiming any company or file, check all active registrations for overlap. First-registered wins. If conflict exists, pick different work or ask Rob.
 
@@ -114,6 +131,18 @@ Before writing to any shared file, create a lock in `.locks/`. Full protocol: `.
 - `[INFO]` — General information sharing
 
 **Check on startup.** Always read messages.md during startup (Step 7). Other sessions may have left alerts.
+
+**Message Board Rules (from Session 30 audit):**
+
+1. **Timestamp must be CURRENT time when writing**, not when you started the task. Use `date -u +%Y-%m-%dT%H:%M:%SZ` to get the exact current time right before appending.
+2. **New messages go at the TOP** of the Messages section (right below the `## Messages` divider). Read the first existing message and insert ABOVE it.
+3. **Accuracy requirement for DONE/CLAIM messages:**
+   - State exact number of MASTER_SENT_LIST rows added (not enrolled count)
+   - State the current total row count of MASTER_SENT_LIST.csv (run `wc -l` right before writing)
+   - State exact companies and contact count
+   - If using enrollment overrides (finished_in_other, active_in_other, job_change), list which contacts needed them
+4. **One message per major action.** Don't combine unrelated work into one message. If you did Batch 6 and Batch 7, write TWO messages.
+5. **Never edit existing messages.** If you made an error, append a `[CORRECTION]` message referencing the wrong one.
 
 ---
 
@@ -205,17 +234,19 @@ Sessions have limited context windows. Hitting the limit causes compaction (loss
 
 ## Handoff Protocol
 
-At the END of every session, BEFORE stopping, Claude MUST:
+At the END of every session, BEFORE stopping, Claude MUST complete ALL 9 steps. **No exceptions. No "I'll let the next session handle it."** Session 30 audit found handoff.md 4+ sessions stale because sessions skipped Step 2.
 
 1. Clear `in-progress.md` Status to CLEAR (if a task was completed)
-2. Update `memory/session/handoff.md` with current pipeline state (FULL section, not just header)
+2. **Update `memory/session/handoff.md`** with current pipeline state — add a FULL section for any batch/wave work done this session (contact table, Apollo IDs, status, T2 due dates). Update the `Last Updated` header. **If you enrolled contacts, the handoff MUST include them.**
 3. Update `memory/session/work-queue.md` — mark completed tasks DONE, add new ones
 4. Append a session entry to `memory/session/session-log.md` (with contact table if applicable)
-5. Delete your active session registration: `memory/session/active/{session-number}.json`
+5. Set your active session registration to `status: "completed"`, then delete the file
 6. Release all file locks in `.locks/`
-7. Leave a `[DONE]` message in `memory/session/messages.md` summarizing your work
+7. Leave a `[DONE]` message in `memory/session/messages.md` summarizing your work (see Message Board Rules below for format)
 8. Commit all changes: `git add -A && git commit -m "Session [date]: [1-line summary]"`
 9. Remind Rob to `git push` from his terminal (Claude cannot push due to auth)
+
+**Self-check before finishing:** Can the NEXT session read handoff.md and know exactly what you did without reading messages.md or session-log.md? If no, your handoff is incomplete. Go back to Step 2.
 
 Full handoff playbook: `memory/playbooks/session-handoff.md`
 
@@ -279,6 +310,20 @@ Repeatable workflow definitions live in `skills/*/SKILL.md`. These are more stru
 | File locks | `.locks/{filename}.lock` | `.locks/MASTER_SENT_LIST.csv.lock` |
 | Session files | `memory/session/{name}.md` | `memory/session/handoff.md` |
 
+### MASTER_SENT_LIST.csv Batch Name Standard
+
+The `batch` column in MASTER_SENT_LIST.csv MUST use the full standard format. **Session 30 audit found 5 non-standard batch names (B6, B7, W6B1, W5B-S29) that are untraceable without external context.** Full standard documented in `playbooks/dedup-protocol.md`.
+
+| Sequence | Format | Example |
+|----------|--------|---------|
+| TAM Outbound T1 | `TAM Outbound Batch {N} Mar{DD}` | `TAM Outbound Batch 7 Mar12` |
+| TAM Outbound T2 | `TAM Outbound Batch {N} T2 Mar{DD}` | `TAM Outbound Batch 7 T2 Mar16` |
+| Website Visitor | `WV Email Batch Mar{DD}` | `WV Email Batch Mar3` |
+| Buyer Intent | `Buyer Intent Email T{N}` | `Buyer Intent Email T2` |
+| Other | `{Descriptive Name} T{touch} Mar{DD}` | `Tyler Referrals T1 Mar10` |
+
+**NEVER** use short forms like B7, W6B1, or W5B-S29.
+
 ---
 
 ## Git Status
@@ -290,4 +335,4 @@ Repeatable workflow definitions live in `skills/*/SKILL.md`. These are more stru
 
 ---
 
-*Last updated: 2026-03-12 (Session 28 — v2.0: Parallel session protocol, file locking, message board, playbook system, Cowork skills)*
+*Last updated: 2026-03-12 (Session 30 — v2.1: Audit-driven fixes: mandatory session registration with JSON template, handoff.md enforcement with self-check, messages.md accuracy rules with timestamp/count verification, MASTER_SENT_LIST batch naming standard, legacy duplicate documentation)*

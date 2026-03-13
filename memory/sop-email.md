@@ -181,3 +181,12 @@ python scripts/init_isolated_channel_dbs.py \
 - [ ] Tracker updated with sent date + next touch date.
 - [ ] Bounce/reply exceptions logged.
 - [ ] No LinkedIn statuses or IDs used in email tracking fields.
+
+---
+
+## Run Learnings Log (Email)
+
+### Wave 6 Batch 2 (Mar 12, 2026)
+- **Ownership-blocked enrollment:** Existing Apollo contacts owned by other team members cannot be enrolled via API even with `contacts_without_ownership_permission: true`. Casey Florig was the affected contact. Must enroll manually in Apollo UI or transfer ownership first.
+- **Apollo enrollment flags for multi-contact batches:** Always include `sequence_same_company_in_same_campaign: true`, `sequence_finished_in_other_campaigns: true`, and `sequence_active_in_other_campaigns: true` when enrolling email batches with multiple contacts per company.
+- **Catchall domain prevalence:** 8 of 12 companies in W6B2 have catchall domains (BeyondTrust, Jack Henry, Bluevine, hims & hers, SingleStore, Skedulo, EverBank, KIBO). Catchall means bounces won't show as hard bounces. Monitor open/click signals as deliverability proxy.

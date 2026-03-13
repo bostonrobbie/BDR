@@ -1,6 +1,6 @@
 # Testsigma BDR Outreach Repository
 
-**Owner:** Rob Gorham, BDR | **Last Updated:** March 7, 2026
+**Owner:** Rob Gorham, BDR | **Last Updated:** March 12, 2026
 
 This repository contains the complete BDR outreach system for Testsigma, including SOPs, playbooks, templates, intelligence reports, and batch trackers. Everything is designed for a repeatable daily workflow assisted by Cowork (Claude desktop automation).
 
@@ -11,13 +11,19 @@ This repository contains the complete BDR outreach system for Testsigma, includi
 | You need to... | Go to... |
 |----------------|----------|
 | Start a new session | `CLAUDE.md` → `AGENTS.md` → `memory/session/handoff.md` |
-| See current pipeline state | `CLAUDE.md` header + `memory/pipeline-state.md` |
-| Draft outreach | `TEMPLATE_LIBRARY.md` + `memory/sop-outreach.md` |
+| Navigate any SOP or playbook | `memory/README.md` — master navigation hub |
+| See current pipeline state | `memory/pipeline-state.md` |
+| Run the daily workflow | `memory/sop-daily.md` |
+| Build a T1 batch | `memory/sop-prospect.md` + `memory/playbooks/tam-t1-batch.md` |
+| Draft LinkedIn outreach | `memory/sop-outreach.md` |
+| Draft email outreach | `memory/sop-email.md` |
+| Run TAM outbound end-to-end | `memory/sop-tam-outbound.md` |
 | Send InMails | `memory/sop-send.md` |
-| Handle a reply | `reply-handling-playbook.docx` + `memory/warm-leads.md` |
+| Handle inbound Salesforce leads | `memory/playbooks/inbound-leads-sequence.md` |
+| Handle a reply | `memory/warm-leads.md` |
 | Check product/ICP | `testsigma-knowledge-bible.md` + `knowledge/` folder |
-| Review reference playbooks | `sops/` folder |
-| Find old batch data | `archive/batch-reports/` |
+| Review all playbooks | `memory/playbooks/_index.md` |
+| Find old batch data | `archive/` folder |
 
 ---
 
@@ -85,23 +91,49 @@ This repository contains the complete BDR outreach system for Testsigma, includi
 ## Folder Structure
 
 ### `memory/` — Operational Brain
-The living, per-session knowledge base. Always read relevant files here before starting any task.
+The living, per-session knowledge base. **Start with `memory/README.md` for full navigation.** Always read relevant files before starting any task.
+
+**SOPs (8 total):**
+
+| Path | What It Contains |
+|------|-----------------|
+| `memory/sop-daily.md` | "Run the daily" — master daily workflow |
+| `memory/sop-tam-outbound.md` | TAM outbound end-to-end (26 parts, authoritative) |
+| `memory/sop-prospect.md` | Sales Nav batch build, ICP scoring, TAM-only rules |
+| `memory/sop-outreach.md` | LinkedIn outreach drafting, C2 structure, QA Gate |
+| `memory/sop-email.md` | Email outreach drafting and Apollo execution |
+| `memory/sop-send.md` | LinkedIn Sales Navigator live send protocol |
+| `memory/sop-post-call-followup.md` | Post-call follow-up email from Gong transcript |
+| `memory/email-analytics-sop.md` | Email performance analysis workflow |
+
+**Playbooks** (12 total — see `memory/playbooks/_index.md`):
+
+| Path | What It Contains |
+|------|-----------------|
+| `memory/playbooks/tam-t1-batch.md` | End-to-end T1 batch — primary daily workflow |
+| `memory/playbooks/inbound-leads-sequence.md` | Inbound Salesforce lead handling + send rules |
+| `memory/playbooks/apollo-enrollment.md` | Contact creation + Apollo sequence enrollment |
+| `memory/playbooks/apollo-task-queue-sends.md` | Executing sends through Apollo task queue |
+| `memory/playbooks/t2-followup.md` | T2 follow-up drafting |
+| `memory/playbooks/dedup-protocol.md` | Pre-send dedup safety check |
+| `memory/playbooks/qa-gate.md` | 14-point message QA validation |
+| `memory/playbooks/session-handoff.md` | End-of-session closing protocol |
+
+**Reference Files:**
 
 | Path | What It Contains |
 |------|-----------------|
 | `memory/session/handoff.md` | Current state snapshot — read every session start |
 | `memory/session/work-queue.md` | Active task queue with priorities |
 | `memory/session/session-log.md` | Log of all sessions |
-| `memory/pipeline-state.md` | Full send log, batch index, follow-up schedule |
-| `memory/sop-outreach.md` | Message drafting rules, C2 structure, QA Gate |
-| `memory/sop-send.md` | InMail send process, pre-batch dedup checklist |
-| `memory/sop-daily.md` | Run-the-daily workflow |
+| `memory/pipeline-state.md` | Full send log, batch index, current contact statuses |
 | `memory/warm-leads.md` | Active warm leads and handling notes |
-| `memory/incidents.md` | Incident log with cadence enforcement rules (INC-001–003) |
+| `memory/incidents.md` | Incident log — INC-001 through INC-012, derived hard rules |
 | `memory/apollo-config.md` | Apollo sequence IDs, email config, credit tracking |
 | `memory/data-rules.md` | Data-backed rules and hard constraints |
 | `memory/scoring-feedback.md` | A/B test results, feedback loops, performance data |
 | `memory/proof-points.md` | Proof point matching and objection handling |
+| `memory/target-accounts.md` | TAM + Factor account list |
 
 ### `src/` — Application Code
 FastAPI backend + agent layer. Not needed for day-to-day BDR work.

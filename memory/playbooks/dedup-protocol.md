@@ -136,6 +136,48 @@ After all checks pass and the contact is enrolled:
 3. Format: `name,batch,send_date,channel,credits,file,norm`
 4. The `norm` column is the lowercase full name for grep matching
 
+### Batch Name Standard (MANDATORY)
+
+The `batch` column MUST follow one of these exact formats. No abbreviations, no ad-hoc naming.
+
+| Sequence | Format | Example |
+|----------|--------|---------|
+| TAM Outbound T1 | `TAM Outbound Batch {N} Mar{DD}` | `TAM Outbound Batch 7 Mar12` |
+| TAM Outbound T2 | `TAM Outbound Batch {N} T2 Mar{DD}` | `TAM Outbound Batch 7 T2 Mar16` |
+| Website Visitor T1 | `WV Email Batch Mar{DD}` | `WV Email Batch Mar3` |
+| Tyler Referrals | `Tyler Referrals T1 Mar{DD}` | `Tyler Referrals T1 Mar10` |
+| Buyer Intent | `Buyer Intent Email T{N}` | `Buyer Intent Email T2` |
+| Legacy LinkedIn | `Batch {N}` | `Batch 8` |
+
+**NEVER use:** Short forms like "B7", "B6", "W6B1", "W5B-S29". These are untraceable. Every row must be identifiable to a specific wave, sequence, and date without external context.
+
+**Post-logging verification:** After appending rows, run `wc -l MASTER_SENT_LIST.csv` and confirm the count matches expectations (previous count + new rows). Include this count in your messages.md CLAIM/DONE entry.
+
+### DONE/CLAIM Message Verification
+
+When writing a `[DONE]` or `[CLAIM]` message to messages.md:
+1. State the EXACT number of rows added (not contacts enrolled, since some may be pre-existing)
+2. State the new MASTER_SENT_LIST.csv total row count
+3. Cross-check: `enrolled count` should equal `rows added` unless a contact was already in the file for a different batch
+
 ---
 
-*Last updated: 2026-03-12 — consolidated from Sessions 7-27, INC-001 through INC-010*
+## Known Legacy Duplicates (Pre-Protocol)
+
+The following 7 names appear twice in MASTER_SENT_LIST.csv from batches BEFORE the dedup protocol was formalized (pre-March 10). These are documented, not bugs. Do NOT attempt to "fix" them by removing rows.
+
+| Name | Batch 1 | Batch 2 | Notes |
+|------|---------|---------|-------|
+| Chuck Smith | Batch 1 (Feb 23) | Batch 5B (Feb 27) | Caused DNC entry |
+| Abe Blanco | Batch 3 (Feb 26) | Batch 8 (Mar 3) | Replied "not interested," now DNC |
+| Yassi Dastan | Batch 6 (Feb 28) | Batch 8 (Mar 3) | Pre-dedup era |
+| Rick Kowaleski | Batch 3 (Feb 26) | Batch 8 (Mar 3) | Pre-dedup era |
+| Mohan Gummadi | Batch 5B (Feb 27) | Batch 8 (Mar 3) | Pre-dedup era |
+| Christie Howard | Batch 5B (Feb 27) | Batch 8 (Mar 3) | Pre-dedup era |
+| Eduardo Menezes | WV Feb 27 (T1) | Buyer Intent T2 (Mar 6) | Different sequences |
+
+**Since March 10 (protocol active): ZERO duplicates across all TAM Outbound waves.** The protocol works.
+
+---
+
+*Last updated: 2026-03-12 (Session 30 audit) — batch naming standard, DONE verification, legacy duplicates documented*

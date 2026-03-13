@@ -1120,3 +1120,59 @@ Y02 Ash Pedgaonkar, Y06 Suchith Chandran, V01 Ted Barker, V04 Aleck Gandel, CH01
 **Files created/modified:**
 - `tamob-batch-20260312-5.html` (new batch tracker)
 - `MASTER_SENT_LIST.csv` (+5 rows = 432 total)
+
+---
+
+## Session 31 — Batch 7 Logging + Comprehensive Audit + SOP Hardening (2026-03-12)
+
+**Task:** TASK-031 (ad-hoc — Rob requested audit + SOP improvements)
+**Duration:** ~90 min
+
+**What was done:**
+
+Phase 1 — Batch 7 Logging Completion:
+- Appended 5 rows to MASTER_SENT_LIST.csv for Batch 7 contacts (Cathy Kauffman, Daksha Kantaria, Shital Shisode, Aaron Sinz, Gil Leong)
+- Updated tamob-batch-20260312-7.html badge from "Draft Ready" to "Enrolled"
+- Posted CLAIM message to messages.md
+
+Phase 2 — Comprehensive Audit:
+- Audited MASTER_SENT_LIST.csv: 7 legacy duplicates (all pre-March 10, documented), zero post-protocol duplicates
+- DNC compliance: all 7 entries respected across all batches
+- Identified 30+ non-standard batch name formats (B6, B7, W6B1, W5B-S29, W6B2)
+- Messages.md ordering and timestamp accuracy reviewed
+- Session registration: Session 29 registered, Session 30 never registered
+- Handoff.md confirmed 4+ sessions stale (fixed in Phase 3)
+
+Phase 3 — SOP Hardening (5 files updated):
+1. `AGENTS.md` v2.0 → v2.1: Session registration enforcement, handoff self-check, message board rules, batch naming standard
+2. `memory/playbooks/dedup-protocol.md`: Batch naming standard table (6 formats), post-logging wc-l verification, legacy duplicates documented
+3. `memory/playbooks/session-handoff.md`: Step 2 as "MOST CRITICAL STEP", common mistakes expanded from 5 to 10
+4. `skills/tam-t1-batch/SKILL.md`: Step 9 rewritten with 6 mandatory sub-steps + verification commands
+5. `memory/session/messages.md`: Rules section updated with accuracy requirements
+
+Phase 4 — Session Handoff:
+- Updated handoff.md with all missing Sessions 29-31 work (was 4+ sessions behind)
+- Updated work-queue.md with TASK-031 (done) + TASK-032 (batch name cleanup)
+- Appended session-log.md (this entry)
+- Posted DONE message to messages.md
+
+**Files changed:**
+- `AGENTS.md` (v2.1)
+- `memory/playbooks/dedup-protocol.md`
+- `memory/playbooks/session-handoff.md`
+- `skills/tam-t1-batch/SKILL.md`
+- `memory/session/messages.md` (rules + CLAIM + DONE)
+- `memory/session/handoff.md` (brought current)
+- `memory/session/work-queue.md` (updated)
+- `memory/session/session-log.md` (this entry)
+- `MASTER_SENT_LIST.csv` (+5 Batch 7 rows)
+- `tamob-batch-20260312-7.html` (badge update)
+
+**Contacts enrolled:** 0 (audit-only session; Batch 7 enrollment happened in Session 30)
+
+**Notes:**
+- MASTER_SENT_LIST.csv now 496 rows (includes concurrent session work: W6B1 8 rows, W6B2 27 rows, B6 24 rows)
+- 5 non-standard batch names need correction (TASK-032, P3)
+- 3 contacts blocked by Apollo ownership: Yogesh Garg (Check Point), Donald Jackson (Chase), Iain Duffield (Anaplan) — all need Rob manual action in Apollo UI
+
+**Next:** New TAM T1 batch (operating directive), then T2 drafts for overdue waves

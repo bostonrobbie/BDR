@@ -383,3 +383,59 @@ Apollo People Search was used with title + location filters but without restrict
 ### Additional Issues Found During Batch 5
 - **Yogesh Garg (Check Point):** Enrollment repeatedly skipped by Apollo API with `contacts_without_ownership_permission` error despite flag being set. Contact has null `owner_id`. Needs manual ownership assignment in Apollo UI by Rob, then re-enrollment.
 - **Mirza Hasan & Daniela Young (Infor):** Excluded from enrollment because Apollo `inactive_reason` showed "talked on phone" — they had phone conversations during a prior sequence. Only contacts with no phone contact or replies were enrolled per Rob's instruction.
+
+---
+
+## INC-012: Inbound Sequence — Wrong Body Sent to Evely Perrella (2026-03-12)
+**Severity:** HIGH
+
+### What Happened
+Evely Perrella's Step 1 email (Inbound Leads sequence) was sent from Apollo with the OLD TEMPLATE body instead of Rob's approved personalized draft. The subject line ("Evely, Testsigma reaching out") was correct. The body that sent was the generic template: "You came across Testsigma recently, which prompted me to reach out directly..." instead of the approved: "Thanks for reaching out. We've actually had a few conversations going with folks at Aetna already..."
+
+### Affected Contact
+| Name | Company | Email | What Sent | What Should Have Sent |
+|------|---------|-------|-----------|----------------------|
+| Evely Perrella | Aetna, a CVS Health Company | perrellae@aetna.com | Generic template (no Aetna relationship mention, salesy tone) | Rob's approved V-C draft (casual, references existing Aetna conversations, asks what's driving interest) |
+
+### Root Cause (THREE compounding failures)
+1. **Same Quill injection bug as INC-007/INC-008:** Used `quill.clipboard.dangerouslyPasteHTML(html)` to inject the approved body. Apollo's "Send Now" button reads from server-side template state, NOT the Quill editor DOM. Visual editor showed correct text; server sent the saved template. This is the THIRD time this exact bug has occurred.
+2. **Violated INC-007 permanent rules:** Did NOT run mandatory JS body verification (`document.querySelector('.ql-editor').innerText`) before clicking Send Now. Did NOT take zoom screenshot of body area. Both rules were added after INC-007 specifically to prevent this.
+3. **Violated INC-008 Rule A/B:** Did NOT execute the mandatory pre-send JS check. Did NOT zoom screenshot. Clicked Send Now without any verification.
+4. **NEW failure: No pre-send screenshot shown to Rob.** Rob explicitly asked "can you show me a screenshot of the email before you send it" — but the email had ALREADY been sent. The send happened without Rob seeing the final email. This is a process failure independent of the Quill bug.
+
+### Why Existing Safeguards Failed
+The INC-007 and INC-008 rules existed in this file but were not consulted before the send. The session did not re-read `incidents.md` before executing the Apollo task send flow. The rules were documentation-level safeguards, not workflow-level gates.
+
+### Remediation — Evely
+- Email already sent. Cannot unsend.
+- Template body is not harmful — it's a reasonable inbound response with correct subject.
+- Option A: Wait for reply. If no reply by Day 4, use Rob's approved draft as Step 2 follow-up.
+- Option B: Send a short follow-up now with the real message. Risk: two emails same day looks eager.
+- Rob to decide which option.
+
+### PERMANENT RULE CHANGES (effective immediately — INC-012)
+
+**⛔ RULE 12-A: NEVER use Quill API injection for Apollo email sends. PERIOD.**
+No `dangerouslyPasteHTML()`, no `setText()`, no `setContents()`, no clipboard injection.
+The Quill editor DOM is disconnected from Apollo's send payload. This has been proven THREE TIMES (INC-007, INC-008, INC-012). Any form of Quill API manipulation is BANNED for send-critical content.
+
+**⛔ RULE 12-B: Apollo email body edits MUST use one of these two methods ONLY:**
+1. **Method 1 — Template Edit:** Edit the sequence step template in Settings BEFORE opening the task. This changes the server-side template that Apollo actually sends.
+2. **Method 2 — Manual Clear + Type:** In the task compose view, click into the body, Ctrl+A to select all, Delete to clear, then TYPE the new content character by character (or paste from clipboard using the browser's native paste, NOT Quill API). Then verify per Rule 12-C.
+
+**⛔ RULE 12-C: MANDATORY 4-STEP PRE-SEND VERIFICATION (cannot be skipped for ANY reason):**
+Before clicking "Send Now" on ANY Apollo task email:
+1. **JS body readback:** Run `document.querySelector('.ql-editor').innerText.trim().slice(0, 120)` — paste result in session. Must match approved draft opening.
+2. **Zoom screenshot:** Take zoom screenshot of body area. Body must show approved content.
+3. **Present to Rob:** Show Rob the screenshot + JS readback result. Wait for explicit "send it" / "looks good" / "approved."
+4. **Post-send Gmail verification:** Within 60 seconds of clicking Send Now, read the sent email via Gmail MCP (`gmail_search_messages` + `gmail_read_message`). If body does NOT match approved draft, IMMEDIATELY flag as incident. Do NOT continue with other sends.
+
+If ANY of steps 1-3 are skipped, the send MUST NOT happen. No exceptions. No "Rob already said APPROVE SEND." The verification gate is separate from the content approval.
+
+**⛔ RULE 12-D: Read `incidents.md` before every Apollo send session.**
+Before executing ANY Apollo task send (individual or batch), re-read the relevant INC entries (007, 008, 012) to refresh the rules. This is a mandatory pre-flight check.
+
+**⛔ RULE 12-E: APPROVE SEND ≠ APPROVE CLICK.**
+Rob's "APPROVE SEND" approves the MESSAGE CONTENT. It does NOT authorize clicking "Send Now" without completing Rule 12-C verification. Content approval and send-click approval are two separate gates.
+
+---
