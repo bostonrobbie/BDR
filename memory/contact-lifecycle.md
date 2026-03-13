@@ -100,6 +100,141 @@ Unified contact history tracking every person from first enrichment through fina
 
 ---
 
+---
+
+### Krystal Jackson-Lennon — TELUS
+| Field | Value |
+|-------|-------|
+| Company | TELUS |
+| Domain | telus.com |
+| Title | Manager, Technology Strategy / SRE / Performance Engineering |
+| Email | krystal.jackson-lennon@telus.com |
+| Phone | +1 416-906-2317 |
+| Apollo Contact ID | 699ca3b22f3aa6001115c940 |
+| Current Stage | T1_REPLIED (inbound call ×4) |
+| Lead Type | Inbound missed calls — called Rob back via Apollo dialer |
+| Priority | P0 |
+
+**Timeline:**
+| Date | Event | Detail |
+|------|-------|--------|
+| Feb 23 | ENROLLED | TAM Outbound sequence |
+| Mar 12 | INBOUND_CALL ×4 | Called Rob's Apollo dialer at 3:55-3:56 PM — MISSED. Sequence auto-finished with reason "talked on phone" |
+
+---
+
+### Mike Brown — TELUS
+| Field | Value |
+|-------|-------|
+| Company | TELUS |
+| Domain | telus.com |
+| Title | Quality Assurance Manager |
+| Email | mike.brown@telus.com |
+| Phone | +1 604-999-8592 |
+| Apollo Contact ID | 698e0fb3f82c890015cc6d36 |
+| Current Stage | T1_REPLIED (inbound call ×2) |
+| Lead Type | Inbound missed calls |
+| Priority | P0 |
+
+**Timeline:**
+| Date | Event | Detail |
+|------|-------|--------|
+| Feb 12 | ENROLLED | TAM Outbound sequence |
+| Mar 11 | INBOUND_CALL ×2 | Called at 3:25 PM and 3:40 PM — MISSED. Sequence finished "Completed last step" |
+
+---
+
+### Rajesh Ranjan — TELUS
+| Field | Value |
+|-------|-------|
+| Company | TELUS |
+| Domain | telusagcg.com (subdomain) |
+| Title | Engineering Manager, Data Engineering & Analytics |
+| Email | rajesh.ranjan@telusagcg.com |
+| Phone | +1 647-936-7954 |
+| Apollo Contact ID | 699ca29b9d3516001deb1e82 |
+| Current Stage | T1_REPLIED (inbound call ×1) |
+| Lead Type | Inbound missed call |
+| Priority | P0 |
+
+**Timeline:**
+| Date | Event | Detail |
+|------|-------|--------|
+| Feb 23 | ENROLLED | TAM Outbound sequence |
+| Mar 11 | INBOUND_CALL ×1 | Called at 3:00 PM — MISSED. Sequence still active at step 4 |
+
+---
+
+### Elias E. del Real — Anewgo
+| Field | Value |
+|-------|-------|
+| Company | Anewgo |
+| Domain | anewgo.com |
+| Email | elias@anewgo.com |
+| Current Stage | MEETING_BOOKED |
+| Lead Type | Outbound → converted |
+| Priority | P1 |
+
+**Timeline:**
+| Date | Event | Detail |
+|------|-------|--------|
+| Mar 12 | MEETING_BOOKED | Accepted calendar invite for Apr 13, 2026 12:00-12:15 PM EDT |
+| Note | Bounce for elias@anugo.com was wrong domain typo — correct email is elias@anewgo.com |
+
+---
+
+### Zahidh Zubair — Citizens Bank
+| Field | Value |
+|-------|-------|
+| Company | Citizens Bank |
+| Email | zahidh.zubair@citizensaccess.com |
+| Title | QA Lead |
+| Apollo Contact ID | 69b2ef9378c0040011c67f3e |
+| Current Stage | BOUNCED |
+
+**Timeline:**
+| Date | Event | Detail |
+|------|-------|--------|
+| Mar 12 | ENROLLED | TAM Outbound via robert.gorham@testsigma.com |
+| Mar 12 | BOUNCED | Apollo marked failed/bounced — email to citizensbank.com domain undeliverable |
+| Note | Apollo has citizensaccess.com as email domain — bounce suggests wrong domain was attempted |
+
+---
+
+### Sabrina Perry — EverBank
+| Field | Value |
+|-------|-------|
+| Company | EverBank |
+| Email | sabrina.perry@everbank.com |
+| Title | Vice President Quality Assurance |
+| Apollo Contact ID | 69b2f340c168d60015b5811a |
+| Current Stage | BOUNCED (spam_blocked) |
+
+**Timeline:**
+| Date | Event | Detail |
+|------|-------|--------|
+| Mar 12 | ENROLLED | TAM Outbound via robert.gorham@testsigma.com |
+| Mar 12 | BLOCKED | EverBank security policy (550 5.7.129) — restricted senders. Not a bad email, just blocked. |
+
+---
+
+### David Schraff — Cleveland Clinic
+| Field | Value |
+|-------|-------|
+| Company | Cleveland Clinic |
+| Email | schraffd@ccf.org |
+| Title | Manager, Testing & QA Center of Excellence |
+| Apollo Contact ID | 68cc65ca295c7b0001f11445 |
+| Current Stage | BOUNCED |
+
+**Timeline:**
+| Date | Event | Detail |
+|------|-------|--------|
+| Mar 11 | ENROLLED | TAM Outbound via robert.gorham@testsigma.com |
+| Mar 12 | BOUNCED | Cleveland Clinic messaging system returned delivery failure for schraffd@ccf.org |
+
+---
+
 ## Bulk Contact Records
 
 > **Note:** Full individual records for the 495 contacts in MASTER_SENT_LIST.csv are stored at the batch level. Run `skills/lifecycle-tracker/SKILL.md` to generate full per-contact records. The following represents a summary by batch.

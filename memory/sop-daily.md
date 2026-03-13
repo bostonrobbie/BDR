@@ -1,5 +1,5 @@
 # "Run the Daily" — Automated Daily Outreach Workflow
-## Version 3.0 — Updated Mar 12, 2026 (T1 prospecting is the #1 daily priority. Maximize new contacts every session. T2s handled after new batch work is done, or batched at end of session.)
+## Version 3.1 — Updated Mar 13, 2026 (T1 prospecting is the #1 daily priority. Daily target raised to 50-100 new contacts. T2s handled after new batch work is done, or batched at end of session.)
 
 Trigger phrases: "run the daily", "daily run", "morning run", "start outreach", "run outreach"
 
@@ -14,7 +14,7 @@ New TAM T1 batch work is the top daily priority — not T2s, not follow-up proce
 T2s still get done — just after new T1 work is complete, or in whatever time remains.
 
 **Primary channel:** TAM Outbound email via Apollo (`69afff8dc8897c0019b78c7e`)
-**Daily T1 target:** 25-50 new contacts enrolled and sent
+**Daily T1 target:** 50-100 new contacts enrolled and sent (25 minimum on light days)
 **LinkedIn InMail:** ⛔ Suspended — 4 credits remaining. Warm lead escalations only.
 
 Active wave T2 schedule (handle after T1 work):
@@ -24,6 +24,7 @@ Active wave T2 schedule (handle after T1 work):
 | Wave 2 | Mar 10 | Mar 15 | 16 |
 | Wave 3 | Mar 11 | Mar 16 | 35 |
 | Wave 4 | Mar 11 | Mar 19 | 37 |
+| Batch 8 | Mar 13 | Mar 18 | 55 (Monika Sharma skipped) |
 
 ---
 
@@ -97,7 +98,7 @@ T2s matter — but Apollo surfaces them on a fixed cadence and they don't expire
 1. Open Apollo → TAM Outbound - Rob Gorham → Tasks tab
 2. For each task due today:
    a. Identify contact, pull T2 draft from batch tracker HTML
-   b. If no draft exists: draft T2 per Part 7 of sop-tam-outbound.md (50-70 words, new angle, engagement question CTA)
+   b. If no draft exists: draft T2 per Part 7 of sop-tam-outbound.md (140-190 words, Deep-Dive v4 — "I imagine" pain + pitch + customer story + 15-min CTA). Full playbook: `memory/playbooks/t2-followup.md`.
    c. Present to Rob — wait for **APPROVE SEND**
    d. Send via Apollo UI (Part 23 + Part 25 of sop-tam-outbound.md)
    e. Update batch tracker status → "T2 Sent [date]"
@@ -110,8 +111,9 @@ T2s matter — but Apollo surfaces them on a fixed cadence and they don't expire
 | Wave 2 | `tamob-wave2-draft-mar10.html` | `tamob-wave2-t2-mar15.html` |
 | Wave 3 | `tamob-batch-20260311-1.html` | `tamob-wave3-t2-mar16.html` |
 | Wave 4 | `tamob-batch-20260311-2.html` | `tamob-wave4-t2-mar19.html` |
+| Batch 8 | `tamob-batch-20260313-1.html` | `tamob-batch8-t2-drafts-mar18.html` |
 
-**T2 formula:** 50-70 words. Light callback to T1 (1 sentence). New angle + new proof point. Engagement question close (NOT "what day works" — save that for breakup). No em dashes. Full protocol: sop-tam-outbound.md Part 7.
+**T2 formula (Deep-Dive v4, locked Mar 12):** 140-190 words. 4-part structure: (1) "I imagine" + deeper pain deepening, (2) Testsigma solution pitch, (3) customer story with WHY relevant, (4) 15-min CTA. BANNED: "Circling back" / "Following up" / "One more angle." No em dashes. Full playbook: `memory/playbooks/t2-followup.md`. Canonical source: sop-tam-outbound.md Part 7.
 
 ---
 
@@ -144,7 +146,7 @@ When credits allow (>10): check work-queue for overdue T2/T3 InMails from legacy
 | T2 wave due tomorrow with zero drafts | Build T2 drafts in Phase 4 today even if tasks haven't surfaced yet. |
 | ICP=HIGH fully exhausted | Shift to ICP=Medium in Phase 3. Same process. |
 | Apollo has 20+ T2s overdue | Do T2s first in Phase 3 position, then new T1 batch after. |
-| Thursday | Maximize send volume — go for full 50 T1 target. |
+| Thursday | Maximize send volume — push for full 100 T1 target. |
 | InMail credits < 5 | Phase 5 suspended. Apollo email only. |
 
 **The only situation that pushes T2s above new T1 work:** 20+ T2s overdue simultaneously. That won't happen under normal cadence. Under normal conditions, T1 always comes first.
@@ -155,7 +157,7 @@ When credits allow (>10): check work-queue for overdue T2/T3 InMails from legacy
 
 | Metric | Weekly Target | Notes |
 |--------|--------------|-------|
-| TAM Outbound T1 sends | 100-250 | 25-50/day × 4-5 send days |
+| TAM Outbound T1 sends | 200-500 | 50-100/day × 4-5 send days |
 | TAM Outbound T2 sends | 20-40 | Handled after T1 work each session |
 | Reply response time | Same day | No warm lead sits >24 hours |
 | Meetings booked | 1-2 | Primary success metric |

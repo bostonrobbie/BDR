@@ -9,14 +9,14 @@ Before sending ANY outreach email. Every email must pass the QA gate. No excepti
 
 | # | Check | Points | How to Verify |
 |---|-------|--------|---------------|
-| 1 | Word count in range | 1 | T1: 75-99 words. T2: 50-70 words. Breakup: 40-60 words. Count with `wc -w` or manual count. |
+| 1 | Word count in range | 1 | T1: 75-99 words. T2: 140-190 words (TAM Outbound Deep-Dive v4). Breakup: 40-60 words. Count with `wc -w` or manual count. |
 | 2 | Exactly 2 question marks | 1 | Count `?` characters. Must be exactly 2 for T1. T2 can have 1-2. |
 | 3 | SMYKM subject line | 1 | Format: `{First name}'s {role context} at {Company}`. Not generic like "Quick question". |
 | 4 | HC1 intro (shows you know them) | 1 | First sentence references their specific role, team, or responsibility. NOT "I came across your profile." |
 | 5 | Specific challenge hook | 1 | References a real challenge relevant to their role. NOT "many companies struggle with testing." |
 | 6 | Named customer with numbers | 1 | Mentions a real Testsigma customer AND a specific metric. E.g., "Hansard cut regression 8 to 5 weeks." |
 | 7 | Testsigma mentioned by name | 1 | The word "Testsigma" appears in the body. |
-| 8 | "What day works" CTA (T1 only) | 1 | CTA ends with "What day works to see how?" or similar. T2 uses engagement question instead. |
+| 8 | "What day works" CTA (T1 only) | 1 | CTA ends with "What day works to see how?" or similar. T2 uses 15-minute meeting ask ("Would 15 minutes make sense..."), NOT an engagement question. |
 | 9 | No em dashes | 1 | Search for `—` (em dash). Must be zero. Use commas instead. |
 | 10 | No placeholder text | 1 | Search for `[`, `]`, `{`, `}`, `COMPANY`, `NAME`, `TITLE`. Must be zero. |
 | 11 | Different proof point from same-company contacts | 1 | Check the proof point rotation tracker in the batch HTML. No two contacts at the same company get the same customer story. |
@@ -25,11 +25,12 @@ Before sending ANY outreach email. Every email must pass the QA gate. No excepti
 **Pass threshold:** MQS >= 9/12
 **Hard fail (instant reject, regardless of score):**
 - Any placeholder text (Check 10 fails)
-- Word count >120 or <60
+- T1 word count >120 or <60 | T2 word count >200 or <120
 - Missing proof point entirely
 - Same proof point as another same-company contact
 - Contact is on DNC list
 - Contact's domain not in TAM accounts list
+- T2 uses banned phrases: "Circling back" / "Following up" / "One more angle worth adding" / "Different lens from my last note"
 
 ---
 
@@ -150,4 +151,4 @@ Each contact card in the batch tracker should include a QA checklist:
 
 ---
 
-*Last updated: 2026-03-12 — consolidated from Sessions 4-27, data-rules.md, sop-outreach.md*
+*Last updated: 2026-03-13 (Session 34) — T2 word count corrected 50-70 → 140-190 (TAM Outbound Deep-Dive v4); T2 CTA corrected engagement question → 15-minute meeting ask; T2 hard-fail banned phrases added. Source: sop-tam-outbound.md Part 7 v4.*

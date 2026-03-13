@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TAM Outbound Batch 8 — 2026-03-13</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f8fafc; color: #1e293b; }
+h1 { border-bottom: 3px solid #3b82f6; padding-bottom: 10px; }
+h2 { color: #1e40af; border-left: 4px solid #3b82f6; padding-left: 12px; margin-top: 36px; }
+.badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-left: 8px; }
+.badge-enrolled { background: #dcfce7; color: #166534; }
+.badge-draft { background: #fef3c7; color: #92400e; }
+.badge-catchall { background: #fef9c3; color: #854d0e; }
+.badge-factor { background: #fce7f3; color: #9d174d; }
+.badge-tam-high { background: #ede9fe; color: #5b21b6; }
+.summary-box { background: white; border-radius: 8px; padding: 20px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 12px; }
+.stat { text-align: center; padding: 12px; background: #f1f5f9; border-radius: 6px; }
+.stat-num { font-size: 28px; font-weight: 700; color: #1e40af; }
+.stat-label { font-size: 12px; color: #64748b; margin-top: 4px; }
+.company-section { background: white; border-radius: 8px; padding: 20px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.company-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.company-name { font-size: 18px; font-weight: 700; }
+table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+th, td { border: 1px solid #e2e8f0; padding: 8px 12px; text-align: left; font-size: 13px; }
+th { background: #f1f5f9; font-weight: 600; }
+.status-enrolled { color: #166534; font-weight: 600; }
+.tier-tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+.tier-qa { background: #dcfce7; color: #166534; }
+.tier-eng { background: #dbeafe; color: #1e40af; }
+.tier-sdet { background: #fef9c3; color: #854d0e; }
+.section-note { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 12px; margin: 10px 0; font-size: 13px; }
+.draft-pending { background: #fef3c7; border: 1px solid #fde68a; border-radius: 6px; padding: 10px 14px; margin-top: 10px; font-size: 13px; color: #92400e; }
+</style>
+</head>
+<body>
+
+<h1>TAM Outbound Batch 8 — March 13, 2026 <span class="badge badge-enrolled">56 Enrolled</span></h1>
+
+<div class="summary-box">
+<strong>Session 32-33 | Batch 8 Mar13</strong><br>
+56 contacts enrolled across 14 TAM accounts. All passed 6-point dedup + TAM domain verification.<br>
+Sequence: <code>TAM Outbound - Rob Gorham</code> (ID: 69afff8dc8897c0019b78c7e)<br>
+MASTER_SENT_LIST.csv rows 497–552. Enrollment confirmed via <code>contacts_already_exists_in_current_campaign</code> API response.
+
+<div class="summary-grid">
+  <div class="stat"><div class="stat-num">56</div><div class="stat-label">Contacts Enrolled</div></div>
+  <div class="stat"><div class="stat-num">14</div><div class="stat-label">TAM Accounts</div></div>
+  <div class="stat"><div class="stat-num">552</div><div class="stat-label">MASTER_SENT_LIST Rows</div></div>
+  <div class="stat"><div class="stat-num">56</div><div class="stat-label">Drafts Written</div></div>
+</div>
+</div>
+
+<div class="section-note">
+<strong>Catchall domains:</strong> Yext (yext.com), Evernorth (evernorth.com), Jack Henry (jackhenry.com), SingleStore (singlestore.com) — monitor for bounces at Step 1.<br>
+<strong>T1 Drafts:</strong> All 56 drafted. MQS gate passed. Awaiting APPROVE SEND.
+</div>
+
+<!-- ==================== WATCHGUARD (7) ==================== -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">WatchGuard Technologies</div>
+  <span class="badge badge-tam-high">TAM HIGH</span>
+  <span class="badge badge-enrolled">7 contacts</span>
+</div>
+<p style="color:#64748b;font-size:13px;margin-bottom:12px;">Security/Network | ~1,900 emp | TAM ID: watchguard.com</p>
+<table>
+  <tr><th>#</th><th>Name</th><th>Title</th><th>Persona</th><th>Status</th></tr>
+  <tr><td>1</td><td>Christian Cayford</td><td>QA Lead</td><td><span class="tier-tag tier-qa">QA Lead</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>2</td><td>Cyril Muhlenbach</td><td>Director of QA</td><td><span class="tier-tag tier-qa">Dir QA</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>3</td><td>Regiane Villela</td><td>QA Manager</td><td><span class="tier-tag tier-qa">QA Mgr</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>4</td><td>Junkai Zhang</td><td>QA Manager</td><td><span class="tier-tag tier-qa">QA Mgr</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>5</td><td>Nicky Niu</td><td>QA Manager</td><td><span class="tier-tag tier-qa">QA Mgr</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>6</td><td>Jai Misra</td><td>Vice President of Engineering</td><td><span class="tier-tag tier-eng">VP Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>7</td><td>Monica Diaz Zubiaur</td><td>Vice President of Engineering</td><td><span class="tier-tag tier-eng">VP Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+</table>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#1 — Christian Cayford | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Christian's regression coverage at WatchGuard<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Christian,<br><br>Most QA leads I talk to say the same thing: keeping regression tests maintained across a multi-product suite eats time that should go toward building new coverage. Is that something your team deals with at WatchGuard?<br><br>Hansard was in that spot and cut their regression window from 8 to 5 weeks.<br><br>If reducing that maintenance load would free your team to build more coverage, is that a direction you're currently focused on?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at cybersecurity companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 94 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#2 — Cyril Muhlenbach | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Cyril's QA release cadence at WatchGuard<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Cyril,<br><br>When a security platform serves 17,000 MSPs, a regression slip ripples out to their end customers. The release pressure from a channel at that scale has a way of outpacing what any regression suite can verify. Does that tension come up at WatchGuard?<br><br>Cisco tackled the same problem and cut regression overhead by 35%.<br><br>If staying ahead of that release pressure is something you're focused on, how is your team thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at cybersecurity companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 95 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#3 — Regiane Villela | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Regiane's automation coverage at WatchGuard<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Regiane,<br><br>I keep hearing from QA managers at multi-product platforms that adding coverage for each new feature takes nearly as long as building the feature itself. Coverage debt builds sprint over sprint. Does that ever happen at WatchGuard?<br><br>CRED had similar pressure and reached 90% regression coverage 5x faster with tests written in plain English.<br><br>If scaling coverage without adding headcount is something your team is exploring, is that a direction you're looking at?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at cybersecurity companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 95 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#4 — Junkai Zhang | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Junkai's cross-product testing at WatchGuard<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Junkai,<br><br>One thing that keeps coming up with QA managers covering multi-product platforms: UI updates in one product break shared tests across the suite, and the rework crowds out time for net-new coverage. Curious if WatchGuard is dealing with that too?<br><br>MediBuddy automated 2,500 tests and cut maintenance by 50%.<br><br>If reducing that rework cycle is something your team is working on, is it worth comparing approaches?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at cybersecurity companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 88 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#5 — Nicky Niu | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Nicky's test creation throughput at WatchGuard<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Nicky,<br><br>At WatchGuard, shipping across network security, endpoint, MFA, and Wi-Fi on overlapping cadences means regression cycles never fully close before the next round begins. Does your team ever feel like the suite is always playing catch-up?<br><br>Sanofi hit the same wall and compressed their full regression suite from 3 days to 80 minutes.<br><br>If that kind of compression is something your team is exploring, is it worth a quick conversation?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at cybersecurity companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 92 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#6 — Jai Misra | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Jai's engineering throughput at WatchGuard<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Jai,<br><br>Most VPs I talk to at security platforms say the same thing: as the product surface grows, test maintenance grows with it, and coverage can't keep pace with releases. Is that something you're seeing at WatchGuard?<br><br>A Fortune 100 tech company tackled the same problem and saw 3x productivity gains on their testing team.<br><br>If closing that gap is something you're working on, how is your team thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at cybersecurity companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 92 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#7 — Monica Diaz Zubiaur | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Monica's QA scale at WatchGuard<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Monica,<br><br>When a security platform ships across four product lines on overlapping cadences, regression maintenance doesn't stay contained to one team, it spreads across the org. Does that kind of cross-product coordination ever slow release timelines at WatchGuard?<br><br>Nagra DTV automated 2,500 tests 75% faster without adding team capacity.<br><br>If that kind of acceleration is something your engineering org is looking at, is it worth a quick conversation?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at cybersecurity companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 89 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="section-note" style="margin-top:8px;"><strong>Status:</strong> All drafts above are QA-passed and ready. Send ONLY after Rob gives explicit APPROVE SEND per contact.</div>
+</div>
+
+<!-- ==================== EVERBRIDGE (8) ==================== -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">Everbridge</div>
+  <span class="badge badge-tam-high">TAM HIGH</span>
+  <span class="badge badge-enrolled">8 contacts</span>
+</div>
+<p style="color:#64748b;font-size:13px;margin-bottom:12px;">SaaS / Critical Event Management | ~1,100 emp | TAM ID: everbridge.com</p>
+<table>
+  <tr><th>#</th><th>Name</th><th>Title</th><th>Persona</th><th>Status</th></tr>
+  <tr><td>8</td><td>Rebecca Zhu</td><td>QA Manager</td><td><span class="tier-tag tier-qa">QA Mgr</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>9</td><td>Chuck Fields</td><td>Vice President of Engineering</td><td><span class="tier-tag tier-eng">VP Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>10</td><td>Morten Seliussen</td><td>Vice President of Engineering</td><td><span class="tier-tag tier-eng">VP Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>11</td><td>Chrissy Simpson</td><td>Director of Engineering</td><td><span class="tier-tag tier-eng">Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>12</td><td>Travis Conti</td><td>Director of Engineering</td><td><span class="tier-tag tier-eng">Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>13</td><td>Peter Kosa</td><td>Director of Engineering</td><td><span class="tier-tag tier-eng">Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>14</td><td>Tyrell Cooney</td><td>Vice President of Engineering</td><td><span class="tier-tag tier-eng">VP Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>15</td><td>Monika Sharma</td><td>Director, Engineering</td><td><span class="tier-tag tier-eng">Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+</table>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#8 — Rebecca Zhu | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Rebecca's test maintenance at Everbridge<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Rebecca,<br><br>I keep hearing from QA managers at critical event platforms that regression coverage is hard to keep current when the product evolves quickly, and gaps tend to surface at the worst possible time. Does that happen at Everbridge?<br><br>Hansard was in that spot and cut their regression window from 8 to 5 weeks.<br><br>If reducing that kind of exposure is something your team is focused on, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 95 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#9 — Chuck Fields | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Chuck's platform quality at Everbridge<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Chuck,<br><br>Most VP Engs at SaaS platforms say the same thing: as headcount grows and the product expands, coverage gaps compound faster than the team can close them. Is that something you're managing at Everbridge?<br><br>Cisco tackled the same problem and cut regression overhead by 35%.<br><br>If closing that gap without proportional headcount growth is something you're exploring, how is your team approaching it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 86 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#10 — Morten Seliussen | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Morten's testing surface at Everbridge<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Morten,<br><br>One thing that keeps coming up with VP Engs at SaaS companies: the faster the product moves, the more brittle the regression suite becomes, and fixing it costs more than building new features. Curious if that's a pattern at Everbridge?<br><br>MediBuddy automated 2,500 tests and cut maintenance by 50%.<br><br>If reducing that overhead is a priority, is it something your team is actively working on?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 88 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#11 — Chrissy Simpson | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Chrissy's test creation pace at Everbridge<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Chrissy,<br><br>At Everbridge, the critical nature of the platform means releases can't afford regressions, but full regression cycles are long. At scale, that tension becomes a real bottleneck. Is that something your engineering team is navigating?<br><br>Sanofi was dealing with that and compressed their full regression suite from 3 days to 80 minutes.<br><br>If that kind of speed is something you're looking at, is it worth exploring how they did it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 93 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#12 — Travis Conti | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Travis's coverage breadth at Everbridge<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Travis,<br><br>When a platform like Everbridge releases frequently, the coverage gap compounds over time: tests written for one version go stale, and teams spend more cycles updating suites than shipping features. Does that pattern show up at Everbridge?<br><br>CRED had similar pressure and reached 90% regression coverage 5x faster.<br><br>If coverage depth at velocity is something you're trying to improve, how is your team thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 89 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#13 — Peter Kosa | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Peter's regression suite at Everbridge<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Peter,<br><br>Most engineering directors at critical event platforms say the same thing: when a major release needs to go out, the regression suite becomes the bottleneck, not the code. Is that something you're running into at Everbridge?<br><br>A Fortune 100 tech company hit the same wall and saw 3x productivity gains on their testing team.<br><br>If speeding up that cycle is something you're actively exploring, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 93 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#14 — Tyrell Cooney | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Tyrell's platform testing at Everbridge<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Tyrell,<br><br>I keep hearing from VP Engs at SaaS platforms that test coverage becomes a ceiling, not a floor: teams end up maintaining what they have instead of expanding it. Does that ever describe your situation at Everbridge?<br><br>Nagra DTV was dealing with that and automated 2,500 tests 75% faster.<br><br>If growing coverage without growing the maintenance burden is something you're focused on, is that a direction worth exploring?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 91 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#991b1b;">#15 — Monika Sharma | MANUAL SEND NEEDED</strong><br>
+  <strong>Subject:</strong> Monika's automation stack at Everbridge<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Monika,<br><br>One thing that keeps coming up with engineering directors at SaaS platforms: when test suites don't scale with the product, manual effort fills the gap, and that's not a sustainable model. Curious if that's something Everbridge is navigating?<br><br>Spendflo tackled the same problem and cut manual test effort by 50% in the first quarter.<br><br>If scaling automated coverage is something you're exploring, how is your team thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 92 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="section-note" style="margin-top:8px;"><strong>Status:</strong> All drafts above are QA-passed and ready. Send ONLY after Rob gives explicit APPROVE SEND per contact.</div>
+</div>
+
+<!-- ==================== PROCORE (2) ==================== -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">Procore Technologies</div>
+  <span class="badge badge-tam-high">TAM HIGH</span>
+  <span class="badge badge-enrolled">2 contacts</span>
+</div>
+<p style="color:#64748b;font-size:13px;margin-bottom:12px;">SaaS / Construction Tech | ~4,600 emp | TAM ID: procore.com</p>
+<table>
+  <tr><th>#</th><th>Name</th><th>Title</th><th>Persona</th><th>Status</th></tr>
+  <tr><td>16</td><td>Raghda Sakka</td><td>Quality Assurance Manager</td><td><span class="tier-tag tier-qa">QA Mgr</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>17</td><td>Bryant Macy</td><td>Vice President of Software Engineering</td><td><span class="tier-tag tier-eng">VP Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+</table>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#16 — Raghda Sakka | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Raghda's test coverage at Procore<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Raghda,<br><br>I keep hearing from QA managers at construction tech platforms that when the product scales, test creation doesn't scale with it, and coverage gaps show up in the field instead of in the suite. Does that happen at Procore?<br><br>MediBuddy automated 2,500 tests and cut maintenance by 50%.<br><br>If building coverage faster is something your team is working toward, is that a direction you're exploring?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 88 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#17 — Bryant Macy | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Bryant's engineering throughput at Procore<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Bryant,<br><br>Most VP Engs at construction tech companies say the same thing: Procore's platform complexity keeps growing, and the test surface grows with it, but coverage doesn't. Is that gap something you're trying to close?<br><br>A Fortune 100 tech company had similar pressure and saw 3x productivity gains on their testing team.<br><br>If closing that gap efficiently is something you're actively exploring, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 90 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="section-note" style="margin-top:8px;"><strong>Status:</strong> All drafts above are QA-passed and ready. Send ONLY after Rob gives explicit APPROVE SEND per contact.</div>
+</div>
+
+<!-- ==================== PLURALSIGHT (4) ==================== -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">Pluralsight</div>
+  <span class="badge badge-tam-high">TAM HIGH</span>
+  <span class="badge badge-enrolled">4 contacts</span>
+</div>
+<p style="color:#64748b;font-size:13px;margin-bottom:12px;">EdTech / SaaS | ~1,700 emp | TAM ID: pluralsight.com</p>
+<table>
+  <tr><th>#</th><th>Name</th><th>Title</th><th>Persona</th><th>Status</th></tr>
+  <tr><td>18</td><td>Sanjeev Singla</td><td>Director of Engineering - Smart Apps</td><td><span class="tier-tag tier-eng">Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>19</td><td>Ravindra Hassan</td><td>SVP, Engineering & India Site Head</td><td><span class="tier-tag tier-eng">SVP Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>20</td><td>Krishna Halaharvi</td><td>Director of Engineering - Membership & Leader Hub</td><td><span class="tier-tag tier-eng">Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>21</td><td>Ryan Beytell</td><td>Engineering Manager</td><td><span class="tier-tag tier-eng">Eng Mgr</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+</table>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#18 — Sanjeev Singla | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Sanjeev's test coverage for Smart Apps at Pluralsight<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Sanjeev,<br><br>At Pluralsight, the learning platform is always evolving with new features, integrations, and experiences. When the product moves that quickly, keeping tests current without constant maintenance becomes its own engineering problem. Is that something your team deals with?<br><br>Nagra DTV was in that spot and automated 2,500 tests 75% faster.<br><br>If accelerating test coverage for a fast-moving product is something you're exploring, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise SaaS companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 91 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#19 — Ravindra Hassan | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Ravindra's engineering velocity at Pluralsight<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Ravindra,<br><br>When engineering teams are distributed across time zones, regression coverage gaps compound because different teams test against different product states. Does that coordination challenge come up at Pluralsight?<br><br>A Fortune 100 tech company tackled the same problem and saw 3x productivity gains on their testing team.<br><br>If improving coverage consistency across a distributed engineering org is something you're looking at, how is your team approaching it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise SaaS companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 89 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#20 — Krishna Halaharvi | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Krishna's coverage for Membership at Pluralsight<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Krishna,<br><br>Most engineering directors at EdTech platforms say the same thing: when the member product keeps adding features, test coverage has to grow with it, but the tooling often can't keep pace. Is that something you're running into at Pluralsight?<br><br>CRED had similar pressure and reached 90% regression coverage 5x faster.<br><br>If keeping coverage in step with product growth is something your team is focused on, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise SaaS companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 94 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#21 — Ryan Beytell | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Ryan's regression overhead at Pluralsight<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Ryan,<br><br>I keep hearing from engineering managers at SaaS platforms that test maintenance ends up being the team's biggest hidden cost: not just in time, but in delayed releases and coverage debt that builds sprint over sprint. Does that resonate at Pluralsight?<br><br>Hansard was in that spot and cut their regression window from 8 to 5 weeks.<br><br>If reducing that maintenance debt is something your team is working on, is that worth a quick conversation?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise SaaS companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 97 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="section-note" style="margin-top:8px;"><strong>Status:</strong> All drafts above are QA-passed and ready. Send ONLY after Rob gives explicit APPROVE SEND per contact.</div>
+</div>
+
+<!-- ==================== SYSDIG (3) ==================== -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">Sysdig</div>
+  <span class="badge badge-tam-high">TAM HIGH</span>
+  <span class="badge badge-enrolled">3 contacts</span>
+</div>
+<p style="color:#64748b;font-size:13px;margin-bottom:12px;">Security / Cloud | ~900 emp | TAM ID: sysdig.com</p>
+<table>
+  <tr><th>#</th><th>Name</th><th>Title</th><th>Persona</th><th>Status</th></tr>
+  <tr><td>22</td><td>Miguel Julian Ramos</td><td>QA Manager</td><td><span class="tier-tag tier-qa">QA Mgr</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>23</td><td>Aleksandar Ponjavic</td><td>Director of Engineering</td><td><span class="tier-tag tier-eng">Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>24</td><td>Marjan Mihanovic</td><td>Senior Director of Engineering</td><td><span class="tier-tag tier-eng">Sr Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+</table>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#22 — Miguel Julian Ramos | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Miguel's QA coverage at Sysdig<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Miguel,<br><br>I keep hearing from QA managers at cloud security platforms that coverage is hard to scale when test creation is time-consuming. New container and runtime behaviors emerge faster than suites can track. Does that happen at Sysdig?<br><br>CRED had similar pressure and reached 90% regression coverage 5x faster with tests written in plain English.<br><br>If scaling coverage to match platform velocity is something you're exploring, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at cybersecurity companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 93 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#23 — Aleksandar Ponjavic | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Aleksandar's automation footprint at Sysdig<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Aleksandar,<br><br>One thing that keeps coming up with engineering directors at security platforms: as the product footprint expands, test coverage tends to lag, and that gap becomes a vulnerability in its own right. Curious if that's something Sysdig is navigating?<br><br>MediBuddy automated 2,500 tests and cut maintenance by 50%.<br><br>If closing that coverage gap faster is something your team is working on, is it worth comparing approaches?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at cybersecurity companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 88 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#24 — Marjan Mihanovic | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Marjan's regression coverage at Sysdig<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Marjan,<br><br>Most senior engineering leaders at cloud security companies say the same thing: keeping test coverage current across runtime security, vulnerability management, and compliance is a full-time challenge as the platform grows. Is that something your team is dealing with at Sysdig?<br><br>Cisco tackled the same problem and cut regression overhead by 35%.<br><br>If reducing that overhead is a priority for your team, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at cybersecurity companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 90 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="section-note" style="margin-top:8px;"><strong>Status:</strong> All drafts above are QA-passed and ready. Send ONLY after Rob gives explicit APPROVE SEND per contact.</div>
+</div>
+
+<!-- ==================== YEXT (3) ==================== -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">Yext</div>
+  <span class="badge badge-tam-high">TAM HIGH</span>
+  <span class="badge badge-enrolled">3 contacts</span>
+  <span class="badge badge-catchall">catch-all domain</span>
+</div>
+<p style="color:#64748b;font-size:13px;margin-bottom:12px;">SaaS / Digital Presence | ~1,200 emp | TAM ID: yext.com | ⚠️ yext.com is catch-all — monitor bounces</p>
+<table>
+  <tr><th>#</th><th>Name</th><th>Title</th><th>Persona</th><th>Status</th></tr>
+  <tr><td>25</td><td>Austin Chu</td><td>Director, Software Engineering</td><td><span class="tier-tag tier-eng">Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>26</td><td>Samir Singh</td><td>Director of Software Engineering</td><td><span class="tier-tag tier-eng">Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>27</td><td>Peter Rimshnick</td><td>Senior Director, Software Engineering</td><td><span class="tier-tag tier-eng">Sr Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+</table>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#25 — Austin Chu | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Austin's test coverage at Yext<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Austin,<br><br>At Yext, maintaining consistency across the knowledge graph, pages, reviews, and search means any platform update can break tests across multiple surfaces at once. When a release touches all of those areas, does execution time become a bottleneck?<br><br>Nagra DTV was in that spot and automated 2,500 tests 75% faster.<br><br>If compressing execution time across that full surface is something your team is exploring, is it worth a conversation?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise SaaS companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 92 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#26 — Samir Singh | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Samir's platform coverage at Yext<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Samir,<br><br>Most engineering directors at knowledge management platforms say the same thing: when the product spans multiple content surfaces, test coverage has to keep pace with each one, and that multiplies maintenance fast. Is that something you're running into at Yext?<br><br>CRED had similar pressure and reached 90% regression coverage 5x faster.<br><br>If scaling coverage across a broad product surface is something your team is focused on, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise SaaS companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 95 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#27 — Peter Rimshnick | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Peter's regression suite at Yext<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Peter,<br><br>I keep hearing from senior engineering leaders at SaaS companies that the gap between product complexity and test coverage grows every quarter, and closing it feels like it's always behind the next sprint. Does that describe where Yext is?<br><br>Hansard was in that spot and cut their regression window from 8 to 5 weeks.<br><br>If closing that gap is something your engineering org is actively exploring, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise SaaS companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 95 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="section-note" style="margin-top:8px;"><strong>Status:</strong> All drafts above are QA-passed and ready. Send ONLY after Rob gives explicit APPROVE SEND per contact.</div>
+</div>
+
+<!-- ==================== SINGLESTORE (1) ==================== -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">SingleStore</div>
+  <span class="badge badge-tam-high">TAM HIGH</span>
+  <span class="badge badge-enrolled">1 contact</span>
+  <span class="badge badge-catchall">catch-all domain</span>
+</div>
+<p style="color:#64748b;font-size:13px;margin-bottom:12px;">Tech / Database | ~650 emp | TAM ID: singlestore.com | ⚠️ catch-all domain — monitor bounces</p>
+<table>
+  <tr><th>#</th><th>Name</th><th>Title</th><th>Persona</th><th>Status</th></tr>
+  <tr><td>28</td><td>Robert Walzer</td><td>VP of Engineering</td><td><span class="tier-tag tier-eng">VP Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+</table>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#28 — Robert Walzer | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Robert's testing infrastructure at SingleStore<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Robert,<br><br>Most VP Engs at database companies say the same thing: as the platform adds connectors, integrations, and deployment targets, the test matrix expands faster than the team can cover it. Is that something you're navigating at SingleStore?<br><br>Cisco tackled the same problem and cut regression overhead by 35%.<br><br>If reducing that overhead without sacrificing coverage is something you're exploring, how is your team thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 89 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="section-note" style="margin-top:8px;"><strong>Status:</strong> All drafts above are QA-passed and ready. Send ONLY after Rob gives explicit APPROVE SEND per contact.</div>
+</div>
+
+<!-- ==================== EVERNORTH (3) ==================== -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">Evernorth Health Services</div>
+  <span class="badge badge-tam-high">TAM HIGH</span>
+  <span class="badge badge-enrolled">3 contacts</span>
+  <span class="badge badge-catchall">catch-all domain</span>
+</div>
+<p style="color:#64748b;font-size:13px;margin-bottom:12px;">Healthcare / Pharmacy | ~70,000 emp (Cigna subsidiary) | TAM ID: evernorth.com | ⚠️ catch-all — monitor bounces</p>
+<table>
+  <tr><th>#</th><th>Name</th><th>Title</th><th>Persona</th><th>Status</th></tr>
+  <tr><td>29</td><td>Pavel Asiyeuski</td><td>QA Automation Lead</td><td><span class="tier-tag tier-qa">QA Lead</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>30</td><td>Kangesh Paramasivam</td><td>Quality Assurance Test Manager</td><td><span class="tier-tag tier-qa">QA Mgr</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>31</td><td>Senthilkumar Muthusamy</td><td>Test Manager</td><td><span class="tier-tag tier-qa">QA Mgr</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+</table>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#29 — Pavel Asiyeuski | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Pavel's automation maintenance at Evernorth<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Pavel,<br><br>One thing that keeps coming up with QA leads at healthcare platforms: compliance means regression coverage can't be partial, but full regression runs are long enough to slow cadence. Curious if that balance is something you navigate at Evernorth?<br><br>Hansard was in that spot and cut their regression window from 8 to 5 weeks.<br><br>If compressing that cycle without reducing coverage is something your team is exploring, is it worth a conversation?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at healthcare technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 95 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#30 — Kangesh Paramasivam | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Kangesh's QA coverage at Evernorth<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Kangesh,<br><br>I keep hearing from QA managers at healthcare platforms that maintaining test coverage across pharmacy workflows, benefits, and member-facing products is a different challenge at each scale. Coverage debt compounds quietly until it shows up in a release. Does that happen at Evernorth?<br><br>MediBuddy automated 2,500 tests and cut maintenance by 50%.<br><br>If reducing that maintenance load is something your team is focused on, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at healthcare technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 93 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#31 — Senthilkumar Muthusamy | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Senthilkumar's test coverage at Evernorth<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Senthilkumar,<br><br>At a healthcare platform like Evernorth, release quality is tied directly to patient experience, so the pressure to keep regression coverage current is higher than most. When full regression cycles are long, does that ever slow releases?<br><br>Sanofi was dealing with that and compressed their full regression suite from 3 days to 80 minutes.<br><br>If that kind of speed is something your team is looking at, is it worth exploring how they did it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at healthcare technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 97 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="section-note" style="margin-top:8px;"><strong>Status:</strong> All drafts above are QA-passed and ready. Send ONLY after Rob gives explicit APPROVE SEND per contact.</div>
+</div>
+
+<!-- ==================== COUCHBASE (4) ==================== -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">Couchbase</div>
+  <span class="badge badge-tam-high">TAM HIGH</span>
+  <span class="badge badge-enrolled">4 contacts</span>
+</div>
+<p style="color:#64748b;font-size:13px;margin-bottom:12px;">Tech / Database | ~600 emp | TAM ID: couchbase.com</p>
+<table>
+  <tr><th>#</th><th>Name</th><th>Title</th><th>Persona</th><th>Status</th></tr>
+  <tr><td>32</td><td>Dave Finlay</td><td>VP, Engineering</td><td><span class="tier-tag tier-eng">VP Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>33</td><td>Ashish Chaudhari</td><td>Director Software Engineering</td><td><span class="tier-tag tier-eng">Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>34</td><td>Naveen Gowda</td><td>Director of Software Engineering</td><td><span class="tier-tag tier-eng">Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>35</td><td>Anisha Jha</td><td>Lead SDET</td><td><span class="tier-tag tier-sdet">SDET</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+</table>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#32 — Dave Finlay | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Dave's engineering throughput at Couchbase<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Dave,<br><br>Most VP Engs at database companies say the same thing: as the platform expands across cloud, edge, and mobile, the test surface multiplies, but the team covering it doesn't. Is that gap something you're working on at Couchbase?<br><br>A Fortune 100 tech company tackled the same problem and saw 3x productivity gains on their testing team.<br><br>If closing that gap efficiently is a priority, how is your team thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 94 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#33 — Ashish Chaudhari | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Ashish's cloud automation coverage at Couchbase<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Ashish,<br><br>At Couchbase, covering edge computing, mobile sync, and multi-cloud deployments means the regression matrix grows with every new deployment target. When execution time compounds across those environments, does it become a bottleneck for releases?<br><br>Nagra DTV was in that spot and automated 2,500 tests 75% faster without adding team capacity.<br><br>If compressing execution time across that matrix is something your team is exploring, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 92 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#34 — Naveen Gowda | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Naveen's test coverage at Couchbase<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Naveen,<br><br>I keep hearing from engineering directors at database platforms that every new integration or deployment target adds tests that are hard to maintain over time. Coverage debt builds until it's the thing blocking a release. Does that happen at Couchbase?<br><br>CRED had similar pressure and reached 90% regression coverage 5x faster.<br><br>If keeping coverage current without constant rework is something your team is working on, is it worth a conversation?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 93 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#35 — Anisha Jha | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Anisha's automation framework at Couchbase<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Anisha,<br><br>One thing that keeps coming up with SDETs at database platforms: when the product spans multiple deployment environments, tests written for one don't always hold for another, and maintenance becomes the main job. Is that something your team runs into at Couchbase?<br><br>MediBuddy automated 2,500 tests and cut maintenance by 50%.<br><br>If reducing that cross-environment rework is something you're exploring, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 89 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="section-note" style="margin-top:8px;"><strong>Status:</strong> All drafts above are QA-passed and ready. Send ONLY after Rob gives explicit APPROVE SEND per contact.</div>
+</div>
+
+<!-- ==================== PATHLOCK (5) ==================== -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">Pathlock</div>
+  <span class="badge badge-tam-high">TAM HIGH</span>
+  <span class="badge badge-enrolled">5 contacts</span>
+</div>
+<p style="color:#64748b;font-size:13px;margin-bottom:12px;">Security / GRC SaaS | ~500 emp | TAM ID: pathlock.com</p>
+<table>
+  <tr><th>#</th><th>Name</th><th>Title</th><th>Persona</th><th>Status</th></tr>
+  <tr><td>36</td><td>Sandip Patil</td><td>QA Lead</td><td><span class="tier-tag tier-qa">QA Lead</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>37</td><td>Rashmi Janorkar</td><td>QA Lead</td><td><span class="tier-tag tier-qa">QA Lead</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>38</td><td>Jeetender Rawat</td><td>Senior QA Manager</td><td><span class="tier-tag tier-qa">Sr QA Mgr</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>39</td><td>Shipra Sharma</td><td>Test Manager</td><td><span class="tier-tag tier-qa">Test Mgr</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>40</td><td>Chandra Chauhan</td><td>Director of Engineering</td><td><span class="tier-tag tier-eng">Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+</table>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#36 — Sandip Patil | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Sandip's integration coverage at Pathlock<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Sandip,<br><br>I keep hearing from QA leads at ERP governance platforms that every new connector or compliance rule adds tests that break quickly as configurations change. Keeping that coverage current is a constant effort. Does that happen at Pathlock?<br><br>CRED had similar pressure and reached 90% regression coverage 5x faster.<br><br>If scaling coverage across a growing compliance surface is something you're focused on, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 91 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#37 — Rashmi Janorkar | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Rashmi's test maintenance at Pathlock<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Rashmi,<br><br>Most QA leads at access governance platforms say the same thing: when policies and connectors update frequently, regression tests need constant adjustment, and that work crowds out new coverage. Is that something your team deals with at Pathlock?<br><br>Hansard was in that spot and cut their regression window from 8 to 5 weeks.<br><br>If reducing that maintenance cycle is something you're working on, is that a direction worth exploring?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 92 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#38 — Jeetender Rawat | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Jeetender's QA coverage at Pathlock<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Jeetender,<br><br>At Pathlock, covering access controls and compliance workflows across SAP, Oracle, and other ERP connectors means each new integration expands the test surface. When that surface grows faster than coverage can keep up, does it become a release risk?<br><br>MediBuddy automated 2,500 tests and cut maintenance by 50%.<br><br>If closing that coverage gap is something your team is focused on, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 89 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#39 — Shipra Sharma | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Shipra's test coverage for Pathlock<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Shipra,<br><br>One thing that keeps coming up with test managers at compliance platforms: when audit requirements change, the test suite has to change with them, and that's not a small effort at enterprise scale. Is that kind of pressure something your team feels at Pathlock?<br><br>Sanofi hit the same wall and compressed their full regression suite from 3 days to 80 minutes.<br><br>If reducing that cycle is something you're exploring, is it worth a conversation?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 97 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#40 — Chandra Chauhan | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Chandra's engineering coverage at Pathlock<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Chandra,<br><br>Most engineering directors at ERP governance platforms say the same thing: the compliance surface is always growing, and keeping test coverage current across every supported connector is a full-time engineering challenge. Is that something you're navigating at Pathlock?<br><br>Cisco tackled the same problem and cut regression overhead by 35%.<br><br>If reducing that overhead is something your team is working on, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at enterprise technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 89 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="section-note" style="margin-top:8px;"><strong>Status:</strong> All drafts above are QA-passed and ready. Send ONLY after Rob gives explicit APPROVE SEND per contact.</div>
+</div>
+
+<!-- ==================== TANDEM DIABETES CARE (5) ==================== -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">Tandem Diabetes Care</div>
+  <span class="badge badge-tam-high">TAM HIGH</span>
+  <span class="badge badge-enrolled">5 contacts</span>
+</div>
+<p style="color:#64748b;font-size:13px;margin-bottom:12px;">MedTech / Diabetes Devices | ~1,100 emp | TAM ID: tandemdiabetes.com</p>
+<table>
+  <tr><th>#</th><th>Name</th><th>Title</th><th>Persona</th><th>Status</th></tr>
+  <tr><td>41</td><td>Jake Lai</td><td>Sr. Director, Software Engineering, Test & Release</td><td><span class="tier-tag tier-sdet">Test Lead</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>42</td><td>Leif Woodahl</td><td>Vice President of Engineering</td><td><span class="tier-tag tier-eng">VP Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>43</td><td>Matt Polichette</td><td>Director Software Engineering</td><td><span class="tier-tag tier-eng">Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>44</td><td>Paul Harris</td><td>Director of Software Engineering</td><td><span class="tier-tag tier-eng">Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>45</td><td>Joe Tuttobene</td><td>Sr. Director, Software Engineering</td><td><span class="tier-tag tier-eng">Sr Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+</table>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#41 — Jake Lai | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Jake's test and release cycle at Tandem<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Jake,<br><br>At a medical device company like Tandem, release quality has direct patient impact, so regression coverage can't be skipped, but full regression cycles slow down release cadence. Does that tension between coverage and speed show up in your release process?<br><br>Sanofi hit the same wall and compressed their full regression suite from 3 days to 80 minutes.<br><br>If that kind of compression is something your team is exploring, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at healthcare technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 97 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#42 — Leif Woodahl | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Leif's engineering velocity at Tandem<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Leif,<br><br>Most VP Engs at healthcare technology companies say the same thing: as the device software expands, test coverage has to grow with it, but the tooling often can't keep pace with a regulated release cycle. Is that something you're managing at Tandem?<br><br>A Fortune 100 tech company had similar pressure and saw 3x productivity gains on their testing team.<br><br>If closing that gap is a priority, how is your team thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at healthcare technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 96 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#43 — Matt Polichette | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Matt's mobile coverage at Tandem<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Matt,<br><br>I keep hearing from engineering directors at medical device companies that when the software footprint grows across mobile, pump firmware, and cloud, test maintenance becomes its own project. Coverage debt builds until it's blocking a submission or a release. Does that happen at Tandem?<br><br>MediBuddy automated 2,500 tests and cut maintenance by 50%.<br><br>If reducing that maintenance load is something your team is focused on, is that worth a conversation?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at healthcare technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 93 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#44 — Paul Harris | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Paul's coverage for new product lines at Tandem<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Paul,<br><br>One thing that keeps coming up with engineering directors at healthcare tech companies: the faster the product evolves, the more brittle the regression suite becomes, and fixing it starts to cost more than building new features. Curious if that's a pattern at Tandem?<br><br>CRED had similar pressure and reached 90% regression coverage 5x faster.<br><br>If reducing that brittleness is something your team is working on, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at healthcare technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 94 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#45 — Joe Tuttobene | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Joe's regression coverage at Tandem<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Joe,<br><br>At a company like Tandem, software releases touch both patient-facing mobile apps and device firmware, which means regression coverage can't have gaps. When full regression cycles are long, does that ever become the bottleneck before a release?<br><br>Hansard was in that spot and cut their regression window from 8 to 5 weeks.<br><br>If compressing that cycle without reducing coverage is something your team is exploring, is it worth a conversation?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at healthcare technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 93 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="section-note" style="margin-top:8px;"><strong>Status:</strong> All drafts above are QA-passed and ready. Send ONLY after Rob gives explicit APPROVE SEND per contact.</div>
+</div>
+
+<!-- ==================== JACK HENRY (4) ==================== -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">Jack Henry & Associates</div>
+  <span class="badge badge-tam-high">TAM HIGH</span>
+  <span class="badge badge-enrolled">4 contacts</span>
+  <span class="badge badge-catchall">catch-all domain</span>
+</div>
+<p style="color:#64748b;font-size:13px;margin-bottom:12px;">Fintech / Core Banking | ~7,000 emp | TAM ID: jackhenry.com | ⚠️ catch-all — monitor bounces</p>
+<table>
+  <tr><th>#</th><th>Name</th><th>Title</th><th>Persona</th><th>Status</th></tr>
+  <tr><td>46</td><td>Troy Wiseman</td><td>Quality Assurance Manager</td><td><span class="tier-tag tier-qa">QA Mgr</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>47</td><td>Kara Mallory</td><td>Dir, Testing & Business Analysis</td><td><span class="tier-tag tier-qa">Dir QA</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>48</td><td>Ryan Konz</td><td>Director of Engineering</td><td><span class="tier-tag tier-eng">Dir Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>49</td><td>Robert Ledbetter</td><td>EPS Senior QA Manager</td><td><span class="tier-tag tier-qa">Sr QA Mgr</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+</table>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#46 — Troy Wiseman | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Troy's test automation at Jack Henry<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Troy,<br><br>I keep hearing from QA managers at banking platforms that keeping regression coverage current across core banking, payments, and digital channels is a constant challenge. Each product has its own release cadence and maintenance compounds. Does that happen at Jack Henry?<br><br>Hansard was in that spot and cut their regression window from 8 to 5 weeks.<br><br>If reducing that maintenance load is something your team is focused on, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at financial services companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 97 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#47 — Kara Mallory | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Kara's testing organization at Jack Henry<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Kara,<br><br>Most directors of testing at financial technology companies say the same thing: when a platform serves 8,000+ financial institutions, coverage gaps in core workflows aren't an option, but full regression cycles are long. Is that tension something your team navigates at Jack Henry?<br><br>MediBuddy automated 2,500 tests and cut maintenance by 50%.<br><br>If compressing that cycle without sacrificing coverage is something you're exploring, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at financial services companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 92 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#48 — Ryan Konz | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Ryan's test coverage at Jack Henry<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Ryan,<br><br>At Jack Henry, releasing updates across core processing, digital banking, and payment platforms on separate cadences means tests written for one surface don't always hold for another. When that maintenance compounds, does it become a bottleneck?<br><br>Cisco tackled the same problem and cut regression overhead by 35%.<br><br>If reducing that overhead across the platform is something your team is working on, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at financial services companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 90 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#49 — Robert Ledbetter | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Robert's EPS regression coverage at Jack Henry<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Robert,<br><br>One thing that keeps coming up with QA managers at fintech platforms: compliance-driven releases can't skip regression, but full regression runs are long enough to slow cadence. That tension tends to get worse as the product grows. Is that something your team deals with at Jack Henry?<br><br>CRED had similar pressure and reached 90% regression coverage 5x faster.<br><br>If closing that gap is something you're focused on, is it worth a quick conversation?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at financial services companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 96 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="section-note" style="margin-top:8px;"><strong>Status:</strong> All drafts above are QA-passed and ready. Send ONLY after Rob gives explicit APPROVE SEND per contact.</div>
+</div>
+
+<!-- ==================== BMO (5) ==================== -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">BMO Financial Group</div>
+  <span class="badge badge-tam-high">TAM HIGH</span>
+  <span class="badge badge-enrolled">5 contacts</span>
+</div>
+<p style="color:#64748b;font-size:13px;margin-bottom:12px;">Finance / Banking | ~46,000 emp | TAM ID: bmo.com</p>
+<table>
+  <tr><th>#</th><th>Name</th><th>Title</th><th>Persona</th><th>Status</th></tr>
+  <tr><td>50</td><td>Vengadesan Jayaraman</td><td>QA Automation Lead</td><td><span class="tier-tag tier-qa">QA Lead</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>51</td><td>Arif Dhamani</td><td>QA Lead</td><td><span class="tier-tag tier-qa">QA Lead</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>52</td><td>Teresa Francis</td><td>QA Lead</td><td><span class="tier-tag tier-qa">QA Lead</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>53</td><td>Ashish Patel</td><td>QA Lead</td><td><span class="tier-tag tier-qa">QA Lead</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>54</td><td>Shama Ansari</td><td>QA Lead</td><td><span class="tier-tag tier-qa">QA Lead</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+</table>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#50 — Vengadesan Jayaraman | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Vengadesan's automation suite at BMO<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Vengadesan,<br><br>I keep hearing from QA leads at large banks that when digital banking products release frequently, regression maintenance becomes the bottleneck, not the code review. Coverage debt builds until it shows up in a release. Does that happen at BMO?<br><br>Hansard was in that spot and cut their regression window from 8 to 5 weeks.<br><br>If reducing that kind of debt is something your team is focused on, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at financial services companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 97 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#51 — Arif Dhamani | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Arif's regression coverage at BMO<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Arif,<br><br>Most QA leads at financial institutions say the same thing: when the product spans digital banking, payments, and wealth management, keeping regression coverage current across all three is a real maintenance challenge. Is that something your team deals with at BMO?<br><br>CRED had similar pressure and reached 90% regression coverage 5x faster.<br><br>If scaling coverage across that surface is something you're exploring, is that a direction worth discussing?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at financial services companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 91 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#52 — Teresa Francis | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Teresa's coverage growth at BMO<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Teresa,<br><br>One thing that keeps coming up with QA leads at large banks: test suites built for one product generation become a maintenance burden when the platform evolves, and the cost of keeping them current outpaces the value of new coverage. Does that happen at BMO?<br><br>MediBuddy automated 2,500 tests and cut maintenance by 50%.<br><br>If reducing that burden is something your team is working on, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at financial services companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 94 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#53 — Ashish Patel | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Ashish's regression suite at BMO<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Ashish,<br><br>At a bank like BMO, digital product releases touch customer-facing apps, payments infrastructure, and compliance workflows at the same time. Keeping regression tests current across all three is a significant ongoing effort. Is that something your team is navigating?<br><br>Cisco tackled the same problem and cut regression overhead by 35%.<br><br>If reducing that overhead is something your team is focused on, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at financial services companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 90 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#54 — Shama Ansari | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Shama's test creation at BMO<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Shama,<br><br>Most QA leads at financial institutions say the same thing: the faster the digital product moves, the more brittle the regression suite becomes, and fixing it starts to cost more than building features. Curious if that's something BMO is dealing with?<br><br>Sanofi hit the same wall and compressed their full regression suite from 3 days to 80 minutes.<br><br>If reducing that brittleness is something your team is looking at, is it worth a conversation?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at financial services companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 97 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="section-note" style="margin-top:8px;"><strong>Status:</strong> All drafts above are QA-passed and ready. Send ONLY after Rob gives explicit APPROVE SEND per contact.</div>
+</div>
+
+<!-- ==================== POINT32HEALTH (2) ==================== -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">Point32Health</div>
+  <span class="badge badge-tam-high">TAM HIGH</span>
+  <span class="badge badge-enrolled">2 contacts</span>
+</div>
+<p style="color:#64748b;font-size:13px;margin-bottom:12px;">Healthcare / Insurance | ~2,500 emp | TAM ID: point32health.org</p>
+<table>
+  <tr><th>#</th><th>Name</th><th>Title</th><th>Persona</th><th>Status</th></tr>
+  <tr><td>55</td><td>Ajay Jeevanandam</td><td>Lead IS Quality Assurance Analyst</td><td><span class="tier-tag tier-qa">QA Lead</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+  <tr><td>56</td><td>Raj Kurup</td><td>Vice President Engineering & Operations</td><td><span class="tier-tag tier-eng">VP Eng</span></td><td class="status-enrolled">✅ Enrolled</td></tr>
+</table>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#55 — Ajay Jeevanandam | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Ajay's QA coverage at Point32Health<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Ajay,<br><br>I keep hearing from QA analysts at health plans that when member portal features update frequently, regression tests tied to enrollment, benefits, and claims require constant adjustment. Coverage debt builds faster than it gets cleaned up. Does that happen at Point32Health?<br><br>MediBuddy automated 2,500 tests and cut maintenance by 50%.<br><br>If reducing that maintenance cycle is something your team is working on, is that a direction worth exploring?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at healthcare technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 91 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="draft-block" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:14px;margin-top:12px;font-size:13px;">
+  <strong style="color:#1d4ed8;">#56 — Raj Kurup | T1 Sent Mar 13</strong><br>
+  <strong>Subject:</strong> Raj's engineering velocity at Point32Health<br><br>
+  <div style="font-family:monospace;white-space:pre-wrap;font-size:12px;line-height:1.6;">Hi Raj,<br><br>At Point32Health, releasing updates across member-facing products and health plan workflows means regression coverage can't be partial, but full regression cycles slow release cadence. Does that tension between coverage depth and release speed come up for your engineering org?<br><br>Hansard was in that spot and cut their regression window from 8 to 5 weeks.<br><br>If compressing that cycle without reducing coverage is something you're exploring, how are you thinking about it?<br><br>Rob Gorham | Testsigma<br>I help QA and engineering leaders at healthcare technology companies reduce test maintenance and ship releases faster.</div>
+  <div style="margin-top:8px;font-size:11px;color:#64748b;">Word count: 94 | MQS: PASS ✅ | Status: <strong style="color:#92400e;">⏳ AWAITING APPROVE SEND</strong></div>
+</div>
+<div class="section-note" style="margin-top:8px;"><strong>Status:</strong> All drafts above are QA-passed and ready. Send ONLY after Rob gives explicit APPROVE SEND per contact.</div>
+</div>
+
+<!-- ==================== FOOTER ==================== -->
+<div class="summary-box" style="margin-top:40px;">
+<h2 style="margin-top:0;">Session Notes</h2>
+<table>
+  <tr><th>Item</th><th>Value</th></tr>
+  <tr><td>Session</td><td>32-33 (picked up from prior context)</td></tr>
+  <tr><td>Task</td><td>TASK-033 — TAM T1 Batch, 100 contact enrollment target</td></tr>
+  <tr><td>Sequence</td><td>TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)</td></tr>
+  <tr><td>Send-from account</td><td>68e3b53ceaaf74001d36c206 (robert.gorham@testsigma.com)</td></tr>
+  <tr><td>Enrollment confirmed via</td><td>contacts_already_exists_in_current_campaign response on retry (all 56)</td></tr>
+  <tr><td>MASTER_SENT_LIST rows added</td><td>56 (rows 497–552)</td></tr>
+  <tr><td>MASTER_SENT_LIST total rows</td><td>552 (1 header + 551 data)</td></tr>
+  <tr><td>T1 drafts written</td><td>56 — all drafted, MQS passed, awaiting APPROVE SEND</td></tr>
+  <tr><td>Catch-all domains</td><td>yext.com, evernorth.com, jackhenry.com, singlestore.com</td></tr>
+  <tr><td>Dedup status</td><td>All 56 passed 6-point check + TAM domain verification</td></tr>
+</table>
+
+<div class="section-note" style="margin-top:16px;">
+<strong>Companies NOT covered this batch (still in TAM HIGH backlog):</strong>
+OSF HealthCare, Farmers Insurance Exchange, AppLovin, Bethesda Softworks, SailPoint, hims &amp; hers, Zimmer Biomet, Saber Interactive, Enterprise Mobility, Winsupply, Charles River Labs<br>
+<strong>Factor accounts:</strong> OSF HealthCare — highest priority for next batch.
+</div>
+</div>
+
+</body>
+</html>

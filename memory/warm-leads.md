@@ -76,6 +76,74 @@
 
 ---
 
+---
+
+## 🔥 TELUS — 3 Contacts Called Back (Mar 11-12) — URGENT
+| Field | Detail |
+|-------|--------|
+| Account | TELUS (telus.com) — Telecom, ~40K employees, Toronto/Vancouver |
+| Priority | P0 — Multiple inbound calls, same company, same day |
+| Sequence | TAM Outbound - Rob Gorham (6904f70577baa100190e4858) |
+| Signal | 3 separate contacts from TELUS all called Rob's Apollo dialer |
+
+### Contact 1: Krystal Jackson-Lennon
+| Field | Detail |
+|-------|--------|
+| Title | Manager, Technology Strategy / SRE / Performance Engineering |
+| Email | krystal.jackson-lennon@telus.com |
+| Phone | +1 416-906-2317 |
+| Calls | 4 calls on Mar 12 at 3:55-3:56 PM (back-to-back) |
+| Apollo Status | Sequence FINISHED — inactive reason: "talked on phone" |
+| Next | Call back ASAP. She tried 4 times — clearly motivated. |
+
+### Contact 2: Mike Brown
+| Field | Detail |
+|-------|--------|
+| Title | Quality Assurance Manager |
+| Email | mike.brown@telus.com |
+| Phone | +1 604-999-8592 (North Vancouver, BC) |
+| Calls | 2 calls on Mar 11 at 3:25-3:40 PM |
+| Apollo Status | Sequence FINISHED — inactive reason: "Completed last step" |
+| Next | Call back. Completed sequence + called back = warm. |
+
+### Contact 3: Rajesh Ranjan
+| Field | Detail |
+|-------|--------|
+| Title | Engineering Manager, Data Engineering & Analytics |
+| Email | rajesh.ranjan@telusagcg.com |
+| Phone | +1 647-936-7954 (Toronto, ON) |
+| Calls | 1 call on Mar 11 at 3:00 PM |
+| Apollo Status | Sequence ACTIVE — currently at step 4 |
+| Note | Email sends to @telusagcg.com subdomain — verify it reached him |
+| Next | Call back. Also still in active sequence. |
+
+**Pattern:** All 3 are from TELUS, all called within the same 2-day window. The account is clearly engaged. Rob should call all 3 back today. When connected: lead with performance engineering angle (Krystal is SRE/performance focused).
+
+**Outreach Log:**
+| Date | Contact | Event | Notes |
+|------|---------|-------|-------|
+| Feb 23 | Krystal J-L | Enrolled in TAM Outbound | krystal.jackson-lennon@telus.com |
+| Feb 12 | Mike Brown | Enrolled in TAM Outbound | mike.brown@telus.com |
+| Feb 23 | Rajesh Ranjan | Enrolled in TAM Outbound | rajesh.ranjan@telusagcg.com |
+| Mar 11 | Mike Brown | Called Rob via Apollo dialer ×2 (3:25 PM + 3:40 PM) | MISSED |
+| Mar 11 | Rajesh Ranjan | Called Rob via Apollo dialer ×1 (3:00 PM) | MISSED |
+| Mar 12 | Krystal J-L | Called Rob via Apollo dialer ×4 (3:55-3:56 PM) | MISSED — sequence auto-finished on call |
+
+---
+
+## 📅 Anewgo — Meeting Booked (Apr 13)
+| Field | Detail |
+|-------|--------|
+| Contact | Elias E. del Real |
+| Email | elias@anewgo.com |
+| Company | Anewgo (anewgo.com) |
+| Meeting | Mon Apr 13, 2026 12:00-12:15 PM EDT |
+| Status | CONFIRMED — calendar invite accepted |
+| AE | William Dalley (also accepted) |
+| Note | Earlier bounce for elias@anugo.com was wrong domain typo — correct is elias@anewgo.com |
+
+---
+
 ## Re-Engagement Triggers
 | Trigger | Action |
 |---------|--------|

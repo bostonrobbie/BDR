@@ -1,0 +1,10 @@
+{
+  "session_number": 32,
+  "started_at": "2026-03-13T14:00:00Z",
+  "last_heartbeat": "2026-03-13T14:00:00Z",
+  "status": "active",
+  "task": "Startup + state report. Awaiting Rob direction on TAM T1 batch or T2 drafts.",
+  "claimed_companies": [],
+  "files_editing": [],
+  "agent_type": "cowork"
+}

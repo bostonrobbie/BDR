@@ -6,7 +6,7 @@ Every day that new T1 outreach is needed. This is the primary daily workflow per
 ---
 
 ## Overview
-Source contacts from TAM/Factor accounts, research them, draft personalized T1 emails, QA gate them, enroll in Apollo, and present for Rob's APPROVE SEND. Target: 25-50 new contacts enrolled per send day.
+Source contacts from TAM/Factor accounts, research them, draft personalized T1 emails, QA gate them, enroll in Apollo, and present for Rob's APPROVE SEND. Target: 50-100 new contacts enrolled per send day (25 minimum on light days).
 
 ---
 
@@ -188,10 +188,12 @@ Tell Rob:
 
 1. **INC-010:** Enrolling non-TAM contacts in TAM Outbound sequence. Always verify domain against tam-accounts-mar26.csv.
 2. **INC-007:** Sending placeholder emails (Apollo template instead of custom draft). Always paste the custom draft from the tracker HTML before clicking Send.
-3. **INC-001:** Sending Touch 2 before Day 4 of the sequence. Respect the cadence: T2 not before Day 4, T3 not before Day 9.
-4. **Double-sends:** Contact already received outreach from another channel/batch. Always dedup against MASTER_SENT_LIST.csv.
-5. **Same proof point at same company:** Two contacts at Fidelity both getting the Hansard story. Track proof points per company in the tracker HTML.
+3. **INC-012 (CRITICAL):** Wrong email body sent due to Quill API injection. NEVER use dangerouslyPasteHTML or setText/setContents. Body insertion = `e.focus(); document.execCommand('selectAll'); document.execCommand('insertText', false, bodyText)` ONLY. Two-gate rule: APPROVE SEND (content) ≠ APPROVE CLICK (send button). JS readback required before every Send Now click. Full protocol: `memory/playbooks/apollo-task-queue-sends.md`.
+4. **INC-001:** Sending Touch 2 before Day 4 of the sequence. Respect the cadence: T2 not before Day 4, T3 not before Day 9.
+5. **Double-sends:** Contact already received outreach from another channel/batch. Always dedup against MASTER_SENT_LIST.csv.
+6. **Same proof point at same company:** Two contacts at Fidelity both getting the Hansard story. Track proof points per company in the tracker HTML.
+7. **Subject line not corrected:** Apollo pre-fills "Firstname's QA coverage at Company" from template — must triple-click subject field and retype correct personalized subject from batch tracker for EVERY task before sending.
 
 ---
 
-*Last updated: 2026-03-12 — consolidated from Sessions 4-27*
+*Last updated: 2026-03-13 (Session 34) — daily target corrected 25-50 → 50-100; INC-012 and subject-correction mistake added to Common Mistakes section.*

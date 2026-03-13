@@ -1,13 +1,13 @@
 # SOP: TAM Outbound — End-to-End Process
-## Version 4.1 — Updated Mar 11, 2026 (Send protocol corrected: JS execCommand insertText confirmed working. Clipboard paste returns "Placeholder." Part 24: Subject Correction Protocol. Part 25: T2 Send Protocol — ALL STEPS MANUAL, no auto-send. Part 26: Process Logging and Activity Tracking.)
+## Version 4.2 — Updated Mar 13, 2026 (Daily target corrected 50 → 50-100; INC-012 two-gate send protocol mandatory; T2 formula v4 locked Mar 12 — 140-190 words, Deep-Dive 4-part structure, 15-min CTA, banned phrases. Previous: v4.1 Mar 11 — execCommand insertText confirmed, subject correction protocol, T2 all-manual.)
 
 This SOP governs all outreach to named TAM accounts. It is the authoritative guide for any Claude agent executing the TAM outbound process. Read this file in full before starting any TAM batch.
 
-**Target:** 50 T1 sends per day, enrolled in TAM Outbound sequence, at highest personalization quality.
+**Target:** 50-100 T1 sends per day (25 minimum on light days), enrolled in TAM Outbound sequence, at highest personalization quality.
 **Method:** Rolling daily batches. Account-first research (one company pass covers all contacts at that company). Continuous pipeline — no wave gating.
 **Sequence:** TAM Outbound - Rob Gorham (`69afff8dc8897c0019b78c7e`) — enrollment email: `robert.gorham@testsigma.com`
 
-**Daily priority directive (Mar 12, 2026):** New T1 batch work is the #1 daily priority. Start every session by sourcing and sending new contacts. T2s are handled after T1 batch is complete. Apollo manages the follow-up cadence automatically — the T1 pipeline is what requires active daily effort.
+**Daily priority directive (Mar 13, 2026):** New T1 batch work is the #1 daily priority. Start every session by sourcing and sending new contacts. T2s are handled after T1 batch is complete. Apollo manages the follow-up cadence automatically — the T1 pipeline is what requires active daily effort.
 
 ---
 
@@ -43,7 +43,7 @@ TAM outbound runs as a continuous daily pipeline. No wave gating. Batches go out
 **Wave 2+** = Tier B/C TAM accounts from `tam-accounts-mar26.csv`. Start building immediately.
 
 ### Rolling Batch Rules
-- **Daily goal: 50 T1 sends enrolled in TAM Outbound sequence.** This is the target, not a hard cap — if 45 or 55 are ready, that's fine.
+- **Daily goal: 50-100 T1 sends enrolled in TAM Outbound sequence (25 minimum on light days).** This is the target range, not a hard cap — aim for 50 as baseline, push to 100 on full sessions.
 - Each day = one or more batch tracker files (e.g., `tamob-batch-20260310-1.html`). If a day's 50 contacts span many accounts, a single tracker file is fine. Split only if the file gets unwieldy (>60 rows).
 - Tier A contacts always go in the current batch alongside Tier B/C — no separate queue.
 - Do NOT hold Tier B accounts waiting for Tier A to finish. They run concurrently in the same daily batch.
@@ -769,13 +769,13 @@ When in doubt: Apollo + batch tracker HTML will tell you everything you need to 
 
 ---
 
-## Part 20: Daily Batch Cadence — 50/Day Target
+## Part 20: Daily Batch Cadence — 50-100/Day Target
 
-This is the repeating daily workflow. **Critical rule: complete ALL research for all 50 contacts before writing a single draft.** Do not draft as you go. Research the full batch first, then draft everything.
+This is the repeating daily workflow. **Critical rule: complete ALL research for all contacts before writing a single draft.** Do not draft as you go. Research the full batch first, then draft everything.
 
-### Phase 1: Account Sourcing — Pull Until You Have 50 Contacts (30 min)
+### Phase 1: Account Sourcing — Pull Until You Have 50-100 Contacts (30 min)
 
-**Goal:** Source enough accounts to produce exactly 50 clean contacts for today's batch.
+**Goal:** Source enough accounts to produce 50-100 clean contacts for today's batch (25 minimum on light days).
 
 1. Open `tam-coverage-tracker.csv`
 2. Filter: `icp = HIGH`, `status = ✅ Untouched` — sort by employee count descending
@@ -838,7 +838,7 @@ Draft in account batches, not random order. Write all contacts at one company co
 **Per contact (~4-5 min):**
 1. Write T1 subject (SMYKM — specific to this person/company, not a generic pain category)
 2. Write T1 body (HC1 opener → challenge observation tied to their role scope + company trigger → proof point → "what day works" CTA, 75-100 words)
-3. Write T2 body (bridge phrase → new angle → new proof point from T2 rotation → engagement question, 50-70 words)
+3. Write T2 body (Deep-Dive v4 — "I imagine" pain deepening → Testsigma pitch → customer story → 15-min CTA, 140-190 words. See Part 7 for canonical formula and reference example.)
 4. Self-check: if the next contact at this same company read both their T1 and yours side by side, would they think it was the same template? If yes: revise the opener or the challenge sentence.
 
 **Draft speed is fast here because all research is pre-done.** You're not thinking "what angle do I use?" — you're filling in a pre-mapped structure.
@@ -852,7 +852,7 @@ Before presenting to Rob, run the batch through the QA Gate:
 - [ ] HC1 compliant opener: "We have yet to be properly introduced, but I'm Rob with Testsigma."
 - [ ] T1 subject is person/company-specific (NOT generic pain phrase)
 - [ ] T1 body 75-100 words (hard cap 120)
-- [ ] T2 body 50-70 words
+- [ ] T2 body 140-190 words (Deep-Dive v4 — Part 7 canonical formula)
 - [ ] T1 and T2 use different proof points
 - [ ] No em dashes anywhere
 - [ ] No two contacts at same company have same opener angle, same proof point, or same CTA phrasing
@@ -1486,38 +1486,33 @@ Apollo queues the Step 2 (T2) task automatically after Step 1 is marked complete
 
 ### T2 Formula
 
-T2 is a follow-up to T1. It must NOT repeat T1. It must add a new angle, new proof point, and new question.
+⚠️ **CANONICAL SOURCE IS PART 7 (Deep-Dive v4, Updated Mar 12).** The section below is superseded. Use Part 7 for all T2 drafting. Playbook: `memory/playbooks/t2-followup.md`.
 
-**Structure (50-70 words, NOT "what day works" CTA):**
-1. **Bridge** (1 sentence) — acknowledges T1 sent, pivots immediately. Never "just following up." Use: "One more thought on [topic]," or "Wanted to add one more data point."
-2. **New angle / new proof point** (2-3 sentences) — different from T1. If T1 used coverage angle, T2 uses maintenance time angle. Cite a specific customer story or stat.
-3. **Engagement question CTA** (1 sentence) — open-ended, NOT "what day works." Use: "Is [specific challenge] something you're dealing with?" or "How are you handling [topic] today?"
-
-**T2 is NOT:**
-- A shorter version of T1
-- A generic "following up on my last email"
-- Another ask for a meeting (that comes later)
-- More than 70 words
+**T2 Summary (from Part 7 v4):**
+- **Word count:** 140-190 words (intentionally longer than T1)
+- **Structure (4 parts):** (1) "I imagine" + deeper pain speculation, (2) Testsigma solution pitch, (3) customer story + WHY relevant, (4) 15-minute CTA
+- **CTA:** 15-minute meeting ask ("Would 15 minutes make sense to walk through how [Customer] made that shift and see if it applies?") — NOT an engagement question
+- **BANNED:** "Circling back" / "Following up" / "One more angle worth adding" / "Different lens from my last note"
+- **Threading:** Send as a reply to T1 thread when possible
+- **New proof point:** Must be different from T1 customer story
 
 ---
 
-### T2 QA Gate
-
-Same MQS framework as T1, adapted for T2:
+### T2 QA Gate (Part 7 v4)
 
 | Check | Pass |
 |-------|------|
-| Word count | 50-70 words |
-| Question marks | Exactly 1 (the CTA question) |
-| No banned words | "AI," "self-healing," "flaky test," "CI/CD," "I noticed," "I saw," "what day works" |
+| Word count | 140-190 words |
+| "I imagine" opener in Part 1 | Yes |
+| Different proof point from T1 | Yes |
+| No banned phrases ("Circling back" etc.) | Zero |
+| Named customer with specific metric | Yes |
+| WHY customer story is relevant to them | Yes |
+| 15-minute CTA (not engagement question) | Yes |
+| No placeholder text | Zero |
 | No em dashes | Zero |
-| No named customers | Zero |
-| New angle from T1 | Different challenge hook than T1 |
-| Engagement question (not meeting ask) | Yes — "Is this a problem you face?" not "What day works?" |
-| HC1 compliant opener | T2 can drop HC1 (already introduced) — starts with bridge phrase |
-| Signature block present | Yes |
 
-Minimum passing score: 9/10 applicable criteria. Fix before enrolling.
+Minimum passing score: 7/9. Fix before sending.
 
 ---
 

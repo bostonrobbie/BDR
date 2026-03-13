@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-12 (Session 31 — Audit + SOP hardening complete. 5 files updated. Handoff.md brought current. MASTER_SENT_LIST.csv 496 rows.)
+## Last Updated: 2026-03-13 (Session 34 — Batch 8 T1 sends complete, 55/56 sent. Monika Sharma skipped per Rob. TASK-035 added for Batch 8 T2 drafts due Mar 18. MASTER_SENT_LIST.csv 552 rows.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 Follow the 14-step startup in `AGENTS.md` (v2.0). Key steps:
@@ -19,6 +19,58 @@ Tasks are sorted by priority. Claim one task at a time by updating status to IN_
 ---
 
 ## 🔴 CRITICAL — Do First
+
+### TASK-033: Call Back TELUS Contacts TODAY — 3 Missed Inbound Calls
+**Status:** UNCLAIMED — Rob must call back
+**Priority:** P0 — inbound calls from active prospects
+**Date Added:** 2026-03-13 (reply-classifier scheduled run)
+
+3 TELUS contacts called Rob's Apollo dialer and got no answer. Call back ASAP:
+
+| Priority | Name | Title | Phone | Calls | When |
+|----------|------|-------|-------|-------|------|
+| 1st | Krystal Jackson-Lennon | Manager, Technology Strategy/SRE/Perf Eng | +1 416-906-2317 | ×4 | Mar 12 3:55-3:56 PM |
+| 2nd | Mike Brown | Quality Assurance Manager | +1 604-999-8592 | ×2 | Mar 11 3:25-3:40 PM |
+| 3rd | Rajesh Ranjan | Engineering Manager | +1 647-936-7954 | ×1 | Mar 11 3:00 PM |
+
+**Talk track:** Performance engineering + test automation at scale. Krystal is SRE/performance focused — lead with flaky tests / performance test automation angle.
+**After call:** Update warm-leads.md + contact-lifecycle.md with outcome. If positive: add MEETING_BOOKED row.
+**Note:** All 3 from same TELUS account — coordinate messaging so they don't feel siloed. Consider telling each you're talking to their colleagues.
+
+---
+
+### TASK-034: Fix Bounce Cluster — EA, Humana, Mastercard, Others
+**Status:** UNCLAIMED
+**Priority:** P1 — multiple contacts unreachable
+**Date Added:** 2026-03-13 (reply-classifier scheduled run)
+
+Bounce summary from Mar 11-12 sends:
+
+| Contact | Company | Email (bounced) | Action |
+|---------|---------|-----------------|--------|
+| Clifton Wilcox | EA | clifton@ea.com | Re-source via Sales Nav — @ea.com format invalid |
+| Simon Crawford | EA | simon.crawford@ea.com | Re-source or skip |
+| Divya Sathish | EA | divya.sathish@ea.com | Already flagged in TASK-021 |
+| Jiadong Shen | EA | jiadong.shen@ea.com | Already flagged in TASK-021 |
+| Janel Jolly | EA | janel.jolly@ea.com | Re-source |
+| William Xie | EA | william.xie@ea.com | Re-source |
+| Sabrina Perry | EverBank | sabrina.perry@everbank.com | SPAM BLOCKED (not a bounce) — EverBank blocks external senders. May need LinkedIn outreach instead. VP QA = high value. |
+| Zahidh Zubair | Citizens Bank | zahidh.zubair@citizensaccess.com | Apollo shows @citizensaccess.com but bounce to @citizensbank.com — verify which domain |
+| David Schraff | Cleveland Clinic | schraffd@ccf.org | Bounced — re-source or try alternate |
+| salam6@humana.com | Humana | Bad format email | Skip — email pattern invalid |
+| sgangyshetty@humana.com | Humana | Bad format | Skip |
+| ahmet.cakar@humana.com | Humana | Bounced | Re-source |
+| koushal.ram@mastercard.com | Mastercard | SMTP 550 | Already flagged — skip or re-source |
+| kshchelkonogova@mastercard.com | Mastercard | SMTP 550 | Already flagged in TASK-021 (Ksenia Shchelkonogova) |
+| r.soto@cash.app | Cash.App/Block | Bounced | Re-source |
+| jessica.harris@onemainfinancial.com | OneMain Financial | Bounced | Re-source |
+| mseal@draftkings.com | DraftKings | Bounced | Re-source |
+
+**EA Note:** 6 EA bounces suggests @ea.com domain doesn't accept email at these addresses. May need Sales Nav InMail for EA contacts instead of email. Reference: Yu Jin + Maalika Tadinada (from Wave 2, yjin@ea.com/mtadinada@ea.com) — check if those bounced too.
+
+**Sabrina Perry note:** VP QA at EverBank is high value but email is blocked at the network level. Recommend LinkedIn InMail as alternative channel.
+
+---
 
 ### TASK-021: Enroll + Send Wave 4 T1 (48 contacts)
 **Status:** ✅ DONE (2026-03-11, Sessions 22-25)
@@ -92,9 +144,26 @@ All 9 contacts enrolled in TAM Outbound Step 1. When Apollo surfaces the manual 
 **Output:** T2 drafts added to `tamob-batch-20260312-4.html` or separate file
 
 9 contacts from Wave 5 Batch 4. T2 tasks will appear in Apollo ~Day 5 from T1 send.
-**Formula:** sop-tam-outbound.md Part 7 — 50-70 words, engagement question CTA, different proof point from T1
+**Formula:** sop-tam-outbound.md Part 7 (Deep-Dive v4, locked Mar 12) — 140-190 words, 4-part: "I imagine" pain + Testsigma pitch + customer story + 15-min CTA. BANNED: "Circling back" / "Following up." See `memory/playbooks/t2-followup.md` for full formula + reference example.
 **Check T1 proof points:** `tamob-batch-20260312-4.html` (9 contact T1 drafts)
 **APPROVE SEND required before any sends**
+
+### TASK-035: Draft T2 Emails — Batch 8 (55 contacts, due Mar 18)
+**Status:** UNCLAIMED
+**Priority:** P1 — T2 due Mar 18 (Day 5 from Mar 13 T1 send)
+**Effort:** ~120-180 min (large batch, 14 accounts)
+**Output:** `tamob-batch8-t2-drafts-mar18.html`
+
+55 contacts enrolled in TAM Outbound Mar 13. T1 sent Mar 13. T2 tasks will appear in Apollo Tasks tab ~Mar 17-18.
+**Formula:** sop-tam-outbound.md Part 7 (Deep-Dive v4, locked Mar 12) — 140-190 words, 4-part: (1) "I imagine" + deeper pain, (2) Testsigma solution pitch, (3) customer story with WHY, (4) 15-min CTA. BANNED: "Circling back" / "Following up." See `memory/playbooks/t2-followup.md` for full formula + reference example.
+**Check T1 proof points:** `tamob-batch-20260313-1.html` (55 contact T1 drafts — use different proof point per contact)
+**Send via:** Apollo UI → INC-012 protocol (JS insertText body, subject correction, readback verify, Send Now)
+**APPROVE SEND required before any sends**
+
+**Accounts:** WatchGuard (7), Everbridge (7), Procore (2), Pluralsight (4), Sysdig (3), Yext (3), SingleStore (1), Evernorth (3), Couchbase (4), Pathlock (5), Tandem Diabetes Care (5), Jack Henry (4), BMO Financial Group (5), Point32Health (2)
+**Note:** Monika Sharma (#15, Everbridge) was skipped — do NOT draft T2 for her.
+
+---
 
 ### TASK-022: Draft T2 Emails — Wave 4 (35 contacts, due Mar 19)
 **Status:** UNCLAIMED
@@ -103,8 +172,8 @@ All 9 contacts enrolled in TAM Outbound Step 1. When Apollo surfaces the manual 
 **Output:** `tamob-wave4-t2-drafts-mar19.html`
 
 35 contacts enrolled in TAM Outbound Mar 11. T2 tasks will appear in Apollo Tasks tab ~Mar 18-19.
-When Apollo surfaces them → draft + send per TASK-017 protocol.
-**Formula:** sop-tam-outbound.md Part 7 — 50-70 words, engagement question CTA, different proof point from T1
+When Apollo surfaces them → draft + send per t2-followup.md playbook.
+**Formula:** sop-tam-outbound.md Part 7 (Deep-Dive v4, locked Mar 12) — 140-190 words, 4-part: "I imagine" pain + Testsigma pitch + customer story + 15-min CTA. BANNED: "Circling back" / "Following up." See `memory/playbooks/t2-followup.md` for full formula + reference example.
 **Check T1 proof points:** `tamob-batch-20260311-2.html` (35 contact T1 drafts with subjects + bodies)
 **Send via:** Apollo UI (Part 23 of sop-tam-outbound.md v3.1) → manually paste → Send Now
 **APPROVE SEND required before any sends**
@@ -177,8 +246,8 @@ Audit Gmail drafts from all testsigma.com accounts:
 **Output:** `tamob-wave3-t2-drafts-mar16.html`
 
 35 contacts enrolled in TAM Outbound Mar 11. T2 tasks will appear in Apollo Tasks tab ~Mar 15-16.
-When Apollo surfaces them → draft + send per TASK-017 protocol.
-**Formula:** sop-tam-outbound.md Part 7 — 50-70 words, engagement question CTA, different proof point from T1
+When Apollo surfaces them → draft + send per t2-followup.md playbook.
+**Formula:** sop-tam-outbound.md Part 7 (Deep-Dive v4, locked Mar 12) — 140-190 words, 4-part: "I imagine" pain + Testsigma pitch + customer story + 15-min CTA. BANNED: "Circling back" / "Following up." See `memory/playbooks/t2-followup.md` for full formula + reference example.
 **Check T1 proof points:** `tamob-batch-20260311-1.html` (35 contact T1 drafts with subjects + bodies)
 **Send via:** Apollo UI (Part 23 of sop-tam-outbound.md v3.1) → manually paste → Send Now
 **APPROVE SEND required before any sends**
@@ -200,8 +269,7 @@ Sucheth Ramgiri (Commvault) hard-bounced — sramgiri@commvault.com is invalid (
 **Output:** `tamob-wave1-t2-drafts-mar12.html` and `tamob-wave2-t2-drafts-mar11.html`
 
 **When to do this:** Open Apollo Tasks tab → when T2 tasks appear as due, THEN draft + send.
-**Formula:** sop-tam-outbound.md Part 7 — 50-70 words, engagement question CTA (NOT "what day works"), different proof point from T1.
-**Draft structure:** (1) light callback to T1 send, (2) new angle/proof point, (3) engagement question close
+**Formula:** sop-tam-outbound.md Part 7 (Deep-Dive v4, locked Mar 12) — 140-190 words, 4-part: (1) "I imagine" + deeper pain, (2) Testsigma solution pitch, (3) customer story with WHY, (4) 15-min CTA. BANNED: "Circling back" / "Following up" / "One more angle." See `memory/playbooks/t2-followup.md` for full formula + QA gate + reference example.
 **Check T1 proof points:** tamob-wave1-draft-mar10.html / tamob-wave2-draft-mar10.html (no repeat per contact)
 **Send via:** Apollo UI (Part 23 of sop-tam-outbound.md v3.1) → manually paste subject + body → Send Now → Apollo marks Done and auto-advances automatically
 **APPROVE SEND required before any sends**
@@ -511,7 +579,7 @@ Use the Contact Depth Rule from sop-tam-outbound.md Part 3:
 - Shawn Woods: Below Director threshold — include or skip?
 
 **Step D — Build T2 drafts for same contacts**
-After T1 drafts complete. Use unified email-first formula (sop-tam-outbound.md Part 7): 4 parts, 50-70 words, engagement question CTA, different proof point from T1.
+After T1 drafts complete. Use Deep-Dive v4 formula (sop-tam-outbound.md Part 7): 140-190 words, 4 parts — "I imagine" pain + Testsigma pitch + customer story + 15-min CTA, different proof point from T1. Full playbook: `memory/playbooks/t2-followup.md`.
 
 **Step E — Present BATCH SUMMARY block to Rob**
 Format per sop-tam-outbound.md Part 10. Wait for "APPROVE SEND."
@@ -526,7 +594,7 @@ For each contact sent:
 **Apollo task queue becomes the follow-up controller after enrollment.** Each enrolled contact auto-generates a Step 2 task for Day 5. Check Apollo daily for tasks due.
 
 **T1 formula:** Enterprise Email T1 (HC1 intro, SMYKM subject, 75-100 words). sop-tam-outbound.md Part 6.
-**T2 formula:** Unified email-first (4 parts, 50-70 words, engagement question). sop-tam-outbound.md Part 7.
+**T2 formula:** Deep-Dive v4 (140-190 words, "I imagine" pain + pitch + customer story + 15-min CTA). sop-tam-outbound.md Part 7. Full playbook: `memory/playbooks/t2-followup.md`.
 **Enrollment email:** robert.gorham@testsigma.com (.com ONLY)
 
 ---

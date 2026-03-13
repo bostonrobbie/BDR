@@ -1,10 +1,10 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-12 (Session 31 — Comprehensive audit of all tracking files + SOP hardening. 5 protocol files updated (AGENTS.md v2.1, dedup-protocol.md, session-handoff.md, tam-t1-batch SKILL.md, messages.md rules). MASTER_SENT_LIST.csv now 496 rows. Handoff.md brought current through Sessions 29-31.)
+## Last Updated: 2026-03-13 (Session 34 — Batch 8 T1 sends complete. 55/56 T1 emails sent via Apollo Tasks tab. Monika Sharma (#15, Everbridge) skipped per Rob. Tracker badges updated to "T1 Sent Mar 13". T2 due Mar 18. Logs + SOPs updated for daily 50-100 send target.)
 
 ---
 
 ## TODAY'S DATE
-**Thursday, March 12, 2026**
+**Friday, March 13, 2026**
 
 ---
 
@@ -164,7 +164,7 @@ Wave 2 T1 sent Mar 10 (8-11 AM). T2 tasks were due same day. Complete asap.
 Wave 3 T1 enrolled Mar 11. T2 tasks will appear in Apollo ~Mar 15-16. Check Apollo Tasks tab then.
 
 **Next action for T2s:** Open Apollo Tasks tab → execute any due Wave 1/2 tasks → draft + send per TASK-017
-**T2 formula:** sop-tam-outbound.md Part 7 — 50-70 words, engagement question CTA, different proof point from T1
+**T2 formula:** sop-tam-outbound.md Part 7 (Deep-Dive v4, locked Mar 12) — 140-190 words, "I imagine" pain + Testsigma pitch + customer story + 15-min CTA. BANNED: "Circling back" / "Following up." See `memory/playbooks/t2-followup.md` for full formula.
 **Draft files to create:** `tamob-wave1-t2-drafts-mar12.html`, `tamob-wave2-t2-drafts.html`, `tamob-wave3-t2-drafts-mar16.html`
 
 **Session 14 tracker fixes applied:**
@@ -541,6 +541,41 @@ These were added by concurrent sessions. See messages.md for session-specific DO
 
 ---
 
+## TAM OUTBOUND BATCH 8 — (Mar 13 — Sessions 32-34)
+
+**✅ 56 CONTACTS ENROLLED — TASK-033 COMPLETE**
+**✅ T1 SENDS COMPLETE — 55/56 SENT MAR 13 (Session 34)**
+**⚠️ Monika Sharma (#15, Everbridge) — SKIPPED per Rob. Apollo task disappeared from queue; no email sent. Do not retry.**
+
+**File:** `tamob-batch-20260313-1.html` — Badges updated: 55 × "T1 Sent Mar 13" (blue), 1 × "MANUAL SEND NEEDED" (Monika Sharma, red — effectively skipped)
+**Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
+**MASTER_SENT_LIST.csv:** 56 rows added (rows 497-552). Total 552 rows (standard name: "TAM Outbound Batch 8 Mar13").
+**Enrollment confirmed via:** `contacts_already_exists_in_current_campaign` response on retry
+**T2 due:** Mar 18 (Day 5 from Mar 13 send date) — TASK-035 tracks T2 drafts
+**Send method used (INC-012 protocol):** Triple-click subject → retype correct subject → JS execCommand insertText body → readback verify → ref click Send Now → screenshot confirm auto-advance → Gmail MCP verify within 60s
+
+**56 contacts across 14 accounts:**
+| Company | Count | Domain | Notes |
+|---------|-------|--------|-------|
+| WatchGuard | 7 | watchguard.com | TAM HIGH |
+| Everbridge | 8 | everbridge.com | TAM HIGH |
+| Procore | 2 | procore.com | TAM HIGH |
+| Pluralsight | 4 | pluralsight.com | TAM HIGH |
+| Sysdig | 3 | sysdig.com | TAM HIGH |
+| Yext | 3 | yext.com | TAM HIGH — ⚠️ catch-all |
+| SingleStore | 1 | singlestore.com | TAM HIGH — ⚠️ catch-all |
+| Evernorth | 3 | evernorth.com | TAM HIGH — ⚠️ catch-all |
+| Couchbase | 4 | couchbase.com | TAM HIGH |
+| Pathlock | 5 | pathlock.com | TAM HIGH |
+| Tandem Diabetes Care | 5 | tandemdiabetes.com | TAM HIGH |
+| Jack Henry | 4 | jackhenry.com | TAM HIGH — ⚠️ catch-all |
+| BMO Financial Group | 5 | bmo.com | TAM HIGH |
+| Point32Health | 2 | point32health.org | TAM HIGH |
+
+**Remaining untouched TAM HIGH backlog:** OSF HealthCare, Farmers Insurance Exchange, AppLovin, Bethesda Softworks, SailPoint, hims & hers, Zimmer Biomet, Saber Interactive, Enterprise Mobility, Winsupply, Charles River Labs — plus all Factor accounts not yet worked.
+
+---
+
 ## TAM OUTBOUND SEQUENCE — READY TO USE
 | Sequence | ID | Status |
 |----------|-----|--------|
@@ -625,10 +660,11 @@ Complete parallel session infrastructure for multi-agent collaboration. 19 new f
 ---
 
 *Next session: Follow the 14-step startup in AGENTS.md (v2.1), then:*
-*1. **APPROVE SEND check** — Multiple batches pending Rob's approval: Batch 4 (9), Batch 5 (5), Batch 5B (5), Batch 6 (31), Batch 7 (5)*
-*2. **New TAM T1 batch** — source, research, draft new contacts from Factor/TAM accounts (operating directive: T1 pipeline first)*
-*3. **Rob manual actions needed:** Yogesh Garg (Check Point) + Donald Jackson (Chase) + Iain Duffield (Anaplan) — all ownership blocked in Apollo*
-*4. **T2 drafts due:** Wave 1/2 T2 OVERDUE (TASK-017), Wave 3 T2 due Mar 16 (TASK-020), Wave 4 T2 due Mar 19 (TASK-022)*
-*5. **Batch name cleanup:** 5 non-standard names in today's batches (B6, B7, W6B1, W5B-S29, W6B2) — low priority but should be corrected*
-*6. **TASK-018** (Sucheth Ramgiri cleanup) + **TASK-003** (Gmail draft audit)*
-*MASTER_SENT_LIST.csv: 496 rows. Apollo Tasks tab is the source of truth for what's due.*
+*1. **APPROVE SEND check** — Batches still pending Rob's approval: Batch 4 (9), Batch 5 (5), Batch 5B (5), Batch 6 (31), Batch 7 (5)*
+*2. **New TAM T1 batch** — source, research, draft, enroll, and send 50-100 new contacts from Factor/TAM accounts. T1 pipeline first, every session.*
+*3. **T2 drafts URGENT:** Wave 1/2 T2 OVERDUE (TASK-017). Wave 3 T2 due Mar 16 (TASK-020). Wave 4 T2 due Mar 19 (TASK-022). **Batch 8 T2 due Mar 18 (TASK-035).***
+*4. **Rob manual actions needed:** Yogesh Garg (Check Point) + Donald Jackson (Chase) + Iain Duffield (Anaplan) — all ownership blocked in Apollo (TASK-028)*
+*5. **TELUS callbacks** — 3 missed inbound calls (TASK-033, P0). Krystal Jackson-Lennon called ×4.*
+*6. **Bounce cleanup** — TASK-034: EA (6 bounces), Humana, Mastercard, others*
+*7. **TASK-018** (Sucheth Ramgiri cleanup) + **TASK-003** (Gmail draft audit)*
+*MASTER_SENT_LIST.csv: 552 rows. Apollo Tasks tab is the source of truth for what's due.*
