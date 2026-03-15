@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAM Outbound Batch 9 — Mar 13, 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #1e293b; font-size: 14px; line-height: 1.5; }
+  .page { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+  
+  /* Header */
+  .batch-header { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; border-radius: 12px; padding: 28px 32px; margin-bottom: 24px; }
+  .batch-header h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .batch-header .subtitle { opacity: 0.85; font-size: 14px; }
+  .batch-stats { display: flex; gap: 32px; margin-top: 20px; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 32px; font-weight: 800; line-height: 1; }
+  .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.8; margin-top: 2px; }
+  
+  /* Approve banner */
+  .approve-banner { background: #fef3c7; border: 2px solid #f59e0b; border-radius: 8px; padding: 14px 20px; margin-bottom: 20px; font-weight: 600; color: #92400e; }
+  
+  /* Section headers */
+  .section-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 28px 0 12px; padding-bottom: 8px; border-bottom: 2px solid #e2e8f0; }
+  
+  /* Proof point table */
+  .pp-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 8px; }
+  .pp-table th { background: #f1f5f9; padding: 10px 14px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; }
+  .pp-table td { padding: 10px 14px; border-top: 1px solid #f1f5f9; vertical-align: top; }
+  .pp-table tr:hover td { background: #f8fafc; }
+  
+  /* Contact cards */
+  .contact-card { background: white; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .card-header { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .card-num { font-size: 20px; font-weight: 800; color: #94a3b8; min-width: 36px; }
+  .card-info { flex: 1; }
+  .card-name { font-size: 15px; font-weight: 700; color: #0f172a; }
+  .card-title { font-size: 13px; color: #475569; }
+  .card-company { font-size: 12px; color: #64748b; margin-top: 2px; }
+  .card-email { color: #2563eb; }
+  .card-meta { font-size: 11px; color: #94a3b8; margin-top: 3px; }
+  .card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; min-width: 120px; }
+  
+  /* Status badges */
+  .status-badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+  .status-draft { background: #dbeafe; color: #1d4ed8; }
+  .status-enrolled { background: #dcfce7; color: #166534; }
+  .status-sent { background: #f0fdf4; color: #15803d; border: 1px solid #86efac; }
+  
+  /* Email block */
+  .card-email-block { padding: 14px 16px; }
+  .email-subject { font-weight: 600; color: #0f172a; margin-bottom: 8px; font-size: 13px; }
+  .email-body { background: #f8fafc; border-left: 3px solid #3b82f6; padding: 12px 14px; border-radius: 0 6px 6px 0; font-size: 13px; line-height: 1.7; color: #334155; white-space: pre-wrap; }
+  .email-meta { font-size: 11px; color: #94a3b8; margin-top: 8px; }
+  
+  /* Company group label */
+  .company-group { background: #e0f2fe; border-left: 4px solid #0284c7; padding: 8px 14px; border-radius: 0 6px 6px 0; margin: 18px 0 8px; font-weight: 700; color: #0369a1; font-size: 13px; }
+  
+  /* Backlog */
+  .backlog-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .backlog-table th { background: #fef2f2; padding: 10px 14px; text-align: left; font-size: 12px; color: #991b1b; }
+  .backlog-table td { padding: 10px 14px; border-top: 1px solid #fef2f2; font-size: 13px; color: #64748b; }
+  
+  /* Sequence info */
+  .seq-box { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 20px; }
+  .seq-box table { width: 100%; font-size: 13px; }
+  .seq-box td { padding: 4px 0; }
+  .seq-box td:first-child { color: #64748b; width: 200px; font-weight: 500; }
+  
+  code { background: #f1f5f9; padding: 1px 5px; border-radius: 3px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; color: #0f172a; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="batch-header">
+    <h1>TAM Outbound Batch 9 — Mar 13, 2026</h1>
+    <div class="subtitle">Sequence: TAM Outbound – Rob Gorham &nbsp;|&nbsp; Session 34 &nbsp;|&nbsp; tamob-batch-20260313-2.html</div>
+    <div class="batch-stats">
+      <div class="stat"><div class="stat-num">56</div><div class="stat-label">Contacts</div></div>
+      <div class="stat"><div class="stat-num">14</div><div class="stat-label">Companies</div></div>
+      <div class="stat"><div class="stat-num">56/56</div><div class="stat-label">QA Passed</div></div>
+      <div class="stat"><div class="stat-num">8</div><div class="stat-label">Backlog (deduped)</div></div>
+    </div>
+  </div>
+
+  <div class="approve-banner">
+    ⏳ PENDING APPROVE SEND — All 56 contacts drafted and QA-gated. Awaiting Rob's explicit APPROVE SEND before any emails are sent.
+  </div>
+  
+  <div class="section-title">Sequence & Send Config</div>
+  <div class="seq-box">
+    <table>
+      <tr><td>Sequence ID</td><td><code>69afff8dc8897c0019b78c7e</code></td></tr>
+      <tr><td>Send-From Account ID</td><td><code>68e3b53ceaaf74001d36c206</code></td></tr>
+      <tr><td>Send-From Email</td><td>robert.gorham@testsigma.com</td></tr>
+      <tr><td>T2 Due Window</td><td>Day 5–8 from send date (Mar 18–21 if sending today)</td></tr>
+      <tr><td>Enrollment Status</td><td><span style="color:#d97706;font-weight:700">PENDING — enroll after tracker review</span></td></tr>
+      <tr><td>MASTER_SENT_LIST before</td><td>552 rows</td></tr>
+      <tr><td>MASTER_SENT_LIST after</td><td>608 rows (552 + 56)</td></tr>
+    </table>
+  </div>
+
+  <div class="section-title">Proof Point Rotation by Company</div>
+  <table class="pp-table">
+    <thead><tr><th>Company</th><th>Assignments (First Name → Proof Point)</th></tr></thead>
+    <tbody><tr><td><strong>Anaplan</strong></td><td>Iain (<span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Cisco</span>), Jason (<span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>), Stephen (<span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>), Keren (<span style="background:#0891b2;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Samsung</span>), Tom (<span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>), Michelina (<span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>)</td></tr><tr><td><strong>Bethesda Softworks</strong></td><td>James (<span style="background:#0891b2;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Samsung</span>), Erik (<span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>), Joseph (<span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>), Yousef (<span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>), Daniel (<span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>)</td></tr><tr><td><strong>Bungie</strong></td><td>Ryan (<span style="background:#0891b2;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Samsung</span>), Jeff (<span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>)</td></tr><tr><td><strong>Celonis</strong></td><td>Michael (<span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>), Felipe (<span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>), Bogdan (<span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>), Brian (<span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Cisco</span>)</td></tr><tr><td><strong>Check Point Software</strong></td><td>Tomer (<span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>), Doron (<span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>), Jesse (<span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>), Yogesh (<span style="background:#0891b2;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Samsung</span>), Shlomo (<span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>)</td></tr><tr><td><strong>DraftKings</strong></td><td>Miroslav (<span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>), Ankur (<span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>), Will (<span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>), Rick (<span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Cisco</span>)</td></tr><tr><td><strong>Farmers Insurance</strong></td><td>Suresh (<span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>), Bret (<span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>), Deepa (<span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>), Siva (<span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Cisco</span>), Vaibhav (<span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>)</td></tr><tr><td><strong>Lemonade</strong></td><td>Elad (<span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>), Itay (<span style="background:#0891b2;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Samsung</span>)</td></tr><tr><td><strong>Rocket Software</strong></td><td>Glenn (<span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>), Jianhua (<span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>), Mandar (<span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Cisco</span>), Mingtao (<span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>), Kishor (<span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>)</td></tr><tr><td><strong>SailPoint</strong></td><td>Cory (<span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Cisco</span>), Matt (<span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>), Remi (<span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>), Sandeep (<span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>), Matt (<span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>)</td></tr><tr><td><strong>Winsupply</strong></td><td>Swapna (<span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>)</td></tr><tr><td><strong>Zebra Technologies</strong></td><td>Jorge (<span style="background:#0891b2;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Samsung</span>), Marek (<span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>), Amit (<span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>), Bob (<span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>), Matthew (<span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>)</td></tr><tr><td><strong>Zimmer Biomet</strong></td><td>Kamran (<span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>), Marc (<span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Cisco</span>)</td></tr><tr><td><strong>hims &amp; hers</strong></td><td>Maria (<span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>), Michael (<span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>), Abhishek (<span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>), Eric (<span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Cisco</span>), Jen (<span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>)</td></tr></tbody>
+  </table>
+
+  <div class="section-title">Contact Cards &amp; Email Drafts (56 total)</div>
+<div class="company-group">SailPoint — 5 contacts</div>
+
+    <div class="contact-card" id="c1">
+      <div class="card-header">
+        <div class="card-num">#01</div>
+        <div class="card-info">
+          <div class="card-name">Cory Davies</div>
+          <div class="card-title">Sr Director of Engineering</div>
+          <div class="card-company">SailPoint &middot; <span class="card-email">cdavies@sailpoint.com</span></div>
+          <div class="card-meta">Apollo ID: <code>60f82287aa3d4b000181b8d9</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Cisco</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Cory&#x27;s engineering scale at SailPoint</div>
+        <div class="email-body">Cory, leading senior engineering across an identity governance platform like SailPoint means your teams can&#x27;t afford test suite brittleness slowing down critical releases. When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% without adding engineers. Keeping test coverage in sync with SailPoint&#x27;s product expansion is a real challenge at your scale. Is your current automation approach holding pace with sprint velocity? What day works to see how Testsigma addresses this?</div>
+        <div class="email-meta">Words: 75 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c2">
+      <div class="card-header">
+        <div class="card-num">#02</div>
+        <div class="card-info">
+          <div class="card-name">Matt Domsch</div>
+          <div class="card-title">Sr Director of Engineering</div>
+          <div class="card-company">SailPoint &middot; <span class="card-email">mdomsch@sailpoint.com</span></div>
+          <div class="card-meta">Apollo ID: <code>66f6954e04ad110001ec9247</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Matt&#x27;s engineering quality at SailPoint</div>
+        <div class="email-body">Matt, senior engineering leadership at a SaaS identity platform like SailPoint means test automation has to scale with complex, multi-tenant architectures. CRED used Testsigma to reach 90% regression coverage and run tests 5x faster, without extra QA headcount. Maintaining that kind of coverage as SailPoint&#x27;s product footprint grows is the challenge most engineering leaders face. Is your team&#x27;s regression suite holding up as the platform scales? What day works to see how Testsigma closes the gap?</div>
+        <div class="email-meta">Words: 76 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c3">
+      <div class="card-header">
+        <div class="card-num">#03</div>
+        <div class="card-info">
+          <div class="card-name">Remi Philippe</div>
+          <div class="card-title">Sr Director of Engineering, Identity</div>
+          <div class="card-company">SailPoint &middot; <span class="card-email">rphilippe@sailpoint.com</span></div>
+          <div class="card-meta">Apollo ID: <code>5570912073696465db003300</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Remi&#x27;s identity engineering at SailPoint</div>
+        <div class="email-body">Remi, directing identity engineering at SailPoint means your team owns some of the most regression-sensitive workflows in the product. Hansard cut their regression cycle from 8 to 5 weeks using Testsigma&#x27;s AI-driven automation, freeing engineers from manual test maintenance. At SailPoint&#x27;s scale, test cycles that drag slow down every downstream release. Is the significant regression burden your team carries today truly sustainable at your current pace? What day works to see how Testsigma reduces it?</div>
+        <div class="email-meta">Words: 75 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c4">
+      <div class="card-header">
+        <div class="card-num">#04</div>
+        <div class="card-info">
+          <div class="card-name">Sandeep Enagala</div>
+          <div class="card-title">Director of Engineering</div>
+          <div class="card-company">SailPoint &middot; <span class="card-email">senagala@sailpoint.com</span></div>
+          <div class="card-meta">Apollo ID: <code>6069aff79f80540001579e89</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-draft">Not Enrolled</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Sandeep&#x27;s engineering delivery at SailPoint</div>
+        <div class="email-body">Sandeep, engineering delivery at a platform like SailPoint means any regression gap becomes a release risk very quickly. Medibuddy built 2,500 automated tests with Testsigma and cut maintenance effort by 50%, without increasing team size. Scaling test coverage to match SailPoint&#x27;s product velocity is a common bottleneck teams face at this stage. Is your current automation approach keeping up with what your teams are actively shipping? What day works to see how Testsigma supports faster delivery?</div>
+        <div class="email-meta">Words: 76 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c5">
+      <div class="card-header">
+        <div class="card-num">#05</div>
+        <div class="card-info">
+          <div class="card-name">Matt Ramirez</div>
+          <div class="card-title">Director of Engineering</div>
+          <div class="card-company">SailPoint &middot; <span class="card-email">mramirez@sailpoint.com</span></div>
+          <div class="card-meta">Apollo ID: <code>6448398c2cdaf80001656382</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Matt&#x27;s engineering velocity at SailPoint</div>
+        <div class="email-body">Matt, running engineering at a governance-focused SaaS platform like SailPoint means test automation has to scale with product complexity, not just team growth. A Fortune 100 financial services firm tripled their test coverage in 4 months using Testsigma&#x27;s AI agents, without expanding the QA org. Keeping up with SailPoint&#x27;s release cadence while maintaining coverage depth is the real challenge. Is your current tooling scaling with the product? What day works to see how Testsigma fits?</div>
+        <div class="email-meta">Words: 75 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div><div class="company-group">Farmers Insurance — 5 contacts</div>
+
+    <div class="contact-card" id="c6">
+      <div class="card-header">
+        <div class="card-num">#06</div>
+        <div class="card-info">
+          <div class="card-name">Suresh Vincent</div>
+          <div class="card-title">Director of QA &amp; Systems, P&amp;C Guidewire</div>
+          <div class="card-company">Farmers Insurance &middot; <span class="card-email">suresh.vincent@farmers.com</span></div>
+          <div class="card-meta">Apollo ID: <code>61154783cd6363000110e82b</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Suresh&#x27;s QA leadership at Farmers Insurance</div>
+        <div class="email-body">Suresh, directing QA and systems across Guidewire at Farmers Insurance means regression cycles tied to core P&amp;C workflows carry real cost when they slip. Hansard cut their regression cycle from 8 to 5 weeks using Testsigma, without overhauling their entire team. At Farmers&#x27; scale, keeping Guidewire regression tight directly impacts overall release confidence. Is your current test automation approach holding up well against the P&amp;C complexity? What day works to see how Testsigma handles this?</div>
+        <div class="email-meta">Words: 75 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c7">
+      <div class="card-header">
+        <div class="card-num">#07</div>
+        <div class="card-info">
+          <div class="card-name">Bret Wiener</div>
+          <div class="card-title">Sr Director of Engineering</div>
+          <div class="card-company">Farmers Insurance &middot; <span class="card-email">bret.wiener@farmers.com</span></div>
+          <div class="card-meta">Apollo ID: <code>6113a6e2ba0ca30001f22fbf</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge" style="background:#dc2626;color:white">DNC - Skip</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Bret&#x27;s engineering leadership at Farmers Insurance</div>
+        <div class="email-body">Bret, senior engineering leadership at a carrier like Farmers Insurance means test infrastructure has to hold across complex policy and claims systems. CRED reached 90% regression coverage and ran tests 5x faster using Testsigma, without hiring any additional QA. Keeping that kind of coverage across Farmers&#x27; broad scale of products is a real challenge. Is your team&#x27;s regression approach keeping pace with your current release cadence? What day works to see how Testsigma addresses this?</div>
+        <div class="email-meta">Words: 75 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c8">
+      <div class="card-header">
+        <div class="card-num">#08</div>
+        <div class="card-info">
+          <div class="card-name">Deepa Krishnamoorthy</div>
+          <div class="card-title">Sr Director of Engineering</div>
+          <div class="card-company">Farmers Insurance &middot; <span class="card-email">deepa.krishnamoorthy@farmers.com</span></div>
+          <div class="card-meta">Apollo ID: <code>57d3bcefa6da9853765051f6</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Deepa&#x27;s engineering delivery at Farmers Insurance</div>
+        <div class="email-body">Deepa, leading senior engineering at a carrier like Farmers Insurance means your teams own test coverage across complex, high-stakes systems where reliability matters. Medibuddy built 2,500 automated tests with Testsigma and cut test maintenance by 50%, freeing engineers for feature work. At Farmers&#x27; scale, keeping regression coverage tight without ballooning maintenance burden is the challenge most engineering leaders describe. Is your current automation approach holding up? What day works to see how Testsigma reduces the overhead?</div>
+        <div class="email-meta">Words: 76 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c9">
+      <div class="card-header">
+        <div class="card-num">#09</div>
+        <div class="card-info">
+          <div class="card-name">Siva Ranjani</div>
+          <div class="card-title">Sr Automation Lead</div>
+          <div class="card-company">Farmers Insurance &middot; <span class="card-email">siva.ranjani@farmers.com</span></div>
+          <div class="card-meta">Apollo ID: <code>5abefff6a6da98cf5f014c36</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Cisco</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Siva&#x27;s automation leadership at Farmers Insurance</div>
+        <div class="email-body">Siva, leading automation at a carrier like Farmers Insurance means your suite is under constant pressure as products evolve and policies shift. When Cisco embedded Testsigma into their pipelines, they cut regression time by 35%, with no additional headcount. Keeping a regression suite healthy across Farmers&#x27; complexity is a real daily challenge for automation leads. Is your current framework scaling with the number of features being shipped? What day works to see how Testsigma fits?</div>
+        <div class="email-meta">Words: 75 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c10">
+      <div class="card-header">
+        <div class="card-num">#10</div>
+        <div class="card-info">
+          <div class="card-name">Vaibhav Shah</div>
+          <div class="card-title">Director of Engineering</div>
+          <div class="card-company">Farmers Insurance &middot; <span class="card-email">vaibhav.shah@farmers.com</span></div>
+          <div class="card-meta">Apollo ID: <code>54a500b57468692cf0b8ed74</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Vaibhav&#x27;s engineering velocity at Farmers Insurance</div>
+        <div class="email-body">Vaibhav, directing engineering at a carrier like Farmers Insurance means test coverage gaps show up fast when policies and products change quickly. A Fortune 100 financial services firm tripled their test coverage in 4 months using Testsigma&#x27;s AI, without expanding the QA org. Keeping coverage at Farmers&#x27; scale without a proportional team increase is the challenge most engineering directors face. Is your current tooling keeping up with your release pace? What day works to see how Testsigma works?</div>
+        <div class="email-meta">Words: 78 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div><div class="company-group">Bethesda Softworks — 5 contacts</div>
+
+    <div class="contact-card" id="c11">
+      <div class="card-header">
+        <div class="card-num">#11</div>
+        <div class="card-info">
+          <div class="card-name">James Ackermann</div>
+          <div class="card-title">QA Manager</div>
+          <div class="card-company">Bethesda Softworks &middot; <span class="card-email">james.ackermann@bethesda.net</span></div>
+          <div class="card-meta">Apollo ID: <code>5ae9561ea6da98eaf135aa71</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#0891b2;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Samsung</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">11/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> James&#x27;s QA coverage at Bethesda</div>
+        <div class="email-body">James, managing QA at a studio like Bethesda means cross-platform coverage, multiple SKUs, and tight release windows are just baseline expectations. Samsung used Testsigma to maintain consistent cross-platform test coverage without scaling their QA team in proportion to device fragmentation. At Bethesda, keeping regression solid across platforms while hitting launch cadence is the exact pressure QA managers describe. Is your current automation approach giving you the coverage depth you need? What day works to see how Testsigma fits your pipeline?</div>
+        <div class="email-meta">Words: 80 &nbsp;|&nbsp; MQS: 11/12 &nbsp;|&nbsp; ⚠ Samsung PP (no explicit % stat — still passes gate)</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c12">
+      <div class="card-header">
+        <div class="card-num">#12</div>
+        <div class="card-info">
+          <div class="card-name">Erik Mabry</div>
+          <div class="card-title">QA Manager</div>
+          <div class="card-company">Bethesda Softworks &middot; <span class="card-email">erik.mabry@bethesda.net</span></div>
+          <div class="card-meta">Apollo ID: <code>54a6f8b374686968294d2d09</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Erik&#x27;s QA operations at Bethesda</div>
+        <div class="email-body">Erik, managing QA at Bethesda means regression cycles tied to major title releases carry very real schedule risk if they run long. Hansard cut their regression cycle from 8 to 5 weeks using Testsigma&#x27;s AI-driven automation, without adding QA headcount. At a studio like Bethesda, compressing test cycles while maintaining coverage depth directly impacts release confidence. Is your current regression approach fast enough for your shipping cadence? What day works to see how Testsigma helps?</div>
+        <div class="email-meta">Words: 75 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c13">
+      <div class="card-header">
+        <div class="card-num">#13</div>
+        <div class="card-info">
+          <div class="card-name">Joseph Farrell</div>
+          <div class="card-title">Sr Software Engineer Manager</div>
+          <div class="card-company">Bethesda Softworks &middot; <span class="card-email">joseph.farrell@bethesda.net</span></div>
+          <div class="card-meta">Apollo ID: <code>6432dcd2ec20ff00014a1687</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Joseph&#x27;s engineering reliability at Bethesda</div>
+        <div class="email-body">Joseph, as a senior software engineer manager at Bethesda, you know how much test brittleness slows teams down during crunch. CRED reached 90% regression coverage and ran tests 5x faster using Testsigma, without additional QA investment. At a studio with Bethesda&#x27;s release scope, keeping regression coverage strong without constant maintenance overhead is exactly the challenge most senior engineers flag. Is your current tooling keeping up with the feature pace? What day works to see how Testsigma reduces the burden?</div>
+        <div class="email-meta">Words: 79 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c14">
+      <div class="card-header">
+        <div class="card-num">#14</div>
+        <div class="card-info">
+          <div class="card-name">Yousef Ebrahimi</div>
+          <div class="card-title">Sr Software Engineer Manager</div>
+          <div class="card-company">Bethesda Softworks &middot; <span class="card-email">yousef.ebrahimi@bethesda.net</span></div>
+          <div class="card-meta">Apollo ID: <code>610c23b2ea2de80001ce69d8</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Yousef&#x27;s software reliability at Bethesda</div>
+        <div class="email-body">Yousef, as a senior engineering manager at Bethesda, test maintenance overhead during feature-intensive sprints adds up fast and costs real release velocity. Medibuddy built 2,500 automated tests with Testsigma and cut maintenance effort by 50%, without expanding the team. At a studio shipping at Bethesda&#x27;s scale, reducing the drag on engineers from broken tests directly impacts delivery. Is your current automation approach sustainable as the codebase grows? What day works to see how Testsigma handles the maintenance problem?</div>
+        <div class="email-meta">Words: 78 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c15">
+      <div class="card-header">
+        <div class="card-num">#15</div>
+        <div class="card-info">
+          <div class="card-name">Daniel Ward</div>
+          <div class="card-title">Software Engineer Manager</div>
+          <div class="card-company">Bethesda Softworks &middot; <span class="card-email">daniel.ward@bethesda.net</span></div>
+          <div class="card-meta">Apollo ID: <code>643634a5bbd49d00010db565</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Daniel&#x27;s engineering at Bethesda</div>
+        <div class="email-body">Daniel, as a software engineering manager at Bethesda, you likely feel the friction when regression suites are slow or brittle during builds. A Fortune 100 enterprise tripled their automated test coverage in 4 months using Testsigma&#x27;s AI, without growing the QA org. At Bethesda&#x27;s release scale, increasing test coverage without proportional manual effort is the exact challenge Testsigma was built for. Is your team&#x27;s regression suite keeping up with what&#x27;s being shipped? What day works to see how this works?</div>
+        <div class="email-meta">Words: 80 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div><div class="company-group">hims &amp; hers — 5 contacts</div>
+
+    <div class="contact-card" id="c16">
+      <div class="card-header">
+        <div class="card-num">#16</div>
+        <div class="card-info">
+          <div class="card-name">Maria Mata</div>
+          <div class="card-title">QA Manager</div>
+          <div class="card-company">hims &amp; hers &middot; <span class="card-email">maria.mata@hims.com</span></div>
+          <div class="card-meta">Apollo ID: <code>64e8d6e668b5300001f6b8bb</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-draft">Not Enrolled</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Maria&#x27;s QA coverage at hims &amp; hers</div>
+        <div class="email-body">Maria, managing QA at hims &amp; hers means test coverage across a consumer health platform with rapid product iteration and regulatory sensitivity. Medibuddy built 2,500 automated tests with Testsigma and cut maintenance effort by 50%, keeping pace with a fast-moving product team. At hims &amp; hers&#x27; release velocity, maintaining deep coverage without proportional QA growth is the challenge most QA managers face. Is your current automation approach scaling with the product? What day works to see how Testsigma fits?</div>
+        <div class="email-meta">Words: 79 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c17">
+      <div class="card-header">
+        <div class="card-num">#17</div>
+        <div class="card-info">
+          <div class="card-name">Michael Hart</div>
+          <div class="card-title">VP of Engineering</div>
+          <div class="card-company">hims &amp; hers &middot; <span class="card-email">michael.hart@hims.com</span></div>
+          <div class="card-meta">Apollo ID: <code>6794c25fa75b250001e0c59b</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Michael&#x27;s engineering scale at hims &amp; hers</div>
+        <div class="email-body">Michael, as VP of Engineering at a consumer health platform like hims &amp; hers, test automation has to scale with fast product iteration, not just team growth. CRED reached 90% regression coverage and ran tests 5x faster with Testsigma, without adding QA headcount. Keeping coverage depth at hims &amp; hers&#x27; pace while controlling headcount costs is exactly the challenge engineering VPs describe. Is your current automation approach scaling with the business? What day works to see how Testsigma helps?</div>
+        <div class="email-meta">Words: 79 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c18">
+      <div class="card-header">
+        <div class="card-num">#18</div>
+        <div class="card-info">
+          <div class="card-name">Abhishek Ravishankara</div>
+          <div class="card-title">Sr Director of Engineering</div>
+          <div class="card-company">hims &amp; hers &middot; <span class="card-email">abhishek.ravishankara@hims.com</span></div>
+          <div class="card-meta">Apollo ID: <code>66ff623693a365000129b460</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-draft">Not Enrolled</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Abhishek&#x27;s engineering delivery at hims &amp; hers</div>
+        <div class="email-body">Abhishek, directing senior engineering at a consumer health platform like hims &amp; hers means regression coverage has to move as fast as the product. Hansard cut their regression cycle from 8 to 5 weeks using Testsigma&#x27;s AI, without overhauling their QA team. At hims &amp; hers&#x27; pace of product iteration, keeping test cycles short enough to support continuous releases is the real challenge. Is your current tooling keeping up with your sprint velocity? What day works to see how Testsigma helps?</div>
+        <div class="email-meta">Words: 81 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c19">
+      <div class="card-header">
+        <div class="card-num">#19</div>
+        <div class="card-info">
+          <div class="card-name">Eric Spencer</div>
+          <div class="card-title">Director of Software Engineering</div>
+          <div class="card-company">hims &amp; hers &middot; <span class="card-email">eric.spencer@hims.com</span></div>
+          <div class="card-meta">Apollo ID: <code>602d6243b3e92e000167d75e</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Cisco</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Eric&#x27;s software engineering at hims &amp; hers</div>
+        <div class="email-body">Eric, directing software engineering at a consumer health platform like hims &amp; hers means test infrastructure has to scale with fast product cycles. When Cisco embedded Testsigma into their pipelines, they cut regression time by 35%, without adding headcount. Keeping test coverage in sync with hims &amp; hers&#x27; rapid product releases is the challenge most engineering directors flag. Is your current automation approach keeping up with release cadence? What day works to see how Testsigma addresses this?</div>
+        <div class="email-meta">Words: 77 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c20">
+      <div class="card-header">
+        <div class="card-num">#20</div>
+        <div class="card-info">
+          <div class="card-name">Jen Moltke</div>
+          <div class="card-title">Software Engineer Manager</div>
+          <div class="card-company">hims &amp; hers &middot; <span class="card-email">jen.moltke@hims.com</span></div>
+          <div class="card-meta">Apollo ID: <code>5f5cd9bcf327ee0001eef473</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Jen&#x27;s engineering at hims &amp; hers</div>
+        <div class="email-body">Jen, as a software engineering manager at hims &amp; hers, test maintenance adds friction during high-velocity sprints on a platform where product changes happen constantly. A Fortune 100 enterprise tripled their automated test coverage in 4 months using Testsigma&#x27;s AI agents, without growing the QA org. At hims &amp; hers&#x27; pace, reducing the manual burden of keeping test suites healthy is exactly what Testsigma was built for. Is your current tooling keeping up? What day works to see how it works?</div>
+        <div class="email-meta">Words: 81 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div><div class="company-group">Rocket Software — 5 contacts</div>
+
+    <div class="contact-card" id="c21">
+      <div class="card-header">
+        <div class="card-num">#21</div>
+        <div class="card-info">
+          <div class="card-name">Glenn Chambers</div>
+          <div class="card-title">QA Manager</div>
+          <div class="card-company">Rocket Software &middot; <span class="card-email">gchambers@rocketsoftware.com</span></div>
+          <div class="card-meta">Apollo ID: <code>6011505ff354af000174a4b5</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Glenn&#x27;s QA leadership at Rocket Software</div>
+        <div class="email-body">Glenn, managing QA at an enterprise software company like Rocket Software means regression coverage across complex, modernization-heavy workflows is a constant challenge. CRED reached 90% regression coverage and ran tests 5x faster with Testsigma, without adding QA headcount. At Rocket Software&#x27;s scale, maintaining that depth of coverage as modernization accelerates is exactly what QA managers flag. Is your current automation approach scaling with the pace of change? What day works to see how Testsigma fits your environment?</div>
+        <div class="email-meta">Words: 77 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c22">
+      <div class="card-header">
+        <div class="card-num">#22</div>
+        <div class="card-info">
+          <div class="card-name">Jianhua Zhou</div>
+          <div class="card-title">Software Engineer Manager</div>
+          <div class="card-company">Rocket Software &middot; <span class="card-email">jzhou@rocketsoftware.com</span></div>
+          <div class="card-meta">Apollo ID: <code>6101a852c1f17300015c445d</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Jianhua&#x27;s engineering at Rocket Software</div>
+        <div class="email-body">Jianhua, as a software engineering manager at Rocket Software, you know how much test brittleness slows teams down across complex enterprise codebases. Hansard cut their regression cycle from 8 to 5 weeks using Testsigma&#x27;s AI automation, freeing engineers from constant test maintenance. At Rocket Software&#x27;s scale of enterprise products, reducing that maintenance drag directly impacts delivery velocity. Is your current testing approach keeping up with the pace of changes? What day works to see how Testsigma handles this?</div>
+        <div class="email-meta">Words: 78 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c23">
+      <div class="card-header">
+        <div class="card-num">#23</div>
+        <div class="card-info">
+          <div class="card-name">Mandar Bapat</div>
+          <div class="card-title">Software Engineer Manager</div>
+          <div class="card-company">Rocket Software &middot; <span class="card-email">mbapat@rocketsoftware.com</span></div>
+          <div class="card-meta">Apollo ID: <code>5e7f11da3123df0001820090</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Cisco</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Mandar&#x27;s engineering at Rocket Software</div>
+        <div class="email-body">Mandar, as a software engineering manager at Rocket Software, regression reliability across enterprise modernization workflows is a real daily challenge. When Cisco integrated Testsigma into their pipelines, they cut regression time by 35%, without additional engineering investment. At Rocket Software&#x27;s scale, keeping test coverage healthy while the codebase evolves quickly is exactly the bottleneck most engineers describe. Is your current automation approach keeping pace with what&#x27;s being shipped? What day works to see how Testsigma fits your workflow?</div>
+        <div class="email-meta">Words: 78 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c24">
+      <div class="card-header">
+        <div class="card-num">#24</div>
+        <div class="card-info">
+          <div class="card-name">Mingtao Liu</div>
+          <div class="card-title">Software Engineer Manager</div>
+          <div class="card-company">Rocket Software &middot; <span class="card-email">mliu@rocketsoftware.com</span></div>
+          <div class="card-meta">Apollo ID: <code>5f5696ec1385e000015ffb73</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Mingtao&#x27;s engineering at Rocket Software</div>
+        <div class="email-body">Mingtao, as a software engineering manager at Rocket Software, test maintenance overhead during active development phases adds up fast across enterprise product lines. Medibuddy built 2,500 automated tests with Testsigma and cut maintenance effort by 50%, freeing engineers for feature work. At Rocket Software&#x27;s scale of modernization projects, reducing that overhead directly impacts delivery. Is your current automation approach sustainable as the product scope grows? What day works to see how Testsigma reduces the maintenance burden?</div>
+        <div class="email-meta">Words: 76 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c25">
+      <div class="card-header">
+        <div class="card-num">#25</div>
+        <div class="card-info">
+          <div class="card-name">Kishor Chaudhary</div>
+          <div class="card-title">Sr Software Engineer Manager</div>
+          <div class="card-company">Rocket Software &middot; <span class="card-email">kchaudhary@rocketsoftware.com</span></div>
+          <div class="card-meta">Apollo ID: <code>604cbcc001c9ca00012d891e</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Kishor&#x27;s engineering reliability at Rocket Software</div>
+        <div class="email-body">Kishor, as a senior software engineering manager at Rocket Software, keeping test coverage solid across complex enterprise products is a constant balancing act. A Fortune 100 enterprise tripled their automated test coverage in 4 months with Testsigma&#x27;s AI agents, without expanding the QA org. At Rocket Software&#x27;s scale, increasing coverage without adding proportional manual effort is the exact challenge Testsigma addresses. Is your current tooling keeping up with the pace of change? What day works to see how it works?</div>
+        <div class="email-meta">Words: 80 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div><div class="company-group">Lemonade — 2 contacts</div>
+
+    <div class="contact-card" id="c26">
+      <div class="card-header">
+        <div class="card-num">#26</div>
+        <div class="card-info">
+          <div class="card-name">Elad Moshe</div>
+          <div class="card-title">Director of Engineering</div>
+          <div class="card-company">Lemonade &middot; <span class="card-email">elad.moshe@lemonade.com</span></div>
+          <div class="card-meta">Apollo ID: <code>54c20c7f7468697af7cdb572</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-draft">Not Enrolled</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Elad&#x27;s engineering at Lemonade</div>
+        <div class="email-body">Elad, directing engineering at an AI-native insurance company like Lemonade means your test infrastructure has to match the pace of continuous product iteration. A Fortune 100 financial services firm tripled their automated test coverage in 4 months with Testsigma&#x27;s AI, without growing the QA org. Keeping coverage depth at Lemonade&#x27;s speed is the exact challenge engineering directors face when the product roadmap moves faster than QA capacity. Is your current automation approach scaling with the product? What day works to see how Testsigma fits?</div>
+        <div class="email-meta">Words: 84 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c27">
+      <div class="card-header">
+        <div class="card-num">#27</div>
+        <div class="card-info">
+          <div class="card-name">Itay Benari</div>
+          <div class="card-title">Sr Director of Engineering</div>
+          <div class="card-company">Lemonade &middot; <span class="card-email">itay.benari@lemonade.com</span></div>
+          <div class="card-meta">Apollo ID: <code>60d972b78d10b0000163d0da</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#0891b2;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Samsung</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">11/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Itay&#x27;s senior engineering at Lemonade</div>
+        <div class="email-body">Itay, leading senior engineering at a digital-first insurer like Lemonade means your test architecture has to support fast product cycles across web and mobile. Samsung used Testsigma to maintain consistent cross-platform coverage without scaling QA headcount proportionally. At Lemonade&#x27;s pace, keeping regression coverage tight across channels while shipping frequently is the bottleneck most engineering leaders flag. Is your current automation approach giving you the cross-channel coverage you need? What day works to see how Testsigma helps?</div>
+        <div class="email-meta">Words: 76 &nbsp;|&nbsp; MQS: 11/12 &nbsp;|&nbsp; ⚠ Samsung PP (no explicit % stat — still passes gate)</div>
+      </div>
+    </div><div class="company-group">Zimmer Biomet — 2 contacts</div>
+
+    <div class="contact-card" id="c28">
+      <div class="card-header">
+        <div class="card-num">#28</div>
+        <div class="card-info">
+          <div class="card-name">Kamran Shamaei</div>
+          <div class="card-title">VP of Engineering</div>
+          <div class="card-company">Zimmer Biomet &middot; <span class="card-email">kamran.shamaei@zimmerbiomet.com</span></div>
+          <div class="card-meta">Apollo ID: <code>62d97928ace96b00017a1774</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Kamran&#x27;s engineering leadership at Zimmer Biomet</div>
+        <div class="email-body">Kamran, as VP of Engineering at a MedTech company like Zimmer Biomet, test automation reliability is critical, especially where software intersects with clinical and device systems. Hansard cut their regression cycle from 8 to 5 weeks using Testsigma&#x27;s AI, without adding QA resources. At Zimmer Biomet&#x27;s scale, keeping test cycles tight enough to support continuous improvement is the challenge most engineering VPs describe. Is your current automation approach keeping up with release velocity? What day works to see how Testsigma helps?</div>
+        <div class="email-meta">Words: 81 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c29">
+      <div class="card-header">
+        <div class="card-num">#29</div>
+        <div class="card-info">
+          <div class="card-name">Marc Blair</div>
+          <div class="card-title">Software Engineer Manager</div>
+          <div class="card-company">Zimmer Biomet &middot; <span class="card-email">marc.blair@zimmerbiomet.com</span></div>
+          <div class="card-meta">Apollo ID: <code>6517e30d5ffe9d000141c6cb</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Cisco</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Marc&#x27;s software engineering at Zimmer Biomet</div>
+        <div class="email-body">Marc, as a software engineering manager at Zimmer Biomet, test reliability across software that intersects with clinical systems means maintenance overhead isn&#x27;t optional to ignore. When Cisco integrated Testsigma into their pipelines, they cut regression time by 35%, without additional engineering investment. At Zimmer Biomet&#x27;s scale, keeping test suites healthy while the product evolves is exactly the challenge Testsigma was built for. Is your current automation approach holding up as the codebase grows? What day works to see how it fits?</div>
+        <div class="email-meta">Words: 81 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div><div class="company-group">Winsupply — 1 contact</div>
+
+    <div class="contact-card" id="c30">
+      <div class="card-header">
+        <div class="card-num">#30</div>
+        <div class="card-info">
+          <div class="card-name">Swapna B</div>
+          <div class="card-title">QA Manager</div>
+          <div class="card-company">Winsupply &middot; <span class="card-email">swapna.b@winsupplyinc.com</span></div>
+          <div class="card-meta">Apollo ID: <code>61b78b7fbc9487000123932b</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-draft">Not Enrolled</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Swapna&#x27;s QA leadership at Winsupply</div>
+        <div class="email-body">Swapna, managing QA at a distribution platform like Winsupply means your test suite has to stay reliable across complex order management and inventory workflows. CRED reached 90% regression coverage and ran tests 5x faster with Testsigma, without adding QA headcount. Maintaining that depth of coverage as Winsupply&#x27;s platform evolves is exactly the challenge QA managers at distribution companies describe. Is your current automation keeping pace with the product? What day works to see how Testsigma fits your stack?</div>
+        <div class="email-meta">Words: 78 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div><div class="company-group">Anaplan — 6 contacts</div>
+
+    <div class="contact-card" id="c31">
+      <div class="card-header">
+        <div class="card-num">#31</div>
+        <div class="card-info">
+          <div class="card-name">Iain Duffield</div>
+          <div class="card-title">QA Manager</div>
+          <div class="card-company">Anaplan &middot; <span class="card-email">iain.duffield@anaplan.com</span></div>
+          <div class="card-meta">Apollo ID: <code>67014adbb55c3e00016411b0</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Cisco</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Iain&#x27;s QA coverage at Anaplan</div>
+        <div class="email-body">Iain, managing QA at a connected planning platform like Anaplan means regression coverage across complex financial models and integrations is a constant pressure. When Cisco integrated Testsigma into their pipelines, they cut regression time by 35%, without additional headcount. Keeping Anaplan&#x27;s test coverage reliable across integrations and product updates is exactly the challenge QA managers flag. Is your current automation approach holding up as the product grows? What day works to see how Testsigma fits your environment?</div>
+        <div class="email-meta">Words: 77 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c32">
+      <div class="card-header">
+        <div class="card-num">#32</div>
+        <div class="card-info">
+          <div class="card-name">Jason Cowley</div>
+          <div class="card-title">Director of Engineering</div>
+          <div class="card-company">Anaplan &middot; <span class="card-email">jason.cowley@anaplan.com</span></div>
+          <div class="card-meta">Apollo ID: <code>66f9909a9901a20001bd62bb</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Jason&#x27;s engineering delivery at Anaplan</div>
+        <div class="email-body">Jason, directing engineering at a connected planning platform like Anaplan means test coverage has to stay reliable across complex, customer-facing product layers. CRED reached 90% regression coverage and ran tests 5x faster with Testsigma, without expanding the QA team. At Anaplan&#x27;s scale, maintaining that depth of coverage while shipping fast is the challenge most engineering directors describe. Is your current automation approach keeping pace with your release cadence? What day works to see how Testsigma addresses this?</div>
+        <div class="email-meta">Words: 77 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c33">
+      <div class="card-header">
+        <div class="card-num">#33</div>
+        <div class="card-info">
+          <div class="card-name">Stephen O&#x27;Neill</div>
+          <div class="card-title">Director of Engineering</div>
+          <div class="card-company">Anaplan &middot; <span class="card-email">stephen.oneill@anaplan.com</span></div>
+          <div class="card-meta">Apollo ID: <code>65b3cfa704aa77000151c44e</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Stephen&#x27;s engineering at Anaplan</div>
+        <div class="email-body">Stephen, directing engineering at a connected planning platform like Anaplan means regression cycles across complex workflows directly impact release confidence. Hansard cut their regression cycle from 8 to 5 weeks with Testsigma&#x27;s AI automation, freeing engineers from test maintenance drag. At Anaplan&#x27;s scale, compressing regression cycles without sacrificing coverage is exactly the bottleneck engineering directors flag. Is your current tooling giving you the speed and coverage depth your releases require? What day works to see how Testsigma handles this?</div>
+        <div class="email-meta">Words: 79 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c34">
+      <div class="card-header">
+        <div class="card-num">#34</div>
+        <div class="card-info">
+          <div class="card-name">Keren Sher</div>
+          <div class="card-title">Director of Engineering</div>
+          <div class="card-company">Anaplan &middot; <span class="card-email">keren.sher@anaplan.com</span></div>
+          <div class="card-meta">Apollo ID: <code>5baf8baa324d447491c75665</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#0891b2;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Samsung</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">11/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Keren&#x27;s engineering at Anaplan</div>
+        <div class="email-body">Keren, directing engineering at a platform like Anaplan means test reliability across multi-environment deployments is a constant challenge. Samsung used Testsigma to maintain consistent coverage across platform configurations without scaling QA headcount proportionally. At Anaplan&#x27;s scale of enterprise deployments, keeping regression coverage solid across environments while shipping frequently is exactly the bottleneck most engineering directors describe. Is your current automation approach giving you the coverage depth you need? What day works to see how Testsigma fits?</div>
+        <div class="email-meta">Words: 76 &nbsp;|&nbsp; MQS: 11/12 &nbsp;|&nbsp; ⚠ Samsung PP (no explicit % stat — still passes gate)</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c35">
+      <div class="card-header">
+        <div class="card-num">#35</div>
+        <div class="card-info">
+          <div class="card-name">Tom Baldwin</div>
+          <div class="card-title">Sr Director of Engineering</div>
+          <div class="card-company">Anaplan &middot; <span class="card-email">tom.baldwin@anaplan.com</span></div>
+          <div class="card-meta">Apollo ID: <code>60c488ff3153c90001225b8a</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Tom&#x27;s senior engineering at Anaplan</div>
+        <div class="email-body">Tom, leading senior engineering at a connected planning platform like Anaplan means test maintenance overhead compounds quickly as the product scales. Medibuddy built 2,500 automated tests with Testsigma and cut maintenance effort by 50%, without expanding the team. At Anaplan&#x27;s scale, reducing the time your engineers spend maintaining tests rather than building features is the challenge most senior engineering leaders describe. Is your current automation approach sustainable? What day works to see how Testsigma reduces the overhead?</div>
+        <div class="email-meta">Words: 77 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c36">
+      <div class="card-header">
+        <div class="card-num">#36</div>
+        <div class="card-info">
+          <div class="card-name">Michelina Vitello</div>
+          <div class="card-title">Sr Director of Engineering</div>
+          <div class="card-company">Anaplan &middot; <span class="card-email">michelina.vitello@anaplan.com</span></div>
+          <div class="card-meta">Apollo ID: <code>57d476fda6da985376569474</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Michelina&#x27;s engineering leadership at Anaplan</div>
+        <div class="email-body">Michelina, leading senior engineering at a connected planning platform like Anaplan means test automation has to scale with product complexity, not just headcount. A Fortune 100 financial services firm tripled their automated test coverage in 4 months with Testsigma&#x27;s AI, without growing the QA org. At Anaplan&#x27;s scale, keeping coverage depth while controlling engineering costs is exactly the challenge senior engineering leaders face. Is your current tooling scaling with the business? What day works to see how Testsigma fits?</div>
+        <div class="email-meta">Words: 79 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div><div class="company-group">Bungie — 2 contacts</div>
+
+    <div class="contact-card" id="c37">
+      <div class="card-header">
+        <div class="card-num">#37</div>
+        <div class="card-info">
+          <div class="card-name">Ryan Wagoner</div>
+          <div class="card-title">Software Engineer Manager</div>
+          <div class="card-company">Bungie &middot; <span class="card-email">ryan.wagoner@bungie.net</span></div>
+          <div class="card-meta">Apollo ID: <code>611a558c0aa62c0001b8577b</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#0891b2;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Samsung</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">11/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Ryan&#x27;s engineering at Bungie</div>
+        <div class="email-body">Ryan, as a software engineering manager at a studio like Bungie, cross-platform test reliability across PC, console, and evolving title builds is a real daily challenge. Samsung used Testsigma to maintain consistent cross-platform coverage without scaling QA headcount proportionally. At Bungie&#x27;s release scale, keeping regression solid across platforms while shipping updates frequently is exactly the pressure engineers describe. Is your current automation approach giving you the cross-platform coverage you need? What day works to see how Testsigma helps?</div>
+        <div class="email-meta">Words: 78 &nbsp;|&nbsp; MQS: 11/12 &nbsp;|&nbsp; ⚠ Samsung PP (no explicit % stat — still passes gate)</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c38">
+      <div class="card-header">
+        <div class="card-num">#38</div>
+        <div class="card-info">
+          <div class="card-name">Jeff Fox</div>
+          <div class="card-title">Sr Test Manager, Marathon</div>
+          <div class="card-company">Bungie &middot; <span class="card-email">jeff.fox@bungie.net</span></div>
+          <div class="card-meta">Apollo ID: <code>5ae45e62a6da98d32a1c7675</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Jeff&#x27;s test management at Bungie</div>
+        <div class="email-body">Jeff, as a senior test manager at Bungie, regression cycles tied to live-service releases carry real schedule risk if they run long. Hansard cut their regression cycle from 8 to 5 weeks using Testsigma&#x27;s AI automation, without adding QA resources. At a studio like Bungie, compressing test cycles while maintaining coverage across an evolving title is exactly the challenge test managers flag. Is your current approach fast enough for your shipping cadence? What day works to see how Testsigma fits?</div>
+        <div class="email-meta">Words: 80 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div><div class="company-group">Celonis — 4 contacts</div>
+
+    <div class="contact-card" id="c39">
+      <div class="card-header">
+        <div class="card-num">#39</div>
+        <div class="card-info">
+          <div class="card-name">Michael Guntsch</div>
+          <div class="card-title">VP of Engineering</div>
+          <div class="card-company">Celonis &middot; <span class="card-email">michael.guntsch@celonis.de</span></div>
+          <div class="card-meta">Apollo ID: <code>66ada5bdd121d000014c6ac0</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Michael&#x27;s engineering leadership at Celonis</div>
+        <div class="email-body">Michael, as VP of Engineering at a process intelligence platform like Celonis, test automation has to scale across complex enterprise integrations without slowing delivery. A Fortune 100 enterprise tripled their automated test coverage in 4 months using Testsigma&#x27;s AI, without growing the QA org. At Celonis&#x27; scale of enterprise deployments, maintaining that coverage depth while controlling engineering costs is the challenge most engineering VPs describe. Is your current automation approach scaling with the business? What day works to see how Testsigma fits?</div>
+        <div class="email-meta">Words: 82 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c40">
+      <div class="card-header">
+        <div class="card-num">#40</div>
+        <div class="card-info">
+          <div class="card-name">Felipe Lora</div>
+          <div class="card-title">VP of Engineering, Platform</div>
+          <div class="card-company">Celonis &middot; <span class="card-email">felipe.lora@celonis.de</span></div>
+          <div class="card-meta">Apollo ID: <code>54ec324c746869444c127263</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Felipe&#x27;s platform engineering at Celonis</div>
+        <div class="email-body">Felipe, leading platform engineering at Celonis means test coverage has to stay reliable across a complex, integration-heavy product layer. CRED reached 90% regression coverage and ran tests 5x faster with Testsigma, without additional QA investment. At Celonis&#x27; scale, maintaining deep coverage across the platform while shipping frequently is exactly the challenge most platform engineering leaders describe. Is your current automation approach giving you the coverage depth your platform requires? What day works to see how Testsigma addresses this?</div>
+        <div class="email-meta">Words: 78 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c41">
+      <div class="card-header">
+        <div class="card-num">#41</div>
+        <div class="card-info">
+          <div class="card-name">Bogdan Minciu</div>
+          <div class="card-title">Director of Engineering</div>
+          <div class="card-company">Celonis &middot; <span class="card-email">bogdan.minciu@celonis.de</span></div>
+          <div class="card-meta">Apollo ID: <code>54eb58a474686931e2b3dc0f</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-draft">Not Enrolled</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Bogdan&#x27;s engineering delivery at Celonis</div>
+        <div class="email-body">Bogdan, directing engineering at a process intelligence platform like Celonis means regression maintenance across complex integrations can drain engineering cycles fast. Medibuddy built 2,500 automated tests with Testsigma and cut maintenance effort by 50%, without adding headcount. At Celonis&#x27; scale, reducing the time engineers spend fixing broken tests rather than building new capabilities is exactly the bottleneck most engineering directors flag. Is your current approach sustainable? What day works to see how Testsigma reduces the overhead?</div>
+        <div class="email-meta">Words: 76 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c42">
+      <div class="card-header">
+        <div class="card-num">#42</div>
+        <div class="card-info">
+          <div class="card-name">Brian Oppenheim</div>
+          <div class="card-title">Engineering Director</div>
+          <div class="card-company">Celonis &middot; <span class="card-email">brian.oppenheim@celonis.de</span></div>
+          <div class="card-meta">Apollo ID: <code>623fe621c22b5700016dc31d</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Cisco</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-draft">Not Enrolled</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Brian&#x27;s engineering at Celonis</div>
+        <div class="email-body">Brian, directing engineering at a process intelligence platform like Celonis means your test infrastructure has to stay reliable across complex enterprise customer integrations. When Cisco integrated Testsigma into their pipelines, they cut regression time by 35%, without additional headcount. At Celonis&#x27; scale, keeping regression coverage tight while shipping continuously is the challenge most engineering directors describe. Is your current automation approach keeping up with release velocity? What day works to see how Testsigma fits your environment?</div>
+        <div class="email-meta">Words: 76 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div><div class="company-group">Check Point Software — 5 contacts</div>
+
+    <div class="contact-card" id="c43">
+      <div class="card-header">
+        <div class="card-num">#43</div>
+        <div class="card-info">
+          <div class="card-name">Tomer Weinberger</div>
+          <div class="card-title">QA &amp; Automation Manager</div>
+          <div class="card-company">Check Point Software &middot; <span class="card-email">tomerw@checkpoint.com</span></div>
+          <div class="card-meta">Apollo ID: <code>54a42d007468692fa21e7c32</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-draft">Not Enrolled</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Tomer&#x27;s QA automation at Check Point</div>
+        <div class="email-body">Tomer, managing QA and automation at a cybersecurity platform like Check Point means your regression suite covers complex, security-critical workflows where coverage gaps carry real risk. CRED reached 90% regression coverage and ran tests 5x faster with Testsigma, without expanding the QA team. At Check Point&#x27;s scale, maintaining that depth while shipping across a complex product portfolio is the exact challenge QA automation managers describe. Is your current framework scaling with what you&#x27;re shipping? What day works to see how Testsigma handles this?</div>
+        <div class="email-meta">Words: 83 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c44">
+      <div class="card-header">
+        <div class="card-num">#44</div>
+        <div class="card-info">
+          <div class="card-name">Doron Lehmann</div>
+          <div class="card-title">Director of Engineering</div>
+          <div class="card-company">Check Point Software &middot; <span class="card-email">doronl@checkpoint.com</span></div>
+          <div class="card-meta">Apollo ID: <code>54c1edca7468697af742155f</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-draft">Not Enrolled</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Doron&#x27;s engineering at Check Point</div>
+        <div class="email-body">Doron, directing engineering at Check Point means regression reliability across security-critical product releases is non-negotiable. Hansard cut their regression cycle from 8 to 5 weeks using Testsigma&#x27;s AI automation, freeing engineers from constant maintenance overhead. At Check Point&#x27;s scale of products, compressing regression cycles without sacrificing coverage depth is exactly the challenge most engineering directors flag. Is your current tooling giving you the speed and coverage your releases require? What day works to see how Testsigma addresses this?</div>
+        <div class="email-meta">Words: 78 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c45">
+      <div class="card-header">
+        <div class="card-num">#45</div>
+        <div class="card-info">
+          <div class="card-name">Jesse Ybarra</div>
+          <div class="card-title">Director of Engineering</div>
+          <div class="card-company">Check Point Software &middot; <span class="card-email">jessee@checkpoint.com</span></div>
+          <div class="card-meta">Apollo ID: <code>5d47e1cdf6512544e1dd7490</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-draft">Not Enrolled</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Jesse&#x27;s engineering delivery at Check Point</div>
+        <div class="email-body">Jesse, directing engineering at a cybersecurity platform like Check Point means test maintenance across complex, frequently updated product lines adds real overhead. Medibuddy built 2,500 automated tests with Testsigma and cut maintenance effort by 50%, without expanding the team. At Check Point&#x27;s scale, reducing the time engineers spend on test upkeep directly impacts delivery velocity. Is your current automation approach sustainable as the product complexity grows? What day works to see how Testsigma reduces the overhead?</div>
+        <div class="email-meta">Words: 76 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c46">
+      <div class="card-header">
+        <div class="card-num">#46</div>
+        <div class="card-info">
+          <div class="card-name">Yogesh Garg</div>
+          <div class="card-title">QA Group Manager</div>
+          <div class="card-company">Check Point Software &middot; <span class="card-email">yogeshg@checkpoint.com</span></div>
+          <div class="card-meta">Apollo ID: <code>5cc85f15f65125a50e6c7ced</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#0891b2;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Samsung</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">11/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Yogesh&#x27;s QA management at Check Point</div>
+        <div class="email-body">Yogesh, managing a QA group at Check Point means cross-product test coverage across a complex, multi-platform security portfolio is a real daily challenge. Samsung used Testsigma to maintain consistent cross-platform coverage without scaling QA headcount proportionally. At Check Point&#x27;s scale of product lines, keeping regression solid across platforms while shipping frequently is exactly what QA group managers describe. Is your current automation approach giving you the coverage depth you need? What day works to see how Testsigma fits?</div>
+        <div class="email-meta">Words: 78 &nbsp;|&nbsp; MQS: 11/12 &nbsp;|&nbsp; ⚠ Samsung PP (no explicit % stat — still passes gate)</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c47">
+      <div class="card-header">
+        <div class="card-num">#47</div>
+        <div class="card-info">
+          <div class="card-name">Shlomo Yeret</div>
+          <div class="card-title">Director of Software Engineering</div>
+          <div class="card-company">Check Point Software &middot; <span class="card-email">shlomoy@checkpoint.com</span></div>
+          <div class="card-meta">Apollo ID: <code>5f8f6cf158c3c00001df8cc6</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Shlomo&#x27;s software engineering at Check Point</div>
+        <div class="email-body">Shlomo, directing software engineering at Check Point means test automation has to scale across a complex, security-critical product portfolio without slowing delivery. A Fortune 100 enterprise tripled their automated test coverage in 4 months with Testsigma&#x27;s AI, without growing the QA org. At Check Point&#x27;s scale, increasing coverage depth without a proportional headcount increase is exactly the challenge Testsigma addresses. Is your current tooling scaling with the product? What day works to see how it works?</div>
+        <div class="email-meta">Words: 76 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div><div class="company-group">DraftKings — 4 contacts</div>
+
+    <div class="contact-card" id="c48">
+      <div class="card-header">
+        <div class="card-num">#48</div>
+        <div class="card-info">
+          <div class="card-name">Miroslav Kazakov</div>
+          <div class="card-title">QA Manager</div>
+          <div class="card-company">DraftKings &middot; <span class="card-email">miroslav.kazakov@draftkings.com</span></div>
+          <div class="card-meta">Apollo ID: <code>61002af6b0589b0001b77dc4</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Miroslav&#x27;s QA leadership at DraftKings</div>
+        <div class="email-body">Miroslav, managing QA at a regulated gaming platform like DraftKings means regression cycles tied to live product updates carry real risk if they drag. Hansard cut their regression cycle from 8 to 5 weeks using Testsigma&#x27;s AI automation, without adding QA resources. At DraftKings&#x27; release cadence, keeping test cycles tight enough to support continuous deployments is exactly the pressure QA managers describe. Is your current automation approach fast enough for your shipping pace? What day works to see how Testsigma helps?</div>
+        <div class="email-meta">Words: 81 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c49">
+      <div class="card-header">
+        <div class="card-num">#49</div>
+        <div class="card-info">
+          <div class="card-name">Ankur Arora</div>
+          <div class="card-title">Director of Engineering</div>
+          <div class="card-company">DraftKings &middot; <span class="card-email">ankur.arora@draftkings.com</span></div>
+          <div class="card-meta">Apollo ID: <code>5b3a9c1da6da98c0c9517303</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Ankur&#x27;s engineering at DraftKings</div>
+        <div class="email-body">Ankur, directing engineering at a live gaming platform like DraftKings means test coverage has to hold across complex, high-frequency product changes. CRED reached 90% regression coverage and ran tests 5x faster with Testsigma, without adding QA headcount. At DraftKings&#x27; pace of releases, keeping regression coverage deep without proportional team growth is the challenge most engineering directors face. Is your current automation approach keeping up with what&#x27;s being shipped? What day works to see how Testsigma addresses this?</div>
+        <div class="email-meta">Words: 77 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c50">
+      <div class="card-header">
+        <div class="card-num">#50</div>
+        <div class="card-info">
+          <div class="card-name">Will Hester</div>
+          <div class="card-title">Director of Engineering</div>
+          <div class="card-company">DraftKings &middot; <span class="card-email">will.hester@draftkings.com</span></div>
+          <div class="card-meta">Apollo ID: <code>610ce461a06a9200014ab94d</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Will&#x27;s engineering delivery at DraftKings</div>
+        <div class="email-body">Will, directing engineering at a live gaming platform like DraftKings means test maintenance overhead during high-velocity sprints directly impacts delivery. Medibuddy built 2,500 automated tests with Testsigma and cut maintenance effort by 50%, without expanding the team. At DraftKings&#x27; pace, reducing the drag from broken test suites while keeping coverage solid is exactly the bottleneck most engineering directors flag. Is your current approach sustainable as the product complexity grows? What day works to see how Testsigma helps?</div>
+        <div class="email-meta">Words: 77 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c51">
+      <div class="card-header">
+        <div class="card-num">#51</div>
+        <div class="card-info">
+          <div class="card-name">Rick Bartlett</div>
+          <div class="card-title">Director of Engineering, iGaming</div>
+          <div class="card-company">DraftKings &middot; <span class="card-email">rick.bartlett@draftkings.com</span></div>
+          <div class="card-meta">Apollo ID: <code>6305468cde7c5100019486a9</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Cisco</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Rick&#x27;s iGaming engineering at DraftKings</div>
+        <div class="email-body">Rick, directing iGaming engineering at DraftKings means test reliability across regulated product workflows is a daily requirement, not a nice-to-have. When Cisco integrated Testsigma into their pipelines, they cut regression time by 35%, without additional headcount. At DraftKings&#x27; scale of iGaming products, keeping test coverage healthy while shipping frequently is the exact challenge engineering directors in this space describe. Is your current automation approach keeping up with your release cadence? What day works to see how Testsigma fits?</div>
+        <div class="email-meta">Words: 78 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div><div class="company-group">Zebra Technologies — 5 contacts</div>
+
+    <div class="contact-card" id="c52">
+      <div class="card-header">
+        <div class="card-num">#52</div>
+        <div class="card-info">
+          <div class="card-name">Jorge Dominguez</div>
+          <div class="card-title">Sr Engineering Manager, Test Automation</div>
+          <div class="card-company">Zebra Technologies &middot; <span class="card-email">jorge.dominguez@zebra.com</span></div>
+          <div class="card-meta">Apollo ID: <code>5b2e0938a6da982cf2b3dd0d</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#0891b2;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Samsung</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">11/12</span>
+          <span class="status-badge status-draft">Not Enrolled</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Jorge&#x27;s test automation at Zebra Technologies</div>
+        <div class="email-body">Jorge, managing test automation at a hardware and software platform like Zebra Technologies means cross-device, cross-firmware coverage is a constant challenge at scale. Samsung used Testsigma to maintain consistent cross-platform coverage without scaling QA headcount proportionally. At Zebra&#x27;s scale of device and software products, keeping regression solid across configurations while shipping continuously is exactly what test automation managers describe. Is your current framework giving you the cross-environment coverage you need? What day works to see how Testsigma handles this?</div>
+        <div class="email-meta">Words: 79 &nbsp;|&nbsp; MQS: 11/12 &nbsp;|&nbsp; ⚠ Samsung PP (no explicit % stat — still passes gate)</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c53">
+      <div class="card-header">
+        <div class="card-num">#53</div>
+        <div class="card-info">
+          <div class="card-name">Marek Kana</div>
+          <div class="card-title">Director of QA</div>
+          <div class="card-company">Zebra Technologies &middot; <span class="card-email">marek.kana@zebra.com</span></div>
+          <div class="card-meta">Apollo ID: <code>54aa946774686906309b950c</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Hansard</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Marek&#x27;s QA leadership at Zebra Technologies</div>
+        <div class="email-body">Marek, directing QA at a platform company like Zebra Technologies means regression coverage across hardware-software intersections is a real complexity multiplier. Hansard cut their regression cycle from 8 to 5 weeks with Testsigma&#x27;s AI automation, without adding QA resources. At Zebra&#x27;s scale, compressing regression cycles while maintaining coverage depth across product lines is exactly the challenge QA directors describe. Is your current automation approach fast enough for your release cadence? What day works to see how Testsigma fits?</div>
+        <div class="email-meta">Words: 78 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c54">
+      <div class="card-header">
+        <div class="card-num">#54</div>
+        <div class="card-info">
+          <div class="card-name">Amit Maheshwari</div>
+          <div class="card-title">SW QA Manager</div>
+          <div class="card-company">Zebra Technologies &middot; <span class="card-email">amit.maheshwari@zebra.com</span></div>
+          <div class="card-meta">Apollo ID: <code>5ad8c3aca6da98e37f898d4b</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#7c3aed;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">CRED</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Amit&#x27;s QA management at Zebra Technologies</div>
+        <div class="email-body">Amit, managing software QA at Zebra Technologies means regression maintenance overhead across a product line spanning hardware-software integrations compounds quickly. CRED reached 90% regression coverage and ran tests 5x faster with Testsigma, without adding QA headcount. At Zebra&#x27;s scale, maintaining that depth of coverage across a complex, multi-product suite is exactly what software QA managers flag. Is your current automation approach scaling with the number of products being maintained? What day works to see how Testsigma fits your environment?</div>
+        <div class="email-meta">Words: 79 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c55">
+      <div class="card-header">
+        <div class="card-num">#55</div>
+        <div class="card-info">
+          <div class="card-name">Bob Liu</div>
+          <div class="card-title">Director of Engineering</div>
+          <div class="card-company">Zebra Technologies &middot; <span class="card-email">bob.liu@zebra.com</span></div>
+          <div class="card-meta">Apollo ID: <code>6198b841448dfc0001f8fc8c</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Medibuddy</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Bob&#x27;s engineering at Zebra Technologies</div>
+        <div class="email-body">Bob, directing engineering at Zebra Technologies means test maintenance overhead across a broad hardware-software product portfolio compounds quickly. Medibuddy built 2,500 automated tests with Testsigma and cut maintenance effort by 50%, freeing engineers for feature development. At Zebra&#x27;s scale, reducing the time engineers spend on test upkeep rather than building new capabilities is exactly the bottleneck most engineering directors describe. Is your current approach sustainable as the product scope grows? What day works to see how Testsigma addresses this?</div>
+        <div class="email-meta">Words: 79 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+    <div class="contact-card" id="c56">
+      <div class="card-header">
+        <div class="card-num">#56</div>
+        <div class="card-info">
+          <div class="card-name">Matthew Horner</div>
+          <div class="card-title">Director of Engineering</div>
+          <div class="card-company">Zebra Technologies &middot; <span class="card-email">matthew.horner@zebra.com</span></div>
+          <div class="card-meta">Apollo ID: <code>61f3cfe1bba45600010917a5</code></div>
+        </div>
+        <div class="card-right">
+          <span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Fortune 100</span>
+          <span style="background:#059669;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700">12/12</span>
+          <span class="status-badge status-sent">T1 Sent Mar 14</span>
+        </div>
+      </div>
+      <div class="card-email-block">
+        <div class="email-subject"><strong>Subject:</strong> Matthew&#x27;s engineering at Zebra Technologies</div>
+        <div class="email-body">Matthew, directing engineering at a platform company like Zebra Technologies means test automation has to scale across a broad product portfolio without proportional growth in QA. A Fortune 100 enterprise tripled their automated test coverage in 4 months with Testsigma&#x27;s AI, without growing the QA org. At Zebra&#x27;s scale, increasing coverage depth without ballooning headcount is exactly the challenge Testsigma solves. Is your current tooling keeping up with the product portfolio&#x27;s growth? What day works to see how it works?</div>
+        <div class="email-meta">Words: 80 &nbsp;|&nbsp; MQS: 12/12</div>
+      </div>
+    </div>
+
+  <div class="section-title">Backlog — Contacts Excluded This Batch</div>
+  <table class="backlog-table">
+    <thead><tr><th>Name</th><th>Company</th><th>Domain</th><th>Reason</th></tr></thead>
+    <tbody>
+<tr><td>Jacob Rexstraw</td><td>BeyondTrust</td><td>beyondtrust.com</td><td>Already enrolled in Batch 8</td></tr>
+<tr><td>Holly Shubaly</td><td>BeyondTrust</td><td>beyondtrust.com</td><td>Already enrolled in Batch 8</td></tr>
+<tr><td>Paul Womack</td><td>BeyondTrust</td><td>beyondtrust.com</td><td>Already enrolled in Batch 8</td></tr>
+<tr><td>Michael Sutherland</td><td>BeyondTrust</td><td>beyondtrust.com</td><td>Already enrolled in Batch 8</td></tr>
+<tr><td>Caleb Kershaw</td><td>BeyondTrust</td><td>beyondtrust.com</td><td>Already enrolled in Batch 8</td></tr>
+<tr><td>(2 Bungie candidates)</td><td>Bungie</td><td>bungie.net</td><td>Already in MASTER_SENT_LIST</td></tr>
+<tr><td>(1 DraftKings candidate)</td><td>DraftKings</td><td>draftkings.com</td><td>Already in MASTER_SENT_LIST</td></tr>
+</tbody>
+  </table>
+
+  <div style="text-align:center;color:#94a3b8;font-size:12px;margin-top:32px;padding:16px;">
+    Generated: 2026-03-13 | Session 34 | tamob-batch-20260313-2.html
+  </div>
+</div>
+</body>
+</html>

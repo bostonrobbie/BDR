@@ -134,7 +134,36 @@ Every tracker HTML MUST include:
 - Add Apollo ID to each card
 
 ### After T1 send:
-- Change badge to "T1 Sent {date}"
+**Do NOT update badges one-by-one during the send session** — this is slow and disrupts flow.
+Instead, run a single Python pass at session end after all sends are complete:
+
+```python
+with open('tamob-batch-YYYYMMDD-N.html', 'r') as f:
+    content = f.read()
+
+# Step 1: Set all "Draft Ready" → "T1 Sent {date}"
+content = content.replace(
+    'status-badge status-draft">Draft Ready',
+    'status-badge status-sent">T1 Sent Mar 14'
+)
+
+# Step 2: For DNC contacts — find their card by card-num and replace badge
+bret_start = content.find('<div class="card-num">#07</div>')
+# ... replace T1 Sent with DNC badge in that section only
+
+# Step 3: For contacts in tracker but NOT sent — revert to "Not Enrolled"
+for id_str in not_enrolled_ids:
+    card_start = content.find(f'card-num">#{id_str}</div>')
+    # ... replace T1 Sent back to Not Enrolled in that card section
+
+# Step 4: Verify badge counts
+import re
+from collections import Counter
+badges = re.findall(r'status-badge[^>]*>([^<]+)<', content)
+print(Counter(badges))  # Should show: {sent_count} T1 Sent, {dnc_count} DNC, {not_enrolled} Not Enrolled
+```
+
+The `batch{N}_sends.json` file is the authoritative list of who was actually sent — use it to determine which HTML contacts need "Not Enrolled" vs "T1 Sent".
 
 ### After T2 draft:
 - Add T2 email draft section to each card (below T1 draft)
@@ -146,4 +175,4 @@ Every tracker HTML MUST include:
 
 ---
 
-*Last updated: 2026-03-12 — template standardized from Waves 1-5 tracker formats*
+*Last updated: 2026-03-14 (Session 37) — batch Python badge update pattern added for T1 sends. Per-send badge updates deprecated. batch_sends.json as authoritative sent-list source added. Prior: 2026-03-12 — template standardized from Waves 1-5 tracker formats.*

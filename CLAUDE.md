@@ -110,6 +110,7 @@ Only prospect from TAM (312) + Factor (38) accounts. Verify every contact's comp
 | Abe Blanco | Kapitus | Replied "not interested" Mar 4. Batch 8 send. Skip permanently. | 2026-03-04 |
 | Chuck Smith | Aventiv Technologies | Double-send (B1 connection + B5B InMail). Rob decision Mar 4. Skip permanently. | 2026-03-04 |
 | Jitesh Biswal | JPMorgan Chase | Declined InMail Nov 4 (pre-campaign Oct 27 send). Skip permanently. | 2026-03-06 |
+| Bret Wiener | Farmers Insurance | Prior meeting held. Stage = Connected, had [Archived Sequence] from earlier era. Skip permanently — do not re-enroll. | 2026-03-14 |
 
 ---
 

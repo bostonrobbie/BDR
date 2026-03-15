@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-13 (Session 34 — Batch 8 T1 sends complete, 55/56 sent. Monika Sharma skipped per Rob. TASK-035 added for Batch 8 T2 drafts due Mar 18. MASTER_SENT_LIST.csv 552 rows.)
+## Last Updated: 2026-03-14 (Session 37 — Batch 9 T1 sends COMPLETE. 44/45 sent Mar 14. Bret Wiener DNC skipped. Tracker updated. TASK-036 now active — T2 window opens Mar 18-21.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 Follow the 14-step startup in `AGENTS.md` (v2.0). Key steps:
@@ -147,6 +147,22 @@ All 9 contacts enrolled in TAM Outbound Step 1. When Apollo surfaces the manual 
 **Formula:** sop-tam-outbound.md Part 7 (Deep-Dive v4, locked Mar 12) — 140-190 words, 4-part: "I imagine" pain + Testsigma pitch + customer story + 15-min CTA. BANNED: "Circling back" / "Following up." See `memory/playbooks/t2-followup.md` for full formula + reference example.
 **Check T1 proof points:** `tamob-batch-20260312-4.html` (9 contact T1 drafts)
 **APPROVE SEND required before any sends**
+
+### TASK-036: Draft T2 Emails — Batch 9 (44 contacts, due Mar 18-21)
+**Status:** UNCLAIMED
+**Priority:** P1 — T2 due Mar 18-21 (Day 5-8 from Mar 14 T1 send)
+**Effort:** ~120 min (large batch, 14 accounts)
+**Output:** `tamob-batch9-t2-drafts-mar18.html`
+
+44 contacts sent T1 on Mar 14 (45 enrolled, Bret Wiener DNC skipped). T2 tasks will appear in Apollo Tasks tab ~Mar 18-19.
+**Formula:** sop-tam-outbound.md Part 7 (Deep-Dive v4) — 140-190 words, 4-part: (1) "I imagine" + deeper pain, (2) Testsigma solution pitch, (3) customer story with WHY, (4) 15-min CTA. BANNED: "Circling back" / "Following up." See `memory/playbooks/t2-followup.md`.
+**Check T1 proof points:** `tamob-batch-20260313-2.html` (45 contact T1 drafts — use different proof point per contact)
+**Send via:** Apollo UI → INC-012 protocol
+**APPROVE SEND required before any sends**
+
+**Accounts:** SailPoint(4), Farmers Insurance(5), Bethesda Softworks(5), hims&hers(3), Rocket Software(5), Lemonade(1), Zimmer Biomet(2), Anaplan(6), Bungie(2), Celonis(2), Check Point(2), DraftKings(4), Zebra Technologies(4)
+
+---
 
 ### TASK-035: Draft T2 Emails — Batch 8 (55 contacts, due Mar 18)
 **Status:** UNCLAIMED

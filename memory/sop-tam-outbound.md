@@ -1,5 +1,5 @@
 # SOP: TAM Outbound — End-to-End Process
-## Version 4.2 — Updated Mar 13, 2026 (Daily target corrected 50 → 50-100; INC-012 two-gate send protocol mandatory; T2 formula v4 locked Mar 12 — 140-190 words, Deep-Dive 4-part structure, 15-min CTA, banned phrases. Previous: v4.1 Mar 11 — execCommand insertText confirmed, subject correction protocol, T2 all-manual.)
+## Version 4.3 — Updated Mar 14, 2026 (T1 formula upgraded: HC1 opener retired, new 3-para non-assumptive structure locked. Reply-first CTA replaces "what day works" meeting ask in T1. Full spec in Part 6. Previous: v4.2 Mar 13 — Daily target corrected 50 → 50-100; INC-012 two-gate send protocol mandatory; T2 formula v4 locked Mar 12.)
 
 This SOP governs all outreach to named TAM accounts. It is the authoritative guide for any Claude agent executing the TAM outbound process. Read this file in full before starting any TAM batch.
 
@@ -177,7 +177,14 @@ Run before every batch, for every contact:
 
 5. **Sales Navigator inbox check:** Search their name in Sales Nav messages. If an existing thread exists: check if prior message was T1 InMail. If yes and unanswered within 14+ days: T2 email may be appropriate. If a reply exists: handle as warm lead.
 
-If dedup clean: proceed. If any flag: document in batch tracker notes, ask Rob before proceeding.
+6. **Apollo Stage + Sequence history check (MANDATORY — Added Mar 14, 2026):** Open the contact's Apollo profile. Check two things:
+   - **Stage field:** If Stage = "Connected", "Meeting Booked", "Meeting Held", "Opportunity", "Customer", or any non-cold stage, STOP — do NOT enroll. These stages mean prior engagement or an active relationship exists. Ask Rob before taking any action.
+   - **Sequences tab:** If the contact has ANY prior sequence (even [Archived Sequence] marked Finished), check with Rob before enrolling in a new cold sequence. A finished sequence means they were previously touched — Rob may have spoken with them.
+   - **Activities tab:** Scan for any logged meetings, calls, or demos. If any exists: treat as warm lead, SKIP cold enrollment, alert Rob.
+
+   **Lesson learned (Mar 14, 2026 — Bret Wiener, Farmers Insurance):** Contact was enrolled in Batch 9 TAM Outbound despite having a prior [Archived Sequence] Finished and Stage = "Connected." Rob had previously met with him. Email was caught before send — but only because Rob flagged it manually. Root cause: dedup check did not include Apollo Stage or sequence history review. Prevention: always run Step 6 above before enrollment.
+
+If dedup clean on all 6 checks: proceed. If any flag: document in batch tracker notes, ask Rob before proceeding.
 
 ---
 
@@ -314,49 +321,93 @@ If any check fails: fix it before drafting. Do not draft from title + company al
 
 ---
 
-## Part 6: T1 — Email Only (Updated Mar 10)
+## Part 6: T1 — Email Only (Updated Mar 14)
 
 **CONFIRMED: T1 is email only for TAM Outbound.** Old InMail T1 decision tree is deprecated.
 
 Step 1 of the TAM Outbound sequence is always an email sent via Apollo (robert.gorham@testsigma.com). Old Wave 1 InMail drafts (wave1-prospecting-plan-mar9.html) are deprecated and deleted. Start fresh prospecting for all accounts.
 
-### Enterprise Email T1 Formula
+### Enterprise Email T1 Formula (v2 — Locked Mar 14, 2026)
 
-Use this for ALL email T1 sends (TAM Outbound Step 1):
+**⚠️ HC1 opener ("We have yet to be properly introduced...") is RETIRED as of Mar 14. Do not use it in T1 emails.**
 
-**Subject:** SMYKM personal ("[Name]'s QA coverage at [Company]") OR specific problem-framed ("Testing [Company's specific platform]" or "Regression coverage for [product line]")
-- NOT generic: "Quick question" "Regression eating your time" — those are SMB patterns
-- Enterprise subjects are specific to THEM, not to a pain category
+Use this 3-paragraph structure for ALL TAM Outbound T1 sends:
 
-**Opener:** MUST use HC1-compliant SMYKM opening:
-> "We have yet to be properly introduced, but I'm Rob with Testsigma."
+---
 
-Then immediately pivot to a QA-relevant challenge observation tied to their specific role/company. Do NOT comment on their profile, LinkedIn activity, or career history. Do NOT say "I noticed" or "I saw."
+**Subject:** "[Name]'s [role/pain angle] at [Company]"
+- Specific to the person and pain, not a generic category
+- Examples: "Cory's engineering scale at SailPoint", "Suresh's QA leadership at Farmers Insurance"
+- NOT: "Quick question", "Regression eating your time", or any generic pain phrase
 
-**Challenge-Narrative (2-3 sentences):**
-Embed context about what their type of team typically deals with, tied to something research-verified about their company/vertical. Then bridge to proof point.
-Pattern: "The challenge [type of org] hits is [specific problem]. [Customer] was dealing with the same [thing] and [outcome + Testsigma]."
+---
 
-**Close:**
-Same "what day works" close as InMail. Tie to proof point outcome. NOT open-ended.
+**Greeting:** Hi [First], (plain — no bold)
 
-**Word limit:** 75-100 words body (enterprise = inbox-zero culture, shorter wins). Absolute max 120 words.
+**Para 1 — Non-assumptive role observation + check-in question**
+Opens with a non-assumptive observation about what their role/context "usually means" for QA/testing, tied to their specific company or vertical. Must end with a diagnostic check-in question that invites a reply and confirms whether the pain applies.
+- Use "usually means" or "tends to" as the opener. Never assume — observe.
+- The check-in question must be specific to the pain named, not generic ("Is that something your team is navigating?" is too weak — name the specific pain).
+- ✅ "Running senior engineering across an identity governance platform usually means test suite brittleness finds its way into your release cycle before you have time to fix it. Is your team spending more sprint cycles chasing broken tests than building new coverage?"
+- ❌ "I know how busy QA teams are. Is this a priority for you?" (generic, assumptive)
 
-**Example structure:**
+**Para 2 — Bridge + customer metric + outcome sentence**
+Opens with a bridge phrase that EXPLICITLY NAMES the specific pain word/phrase used in Para 1 (not a generic "ran into the same bottleneck"). Names the customer, the metric, and what their team stopped doing.
+- Bridge must echo the exact pain term from Para 1: "was dealing with the same brittleness problem", "was dealing with the same catch-up problem", "was dealing with the same maintenance drain"
+- Structure: "[Customer] was dealing with the same [exact pain term from Para 1] and [outcome metric] on Testsigma, [efficiency note]. Their team stopped [specific behavior they had to stop doing]."
+- ✅ "Cisco was dealing with the same brittleness problem and cut regression runtime by 35% on Testsigma, without adding engineers. Their team stopped manually patching broken locators every sprint."
+- ❌ "Cisco ran into the same bottleneck and achieved great results." (generic bridge, no specific outcome)
+
+**Para 3 — Stakes line + open-ended reply question**
+A brief stakes sentence about what the pain costs at their company's scale. Ends with an open-ended question that invites a reply (NOT a meeting ask). The question must relate directly to the specific pain in this email.
+- Stakes line pattern: "At [Company]'s scale, [specific consequence of the pain]." OR "[Vertical] [companies/platforms] can't afford [the pain]."
+- Reply question: Open-ended, diagnostic, related to the pain. Ask what their situation actually looks like — not whether they want a meeting.
+- ✅ "At SailPoint's scale, that drag compounds across every release. Is test brittleness something your team is actively trying to get ahead of?"
+- ❌ "What day works for a quick call?" (DO NOT use — this is a meeting ask, not a reply question)
+- ❌ "Would love to connect!" (too salesy)
+
+---
+
+**Hard Rules:**
+- Word count: 75-99 words (body text only, not greeting/signature)
+- Exactly 2 question marks in the full email (check-in question + reply question)
+- "Testsigma" must appear at least once in the body
+- No em dashes anywhere
+- No ` - ` separators (use commas instead)
+- No "following up", "circling back", "I noticed", "I saw"
+- No meeting ask in T1. Reply-first CTA only.
+- Paragraph breaks: use explicit blank lines between each para (renders as 3 distinct paragraphs)
+- Named customer required (Cisco, CRED, Hansard, Medibuddy, Samsung, or Fortune 100 firm)
+
+---
+
+**Example:**
 ```
-Subject: Seth's QA coverage at Fidelity
+Subject: Cory's engineering scale at SailPoint
 
-We have yet to be properly introduced, but I'm Rob with Testsigma.
+Hi Cory,
 
-At Fidelity's scale, financial platform updates ripple through hundreds of test cases. Most QA leaders at large institutions say test maintenance is what limits coverage growth, not headcount.
+Running senior engineering across an identity governance platform usually means test suite brittleness finds its way into your release cycle before you have time to fix it. Is your team spending more sprint cycles chasing broken tests than building new coverage?
 
-Hansard cut their regression cycle from 8 to 5 weeks with our AI self-healing. Tests fix themselves when the UI changes.
+Cisco was dealing with the same brittleness problem and cut regression runtime by 35% on Testsigma, without adding engineers. Their team stopped manually patching broken locators every sprint.
 
-If cutting that overhead would help your team scale coverage, what day works for a quick look at how they did it?
+At SailPoint's scale, that drag compounds across every release. Is test brittleness something your team is actively trying to get ahead of?
 
+Cheers,
 Rob Gorham
-Testsigma
+Business Development · Testsigma
+robert.gorham@testsigma.com
 ```
+
+**Proof point rotation (T1 — use each story once per batch per company):**
+| Story | Metric | Best pain match |
+|-------|--------|----------------|
+| Cisco | 35% regression time cut | Brittleness, broken locators, false failures |
+| CRED | 90% coverage, 5x faster | Coverage gaps, catch-up debt, scale |
+| Hansard | 8 → 5 week regression | Cycle length, deadline pressure, shipping cadence |
+| Medibuddy | 2,500 tests, 50% maintenance cut | Maintenance drain, sprint capacity |
+| Samsung | Cross-platform consistent coverage | Multi-platform, device fragmentation, hardware-software |
+| Fortune 100 firm | 3x coverage in 4 months | Portfolio coverage gap, QA constraint on velocity |
 
 ---
 
@@ -836,10 +887,10 @@ Now research each contact individually. For each person in the tracker:
 Draft in account batches, not random order. Write all contacts at one company consecutively to catch any overlap:
 
 **Per contact (~4-5 min):**
-1. Write T1 subject (SMYKM — specific to this person/company, not a generic pain category)
-2. Write T1 body (HC1 opener → challenge observation tied to their role scope + company trigger → proof point → "what day works" CTA, 75-100 words)
+1. Write T1 subject ("[Name]'s [role/pain angle] at [Company]" — specific to this person, not a generic pain category)
+2. Write T1 body (3-para formula v2 — Para 1: "usually means" observation + check-in question → Para 2: bridge naming specific pain + customer metric + outcome → Para 3: stakes line + open-ended reply question. 75-99 words, exactly 2 question marks. See Part 6 for full spec and example.)
 3. Write T2 body (Deep-Dive v4 — "I imagine" pain deepening → Testsigma pitch → customer story → 15-min CTA, 140-190 words. See Part 7 for canonical formula and reference example.)
-4. Self-check: if the next contact at this same company read both their T1 and yours side by side, would they think it was the same template? If yes: revise the opener or the challenge sentence.
+4. Self-check: if the next contact at this same company read both their T1 and yours side by side, would they think it was the same template? If yes: revise the Para 1 observation or Para 2 bridge.
 
 **Draft speed is fast here because all research is pre-done.** You're not thinking "what angle do I use?" — you're filling in a pre-mapped structure.
 
@@ -848,14 +899,20 @@ Draft in account batches, not random order. Write all contacts at one company co
 Before presenting to Rob, run the batch through the QA Gate:
 
 **Per-message checks:**
-- [ ] No "following up" / "circling back" language in T1 (HC violation)
-- [ ] HC1 compliant opener: "We have yet to be properly introduced, but I'm Rob with Testsigma."
-- [ ] T1 subject is person/company-specific (NOT generic pain phrase)
-- [ ] T1 body 75-100 words (hard cap 120)
+- [ ] No "following up" / "circling back" / "I noticed" / "I saw" language anywhere
+- [ ] T1 subject is person/company-specific — "[Name]'s [role/pain] at [Company]" format
+- [ ] T1 Para 1 uses "usually means" or "tends to" opener (non-assumptive) + check-in question
+- [ ] T1 Para 2 bridge explicitly names the same pain word/phrase used in Para 1 (not generic "same bottleneck")
+- [ ] T1 Para 3 ends with an open-ended REPLY question (NOT a meeting ask — no "what day works")
+- [ ] T1 body 75-99 words (hard cap 99)
+- [ ] Exactly 2 question marks in T1 body
+- [ ] "Testsigma" named in T1 body
+- [ ] Named customer (Cisco, CRED, Hansard, Medibuddy, Samsung, or Fortune 100) in T1 body
+- [ ] No em dashes anywhere
+- [ ] No ` - ` separators (use commas)
 - [ ] T2 body 140-190 words (Deep-Dive v4 — Part 7 canonical formula)
 - [ ] T1 and T2 use different proof points
-- [ ] No em dashes anywhere
-- [ ] No two contacts at same company have same opener angle, same proof point, or same CTA phrasing
+- [ ] No two contacts at same company have same Para 1 observation, same proof point, or same reply question
 - [ ] Extrapolated emails flagged in tracker
 
 **MQS check (spot-check minimum 5 contacts):** Run MQS scoring from sop-outreach.md on at least 10% of the batch. Target: all spot-checked contacts at 9/12 or above. If any score below 9: revise before presenting.
@@ -1326,6 +1383,7 @@ For each contact in the batch (T1 or T2):
 
 **Step 4 — Final pre-send checklist (mandatory)**
 Visually confirm ALL before clicking Send Now:
+- [ ] **Stage check:** Contact's Apollo Stage is cold (New, Prospect, etc.) — NOT "Connected", "Meeting Held", "Opportunity", or any warm/active stage. If warm stage: STOP, do not send, alert Rob.
 - [ ] Subject: personalized SMYKM subject, matches draft reference exactly
 - [ ] Subject: does NOT contain "QA coverage" unless that is correct for this specific person
 - [ ] Body: starts with "Hi [First Name]," — correct first name for THIS contact

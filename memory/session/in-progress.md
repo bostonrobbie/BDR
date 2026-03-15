@@ -1,10 +1,11 @@
 # In-Progress — Crash Recovery Checkpoint
 
 ## Status: COMPLETE
-## Session: 32-33
-## Task ID: TASK-033
-## Task Name: TAM T1 Batch — 100 contact enrollment target (Mar 13)
+## Session: 32-37
+## Task ID: TASK-033 + TASK-036-ENROLL + TASK-036-SEND
+## Task Name: TAM T1 Batch 9 — 56 drafted, 45 enrolled (Mar 13), 44/45 T1 SENT (Mar 14)
 ## Started: 2026-03-13
+## Completed: 2026-03-14
 
 ## Objective
 Source, dedup, enrich, and enroll up to 100 contacts from untouched high-ICP TAM/Factor accounts in the TAM Outbound - Rob Gorham sequence.
@@ -58,11 +59,16 @@ Source, dedup, enrich, and enroll up to 100 contacts from untouched high-ICP TAM
 If crash: Start at Step 3 — Apollo People Search. All target accounts listed above.
 If enrollment started: check which contacts already enrolled by reading messages.md CLAIM entry.
 
-## Completion Notes
-- 56 contacts enrolled across 14 TAM HIGH accounts
-- MASTER_SENT_LIST.csv: 552 rows total (496 pre-session + 56 added)
+## Completion Notes — Batch 8 (Session 33)
+- 56 contacts enrolled across 14 TAM HIGH accounts (tamob-batch-20260313-1.html)
+- MASTER_SENT_LIST.csv: 552 rows total after Batch 8
+
+## Completion Notes — Batch 9 (Session 35)
+- 56 contacts drafted, 45 enrolled (11 dedup misses/other-campaign blocks)
+- Accounts: SailPoint(4), Farmers(5), Bethesda(5), hims&hers(3), Rocket Software(5), Lemonade(1), Zimmer Biomet(2), Anaplan(6), Bungie(2), Celonis(2), Check Point(2), DraftKings(4), Zebra(4)
+- MASTER_SENT_LIST.csv: 597 rows total (552 + 45)
 - Sequence ID: 69afff8dc8897c0019b78c7e
 - Send-from account ID: 68e3b53ceaaf74001d36c206
-- Tracker: tamob-batch-20260313-1.html
-- T1 drafts NOT written — pending APPROVE SEND from Rob
-- Catch-all domains: yext.com, evernorth.com, jackhenry.com, singlestore.com
+- Tracker: tamob-batch-20260313-2.html
+- 11 excluded: Sandeep Enagala, Maria Mata, Abhishek Ravishankara, Elad Moshe, Swapna B, Jesse Ybarra, Jorge Dominguez, Bogdan Minciu, Brian Oppenheim, Tomer Weinberger, Doron Lehmann
+- T2 due: Mar 18-21 (Day 5-8 from Mar 13 send)

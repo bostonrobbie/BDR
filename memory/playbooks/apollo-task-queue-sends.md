@@ -10,8 +10,17 @@ After contacts are enrolled in the TAM Outbound sequence and Rob has given APPRO
 ## Prerequisites
 1. Contacts enrolled in TAM Outbound sequence (Step 1, active status)
 2. Rob has given explicit **APPROVE SEND** for this batch (content gate — required before touching Apollo)
-3. Batch tracker HTML file exists with all T1 email drafts (subject + body per contact)
+3. Approved content accessible — either batch tracker HTML **or** a `batch{N}_sends.json` file (see Content Lookup below)
 4. You have browser access to Apollo (blue/work Chrome profile)
+
+## Content Lookup — batch_sends.json Pattern
+For large batches (Batch 9+), a JSON file is the fastest way to retrieve approved body + subject per contact mid-send. Format: array of objects with `id`, `name`, `first`, `email`, `subject`, `body`.
+
+**Python lookup (use this every send):**
+```bash
+python3 -c "import json; data=json.load(open('batch9_sends.json')); c=next(x for x in data if x['id']==N); print('SUBJECT:', c['subject']); print('BODY:'); print(c['body'])"
+```
+Replace `N` with the contact's integer ID. Run this BEFORE opening each task in Apollo.
 
 ---
 
@@ -61,19 +70,19 @@ Apollo pre-fills subjects as "Firstname's QA coverage at Company" from the seque
 - Type the correct personalized subject from the tracker (e.g., "Sandip's integration coverage at Pathlock")
 - Verify with JS: `document.querySelector('input[placeholder="Type a subject for your email"]').value`
 
-**Step 2b — Body insertion (execCommand method only):**
+**Step 2b — Body insertion + readback (one JS call, execCommand method only):**
 ```javascript
-const e = document.querySelector('.ql-editor');
-e.focus();
+const body = `[approved body text — paste from batch_sends.json lookup]`;
+const editor = document.querySelector('.ql-editor');
+editor.focus();
 document.execCommand('selectAll');
-document.execCommand('insertText', false, `[JS_BODY string from tracker/lookup.py]`);
+document.execCommand('insertText', false, body);
+editor.innerText.trim().slice(0, 120);
 ```
+The return value IS the readback — verify it matches the first 120 chars of the approved body. If it doesn't → STOP.
 
 **Step 2c — INC-012 Readback Gate (MANDATORY before Send Now):**
-```javascript
-document.querySelector('.ql-editor').innerText.trim().slice(0, 120)
-```
-Verify output matches the approved body for this contact. Present screenshot of body area to Rob.
+The combined JS call above handles injection + readback in one step. The returned string must match the approved body opening. Present a full screenshot of subject + body area to verify visually before Send Now.
 
 **Step 2d — QA CHECK checklist:**
 - [ ] Subject has contact's first name and correct company/topic?
@@ -84,22 +93,45 @@ Verify output matches the approved body for this contact. Present screenshot of 
 - [ ] Readback matches approved draft?
 
 **Step 2e — Send Now click:**
-- Find the Send Now button: `const btns = Array.from(document.querySelectorAll('button')); const sendNow = btns.find(b => b.textContent.trim() === 'Send Now');`
-- Confirm `disabled=false` before clicking
-- Click via ref (preferred) or coordinate
-- Apollo auto-advances to next task — confirm by URL change and new contact header
+- Click the Send Now button (coordinate ~214, 777 in the compose panel, or find via screenshot)
+- After clicking, Apollo returns to the task list URL
 
-**Step 2f — Post-send verification:**
-- Check Gmail MCP within 60 seconds: `gmail_search_messages(q="subject:[key words] from:robert.gorham@testsigma.com")`
-- If Gmail confirms sent: ✅ proceed to next task
-- If Gmail shows nothing after 90s: flag and investigate before continuing
+**Step 2f — Post-send verification (3 patterns — use whichever applies):**
 
-4. Apollo marks the task as complete and auto-advances the contact to Step 2
+**Pattern A — Clean confirm (cleanest):**
+URL returns to task list + task count shows "0 of 0" = ✅ sent and no remaining tasks for this search.
+
+**Pattern B — "Changes saved" toast + empty list:**
+"Changes saved" green toast appears + Email tasks = 0 = ✅ sent. Most common for single-contact searches.
+
+**Pattern C — Sticky "1-1 of 1" (MOST COMMON in large batches):**
+URL returns to task list but count still shows "1-1 of 1" (does NOT update immediately).
+**Do NOT resend.** Click back into the task and run:
+```javascript
+!!([...document.querySelectorAll('button')].find(b => b.innerText.includes('Task completed')))
+```
+`true` = task is complete ✅. Also look for "Task completed" greyed-out button at top of page and "Send Now" being disabled.
+
+**Gmail MCP** is a fallback only — the above in-page checks are faster and more reliable. Use Gmail MCP only if all 3 patterns are ambiguous.
+
+4. Contact's sequence advances to Step 2 in Apollo (happens server-side, not always visible immediately)
 
 ### Step 3: Update Tracker
-After sending each email:
-1. Update the contact's status badge in the tracker HTML: "Draft Ready" → "T1 Sent {date}"
-2. If MASTER_SENT_LIST.csv hasn't been updated yet (it should be from enrollment), verify the row exists
+**Do NOT update badge per-send during the session** — this is slow and error-prone mid-send flow.
+Instead, do a single batch update at the end of the session using Python:
+
+```python
+# Replace all "Draft Ready" badges with "T1 Sent {date}" in one pass
+content = content.replace(
+    'status-badge status-draft">Draft Ready',
+    'status-badge status-sent">T1 Sent Mar 14'
+)
+# Then for any DNC contacts: find their card section and replace with DNC badge
+# Then for any Not Enrolled contacts: revert those back to "Not Enrolled"
+# Final check: count badges to verify correct distribution
+```
+
+Full pattern in tamob-batch-20260313-2.html session notes. MASTER_SENT_LIST.csv should already have all rows from enrollment — verify `wc -l` matches expected count.
 
 ### Step 4: Verify All Sends
 After completing all tasks:
@@ -117,6 +149,17 @@ Check `contact_campaign_statuses` for `current_step_position` and `status`.
 ---
 
 ## Known Issues
+
+### Sticky "1-1 of 1" after send — NORMAL BEHAVIOR (not an error)
+**Cause:** Apollo's task list count does not always update immediately after a send. The URL returns to the task list but the count stays at "1-1 of 1" instead of dropping to "0 of 0".
+**This is NOT a failed send.** It happens consistently across large batches.
+**Fix:** Click back into the task → run `!!([...document.querySelectorAll('button')].find(b => b.innerText.includes('Task completed')))` → `true` confirms sent. Also check that "Send Now" is greyed out on the task page.
+**DO NOT click Send Now again** — that would double-send.
+**Example:** Confirmed in Batch 8 (55 contacts) and Batch 9 (44 contacts) — this is the standard behavior, not an exception. (Sessions 34, 37)
+
+### Search field not updating after task completion
+**Cause:** After completing a task, the URL may remain on the old task page when you try to search for the next contact. The search field is present but typing doesn't navigate.
+**Fix:** Click the "Tasks" breadcrumb at the top left first to return to the clean task list, THEN search for the next contact. Never search from within a completed task page.
 
 ### Tasks not appearing in queue
 **Cause:** Apollo has a delay between enrollment and task generation. Tasks can take 1-24 hours to surface.
@@ -151,12 +194,12 @@ Same process as T1, but:
 
 | Touch | When tasks appear | Word count | CTA style |
 |-------|------------------|------------|-----------|
-| T1 | 1-24 hours after enrollment | 75-99 | "What day works to see how?" |
-| T2 | Day 5 from T1 send | 50-70 | Engagement question |
+| T1 | 1-24 hours after enrollment | 75-99 | Engagement question ("What day works…") |
+| T2 | Day 5 from T1 send | 140-190 | 15-min meeting ask ("Would 15 minutes make sense…") |
 | T3 | Day 10 from T1 send | N/A (LI connect request) | Connection request |
 | T4-T6 | Day 15, 21, 28 | N/A (phone calls) | Call script |
 | T7 | Day 35 | 40-60 | Breakup email |
 
 ---
 
-*Last updated: 2026-03-13 (Session 34) — INC-012 mandatory two-gate protocol embedded as core send process. Subject correction pattern documented. Daily 50-100 target added. Consolidated from Sessions 11, 19-20, 22-24, 34.*
+*Last updated: 2026-03-14 (Session 37) — batch_sends.json lookup pattern added. Sticky "1-1 of 1" documented as normal/expected behavior with JS Task completed check as primary verification. "Changes saved" toast + empty list added as Pattern B confirm. Per-send tracker update replaced with batch Python update at session end. T2 word count corrected to 140-190. Search field navigation bug documented. Gmail MCP demoted to fallback only. Prior: Session 34 — INC-012 protocol, subject correction, daily 50-100 target.*

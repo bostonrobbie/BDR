@@ -109,7 +109,22 @@ Tell Rob: contact count, companies, link to tracker HTML, any blockers.
 Wait for explicit "APPROVE SEND" before any emails go out.
 
 ## Post-APPROVE SEND
-See `playbooks/apollo-task-queue-sends.md` for the send execution process.
+See `playbooks/apollo-task-queue-sends.md` for the full send execution process.
+
+**Before starting sends, create a `batch{N}_sends.json` file** with all approved content:
+```json
+[{"id": 1, "name": "Full Name", "first": "First", "email": "email@co.com", "subject": "First's role at Company", "body": "Approved body text..."}, ...]
+```
+This becomes the source of truth for every send. Retrieve per-contact content mid-session with:
+```bash
+python3 -c "import json; data=json.load(open('batchN_sends.json')); c=next(x for x in data if x['id']==N); print('SUBJECT:', c['subject']); print('BODY:'); print(c['body'])"
+```
+
+**Key send mechanics (from Batch 8/9 production runs):**
+- Subject always needs manual correction — Apollo pre-fills wrong generic text every time
+- Combined injection+readback in one JS call (see apollo-task-queue-sends.md Step 2b)
+- Sticky "1-1 of 1" after send is NORMAL — use JS Task completed check, not Gmail MCP
+- Batch tracker badge updates: do ONE Python pass at session end, not per-send
 
 ## Error Handling
 See `playbooks/error-recovery.md` for all known errors and fixes.

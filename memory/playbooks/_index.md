@@ -57,4 +57,4 @@ All original candidates are now live skills:
 
 ---
 
-*Last updated: 2026-03-12 (Session 30 — 12 playbooks + 10 new skills added)*
+*Last updated: 2026-03-14 (Session 37 — apollo-task-queue-sends.md major update: sticky 1-1-of-1 documented, JS Task completed check as primary verification, batch_sends.json lookup pattern, Gmail MCP demoted to fallback, T2 word count corrected, tracker badge update moved to batch Python pass. batch-tracker-html.md: en-masse badge update pattern added. tam-t1-batch SKILL.md: sends.json + key send mechanics added. Prior: Session 30 — 12 playbooks + 10 new skills.)*

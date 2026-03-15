@@ -84,14 +84,46 @@ Steps:
 
 ### Step 6: Draft T1 Emails
 
-**Formula (from sop-tam-outbound.md Part 6):**
-- Subject: `{First name}'s {role context} at {Company}` (SMYKM style)
-- Body structure: HC1 intro (1 sentence) → Challenge hook (1-2 sentences) → Proof point with numbers (1 sentence) → CTA: "What day works to see how?" (1 sentence)
-- Word count: 75-99 words (sweet spot per data-rules.md: 39.0% reply rate)
-- Exactly 2 question marks in the body
-- Must mention Testsigma by name
-- Must include a named customer with specific numbers (e.g., "Hansard cut regression 8 to 5 weeks")
-- No em dashes. Use commas. Minimize hyphens.
+**Formula (updated 2026-03-14, canonical — derived from best-performing sends across 200+ T1 emails):**
+
+**Subject:** `{First}'s {specific pain angle} at {Company}`
+Vary the angle per contact: regression cycle, QA coverage, test maintenance, automation ratio, regression overhead. Don't default to "QA coverage" for everyone.
+
+**Body structure (3 paragraphs + greeting + sign-off):**
+
+```
+Hi {First},
+
+[Para 1] {Role context}, {specific diagnostic question}?
+
+[Para 2] {Customer} {result} on Testsigma. {Outcome — what their team stopped doing / started doing}.
+
+[Para 3] {Stakes one-liner for their vertical}. What day works for a quick look at how they {got there / made the shift}?
+
+Cheers,
+Rob
+```
+
+**Para 1 — Diagnostic question opener:**
+Role context + specific diagnostic question. Best constructs:
+- "or" choice: "where does your team spend more sprint time, building new coverage or keeping existing tests from breaking?"
+- "how much X vs Y": "how much of your team's sprint capacity goes to test maintenance versus adding new coverage?"
+- Stakes framing: "how long does a full regression run take before a major release? At a [vertical] platform that size, the answer probably has real consequences."
+Never assert their problem for them. Ask. The question should assume they know the answer.
+> "Hi Jamie, Leading QA at Bungie, where does your team spend more sprint time right now, building new test coverage or keeping existing tests from breaking?"
+
+**Para 2 — Proof point with outcome framing:**
+Named customer + specific metric + what their team STOPPED doing or STARTED doing. Mention Testsigma by name once.
+- YES: "CRED reached 90% regression coverage and cut execution time 5x on Testsigma. Their QA team stopped spending sprints on test repair."
+- NO: "Testsigma's AI auto-heals broken locators." (feature framing — banned)
+- NO: "That speed and stability tends to resonate with QA directors in [vertical]." (meta — banned)
+
+**Para 3 — Stakes + CTA:**
+One vertical-specific stakes sentence + "What day works for a quick look at how they got there?" Ties CTA back to proof.
+- YES: "Game quality at that level doesn't leave room for regression gaps. What day works for a quick look at how they got there?"
+- NO: "Worth a look if this sounds relevant." (easy out — banned)
+- NO: "Happy to walk through how they got there." (permission-based — banned)
+- NO: "What day works to see how Testsigma addresses this?" (vague — banned)
 
 **Proof point rotation:** Track which proof point each contact gets. No two contacts at the same company should get the same proof point. Available proof points:
 - Hansard: regression 8→5 weeks

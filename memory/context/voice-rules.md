@@ -45,7 +45,7 @@ These rules are backed by statistical analysis of 1,330 LinkedIn conversations. 
 
 ### Length
 - **NO messages over 120 words** - reply avg 98.7 words vs no-reply 107.7 words
-- Touch 1 (InMail): 70-100 words (target ~580 chars)
+- Touch 1 (Email): 75-99 words (target ~580 chars)
 - Touch 3 (Follow-up): 40-70 words
 - Touch 5 (Email): 70-100 words
 - Touch 6 (Break-up): 30-50 words
@@ -97,13 +97,65 @@ These rules are backed by statistical analysis of 1,330 LinkedIn conversations. 
 
 ## The C1 Message Framework
 
-Every Touch 1 message has 5 invisible elements. They must flow as one natural thought, not a formula.
+Updated 2026-03-14 (canonical, derived from best-performing sends across 200+ T1 emails). Every Touch 1 email has 3 body paragraphs. They must flow as one natural thought, not a template.
 
-1. **Subject line** - 2-4 words. Specific enough to open, not clickbaity.
-2. **Opening question** - 1-2 lines. Curiosity-led. Connects to a plausible challenge at their company. Synthesized from research, never citing the source.
-3. **Context sentence** - 1-2 lines. Explains WHY the question matters. Grounded in what typically happens for teams like theirs.
-4. **Proof point** - 1-2 lines. One verified customer example with real numbers, matched to their vertical. Frame as customer achievement, not Testsigma feature. Mention Testsigma by name once.
-5. **Close** - 1 line. Confident, casual meeting ask with question mark. Directly references the value angle above it. No easy outs.
+**Subject:** `{First}'s {specific pain angle} at {Company}`
+Vary the angle per contact: regression cycle, QA coverage, test maintenance, automation ratio, regression overhead. Don't default to "QA coverage" for everyone.
+
+**Structure:**
+
+```
+Hi {First},
+
+[Para 1 — Opener]
+{Role context}, {specific diagnostic question}?
+
+[Para 2 — Proof point]
+{Customer} {achieved result} on Testsigma. {Outcome framing — what their team stopped doing / started doing}.
+
+[Para 3 — Stakes + CTA]
+{Stakes one-liner specific to their vertical}. What day works for a quick look at how they {got there / made the shift}?
+
+Cheers,
+Rob
+```
+
+**Para 1 — Diagnostic question opener (must be non-assumptive):**
+Open with role context, then ask a diagnostic question — OR use a softened observation with a check-in. The goal is to invite them to confirm whether the pain applies, not declare that it does.
+
+**Non-assumptive language rules:**
+- NEVER assert pain as fact: ❌ "means your team can't afford X" / "means X is costing you Y"
+- USE softened framing: ✅ "usually means X can be a real drag" / "tends to mean X is a constant challenge"
+- USE conditional framing: ✅ "if regression maintenance is eating into your team's capacity..."
+- USE a check-in question: ✅ "Is that something your team is navigating?" / "Does that sound familiar?"
+- BEST: ask directly so they self-identify: ✅ "where does your team spend more sprint time — building new coverage or keeping existing tests from breaking?"
+
+**Protect yourself when the assumption might be wrong:**
+If using an observation opener (not pure question), always end para 1 with a check-in question that lets them opt in or out:
+> "Running QA at a carrier like Farmers Insurance usually means regression cycles tied to policy workflows carry real cost if they slip. Is that something your team is managing right now?"
+If using a pure diagnostic question, the question itself is the protection — no check-in needed:
+> "Hi Pierre, Directing QA at CVS Health, how long does a full regression run take before a major release? At a pharmacy and health services platform that size, the answer probably has real consequences."
+
+**Para 2 — Proof point:**
+Named customer + specific metric. Frame as what their team stopped doing / started doing — NOT what Testsigma does. Mention Testsigma by name once.
+- YES: "CRED reached 90% regression coverage and cut execution time 5x on Testsigma. Their QA team stopped spending sprints on test repair."
+- NO: "Testsigma's AI writes tests in plain English and auto-heals broken locators." (feature framing)
+- NO: "That speed and stability tends to resonate with QA directors in [vertical]." (meta/awkward)
+
+**Para 3 — Stakes + CTA:**
+One stakes sentence specific to their vertical/company context, then CTA. "What day works for a quick look at how they got there?" ties the ask directly back to the proof, which is stronger than a generic meeting ask.
+- YES: "Game quality at that level doesn't leave room for regression gaps. What day works for a quick look at how they got there?"
+- YES: "FinTech teams can't afford slow regression cycles. What day works for a quick look at how they made the shift?"
+- NO: "Worth a look if this sounds relevant." (easy out)
+- NO: "Happy to walk through how they got there." (permission-based)
+
+**Hard constraints:**
+- Always "Hi {First}," — never skip the greeting
+- 75-99 words body (120 absolute max)
+- Exactly 1 question mark in body (the diagnostic opener) + CTA (which ends with "?") = 2 total is fine, but don't force a double question close
+- No "What day works to see how Testsigma addresses this?" — weak, vague
+- No feature explanation sentence
+- No meta-commentary ("that tends to resonate with...")
 
 ### What C1 does NOT sound like
 > "Hey [Name], I saw you worked at [Company] for [X] years leading [team]. That must mean [assumption]. [Client] saved [number]. Would 15 minutes make sense?"

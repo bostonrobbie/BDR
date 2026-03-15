@@ -1,10 +1,10 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-13 (Session 34 — Batch 8 T1 sends complete. 55/56 T1 emails sent via Apollo Tasks tab. Monika Sharma (#15, Everbridge) skipped per Rob. Tracker badges updated to "T1 Sent Mar 13". T2 due Mar 18. Logs + SOPs updated for daily 50-100 send target.)
+## Last Updated: 2026-03-14 (Session 37 — Batch 9 (TAM Outbound) T1 sends COMPLETE. 44/45 sent Mar 14 (1 DNC: Bret Wiener). Tracker tamob-batch-20260313-2.html updated: 44 × T1 Sent Mar 14, 1 × DNC, 11 × Not Enrolled. MASTER_SENT_LIST 597 rows (all 45 pre-added). T2 window: Mar 18-21. TASK-036 now active.)
 
 ---
 
 ## TODAY'S DATE
-**Friday, March 13, 2026**
+**Saturday, March 14, 2026**
 
 ---
 
@@ -73,6 +73,37 @@ Groups A (13), B (8), C (25) — all have Gmail drafts ready but Rob has not sen
 These are Touch 1 emails for the Tier 1 Intent sequence.
 **These drafts are from robert.gorham@testsigma.com — check for doubles before sending.**
 **NOTE:** 16 of these contacts may have already received Touch 1 via Apollo on Mar 1 (from testsigma.net). Confirm before sending to avoid double-send.
+
+---
+
+## TAM OUTBOUND BATCH 9 — STATE (Session 37, Mar 14)
+
+**Tracker:** `tamob-batch-20260313-2.html`
+**Enrolled:** 45 contacts in TAM Outbound (sequence 69afff8dc8897c0019b78c7e)
+**T1 drafted:** 56 total — 45 enrolled, 11 excluded (dedup/other-campaign blocks)
+**T1 SENT:** 44/45 on Mar 14 (Bret Wiener skipped — DNC, prior meeting held)
+**MASTER_SENT_LIST.csv:** 597 rows (all pre-added during enrollment)
+**T2 due:** Mar 18-21 (Day 5-8 from Mar 14 send date)
+**Status:** ✅ T1 SENT — T2 window opens Mar 18-21 (TASK-036)
+
+| Company | Enrolled | Excluded | Notes |
+|---------|----------|----------|-------|
+| SailPoint | 4 | 1 (Sandeep — Batch 8 dedup) | |
+| Farmers Insurance | 5 | 0 | |
+| Bethesda Softworks | 5 | 0 | |
+| hims & hers | 3 | 2 (Maria, Abhishek — step 2 already) | Michael Hart, Eric Spencer, Jen Moltke enrolled |
+| Rocket Software | 5 | 0 | |
+| Lemonade | 1 | 1 (Elad — step 2 already) | Itay Benari enrolled |
+| Zimmer Biomet | 2 | 0 | |
+| Winsupply | 0 | 1 (Swapna B — other campaigns) | |
+| Anaplan | 6 | 0 | |
+| Bungie | 2 | 0 | |
+| Celonis | 2 | 2 (Bogdan, Brian — other campaigns) | Michael Guntsch, Felipe Lora enrolled |
+| Check Point | 2 | 3 (Jesse — step 2; Tomer, Doron — other campaigns) | Shlomo Yeret, Yogesh Garg enrolled |
+| DraftKings | 4 | 1 (Jorge — step 2 already) | Ankur, Miroslav, Will, Rick enrolled |
+| Zebra Technologies | 4 | 0 | Matthew, Marek, Amit, Bob enrolled |
+
+**T2 task:** TASK-036 in work-queue.md — Draft T2 for all 45 contacts, due Mar 18-21
 
 ---
 

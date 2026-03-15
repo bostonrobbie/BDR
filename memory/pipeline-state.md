@@ -176,6 +176,7 @@ Aetna is an ACTIVE account. Existing deal thread: Pranati Thankala (contact), Ty
 | Mar 11 | TAM Outbound Wave 4 T1 — 48 enrolled. 37 sent (35 via Apollo Tasks + 2 auto-sent by Apollo: Glen Hudson + Sibghatullah Veedy). 2 blocked (Valerie Jefferies job change, Yvonne Oliver ownership error). **10 bounced** (Ksenia Shchelkonogova + Jessica Harris, William Xie, David Schraff, Mike Seal, Koushal Ram, Sakib Alam, Samatha Gangyshetty, Ahmet Cakar — all discovered Mar 12 Gmail scan). 9 step 1 tasks pending in Apollo queue. | 37 | 368 |
 | Mar 12 | TAM Outbound Batch 5 — 5 enrolled (of 13 drafted). 5 non-TAM (DocuSign, Bentley) removed per INC-010. 2 Infor contacts (Mirza Hasan, Daniela Young) excluded (prior phone contact). 1 (Yogesh Garg, Check Point) enrollment blocked by Apollo ownership error — needs manual fix. | 5 enrolled (pending T1 send) | 368 |
 | Mar 13 | TAM Outbound Batch 8 — 55/56 T1 emails sent via Apollo Tasks tab (INC-012 protocol). 56 enrolled, 56 tasks expected. Monika Sharma (#15, Everbridge) task disappeared from Apollo queue — Rob confirmed skip. All 55 sends Gmail-verified within 60s. Subjects personalized (Apollo pre-fills "Firstname's QA coverage at Company" — must correct each). 14 accounts: WatchGuard (7), Everbridge (7 sent, 1 skipped), Procore (2), Pluralsight (4), Sysdig (3), Yext (3), SingleStore (1), Evernorth (3), Couchbase (4), Pathlock (5), Tandem Diabetes Care (5), Jack Henry (4), BMO Financial Group (5), Point32Health (2). T2 due Mar 18. | 55 sent | 423 (cumulative TAM Outbound T1s sent) |
+| Mar 14 | TAM Outbound Batch 9 — 44/45 T1 emails sent via Apollo Tasks tab (INC-012 protocol, execCommand injection). 45 enrolled, 1 DNC skipped (Bret Wiener, Farmers Insurance — prior meeting held). Subjects personalized per contact. 14 accounts: SailPoint (4), Farmers Insurance (4 sent/1 DNC), Bethesda Softworks (5), hims&hers (3), Rocket Software (5), Lemonade (1), Zimmer Biomet (2), Anaplan (6), Bungie (2), Celonis (2), Check Point (2), DraftKings (4), Zebra Technologies (4). Tracker: tamob-batch-20260313-2.html (44 × T1 Sent Mar 14, 1 × DNC, 11 × Not Enrolled). T2 due Mar 18-21. | 44 sent | 467 (cumulative TAM Outbound T1s sent) |
 
 ### Email Send History
 | Date | Time | Recipients | Type | Status |
@@ -359,8 +360,8 @@ Ron Trachman, Laurie Nielsen, Alan Gutherz, Derek Stanley, Nihal Elsayed, Sarah 
 | Total InMails sent (LinkedIn) | 228 (198 tracked + 6 untracked B9 Mar 3 + 11 untracked B9 Mar 4 + 9 Batch 10 Mar 6 + 4 Batch 11 Mar 6) |
 | Total Emails sent (all channels) | **~300+** — 74 confirmed pre-Mar10 + 23 Wave1 placeholder (INC-007) + 24 Wave1 recovery + 16 Wave2 + 33 Wave3 actual + 2 Wave3 recovery (INC-008) + 37 Wave4 = ~209 TAM Outbound sends. See Master Send Log for detail. |
 | InMail credits remaining | **4** (last updated Mar 6 post-Batch 11) |
-| MASTER_SENT_LIST.csv rows | **552** (updated Mar 13 — includes Batch 8 enrollment rows 497-552) |
-| TAM Outbound unique contacts T1 sent | **166** (Wave1: 23, Wave2: 16, Wave3: 35, Wave4: 37, Batch 8: 55) |
+| MASTER_SENT_LIST.csv rows | **597** (updated Mar 13 — includes Batch 8 + Batch 9 enrollment rows) |
+| TAM Outbound unique contacts T1 sent | **210** (Wave1: 23, Wave2: 16, Wave3: 35, Wave4: 37, Batch 8: 55, Batch 9: 44) |
 | TAM Outbound pending T1 tasks | **9** (Wave4: Irina Baxter, Jiadong Shen, Simon Crawford, Adit Shah, Mohan Raj, Shilendra Sharma, Poonam Patil, Divya Sathish, + Christine Gamache/Brooks Foley Wave3 future-dated) — plus Batches 4/5/5B/6/7 pending APPROVE SEND |
 | Apollo Q1 Priority Accounts | **316 enrolled** (315 pre-Mar7 + 1 Mar 7 Gil Taub add) |
 | Apollo TAM Outbound - Rob Gorham | ~120+ enrolled (Wave 1-4 combined) |
@@ -476,6 +477,7 @@ Q1 QA Outreach - US (ID: 699f4089628b940011da7fb7) fully resolved. 26 clean cont
 | tamob-batch-20260311-1.html | Wave 3 — 35 contacts (Yahoo, Veradigm, Charlie Health, TELUS, GE HealthCare, L3Harris, Georgia-Pacific) | ✅ 33 T1 Sent Mar 11. 2 future-dated. T2 due Mar 16. |
 | tamob-batch-20260311-2.html | Wave 4 — 48 enrolled (E*TRADE, Broadcom, Humana, Corewell, BCBS, Mastercard, Anaplan, DraftKings, Cleveland Clinic, Microchip, GEICO, EA, HashiCorp, KKR, Datamatics, OneMain) | 37 T1SentMar11, 2 Blocked, 9 Ready (pending tasks). T2 due Mar 19. |
 | tamob-batch-20260313-1.html | Batch 8 — 56 enrolled (WatchGuard, Everbridge, Procore, Pluralsight, Sysdig, Yext, SingleStore, Evernorth, Couchbase, Pathlock, Tandem Diabetes Care, Jack Henry, BMO, Point32Health) | 55 T1SentMar13, 1 skipped (Monika Sharma/Everbridge — Rob confirmed skip). T2 due Mar 18. |
+| tamob-batch-20260313-2.html | Batch 9 — 56 drafted, 45 enrolled, 11 excluded (SailPoint, hims&hers, Lemonade, Winsupply, Celonis, Check Point, DraftKings dedup/step2 blocks) | 44 T1SentMar14, 1 DNC (Bret Wiener/Farmers), 11 NotEnrolled. T2 due Mar 18-21. |
 
 ---
 
