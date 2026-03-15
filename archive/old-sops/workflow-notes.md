@@ -1,5 +1,5 @@
 # Workflow Notes for Rob
-## Last Updated: March 1, 2026 (v2.0 — comprehensive knowledge base)
+## Last Updated: March 6, 2026 (v2.1 — daily audit SOP added; Q1 Priority Accounts tracking gap documented)
 
 ---
 
@@ -73,10 +73,10 @@ Every prospect MUST pass ALL checks before being added to a sequence. No excepti
 
 ## 6. Catchall Domains
 
-19 catchall domains identified as of March 1, 2026. These accept any email address, so delivery is uncertain and email verification gives a false "verified" result.
+22 catchall domains identified as of March 2, 2026. These accept any email address, so delivery is uncertain and email verification gives a false "verified" result.
 
 **Monitor bounce rates closely for:**
-veeva.com, redsailtechnologies.com, opploans.com, goodrx.com, flywire.com, bynder.com, drata.com, g2.com, medimpact.com, freedompay.com, csgi.com, cedargate.com, iteris.com, quickbase.com, connectwise.com, modmed.com, opsecsecurityonline.com, crestron.com, epicgames.com, origamirisk.com
+veeva.com, redsailtechnologies.com, opploans.com, goodrx.com, flywire.com, bynder.com, drata.com, g2.com, medimpact.com, freedompay.com, csgi.com, cedargate.com, iteris.com, quickbase.com, connectwise.com, modmed.com, opsecsecurityonline.com, crestron.com, epicgames.com, origamirisk.com, sapiens.com, webmd.com, webmd.net, solera.com, theocc.com, virtru.com, cyberark.com, together.ai, qualified.com, silvaco.com, meetmarigold.com
 
 ---
 

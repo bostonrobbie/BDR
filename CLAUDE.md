@@ -139,7 +139,7 @@ memory/                        ← THE BRAIN — all living knowledge
   call-log.md                  ← Call activity (Rob fills in daily)
   testsigma-knowledge-bible.md ← Full product/company knowledge base
 
-skills/                        ← ALL SKILLS (22 total)
+skills/                        ← ALL SKILLS (30 total)
   _shared/learning-loop.md     ← Self-improvement protocol for all skills
   session-start/               tam-t1-batch/      apollo-enroll/
   reply-classifier/            reply-router/       batch-dashboard/
@@ -148,7 +148,9 @@ skills/                        ← ALL SKILLS (22 total)
   apollo-send/                 batch-json-builder/ stage-monitor/
   t2-draft-generator/          auto-prospect-enroll/ warm-lead-reengagement/
   post-send-verifier/          objection-trend-digest/ trigger-monitor/
-  system-diagnostics/          ← NEW: cross-skill health monitor + call analytics
+  system-diagnostics/          morning-briefing/   post-meeting/
+  subject-line-optimizer/      call-prep-card/     pipeline-tracker/
+  account-scorer/              linkedin-signal-monitor/ reply-context-card/
 
 batches/                       ← ALL BATCH TRACKERS
   active/                      ← tamob-batch-*.html files (in-sequence)
@@ -156,7 +158,8 @@ batches/                       ← ALL BATCH TRACKERS
   sends-json/                  ← batch{N}_sends.json files
 
 analytics/                     ← ALL ANALYTICS
-  outreach.db                  ← SQLite DB (auto-synced weekly)
+  outreach.db                  ← SQLite schema file (DB runs at /tmp/bdr_outreach.db — OneDrive limitation)
+  db_init.sql                  ← Schema DDL — skills build DB at /tmp/bdr_outreach.db on each run
   dashboards/                  ← HTML dashboards (email-analytics, bdr-intelligence, daily-briefing)
   reports/                     ← Periodic analysis reports
 
@@ -213,8 +216,12 @@ archive/                       ← HISTORICAL — all completed/superseded files
 | **System health** | `diagnostics/system-health-report.md` |
 | **Call log** | `memory/call-log.md` |
 | **Product knowledge** | `memory/testsigma-knowledge-bible.md` |
+| **Pipeline board** | `analytics/dashboards/pipeline-board-[date].html` — visual warm lead kanban |
+| **Account scores** | `memory/account-scores-[date].md` — latest weekly TAM/Factor rankings |
+| **LinkedIn signals** | `memory/linkedin-signals.md` — recent profile views, InMail reads, connections |
+| **Subject line performance** | `analytics/reports/subject-line-performance-[date].md` — formula analysis |
 
-**Cowork Skills** (23 total — all in `skills/`):
+**Cowork Skills** (29 total — all in `skills/`):
 
 | Skill | Location | Use When |
 |-------|----------|----------|
@@ -240,33 +247,45 @@ archive/                       ← HISTORICAL — all completed/superseded files
 | Post-Send Verifier | `skills/post-send-verifier/SKILL.md` | Verifies Apollo sends landed in Gmail Sent — catches silent failures |
 | Objection Trend Digest | `skills/objection-trend-digest/SKILL.md` | Weekly objection pattern analysis — surfaces rising/falling types |
 | Post-Meeting | `skills/post-meeting/SKILL.md` | After prospect meetings: capture notes, analyze transcripts, stage follow-up drafts |
-| **System Diagnostics** | `skills/system-diagnostics/SKILL.md` | ✅ NEW — cross-skill health check, performance correlations, call analytics |
+| System Diagnostics | `skills/system-diagnostics/SKILL.md` | Cross-skill health check, performance correlations, call analytics (Sundays) |
+| Morning Briefing | `skills/morning-briefing/SKILL.md` | HTML visual dashboard — warm leads, replies, calendar, T2 due, pipeline |
+| Subject Line Optimizer | `skills/subject-line-optimizer/SKILL.md` | Analyze subject line performance by formula/persona/vertical — runs Fridays 5:20 PM |
+| Call Prep Card | `skills/call-prep-card/SKILL.md` | Generate opener + voicemail script per persona/vertical before cold calling |
+| Pipeline Tracker | `skills/pipeline-tracker/SKILL.md` | Visual HTML kanban board of all warm prospects by stage — Rob's CRM substitute |
+| Account Scorer | `skills/account-scorer/SKILL.md` | Re-score all 350 TAM+Factor accounts weekly, output ranked top-25 (Mondays 6:25 AM) |
+| LinkedIn Signal Monitor | `skills/linkedin-signal-monitor/SKILL.md` | Read-only monitoring of profile views, InMail reads, connections (Weekdays 6:05 AM) |
+| Reply Context Card | `skills/reply-context-card/SKILL.md` | Auto-enriches warm replies with full history + company intel before reply-router drafts |
 
-**Scheduled Tasks** (11 total — none send anything automatically):
+**Scheduled Tasks** (14 total — none send anything automatically):
 
 | Task | Schedule | Purpose |
 |------|----------|---------|
-| morning-briefing | Weekdays 6:00 AM | Overnight replies + calendar + T2/T3 due + warm leads + work queue |
+| morning-briefing | Weekdays 6:00 AM | HTML visual dashboard — warm leads, overnight replies, calendar, T2 due, pipeline |
+| linkedin-signal-monitor | Weekdays 6:05 AM | Read-only profile views, InMail reads, connection signals → feeds morning briefing |
 | trigger-monitor | Mon/Wed/Fri 6:10 AM | Scan Factor + TAM HIGH for QA hiring, funding, leadership changes |
 | stage-monitor | Weekdays 6:20 AM | T2/T3 due-date check, bounce scan, pipeline snapshot |
+| account-scorer | Mon/Wed/Fri 6:25 AM | Re-score TAM+Factor accounts, output ranked top-25 for auto-prospect-enroll |
 | auto-prospect-enroll | Mon/Wed/Fri 6:30 AM | Auto-prospect TAM contacts, compliance + QA gate, enroll, build sends.json |
-| reply-classifier | Weekdays 9am,11am,1pm,3pm,5pm | Full Gmail reply scan, classify P0-P4, update warm-leads.md |
+| reply-classifier | Weekdays 9am,11am,1pm,3pm,5pm | Full Gmail reply scan, classify P0-P4, invoke reply-context-card for P0/P1 |
 | weekly-analytics | Fridays 5:00 PM | Sync sends + replies + calls → compute metrics → refresh dashboard |
+| subject-line-optimizer | Fridays 5:20 PM | Analyze subject line performance by formula/persona/vertical → recommendations |
+| objection-trend-digest | Fridays 5:15 PM | Weekly objection tally + messaging recommendations |
 | warm-lead-reengagement | Monthly 1st, 6:05 AM | P2/P3 re-engagement window scanner |
 | post-send-verifier-noon | Weekdays 12:00 PM | Mid-day Gmail Sent verification |
 | post-send-verifier-eod | Weekdays 5:30 PM | End-of-day final send verification |
-| objection-trend-digest | Fridays 5:15 PM | Weekly objection tally + messaging recommendations |
-| **system-diagnostics** | **Sundays 6:00 AM** | **✅ NEW — cross-skill health + performance correlation + call analytics** |
+| system-diagnostics | Sundays 6:00 AM | Cross-skill health + performance correlation + call analytics |
 
 **Analytics Infrastructure:**
 
 | File | Purpose |
 |------|---------|
-| `analytics/outreach.db` | SQLite DB — outreach_sends, call_activity, weekly_summary, warm_leads_log |
+| `analytics/db_init.sql` | SQLite schema DDL — skills build DB at `/tmp/bdr_outreach.db` (OneDrive blocks SQLite file locking) |
 | `bdr-analytics-dashboard.html` | Combined email + LinkedIn + call dashboard (regenerated weekly by weekly-analytics) |
-| `analytics/dashboards/` | All HTML dashboards (archived + current) |
-| `analytics/reports/` | Periodic analysis reports |
+| `analytics/dashboards/` | All HTML dashboards including pipeline-board-[date].html (pipeline-tracker output) |
+| `analytics/reports/` | Periodic analysis reports including subject-line-performance-[date].md |
 | `memory/call-log.md` | Call activity log — Rob fills daily, weekly-analytics + system-diagnostics read it |
+| `memory/linkedin-signals.md` | Running log of LinkedIn signals (profile views, InMail reads, connections) |
+| `memory/account-scores-[date].md` | Weekly dynamic account scores — top-25 ranked list fed to auto-prospect-enroll |
 | `diagnostics/system-health-report.md` | Weekly cross-skill diagnostic report (auto-generated Sundays) |
 | `memory/contact-lifecycle.md` | Unified contact timeline from discovery to outcome |
 
