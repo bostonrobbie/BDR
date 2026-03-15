@@ -1,5 +1,5 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-14 (Session 37 — Batch 9 (TAM Outbound) T1 sends COMPLETE. 44/45 sent Mar 14 (1 DNC: Bret Wiener). Tracker tamob-batch-20260313-2.html updated: 44 × T1 Sent Mar 14, 1 × DNC, 11 × Not Enrolled. MASTER_SENT_LIST 597 rows (all 45 pre-added). T2 window: Mar 18-21. TASK-036 now active.)
+## Last Updated: 2026-03-14 (Session 37 — Batch 9 (TAM Outbound) T1 sends COMPLETE. 44/45 sent Mar 14 (1 DNC: Bret Wiener). Tracker batches/active/tamob-batch-20260313-2.html updated: 44 × T1 Sent Mar 14, 1 × DNC, 11 × Not Enrolled. MASTER_SENT_LIST 597 rows (all 45 pre-added). T2 window: Mar 18-21. TASK-036 now active.)
 
 ---
 
@@ -78,7 +78,7 @@ These are Touch 1 emails for the Tier 1 Intent sequence.
 
 ## TAM OUTBOUND BATCH 9 — STATE (Session 37, Mar 14)
 
-**Tracker:** `tamob-batch-20260313-2.html`
+**Tracker:** `batches/active/tamob-batch-20260313-2.html`
 **Enrolled:** 45 contacts in TAM Outbound (sequence 69afff8dc8897c0019b78c7e)
 **T1 drafted:** 56 total — 45 enrolled, 11 excluded (dedup/other-campaign blocks)
 **T1 SENT:** 44/45 on Mar 14 (Bret Wiener skipped — DNC, prior meeting held)
@@ -196,15 +196,15 @@ Wave 3 T1 enrolled Mar 11. T2 tasks will appear in Apollo ~Mar 15-16. Check Apol
 
 **Next action for T2s:** Open Apollo Tasks tab → execute any due Wave 1/2 tasks → draft + send per TASK-017
 **T2 formula:** sop-tam-outbound.md Part 7 (Deep-Dive v4, locked Mar 12) — 140-190 words, "I imagine" pain + Testsigma pitch + customer story + 15-min CTA. BANNED: "Circling back" / "Following up." See `memory/playbooks/t2-followup.md` for full formula.
-**Draft files to create:** `tamob-wave1-t2-drafts-mar12.html`, `tamob-wave2-t2-drafts.html`, `tamob-wave3-t2-drafts-mar16.html`
+**Draft files to create:** `batches/active/tamob-wave1-t2-drafts-mar12.html`, `batches/active/tamob-wave2-t2-drafts.html`, `batches/active/tamob-wave3-t2-drafts-mar16.html`
 
 **Session 14 tracker fixes applied:**
-- `tamob-wave1-draft-mar10.html`: All 23 badges updated from "Draft Ready" → "T1 Sent Mar 10" ✅
+- `batches/active/tamob-wave1-draft-mar10.html`: All 23 badges updated from "Draft Ready" → "T1 Sent Mar 10" ✅
 - `MASTER_SENT_LIST.csv`: 23 Wave 1 rows added (total 338 rows) ✅
 - `memory/sop-tam-outbound.md`: Version 3.0 — Part 23 added (Gmail Chrome Send Protocol), Phase 8/Part 11/Part 18 hardened ✅
 
 **Prior Session 7 changes (for reference):**
-1. wave1-batch1-tracker-mar10.html built — 27 contacts across 6 accounts (expanded from 13 in prior planning)
+1. batches/active/wavebatch1-tracker-mar10.html built — 27 contacts across 6 accounts (expanded from 13 in prior planning)
 2. All 23 clean contacts enrolled in TAM Outbound - Rob Gorham sequence
 3. Enrollment done in 5 batches (max 5/batch per Apollo limit): A, B, C, D, E
 4. Des Keane + Hrishikesh Aradhye required `sequence_job_change: true` override (flagged as recent job change)
@@ -242,7 +242,7 @@ Wave 3 T1 enrolled Mar 11. T2 tasks will appear in Apollo ~Mar 15-16. Check Apol
 
 **✅ ALL 16 T1 EMAILS SENT AND ENROLLED — Mar 10, 2026**
 
-**File:** `tamob-wave2-draft-mar10.html` (all badges updated to "T1 Sent Mar 10")
+**File:** `batches/active/tamob-wave2-draft-mar10.html` (all badges updated to "T1 Sent Mar 10")
 **Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
 **T2 due:** Mar 15 (Day 5) for all 16
 
@@ -276,7 +276,7 @@ Wave 3 T1 enrolled Mar 11. T2 tasks will appear in Apollo ~Mar 15-16. Check Apol
 **✅ ALL 35 T1 EMAILS ENROLLED — Mar 11, 2026**
 **📧 T1 SEND STATUS (Session 20): 33 of 35 T1 emails sent via Apollo Tasks tab. 2 enrolled with future-dated T1 tasks (Christine Gamache/TELUS, Brooks Foley/GE HealthCare) — will surface in Apollo automatically. Wave 3 T1 sends are effectively COMPLETE for now.**
 
-**File:** `tamob-batch-20260311-1.html` (172KB — 35 contact cards, MQS 11-12/12, A/B tested)
+**File:** `batches/active/tamob-batch-20260311-1.html` (172KB — 35 contact cards, MQS 11-12/12, A/B tested)
 **Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
 **T2 due:** Mar 16 (Day 5 from Mar 11 send date) for all 35
 **Step 1 active count after enrollment:** 48 (Wave 3 added 15 net new to Step 1)
@@ -353,7 +353,7 @@ Wave 3 T1 enrolled Mar 11. T2 tasks will appear in Apollo ~Mar 15-16. Check Apol
    - Batch C (5): Padma Srikanth, Prasad Alapati, Maurice Saunders, Snezhana Ruseva, Chamath Guneratne
    - Batch D (5): Sucheth Ramgiri, Arun Amarendran, Chamath Guneratne, Maggie Redden, Jennifer Drangstveit
    - Batch E (3): John Harding (normal), Hrishikesh Aradhye (job_change override), Des Keane (job_change override)
-2. **Updated wave1-batch1-tracker-mar10.html** — enrolled count updated to 23, all Pending badges → ✅ Enrolled
+2. **Updated batches/active/wavebatch1-tracker-mar10.html** — enrolled count updated to 23, all Pending badges → ✅ Enrolled
 3. **Updated memory/apollo-config.md** — added robert.gorham@testsigma.com (ID: 68e3b53ceaaf74001d36c206) as TAM Outbound ONLY
 4. **Updated memory/target-accounts.md** — all 6 Wave 1 accounts expanded with full contact rosters + enrollment status; Maggie Redden email corrected to @cunamutual.com
 
@@ -372,7 +372,7 @@ Wave 3 T1 enrolled Mar 11. T2 tasks will appear in Apollo ~Mar 15-16. Check Apol
 **⚠️ 2 BLOCKED — requires Rob awareness**
 **⚠️ 11 CONTACTS WITH NO APOLLO EMAIL TASKS — requires Rob guidance**
 
-**File:** `tamob-batch-20260311-2.html` — updated: 37 "T1 Sent Mar11 ✓" (8 of which BOUNCED — see INC-011), 2 "Blocked ✗", 9 "Ready" (pending Step 1 tasks). **Wave 4 bounces: 10 total** (Ksenia Shchelkonogova from INC-009 + 8 new from INC-011).
+**File:** `batches/active/tamob-batch-20260311-2.html` — updated: 37 "T1 Sent Mar11 ✓" (8 of which BOUNCED — see INC-011), 2 "Blocked ✗", 9 "Ready" (pending Step 1 tasks). **Wave 4 bounces: 10 total** (Ksenia Shchelkonogova from INC-009 + 8 new from INC-011).
 **Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
 **T2 due:** Day 8 from Mar 11 send = **Mar 19** for all 37 confirmed sent contacts
 **MASTER_SENT_LIST.csv:** 37 rows added (batch: "TAM Outbound Wave4 T1 Mar11") — total now 412 rows
@@ -421,8 +421,8 @@ E*TRADE/Morgan Stanley, Broadcom, Humana, Corewell Health, Blue Cross MN, BCBS T
 **✅ 5 CONTACTS FROM BATCH 5 ENROLLED (Session 27)**
 **⏳ ALL 14 T1 SENDS PENDING — APPROVE SEND NEEDED**
 
-**Batch 4 File:** `tamob-batch-20260312-4.html` (9 contact cards with T1 email drafts)
-**Batch 5 File:** `tamob-batch-20260312-4.html` (same file — 5 additional contacts from Infor/Zebra/Check Point/FactSet)
+**Batch 4 File:** `batches/active/tamob-batch-20260312-4.html` (9 contact cards with T1 email drafts)
+**Batch 5 File:** `batches/active/tamob-batch-20260312-4.html` (same file — 5 additional contacts from Infor/Zebra/Check Point/FactSet)
 **Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
 **T2 due:** Mar 19-20 (Day 5-8 from send date, depending on when T1 is sent)
 **MASTER_SENT_LIST.csv:** Total 420 rows (Batch 4: 9 rows + Batch 5: pending T1 send).
@@ -484,7 +484,7 @@ E*TRADE/Morgan Stanley, Broadcom, Humana, Corewell Health, Blue Cross MN, BCBS T
 **✅ 5 CONTACTS ENROLLED FROM ACCOUNT EXPANSION SWEEP**
 **⏳ T1 SENDS PENDING — APPROVE SEND NEEDED (TASK-027)**
 
-**File:** `tamob-batch-20260312-5.html`
+**File:** `batches/active/tamob-batch-20260312-5.html`
 **Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
 **MASTER_SENT_LIST.csv:** 5 rows added (batch: "W5B-S29" — ⚠️ non-standard name, should be "TAM Outbound Batch 5B Mar12")
 
@@ -509,7 +509,7 @@ E*TRADE/Morgan Stanley, Broadcom, Humana, Corewell Health, Blue Cross MN, BCBS T
 Session 29 enrolled 7 contacts (Aetna, EmblemHealth, BeyondTrust, Aura, DraftKings, Clinisys, Alithya). Iain Duffield (Anaplan) SKIPPED — ownership conflict, needs manual reassignment.
 Session 30 enrolled 24 contacts (BlackRock 5, Citizens 3, Celonis 1, Bungie 2, CVS Health 7, Caterpillar 2, BCBS 1, Cash App 1, Andersen 1, Allianz 2, Successive 1).
 
-**File:** `tamob-batch-20260312-6.html`
+**File:** `batches/active/tamob-batch-20260312-6.html`
 **Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
 **MASTER_SENT_LIST.csv:** 24 rows (B6 batch name — ⚠️ non-standard, should be "TAM Outbound Batch 6 Mar12")
 
@@ -525,7 +525,7 @@ Session 30 enrolled 24 contacts (BlackRock 5, Citizens 3, Celonis 1, Bungie 2, C
 **✅ 5 CONTACTS ENROLLED**
 **⏳ T1 SENDS PENDING — APPROVE SEND NEEDED**
 
-**File:** `tamob-batch-20260312-7.html` (badge: Enrolled)
+**File:** `batches/active/tamob-batch-20260312-7.html` (badge: Enrolled)
 **Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
 **MASTER_SENT_LIST.csv:** 5 rows (B7 batch name — ⚠️ non-standard, should be "TAM Outbound Batch 7 Mar12")
 
@@ -542,7 +542,7 @@ Session 30 enrolled 24 contacts (BlackRock 5, Citizens 3, Celonis 1, Bungie 2, C
 
 ## WAVE 6 BATCH 1 + BATCH 2 — (Mar 12 — Concurrent Sessions)
 
-**Wave 6 Batch 1:** 8 contacts (W6B1 batch name in MASTER_SENT_LIST.csv). Tracker: `tamob-wave6-batch1-20260312.html`
+**Wave 6 Batch 1:** 8 contacts (W6B1 batch name in MASTER_SENT_LIST.csv). Tracker: `batches/active/tamob-wave6-batch1-20260312.html`
 **Wave 6 Batch 2:** 27 contacts (W6B2 batch name in MASTER_SENT_LIST.csv). Tracker: `prospect-outreach-w6b2-mar12.html`
 
 These were added by concurrent sessions. See messages.md for session-specific DONE/CLAIM details. ⚠️ Both use non-standard batch names.
@@ -578,7 +578,7 @@ These were added by concurrent sessions. See messages.md for session-specific DO
 **✅ T1 SENDS COMPLETE — 55/56 SENT MAR 13 (Session 34)**
 **⚠️ Monika Sharma (#15, Everbridge) — SKIPPED per Rob. Apollo task disappeared from queue; no email sent. Do not retry.**
 
-**File:** `tamob-batch-20260313-1.html` — Badges updated: 55 × "T1 Sent Mar 13" (blue), 1 × "MANUAL SEND NEEDED" (Monika Sharma, red — effectively skipped)
+**File:** `batches/active/tamob-batch-20260313-1.html` — Badges updated: 55 × "T1 Sent Mar 13" (blue), 1 × "MANUAL SEND NEEDED" (Monika Sharma, red — effectively skipped)
 **Enrollment sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
 **MASTER_SENT_LIST.csv:** 56 rows added (rows 497-552). Total 552 rows (standard name: "TAM Outbound Batch 8 Mar13").
 **Enrollment confirmed via:** `contacts_already_exists_in_current_campaign` response on retry
@@ -622,7 +622,7 @@ These were added by concurrent sessions. See messages.md for session-specific DO
 - TruStage: 3 enrolled (Chamath, Maggie @cunamutual.com, Jennifer D @cunamutual.com). Shawn Woods HOLD. Needs T1 drafts.
 - YouTube: 3 enrolled (John Harding, Des Keane ⚠️ job_change, Hrishi Aradhye ⚠️ job_change). Needs T1 drafts. High targeting.
 
-**⚠️ IMPORTANT:** Old wave1-prospecting-plan-mar9.html InMail drafts are DEPRECATED. Do NOT use.
+**⚠️ IMPORTANT:** Old batches/active/waveprospecting-plan-mar9.html InMail drafts are DEPRECATED. Do NOT use.
 **Next step (TASK-014 Steps C+D):** Build T1 + T2 email drafts for all 23 enrolled contacts. Read sop-tam-outbound.md before drafting. Present BATCH SUMMARY to Rob. Wait for APPROVE SEND.
 
 ---
@@ -633,18 +633,18 @@ These were added by concurrent sessions. See messages.md for session-specific DO
 - Branch: `main`
 - Last pushed commit: `79014b7` — SOP v3.1: Retire Gmail Chrome send method, switch to Apollo UI direct
 - Unpushed commits (2 — Rob must `git push`): `7a15ba7` (Session 16 gap resolutions) + `71331ed` (Session 16 close)
-- Mar 10 (Session 7) changes: `wave1-batch1-tracker-mar10.html`, `memory/apollo-config.md`, `memory/target-accounts.md`
+- Mar 10 (Session 7) changes: `batches/active/wavebatch1-tracker-mar10.html`, `memory/apollo-config.md`, `memory/target-accounts.md`
 - Mar 10 (Session 8) changes: `tyler-referrals-outreach-mar10.html`, `MASTER_SENT_LIST.csv`, `memory/pipeline-state.md`
-- Mar 10 (Session 9) changes: `tamob-wave2-draft-mar10.html` (drafts built), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
-- Mar 10 (Session 10) changes: `tamob-wave2-draft-mar10.html` (QA trimmed + status updated), `MASTER_SENT_LIST.csv` (+16 Wave 2 rows), `memory/sop-tam-outbound.md` (Part 22 added), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
+- Mar 10 (Session 9) changes: `batches/active/tamob-wave2-draft-mar10.html` (drafts built), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
+- Mar 10 (Session 10) changes: `batches/active/tamob-wave2-draft-mar10.html` (QA trimmed + status updated), `MASTER_SENT_LIST.csv` (+16 Wave 2 rows), `memory/sop-tam-outbound.md` (Part 22 added), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Mar 10 (Session 11) changes: `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md` — Wave 1 T1 sends complete
 - Mar 10 (Session 13) changes: `memory/incidents.md` (INC-007 recovery complete), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
-- Mar 11 (Session 14) changes: `tamob-wave1-draft-mar10.html` (badges fixed), `MASTER_SENT_LIST.csv` (+23 Wave 1 rows), `memory/sop-tam-outbound.md` (v3.0 — Part 23 added, INC-007 hardening), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
+- Mar 11 (Session 14) changes: `batches/active/tamob-wave1-draft-mar10.html` (badges fixed), `MASTER_SENT_LIST.csv` (+23 Wave 1 rows), `memory/sop-tam-outbound.md` (v3.0 — Part 23 added, INC-007 hardening), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Mar 11 (Session 15) changes: `memory/session/in-progress.md` (NEW — crash-recovery checkpoint file), `AGENTS.md` (crash recovery + mid-session commit protocol added), `memory/session/work-queue.md` (TASK-017 deferred, TASK-019 added as DONE), `memory/session/handoff.md`, `memory/session/session-log.md`
 - Mar 11 (Session 16) changes: `memory/sop-tam-outbound.md` (Part 5 catchall case-by-case policy, Part 9 T2 removed from required fields), `memory/session/work-queue.md` (TASK-017 send protocol fixed), `memory/session/handoff.md`, `memory/session/session-log.md`
-- Mar 11 (Sessions 17-18) changes: `tamob-batch-20260311-1.html` (NEW — Wave 3 batch tracker, 35 contacts), `MASTER_SENT_LIST.csv` (+35 Wave 3 rows, 374 total), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
-- Mar 11 (Sessions 22-24) changes: `tamob-batch-20260311-2.html` (badges updated: 35 T1SentMar11, 2 Blocked, 11 Ready), `MASTER_SENT_LIST.csv` (+35 Wave 4 rows, 410 total), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
-- Mar 11 (Session 25) changes: `tamob-batch-20260311-2.html` (Glen Hudson + Sibghatullah Veedy → T1SentMar11, now 37/2/9), `MASTER_SENT_LIST.csv` (+2 rows, 412 total), `memory/session/handoff.md` (11 no-task investigation findings), `memory/session/work-queue.md`, `memory/session/session-log.md`
+- Mar 11 (Sessions 17-18) changes: `batches/active/tamob-batch-20260311-1.html` (NEW — Wave 3 batch tracker, 35 contacts), `MASTER_SENT_LIST.csv` (+35 Wave 3 rows, 374 total), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
+- Mar 11 (Sessions 22-24) changes: `batches/active/tamob-batch-20260311-2.html` (badges updated: 35 T1SentMar11, 2 Blocked, 11 Ready), `MASTER_SENT_LIST.csv` (+35 Wave 4 rows, 410 total), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
+- Mar 11 (Session 25) changes: `batches/active/tamob-batch-20260311-2.html` (Glen Hudson + Sibghatullah Veedy → T1SentMar11, now 37/2/9), `MASTER_SENT_LIST.csv` (+2 rows, 412 total), `memory/session/handoff.md` (11 no-task investigation findings), `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Mar 12 (Session 27) changes: `memory/sop-tam-outbound.md` (Part 11 domain verification gate), `memory/target-accounts.md` (Factor prioritization + domain verification), `CLAUDE.md` (TAM-ONLY rule + pipeline status), `memory/incidents.md` (INC-010 + Rule 8), `memory/pipeline-state.md` (Batch 5 log), `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
 - Claude cannot push (no GitHub auth in VM). Rob must run `git push` from his terminal.
 

@@ -114,6 +114,69 @@ Only prospect from TAM (312) + Factor (38) accounts. Verify every contact's comp
 
 ---
 
+## Folder Structure (reorganized Mar 15, 2026)
+
+```
+Work/                          ← ROOT — 6 files only
+  CLAUDE.md                    ← This file. Always read first.
+  AGENTS.md                    ← Multi-agent protocol. Read second.
+  MASTER_SENT_LIST.csv         ← Source of truth for all sent contacts
+  tam-accounts-mar26.csv       ← TAM account list (312 + 38 Factor)
+  README.md                    ← Human navigation guide
+  bdr-analytics-dashboard.html ← Weekly performance dashboard
+
+memory/                        ← THE BRAIN — all living knowledge
+  sop-*.md                     ← Canonical SOPs (daily, email, outreach, send, prospect, tam-outbound, post-call-followup)
+  playbooks/                   ← 12 operational playbooks
+  session/                     ← Session state (handoff, work-queue, messages, in-progress, active/)
+  competitors/                 ← Competitor profiles (10 files)
+  context/                     ← Gold standards, voice rules, objection map, proof points
+  market-intel/                ← Industry trends, analyst coverage
+  warm-leads.md                ← Active warm leads (P0-P3)
+  incidents.md                 ← All INC-* incident records
+  pipeline-state.md            ← Full pipeline log
+  contact-lifecycle.md         ← Unified contact timelines
+  call-log.md                  ← Call activity (Rob fills in daily)
+  testsigma-knowledge-bible.md ← Full product/company knowledge base
+
+skills/                        ← ALL SKILLS (22 total)
+  _shared/learning-loop.md     ← Self-improvement protocol for all skills
+  session-start/               tam-t1-batch/      apollo-enroll/
+  reply-classifier/            reply-router/       batch-dashboard/
+  enrichment-pipeline/         compliance-gate/    draft-qa/
+  lifecycle-tracker/           analytics-engine/   handoff-auto/
+  apollo-send/                 batch-json-builder/ stage-monitor/
+  t2-draft-generator/          auto-prospect-enroll/ warm-lead-reengagement/
+  post-send-verifier/          objection-trend-digest/ trigger-monitor/
+  system-diagnostics/          ← NEW: cross-skill health monitor + call analytics
+
+batches/                       ← ALL BATCH TRACKERS
+  active/                      ← tamob-batch-*.html files (in-sequence)
+  t2-pending/                  ← T2 drafts staged for APPROVE SEND
+  sends-json/                  ← batch{N}_sends.json files
+
+analytics/                     ← ALL ANALYTICS
+  outreach.db                  ← SQLite DB (auto-synced weekly)
+  dashboards/                  ← HTML dashboards (email-analytics, bdr-intelligence, daily-briefing)
+  reports/                     ← Periodic analysis reports
+
+diagnostics/                   ← SYSTEM HEALTH (new)
+  system-health-report.md      ← Weekly cross-skill diagnostic (auto-generated Sundays)
+  run-log.md                   ← system-diagnostics skill run history
+
+docs/reference/                ← Source PDFs + docx (Apollo SOP, Call SOP, Email SOP, etc.)
+
+archive/                       ← HISTORICAL — all completed/superseded files
+  old-drafts/                  ← All previous touch1/touch2 draft .md files
+  old-outreach-html/           ← Old batch HTML files (pre-Mar 11)
+  old-sops/                    ← Superseded SOP versions
+  old-code/                    ← Dead code (src/, api/, scripts/, etc.)
+  batch-reports/               ← Batch QA reports
+  apollo-exports/              ← Apollo data exports
+```
+
+---
+
 ## Reference Files (read on-demand per task)
 
 **Full SOP/playbook navigation:** `memory/README.md` — always start here if unsure which file to read.
@@ -145,8 +208,13 @@ Only prospect from TAM (312) + Factor (38) accounts. Verify every contact's comp
 | Scoring/feedback | `memory/scoring-feedback.md` |
 | Target accounts | `memory/target-accounts.md` |
 | Email analytics | `memory/email-analytics-sop.md` |
+| **Active batch trackers** | `batches/active/` — all tamob-batch-*.html files |
+| **T2 drafts for approval** | `batches/t2-pending/` |
+| **System health** | `diagnostics/system-health-report.md` |
+| **Call log** | `memory/call-log.md` |
+| **Product knowledge** | `memory/testsigma-knowledge-bible.md` |
 
-**Cowork Skills** (repeatable workflows):
+**Cowork Skills** (23 total — all in `skills/`):
 
 | Skill | Location | Use When |
 |-------|----------|----------|
@@ -163,46 +231,46 @@ Only prospect from TAM (312) + Factor (38) accounts. Verify every contact's comp
 | Analytics Engine | `skills/analytics-engine/SKILL.md` | Reply rate analytics by persona, vertical, proof point |
 | Handoff Auto | `skills/handoff-auto/SKILL.md` | Auto-generate session handoff docs at end of session |
 | Compliance Gate | `skills/compliance-gate/SKILL.md` | 8-point safety check before any enrollment |
-| **Apollo Send** | `skills/apollo-send/SKILL.md` | Execute Apollo task queue sends with INC-012 two-gate protocol |
-| **Batch JSON Builder** | `skills/batch-json-builder/SKILL.md` | After APPROVE SEND: parse tracker HTML → generate batch{N}_sends.json |
-| **Stage Monitor** | `skills/stage-monitor/SKILL.md` | Daily T2/T3 due-date check, bounce scan, warm lead surface |
+| Apollo Send | `skills/apollo-send/SKILL.md` | Execute Apollo task queue sends with INC-012 two-gate protocol |
+| Batch JSON Builder | `skills/batch-json-builder/SKILL.md` | After APPROVE SEND: parse tracker HTML → generate batch{N}_sends.json |
+| Stage Monitor | `skills/stage-monitor/SKILL.md` | Daily T2/T3 due-date check, bounce scan, warm lead surface |
 | **T2 Draft Generator** | `skills/t2-draft-generator/SKILL.md` | ⚠️ LOCKED — stub only, pending T2 formula finalization |
-| **Auto Prospect + Enroll** | `skills/auto-prospect-enroll/SKILL.md` | Full automated pipeline: account select → prospect → compliance gate → draft → MQS → enroll → sends.json |
-| **Warm Lead Re-Engagement** | `skills/warm-lead-reengagement/SKILL.md` | Monthly scan of P2/P3 contacts whose re-engage window has passed — surfaces actionable contacts |
-| **Post-Send Verifier** | `skills/post-send-verifier/SKILL.md` | Verifies Apollo sends landed in Gmail Sent — catches silent failures |
-| **Objection Trend Digest** | `skills/objection-trend-digest/SKILL.md` | Weekly objection pattern analysis — surfaces rising/falling objection types and messaging recommendations |
+| Auto Prospect + Enroll | `skills/auto-prospect-enroll/SKILL.md` | Full automated pipeline: account select → prospect → compliance gate → draft → MQS → enroll → sends.json |
+| Warm Lead Re-Engagement | `skills/warm-lead-reengagement/SKILL.md` | Monthly scan of P2/P3 contacts whose re-engage window has passed |
+| Post-Send Verifier | `skills/post-send-verifier/SKILL.md` | Verifies Apollo sends landed in Gmail Sent — catches silent failures |
+| Objection Trend Digest | `skills/objection-trend-digest/SKILL.md` | Weekly objection pattern analysis — surfaces rising/falling types |
+| Post-Meeting | `skills/post-meeting/SKILL.md` | After prospect meetings: capture notes, analyze transcripts, stage follow-up drafts |
+| **System Diagnostics** | `skills/system-diagnostics/SKILL.md` | ✅ NEW — cross-skill health check, performance correlations, call analytics |
 
-**Scheduled Tasks** (all registered in Cowork Scheduled sidebar — none send anything):
+**Scheduled Tasks** (11 total — none send anything automatically):
 
 | Task | Schedule | Purpose |
 |------|----------|---------|
-| morning-briefing | Weekdays 6:00 AM | Overnight replies + calendar + T2/T3 due + warm leads + work queue → writes to messages.md |
+| morning-briefing | Weekdays 6:00 AM | Overnight replies + calendar + T2/T3 due + warm leads + work queue |
 | trigger-monitor | Mon/Wed/Fri 6:10 AM | Scan Factor + TAM HIGH for QA hiring, funding, leadership changes |
-| auto-prospect-enroll | Mon/Wed/Fri 6:30 AM | Auto-prospect TAM contacts, compliance + QA gate, enroll clean contacts, build sends.json |
 | stage-monitor | Weekdays 6:20 AM | T2/T3 due-date check, bounce scan, pipeline snapshot |
+| auto-prospect-enroll | Mon/Wed/Fri 6:30 AM | Auto-prospect TAM contacts, compliance + QA gate, enroll, build sends.json |
 | reply-classifier | Weekdays 9am,11am,1pm,3pm,5pm | Full Gmail reply scan, classify P0-P4, update warm-leads.md |
-| weekly-analytics | Fridays 5:00 PM | Sync sends + replies + calls → compute metrics → refresh bdr-analytics-dashboard.html |
-| warm-lead-reengagement | Monthly, 1st at 6:05 AM | P2/P3 re-engagement window scanner → writes to messages.md |
-| post-send-verifier-noon | Weekdays 12:00 PM | Mid-day Gmail Sent verification for morning Apollo sends |
-| post-send-verifier-eod | Weekdays 5:30 PM | End-of-day final verification for all day's Apollo sends |
-| objection-trend-digest | Fridays 5:15 PM | Weekly reply objection tally — rising/falling patterns + messaging recommendations |
+| weekly-analytics | Fridays 5:00 PM | Sync sends + replies + calls → compute metrics → refresh dashboard |
+| warm-lead-reengagement | Monthly 1st, 6:05 AM | P2/P3 re-engagement window scanner |
+| post-send-verifier-noon | Weekdays 12:00 PM | Mid-day Gmail Sent verification |
+| post-send-verifier-eod | Weekdays 5:30 PM | End-of-day final send verification |
+| objection-trend-digest | Fridays 5:15 PM | Weekly objection tally + messaging recommendations |
+| **system-diagnostics** | **Sundays 6:00 AM** | **✅ NEW — cross-skill health + performance correlation + call analytics** |
 
-**Analytics Infrastructure** (initialized Mar 14, 2026):
-
-| File | Purpose |
-|------|---------|
-| `analytics/outreach.db` | SQLite DB — outreach_sends, call_activity, weekly_summary, warm_leads_log tables |
-| `bdr-analytics-dashboard.html` | Combined email + LinkedIn + call performance dashboard (regenerated weekly) |
-| `memory/call-log.md` | Manual call activity log — Rob fills in dials/connects/meetings, weekly-analytics syncs to DB |
-
-**New Data Files** (initialized Mar 12, 2026):
+**Analytics Infrastructure:**
 
 | File | Purpose |
 |------|---------|
+| `analytics/outreach.db` | SQLite DB — outreach_sends, call_activity, weekly_summary, warm_leads_log |
+| `bdr-analytics-dashboard.html` | Combined email + LinkedIn + call dashboard (regenerated weekly by weekly-analytics) |
+| `analytics/dashboards/` | All HTML dashboards (archived + current) |
+| `analytics/reports/` | Periodic analysis reports |
+| `memory/call-log.md` | Call activity log — Rob fills daily, weekly-analytics + system-diagnostics read it |
+| `diagnostics/system-health-report.md` | Weekly cross-skill diagnostic report (auto-generated Sundays) |
 | `memory/contact-lifecycle.md` | Unified contact timeline from discovery to outcome |
-| `Work/pipeline-dashboard.html` | Generated by batch-dashboard skill (regenerate on demand) |
 
-**Rule:** Always read the relevant files BEFORE starting a task. Don't rely on cached knowledge from prior sessions.
+**Rule:** Always read relevant files BEFORE starting a task. Don't rely on cached knowledge from prior sessions.
 
 ---
 

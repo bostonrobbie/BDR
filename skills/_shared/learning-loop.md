@@ -204,6 +204,42 @@ Rob reviews proposals at his discretion. Nothing changes in SKILL.md until Rob a
 
 ---
 
+## Instant Approval Protocol
+
+When Rob says any of these phrases:
+- "approve skill update [skill-name]"
+- "approve [skill-name] update"
+- "apply skill update [skill-name]"
+- "yes, update [skill-name]"
+
+Claude must IMMEDIATELY in that same response:
+
+1. Read the most recent SKILL UPDATE PROPOSAL for that skill from `memory/session/messages.md`
+2. Apply the exact proposed change to `skills/[skill-name]/SKILL.md` using the Edit tool
+3. Append to `skills/[skill-name]/run-log.md`:
+   ```
+   ### SKILL UPDATE APPLIED — [DATE]
+   - Change: [what was changed]
+   - Approved by: Rob (verbal)
+   - Applied by: [session]
+   ```
+4. Append to `memory/session/messages.md`:
+   ```
+   [timestamp] [INFO] Skill update applied: [skill-name]. Change: [brief description].
+   ```
+5. Confirm to Rob: "Done — [skill-name] updated. Change: [1-line description]."
+
+**NO separate task. NO "I'll do that now" and then creating a todo. Immediate execution in the same response.**
+
+Special case — Rob says "approve all skill updates":
+- Read ALL pending SKILL UPDATE PROPOSAL entries from `memory/session/messages.md`
+- Apply each one to its corresponding skill in sequence
+- Log each update to the skill's run-log.md
+- Append a single summary to messages.md
+- Confirm: "Done — [N] skill updates applied: [list each skill and change in 1 line each]."
+
+---
+
 ## Failure Recovery
 
 If a skill fails mid-run:
