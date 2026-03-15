@@ -99,6 +99,9 @@ Run at the START of every new session, before doing any other work.
    - Pipeline view → `skills/batch-dashboard/SKILL.md`
    - Account research → `skills/trigger-monitor/SKILL.md`
    - Closing session → `skills/handoff-auto/SKILL.md`
+   - Apollo sends → `skills/apollo-send/SKILL.md` (replaces manual send flow — use after APPROVE SEND)
+   - Pre-send JSON prep → `skills/batch-json-builder/SKILL.md` (run after APPROVE SEND, before apollo-send)
+   - T2/T3 due dates → `skills/stage-monitor/SKILL.md` (or check scheduled output in messages.md)
 
 **Context budget:** By this point you should have read 6-8 files. Add 1-3 playbooks max. Total startup reads should be 7-11 files. If you're reading more, you're loading too much.
 
@@ -137,3 +140,31 @@ Run at the START of every new session, before doing any other work.
 [ ] Read relevant playbooks/skills (see Phase 7)
 [ ] Report to Rob
 ```
+
+---
+
+## Self-Improvement Loop
+
+This skill maintains its own run log and learned-patterns file. Full protocol: `skills/_shared/learning-loop.md`
+
+### Before Each Run
+1. Read `skills/session-start/learned-patterns.md` if it exists — apply any documented calibration adjustments
+2. Count entries in `skills/session-start/run-log.md` to determine current run number
+
+### After Every Run — Append to run-log.md
+```
+### Run #[N] — [YYYY-MM-DD HH:MM]
+- **Result:** [1-2 sentence summary]
+- **Key metrics:** [skill-specific counts per _shared/learning-loop.md]
+- **Anomalies:** [anything unexpected]
+- **Adjustments made this run:** [any deviations from SKILL.md]
+- **Output quality:** [Accurate / Mostly accurate / Needs calibration / Failed]
+```
+
+### Every 5th Run — Pattern Review
+1. Read last 5 run-log.md entries
+2. Extract recurring patterns, consistent edge cases, metric drift
+3. Overwrite `skills/session-start/learned-patterns.md` with updated findings
+4. If a pattern appears in 4+ of 5 runs: write a `## SKILL UPDATE PROPOSAL — session-start` entry to `memory/session/messages.md` for Rob's review
+
+**Hard rule:** Never modify SKILL.md directly. Only propose updates via messages.md and wait for Rob's explicit approval.

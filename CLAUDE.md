@@ -163,13 +163,37 @@ Only prospect from TAM (312) + Factor (38) accounts. Verify every contact's comp
 | Analytics Engine | `skills/analytics-engine/SKILL.md` | Reply rate analytics by persona, vertical, proof point |
 | Handoff Auto | `skills/handoff-auto/SKILL.md` | Auto-generate session handoff docs at end of session |
 | Compliance Gate | `skills/compliance-gate/SKILL.md` | 8-point safety check before any enrollment |
+| **Apollo Send** | `skills/apollo-send/SKILL.md` | Execute Apollo task queue sends with INC-012 two-gate protocol |
+| **Batch JSON Builder** | `skills/batch-json-builder/SKILL.md` | After APPROVE SEND: parse tracker HTML → generate batch{N}_sends.json |
+| **Stage Monitor** | `skills/stage-monitor/SKILL.md` | Daily T2/T3 due-date check, bounce scan, warm lead surface |
+| **T2 Draft Generator** | `skills/t2-draft-generator/SKILL.md` | ⚠️ LOCKED — stub only, pending T2 formula finalization |
+| **Auto Prospect + Enroll** | `skills/auto-prospect-enroll/SKILL.md` | Full automated pipeline: account select → prospect → compliance gate → draft → MQS → enroll → sends.json |
+| **Warm Lead Re-Engagement** | `skills/warm-lead-reengagement/SKILL.md` | Monthly scan of P2/P3 contacts whose re-engage window has passed — surfaces actionable contacts |
+| **Post-Send Verifier** | `skills/post-send-verifier/SKILL.md` | Verifies Apollo sends landed in Gmail Sent — catches silent failures |
+| **Objection Trend Digest** | `skills/objection-trend-digest/SKILL.md` | Weekly objection pattern analysis — surfaces rising/falling objection types and messaging recommendations |
 
-**Scheduled Tasks** (run automatically):
+**Scheduled Tasks** (all registered in Cowork Scheduled sidebar — none send anything):
 
 | Task | Schedule | Purpose |
 |------|----------|---------|
-| reply-classifier | Weekdays 9am,11am,1pm,3pm,5pm | Auto-check Gmail for new replies |
-| trigger-monitor | Mon/Wed/Fri 8am | Scan accounts for trigger events |
+| morning-briefing | Weekdays 6:00 AM | Overnight replies + calendar + T2/T3 due + warm leads + work queue → writes to messages.md |
+| trigger-monitor | Mon/Wed/Fri 6:10 AM | Scan Factor + TAM HIGH for QA hiring, funding, leadership changes |
+| auto-prospect-enroll | Mon/Wed/Fri 6:30 AM | Auto-prospect TAM contacts, compliance + QA gate, enroll clean contacts, build sends.json |
+| stage-monitor | Weekdays 6:20 AM | T2/T3 due-date check, bounce scan, pipeline snapshot |
+| reply-classifier | Weekdays 9am,11am,1pm,3pm,5pm | Full Gmail reply scan, classify P0-P4, update warm-leads.md |
+| weekly-analytics | Fridays 5:00 PM | Sync sends + replies + calls → compute metrics → refresh bdr-analytics-dashboard.html |
+| warm-lead-reengagement | Monthly, 1st at 6:05 AM | P2/P3 re-engagement window scanner → writes to messages.md |
+| post-send-verifier-noon | Weekdays 12:00 PM | Mid-day Gmail Sent verification for morning Apollo sends |
+| post-send-verifier-eod | Weekdays 5:30 PM | End-of-day final verification for all day's Apollo sends |
+| objection-trend-digest | Fridays 5:15 PM | Weekly reply objection tally — rising/falling patterns + messaging recommendations |
+
+**Analytics Infrastructure** (initialized Mar 14, 2026):
+
+| File | Purpose |
+|------|---------|
+| `analytics/outreach.db` | SQLite DB — outreach_sends, call_activity, weekly_summary, warm_leads_log tables |
+| `bdr-analytics-dashboard.html` | Combined email + LinkedIn + call performance dashboard (regenerated weekly) |
+| `memory/call-log.md` | Manual call activity log — Rob fills in dials/connects/meetings, weekly-analytics syncs to DB |
 
 **New Data Files** (initialized Mar 12, 2026):
 

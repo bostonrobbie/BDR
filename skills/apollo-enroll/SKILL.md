@@ -86,3 +86,31 @@ Full error catalog in `memory/playbooks/error-recovery.md` and `memory/playbooks
 - Apollo auto-send: After enrollment, check `current_step_position`. If 2 instead of 1, Apollo auto-sent the T1 email. Update records accordingly. (INC-009)
 - Catchall domains: Note in tracker but proceed. See `memory/playbooks/catchall-domains.md`.
 - Bounces: Monitor after send. If SMTP 550, remove from sequence and log.
+
+---
+
+## Self-Improvement Loop
+
+This skill maintains its own run log and learned-patterns file. Full protocol: `skills/_shared/learning-loop.md`
+
+### Before Each Run
+1. Read `skills/apollo-enroll/learned-patterns.md` if it exists — apply any documented calibration adjustments
+2. Count entries in `skills/apollo-enroll/run-log.md` to determine current run number
+
+### After Every Run — Append to run-log.md
+```
+### Run #[N] — [YYYY-MM-DD HH:MM]
+- **Result:** [1-2 sentence summary]
+- **Key metrics:** [skill-specific counts per _shared/learning-loop.md]
+- **Anomalies:** [anything unexpected]
+- **Adjustments made this run:** [any deviations from SKILL.md]
+- **Output quality:** [Accurate / Mostly accurate / Needs calibration / Failed]
+```
+
+### Every 5th Run — Pattern Review
+1. Read last 5 run-log.md entries
+2. Extract recurring patterns, consistent edge cases, metric drift
+3. Overwrite `skills/apollo-enroll/learned-patterns.md` with updated findings
+4. If a pattern appears in 4+ of 5 runs: write a `## SKILL UPDATE PROPOSAL — apollo-enroll` entry to `memory/session/messages.md` for Rob's review
+
+**Hard rule:** Never modify SKILL.md directly. Only propose updates via messages.md and wait for Rob's explicit approval.

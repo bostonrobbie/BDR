@@ -314,3 +314,31 @@ description: "Weekly TAM Outbound performance review — Mondays 9am"
 
 *Source: `memory/data-rules.md` (mabl-era baselines) + `memory/playbooks/tam-t1-batch.md` (Pre-Brief format) + `memory/scoring-feedback.md`*
 *Last updated: 2026-03-12 (Session 30 rewrite — grounded in real TAM Outbound data)*
+
+---
+
+## Self-Improvement Loop
+
+This skill maintains its own run log and learned-patterns file. Full protocol: `skills/_shared/learning-loop.md`
+
+### Before Each Run
+1. Read `skills/analytics-engine/learned-patterns.md` if it exists — apply any documented calibration adjustments
+2. Count entries in `skills/analytics-engine/run-log.md` to determine current run number
+
+### After Every Run — Append to run-log.md
+```
+### Run #[N] — [YYYY-MM-DD HH:MM]
+- **Result:** [1-2 sentence summary]
+- **Key metrics:** [skill-specific counts per _shared/learning-loop.md]
+- **Anomalies:** [anything unexpected]
+- **Adjustments made this run:** [any deviations from SKILL.md]
+- **Output quality:** [Accurate / Mostly accurate / Needs calibration / Failed]
+```
+
+### Every 5th Run — Pattern Review
+1. Read last 5 run-log.md entries
+2. Extract recurring patterns, consistent edge cases, metric drift
+3. Overwrite `skills/analytics-engine/learned-patterns.md` with updated findings
+4. If a pattern appears in 4+ of 5 runs: write a `## SKILL UPDATE PROPOSAL — analytics-engine` entry to `memory/session/messages.md` for Rob's review
+
+**Hard rule:** Never modify SKILL.md directly. Only propose updates via messages.md and wait for Rob's explicit approval.

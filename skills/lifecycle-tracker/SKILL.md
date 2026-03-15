@@ -211,3 +211,31 @@ For full individual records on bulk contacts, cross-reference their batch tracke
 
 *Source: `memory/playbooks/tam-t1-batch.md` + `memory/warm-leads.md` + `memory/pipeline-state.md`*
 *Last updated: 2026-03-12 (initialized Session 30, 495 contacts tracked at batch level)*
+
+---
+
+## Self-Improvement Loop
+
+This skill maintains its own run log and learned-patterns file. Full protocol: `skills/_shared/learning-loop.md`
+
+### Before Each Run
+1. Read `skills/lifecycle-tracker/learned-patterns.md` if it exists — apply any documented calibration adjustments
+2. Count entries in `skills/lifecycle-tracker/run-log.md` to determine current run number
+
+### After Every Run — Append to run-log.md
+```
+### Run #[N] — [YYYY-MM-DD HH:MM]
+- **Result:** [1-2 sentence summary]
+- **Key metrics:** [skill-specific counts per _shared/learning-loop.md]
+- **Anomalies:** [anything unexpected]
+- **Adjustments made this run:** [any deviations from SKILL.md]
+- **Output quality:** [Accurate / Mostly accurate / Needs calibration / Failed]
+```
+
+### Every 5th Run — Pattern Review
+1. Read last 5 run-log.md entries
+2. Extract recurring patterns, consistent edge cases, metric drift
+3. Overwrite `skills/lifecycle-tracker/learned-patterns.md` with updated findings
+4. If a pattern appears in 4+ of 5 runs: write a `## SKILL UPDATE PROPOSAL — lifecycle-tracker` entry to `memory/session/messages.md` for Rob's review
+
+**Hard rule:** Never modify SKILL.md directly. Only propose updates via messages.md and wait for Rob's explicit approval.
