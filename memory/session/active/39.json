@@ -1,0 +1,10 @@
+{
+  "session_number": 39,
+  "started_at": "2026-03-15T22:43:07Z",
+  "last_heartbeat": "2026-03-15T22:43:07Z",
+  "status": "active",
+  "task": "TAM T1 Batch 10 Mar15 — source, research, draft, QA, enroll",
+  "claimed_companies": ["Procore Technologies", "Pluralsight", "BlackRock", "Citizens Bank", "CVS Health", "DISH TV", "Dun & Bradstreet", "EmblemHealth", "Vertafore", "Safelite"],
+  "files_editing": ["MASTER_SENT_LIST.csv", "tamob-batch-20260315-1.html"],
+  "agent_type": "cowork"
+}

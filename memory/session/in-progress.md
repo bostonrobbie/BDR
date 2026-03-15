@@ -1,7 +1,36 @@
 # In-Progress — Crash Recovery Checkpoint
 
-## Status: COMPLETE
-## Session: 32-37
+## Status: ACTIVE
+## Session: 39
+## Task ID: TASK-040
+## Task Name: TAM T1 Batch 10 Mar15 — Source, Research, Draft, QA Gate, Enroll
+## Started: 2026-03-15T22:43:07Z
+
+## Step List (Batch 10)
+- [x] Step 1: Read AGENTS.md, handoff, work-queue, in-progress, messages
+- [x] Step 2: Read prerequisite playbooks (tam-t1-batch, dedup, apollo-enrollment, qa-gate, batch-tracker)
+- [x] Step 3: Read MASTER_SENT_LIST (597 rows), TAM accounts (311), coverage state
+- [x] Step 4: Register session 39 in active/39.json
+- [ ] Step 5: Check Gmail for new replies
+- [ ] Step 6: Apollo search — Procore, Pluralsight, BlackRock, Citizens, CVS, DISH, D&B, EmblemHealth, Vertafore, Safelite
+- [ ] Step 7: Dedup all contacts vs MASTER_SENT_LIST + DNC
+- [ ] Step 8: Research + draft T1 emails (75-99 words, SMYKM subject, proof point rotation)
+- [ ] Step 9: QA Gate every draft (MQS >= 9/12)
+- [ ] Step 10: Build tamob-batch-20260315-1.html
+- [ ] Step 11: Enroll in Apollo sequence 69afff8dc8897c0019b78c7e (send-from 68e3b53ceaaf74001d36c206)
+- [ ] Step 12: MASTER_SENT_LIST append + handoff + work-queue + messages
+
+## Files to Create
+- batches/active/tamob-batch-20260315-1.html
+- MASTER_SENT_LIST.csv (append rows)
+
+## Target Row Count: 597 → ~625-647
+
+## Resume Instructions: Start at Step 5 (Gmail check). Then Apollo search Step 6.
+
+---
+## PRIOR SESSION HISTORY BELOW (for reference)
+## Status: COMPLETE (Sessions 32-37)
 ## Task ID: TASK-033 + TASK-036-ENROLL + TASK-036-SEND
 ## Task Name: TAM T1 Batch 9 — 56 drafted, 45 enrolled (Mar 13), 44/45 T1 SENT (Mar 14)
 ## Started: 2026-03-13
