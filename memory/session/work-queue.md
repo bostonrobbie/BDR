@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-14 (Session 37 — Batch 9 T1 sends COMPLETE. 44/45 sent Mar 14. Bret Wiener DNC skipped. Tracker updated. TASK-036 now active — T2 window opens Mar 18-21.)
+## Last Updated: 2026-03-15 (Session 39 — Batch 10 enrollment complete. 15/18 enrolled. TASK-040 added: APPROVE SEND for 15 contacts. TASK-041 added: T2 drafts due Mar 20-23. 3 blocked contacts need Rob manual Apollo UI fix.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 Follow the 14-step startup in `AGENTS.md` (v2.0). Key steps:
@@ -19,6 +19,58 @@ Tasks are sorted by priority. Claim one task at a time by updating status to IN_
 ---
 
 ## 🔴 CRITICAL — Do First
+
+### TASK-040: APPROVE SEND — Batch 10 (15 contacts enrolled, Mar 15)
+**Status:** UNCLAIMED — waiting for Rob's APPROVE SEND
+**Priority:** P0 — contacts enrolled, T1 tasks will appear in Apollo Tasks tab
+**Effort:** ~25 min (paste 15 drafts from tracker into Apollo)
+**Output:** 15 T1 emails sent via Apollo Tasks tab
+
+All 15 contacts enrolled in TAM Outbound Step 1 (sequence 69afff8dc8897c0019b78c7e). When Apollo surfaces the manual email tasks:
+1. **FIRST:** Attach avani.vaidya@cvshealth.com to Avani Vaidya's contact in Apollo UI (ID: 6904a84eea986d00191ba7f1)
+2. Open Apollo Tasks tab
+3. For each contact: paste subject + body from `batches/active/tamob-batch-20260315-1.html`
+4. JS readback verify + screenshot before each send (INC-012 protocol)
+5. Send Now
+6. After all sends: Python badge update pass on tracker HTML
+
+**Contacts:** Avani Vaidya, Swapna Bitra, Tarun Sharma, Divya Paul (CVS Health) | Usman Khan, Mehul Savalia (Citizens Bank) | Minu Prabhakaran, Jacob Wyman, Roger Tonneman (DISH) | Shikha Jayant, Collins Chellaswamy, Brendan McCarthy (D&B) | Dawn McCartha (EmblemHealth) | Stacey Schmidt (Vertafore) | Praveen Gali (Safelite)
+
+**APPROVE SEND required before any sends**
+
+---
+
+### TASK-040B: Manual Apollo Fix — 3 Blocked Contacts (Batch 10)
+**Status:** UNCLAIMED — Rob must manually enroll in Apollo UI
+**Priority:** P1 — 3 contacts have drafts ready but couldn't be enrolled via API
+**Effort:** ~5 min in Apollo UI
+
+3 contacts silently rejected by Apollo API (contacts: [], skipped_contact_ids: {}) despite all override flags. Go to Apollo > Contacts > search each > open their profile > manually add to TAM Outbound sequence:
+
+| Name | Company | Apollo ID | Email |
+|------|---------|-----------|-------|
+| Amaresh Shukla | BlackRock | 6915e0d2b283e9000160ffb8 | amaresh.shukla@blackrock.com |
+| Colin Dwyer | EmblemHealth | 68e69f9eb4d410000123700c | cdwyer@emblemhealth.com |
+| Deepa Pabbathi | Vertafore | 5f886aa5ef18ce008c0b797f | dpabbathi@vertafore.com |
+
+Email drafts for all 3 are in `batches/active/tamob-batch-20260315-1.html`. After manual enrollment, update badges from Blocked → Enrolled and add to sends.
+
+---
+
+### TASK-041: Draft T2 Emails — Batch 10 (15 contacts, due Mar 20-23)
+**Status:** UNCLAIMED
+**Priority:** P1 — T2 due Mar 20-23 (Day 5-8 from T1 send)
+**Effort:** ~45 min
+**Output:** T2 drafts added to `batches/active/tamob-batch-20260315-1.html` or separate T2 file
+
+15 contacts from Batch 10. T2 tasks will appear in Apollo Tasks tab ~Mar 20.
+**Formula:** sop-tam-outbound.md Part 7 (Deep-Dive v4) — 140-190 words, 4-part: (1) "I imagine" + deeper pain, (2) Testsigma pitch, (3) customer story with WHY, (4) 15-min CTA. BANNED: "Circling back" / "Following up." See `memory/playbooks/t2-followup.md`.
+**Check T1 proof points:** `batches/active/tamob-batch-20260315-1.html` (proof point rotation table)
+**APPROVE SEND required before any sends**
+
+**Accounts:** CVS Health (4), Citizens Bank (2), DISH Network (3), D&B (3), EmblemHealth (1), Vertafore (1), Safelite (1)
+
+---
 
 ### TASK-033: Call Back TELUS Contacts TODAY — 3 Missed Inbound Calls
 **Status:** UNCLAIMED — Rob must call back

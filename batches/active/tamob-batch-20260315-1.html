@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TAM Outbound Batch 10 — Mar 15 2026</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+    h1 { color: #1a1a2e; }
+    h2 { color: #1a1a2e; margin-top: 32px; }
+    .card { background: white; border-radius: 8px; padding: 20px; margin: 16px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .card h3 { margin-top: 0; color: #1a1a2e; }
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-right: 6px; }
+    .badge-draft { background: #fff3cd; color: #856404; }
+    .badge-enrolled { background: #d4edda; color: #155724; }
+    .badge-sent { background: #cce5ff; color: #004085; }
+    .badge-blocked { background: #f8d7da; color: #721c24; }
+    .badge-warning { background: #ffeeba; color: #856404; }
+    .email-draft { background: #f8f9fa; border-left: 4px solid #007bff; padding: 12px 16px; margin: 12px 0; font-size: 14px; line-height: 1.6; }
+    .email-draft .subject { font-weight: 700; margin-bottom: 8px; color: #333; }
+    .email-draft .body { white-space: pre-wrap; }
+    .qa-gate { background: #f0f7ff; padding: 10px 14px; border-radius: 6px; margin: 8px 0; font-size: 13px; }
+    .qa-gate .pass { color: #155724; font-weight: 700; }
+    .proof-tracker { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+    .proof-tracker th, .proof-tracker td { padding: 8px 12px; border: 1px solid #dee2e6; text-align: left; }
+    .proof-tracker th { background: #e9ecef; font-weight: 600; }
+    .proof-tracker tr:nth-child(even) { background: #f8f9fa; }
+    .summary { background: #e8f5e9; padding: 16px; border-radius: 8px; margin: 20px 0; }
+    .backlog { background: #fff8e1; padding: 16px; border-radius: 8px; margin: 20px 0; }
+    .meta { color: #666; font-size: 13px; margin-top: 4px; }
+    .contact-meta { color: #555; font-size: 13px; margin: 4px 0; }
+    .override-note { background: #fff3cd; border: 1px solid #ffc107; padding: 6px 10px; border-radius: 4px; font-size: 12px; margin: 6px 0; color: #856404; }
+    .section-divider { border: none; border-top: 2px solid #dee2e6; margin: 32px 0; }
+    .company-header { background: #1a1a2e; color: white; padding: 8px 16px; border-radius: 6px; margin-top: 28px; margin-bottom: 8px; font-size: 15px; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<h1>TAM Outbound — Batch 10 Mar 15</h1>
+<p class="meta">Created: 2026-03-15 | Session: 39 | Contacts: 18 | Status: 15 Enrolled | 3 Blocked | Pending APPROVE SEND</p>
+
+<!-- BATCH SUMMARY -->
+<div class="summary">
+  <h2 style="margin-top:0">Batch Summary</h2>
+  <p><strong>Contacts:</strong> 18 across 8 companies (CVS Health ×4, Citizens Bank ×2, BlackRock ×1, DISH Network ×3, Dun &amp; Bradstreet ×3, EmblemHealth ×2, Vertafore ×2, Safelite ×1)</p>
+  <p><strong>Sequence:</strong> TAM Outbound - Rob Gorham (<code>69afff8dc8897c0019b78c7e</code>)</p>
+  <p><strong>Send-from:</strong> robert.gorham@testsigma.com (<code>68e3b53ceaaf74001d36c206</code>)</p>
+  <p><strong>T2 due:</strong> Mar 20–23 (Day 5–8 from T1 send)</p>
+  <p><strong>MASTER_SENT_LIST before append:</strong> 597 rows &nbsp;|&nbsp; <strong>After:</strong> 612 rows (+15)</p>
+  <p><strong>Enrollment notes:</strong> 15 enrolled | 3 blocked (Amaresh Shukla, Colin Dwyer, Deepa Pabbathi — Apollo API silent rejection, need manual UI fix) | 7 new contacts created | 2 override: active_in_other (Brendan McCarthy, Stacey Schmidt) | ⚠️ Avani Vaidya enrolled but email null on record — needs manual email attachment in Apollo UI</p>
+</div>
+
+<!-- PROOF POINT ROTATION TRACKER -->
+<h2>Proof Point Rotation</h2>
+<table class="proof-tracker">
+  <tr><th>#</th><th>Company</th><th>Contact</th><th>Proof Point</th><th>Customer</th><th>Numbers</th></tr>
+  <tr><td>1</td><td>CVS Health</td><td>Avani Vaidya</td><td>Coverage + velocity</td><td>CRED</td><td>90% regression coverage, 5x faster</td></tr>
+  <tr><td>2</td><td>CVS Health</td><td>Swapna Bitra</td><td>Scale + maintenance</td><td>Medibuddy</td><td>2,500 tests, 50% maintenance cut</td></tr>
+  <tr><td>3</td><td>CVS Health</td><td>Tarun Sharma</td><td>Regression speed</td><td>Sanofi</td><td>3 days → 80 minutes</td></tr>
+  <tr><td>4</td><td>CVS Health</td><td>Divya Paul</td><td>Regression cycle</td><td>Hansard</td><td>8 weeks → 5 weeks</td></tr>
+  <tr><td>5</td><td>Citizens Bank</td><td>Usman Khan</td><td>Regression cycle</td><td>Hansard</td><td>8 weeks → 5 weeks</td></tr>
+  <tr><td>6</td><td>Citizens Bank</td><td>Mehul Savalia</td><td>Coverage + velocity</td><td>CRED</td><td>90% regression coverage, 5x faster</td></tr>
+  <tr><td>7</td><td>BlackRock</td><td>Amaresh Shukla</td><td>Enterprise efficiency</td><td>Cisco</td><td>35% regression time reduction</td></tr>
+  <tr><td>8</td><td>DISH Network</td><td>Minu Prabhakaran</td><td>Scale + maintenance</td><td>Medibuddy</td><td>2,500 tests, 50% maintenance cut</td></tr>
+  <tr><td>9</td><td>DISH Network</td><td>Jacob Wyman</td><td>Media scale + speed</td><td>Nagra DTV</td><td>2,500 tests in 8 months, 4x faster</td></tr>
+  <tr><td>10</td><td>DISH Network</td><td>Roger Tonneman</td><td>Enterprise coverage</td><td>Fortune 100</td><td>3x test coverage in 4 months</td></tr>
+  <tr><td>11</td><td>Dun &amp; Bradstreet</td><td>Shikha Jayant</td><td>Regression cycle</td><td>Hansard</td><td>8 weeks → 5 weeks</td></tr>
+  <tr><td>12</td><td>Dun &amp; Bradstreet</td><td>Collins Chellaswamy</td><td>Coverage + velocity</td><td>CRED</td><td>90% regression coverage, 5x faster</td></tr>
+  <tr><td>13</td><td>Dun &amp; Bradstreet</td><td>Brendan McCarthy ⚠️</td><td>Enterprise coverage</td><td>Fortune 100</td><td>3x test coverage in 4 months</td></tr>
+  <tr><td>14</td><td>EmblemHealth</td><td>Colin Dwyer</td><td>Scale + maintenance</td><td>Medibuddy</td><td>2,500 tests, 50% maintenance cut</td></tr>
+  <tr><td>15</td><td>EmblemHealth</td><td>Dawn McCartha</td><td>Regression speed</td><td>Sanofi</td><td>3 days → 80 minutes</td></tr>
+  <tr><td>16</td><td>Vertafore</td><td>Deepa Pabbathi</td><td>Regression cycle</td><td>Hansard</td><td>8 weeks → 5 weeks</td></tr>
+  <tr><td>17</td><td>Vertafore</td><td>Stacey Schmidt ⚠️</td><td>Coverage + velocity</td><td>CRED</td><td>90% regression coverage, 5x faster</td></tr>
+  <tr><td>18</td><td>Safelite</td><td>Praveen Gali</td><td>Coverage + velocity</td><td>CRED</td><td>90% regression coverage, 5x faster</td></tr>
+</table>
+
+<hr class="section-divider">
+
+<!-- ===== CVS HEALTH ===== -->
+<div class="company-header">CVS Health — 4 contacts</div>
+
+<!-- #1 Avani Vaidya -->
+<div class="card">
+  <h3>#1 — Avani Vaidya</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <span class="badge badge-warning">⚠️ Email Null — Needs Manual Fix</span>
+  <div class="override-note">⚠️ Enrolled in sequence but email field is null on Apollo contact record (6904a84eea986d00191ba7f1). Manually attach avani.vaidya@cvshealth.com in Apollo UI before T1 send.</div>
+  <p class="contact-meta"><strong>Title:</strong> QE Manager / QA Lead &nbsp;|&nbsp; <strong>Company:</strong> CVS Health &nbsp;|&nbsp; <strong>Domain:</strong> cvshealth.com</p>
+  <p class="contact-meta"><strong>Email:</strong> avani.vaidya@cvshealth.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 6904a84eea986d00191ba7f1</p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
+  <div class="email-draft">
+    <div class="subject">Subject: Avani's QA coverage at CVS Health</div>
+    <div class="body">Hi Avani,
+
+Managing QE at CVS Health means you're carrying test coverage across some complex pharmacy and digital health workflows. When regression cycles stretch out, that usually means delayed releases or a backlog of manual test runs your team can't get ahead of.
+
+CRED used Testsigma to hit 90% regression coverage and run 5x faster, without adding headcount. Does that kind of compression matter for where your team is right now?
+
+If so, what day works to see how?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 85 | QM: 2 | Subject: SMYKM ✓ | Proof: CRED (unique at CVS) | HC1: role + workflows ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<!-- #2 Swapna Bitra -->
+<div class="card">
+  <h3>#2 — Swapna Bitra</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p class="contact-meta"><strong>Title:</strong> SDET Lead &nbsp;|&nbsp; <strong>Company:</strong> CVS Health &nbsp;|&nbsp; <strong>Domain:</strong> cvshealth.com</p>
+  <p class="contact-meta"><strong>Email:</strong> swapna.bitra@cvshealth.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 65b65a521a070102ea51e374</p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
+  <div class="email-draft">
+    <div class="subject">Subject: Swapna's automation work at CVS Health</div>
+    <div class="body">Hi Swapna,
+
+As an SDET lead at CVS Health, I'd guess a good chunk of your week goes to maintaining existing tests rather than building new coverage. When test suites age and the UI keeps shifting, maintenance overhead quietly eats your sprint capacity.
+
+Medibuddy scaled to 2,500 automated tests using Testsigma while cutting maintenance 50%, mostly through AI self-healing that catches locator changes before they break the suite. Is that the kind of leverage worth exploring?
+
+What day works to take a look?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 88 | QM: 2 | Subject: SMYKM ✓ | Proof: Medibuddy (unique at CVS) | HC1: SDET role + maintenance pattern ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<!-- #3 Tarun Sharma -->
+<div class="card">
+  <h3>#3 — Tarun Sharma</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p class="contact-meta"><strong>Title:</strong> QA Lead &nbsp;|&nbsp; <strong>Company:</strong> CVS Health &nbsp;|&nbsp; <strong>Domain:</strong> cvshealth.com</p>
+  <p class="contact-meta"><strong>Email:</strong> tarun.sharma@cvshealth.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 65b659a81a070101ae52c83b</p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
+  <div class="email-draft">
+    <div class="subject">Subject: Tarun's regression testing at CVS Health</div>
+    <div class="body">Hi Tarun,
+
+QA leads at large health systems tend to carry regression cycles that are measured in days, not hours. Pharmacy, benefits, and patient-facing platforms don't leave much room for slow test cycles, but the volume of scenarios to cover keeps growing.
+
+Sanofi cut regression from 3 days down to 80 minutes using Testsigma. The driver was parallel execution combined with AI-generated test cases from plain English, which meant fewer manual handoffs per sprint. Is that worth a look for your team?
+
+What day works?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 89 | QM: 2 | Subject: SMYKM ✓ | Proof: Sanofi (unique at CVS) | HC1: health system QA + pharma/benefits coverage ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<!-- #4 Divya Paul -->
+<div class="card">
+  <h3>#4 — Divya Paul</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p class="contact-meta"><strong>Title:</strong> QA Lead &nbsp;|&nbsp; <strong>Company:</strong> CVS Health &nbsp;|&nbsp; <strong>Domain:</strong> cvshealth.com</p>
+  <p class="contact-meta"><strong>Email:</strong> divya.paul@cvshealth.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 65b65a021a070101ae52c962</p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
+  <div class="email-draft">
+    <div class="subject">Subject: Divya's QA practice at CVS Health</div>
+    <div class="body">Hi Divya,
+
+QA leads at CVS Health are balancing test coverage across digital health tools, pharmacy workflows, and patient apps. When new features move fast, regression tends to be the thing that slows the whole release down.
+
+Hansard cut their regression cycle from 8 weeks to 5 using Testsigma's AI self-healing and parallel execution. That's not just faster testing, it's fewer manual scrambles when a locator breaks mid-sprint. Does a shorter regression window matter for your team right now?
+
+What day works to connect?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 85 | QM: 2 | Subject: SMYKM ✓ | Proof: Hansard (unique at CVS) | HC1: CVS-specific platforms ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ===== CITIZENS BANK ===== -->
+<div class="company-header">Citizens Bank — 2 contacts</div>
+
+<!-- #5 Usman Khan -->
+<div class="card">
+  <h3>#5 — Usman Khan</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p class="contact-meta"><strong>Title:</strong> QA Automation Lead &nbsp;|&nbsp; <strong>Company:</strong> Citizens Bank &nbsp;|&nbsp; <strong>Domain:</strong> citizensbank.com</p>
+  <p class="contact-meta"><strong>Email:</strong> usman.khan@citizensbank.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 68add76d2c0dd60001dc078c</p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
+  <div class="email-draft">
+    <div class="subject">Subject: Usman's QA automation at Citizens Bank</div>
+    <div class="body">Hi Usman,
+
+Leading QA automation at a bank like Citizens means your regression suite is probably large, and any locator breakage or UI change can ripple through dozens of test cases. Keeping that stable while also pushing new automation coverage is a constant balance.
+
+Hansard cut their regression cycle from 8 weeks to 5 weeks using Testsigma, largely through AI self-healing that auto-remaps broken locators. Is that kind of maintenance reduction worth looking at for your team?
+
+What day works to see it live?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 87 | QM: 2 | Subject: SMYKM ✓ | Proof: Hansard (unique at Citizens) | HC1: bank QA automation + scale challenge ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<!-- #6 Mehul Savalia -->
+<div class="card">
+  <h3>#6 — Mehul Savalia</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p class="contact-meta"><strong>Title:</strong> QA Lead &nbsp;|&nbsp; <strong>Company:</strong> Citizens Bank &nbsp;|&nbsp; <strong>Domain:</strong> citizensbank.com</p>
+  <p class="contact-meta"><strong>Email:</strong> mehul.savalia@citizensbank.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 692c569cb621bb0001522410</p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
+  <div class="email-draft">
+    <div class="subject">Subject: Mehul's QA work at Citizens Bank</div>
+    <div class="body">Hi Mehul,
+
+QA leads at financial services firms tend to face the same push-pull: expanding test coverage without slowing down release velocity. Manual test creation and brittle automation are usually where the time goes.
+
+CRED used Testsigma to reach 90% regression coverage and run 5x faster, without hiring more engineers. They switched from writing code-based tests to plain English, which opened it up to the whole QA team. Is that kind of coverage jump possible for where Citizens is right now?
+
+What day works?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 84 | QM: 2 | Subject: SMYKM ✓ | Proof: CRED (unique at Citizens) | HC1: FinServ QA lead challenge ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ===== BLACKROCK ===== -->
+<div class="company-header">BlackRock — 1 contact</div>
+
+<!-- #7 Amaresh Shukla -->
+<div class="card">
+  <h3>#7 — Amaresh Shukla</h3>
+  <span class="badge badge-blocked">Blocked — API Rejection</span>
+  <p class="contact-meta"><strong>Title:</strong> VP QA Automation &nbsp;|&nbsp; <strong>Company:</strong> BlackRock &nbsp;|&nbsp; <strong>Domain:</strong> blackrock.com</p>
+  <p class="contact-meta"><strong>Email:</strong> amaresh.shukla@blackrock.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 6915e0d2b283e9000160ffb8</p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
+  <div class="email-draft">
+    <div class="subject">Subject: Amaresh's QA automation at BlackRock</div>
+    <div class="body">Hi Amaresh,
+
+VPs of QA automation at firms like BlackRock are usually navigating the same challenge: scaling test coverage across a growing tech portfolio without proportionally growing the team. When you're running automated regression at enterprise scale, maintenance overhead and execution speed tend to be the pressure points.
+
+Cisco reduced regression time by 35% using Testsigma, across a large, distributed engineering organization. Is that the kind of efficiency gain that would matter for BlackRock's QA footprint?
+
+What day works to dig in?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 84 | QM: 2 | Subject: SMYKM ✓ | Proof: Cisco (only contact at BlackRock) | HC1: enterprise-scale QA VP challenge ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ===== DISH NETWORK ===== -->
+<div class="company-header">DISH Network — 3 contacts</div>
+
+<!-- #8 Minu Prabhakaran -->
+<div class="card">
+  <h3>#8 — Minu Prabhakaran</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p class="contact-meta"><strong>Title:</strong> QA Manager &nbsp;|&nbsp; <strong>Company:</strong> DISH Network &nbsp;|&nbsp; <strong>Domain:</strong> dish.com</p>
+  <p class="contact-meta"><strong>Email:</strong> minu.prabhakaran@dish.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 69b73c3f1f42de001557b84a <em>(new contact created)</em></p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
+  <div class="email-draft">
+    <div class="subject">Subject: Minu's QA team at DISH Network</div>
+    <div class="body">Hi Minu,
+
+QA managers at media and streaming companies tend to deal with sprawling test suites covering web, app, and device surfaces. As features ship faster, test maintenance tends to eat more of the team's capacity than actual test creation.
+
+Medibuddy scaled to 2,500 automated tests using Testsigma while cutting maintenance by 50%, mostly through AI-driven self-healing. Is your team running into that same maintenance-versus-coverage trade-off right now?
+
+What day works to walk through how they did it?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 80 | QM: 2 | Subject: SMYKM ✓ | Proof: Medibuddy (unique at DISH) | HC1: media/streaming + multi-surface challenge ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<!-- #9 Jacob Wyman -->
+<div class="card">
+  <h3>#9 — Jacob Wyman</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p class="contact-meta"><strong>Title:</strong> SQA Engineering Manager &nbsp;|&nbsp; <strong>Company:</strong> DISH Network &nbsp;|&nbsp; <strong>Domain:</strong> dish.com</p>
+  <p class="contact-meta"><strong>Email:</strong> jake.wyman@dish.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 69b73bd01f42de00112d6d12 <em>(new contact created)</em></p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search + People Match</p>
+  <div class="email-draft">
+    <div class="subject">Subject: Jacob's SQA work at DISH Network</div>
+    <div class="body">Hi Jacob,
+
+SQA engineering managers at media companies often carry the dual pressure of building scalable automation while keeping existing tests from going flaky as the product evolves. Scaling a suite fast without sacrificing stability is harder than it sounds.
+
+Nagra DTV built 2,500 tests in 8 months using Testsigma and ran them 4x faster than their prior setup. Plain English test creation and AI self-healing were the two things that made that possible. Worth seeing if that maps to DISH's setup?
+
+What day works?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 88 | QM: 2 | Subject: SMYKM ✓ | Proof: Nagra DTV (unique at DISH — media vertical match) | HC1: SQA eng manager + scale/stability pressure ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<!-- #10 Roger Tonneman -->
+<div class="card">
+  <h3>#10 — Roger Tonneman</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p class="contact-meta"><strong>Title:</strong> Sr QA Manager &nbsp;|&nbsp; <strong>Company:</strong> DISH Network &nbsp;|&nbsp; <strong>Domain:</strong> dish.com</p>
+  <p class="contact-meta"><strong>Email:</strong> roger.tonneman@dish.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 69b73bd21f42de00112d6d1a <em>(new contact created)</em></p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search + People Match</p>
+  <div class="email-draft">
+    <div class="subject">Subject: Roger's QA org at DISH Network</div>
+    <div class="body">Hi Roger,
+
+Senior QA managers at companies like DISH typically have a mix of manual and automated tests, and the gap between what's covered and what needs to be covered tends to widen as the product surface grows. Adding coverage without proportionally adding team members is the core challenge.
+
+A Fortune 100 tech company hit 3x test coverage using Testsigma in under four months, without expanding headcount. Does that kind of scale-up sound relevant for where DISH's QA org is right now?
+
+What day works to compare notes?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 88 | QM: 2 | Subject: SMYKM ✓ | Proof: Fortune 100 (unique at DISH) | HC1: Sr QA manager + coverage gap challenge ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ===== DUN & BRADSTREET ===== -->
+<div class="company-header">Dun &amp; Bradstreet — 3 contacts</div>
+
+<!-- #11 Shikha Jayant -->
+<div class="card">
+  <h3>#11 — Shikha Jayant</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p class="contact-meta"><strong>Title:</strong> Software QA Manager &nbsp;|&nbsp; <strong>Company:</strong> Dun &amp; Bradstreet &nbsp;|&nbsp; <strong>Domain:</strong> dnb.com</p>
+  <p class="contact-meta"><strong>Email:</strong> jayants@dnb.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 69b73bd41f42de001557b816 <em>(new contact created)</em></p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search + People Match</p>
+  <div class="email-draft">
+    <div class="subject">Subject: Shikha's QA team at Dun &amp; Bradstreet</div>
+    <div class="body">Hi Shikha,
+
+Software QA managers at data-heavy platforms like Dun and Bradstreet usually run long regression cycles, especially when data pipelines, APIs, and web interfaces all need coverage. When a UI change breaks a locator, the time to track it down and fix it adds up fast.
+
+Hansard cut their regression cycle from 8 weeks to 5 using Testsigma's AI self-healing, which automatically remaps broken locators. Is that the kind of maintenance gain that would move the needle for your team?
+
+What day works to take a look?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 89 | QM: 2 | Subject: SMYKM ✓ | Proof: Hansard (unique at D&B) | HC1: data platform QA + multi-surface coverage ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<!-- #12 Collins Chellaswamy -->
+<div class="card">
+  <h3>#12 — Collins Chellaswamy</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p class="contact-meta"><strong>Title:</strong> Sr Manager QA &nbsp;|&nbsp; <strong>Company:</strong> Dun &amp; Bradstreet &nbsp;|&nbsp; <strong>Domain:</strong> dnb.com</p>
+  <p class="contact-meta"><strong>Email:</strong> chellaswamyc@dnb.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 69b73bd51f42de001557b81e <em>(new contact created)</em></p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search + People Match</p>
+  <div class="email-draft">
+    <div class="subject">Subject: Collins's QA practice at Dun &amp; Bradstreet</div>
+    <div class="body">Hi Collins,
+
+Senior QA managers at platforms like D&B tend to be on the hook for both coverage breadth and execution speed. The challenge is usually that manual test creation can't keep pace with what the dev team is shipping, especially across multiple product lines.
+
+CRED achieved 90% regression coverage and ran tests 5x faster using Testsigma, without expanding their QA team. The shift to plain English test creation is what unlocked the throughput. Is that kind of acceleration relevant for D&B's QA priorities right now?
+
+What day works?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 90 | QM: 2 | Subject: SMYKM ✓ | Proof: CRED (unique at D&B) | HC1: Sr Manager QA + coverage vs velocity tension ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<!-- #13 Brendan McCarthy -->
+<div class="card">
+  <h3>#13 — Brendan McCarthy</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <span class="badge badge-warning">⚠️ Active in Other Campaign — Override Required</span>
+  <p class="contact-meta"><strong>Title:</strong> Sr QA Manager &nbsp;|&nbsp; <strong>Company:</strong> Dun &amp; Bradstreet &nbsp;|&nbsp; <strong>Domain:</strong> dnb.com</p>
+  <p class="contact-meta"><strong>Email:</strong> mccarthyb@dnb.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 67887b650a8721000111da37</p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search + People Match</p>
+  <div class="override-note">⚠️ Enrollment Override: <code>active_in_other_campaigns: true</code> — Contact is in campaign <code>6790c0f391b47d03f19439b8</code>. NOT in MASTER_SENT_LIST — clear to enroll in our sequence with override flag.</div>
+  <div class="email-draft">
+    <div class="subject">Subject: Brendan's QA leadership at Dun &amp; Bradstreet</div>
+    <div class="body">Hi Brendan,
+
+Senior QA managers at data platform companies like D&B are usually balancing regression coverage across API layers, web surfaces, and data validation workflows. As the test suite grows, keeping it fast and stable becomes the bottleneck more than building new coverage.
+
+A Fortune 100 tech company tripled their test coverage using Testsigma in under four months, without adding QA headcount. Does that kind of productivity jump resonate for where D&B's quality engineering is headed?
+
+What day works to dig into how they did it?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 87 | QM: 2 | Subject: SMYKM ✓ | Proof: Fortune 100 (unique at D&B) | HC1: data platform Sr QA + API/web/data coverage ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ===== EMBLEMHEALTH ===== -->
+<div class="company-header">EmblemHealth — 2 contacts</div>
+
+<!-- #14 Colin Dwyer -->
+<div class="card">
+  <h3>#14 — Colin Dwyer</h3>
+  <span class="badge badge-blocked">Blocked — API Rejection</span>
+  <div class="override-note">⚠️ Enrollment blocked: Apollo API silent rejection despite all override flags. Needs manual enrollment in Apollo UI. Email draft ready.</div>
+  <p class="contact-meta"><strong>Title:</strong> QA Manager &nbsp;|&nbsp; <strong>Company:</strong> EmblemHealth &nbsp;|&nbsp; <strong>Domain:</strong> emblemhealth.com</p>
+  <p class="contact-meta"><strong>Email:</strong> cdwyer@emblemhealth.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 68e69f9eb4d410000123700c</p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
+  <div class="email-draft">
+    <div class="subject">Subject: Colin's QA team at EmblemHealth</div>
+    <div class="body">Hi Colin,
+
+QA managers at health plans like EmblemHealth are usually running test coverage across member portals, provider tools, and claims workflows, all of which need to stay stable during release cycles. When manual test maintenance takes over, new feature coverage tends to fall behind.
+
+Medibuddy built 2,500 automated tests using Testsigma and cut maintenance effort by 50%, largely through AI self-healing. Is your team hitting that same maintenance versus coverage ceiling right now?
+
+What day works to walk through it?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 82 | QM: 2 | Subject: SMYKM ✓ | Proof: Medibuddy (unique at EmblemHealth) | HC1: health plan QA + portals/claims ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<!-- #15 Dawn McCartha -->
+<div class="card">
+  <h3>#15 — Dawn McCartha</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p class="contact-meta"><strong>Title:</strong> Testing Manager &nbsp;|&nbsp; <strong>Company:</strong> EmblemHealth &nbsp;|&nbsp; <strong>Domain:</strong> emblemhealth.com</p>
+  <p class="contact-meta"><strong>Email:</strong> dmccartha@emblemhealth.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 69b73bd77b9ccd00193ed12c <em>(new contact created)</em></p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search + People Match</p>
+  <div class="email-draft">
+    <div class="subject">Subject: Dawn's testing practice at EmblemHealth</div>
+    <div class="body">Hi Dawn,
+
+Testing managers at health plan companies tend to deal with long regression cycles, especially when coverage spans member-facing applications, claims systems, and compliance-critical workflows. When regression takes multiple days to run, that pressure lands directly on release timelines.
+
+Sanofi brought their regression runtime from 3 days down to 80 minutes using Testsigma, through parallel test execution and AI-generated test cases built from plain English specs. Is a shorter cycle worth exploring for your team at EmblemHealth?
+
+What day works?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 85 | QM: 2 | Subject: SMYKM ✓ | Proof: Sanofi (unique at EmblemHealth) | HC1: health plan testing manager + compliance ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ===== VERTAFORE ===== -->
+<div class="company-header">Vertafore — 2 contacts</div>
+
+<!-- #16 Deepa Pabbathi -->
+<div class="card">
+  <h3>#16 — Deepa Pabbathi</h3>
+  <span class="badge badge-blocked">Blocked — API Rejection</span>
+  <p class="contact-meta"><strong>Title:</strong> QA Manager &nbsp;|&nbsp; <strong>Company:</strong> Vertafore &nbsp;|&nbsp; <strong>Domain:</strong> vertafore.com</p>
+  <p class="contact-meta"><strong>Email:</strong> dpabbathi@vertafore.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 5f886aa5ef18ce008c0b797f</p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
+  <div class="email-draft">
+    <div class="subject">Subject: Deepa's QA coverage at Vertafore</div>
+    <div class="body">Hi Deepa,
+
+QA managers at insurance software companies like Vertafore tend to run deep regression cycles across complex policy and agency management workflows. When the product changes frequently, test maintenance becomes the blocker, not test creation.
+
+Hansard, an insurance firm, cut their regression cycle from 8 weeks to 5 weeks using Testsigma's AI self-healing, which handles locator changes automatically. Does that kind of cycle compression map to what Vertafore's QA team is dealing with?
+
+What day works to take a look?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 82 | QM: 2 | Subject: SMYKM ✓ | Proof: Hansard — insurance vertical match (unique at Vertafore) | HC1: insurance software QA + policy/agency workflows ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<!-- #17 Stacey Schmidt -->
+<div class="card">
+  <h3>#17 — Stacey Schmidt</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <span class="badge badge-warning">⚠️ Active in Other Campaign — Override Required</span>
+  <p class="contact-meta"><strong>Title:</strong> QA Manager &nbsp;|&nbsp; <strong>Company:</strong> Vertafore &nbsp;|&nbsp; <strong>Domain:</strong> vertafore.com</p>
+  <p class="contact-meta"><strong>Email:</strong> sschmidt@vertafore.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 664daebc65e77601ebdaa628</p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
+  <div class="override-note">⚠️ Enrollment Override: <code>active_in_other_campaigns: true</code> — Contact is in another sequence. NOT in MASTER_SENT_LIST — clear to enroll in our sequence with override flag.</div>
+  <div class="email-draft">
+    <div class="subject">Subject: Stacey's QA work at Vertafore</div>
+    <div class="body">Hi Stacey,
+
+QA managers at SaaS companies like Vertafore often deal with the tension between keeping regression stable and shipping new coverage fast. As the product evolves, that gap tends to widen if the automation framework doesn't scale with it.
+
+CRED hit 90% regression coverage and ran their suite 5x faster using Testsigma, by shifting to plain English test creation that the full QA team could use, not just engineers. Is that kind of coverage and speed gain worth a look for Vertafore?
+
+What day works?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 88 | QM: 2 | Subject: SMYKM ✓ | Proof: CRED (unique at Vertafore) | HC1: SaaS QA manager + stability vs velocity ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ===== SAFELITE ===== -->
+<div class="company-header">Safelite — 1 contact</div>
+
+<!-- #18 Praveen Gali -->
+<div class="card">
+  <h3>#18 — Praveen Gali</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p class="contact-meta"><strong>Title:</strong> Sr QE Leader &nbsp;|&nbsp; <strong>Company:</strong> Safelite &nbsp;|&nbsp; <strong>Domain:</strong> safelite.com</p>
+  <p class="contact-meta"><strong>Email:</strong> praveen.gali@safelite.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 69b73bd97b9ccd00193ed134 <em>(new contact created)</em></p>
+  <p class="contact-meta"><strong>Source:</strong> Apollo People Search + People Match</p>
+  <div class="email-draft">
+    <div class="subject">Subject: Praveen's QE work at Safelite</div>
+    <div class="body">Hi Praveen,
+
+Senior QE leaders at service-operations companies like Safelite are usually running coverage across customer-facing apps, scheduling platforms, and internal tools. As feature velocity picks up, manual test coverage tends to fall behind and regression cycles stretch out.
+
+CRED reached 90% regression coverage and sped up test execution by 5x using Testsigma, largely by moving to plain English test creation that didn't require code expertise. Is that kind of jump in coverage efficiency worth exploring for your QE team?
+
+What day works?
+
+Rob</div>
+  </div>
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 87 | QM: 2 | Subject: SMYKM ✓ | Proof: CRED (only contact at Safelite) | HC1: service-ops QE + multi-surface coverage ✓ | No em dashes ✓ | No placeholders ✓ | Testsigma ✓ | MQS: <span class="pass">12/12 — PASS</span>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- BACKLOG -->
+<div class="backlog">
+  <h2 style="margin-top:0">Backlog — Excluded Contacts (11 total)</h2>
+  <p>Contacts found during sourcing but excluded from this batch:</p>
+  <ul>
+    <li><strong>Ilene Cohen</strong> (EmblemHealth) — Already enrolled in our TAM Outbound sequence <code>69afff8dc8897c0019b78c7e</code>. Do not re-enroll.</li>
+    <li><strong>Raghda Sakka</strong> (CVS Health) — In MASTER_SENT_LIST (TAM Outbound Batch 8). Skip.</li>
+    <li><strong>Amir Aly</strong> (CVS Health) — In MASTER_SENT_LIST (Buyer Intent T2). Skip.</li>
+    <li><strong>Anshula Kumar</strong> (CVS Health) — In MASTER_SENT_LIST (B6 Mar12). Skip.</li>
+    <li><strong>Dipti Chaudhary</strong> (CVS Health) — In MASTER_SENT_LIST (B6 Mar12). Skip.</li>
+    <li><strong>Rachandeep Kaur</strong> (CVS Health) — In MASTER_SENT_LIST (B6 Mar12). Skip.</li>
+    <li><strong>Thomas Goron</strong> (CVS Health) — In MASTER_SENT_LIST (B6 Mar12). Skip.</li>
+    <li><strong>Gil Leong</strong> (CVS Health) — In MASTER_SENT_LIST (B7 Mar12). Skip.</li>
+    <li><strong>Yuehli Dewolf</strong> (CVS Health) — In MASTER_SENT_LIST (Batch 8 LinkedIn). Skip.</li>
+    <li><strong>Jamie Kurt</strong> (CVS Health) — In MASTER_SENT_LIST (Batch 5B LinkedIn). Skip.</li>
+    <li><strong>Procore Technologies</strong> — Apollo search returned no qualified QA persona contacts not already covered. Carry to Batch 11.</li>
+    <li><strong>Pluralsight</strong> — Apollo search returned no qualified QA persona contacts not already covered. Carry to Batch 11.</li>
+  </ul>
+</div>
+
+</body>
+</html>

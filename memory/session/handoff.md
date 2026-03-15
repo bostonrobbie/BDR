@@ -1,10 +1,49 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-14 (Session 37 — Batch 9 (TAM Outbound) T1 sends COMPLETE. 44/45 sent Mar 14 (1 DNC: Bret Wiener). Tracker batches/active/tamob-batch-20260313-2.html updated: 44 × T1 Sent Mar 14, 1 × DNC, 11 × Not Enrolled. MASTER_SENT_LIST 597 rows (all 45 pre-added). T2 window: Mar 18-21. TASK-036 now active.)
+## Last Updated: 2026-03-15 (Session 39 — Batch 10 enrollment complete. 15/18 enrolled. 3 blocked (API silent rejection). MASTER_SENT_LIST 612 rows. T2 due Mar 20-23. Awaiting APPROVE SEND.)
 
 ---
 
 ## TODAY'S DATE
-**Saturday, March 14, 2026**
+**Sunday, March 15, 2026**
+
+---
+
+## 🟡 BATCH 10 — Pending APPROVE SEND (Session 39)
+
+**15 contacts enrolled** in TAM Outbound sequence `69afff8dc8897c0019b78c7e` (send-from: robert.gorham@testsigma.com).
+**Tracker:** `batches/active/tamob-batch-20260315-1.html`
+**T2 due:** Mar 20–23 (Day 5–8 from T1 send)
+
+| # | Name | Company | Apollo ID | Email | Status |
+|---|------|---------|-----------|-------|--------|
+| 1 | Avani Vaidya | CVS Health | 6904a84eea986d00191ba7f1 | avani.vaidya@cvshealth.com | Enrolled ⚠️ email null |
+| 2 | Swapna Bitra | CVS Health | 65b65a521a070102ea51e374 | swapna.bitra@cvshealth.com | Enrolled |
+| 3 | Tarun Sharma | CVS Health | 65b659a81a070101ae52c83b | tarun.sharma@cvshealth.com | Enrolled |
+| 4 | Divya Paul | CVS Health | 65b65a021a070101ae52c962 | divya.paul@cvshealth.com | Enrolled |
+| 5 | Usman Khan | Citizens Bank | 68add76d2c0dd60001dc078c | usman.khan@citizensbank.com | Enrolled |
+| 6 | Mehul Savalia | Citizens Bank | 692c569cb621bb0001522410 | mehul.savalia@citizensbank.com | Enrolled |
+| 7 | Minu Prabhakaran | DISH Network | 69b73c3f1f42de001557b84a | minu.prabhakaran@dish.com | Enrolled (new contact) |
+| 8 | Jacob Wyman | DISH Network | 69b73bd01f42de00112d6d12 | jake.wyman@dish.com | Enrolled (new contact) |
+| 9 | Roger Tonneman | DISH Network | 69b73bd21f42de00112d6d1a | roger.tonneman@dish.com | Enrolled (new contact) |
+| 10 | Shikha Jayant | D&B | 69b73bd41f42de001557b816 | jayants@dnb.com | Enrolled (new contact) |
+| 11 | Collins Chellaswamy | D&B | 69b73bd51f42de001557b81e | chellaswamyc@dnb.com | Enrolled (new contact) |
+| 12 | Brendan McCarthy | D&B | 67887b650a8721000111da37 | mccarthyb@dnb.com | Enrolled (override: active_in_other) |
+| 13 | Dawn McCartha | EmblemHealth | 69b73bd77b9ccd00193ed12c | dmccartha@emblemhealth.com | Enrolled (new contact) |
+| 14 | Stacey Schmidt | Vertafore | 664daebc65e77601ebdaa628 | sschmidt@vertafore.com | Enrolled (override: active_in_other) |
+| 15 | Praveen Gali | Safelite | 69b73bd97b9ccd00193ed134 | praveen.gali@safelite.com | Enrolled (new contact) |
+
+**3 BLOCKED — Need Rob's manual Apollo UI action:**
+| # | Name | Company | Apollo ID | Reason |
+|---|------|---------|-----------|--------|
+| 7 | Amaresh Shukla | BlackRock | 6915e0d2b283e9000160ffb8 | API silent rejection. Paused in sequence 68fa2bb0939898000d3b489b. |
+| 14 | Colin Dwyer | EmblemHealth | 68e69f9eb4d410000123700c | API silent rejection despite all override flags. |
+| 16 | Deepa Pabbathi | Vertafore | 5f886aa5ef18ce008c0b797f | API silent rejection despite all override flags. |
+
+**⚠️ Avani Vaidya action required:** Contact enrolled but email field is null on Apollo record. Go to Apollo > Contacts > search Avani Vaidya (ID: 6904a84eea986d00191ba7f1) > manually add email: avani.vaidya@cvshealth.com before T1 send.
+
+**Email drafts:** All 18 in tracker. Use `batches/sends-json/` after APPROVE SEND.
+
+---
 
 ---
 

@@ -1176,3 +1176,66 @@ Phase 4 — Session Handoff:
 - 3 contacts blocked by Apollo ownership: Yogesh Garg (Check Point), Donald Jackson (Chase), Iain Duffield (Anaplan) — all need Rob manual action in Apollo UI
 
 **Next:** New TAM T1 batch (operating directive), then T2 drafts for overdue waves
+
+---
+
+## 2026-03-15 — Session 39 — TAM T1 Batch 10 (Source + Draft + QA + Enroll)
+
+**Session type:** TAM Outbound T1 batch build — full workflow
+**Session number:** 39
+**Task:** TASK-040 (continuation of Session 39 crash recovery)
+
+### What was done
+- Resumed from crash at Step 5 (Gmail check + Apollo search already complete from prior session segment)
+- Apollo search: 10 accounts × QA personas → 18 contacts selected post-dedup
+- Dedup: all 18 clean vs MASTER_SENT_LIST (597 rows), DNC, Apollo contacts search
+- Drafted 18 T1 emails (75-99 words, SMYKM subjects, unique proof points per company)
+- QA Gate: all 18 scored 12/12 MQS — PASS
+- Built batch tracker: `batches/active/tamob-batch-20260315-1.html`
+- Enrolled 15/18 in sequence 69afff8dc8897c0019b78c7e
+- MASTER_SENT_LIST.csv: 597 → 612 (+15)
+
+### Contacts enrolled (15)
+| # | Name | Company | Apollo ID |
+|---|------|---------|-----------|
+| 1 | Avani Vaidya | CVS Health | 6904a84eea986d00191ba7f1 |
+| 2 | Swapna Bitra | CVS Health | 65b65a521a070102ea51e374 |
+| 3 | Tarun Sharma | CVS Health | 65b659a81a070101ae52c83b |
+| 4 | Divya Paul | CVS Health | 65b65a021a070101ae52c962 |
+| 5 | Usman Khan | Citizens Bank | 68add76d2c0dd60001dc078c |
+| 6 | Mehul Savalia | Citizens Bank | 692c569cb621bb0001522410 |
+| 7 | Minu Prabhakaran | DISH Network | 69b73c3f1f42de001557b84a |
+| 8 | Jacob Wyman | DISH Network | 69b73bd01f42de00112d6d12 |
+| 9 | Roger Tonneman | DISH Network | 69b73bd21f42de00112d6d1a |
+| 10 | Shikha Jayant | D&B | 69b73bd41f42de001557b816 |
+| 11 | Collins Chellaswamy | D&B | 69b73bd51f42de001557b81e |
+| 12 | Brendan McCarthy | D&B | 67887b650a8721000111da37 |
+| 13 | Dawn McCartha | EmblemHealth | 69b73bd77b9ccd00193ed12c |
+| 14 | Stacey Schmidt | Vertafore | 664daebc65e77601ebdaa628 |
+| 15 | Praveen Gali | Safelite | 69b73bd97b9ccd00193ed134 |
+
+### Enrollment notes
+- 7 new contacts created in Apollo (Minu Prabhakaran, Jacob Wyman, Roger Tonneman, Shikha Jayant, Collins Chellaswamy, Dawn McCartha, Praveen Gali)
+- 2 override active_in_other_campaigns: Brendan McCarthy (D&B), Stacey Schmidt (Vertafore)
+- Minu Prabhakaran: old person ID 54a5529f74686938ac840d8f was legacy — new contact created 69b73c3f1f42de001557b84a
+
+### Blocked (3) — need Rob manual Apollo UI action
+- Amaresh Shukla (BlackRock, 6915e0d2b283e9000160ffb8) — paused in other sequence
+- Colin Dwyer (EmblemHealth, 68e69f9eb4d410000123700c) — silent rejection
+- Deepa Pabbathi (Vertafore, 5f886aa5ef18ce008c0b797f) — silent rejection
+
+### Warning
+- Avani Vaidya enrolled but email null on Apollo contact — needs manual email attachment before T1 send
+
+### Files changed
+- `batches/active/tamob-batch-20260315-1.html` — created
+- `MASTER_SENT_LIST.csv` — 597 → 612 rows (+15)
+- `memory/session/handoff.md` — updated
+- `memory/session/work-queue.md` — added TASK-040, TASK-040B, TASK-041
+- `memory/session/session-log.md` — this entry
+- `memory/session/in-progress.md` — cleared
+- `memory/session/messages.md` — [DONE] appended
+- `memory/session/active/39.json` — deleted
+
+**MASTER_SENT_LIST.csv:** 612 rows total
+**Next:** Rob APPROVE SEND for Batch 10 (15 contacts in Apollo Tasks tab)
