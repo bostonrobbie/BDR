@@ -11,6 +11,22 @@ This file defines how multiple Claude agents (Cowork sessions, Claude Code, etc.
 
 ---
 
+## Cold Start Protocol (for new sessions with zero context)
+
+**Use this FIRST if you're a brand-new Claude session that has never seen this repo before.** It's a fast 5-step checklist to understand what's happening without reading every file.
+
+1. **Read CLAUDE.md** (2 min) — identity, rules, preferences, DNC list, tool stack. Everything needed to understand "who is Rob and what are his hard rules?"
+2. **Read memory/session/handoff.md** (first 50 lines) — current pipeline state snapshot. What was happening in the last session? What batches are active? What's the T2 window?
+3. **Read memory/session/in-progress.md** — crash check. If `Status: ACTIVE`, a prior session crashed mid-task. STOP and tell Rob: "Last session was working on [task]. Status is ACTIVE. Should I resume from step [N] or restart?"
+4. **Read memory/session/messages.md** (last 5-10 messages only) — inter-session alerts. Other sessions may have left `[WARN]` or `[CONFLICT]` flags. Look for `WARN`, `CONFLICT`, or `ASK` tags.
+5. **Read memory/session/work-queue.md** (CRITICAL and ⚡ UNCLAIMED tasks only) — what's pending? What can you claim?
+
+**Then: You have enough context to tell Rob the current state and ask what to work on.**
+
+You do NOT need to read every playbook, SOP, or skill file at startup. Load them on-demand as you claim a task. This keeps your context window clean and saves 30 minutes of reading.
+
+---
+
 ## Agent Startup Sequence (MANDATORY — every session)
 
 ```
@@ -152,29 +168,100 @@ Before writing to any shared file, create a lock in `.locks/`. Full protocol: `.
 `in-progress.md` is a live checkpoint file. Written at task START, updated after each sub-step. If a session crashes, the next session reads this file and can resume exactly where the last one left off.
 
 ### On crash detection (Status = ACTIVE)
-1. STOP. Do not start a new task.
-2. Tell Rob: "The last session crashed mid-task. [Task name] was in progress. [N of M] steps completed. Last checkpoint: [description]. Resume from step [N+1], or restart?"
-3. Wait for Rob's decision.
-4. If resuming: Start at the step marked `next`. Verify files listed in "Files in progress" actually exist on disk before trusting their contents.
-5. If restarting: Set in-progress.md Status to CLEAR, commit, then claim the task fresh.
-6. Never redo completed steps — check files exist first; if they do, trust the checkpoint.
+
+1. **STOP IMMEDIATELY.** Do not start a new task. Do not proceed on the task listed in in-progress.md.
+
+2. **Tell Rob with exact context.** Copy-paste this template and fill in the bracketed fields:
+   ```
+   The last session crashed or hung mid-task. Here's the state:
+
+   Task: [copy Task Name from in-progress.md]
+   Task ID: [TASK-###]
+   Progress: [N] of [M] steps completed
+   Last completed step: [copy last checked step]
+   Last checkpoint: [copy "Resume Instructions" field]
+
+   What was actually completed (verification):
+   - Files created: [list files that exist on disk — run 'ls' to verify]
+   - Rows added to MASTER_SENT_LIST: [run 'wc -l MASTER_SENT_LIST.csv' and compare to prior count in messages.md]
+   - API enrollments: [check latest messages.md CLAIM/DONE entry for exact count]
+
+   What was NOT completed:
+   - [copy steps that are NOT checked off]
+
+   I can resume from step [N+1], or we can restart fresh. Your call?
+   ```
+
+3. **Wait for Rob's explicit decision:** "Resume from step [N]" or "Start fresh" — do not guess.
+
+4. **If resuming:**
+   - Verify the files listed in "Files in progress" actually exist on disk: `ls -la [filename]`
+   - If a file is missing, tell Rob and ask if you should recreate it or skip
+   - Start at the next unchecked step. Do not redo completed steps.
+   - Update your active session registration with the task and mark heartbeat
+
+5. **If restarting:**
+   - Set in-progress.md Status to CLEAR
+   - Commit the change: `git add memory/session/in-progress.md && git commit -m "Crash recovery: restarting [TASK-###]"`
+   - Claim the task fresh, starting from Step 1
+
+6. **Never trust completion without verification.** Even if in-progress.md says "Step 5 completed," verify the output files exist and have the expected row counts.
 
 ### On task START
 Before starting any task involving file creation or multiple API calls:
 1. Open `in-progress.md` and set Status to ACTIVE
-2. Fill in: Task ID, task name, step list, files to be created
-3. Commit immediately
+2. Fill in: Task ID, task name, step list, files to be created, target row counts
+3. Commit immediately with message `Checkpoint: [TASK-XXX] — starting task`
 
 ### During a task (mid-session checkpoints)
 After completing each sub-step:
-1. Check off the step in `in-progress.md`
+1. Check off the step in `in-progress.md`: `- [x] Step N: [description]`
 2. Update "Resume instructions" to point to the next step
-3. Commit
+3. If a file was created/modified, log the new row count or file size
+4. Commit immediately: `Checkpoint: [TASK-XXX] — [Step N] complete`
 
 ### On task completion
 1. Set `in-progress.md` Status to CLEAR
-2. Update handoff.md + work-queue.md
-3. Commit
+2. Update handoff.md + work-queue.md (see Handoff Protocol section below)
+3. Commit: `Session [date]: [1-line summary]`
+
+---
+
+## State Verification Commands (Quick Health Check)
+
+Use these one-liners to verify current system state without reading every file. Run these at session startup to understand what's been done and what's pending:
+
+```bash
+# How many contacts have been sent to total?
+wc -l /sessions/funny-nifty-dirac/mnt/Work/MASTER_SENT_LIST.csv
+
+# What batch trackers are currently active?
+ls -lht /sessions/funny-nifty-dirac/mnt/Work/batches/active/ | grep "tamob-batch" | head -5
+
+# How many T2 draft files are staged for approval?
+ls /sessions/funny-nifty-dirac/mnt/Work/batches/t2-pending/ 2>/dev/null | wc -l
+
+# What's the last session number and status?
+tail -5 /sessions/funny-nifty-dirac/mnt/Work/memory/session/session-log.md
+
+# Is there a crash recovery checkpoint?
+grep "^## Status:" /sessions/funny-nifty-dirac/mnt/Work/memory/session/in-progress.md
+
+# Any stale or active sessions running?
+ls -la /sessions/funny-nifty-dirac/mnt/Work/memory/session/active/
+
+# Recent inter-session messages (last 5)?
+head -10 /sessions/funny-nifty-dirac/mnt/Work/memory/session/messages.md | grep "\[" | head -5
+
+# How many contacts are in each active batch (sampler)?
+for f in /sessions/funny-nifty-dirac/mnt/Work/batches/active/tamob-batch-*.html; do echo "$f: $(grep -c '<tr data-contact' "$f" 2>/dev/null || echo '?') contacts"; done
+```
+
+**Use these to:**
+- Verify nothing is hanging mid-task (no stale active sessions > 2 hours old)
+- See how many contacts have been sent to total
+- Check if T2 drafts are pending approval
+- Understand the current batch workload before claiming a task
 
 ---
 
@@ -281,6 +368,27 @@ Repeatable workflow definitions live in `skills/*/SKILL.md`. These are more stru
 | Session Start | `skills/session-start/SKILL.md` | Every session startup |
 | TAM T1 Batch | `skills/tam-t1-batch/SKILL.md` | Building new outreach batches |
 | Apollo Enroll | `skills/apollo-enroll/SKILL.md` | Creating contacts + enrolling in sequences |
+
+---
+
+## What Lives Where — Quick Reference
+
+New sessions: use this to locate critical files without reading CLAUDE.md folder structure section:
+
+| What You Need | Where to Find It |
+|---------------|------------------|
+| **Current pipeline state** | `memory/session/handoff.md` (first 50 lines) — last 2-3 batches, T2 windows, critical issues |
+| **Tasks to claim** | `memory/session/work-queue.md` — sorted by priority (CRITICAL, ⚡, 🔴, 🟡, 🟢) |
+| **Crash recovery checkpoint** | `memory/session/in-progress.md` — if Status = ACTIVE, read crash recovery section above |
+| **Active batch trackers** | `batches/active/` — HTML files show contact details, send status, T2 due dates |
+| **T2 drafts awaiting approval** | `batches/t2-pending/` — hold until Rob says APPROVE SEND |
+| **All contacts sent to (history)** | `MASTER_SENT_LIST.csv` (597 rows) — dedup check, batch lookup, contact status |
+| **DNC list** | `CLAUDE.md` → "Do Not Contact List" table (8 people) |
+| **Target accounts** | `tam-accounts-mar26.csv` — 312 TAM + 38 Factor accounts |
+| **Completed batches** | `batches/archive/` (if exists) or `archive/old-outreach-html/` |
+| **System health report** | `diagnostics/system-health-report.md` — weekly auto-generated, skill health + call analytics |
+| **All playbooks** | `memory/playbooks/` — read only the playbook(s) mapped to your claimed task (see Playbook System table above) |
+| **All skills** | `skills/` — repeatable workflows; for session startup use `skills/session-start/SKILL.md` |
 
 ---
 
