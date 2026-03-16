@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-15 (Session 39 — Batch 10 enrollment complete. 15/18 enrolled. TASK-040 added: APPROVE SEND for 15 contacts. TASK-041 added: T2 drafts due Mar 20-23. 3 blocked contacts need Rob manual Apollo UI fix.)
+## Last Updated: 2026-03-16 (stage-monitor scheduled run — T2 due dates updated. TASK-020 marked READY_TO_SEND. TASK-042 added: 15 new Batch 9 bounces. TASK-043 added: 2 unidentified missed calls.)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 Follow the 14-step startup in `AGENTS.md` (v2.0). Key steps:
@@ -69,6 +69,41 @@ Email drafts for all 3 are in `batches/active/tamob-batch-20260315-1.html`. Afte
 **APPROVE SEND required before any sends**
 
 **Accounts:** CVS Health (4), Citizens Bank (2), DISH Network (3), D&B (3), EmblemHealth (1), Vertafore (1), Safelite (1)
+
+---
+
+### TASK-043: Identify 2 New Missed Calls (Mar 14-15)
+**Status:** UNCLAIMED — Rob must identify callers
+**Priority:** P0 — could be warm prospects calling back
+**Date Added:** 2026-03-16 (stage-monitor)
+
+2 unidentified missed calls from Apollo dialer not previously logged:
+| Date | Time | Number | Status |
+|------|------|--------|--------|
+| Mar 14 | 1:26 PM | +13234808909 (323 = Los Angeles) | Unidentified |
+| Mar 15 | 11:51 AM | +16175199076 (617 = Boston area) | Unidentified |
+
+Check Apollo call log or dial back to identify. Update warm-leads.md if prospect.
+
+---
+
+### TASK-042: Log + Triage Batch 9 Bounce Cluster (15 bounces, Mar 14 sends)
+**Status:** UNCLAIMED
+**Priority:** P1 — 15 bounces from Batch 9 T1 sends detected via Gmail NDRs
+**Date Added:** 2026-03-16 (stage-monitor)
+
+15 email bounce NDRs detected in Gmail (all from Mar 14 Batch 9 sends):
+| Company | Bounced | Count | Note |
+|---------|---------|-------|------|
+| DraftKings | rick.bartlett, will.hester, ankur.arora, miroslav.kazakov | 4 | All .com — domain likely blocks |
+| Farmers Insurance | vaibhav.shah, siva.ranjani, deepa.krishnamoorthy | 3 | @farmers.com blocked |
+| Bethesda Softworks | erik.mabry, james.ackermann | 2 | @bethesda.net |
+| Celonis | felipe.lora, michael.guntsch | 2 | @celonis.de |
+| Bungie | jeff.fox, ryan.wagoner | 2 | @bungie.net |
+| Anaplan | keren.sher | 1 | @anaplan.com |
+| hims&hers | michael.hart | 1 | @hims.com |
+
+For each: verify bounce in Apollo, mark as bounced in batch tracker `tamob-batch-20260313-2.html`, and skip T2 drafting. DO NOT attempt to resend until email is re-sourced. Cross-reference TASK-034 for any overlap.
 
 ---
 
@@ -308,8 +343,8 @@ Audit Gmail drafts from all testsigma.com accounts:
 ## 🟡 HIGH — Do Soon
 
 ### TASK-020: Draft T2 Emails — Wave 3 (35 contacts, due Mar 16)
-**Status:** UNCLAIMED
-**Priority:** P1 — T2 due Mar 16 (Day 5 from Mar 11 T1 send)
+**Status:** READY_TO_SEND — ⚠️ DUE TODAY (Mar 16). Draft + send this session.
+**Priority:** P0 — T2 due Mar 16 (Day 5 from Mar 11 T1 send) — escalated from P1
 **Effort:** ~120 min (large batch, 7 accounts)
 **Output:** `tamob-wave3-t2-drafts-mar16.html`
 
@@ -331,7 +366,7 @@ Sucheth Ramgiri (Commvault) hard-bounced — sramgiri@commvault.com is invalid (
 ---
 
 ### TASK-017: Draft T2 Emails — Wave 1 (23) + Wave 2 (13)
-**Status:** 🔴 URGENT — Wave 1 T2 due Mar 12. Wave 2 T2 OVERDUE (due Mar 15, now Mar 11). Check Apollo Tasks tab immediately next session.
+**Status:** 🔴 OVERDUE — Wave 1 T2 was due Mar 15 (now Mar 16, +1 day late). Wave 2 T2 was due Mar 15 (+1 day late). Draft + send immediately. stage-monitor confirmed overdue Mar 16.
 **Priority:** P0 — Wave 1 T2 tasks should now be visible in Apollo. Do FIRST next session.
 **Effort:** ~90 min for Wave 1, ~50 min for Wave 2 (templates are similar, batch together)
 **Output:** `tamob-wave1-t2-drafts-mar12.html` and `tamob-wave2-t2-drafts-mar11.html`

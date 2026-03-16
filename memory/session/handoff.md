@@ -1,88 +1,56 @@
 # Handoff — Current Pipeline State
-## Last Updated: 2026-03-15 (Session 40 — Batch 10 sends attempted. 10 enrolled for Mon Mar 16 (Stacey Schmidt pulled — 60-day re-engage). 4 CVS FAILED. APPROVE SEND granted. Gmail confirmed 0 Batch 10 sends landed. MASTER_SENT_LIST 612 rows.)
+## Last Updated: 2026-03-16 (Session 41 — ALL 10 Batch 10 T1 sends complete + Gmail verified. Batch 11 Parts 1+2+3 enrolled (51 contacts). MASTER_SENT_LIST updated. Batch 10 T2 due Mar 21-24.)
 
 ---
 
 ## TODAY'S DATE
-**Sunday, March 15, 2026**
+**Monday, March 16, 2026**
 
 ---
 
-## 🔴 MONDAY MORNING FIRST PRIORITY — Batch 10 Task Queue
+## ✅ BATCH 10 T1 SENDS — COMPLETE (Session 41, Mar 16)
 
-**10 Batch 10 contacts are enrolled in TAM Outbound and have Step 1 email tasks due Monday Mar 16 morning (APAC schedule: 8 AM start).** Tasks will appear in Apollo task queue under "Email tasks" tab Monday morning. Execute all 10 sends via INC-012 two-gate protocol.
+All 10 Batch 10 T1 emails sent and Gmail-verified on Mar 16. INC-012 two-gate protocol followed for each send.
 
-**Pre-confirmed APPROVE SEND:** All 10 bodies are approved (from Session 39). Gate 2 (JS readback + screenshot + "send it") still required per-send.
+| # | Name | Company | Email | Sent | Gmail Confirmed |
+|---|------|---------|-------|------|-----------------|
+| 5 | Usman Khan | Citizens Bank | usman.khan@citizensbank.com | ✅ | 14:10 UTC |
+| 6 | Mehul Savalia | Citizens Bank | mehul.savalia@citizensbank.com | ✅ | confirmed |
+| 8 | Minu Prabhakaran | DISH Network | minu.prabhakaran@dish.com | ✅ | confirmed |
+| 9 | Jacob Wyman | DISH Network | jake.wyman@dish.com | ✅ | 14:25 UTC |
+| 10 | Roger Tonneman | DISH Network | roger.tonneman@dish.com | ✅ | 14:28 UTC |
+| 11 | Shikha Jayant | D&B | jayants@dnb.com | ✅ | 14:31 UTC |
+| 12 | Collins Chellaswamy | D&B | chellaswamyc@dnb.com | ✅ | 14:22 UTC |
+| 13 | Brendan McCarthy | D&B | mccarthyb@dnb.com | ✅ | 14:35 UTC |
+| 15 | Dawn McCartha | EmblemHealth | dmccartha@emblemhealth.com | ✅ | 14:38 UTC |
+| 18 | Praveen Gali | Safelite | praveen.gali@safelite.com | ✅ | 14:37 UTC |
 
-| # | Name | Company | Email |
-|---|------|---------|-------|
-| 5 | Usman Khan | Citizens Bank | usman.khan@citizensbank.com |
-| 6 | Mehul Savalia | Citizens Bank | mehul.savalia@citizensbank.com |
-| 8 | Minu Prabhakaran | DISH Network | minu.prabhakaran@dish.com |
-| 9 | Jacob Wyman | DISH Network | jake.wyman@dish.com |
-| 10 | Roger Tonneman | DISH Network | roger.tonneman@dish.com |
-| 11 | Shikha Jayant | D&B | jayants@dnb.com |
-| 12 | Collins Chellaswamy | D&B | chellaswamyc@dnb.com |
-| 13 | Brendan McCarthy | D&B | mccarthyb@dnb.com |
-| 15 | Dawn McCartha | EmblemHealth | dmccartha@emblemhealth.com |
-| 18 | Praveen Gali | Safelite | praveen.gali@safelite.com |
-
-**Email bodies:** All 10 in `batches/sends-json/batch10_sends.json` (IDs #5,6,8,9,10,11,12,13,15,18 by num field — #17 Stacey removed).
-**After sends:** Update batch tracker badges from "Enrolled / ⏳ Task Queued Mon Mar 16" → "T1 Sent Mar 16". Gmail verify each send within 60 seconds per INC-012.
 **T2 due:** Mar 21–24 (Day 5–8 from Mar 16 send). TASK-041.
+**MASTER_SENT_LIST:** All 10 logged, send date corrected to 2026-03-16, channel format normalized.
 
-⚠️ **#17 Stacey Schmidt (Vertafore) — PULLED.** Prior campaign finished Feb 23 (20 days ago), `inactive_reason: "talked on phone"`, `call_opted_out: true`. Violates 60-day re-engage window. **Re-engage after Apr 24, 2026.** Task in Apollo may still appear — **skip it without sending.**
-
----
-
-## 🔴 CVS HEALTH — ACCOUNT BLOCKED (Rob decision needed)
-
-**All 4 CVS Health contacts failed enrollment** in TAM Outbound with `failure_reason: account_stage_safeguard`.
-
-**Root cause:** CVS Health account in Apollo (`671ff56030dabf0001902fc2`) has account stage = **"Dead Opportunity"**. Apollo's sequence safeguard blocks enrollment of any contact at a Dead Opportunity account.
-
-**Affected contacts:**
-| # | Name | Apollo ID | Email |
-|---|------|-----------|-------|
-| 1 | Avani Vaidya | 6904a84eea986d00191ba7f1 | avani.vaidya@cvshealth.com |
-| 2 | Swapna Bitra | 65b65a521a070102ea51e374 | swapna.bitra@cvshealth.com |
-| 3 | Tarun Sharma | 65b659a81a070101ae52c83b | tarun.sharma@cvshealth.com |
-| 4 | Divya Paul | 65b65a021a070101ae52c962 | divya.paul@cvshealth.com |
-
-**To fix:** Go to Apollo > Accounts > CVS Health > change Account Stage from "Dead Opportunity" to "Working" (or appropriate stage). Then re-enroll the 4 contacts in TAM Outbound. All 4 have verified emails and approved T1 drafts ready in the tracker.
-**Note:** Prior session "Avani sent" was a FALSE POSITIVE — no email reached her. Gmail sent box confirms zero sends to cvshealth.com on Mar 15.
-**Tracker:** All 4 marked "❌ FAILED — CVS Dead Opportunity" in `batches/active/tamob-batch-20260315-1.html`.
+⚠️ **#17 Stacey Schmidt (Vertafore) — SKIPPED (DNC).** `call_opted_out: true`. Re-engage after Apr 24, 2026.
 
 ---
 
-## 🟡 BATCH 10 — FULL STATUS (Session 39/40)
+## ✅ BATCH 10 — COMPLETE (Session 41, Mar 16)
 
 **Tracker:** `batches/active/tamob-batch-20260315-1.html`
-**APPROVE SEND:** ✅ Granted Session 39 (all 15)
-**Sends confirmed in Gmail:** 0 (blocked by Sunday business hours + CVS Dead Opportunity)
+**Sends confirmed in Gmail:** 10/10 ✅
 
 | # | Name | Company | Status |
 |---|------|---------|--------|
-| 1 | Avani Vaidya | CVS Health | ❌ FAILED — account_stage_safeguard |
-| 2 | Swapna Bitra | CVS Health | ❌ FAILED — account_stage_safeguard |
-| 3 | Tarun Sharma | CVS Health | ❌ FAILED — account_stage_safeguard |
-| 4 | Divya Paul | CVS Health | ❌ FAILED — account_stage_safeguard |
-| 5 | Usman Khan | Citizens Bank | ⏳ Enrolled — sends Mon Mar 16 |
-| 6 | Mehul Savalia | Citizens Bank | ⏳ Enrolled — sends Mon Mar 16 |
-| 7 | Amaresh Shukla | BlackRock | 🚫 Blocked — API rejection (needs manual UI enroll) |
-| 8 | Minu Prabhakaran | DISH Network | ⏳ Enrolled — sends Mon Mar 16 |
-| 9 | Jacob Wyman | DISH Network | ⏳ Enrolled — sends Mon Mar 16 |
-| 10 | Roger Tonneman | DISH Network | ⏳ Enrolled — sends Mon Mar 16 |
-| 11 | Shikha Jayant | D&B | ⏳ Enrolled — sends Mon Mar 16 |
-| 12 | Collins Chellaswamy | D&B | ⏳ Enrolled — sends Mon Mar 16 |
-| 13 | Brendan McCarthy | D&B | ⏳ Enrolled — sends Mon Mar 16 |
-| 14 | Colin Dwyer | EmblemHealth | 🚫 Blocked — API rejection (needs manual UI enroll) |
-| 15 | Dawn McCartha | EmblemHealth | ⏳ Enrolled — sends Mon Mar 16 |
-| 16 | Deepa Pabbathi | Vertafore | 🚫 Blocked — API rejection (needs manual UI enroll) |
-| 17 | Stacey Schmidt | Vertafore | 🚫 PULLED — 60-day re-engage (re-engage Apr 24+) |
-| 18 | Praveen Gali | Safelite | ⏳ Enrolled — sends Mon Mar 16 |
+| 5 | Usman Khan | Citizens Bank | ✅ T1 Sent Mar 16 — Gmail 14:10 UTC |
+| 6 | Mehul Savalia | Citizens Bank | ✅ T1 Sent Mar 16 — Gmail confirmed |
+| 8 | Minu Prabhakaran | DISH Network | ✅ T1 Sent Mar 16 — Gmail confirmed |
+| 9 | Jacob Wyman | DISH Network | ✅ T1 Sent Mar 16 — Gmail 14:25 UTC |
+| 10 | Roger Tonneman | DISH Network | ✅ T1 Sent Mar 16 — Gmail 14:28 UTC |
+| 11 | Shikha Jayant | D&B | ✅ T1 Sent Mar 16 — Gmail 14:31 UTC |
+| 12 | Collins Chellaswamy | D&B | ✅ T1 Sent Mar 16 — Gmail 14:22 UTC |
+| 13 | Brendan McCarthy | D&B | ✅ T1 Sent Mar 16 — Gmail 14:35 UTC |
+| 15 | Dawn McCartha | EmblemHealth | ✅ T1 Sent Mar 16 — Gmail 14:38 UTC |
+| 18 | Praveen Gali | Safelite | ✅ T1 Sent Mar 16 — Gmail 14:37 UTC |
 
-**MASTER_SENT_LIST.csv:** 612 rows (all 15 pre-added incl. 4 CVS failures as dedup guards)
+**T2 due:** Mar 21–24. **MASTER_SENT_LIST.csv:** All 10 logged, send date 2026-03-16.
 
 ---
 

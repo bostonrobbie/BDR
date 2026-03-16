@@ -41,8 +41,8 @@ Sentence 2: Tie the result back to the prospect's specific situation. Use "Remin
 - ✅ "One of our customers, Hansard, was in a similar spot and cut their regression window from 8 weeks to 5 with AI that generates and heals tests automatically. Reminded me of the pressure your team is probably navigating."
 - ✅ "One of our customers, CRED, reached 90% regression coverage using AI tests written in plain English. Reminded me of the kind of confidence that matters when government agencies are depending on your platform to process payments without interruption."
 
-**Part 5 — Tied CTA (1 sentence)**
-An engagement question — NOT a meeting ask. Must echo the specific tension established in Parts 1-2. Generic CTAs ("Is this relevant for your team?") are not acceptable.
+**Part 5 — Tied CTA (1 sentence) — Updated Mar 16, 2026**
+An engagement question — NOT a meeting ask. Must echo the specific tension established in Parts 1-2. Generic CTAs ("Is this relevant for your team?") are not acceptable. This engagement-first CTA rule is now locked as the default for all T2 emails.
 - ✅ "Does that tension actually show up in how you approach releases?" (mirrors Part 1: AuditBoard compliance irony)
 - ✅ "Is the maintenance side something your team is trying to get ahead of?" (mirrors Part 1: Kaseya M&A complexity)
 - ✅ "Is test coverage something your team is actively working to improve?" (mirrors Part 1: Fairfax state agency stakes)

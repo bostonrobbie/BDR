@@ -409,6 +409,19 @@ robert.gorham@testsigma.com
 | Samsung | Cross-platform consistent coverage | Multi-platform, device fragmentation, hardware-software |
 | Fortune 100 firm | 3x coverage in 4 months | Portfolio coverage gap, QA constraint on velocity |
 
+**Para 3 Engagement Question CTA — Angle Mapping (Updated Mar 16, 2026):**
+
+Para 3 ends with a relevant diagnostic engagement question tied to the specific pain angle, NOT a meeting ask like "What day works for a quick look at how they got there?" The question invites the prospect to share their current situation.
+
+| Proof Point | Pain Angle | Recommended CTA Question |
+|-----------|-----------|-------------------------|
+| Cisco | Brittleness / Broken Locators | "How often are false failures from broken locators showing up in your runs right now?" |
+| CRED | Coverage Gaps / Scale | "How much of your critical regression scope does your current suite cover today?" |
+| Hansard | Cycle Length / Regression Timeline | "What does your current regression-to-release timeline look like for major releases?" |
+| Medibuddy | Test Maintenance / Sprint Capacity | "How much of your current sprint capacity is going to test maintenance versus building new coverage?" |
+| Samsung | Multi-Platform Consistency | "How are you currently managing regression consistency across your different platforms?" |
+| Fortune 100 | Portfolio Coverage Gap | "How much of your test coverage is still keeping up with your product velocity?" |
+
 ---
 
 ## Part 7: T2 Draft Rules (Deep-Dive Formula v4 — Updated Mar 12)

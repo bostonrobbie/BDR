@@ -276,6 +276,32 @@ Unified contact history tracking every person from first enrichment through fina
 
 ---
 
+## Batch 9 Bounce Records — Mar 14, 2026
+
+NDRs received Sat Mar 14 from Batch 9 sends (T1 sent Mar 14). All flagged as BOUNCED in Apollo. Stage-monitor logged these Mar 16.
+
+| Contact | Company | Email | Bounce Type | Date |
+|---------|---------|-------|-------------|------|
+| Rick Bartlett | DraftKings | rick.bartlett@draftkings.com | Address not found (domain-level reject) | Mar 14 |
+| Will Hester | DraftKings | will.hester@draftkings.com | Address not found (domain-level reject) | Mar 14 |
+| Ankur Arora | DraftKings | ankur.arora@draftkings.com | Address not found (domain-level reject) | Mar 14 |
+| Miroslav Kazakov | DraftKings | miroslav.kazakov@draftkings.com | Address not found (domain-level reject) | Mar 14 |
+| Felipe Lora | Celonis | felipe.lora@celonis.de | 550 5.1.1 hard bounce | Mar 14 |
+| Michael Guntsch | Celonis | michael.guntsch@celonis.de | 550 5.1.1 hard bounce | Mar 14 |
+| Jeff Fox | Bungie | jeff.fox@bungie.net | Address not found (.net domain) | Mar 14 |
+| Ryan Wagoner | Bungie | ryan.wagoner@bungie.net | Address not found (.net domain) | Mar 14 |
+| Keren Sher | Anaplan | keren.sher@anaplan.com | Permanent fatal error | Mar 14 |
+| Michael Hart | hims&hers | michael.hart@hims.com | Permanent fatal error | Mar 14 |
+| Erik Mabry | Bethesda Softworks | erik.mabry@bethesda.net | Address not found (.net domain) | Mar 14 |
+| James Ackermann | Bethesda Softworks | james.ackermann@bethesda.net | Address not found (.net domain) | Mar 14 |
+| Vaibhav Shah | Farmers Insurance | vaibhav.shah@farmers.com | 550 5.1.x reject | Mar 14 |
+| Siva Ranjani | Farmers Insurance | siva.ranjani@farmers.com | 550 5.1.x reject | Mar 14 |
+| Deepa Krishnamoorthy | Farmers Insurance | deepa.krishnamoorthy@farmers.com | 550 5.1.x reject | Mar 14 |
+
+**Pattern notes:** DraftKings (4/4) and Farmers .com domain (3/3) suggest domain-level sending restrictions. Bethesda .net (2/2) same. Rob should manually remove these from Apollo sequence to stop further steps. Apollo enrichment for alternate emails recommended for any contacts Rob wants to re-pursue.
+
+---
+
 ## DNC Contacts (from CLAUDE.md)
 
 | Name | Company | Stage | Reason | Date Added |
