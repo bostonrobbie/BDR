@@ -1,0 +1,165 @@
+================================================================================
+BATCH 3 PROSPECT DATA EXTRACTION - COMPLETE INDEX
+================================================================================
+
+EXTRACTION DATE: 2026-02-27
+SOURCE FILE: /sessions/confident-laughing-ritchie/mnt/Work/prospect-outreach-3-2026-02-25.html
+TOTAL PROSPECTS EXTRACTED: 25
+
+================================================================================
+EXTRACTION OVERVIEW
+================================================================================
+
+Status Distribution:
+  - Touch 1 Sent: 24 prospects
+  - Skipped: 1 prospect (Suraphel Amde @ BILL)
+
+Priority Distribution:
+  - Priority 4 (Warm): 9 prospects
+  - Priority 3 (Standard): 16 prospects
+
+Title Distribution:
+  - Directors/Heads of QA: 8
+  - QA Managers/Engineers: 12
+  - Test Architects/SDETs: 5
+
+Vertical Coverage:
+  - SaaS: 15 prospects
+  - FinTech: 4 prospects
+  - Healthcare/Tech: 3 prospects
+  - Media/Entertainment: 2 prospects
+  - Other: 1 prospect
+
+================================================================================
+DELIVERABLE FILES
+================================================================================
+
+1. BATCH3_SUMMARY.md (4.1 KB)
+   - Quick overview with prospect table
+   - Status and priority breakdowns
+   - Usage instructions
+   - Data structure explanation
+
+2. batch3_extracted.json (47 KB)
+   - Machine-readable JSON format
+   - All 25 prospects with complete data
+   - All three touches (subject + body) per prospect
+   - Best for programmatic access and processing
+
+3. BATCH3_EXTRACTION_REPORT.md (49 KB)
+   - Comprehensive markdown report
+   - Individual prospect cards (1 per prospect)
+   - Full message text for all 3 touches
+   - Organized by prospect ID
+   - Best for human review and copy/paste
+
+4. BATCH3_PROSPECT_EXTRACTION.md (19 KB)
+   - Earlier extraction report (reference)
+
+5. batch3_prospects_extracted.json (35 KB)
+   - Earlier extraction attempt (reference)
+
+================================================================================
+PROSPECT COMPLETE LIST (ID | Name | Company | Title)
+================================================================================
+
+ 1 | Irfan Syed              | Progress Software    | Director of QA
+ 2 | Katie Hotard            | Lucid Software       | Director of QA
+ 3 | Rachana Jagetia         | Housecall Pro        | Director, QA Eng
+ 4 | Giang Hoang             | Employee Navigator   | Director of QA
+ 5 | Kevin Caulfield         | Bottomline           | Director of QA
+ 6 | Rick Kowaleski          | Alteryx              | Sr Principal SDET
+ 7 | Tyler Hackett           | Ava Labs             | QA Engineering Manager
+ 8 | Abe Blanco              | Kapitus              | QA Engineering Manager
+ 9 | Susan Lin               | Robinhood            | Staff QA Engineer
+10 | Aliaksei Ausianka       | NerdWallet           | Staff QA Engineer
+11 | Susan Cohan-Lendzian    | BHG Financial        | QA Engineering Manager
+12 | Jayati Srivastava       | Cvent                | Principal SDET
+13 | Suraphel Amde           | BILL                 | Staff QA Engineer [SKIPPED]
+14 | Steven Mays             | Medallia             | Staff QA Engineer
+15 | Christopher Edwards     | Tanium               | Staff QA Engineer
+16 | Max Iglehart            | Amwell               | Staff QA Engineer
+17 | Mazie Roxx              | Phreesia             | QA Director, Payments
+18 | Ram Bulusu              | LiveRamp             | Head of QA
+19 | Dexter Alon             | Blackhawk Network    | Software QA Eng Manager
+20 | Phil Jones              | Litera               | Director, Quality Engineering
+21 | Sebastien Pambu         | ecoATM Gazelle       | Sr SDET / Test Architect
+22 | Shanil Jain             | Sling TV             | PM & Test Architect
+23 | Andre Maestas           | Unity                | Sr SDET / XR QA Architect IC7
+24 | Animesh Patcha          | Arista Networks      | Test Architect & Eng Manager
+25 | Natalie Gitelman        | Acentra Health       | Test Architect, Sr Test Engineer
+
+================================================================================
+HOW TO USE THE DATA
+================================================================================
+
+FOR COPY/PASTE SENDING:
+  1. Open BATCH3_EXTRACTION_REPORT.md
+  2. Find the prospect card for your target
+  3. Copy the exact message text from Touch 1, Touch 2, or Touch 3
+  4. Paste into LinkedIn InMail or Gmail compose window
+  5. Subject line is provided separately in each section
+
+FOR PROGRAMMATIC ACCESS:
+  1. Load batch3_extracted.json into your application
+  2. Access data via JSON structure:
+     - prospect.touch1.subject
+     - prospect.touch1.body
+     - prospect.touch2.subject
+     - prospect.touch2.body
+     - prospect.touch3.subject
+     - prospect.touch3.body
+
+FOR BULK OPERATIONS:
+  1. Use batch3_extracted.json with your CRM or email platform
+  2. All messages are properly formatted and ready to use
+  3. No additional processing needed
+
+================================================================================
+DATA STRUCTURE (JSON Format)
+================================================================================
+
+{
+  "id": <number>,
+  "name": "<string>",
+  "title": "<string>",
+  "company": "<string>",
+  "priority": <number>,
+  "email": "<string or null>",
+  "status": "<string>",
+  "linkedinUrl": "<string>",
+  "touch1": {
+    "subject": "<string>",
+    "body": "<string with \n for linebreaks>"
+  },
+  "touch2": {
+    "subject": "<string>",
+    "body": "<string with \n for linebreaks>"
+  },
+  "touch3": {
+    "subject": "<string>",
+    "body": "<string with \n for linebreaks>"
+  }
+}
+
+================================================================================
+QUALITY NOTES
+================================================================================
+
+✓ All 25 prospects successfully extracted
+✓ All subject lines verified
+✓ All message bodies verified for accuracy
+✓ Email addresses extracted where available (all 25 have emails)
+✓ LinkedIn URLs verified
+✓ Status and priority fields confirmed
+✓ No data corruption detected
+✓ Formatting preserved (newlines intact)
+✓ All special characters properly escaped
+
+KNOWN ISSUES:
+- Prospect #13 (Suraphel Amde) has status "Skipped" - note in original tracker
+- All other prospects have status "Touch 1 Sent"
+
+================================================================================
+END OF INDEX
+================================================================================

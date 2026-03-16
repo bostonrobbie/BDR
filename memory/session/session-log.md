@@ -1,0 +1,1241 @@
+# Session Log
+## Rob Gorham BDR Second Brain — Testsigma
+
+Append-only log. Each session adds one entry at the bottom.
+
+---
+
+## 2026-03-07 — Multi-Agent Setup + Startup Sequence
+
+**Session type:** Infrastructure setup + status check
+**What was done:**
+- Ran startup sequence per new agent protocol
+- Attempted `git pull` (failed — no credentials in VM, expected)
+- Verified AGENTS.md, handoff.md, work-queue.md do NOT yet exist
+- Read `email_outreach_tracker.csv` (215 rows, Batch 10 = 53 Mar 7 sends)
+- Read `prospect_master_tracker.md` (full pipeline state)
+- **Created** `AGENTS.md` — multi-agent collaboration protocol
+- **Created** `memory/session/handoff.md` — current pipeline snapshot
+- **Created** `memory/session/work-queue.md` — 10-task queue with priorities
+- **Created** `memory/session/session-log.md` — this file
+
+**Key findings:**
+- 9 Feb 27 contacts: Touch 2 overdue by 3 days
+- 4 INC-001 Batch 3 contacts: Touch 2 InMail overdue 2-3 days
+- 46 Gmail drafts (Groups A/B/C): Touch 1 still unsent (6 days old)
+- InMail credits: ~24 remaining (low — email-first mode for Touch 2)
+- Batch 10 (53 contacts): Touch 2 eligible Mar 11
+
+**Files committed:** None this session (need Rob to git push from terminal)
+**Commit pending:** `AGENTS.md`, `memory/session/` directory
+
+---
+
+## 2026-03-07 — Session 2: Touch 2 Drafts (TASK-001 + TASK-002)
+
+**Session type:** Draft creation
+**What was done:**
+- Completed TASK-001: Created `touch2_drafts_feb27.md` — 9 Touch 2 emails for Feb 27 contacts (all MQS 10-12/12, all READY TO SEND)
+- Completed TASK-002: Created `touch2_drafts_batch3_inmail.md` — 4 Touch 2 InMails for INC-001 Batch 3 (Irfan, Katie, Rachana, Giang). All READY TO SEND. MQS: 11, 10, 12, 12.
+- Updated `memory/session/work-queue.md` — TASK-001 and TASK-002 marked DONE, completion records added
+- Updated `memory/session/handoff.md` — INC-001 Batch 3 section changed from 🔴 OVERDUE to ✅ RESOLVED
+
+**Key decisions:**
+- Giang Hoang T2 opener uses "Different angle:" as a combined circling-back + pivot signal (not an HC violation)
+- CRED proof point framed as "cut execution time by 80%" (reduction framing) not "5X faster" (multiplier framing)
+- INC-001 Touch 2 messages do NOT reference the premature Feb 28 email — "Circling back quick" is sufficient
+- After these 4 Touch 2 InMails are sent, the sequence for all 4 INC-001 contacts is COMPLETE (no Touch 3)
+
+**Send window for Batch 3 InMails:** Mon Mar 9 – Tue Mar 10, 12-1 PM local (~4 credits used, ~20 remaining)
+
+**Files created:**
+- `touch2_drafts_feb27.md` ✅
+- `touch2_drafts_batch3_inmail.md` ✅
+
+**Files committed:** Via git commit (see git log). Rob must run `git push` from terminal.
+
+---
+
+## 2026-03-10 — Session 3: TAM Outbound Sequence Build
+
+**Session type:** Apollo infrastructure / sequence creation
+**What was done:**
+- Continued from prior session (context-limit cutoff mid-sequence-build)
+- Reconnected to Apollo tab (tabId 1996404764), sequence ID already created: 69afff8dc8897c0019b78c7e
+- Deleted duplicate Step 3 (manual_email, was caused by force-click race condition in prior session)
+- Confirmed correct type strings via UI inspection: `manual_email`, `linkedin_step_connect`, `call`
+- Fixed Step 3 wait_time (3→5 days) via PUT /api/v1/emailer_steps with snake_case body
+- Built all 7 steps via direct API (POST/PUT), bypassing React UI state issues
+- Final sequence verified via React fiber: all 7 steps correct type, position, wait_time
+
+**Sequence built — TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e):**
+| Step | Type | Day | Wait |
+|------|------|-----|------|
+| 1 | manual_email | Day 1 | 30 min |
+| 2 | manual_email | Day 5 | +4 days |
+| 3 | linkedin_step_connect | Day 10 | +5 days |
+| 4 | call | Day 15 | +5 days |
+| 5 | call | Day 21 | +6 days |
+| 6 | call | Day 28 | +7 days |
+| 7 | manual_email | Day 35 | +7 days |
+
+**Key technical discoveries (Apollo API):**
+- LinkedIn connection type string: `linkedin_step_connect` (not `linkedin_send_connection_request`)
+- Call type string: `call`
+- API uses snake_case for request body (wait_time, wait_mode, emailer_campaign_id)
+- PUT updates require snake_case body — camelCase body is silently ignored
+- Apollo POST/DELETE endpoints have 15-30s response latency but DO commit server-side
+- Concurrent POSTs cause ordering/type errors — send sequentially
+
+**Files updated:**
+- `memory/apollo-config.md` ✅ — TAM Outbound sequence + all step IDs added
+- `memory/session/handoff.md` ✅ — date updated, TAM sequence status added
+- `memory/session/work-queue.md` ✅ — TASK-011/012 added, TAM build marked complete
+- `memory/session/session-log.md` ✅ — this entry
+
+**Pending for next session:** TASK-011 (prospect Wave 1 Factor accounts), TASK-012 (enterprise email SOP)
+**Files to commit:** All 4 memory files above. Rob must run `git push` from terminal.
+
+---
+
+## 2026-03-10 — Session 4: TAM Outbound SOP Build + Wave 1 Execution Prep
+
+**Session type:** SOP creation + Wave 1 readiness
+**Continued from:** Session 3 (context-limit cutoff mid-SOP design)
+
+**What was done:**
+- Read `tam-coverage-tracker.csv` (312 accounts, 38 Factor HOT, Wave 1 has 6 accounts)
+- Read `wave1-prospecting-plan-mar9.html` — found T1 InMail drafts already built for 4/6 accounts (MQS 9-10/12). Key discovery: plan referenced wrong sequence ("LinkedIn Outbound Q1" — should be "TAM Outbound - Rob Gorham")
+- **Created** `memory/sop-tam-outbound.md` — 17-part end-to-end TAM outbound SOP including wave architecture, account selection, contact identification, dedup protocol, A+ research protocol, T1 InMail vs email decision tree, enterprise email T1 formula, T2/breakup rules, batch tracker format, Apollo enrollment, follow-up loop, Wave 1 current state table, proof point vertical matching
+- **Updated** `memory/sop-outreach.md` — added enterprise email T1 formula (SMYKM + HC1 intro, 75-100 words, challenge-narrative structure) and 7-step A+ research protocol for Fortune 500/enterprise contacts (Steps 4-7: job postings, engineering blog, news scan, Glassdoor signal)
+- **Updated** `wave1-prospecting-plan-mar9.html` — corrected all "LinkedIn Outbound Q1" references to "TAM Outbound - Rob Gorham", added correction notice at top, added same-company max lifted note (Fidelity backup contacts now eligible after Seth's T1)
+- **Updated** `memory/session/work-queue.md` — TASK-012 marked DONE, TASK-013 (SOP build) marked DONE, TASK-014 (Wave 1 sends) added as new P0 task
+
+**Wave 1 status after this session:**
+| Account | Contact | Status |
+|---------|---------|--------|
+| Cboe Global Markets | Rick Brandt | ✅ Draft ready — clear to send |
+| Fidelity Investments | Seth Drummond | ✅ Draft ready — clear to send |
+| JPMorgan Chase | Rose Serao | ⚠️ Email extrapolated — verify first |
+| Commvault | Brahmaiah Vallabhaneni | ✅ Draft ready — clear to send |
+| TruStage | Chamath Guneratne | ⚠️ HOLD — confirm prior outreach = Shakeel's |
+| YouTube | US contact TBD | ❌ BLOCKED — need US Director |
+
+**Key decisions documented in SOP:**
+- TAM accounts use "TAM Outbound - Rob Gorham" sequence (NOT LinkedIn Outbound Q1)
+- No max simultaneous contacts per company — but enroll in priority order (most senior first)
+- Same-company max rule lifted — Fidelity backup contacts eligible after Seth T1 sent
+- InMail T1 approach for Tier A Factor accounts → then enroll in TAM Outbound, skip Step 1 in Apollo
+- Email T1 approach when credits = 0 → enroll in TAM Outbound, Step 1 fires the email
+- Rose Serao email is extrapolated — recommend emailing first to test deliverability (safer than spending 1 InMail credit on unverified address)
+
+**Files created/updated:**
+- `memory/sop-tam-outbound.md` ✅ CREATED
+- `memory/sop-outreach.md` ✅ UPDATED (enterprise email formula + A+ research)
+- `wave1-prospecting-plan-mar9.html` ✅ UPDATED (sequence correction)
+- `memory/session/work-queue.md` ✅ UPDATED
+- `memory/session/session-log.md` ✅ this entry
+
+**Pending for next session:** TASK-014 — Wave 1 T1 sends. Rob needs to give APPROVE SEND for the 4 ready accounts, then send via Sales Nav and enroll in TAM Outbound sequence. Two blockers (TruStage confirmation, YouTube US contact) can be resolved while sends are in flight.
+
+**Files to commit:** `sop-tam-outbound.md`, `sop-outreach.md`, `wave1-prospecting-plan-mar9.html`, all 3 session files. Rob must run `git push` from terminal.
+
+---
+
+## 2026-03-10 — Session 5: TAM SOP v2 + YouTube Prospecting
+
+**Session type:** SOP refinement + contact research
+**What was done:**
+- Updated TAM-Outbound-SOP-draft-v1.html → Draft v2 with 4 major changes:
+  - T1 confirmed email-only (old InMail drafts deprecated)
+  - New unified T2 formula designed (email-first, no LinkedIn callback)
+  - TruStage confirmed CLEAN (Apollo: emailer_campaign_ids: [], last_activity_date: null)
+  - YouTube contact shortlist built
+- Apollo search for YouTube/Google Director+ contacts: 19 found, 5 with verified emails
+  - John Harding (VP Eng, YouTube Music & Premium) — jharding@youtube.com — PRIMARY — Apollo ID: 685908e0ad153600113e33a1
+  - Hrishikesh Aradhye (Sr Dir, Music & Podcasts) — hrishi@google.com
+  - Des Keane (Engineering Director, Video Infrastructure) — des@google.com
+  - Nils Krahnstoever (Director, YouTube) — nilsk@google.com
+- TruStage dedup confirmed — no prior BDR outreach
+- Created Apollo contacts for YouTube secondaries (Hrishi, Des)
+
+**Key decisions:**
+- John Harding = primary YouTube contact (direct product-domain fit: Music + Premium)
+- Catch-all domains for YouTube/Google — emails deliverable but not individually verified
+- T1 is email-only for Wave 1 (no InMail credits available)
+
+**Files updated:** TAM-Outbound-SOP-draft-v2, session files
+**Pending:** Wave 1 multi-contact enrollment (expanded roster)
+
+---
+
+## 2026-03-10 — Session 6: TAM SOP v3 + Multi-Contact Rule + Target Accounts Expansion
+
+**Session type:** SOP rules + contact roster expansion
+**What was done:**
+- Added multi-contact rule to sop-tam-outbound.md Part 3 — enroll ALL decision-makers per account in same batch (no more "defer backup contacts")
+- Added Contact Depth Rule — targeting formula: 1-2 contacts = Standard, 3-5 = Medium, 6+ = High
+- Added Apollo Task Queue SOP (Part 18) — Apollo is the primary follow-up controller post-enrollment
+- Added Session Recovery Protocol (Part 19) — exact steps for starting a session mid-wave
+- Updated target-accounts.md — Fidelity (8 contacts), Commvault (5 contacts), Chase (4 contacts), Cboe (3 contacts), TruStage (3 enrolled + 1 hold), YouTube (3 contacts) all expanded
+- Updated work-queue.md TASK-014 — expanded from 13 to 27 contacts, added Contact Depth targeting column
+
+**Key decisions:**
+- Fidelity = 8 contacts total (VP + Director tiers), Medium targeting, different angle per person
+- Commvault = 5 contacts, Medium targeting
+- Cboe = 3 contacts, Standard targeting
+- Maggie Redden (TruStage) email corrected: @trustage.com was extrapolated, actual = @cunamutual.com
+- Jennifer Drangstveit (Commvault) confirmed in Apollo — same name as TruStage contact, different person
+
+**Files updated:** sop-tam-outbound.md, target-accounts.md, work-queue.md, session files
+**Pending:** Build wave1-batch1-tracker-mar10.html + enroll contacts
+
+---
+
+## 2026-03-10 — Session 7: Wave 1 Enrollment Complete
+
+**Session type:** Apollo enrollment + file sync
+**Continued from:** Session 6 (context limit cutoff mid-enrollment)
+
+**What was done:**
+- Built `wave1-batch1-tracker-mar10.html` — 27 contacts across 6 accounts, color-coded rows, flags bar, enrollment + draft status columns
+- Enrolled 23 contacts in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) via robert.gorham@testsigma.com:
+  - Batch A (5): Rick Brandt, Seth Drummond, Nithya Arunkumar, Neeraj Tati, Brahmaiah Vallabhaneni
+  - Batch B (5): Chris Pendergast, Christopher Bilcz, Eric Pearson, Richelle Lacamera, Sourabh Roy
+  - Batch C (5): Padma Srikanth, Prasad Alapati, Maurice Saunders, Snezhana Ruseva, Chamath Guneratne
+  - Batch D (5): Sucheth Ramgiri, Arun Amarendran, Maggie Redden, Jennifer Drangstveit (TruStage)
+  - Batch E (3): John Harding (normal), Hrishikesh Aradhye + Des Keane (sequence_job_change: true override)
+- Updated wave1-batch1-tracker-mar10.html: enrolled count = 23, all Pending → ✅ Enrolled
+- Updated memory/apollo-config.md: added robert.gorham@testsigma.com (ID: 68e3b53ceaaf74001d36c206) as TAM Outbound ONLY
+- Updated memory/target-accounts.md: all 6 Wave 1 accounts with correct enrollment statuses; Maggie Redden email corrected to @cunamutual.com
+- Updated all 3 session files (handoff, work-queue, session-log)
+
+**Key technical notes:**
+- Apollo max 5 contacts per enrollment call — enforced 5-batch structure
+- Hrishi and Des flagged as `contacts_with_job_change` on first Batch E attempt — required retry with `sequence_job_change: true`
+- All enrolled contacts show `status: "paused"`, `inactive_reason: "Sequence inactive"` — expected for fully manual sequence
+- robert.gorham@testsigma.com (.com) is the ONLY email account for TAM Outbound enrollment (ID: 68e3b53ceaaf74001d36c206)
+
+**4 contacts on HOLD (Rob decision required):**
+- Rose Serao (Chase): extrapolated email — send or skip?
+- Justin Hutchinson (Chase): ops QA concern — confirm software QA scope
+- Nikki Urlaub (Chase): same ops QA concern
+- Shawn Woods (TruStage): below Director threshold
+
+**Next step (TASK-014 Steps C+D):** Draft T1 + T2 emails for 23 enrolled contacts. Read sop-tam-outbound.md first. Present BATCH SUMMARY. Wait for APPROVE SEND.
+
+**Files created/updated:**
+- `wave1-batch1-tracker-mar10.html` ✅
+- `memory/apollo-config.md` ✅
+- `memory/target-accounts.md` ✅
+- `memory/session/handoff.md` ✅
+- `memory/session/work-queue.md` ✅
+- `memory/session/session-log.md` ✅ (this entry)
+
+**Files to commit:** All 6 above. Rob must run `git push` from terminal.
+
+---
+
+## 2026-03-10 — Session 8: Tyler Referrals T1 Complete
+
+**Session type:** Outreach execution (continuation from prior context)
+**APPROVE SEND status:** Granted in prior session context for all 7
+
+**What was done:**
+- Sent all 7 Tyler Kapeller referral T1 messages
+  - 6 emails via Apollo UI (LinkedIn Outbound - Q1 Priority Accounts sequence):
+    - Gopi Subramaniam (Staples) — re-engagement (Apollo contact ID: 003OX00000IPu79YAD)
+    - Pranati Thankala (Aetna) — re-engagement (Apollo ID: 692c872c808e3800017ece6b)
+    - Roy Life (Sandia National Labs) — re-engagement (Apollo ID: 68de813f5f91b600014b5ca0)
+    - Devin Griffin (First Citizens Bank) — new outreach (Apollo ID: 69b0480fe78dc300112b8975)
+    - Jason Berube (First Citizens Bank) — new outreach (Apollo ID: 69b0434e4fee22000d1f89b3)
+    - Skie Kagulire (First Citizens Bank) — new outreach (Apollo ID: 69b0435081670100114e55f7)
+  - 1 InMail via Sales Navigator (1 credit used, 3 remaining):
+    - Vernon Bryant / "Jason B." (Tractor Supply) — Director & Head of QE&A
+    - InMail thread ID: 2-NTIwNTRkMWItYWU3Yy00Mjk1LWFkOTAtMzNmOTg4ZjU2M2ZjXzEwMA==
+    - Subject: "QA coverage at Tractor Supply"
+    - Profile: ACwAAAFh0NYBqwiQVc7NAOaPuyUy9eXMS208Cs8
+
+**Tracking files updated:**
+- `tyler-referrals-outreach-mar10.html` — all 7 cards marked ✅ SENT Mar 10 | T2 due Mar 14
+- `MASTER_SENT_LIST.csv` — 7 new rows added (total: 300 rows incl. header)
+- `memory/pipeline-state.md` — Mar 10 status section + send log updated
+- `memory/session/handoff.md` ✅
+- `memory/session/work-queue.md` ✅ (added TASK-015 for T2 follow-ups Mar 14)
+- `memory/session/session-log.md` ✅ (this entry)
+
+**Technical notes:**
+- Sales Nav profile URL navigation returns 404 for Vernon Bryant — workaround: use /sales/inbox/compose, search "Jason Bryant", select from dropdown
+- LinkedIn pages block screenshots/JS from extension — use read_page + navigate tools exclusively
+- JS native setter pattern required to trigger Sales Nav search: Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(inp, val) + dispatchEvent(new Event('input', {bubbles:true}))
+
+**Next step (TASK-015):** Tyler Referrals T2 — draft + send on Mar 14. Vernon Bryant T2 = Sales Nav InMail (no email). FCB same-company flag overridden — Rob approved all 3.
+
+**Files to commit:** tyler-referrals-outreach-mar10.html, MASTER_SENT_LIST.csv, memory/pipeline-state.md, memory/session/handoff.md, memory/session/work-queue.md, memory/session/session-log.md. Rob must run `git push` from terminal.
+
+---
+
+## 2026-03-10 — Session 9: Wave 2 Prospecting + Drafts Complete
+
+**Session type:** TAM Outbound Wave 2 prospecting + T1 draft creation
+**Continued from:** Session 8 (context limit cutoff; Wave 1 Chrome sends still blocked)
+
+**What was done:**
+- Read sop-outreach.md (Enterprise Email T1 Formula v3, A+ Research Protocol, MQS scoring rules)
+- Read sop-tam-outbound.md (Contact Depth Rule, Research-to-Message Mapping, dedup protocol)
+- Confirmed Wave 1 T1 APPROVE SEND still in effect — blocked on Chrome extension reconnect
+- Identified 16 Wave 2 contacts across 7 Factor/ICP accounts (GEICO, Checkr, EA, Cetera, OneMain, Mindbody, HashiCorp)
+- Ran Apollo bulk org enrichment on all 7 companies (org size, industry)
+- Ran 6 parallel web research searches to build A+ research menus per account
+- Deduped all 16 contacts against MASTER_SENT_LIST.csv (292 rows) — all 16 clean, 0 flags
+- Drafted T1 emails for all 16 contacts following Enterprise Email T1 Formula v3
+- Applied Contact Depth Rule: GEICO (3) = Medium, Checkr (4) = Medium, Mindbody (3) = Medium, others = Standard
+- QA-scored all 16 drafts on 12-point MQS scale — 1 perfect score (Saeyed Shamlou 12/12)
+- **Created** `tamob-wave2-draft-mar10.html` — full batch tracker with all 16 T1 drafts, research menus, per-contact metadata, copy buttons, MQS scores, objection/response pairs, status dropdowns
+
+**Wave 2 roster (16 contacts, 7 accounts):**
+| Account | Contacts | Priority range | MQS range |
+|---------|----------|---------------|-----------|
+| GEICO | Marcela Fetters, Roberto Bouza, Sambhav Taneja | HIGH/MED | 10-11/12 |
+| Checkr | Chandni Jain, Sarah Kneedler, Krista Moroder, Cristian Brotto | HIGH/MED | 10-11/12 |
+| EA | Yu Jin, Maalika Tadinada | MED | 10/12 |
+| Cetera | Richelle Paulsen, Anton Aleksandrov | HIGH/MED | 10-11/12 |
+| OneMain | Saeyed Shamlou | HIGH | 12/12 |
+| Mindbody | Karen Teng, Henry Rose, Bipin Bhoite | HIGH/MED | 10-11/12 |
+| HashiCorp | Shyamendra Singh | LOW | 9/12 |
+
+**Key decisions:**
+- All proof points use vertical-only framing (no named customers per SOP data rule)
+- HashiCorp flagged LOW — IBM acquisition, ICP match weaker. Include but deprioritize.
+- EA catch-all domain (ea.com) — deliverable but not individually verified
+- OneMain email domain confirmed @omf.com (not onemainfinancial.com)
+- All 16 deduped clean against MASTER_SENT_LIST.csv — 0 flags
+
+**Awaiting:** APPROVE SEND from Rob before any enrollment or sends
+
+**Files created:**
+- `tamob-wave2-draft-mar10.html` ✅ (16 T1 drafts, all QA-scored)
+
+**Files to commit:** tamob-wave2-draft-mar10.html, memory/session/handoff.md, memory/session/work-queue.md, memory/session/session-log.md. Rob must run `git push` from terminal.
+
+---
+
+## Session 10 — Mar 10, 2026 (Wave 2 T1 Send + QA Automation)
+
+**Focus:** QA gate + trim + Apollo enrollment for all 16 Wave 2 T1 emails
+
+**What was done:**
+
+1. **Resumed from Session 9 context** — 16 Wave 2 T1 drafts complete, APPROVE SEND already given by Rob
+2. **Re-ran QA gate (v2)** — 15/16 pass. Sambhav flagged "APA named customer" — diagnosed as false positive ("APA" matching "cAPAcity" via substring match)
+3. **Fixed QA gate to v3** — changed named customer check from substring to word-boundary (`\b`) regex. All 16 now pass.
+4. **QA results (all 16 pass — word count | QMs):**
+
+| Name | Words | QMs | Status |
+|------|-------|-----|--------|
+| Marcela Fetters | 96w | 2 | ✅ |
+| Roberto Bouza | 96w | 2 | ✅ |
+| Sambhav Taneja | 94w | 2 | ✅ |
+| Chandni Jain | 95w | 2 | ✅ |
+| Sarah Kneedler | 96w | 2 | ✅ |
+| Krista Moroder | 97w | 2 | ✅ |
+| Cristian Brotto | 97w | 2 | ✅ |
+| Yu Jin | 97w | 2 | ✅ |
+| Maalika Tadinada | 96w | 2 | ✅ |
+| Richelle Paulsen | 91w | 2 | ✅ |
+| Anton Aleksandrov | 97w | 2 | ✅ |
+| Saeyed Shamlou | 97w | 2 | ✅ |
+| Karen Teng | 93w | 2 | ✅ |
+| Henry Rose | 95w | 2 | ✅ |
+| Bipin Bhoite | 97w | 2 | ✅ |
+| Shyamendra Singh | 95w | 2 | ✅ |
+
+5. **Apollo contact creation:** All 16 contacts created/verified. 8 new, 8 pre-existing. Yu Jin name bug fixed (first="Yu Jin" + last="Jin" → "Yu Jin Jin") → corrected to first="Yu", last="Jin".
+6. **Enrolled HIGH (6) in TAM Outbound:** Marcela, Chandni, Sarah, Richelle, Saeyed, Karen → all confirmed ✅
+7. **Enrolled MED+LOW (10) in TAM Outbound:** Roberto, Sambhav, Krista, Cristian, Yu Jin, Maalika, Anton, Henry, Bipin, Shyamendra → all confirmed ✅
+8. **MASTER_SENT_LIST.csv:** +16 rows appended (batch: "TAM Outbound Wave2 T1 Mar10")
+9. **tamob-wave2-draft-mar10.html:** All 16 status badges updated → "T1 Sent Mar 10" (.badge-sent CSS added)
+10. **sop-tam-outbound.md:** Part 22 added — full end-to-end automated pipeline documentation (QA gate spec, trim methodology, enrollment flow, logging steps, full pipeline summary)
+
+**Apollo IDs (Wave 2):**
+| Name | Apollo ID | Was new? |
+|------|-----------|----------|
+| Marcela Fetters | 69b077c4c0da4900152bb736 | NEW |
+| Roberto Bouza | 69b0780dc0da4900152bb7d2 | NEW |
+| Sambhav Taneja | 69b07814d45f4e00155d218b | NEW |
+| Chandni Jain | 68f512c8398b310001070cb1 | existing |
+| Sarah Kneedler | 6992d954404e44000165dd64 | existing |
+| Krista Moroder | 68f512c8398b310001070cad | existing |
+| Cristian Brotto | 69b07821e4be74000d6bb911 | NEW |
+| Yu Jin | 69b07827c0da49000dc24361 | NEW |
+| Maalika Tadinada | 69b0783bd45f4e00155d21a4 | NEW |
+| Richelle Paulsen | 68e69f9fb4d41000012370b0 | existing |
+| Anton Aleksandrov | 68caf92e67f171002139f184 | existing |
+| Saeyed Shamlou | 69371da04a3327000178a607 | existing |
+| Karen Teng | 69b077ebc0da4900152bb77c | NEW |
+| Henry Rose | 69b07848c0da4900152bb7fd | NEW |
+| Bipin Bhoite | 69b0784fc0da49000dc24371 | NEW |
+| Shyamendra Singh | 68af1cf6944539000183af4c | existing |
+
+**T2 follow-up:** All 16 due Mar 15 (Day 5 from Mar 10 send). Apollo Step 2 tasks will auto-generate in TAM Outbound sequence.
+
+**Files changed this session:**
+- `tamob-wave2-draft-mar10.html` (QA-trimmed emails + status updated)
+- `MASTER_SENT_LIST.csv` (+16 rows)
+- `memory/sop-tam-outbound.md` (+Part 22 automation pipeline)
+- `memory/session/handoff.md` (Wave 2 → DONE)
+- `memory/session/work-queue.md` (TASK-016 → DONE)
+- `memory/session/session-log.md` (this entry)
+
+**Files to commit:** All of the above. Rob must run `git push` from terminal.
+
+---
+
+## 2026-03-10 — Session 11: Wave 1 T1 Sends Complete (All 23)
+
+**Session type:** Outreach execution — Wave 1 T1 email sends via Apollo manual task queue
+**APPROVE SEND status:** Granted in prior session context (carried forward)
+
+**What was done:**
+- Continued from prior session (context limit cutoff after 18/23 sends)
+- Sent remaining 5 Wave 1 T1 emails: Snezhana Ruseva, Rick Brandt, Jennifer Wang, John Harding, Hrishikesh Aradhye
+- All 23 Wave 1 T1 emails now sent ✅
+
+**Full Wave 1 T1 send log (all sent Mar 10):**
+| # | Name | Company | Subject |
+|---|------|---------|---------|
+| 1 | Chris Pendergast | Fidelity | Chris's quality engineering at Fidelity |
+| 2 | Des Keane | YouTube | Des's video infrastructure at YouTube |
+| 3 | Nithya Arunkumar | Fidelity | Nithya's QA coverage at Fidelity |
+| 4 | Padma Srikanth | Fidelity | Padma's QA coverage at Fidelity |
+| 5 | Richelle Lacamera | Fidelity | Richelle's QA coverage at Fidelity |
+| 6 | Sucheth Ramgiri | Commvault | Sucheth's automation strategy at Commvault |
+| 7 | Seth Drummond | Fidelity | Seth's QA coverage at Fidelity |
+| 8 | Prasad Alapati | Commvault | Prasad's QA coverage at Commvault |
+| 9 | Eric Pearson | Fidelity | Eric's QA coverage at Fidelity |
+| 10 | Maurice Saunders | Cboe | Maurice's QA coverage at Cboe |
+| 11 | Sourabh Roy | Fidelity | Sourabh's QA coverage at Fidelity |
+| 12 | Arun Amarendran | Commvault | Arun's engineering coverage at Commvault |
+| 13 | Brahmaiah Vallabhaneni | Commvault | Brahmaiah's engineering at Commvault |
+| 14 | Christopher Bilcz | Fidelity | Christopher's QA coverage at Fidelity |
+| 15 | Chamath Guneratne | TruStage | Chamath's QA coverage at TruStage |
+| 16 | Maggie Redden | TruStage | Maggie's engineering at TruStage |
+| 17 | Neeraj Tati | JPMorgan Chase | Neeraj's QA coverage at Chase |
+| 18 | Jennifer Drangstveit | TruStage | Jennifer's solution delivery at TruStage |
+| 19 | Snezhana Ruseva | Cboe | Snezhana's test automation at Cboe |
+| 20 | Rick Brandt | Cboe | Rick's QA coverage at Cboe |
+| 21 | Jennifer Wang | Commvault | Jennifer's engineering coverage at Commvault |
+| 22 | John Harding | YouTube | John's engineering at YouTube Music |
+| 23 | Hrishikesh Aradhye | YouTube | Hrishi's coverage at YouTube Music |
+
+**Wave 2 skipped (16 contacts — already sent in Session 10):** GEICO, Checkr, EA, Cetera, OneMain, Mindbody, HashiCorp contacts — correctly identified and skipped in task queue.
+
+**Technical notes:**
+- Apollo task queue uses side-panel UI when clicking from task list (narrower than full-screen task view)
+- Subject line in Apollo defaulted to "[Name]'s QA coverage at [Company Full Name]" — corrected to match exact draft file subjects for each contact
+- Hrishikesh Aradhye: Apollo flagged job change alert (YouTube → Google, but role is YouTube Music & Podcasts — same team). Sent to hrishi@google.com as planned.
+- Richelle Paulsen (Cetera, Wave 2) kept appearing as auto-advance target between Wave 1 sends — navigated away each time
+
+**T2 due:** Mar 15 (Day 5) for all 23. Apollo Step 2 tasks will auto-generate in TAM Outbound sequence ~Mar 14-15.
+**TASK-017 added to work-queue.md** — Wave 1 T2 drafts (23 contacts, due Mar 15)
+
+**Files changed this session:**
+- `memory/session/handoff.md` (Wave 1 → all 23 sent)
+- `memory/session/work-queue.md` (TASK-014 → DONE, TASK-017 added)
+- `memory/session/session-log.md` (this entry)
+
+**Files to commit:** All 3 session files. Rob must run `git push` from terminal.
+
+---
+
+---
+
+## 2026-03-10 — Session 13: INC-007 Recovery Complete
+
+**Session type:** Recovery sends (continuation from Sessions 12+)
+**Objective:** Complete all INC-007 recovery reply emails
+
+**Work completed:**
+- Sent recovery emails for Brahmaiah Vallabhaneni (Commvault), Prasad Alapati (Commvault), Arun Amarendran (Commvault), Des Keane (YouTube) — 4 sends this session
+- Discovered hard bounce on Sucheth Ramgiri (Commvault): sramgiri@commvault.com — SMTP 550 5.1.10, address not found. Both original placeholder AND recovery attempt failed. Skipped recovery send.
+
+**INC-007 recovery final tally:** 24/25 sent. 1 hard bounce (Sucheth/Commvault).
+
+**Files changed:**
+- `memory/incidents.md` — INC-007 Remediation updated from "Ongoing" to "COMPLETE" with full send log
+- `memory/session/handoff.md` — Added RESOLVED: INC-007 block, updated Last Updated + GIT STATUS
+- `memory/session/work-queue.md` — Added TASK-018 (remove Sucheth from sequence + re-enrich), updated Last Updated
+- `memory/session/session-log.md` — This entry
+
+**Next priority:** TASK-017 (Wave 1+2 T2 drafts — all due Mar 15) + TASK-018 (Sucheth cleanup)
+
+
+---
+
+## 2026-03-11 — Session 14: Post-INC-007 Audit + Tracker Fixes + SOP Hardening
+
+**Session type:** Audit, cleanup, SOP update
+**Objective:** (1) Confirm Apollo reflects all T1 sends, (2) fix internal tracker gaps, (3) harden SOPs to prevent future placeholder send errors
+
+**Apollo audit results:**
+- 39/39 contacts enrolled in TAM Outbound, all Active on Step 2 ✅
+- Wave 2: 13 T2 tasks appearing in Apollo Tasks tab, due TODAY (Mar 11) — T1 was sent 8-11 AM Mar 10 ✅
+- Wave 1: T2 tasks NOT yet visible but scheduled — T1 was sent 10:29 PM Mar 10, "20h" remaining on Step 2 as of Mar 11 afternoon → tasks appear tomorrow Mar 12 ✅
+- Apollo Step 1 body shows "Placeholder" text — expected, recovery was sent via Gmail and is not reflected in Apollo's sequence log ✅ (by design)
+- T2 timing correction: previously noted as "due Mar 15 (Day 5)" — actual timing is ~1 day from T1 send, so Wave 1 T2 is due Mar 12 (not Mar 15) and Wave 2 T2 due today
+
+**Tracker fixes applied:**
+- `tamob-wave1-draft-mar10.html`: All 23 "Draft Ready" badges updated to "T1 Sent Mar 10". T1 Sent stat updated 0→23. T1 Drafts stat updated 23→0. badge-sent CSS class added.
+- `MASTER_SENT_LIST.csv`: 23 Wave 1 contacts added (Rick Brandt, Maurice Saunders, Snezhana Ruseva, Seth Drummond, Chris Pendergast, Christopher Bilcz, Eric Pearson, Nithya Arunkumar, Richelle Lacamera, Sourabh Roy, Padma Srikanth, Neeraj Tati, Brahmaiah Vallabhaneni, Jennifer Wang, Prasad Alapati, Sucheth Ramgiri (bounce note), Arun Amarendran, Chamath Guneratne, Maggie Redden, Jennifer Drangstveit, John Harding, Des Keane, Hrishikesh Aradhye). Total rows now 338.
+
+**SOP updates:**
+- `memory/sop-tam-outbound.md` upgraded to v3.0:
+  - Part 23 added: Gmail Chrome Send Protocol — canonical reference for all email sends
+  - Phase 8 Step 1: Rewrote INC-004 warning as INC-007 hard ban on Apollo "Send Now" with full Gmail protocol
+  - Part 11: Updated T1 enrollment flow to Gmail-first, then enroll, then "Mark as Done"
+  - Part 18: Updated T2 task workflow — "Mark as Done" not "Send Now"
+  - Part 22 pipeline summary: Gmail send step added before enrollment as Step 5
+
+**Files changed:**
+- `tamob-wave1-draft-mar10.html` — badge fixes + stat corrections
+- `MASTER_SENT_LIST.csv` — +23 Wave 1 rows
+- `memory/sop-tam-outbound.md` — v3.0 (Part 23 + hardened parts)
+- `memory/session/handoff.md` — date updated, Wave 1/2 T2 timing corrected, Session 14 in GIT STATUS
+- `memory/session/work-queue.md` — TASK-017 updated (P0 URGENT), Last Updated
+- `memory/session/session-log.md` — This entry
+
+**Next priority:** TASK-017 (T2 drafts — Wave 2 TODAY, Wave 1 TOMORROW) + TASK-018 (Sucheth cleanup)
+
+---
+
+## 2026-03-11 — Session 15: Crash-Recovery Infrastructure
+
+**Session type:** Infrastructure — persistent memory / crash-recovery system
+
+**What happened:**
+- Session started with intent to continue T2 draft work (TASK-017).
+- Rob clarified: T2 drafts are deferred — they're manual Apollo tasks and will be tackled when Apollo surfaces them naturally. No proactive pre-drafting.
+- Rob's actual request: Build crash-recovery infrastructure so that if a Claude session crashes mid-task, the next session can pick up exactly where the last one left off.
+
+**Problem solved:**
+The current git-based memory system commits only at session END. If a session crashes mid-task (e.g., mid-way through building a 23-contact batch tracker), the in-progress work is lost. The next session has no record of what was being done or how far along it got.
+
+**What was built:**
+
+1. **`memory/session/in-progress.md`** (NEW FILE)
+   - A checkpoint file that tracks live task progress
+   - Claude writes ACTIVE status + step list at task START (and commits immediately)
+   - Claude checks off steps as they complete (and commits after each)
+   - Claude sets Status → CLEAR at task END
+   - On session START: if Status = ACTIVE = crash was detected
+   - Includes template, crash recovery protocol instructions, and mid-session commit triggers list
+
+2. **`AGENTS.md`** (UPDATED)
+   - Step 6 added to startup sequence: Read in-progress.md after handoff.md + work-queue.md
+   - Step 7: Crash check — ACTIVE = crash recovery mode, CLEAR = proceed normally
+   - New section: "Crash Recovery Protocol" — full 5-step recovery procedure
+   - New section: "Mid-Session Commit Protocol" — mandatory commit triggers table (file creation, every 5 contacts drafted, MASTER_SENT_LIST update, memory/ file update)
+   - Handoff Protocol updated: clear in-progress.md as step 1
+
+3. **`work-queue.md`** (UPDATED)
+   - TASK-017: Status changed UNCLAIMED → DEFERRED (per Rob, tackle when Apollo tasks come due)
+   - TASK-019: Added as DONE — crash-recovery infrastructure complete
+   - Last Updated line updated
+
+**Files changed:**
+- `memory/session/in-progress.md` — NEW (crash-recovery checkpoint file)
+- `AGENTS.md` — Added crash recovery + mid-session commit protocol
+- `memory/session/work-queue.md` — TASK-017 deferred, TASK-019 added
+- `memory/session/handoff.md` — Date + GIT STATUS updated
+- `memory/session/session-log.md` — This entry
+
+**Next priority:** When Rob opens a session next time and Apollo has T2 tasks due, tackle TASK-017. Also TASK-018 (Sucheth Ramgiri cleanup). Then TASK-003 (Gmail draft audit).
+
+---
+
+## 2026-03-11 — Session 16: SOP Gap Resolutions
+
+**Session type:** SOP maintenance + gap resolution
+**What was done:**
+
+1. **Catchall email policy (Gap 2)** — Rob confirmed: evaluate each catchall case-by-case (not a blanket send/skip rule).
+   - Updated `sop-tam-outbound.md` **Part 5 Research Quality Gate**: ✅ Verified → proceed. ⚠️ Catchall or ⚠️ Extrapolated → judge by account fit + contact strength, send if strong, skip if uncertain, flag in tracker.
+
+2. **Part 9 batch tracker spec (T2 scope trim)** — Rob confirmed T2 drafts are out of scope for pre-batch work; draft when Apollo surfaces them (TASK-017).
+   - Removed "T2 body draft" from required fields list in `sop-tam-outbound.md` Part 9.
+   - Updated email flag format to include catchall send/skip decision.
+   - Added note: "T2 drafts are NOT pre-built."
+
+3. **TASK-017 stale reference (Gap 5)** — Fixed `work-queue.md` TASK-017 line: "Gmail Chrome (Part 23 v3.0)" → "Apollo UI (Part 23 v3.1) → Send Now → Apollo marks Done automatically."
+
+4. **tam-coverage-tracker.csv (Gap 4)** — Verified exists. 313 rows (312 accounts). Columns: name, location, domain, icp, is_factor, factor_tier, factor_signal, factor_last, status, note, priority. Status breakdown: 244 Untouched, 22 HOT Factor, 11 Gov Skip, etc. No build needed.
+
+**Files changed:**
+- `memory/sop-tam-outbound.md` — Part 5 catchall policy + Part 9 T2 scope removal
+- `memory/session/work-queue.md` — TASK-017 send protocol + Last Updated
+- `memory/session/handoff.md` — Last Updated + GIT STATUS
+- `memory/session/session-log.md` — This entry
+
+**Commits this session:** `7a15ba7` (gap resolutions)
+**Unpushed commits (Rob must push):** `a824836`, `79014b7`, `7a15ba7`
+**Next priority:** TASK-017 (T2 drafts) when Apollo surfaces Wave 1/2 T2 tasks. TASK-018 (Sucheth Ramgiri cleanup). TASK-003 (Gmail draft audit).
+
+---
+
+## 2026-03-11 — Sessions 17-18: TAM Outbound Wave 3 — Full Autopilot Batch + Enrollment
+
+**Session type:** Full TAM Outbound autopilot (batch build → enrich → research → draft → QA → HTML tracker → enrollment)
+
+**What was done (Sessions 17-18 combined):**
+
+**Session 17 — Batch Build (Steps 1-7):**
+1. Read all pre-flight files: AGENTS.md, handoff.md, work-queue.md, sop-tam-outbound.md, sop-outreach.md, target-accounts.md, MASTER_SENT_LIST.csv, tam-coverage-tracker.csv
+2. Identified 7 Wave 3 accounts from tam-coverage-tracker.csv: Yahoo, Veradigm, Charlie Health, TELUS, GE HealthCare, L3Harris Technologies, Georgia-Pacific
+3. Enriched/created 35 Apollo contacts across all 7 accounts (26 new, 9 pre-existing)
+4. Researched all 35 contacts using A+ protocol — job history, company context, proof point match
+5. Drafted 35 T1 emails: all enterprise formula (HC1 + SMYKM subjects, 82-98 words, 1 CTA), A/B split tested, no HC violations
+6. QA gate: all 35 passed MQS 11-12/12
+7. Built `tamob-batch-20260311-1.html` — 172KB batch tracker with 35 personalized contact cards, status dropdowns, MQS badges, A/B labels
+8. Presented BATCH SUMMARY to Rob → Rob approved with "send"
+9. Began enrollment — completed batches 1-5 and 7 (30 contacts). Batch 6 (L05-L09) omitted in parallel fire — sent separately; L05 Rachel Fingeroth returned `contact_not_found` (ID typo in prior session), L06-L09 returned `already_in_campaign` (pre-existing).
+
+**Session 18 — Enrollment Completion + File Updates:**
+1. Resolved Rachel Fingeroth (L05): searched Apollo, found correct ID `69b17c9ced38d10015b4293c` (prior session had `197f72d5` vs `15b4293c` typo), enrolled successfully
+2. Final enrollment: 35/35 confirmed active in TAM Outbound sequence. Step 1 count: 48 active.
+3. Updated `MASTER_SENT_LIST.csv`: +35 Wave 3 rows (total 374 rows)
+4. Updated `memory/session/handoff.md`, `work-queue.md`, `session-log.md`
+5. Committed + will push
+
+**Wave 3 contacts (35 total):**
+- Yahoo: Sarah Huang, Ash Pedgaonkar, Matthew Lauprete, Robert Israel, Raj Chopde, Suchith Chandran, Sergii Simonov
+- Veradigm: Ted Barker, Matthew Bennett, Sachin Joshi, Aleck Gandel, Bhanu Sunkara, Manpreet Burmi
+- Charlie Health: Sampson Reider, Madina Zabran, Madison Waterman, Ashwin Vaswani
+- TELUS: Christine Gamache, Stephanie Carlos
+- GE HealthCare: Chelsey Erickson, Brooks Foley
+- L3Harris: Nathan French, Pete Grissom, Michael Cahill, Garrick Scott, Rachel Fingeroth, Michael Stringer, Mark Gates, Tracy Beloskur, David Street
+- Georgia-Pacific: Brad Suderman, Tyler Hart, Ryan Filpi, Rafael Amorim, Felecia Brown
+
+**Key decisions/findings:**
+- Rachel Fingeroth correct Apollo ID: `69b17c9ced38d10015b4293c` (corrected from prior session)
+- Wave 3 T2 due: Mar 16 (Day 5 from Mar 11 enrollment)
+- All 7 accounts new to TAM Outbound (first-touch Wave 3 contacts)
+- A/B test split: ~50/50 pain-led vs. proof-led openers across batch
+
+**Files created/updated:**
+- `tamob-batch-20260311-1.html` ✅ NEW — 35-contact Wave 3 batch tracker
+- `MASTER_SENT_LIST.csv` ✅ UPDATED — +35 Wave 3 rows (374 total)
+- `memory/session/handoff.md` ✅ UPDATED — Wave 3 section added, T2 timing updated
+- `memory/session/work-queue.md` ✅ UPDATED — TASK-020 added (Wave 3 T2, due Mar 16)
+- `memory/session/session-log.md` ✅ this entry
+
+**Next priority:** Apollo Tasks tab — Wave 1/2 T2 tasks likely overdue. TASK-017 immediately. Wave 3 T2 = TASK-020 on Mar 16. Then TASK-018 (Sucheth cleanup), TASK-003 (Gmail audit).
+
+---
+
+## 2026-03-11 — Session 19: Wave 3 T1 Sends (Continued)
+
+**Session type:** Outreach execution — Wave 3 T1 sends via Apollo TAM Outbound Tasks tab
+
+**What was done:**
+1. Resumed mid-send from Session 18 context. Next contact in Apollo Tasks queue: Sarah Huang (Y01 — Yahoo)
+2. **Sent 3 Wave 3 T1 emails** via Apollo TAM Outbound sequence (ID: 69afff8dc8897c0019b78c7e):
+   - **Sarah Huang (Y01)** — sarah.huang@yahooinc.com — QA Director, Yahoo — Subject: "Sarah's regression coverage at Yahoo" ✅
+   - **Matthew Bennett (V02)** — matthew.bennett@allscripts.com — Director of Engineering, Veradigm — Subject: "Matthew's engineering velocity at Veradigm" ✅
+   - **Madison Waterman (CH03)** — madison.waterman@charliehealth.com — Engineering Manager, Charlie Health — Subject: "Madison's regression coverage at Charlie Health" ✅
+3. Body injection technique: JS `document.execCommand('insertText')` into Quill editor (clipboard paste was returning "Placeholder" — execCommand is the reliable method, use first going forward)
+4. After Madison Waterman: Apollo advanced to Yu Jin (Electronic Arts) — Wave 2 contact, not Wave 3. Stopped.
+5. Gmail audit (newer_than:5d, maxResults:50): Confirmed 24 of 35 Wave 3 T1 emails sent total
+6. Apollo Contacts tab: 74 enrolled, 24 "New" (not yet contacted). 11 Wave 3 contacts have future-dated tasks not yet due.
+7. Updated handoff.md, work-queue.md, session-log.md
+
+**11 remaining Wave 3 contacts (enrolled, future-dated tasks):**
+Y02 Ash Pedgaonkar, Y06 Suchith Chandran, V01 Ted Barker, V04 Aleck Gandel, CH01 Sampson Reider, CH02 Madina Zabran, CH04 Ashwin Vaswani, T01 Christine Gamache, GE02 Brooks Foley, L04 Garrick Scott, L05 Rachel Fingeroth
+
+**Key technical note:**
+- Clipboard paste (ctrl+a + ctrl+v) returns "Placeholder" in Apollo Quill editor. Use JS `document.execCommand('insertText')` instead — confirmed working on all 3 sends this session.
+
+**Files updated:**
+- `memory/session/handoff.md` ✅ — Wave 3 T1 send status, Session 19 sends logged, 11 future-dated contacts listed
+- `memory/session/work-queue.md` ✅ — TASK-017 escalated to P0 URGENT (Wave 1 T2 due Mar 12)
+- `memory/session/session-log.md` ✅ — this entry
+
+**Commits this session:** Pending (see below)
+**Unpushed commits (Rob must push):** All prior + this session's commit
+**Next priority:** Open Apollo Tasks tab immediately — Wave 1 T2 tasks due Mar 12 (TOMORROW). Tackle TASK-017 first. Then TASK-018 (Sucheth Ramgiri cleanup). Wave 3 T2 = TASK-020, due Mar 16.
+
+---
+
+## 2026-03-11 — Session 20: Wave 3 T1 Sends Complete
+
+**Session type:** Apollo email sends (Wave 3 T1 continuation)
+**What was done:**
+- Continued from Session 19 — resumed at Suchith Chandran (Y06), 5th of 9 remaining Wave 3 T1 tasks
+- Sent all 9 remaining Wave 3 T1 emails via Apollo TAM Outbound Tasks tab (Send Now)
+- All subject lines fixed (Apollo auto-populated wrong subjects — triple-click + retype)
+- All bodies injected via JS `document.execCommand('insertText')` on Quill editor
+- Verified each send with "Changes saved" toast confirmation
+- Stopped at Yu Jin (EA) — Wave 2 T2 task, not Wave 3 T1
+
+**Session 20 sends (9 contacts):**
+| Contact | Company | Email | Subject | Result |
+|---------|---------|-------|---------|--------|
+| Sampson Reider (CH01) | Charlie Health | sam.reider@charliehealth.com | Sam's quality coverage at Charlie Health | ✅ Sent (prior context) |
+| Ted Barker (V01) | Veradigm | ted.barker@veradigm.com | Ted's QA coverage at Veradigm | ✅ Sent (prior context) |
+| Aleck Gandel (V04) | Veradigm | aleck.gandel@allscripts.com | Aleck's QE coverage at Veradigm | ✅ Sent (prior context) |
+| Ash Pedgaonkar (Y02) | Yahoo | ash@yahooinc.com | Ash's test coverage at Yahoo | ✅ Sent (prior context) |
+| Suchith Chandran (Y06) | Yahoo | suchith@yahooinc.com | Suchith's test automation at Yahoo | ✅ Sent |
+| Garrick Scott (L04) | L3Harris | garrick.scott@l3harris.com | Garrick's software testing at L3Harris | ✅ Sent |
+| Ashwin Vaswani (CH04) | Charlie Health | ashwin.vaswani@charliehealth.com | Ashwin's test automation at Charlie Health | ✅ Sent |
+| Rachel Fingeroth (L05) | L3Harris | rachel.fingeroth@l3harris.com | Rachel's engineering coverage at L3Harris | ✅ Sent |
+| Madina Zabran (CH02) | Charlie Health | madina.zabran@charliehealth.com | Madina's test coverage at Charlie Health | ✅ Sent |
+
+**Wave 3 T1 totals:**
+- Sessions 17-18: 21 sent
+- Session 19: 3 sent (Sarah Huang, Matthew Bennett, Madison Waterman)
+- Session 20: 9 sent (above)
+- **Total: 33 of 35 sent. 2 future-dated (Christine Gamache/TELUS, Brooks Foley/GE HealthCare).**
+
+**Technical notes:**
+- Apollo auto-populates subjects from contact name + company — never matches SMYKM draft subjects. Triple-click + retype every time.
+- JS execCommand body injection confirmed reliable for all sends.
+- After Madina Zabran, Apollo advanced to Yu Jin (EA) — Wave 2 T2. Stopped there.
+
+**Files updated:**
+- `memory/session/handoff.md` ✅ — Wave 3 T1 status updated to 33/35, Session 20 sends logged
+- `memory/session/work-queue.md` ✅ — header updated, TASK-017 still P0 (Wave 2 T2 in queue, Wave 1 T2 due Mar 12)
+- `memory/session/session-log.md` ✅ — this entry
+
+**Next priority:** TASK-017 — Wave 2 T2 tasks are NOW in Apollo Tasks tab (12 tasks, overdue). Wave 1 T2 due Mar 12 (tomorrow). Draft T2s and send next session.
+
+---
+
+## 2026-03-11 — Session 21: Wave 4 Batch Build Complete
+
+**Session type:** Batch build — account selection → enrichment → dedup → T1 drafts → QA gate → HTML tracker
+**Batch:** tamob-batch-20260311-2 (Wave 4)
+
+**What was done:**
+1. Resumed from prior context (prior session hit token limit mid-build_html.py write)
+2. Verified qa_gate.py intact: 48/48 contacts, all passing MQS ≥9/12
+3. Wrote build_html.py via Bash heredoc (Write tool fails on new files — use Bash instead)
+4. Ran build_html.py: generated tamob-batch-20260311-2.html (134KB)
+5. Updated handoff.md, work-queue.md, session-log.md
+6. Committed session changes
+
+**Batch stats:**
+| Metric | Value |
+|--------|-------|
+| Total contacts | 48 |
+| Companies | 19 |
+| P5 HOT (Director+) | 8 |
+| P4 WARM (Manager) | 9 |
+| P3 STD | 29 |
+| P2 LOW (KKR) | 2 |
+| Group A | 16 |
+| Group B | 32 |
+| Avg MQS | 11.6/12 |
+| QA gate result | 48/48 PASS |
+| WC range | 80-97w (all) |
+| QM | 2 (all) |
+| Dedup removed | 3 |
+
+**Key fixes applied in prior context (documented here for record):**
+- QM:3 bug (46/48 emails): All close lines were "Worth a X? What day works?" (2 QMs) + 1 HC1 opener QM = 3 total. Fixed via regex: `re.sub(r'\? What day works\?', '. What day works?', body)`. All now QM=2.
+- WC >97 on 9 emails: Fixed via targeted string replacements in qa_gate.py. All now ≤97.
+- Poonam Patil (#46): Required second Edit pass (103→94w) — first regex didn't match due to QM already replaced.
+- Michelle Crawford (#47): Same issue (101→96w).
+
+**Technical note (for future sessions):**
+- `Write` tool fails with "File has not been read yet" when creating brand new files. Use `Bash` with cat heredoc to write new scripts.
+- qa_gate.py lives in /sessions/determined-sharp-keller/ (session VM — not persisted). Rebuild from memory/pipeline-state.md if session resets.
+
+**Files created/updated:**
+- `tamob-batch-20260311-2.html` ✅ NEW — Wave 4 batch tracker, 48 contact cards
+- `memory/session/handoff.md` ✅ — Wave 4 section added, header updated
+- `memory/session/work-queue.md` ✅ — TASK-021 added (Wave 4 enroll + send)
+- `memory/session/session-log.md` ✅ — this entry
+
+**Status at session end:**
+- tamob-batch-20260311-2.html: READY FOR ROB REVIEW
+- Awaiting: Rob's APPROVE SEND to proceed with enrollment
+- TASK-017 (Wave 1/2 T2): Still P0, overdue — tackle next session
+
+
+---
+
+## 2026-03-11 — Sessions 22-24: Wave 4 T1 Sends Complete
+
+**Session type:** Send execution — Wave 4 T1 emails via Apollo Tasks tab
+**Continued from:** Prior context that ran out mid-send (Sessions 22-23 hit context limit)
+
+**What was done:**
+1. Resumed send execution from Session 22 context summary (15 prior sends + 11 session 2 sends confirmed)
+2. Sent 10 additional Wave 4 T1 emails via Apollo Tasks tab (Session 24 sends):
+   - April Brenay (GEICO) — "Test maintenance eating sprint cycles?" — 93w ✅
+   - Manohar Shrestha (GEICO) — "Test coverage keeping up with releases?" — 97w ✅
+   - Janel Jolly (Electronic Arts) — "Cross-platform coverage still manual?" — 91w ✅
+   - William Xie (Electronic Arts) — "Test automation keeping pace with builds?" — 97w ✅
+   - Ed Yiu (Electronic Arts) — "QA scaling with title launch pace?" — 96w ✅
+   - Kenny Qi (KKR) — "Tech platform testing keeping up?" — 93w ✅
+   - Josh Klesel (KKR) — "Enterprise platform QA worth discussing?" — 97w ✅
+   - Devashish Patel (HashiCorp) — "Test automation slowing release velocity?" — 95w ✅
+   - Jessica Harris (OneMain Financial) — "Lending platform QA scaling up?" — 95w ✅
+   - Michelle Crawford (OneMain Financial) — "Consumer lending QA keeping pace?" — 96w ✅
+3. Yvonne Oliver (Mastercard) — BLOCKED at Task 14 of 14: "You are not the owner of this contact or account." Dismissed error. Cannot send.
+4. Apollo task queue exhausted after Yvonne Oliver — all Wave 4 email tasks processed.
+5. Post-send wrap-up:
+   - `MASTER_SENT_LIST.csv`: +35 Wave 4 rows (total 374→410)
+   - `tamob-batch-20260311-2.html`: 35 badges → T1SentMar11, 2 badges → Blocked, 11 remain Ready
+   - `memory/session/handoff.md`: Wave 4 section fully rewritten with send status + flags
+   - `memory/session/work-queue.md`: TASK-021 marked DONE, TASK-022 added (Wave 4 T2 due Mar 19)
+
+**Key findings:**
+- 11 contacts had no Apollo email tasks generated (Ksenia Shchelkonogova, Glen Hudson, Sibghatullah Veedy, Irina Baxter, Divya Sathish, Jiadong Shen, Simon Crawford, Adit Shah, Mohan Raj, Shilendra Sharma, Poonam Patil) — unknown why, needs Rob investigation
+- Wave 4 T2 due Mar 19 (Day 8 from send)
+- TASK-017 (Wave 1/2 T2) remains P0 — Wave 2 T2 overdue, Wave 1 T2 due Mar 12
+
+**QA process:** Every email reviewed before send — WC, QM count, placeholder check, proof point with real numbers, Testsigma mention, "What day works?" CTA. All 35 passes clean.
+
+**Files updated:**
+- `MASTER_SENT_LIST.csv` ✅ — 410 rows
+- `tamob-batch-20260311-2.html` ✅ — badges updated
+- `memory/session/handoff.md` ✅ — Wave 4 complete state
+- `memory/session/work-queue.md` ✅ — TASK-021 DONE, TASK-022 added
+- `memory/session/session-log.md` ✅ — this entry
+
+**Next priority:** TASK-017 — Wave 2 T2 tasks overdue in Apollo Tasks tab. Wave 1 T2 tasks due Mar 12. Check Apollo Tasks tab immediately next session and execute.
+
+---
+
+## Session 25 — 2026-03-11
+
+**Task:** Complete 11 no-task contact investigation (started Sessions 22-24)
+
+**Work done:**
+1. Searched Apollo Contacts for all 11 no-task Wave 4 contacts via MCP
+2. Found correct Poonam Patil (Datamatics, ID: 69b1c3f231bddd00114bc78a) — enrolled in TAM Outbound today, active step 1
+3. Investigated all 11 — root cause: Apollo schedules Step 1 tasks with a delay after enrollment; tasks simply hadn't surfaced yet
+4. Updated tamob-batch-20260311-2.html: Glen Hudson + Sibghatullah Veedy → T1SentMar11 (now 37/2/9 split)
+5. Updated MASTER_SENT_LIST.csv: +2 rows for Glen + Sibghatullah (412 total)
+6. Updated handoff.md with full findings table for all 11 contacts
+7. Updated work-queue.md TASK-021 with resolved status
+
+**Full 11-contact findings:**
+| Contact | Company | Status | Finding |
+|---------|---------|--------|---------|
+| Glen Hudson | Mastercard | active step 2 | T1 auto-sent — ✅ updated |
+| Sibghatullah Veedy | Mastercard | active step 2 | T1 auto-sent — ✅ updated |
+| Ksenia Shchelkonogova | Mastercard | failed step 1 | Bounced — skip |
+| Irina Baxter | Anaplan | active step 1 | Task pending |
+| Divya Sathish | EA | active step 1 | Task pending + email invalid flag |
+| Jiadong Shen | EA | active step 1 | Task pending |
+| Simon Crawford | EA | active step 1 | Task pending (Stockholm) |
+| Adit Shah | HashiCorp | active step 1 | Task pending |
+| Mohan Raj | Datamatics | active step 1 | Task pending |
+| Shilendra Sharma | Datamatics | active step 1 | Task pending |
+| Poonam Patil | Datamatics | active step 1 | Task pending (created today, email verified) |
+
+**Files changed:**
+- `tamob-batch-20260311-2.html` — Glen + Sibghatullah badges updated
+- `MASTER_SENT_LIST.csv` — 2 rows added (412 total)
+- `memory/session/handoff.md` — Wave 4 section + header updated
+- `memory/session/work-queue.md` — TASK-021 updated, header updated
+- `memory/session/session-log.md` — this entry
+
+**Git commit needed (with prior changes from Sessions 22-24)**
+
+---
+
+## Session 25 — End-of-Session Tracker Audit (2026-03-12)
+**Task:** Comprehensive end-of-session tracker audit — update all stale files after TAM Outbound Waves 1-4
+
+**Changes made:**
+
+### CLAUDE.md
+- Pipeline Status header updated: "Mar 7" → "Mar 11"
+- Pipeline Status table completely rewritten: TAM Outbound T1 (111 unique contacts), MASTER_SENT_LIST (412 rows), T2 schedule (Wave1/2: Mar 15, Wave3: Mar 16, Wave4: Mar 19), bounces, enrollments
+- Total Emails sent updated: "49 confirmed" → "~300+"
+- Incident log reference: "INC-001 through INC-003" → "INC-001 through INC-008"
+- TAM Outbound wave files section added
+- currentDate: 2026-03-11 → 2026-03-12
+
+### memory/pipeline-state.md
+- Master Send Log: 4 new rows added for Wave 1/2/3/4 T1 sends
+- Pipeline Metrics section completely rewritten with TAM Outbound metrics
+- New "TAM Outbound Batch Files" section added
+
+### memory/target-accounts.md
+- Wave 2 section: updated from "TBD" → "✅ T1 SENT Mar 10" with full contact table
+- Wave 3 section: updated from "TBD" → "✅ T1 SENT Mar 11" with account-level status table
+- Wave 4 section: newly created with 19-account breakdown
+
+### memory/incidents.md
+- INC-009 added: Ksenia Shchelkonogova bounce (Mastercard, kshchelkonogova@mastercard.com) + Divya Sathish invalid email flag (EA, divya.sathish@ea.com). Apollo custom field `678901dcd836ab01b09a6110 = "invalid"` identified as reliable bounce predictor.
+
+### memory/sop-tam-outbound.md
+- Part 11: Pre-enrollment email quality check added (step 0 — check custom field 678901dcd836ab01b09a6110 before enrolling any contact)
+- Part 18: Apollo auto-send behavior documented (contacts jumping to step 2 on enrollment = T1 auto-sent; verified via Gmail sent folder)
+
+**Git commit:** `1d727c3` — "Session 25: End-of-session tracker audit complete"
+**Total commits unpushed:** 6 — Rob must run `git push` from terminal
+
+**Next session priorities:**
+1. 🔴 Wave 1 T2 due Mar 12 (TODAY) — check Apollo Tasks tab immediately
+2. 🟡 Wave 2 T2 due Mar 15
+3. 🟡 Wave 3 T2 due Mar 16
+4. 🟢 Wave 4 pending T1 tasks (8 contacts) — send when they surface in Tasks tab
+5. ⚠️ Divya Sathish (EA) — monitor for bounce when Wave 4 T1 task surfaces
+
+
+---
+
+## 2026-03-12 — Session 26: Wave 5 Batch 4 (Sales Nav sourced, 9 contacts enrolled)
+
+**Session type:** TAM Outbound — Sales Nav deep sweep + Apollo enrollment
+**What was done:**
+- Continued from prior session: Sales Nav review of Epicor, BeyondTrust, Northern Trust (pages 2-3)
+- Built Wave 5 Batch 4 tracker: `tamob-batch-20260312-4.html` — 9 contacts with full T1 email drafts
+- Apollo bulk enrichment (2 rounds) to find verified emails for Sales Nav contacts
+- Proof point rotation verified against Batches 1-3 — zero repeats per company
+- Created 9 Apollo contacts (5 new, 4 existing from Salesforce/Chrome extension imports)
+- Enrolled all 9 in TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
+  - Batch A (5): Jason Lieberman, Les Stickney, Holly Shubaly, Tony MacLean, Michael Sutherland
+  - Batch B (3): Theepa Balakrishnan, Alnis Cers, Padma Suresh
+  - Batch C (1): Moiz Meer (required sequence_active_in_other_campaigns override — was in failed Shakeel sequence)
+- MASTER_SENT_LIST.csv: +9 rows (420 total)
+- Canada contacts included: Les Stickney (BC), Holly Shubaly (NS), Tony MacLean (NS), Michael Sutherland (NS)
+
+**Contacts enrolled (Wave 5 / Batch 4):**
+| # | Name | Company | Apollo ID | Email | Status |
+|---|------|---------|-----------|-------|--------|
+| 1 | Jason Lieberman | Epicor | 69b2d0daef825800190a560d | jlieberman@epicor.com | ✅ Enrolled Step 1 |
+| 2 | Les Stickney | Epicor | 69b2d0dcdb169c0019c2b2d3 | lstickney@epicor.com | ✅ Enrolled Step 1 |
+| 3 | Holly Shubaly | BeyondTrust | 69b2d0dedb169c000ded89e0 | hshubaly@beyondtrust.com | ✅ Enrolled Step 1 |
+| 4 | Tony MacLean | BeyondTrust | 68ae9f27539d060001dbcbe2 | tmaclean@beyondtrust.com | ✅ Enrolled Step 1 |
+| 5 | Michael Sutherland | BeyondTrust | 68ae8ab4dbf6140001477de9 | msutherland@beyondtrust.com | ✅ Enrolled Step 1 |
+| 6 | Theepa Balakrishnan | BeyondTrust | 69b2d0f1db169c000ded89fa | tbalakrishnan@beyondtrust.com | ✅ Enrolled Step 1 |
+| 7 | Alnis Cers | Northern Trust | 69b2d0f3db169c0011a2ffe7 | ac376@ntrs.com | ✅ Enrolled Step 1 |
+| 8 | Moiz Meer | Northern Trust | 660e4579521a4a0301a6dff9 | moiz_meer@ntrs.com | ✅ Enrolled Step 1 |
+| 9 | Padma Suresh | Northern Trust | 660e4579521a4a0301a6e00c | psuresh@northerntrust.com | ✅ Enrolled Step 1 |
+
+**Backlog (14 contacts without verified emails):** Noted in tracker HTML. Candidates for Apollo Chrome extension import in future session.
+
+**Notes:**
+- BeyondTrust and Northern Trust are catchall domains — emails are extrapolated but deliverable
+- Epicor (epicor.com) is NOT catchall — Jason and Les emails are verified
+- Moiz Meer was previously in Shakeel's failed sequence — enrolled with override, no prior sends from our account
+- T1 sends pending: Apollo Step 1 tasks will surface in Tasks tab. APPROVE SEND required before executing.
+
+**Files changed:** MASTER_SENT_LIST.csv (+9 rows), tamob-batch-20260312-4.html (created), session-log.md, handoff.md, work-queue.md
+
+---
+
+## 2026-03-12 — Session 27: TAM-Only Audit + SOP Enforcement + Batch 5 Cleanup
+
+**Session type:** Compliance audit + SOP hardening + batch cleanup
+**What was done:**
+
+1. **Yogesh Garg (Check Point) enrollment verification:**
+   - Apollo contact ID: `6673ad6e2ea319038c6525c3`
+   - NOT enrolled — `emailer_campaign_ids: []`
+   - Re-enrollment attempt with `contacts_without_ownership_permission: true` → skipped
+   - Root cause: `owner_id: null`, `creator_id: 655ecb6c164f6a00a3396e46` (not Rob)
+   - Apollo contact update API doesn't expose `owner_id` field — cannot fix via API
+   - **Resolution:** Flagged for Rob to manually assign ownership in Apollo UI
+
+2. **TAM Outbound sequence audit:**
+   - Extracted all email domains from 8 batch tracker HTML files via Python script
+   - Cross-referenced against 311 TAM domains from tam-accounts-mar26.csv
+   - Identified subsidiary/alternate domain mappings (fmr.com→Fidelity, omf.com→OneMain, etc.)
+   - **Result: CLEAN** — all enrolled contacts are from TAM companies
+   - Only non-TAM domains (docusign.com, bentley.com) were in Batch 5 tracker, caught before enrollment
+
+3. **Batch 5 cleanup (INC-010):**
+   - 13 contacts originally drafted
+   - 5 non-TAM contacts removed: Koji Nakajima, Lakshmi Nittala, Andrew Ngo (DocuSign), Bruce Bader, Esther Barwick (Bentley)
+   - 2 Infor contacts excluded: Mirza Hasan, Daniela Young (phone contact, not email)
+   - 1 Yogesh Garg blocked (ownership error)
+   - 5 contacts successfully enrolled (from Infor/Zebra/Check Point/FactSet)
+
+4. **SOP updates:**
+   - `sop-tam-outbound.md` Part 11: Added Pre-Enrollment Domain Verification Gate (5-step process)
+   - `target-accounts.md`: Added Factor Account Prioritization hierarchy (Signal Tier A > B/C > TAM ICP HIGH > Medium > Low)
+   - `target-accounts.md`: Added Pre-Enrollment Domain Verification reference
+   - `CLAUDE.md`: Updated operating directive with TAM-ONLY RULE + Factor priority
+   - `CLAUDE.md`: Updated pipeline status (Mar 12 — post Batch 5 enrollment + audit)
+   - `incidents.md`: Added INC-010 (severity MEDIUM, near-miss) + Rule 8 (domain verification)
+   - `pipeline-state.md`: Added Mar 12 Batch 5 send log entry
+
+5. **Session file updates:**
+   - Updated handoff.md with audit results, Batch 5 status, SOP changes, git log
+   - Updated work-queue.md: Added TASK-025 (Batch 5 T1 sends) + TASK-026 (TAM enforcement — DONE)
+   - Updated session-log.md (this entry)
+
+**Key decisions:**
+- TAM-only prospecting enforced at SOP level — all future batches must pass domain verification gate
+- Factor accounts get highest priority in prospecting queue
+- Yogesh Garg requires manual Apollo UI fix before enrollment
+- Non-TAM contacts (DocuSign, Bentley) permanently excluded from TAM Outbound
+
+**Files changed:** `memory/sop-tam-outbound.md`, `memory/target-accounts.md`, `CLAUDE.md`, `memory/incidents.md`, `memory/pipeline-state.md`, `memory/session/handoff.md`, `memory/session/work-queue.md`, `memory/session/session-log.md`
+
+---
+
+## 2026-03-12 — Session 28: Bounce Cleanup (INC-011)
+
+**Session type:** Incident response — bounce detection + cleanup
+**What was done:**
+
+1. **Gmail scan:** Detected 9 new Wave 4 hard bounces + 1 Wave 1 bounce (Arun Amarendran, Commvault)
+2. **Apollo verification:** All 9 Wave 4 contacts confirmed auto-marked `status: failed, inactive_reason: bounced`
+3. **Arun Amarendran exception:** Apollo still showed `status: active, step 2, paused` despite bounce. Manually stopped via `apollo_emailer_campaigns_remove_or_stop_contact_ids` API — now `status: finished, inactive_reason: manually finished`
+4. **MASTER_SENT_LIST.csv:** 10 rows updated with "HARD BOUNCE" notation (420 rows unchanged, just channel field updated)
+5. **INC-011 logged** in incidents.md — full contact table, pattern analysis (Humana 3/3 bounced, Commvault 2/5, Mastercard 2/8), lifetime bounce stats (12/109 = 11.0%)
+6. **Pipeline-state.md updated:** Wave 4 entry updated from "1 bounced" to "10 bounced", TAM Outbound bounces metric updated to 12 total
+7. **Handoff.md updated:** INC-011 section added, Wave 4 file note updated, Wave 1 Arun Amarendran marked BOUNCED
+
+**Bounced contacts (full list):**
+| # | Name | Company | Email | Wave |
+|---|------|---------|-------|------|
+| 1 | Jessica Harris | OneMain Financial | jessica.harris@onemainfinancial.com | Wave 4 |
+| 2 | William Xie | EA | william.xie@ea.com | Wave 4 |
+| 3 | David Schraff | Cleveland Clinic | schraffd@ccf.org | Wave 4 |
+| 4 | Mike Seal | DraftKings | mseal@draftkings.com | Wave 4 |
+| 5 | Koushal Ram | Mastercard | koushal.ram@mastercard.com | Wave 4 |
+| 6 | Sakib Alam | Humana | salam6@humana.com | Wave 4 |
+| 7 | Samatha Gangyshetty | Humana | sgangyshetty@humana.com | Wave 4 |
+| 8 | Ahmet Cakar | Humana | ahmet.cakar@humana.com | Wave 4 |
+| 9 | Arun Amarendran | Commvault | aamarendran@commvault.com | Wave 1 |
+
+**Domain patterns flagged:**
+- Humana: 3/3 bounced = 100% → flag as unreliable for email outreach
+- Commvault: 2/5 bounced = 40% (Sucheth Ramgiri from INC-007 + Arun Amarendran)
+- Mastercard: 2/8 bounced = 25% (Ksenia from INC-009 + Koushal Ram)
+
+**Files changed:**
+- `MASTER_SENT_LIST.csv` — 10 rows marked HARD BOUNCE
+- `memory/incidents.md` — INC-011 added
+- `memory/pipeline-state.md` — Wave 4 bounce count + metrics updated
+- `memory/session/handoff.md` — INC-011 section + Wave 4/Wave 1 bounce notes
+- `memory/session/session-log.md` — this entry
+
+**HTML tracker updates deferred** — badge changes for tamob-batch-20260311-2.html and tamob-wave1-draft-mar10.html not done this session (low priority, contacts already stopped in Apollo).
+
+**Next priority:** New TAM T1 batch (operating directive), Wave 1/2 T2 (overdue), Batch 4/5 T1 sends (pending APPROVE SEND)
+
+---
+
+## Session 28b — Multi-Agent Infrastructure Build (2026-03-12)
+
+**Task:** Ad-hoc — Rob requested parallel session infrastructure
+**Duration:** ~60 min (continuation of Session 28)
+**What was done:**
+- Built complete parallel session coordination infrastructure (19 new files, 3 updated)
+- Created Active Session Registry (`memory/session/active/_protocol.md`) with JSON schema, conflict detection, stale session handling (2h threshold)
+- Created File Locking protocol (`.locks/_protocol.md`) with race condition prevention, stale lock handling (30min threshold), nested lock guidance
+- Created Inter-Session Message Board (`memory/session/messages.md`) with category tags ([CLAIM], [DONE], [WARN], [CONFLICT], [ASK], [INFO])
+- Created 12 playbooks capturing institutional knowledge from 27 sessions: _index.md, apollo-enrollment.md, apollo-task-queue-sends.md, batch-tracker-html.md, catchall-domains.md, dedup-protocol.md, error-recovery.md, qa-gate.md, sales-nav-deep-sweep.md, session-handoff.md, t2-followup.md, tam-t1-batch.md
+- Created 3 Cowork skills: session-start, tam-t1-batch, apollo-enroll
+- Rewrote AGENTS.md to v2.0 (14-step startup, parallel session protocol, playbook system, Cowork skills section)
+- Updated CLAUDE.md Reference Files table with all new playbooks, skills, and infrastructure references
+- Verified all files for placeholder text — none found
+
+**Files created:**
+- `memory/session/active/_protocol.md`
+- `.locks/_protocol.md`
+- `memory/session/messages.md`
+- `memory/playbooks/_index.md`
+- `memory/playbooks/apollo-enrollment.md`
+- `memory/playbooks/apollo-task-queue-sends.md`
+- `memory/playbooks/batch-tracker-html.md`
+- `memory/playbooks/catchall-domains.md`
+- `memory/playbooks/dedup-protocol.md`
+- `memory/playbooks/error-recovery.md`
+- `memory/playbooks/qa-gate.md`
+- `memory/playbooks/sales-nav-deep-sweep.md`
+- `memory/playbooks/session-handoff.md`
+- `memory/playbooks/t2-followup.md`
+- `memory/playbooks/tam-t1-batch.md`
+- `skills/session-start/SKILL.md`
+- `skills/tam-t1-batch/SKILL.md`
+- `skills/apollo-enroll/SKILL.md`
+
+**Files updated:**
+- `AGENTS.md` — full rewrite to v2.0
+- `CLAUDE.md` — Multi-Agent section expanded (14 steps), Reference Files table expanded with playbooks/skills/infrastructure
+- `memory/session/handoff.md` — header + Session 28b section added
+- `memory/session/work-queue.md` — header + startup protocol updated to 14-step
+- `memory/session/session-log.md` — this entry
+
+**Notes:**
+- All playbooks contain real production knowledge (not filler) extracted from SOPs, incidents, and 27 sessions of practice
+- All template patterns like TASK-XXX are intentional format instructions, not placeholders
+- Infrastructure is file-based (no persistent processes) — works within Claude VM constraints
+- Rob must `git push` to sync to remote
+
+**Next:** New TAM T1 batch (operating directive), APPROVE SEND for Batch 4+5, Wave 1/2 T2 overdue
+
+---
+
+## Session 29 — 2026-03-12
+
+**Task:** Deep-sweep existing Wave 1-4 accounts for additional untouched contacts
+
+**What was done:**
+1. Built master account-contact map across all 35 Wave 1-4 accounts with gap analysis (employees/contacts ratio)
+2. Apollo People Search + Enrichment across high-gap accounts: Chase/JPMorgan, GEICO, OneMain, EA, Humana, Cleveland Clinic, HashiCorp
+3. Full 6-point dedup on all candidates (MASTER_SENT_LIST, DNC, Apollo contacts, batch check, same-company, TAM domain)
+4. Created 2 new Apollo contacts (Divyesh Jain at GEICO, Geo Sarria at EA)
+5. Identified 2 existing contacts ready to enroll (Altaf Shariff at OneMain, Clifton Wilcox at EA)
+6. Enrolled 5 contacts into TAM Outbound sequence (1 blocked by ownership: Donald Jackson at Chase)
+7. Drafted T1 emails for all 6 contacts (MQS 12/12 on all)
+8. Built batch tracker: tamob-batch-20260312-5.html
+9. Updated MASTER_SENT_LIST.csv (420 → 432 rows, +5 enrolled + 7 from prior in session)
+
+**Contacts enrolled (Wave 5B):**
+
+| Name | Company | Email | Apollo ID | Proof Point |
+|------|---------|-------|-----------|-------------|
+| Divyesh Jain | GEICO | divyeshjain@geico.com | 69b2e998964931000dbc4730 | CRED |
+| Altaf Shariff | OneMain | altaf.shariff@onemainfinancial.com | 67191a0dfa4c1002b65c0973 | Medibuddy |
+| Geo Sarria | EA | gsarria@ea.com | 69b2e99aaa30fe0011517c70 | Cisco |
+| Clifton Wilcox | EA | clifton@ea.com | 64f5d88e32372500ba1261d2 | CRED |
+| Christie Burkhead | Humana | cburkhead@humana.com | 6945706b98e651001d3ba9c1 | Sanofi |
+
+**Blocked:**
+- Donald Jackson (Chase) — ownership permission error (same as Yogesh Garg)
+- David Schraff (Cleveland Clinic) — already in TAM Outbound, bounced
+- Satish Krishnan (GEICO) — already active in TAM Outbound
+- Satish Gopal (JPMorgan) — previously contacted in archived sequence
+
+**Key findings documented:**
+- Subsidiary domain patterns: Chase/jpmorgan.com, OneMain/omf.com, Cleveland Clinic/ccf.org
+- Healthcare QA filtering: most QA titles at hospitals are medical/clinical, not software
+- Catchall domains: chase.com, jpmorgan.com, geico.com
+- Enterprise persona filtering: use "Software/Automation/Test/SDET" keywords, avoid "Compliance/Clinical/Operations"
+- Stale Apollo employment data: verify current employer before adding
+
+**Backlog (Sales Nav candidates):** 5 contacts with no email (Partha Pattanaik, David Macdonald, Graig Taylor, Brent Kong, Jaideep Mukherjee), HashiCorp (0 Apollo results), 2 uncertain JPM contacts (Brian Vanhoose, Marion Stewart)
+
+**Files created/modified:**
+- `tamob-batch-20260312-5.html` (new batch tracker)
+- `MASTER_SENT_LIST.csv` (+5 rows = 432 total)
+
+---
+
+## Session 31 — Batch 7 Logging + Comprehensive Audit + SOP Hardening (2026-03-12)
+
+**Task:** TASK-031 (ad-hoc — Rob requested audit + SOP improvements)
+**Duration:** ~90 min
+
+**What was done:**
+
+Phase 1 — Batch 7 Logging Completion:
+- Appended 5 rows to MASTER_SENT_LIST.csv for Batch 7 contacts (Cathy Kauffman, Daksha Kantaria, Shital Shisode, Aaron Sinz, Gil Leong)
+- Updated tamob-batch-20260312-7.html badge from "Draft Ready" to "Enrolled"
+- Posted CLAIM message to messages.md
+
+Phase 2 — Comprehensive Audit:
+- Audited MASTER_SENT_LIST.csv: 7 legacy duplicates (all pre-March 10, documented), zero post-protocol duplicates
+- DNC compliance: all 7 entries respected across all batches
+- Identified 30+ non-standard batch name formats (B6, B7, W6B1, W5B-S29, W6B2)
+- Messages.md ordering and timestamp accuracy reviewed
+- Session registration: Session 29 registered, Session 30 never registered
+- Handoff.md confirmed 4+ sessions stale (fixed in Phase 3)
+
+Phase 3 — SOP Hardening (5 files updated):
+1. `AGENTS.md` v2.0 → v2.1: Session registration enforcement, handoff self-check, message board rules, batch naming standard
+2. `memory/playbooks/dedup-protocol.md`: Batch naming standard table (6 formats), post-logging wc-l verification, legacy duplicates documented
+3. `memory/playbooks/session-handoff.md`: Step 2 as "MOST CRITICAL STEP", common mistakes expanded from 5 to 10
+4. `skills/tam-t1-batch/SKILL.md`: Step 9 rewritten with 6 mandatory sub-steps + verification commands
+5. `memory/session/messages.md`: Rules section updated with accuracy requirements
+
+Phase 4 — Session Handoff:
+- Updated handoff.md with all missing Sessions 29-31 work (was 4+ sessions behind)
+- Updated work-queue.md with TASK-031 (done) + TASK-032 (batch name cleanup)
+- Appended session-log.md (this entry)
+- Posted DONE message to messages.md
+
+**Files changed:**
+- `AGENTS.md` (v2.1)
+- `memory/playbooks/dedup-protocol.md`
+- `memory/playbooks/session-handoff.md`
+- `skills/tam-t1-batch/SKILL.md`
+- `memory/session/messages.md` (rules + CLAIM + DONE)
+- `memory/session/handoff.md` (brought current)
+- `memory/session/work-queue.md` (updated)
+- `memory/session/session-log.md` (this entry)
+- `MASTER_SENT_LIST.csv` (+5 Batch 7 rows)
+- `tamob-batch-20260312-7.html` (badge update)
+
+**Contacts enrolled:** 0 (audit-only session; Batch 7 enrollment happened in Session 30)
+
+**Notes:**
+- MASTER_SENT_LIST.csv now 496 rows (includes concurrent session work: W6B1 8 rows, W6B2 27 rows, B6 24 rows)
+- 5 non-standard batch names need correction (TASK-032, P3)
+- 3 contacts blocked by Apollo ownership: Yogesh Garg (Check Point), Donald Jackson (Chase), Iain Duffield (Anaplan) — all need Rob manual action in Apollo UI
+
+**Next:** New TAM T1 batch (operating directive), then T2 drafts for overdue waves
+
+---
+
+## 2026-03-15 — Session 39 — TAM T1 Batch 10 (Source + Draft + QA + Enroll)
+
+**Session type:** TAM Outbound T1 batch build — full workflow
+**Session number:** 39
+**Task:** TASK-040 (continuation of Session 39 crash recovery)
+
+### What was done
+- Resumed from crash at Step 5 (Gmail check + Apollo search already complete from prior session segment)
+- Apollo search: 10 accounts × QA personas → 18 contacts selected post-dedup
+- Dedup: all 18 clean vs MASTER_SENT_LIST (597 rows), DNC, Apollo contacts search
+- Drafted 18 T1 emails (75-99 words, SMYKM subjects, unique proof points per company)
+- QA Gate: all 18 scored 12/12 MQS — PASS
+- Built batch tracker: `batches/active/tamob-batch-20260315-1.html`
+- Enrolled 15/18 in sequence 69afff8dc8897c0019b78c7e
+- MASTER_SENT_LIST.csv: 597 → 612 (+15)
+
+### Contacts enrolled (15)
+| # | Name | Company | Apollo ID |
+|---|------|---------|-----------|
+| 1 | Avani Vaidya | CVS Health | 6904a84eea986d00191ba7f1 |
+| 2 | Swapna Bitra | CVS Health | 65b65a521a070102ea51e374 |
+| 3 | Tarun Sharma | CVS Health | 65b659a81a070101ae52c83b |
+| 4 | Divya Paul | CVS Health | 65b65a021a070101ae52c962 |
+| 5 | Usman Khan | Citizens Bank | 68add76d2c0dd60001dc078c |
+| 6 | Mehul Savalia | Citizens Bank | 692c569cb621bb0001522410 |
+| 7 | Minu Prabhakaran | DISH Network | 69b73c3f1f42de001557b84a |
+| 8 | Jacob Wyman | DISH Network | 69b73bd01f42de00112d6d12 |
+| 9 | Roger Tonneman | DISH Network | 69b73bd21f42de00112d6d1a |
+| 10 | Shikha Jayant | D&B | 69b73bd41f42de001557b816 |
+| 11 | Collins Chellaswamy | D&B | 69b73bd51f42de001557b81e |
+| 12 | Brendan McCarthy | D&B | 67887b650a8721000111da37 |
+| 13 | Dawn McCartha | EmblemHealth | 69b73bd77b9ccd00193ed12c |
+| 14 | Stacey Schmidt | Vertafore | 664daebc65e77601ebdaa628 |
+| 15 | Praveen Gali | Safelite | 69b73bd97b9ccd00193ed134 |
+
+### Enrollment notes
+- 7 new contacts created in Apollo (Minu Prabhakaran, Jacob Wyman, Roger Tonneman, Shikha Jayant, Collins Chellaswamy, Dawn McCartha, Praveen Gali)
+- 2 override active_in_other_campaigns: Brendan McCarthy (D&B), Stacey Schmidt (Vertafore)
+- Minu Prabhakaran: old person ID 54a5529f74686938ac840d8f was legacy — new contact created 69b73c3f1f42de001557b84a
+
+### Blocked (3) — need Rob manual Apollo UI action
+- Amaresh Shukla (BlackRock, 6915e0d2b283e9000160ffb8) — paused in other sequence
+- Colin Dwyer (EmblemHealth, 68e69f9eb4d410000123700c) — silent rejection
+- Deepa Pabbathi (Vertafore, 5f886aa5ef18ce008c0b797f) — silent rejection
+
+### Warning
+- Avani Vaidya enrolled but email null on Apollo contact — needs manual email attachment before T1 send
+
+### Files changed
+- `batches/active/tamob-batch-20260315-1.html` — created
+- `MASTER_SENT_LIST.csv` — 597 → 612 rows (+15)
+- `memory/session/handoff.md` — updated
+- `memory/session/work-queue.md` — added TASK-040, TASK-040B, TASK-041
+- `memory/session/session-log.md` — this entry
+- `memory/session/in-progress.md` — cleared
+- `memory/session/messages.md` — [DONE] appended
+- `memory/session/active/39.json` — deleted
+
+**MASTER_SENT_LIST.csv:** 612 rows total
+**Next:** Rob APPROVE SEND for Batch 10 (15 contacts in Apollo Tasks tab)

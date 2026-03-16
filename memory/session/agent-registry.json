@@ -1,0 +1,33 @@
+{
+  "_meta": {
+    "description": "Active agent registry. Agents write their status on session start and end. session_start.py reads this to warn about in-flight work. Stale entries (last_seen > 4h) are ignored.",
+    "schema_version": "1.0",
+    "stale_threshold_hours": 4
+  },
+  "agents": {
+    "Cowork-1": {
+      "machine": "claude",
+      "last_seen": "2026-03-08T13:01:14Z",
+      "status": "active",
+      "current_task": null,
+      "session_count": 6,
+      "notes": "Primary daily ops agent"
+    },
+    "Cowork-2": {
+      "machine": "PC2",
+      "last_seen": null,
+      "status": "never_seen",
+      "current_task": null,
+      "session_count": 0,
+      "notes": "Batch building + prospecting"
+    },
+    "Cowork-3": {
+      "machine": "PC3",
+      "last_seen": null,
+      "status": "never_seen",
+      "current_task": null,
+      "session_count": 0,
+      "notes": "Research, analytics, repo maintenance"
+    }
+  }
+}

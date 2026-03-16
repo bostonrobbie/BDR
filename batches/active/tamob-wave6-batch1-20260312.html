@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TAM Outbound — Wave 6 Batch 1</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+    .card { background: white; border-radius: 8px; padding: 20px; margin: 16px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .card h3 { margin-top: 0; color: #1a1a2e; }
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+    .badge-draft { background: #fff3cd; color: #856404; }
+    .badge-enrolled { background: #d4edda; color: #155724; }
+    .badge-sent { background: #cce5ff; color: #004085; }
+    .badge-blocked { background: #f8d7da; color: #721c24; }
+    .email-draft { background: #f8f9fa; border-left: 4px solid #007bff; padding: 12px; margin: 12px 0; white-space: pre-line; }
+    .qa-gate { background: #f0f7ff; padding: 12px; border-radius: 6px; margin: 8px 0; font-size: 13px; }
+    .proof-tracker { width: 100%; border-collapse: collapse; margin: 16px 0; }
+    .proof-tracker th, .proof-tracker td { padding: 8px 12px; border: 1px solid #dee2e6; text-align: left; }
+    .proof-tracker th { background: #e9ecef; }
+    .summary { background: #e8f5e9; padding: 16px; border-radius: 8px; margin: 20px 0; }
+    .backlog { background: #fff8e1; padding: 16px; border-radius: 8px; margin: 20px 0; }
+    .meta { color: #666; font-size: 13px; }
+  </style>
+</head>
+<body>
+
+<h1>TAM Outbound — Wave 6 Batch 1</h1>
+<p class="meta">Created: 2026-03-12 | Session: 29 | Contacts: 8 | Status: Enrolled</p>
+
+<!-- BATCH SUMMARY -->
+<div class="summary">
+  <h2>Batch Summary</h2>
+  <p><strong>Enrolled:</strong> 8 contacts across 4 companies</p>
+  <p><strong>Companies:</strong> Procore Technologies (2), SailPoint (3), Celonis (2), OSF HealthCare (1)</p>
+  <p><strong>Sequence:</strong> TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)</p>
+  <p><strong>Send-from:</strong> robert.gorham@testsigma.com (68e3b53ceaaf74001d36c206)</p>
+  <p><strong>T2 due:</strong> 2026-03-17 to 2026-03-20 (Day 5-8 from T1 send)</p>
+</div>
+
+<!-- PROOF POINT ROTATION TRACKER -->
+<h2>Proof Point Rotation</h2>
+<table class="proof-tracker">
+  <tr><th>Company</th><th>Contact</th><th>Proof Point</th><th>Customer</th><th>Numbers</th></tr>
+  <tr><td>Procore</td><td>Rana Tharwat</td><td>Maintenance/Regression</td><td>Hansard</td><td>8 weeks → 5 weeks</td></tr>
+  <tr><td>Procore</td><td>Lamya Sary</td><td>Velocity/Coverage</td><td>CRED</td><td>90% coverage, 80% execution time cut</td></tr>
+  <tr><td>SailPoint</td><td>Anna Broitman</td><td>Regression Reduction</td><td>Cisco</td><td>35% regression reduction</td></tr>
+  <tr><td>SailPoint</td><td>Sandeep Enagala</td><td>Productivity/Scale</td><td>Fortune 100</td><td>3x coverage in 4 months</td></tr>
+  <tr><td>SailPoint</td><td>Satish Chavan</td><td>Scale/Coverage</td><td>Nagra DTV</td><td>2,500 tests in 8 months, 75% cycle reduction</td></tr>
+  <tr><td>Celonis</td><td>Damir Cerovac</td><td>Maintenance/Scale</td><td>Medibuddy</td><td>2,500 tests, 50% maintenance cut</td></tr>
+  <tr><td>Celonis</td><td>Manoj Sharma</td><td>Productivity</td><td>Spendflo</td><td>50% manual testing cut</td></tr>
+  <tr><td>OSF HealthCare</td><td>Randy Wolfe</td><td>Velocity/Compliance</td><td>Sanofi</td><td>3 days → 80 minutes</td></tr>
+</table>
+
+<!-- CONTACT CARDS -->
+
+<!-- 1. Rana Tharwat — Procore -->
+<div class="card">
+  <h3>Rana Tharwat — QA Engineering Manager</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p><strong>Company:</strong> Procore Technologies | <strong>Email:</strong> rana.tharwat@procore.com | <strong>Location:</strong> Cairo, Egypt</p>
+  <p><strong>Apollo Person ID:</strong> 54a37f817468692fa2792800 | <strong>Email status:</strong> verified | <strong>Domain catchall:</strong> No</p>
+  <p><strong>Source:</strong> Apollo People Search + Enrichment</p>
+  <p><strong>LinkedIn:</strong> <a href="http://www.linkedin.com/in/ranatharwat">linkedin.com/in/ranatharwat</a></p>
+
+  <div class="email-draft">
+    <p><strong>Subject:</strong> Rana's QA engineering at Procore</p>
+    <p>Hi Rana,
+
+Running QA for a construction platform like Procore means your regression suites probably touch hundreds of workflows across project management, financials, and field tools. When those suites get brittle, release velocity takes the hit.
+
+Hansard had that exact problem, 8-week regression cycles. After bringing in Testsigma, they cut it to 5 weeks with AI that auto-heals broken tests as the UI evolves.
+
+Is regression maintenance eating into your team's capacity? What day works to see how this maps to Procore?</p>
+  </div>
+
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 86 ✅ | QM: 2 ✅ | Subject: SMYKM ✅ | HC1: ✅ | Challenge: ✅ | Proof: Hansard (unique at Procore) ✅ | Testsigma: ✅ | CTA: "What day works" ✅ | No em dashes: ✅ | No placeholders: ✅ | Unique proof: ✅ | Tone: conversational ✅ | <strong>MQS: 12/12 — PASS</strong>
+  </div>
+</div>
+
+<!-- 2. Lamya Sary — Procore -->
+<div class="card">
+  <h3>Lamya Sary — QA Engineering Manager</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p><strong>Company:</strong> Procore Technologies | <strong>Email:</strong> lamya.sary@procore.com | <strong>Location:</strong> Cairo, Egypt</p>
+  <p><strong>Apollo Person ID:</strong> 54a5b5dc7468692abf9302a2 | <strong>Email status:</strong> verified | <strong>Domain catchall:</strong> No</p>
+  <p><strong>Source:</strong> Apollo People Search + Enrichment</p>
+  <p><strong>LinkedIn:</strong> <a href="http://www.linkedin.com/in/lamya-sary-3b263974">linkedin.com/in/lamya-sary</a></p>
+
+  <div class="email-draft">
+    <p><strong>Subject:</strong> Lamya's QA team at Procore</p>
+    <p>Hi Lamya,
+
+Procore's platform spans project management, financials, and field productivity, which means your QA team is likely balancing coverage demands across multiple product lines. Scaling that coverage without proportionally scaling headcount is the real challenge.
+
+CRED tackled this with Testsigma, reaching 90% regression automation coverage and cutting execution time by 80% across their fintech stack.
+
+Curious how Procore handles coverage scaling today? What day works to explore whether a similar approach fits your team?</p>
+  </div>
+
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 76 ✅ | QM: 2 ✅ | Subject: SMYKM ✅ | HC1: ✅ | Challenge: ✅ | Proof: CRED (unique at Procore) ✅ | Testsigma: ✅ | CTA: "What day works" ✅ | No em dashes: ✅ | No placeholders: ✅ | Unique proof: ✅ | Tone: conversational ✅ | <strong>MQS: 12/12 — PASS</strong>
+  </div>
+</div>
+
+<!-- 3. Anna Broitman — SailPoint -->
+<div class="card">
+  <h3>Anna Broitman — QA Lead</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p><strong>Company:</strong> SailPoint | <strong>Email:</strong> anna.broitman@sailpoint.com | <strong>Location:</strong> Israel</p>
+  <p><strong>Apollo Person ID:</strong> 54aa84337468690630b5a908 | <strong>Email status:</strong> verified</p>
+  <p><strong>Source:</strong> Apollo People Search + Enrichment</p>
+  <p><strong>LinkedIn:</strong> <a href="http://www.linkedin.com/in/anna-broitman-7634a112">linkedin.com/in/anna-broitman</a></p>
+
+  <div class="email-draft">
+    <p><strong>Subject:</strong> Anna's QA work at SailPoint</p>
+    <p>Hi Anna,
+
+Leading QA at SailPoint means your test suites are likely tightly coupled to identity governance workflows that change frequently. Every platform update risks breaking regression coverage across those critical flows.
+
+Cisco's QA team was in a similar spot and achieved a 35% reduction in regression testing time after adopting Testsigma's approach to automated test maintenance.
+
+Is keeping up with regression coverage a bottleneck for your team right now? What day works to see how this could apply at SailPoint?</p>
+  </div>
+
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 78 ✅ | QM: 2 ✅ | Subject: SMYKM ✅ | HC1: ✅ | Challenge: ✅ | Proof: Cisco (unique at SailPoint) ✅ | Testsigma: ✅ | CTA: "What day works" ✅ | No em dashes: ✅ | No placeholders: ✅ | Unique proof: ✅ | Tone: conversational ✅ | <strong>MQS: 12/12 — PASS</strong>
+  </div>
+</div>
+
+<!-- 4. Sandeep Enagala — SailPoint -->
+<div class="card">
+  <h3>Sandeep Enagala — Director of Engineering</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p><strong>Company:</strong> SailPoint | <strong>Email:</strong> sandeep.enagala@sailpoint.com | <strong>Location:</strong> Austin, TX</p>
+  <p><strong>Apollo Person ID:</strong> 6069aff79f80540001579e89 | <strong>Email status:</strong> verified</p>
+  <p><strong>Source:</strong> Apollo People Search + Enrichment</p>
+  <p><strong>LinkedIn:</strong> <a href="http://www.linkedin.com/in/sandeep-enagala-aa8b868">linkedin.com/in/sandeep-enagala</a></p>
+
+  <div class="email-draft">
+    <p><strong>Subject:</strong> Sandeep's engineering org at SailPoint</p>
+    <p>Hi Sandeep,
+
+Directing engineering at SailPoint, you're probably balancing velocity with the stability demands of identity security. As the product surface grows, testing infrastructure either keeps pace or becomes the release bottleneck.
+
+One Fortune 100 team tripled their test coverage in 4 months with Testsigma, without adding headcount. The plain English test creation let developers contribute directly.
+
+Does testing infrastructure feel like it's keeping up with your team's roadmap? What day works to explore whether this maps to SailPoint?</p>
+  </div>
+
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 78 ✅ | QM: 2 ✅ | Subject: SMYKM ✅ | HC1: ✅ | Challenge: ✅ | Proof: Fortune 100 (unique at SailPoint) ✅ | Testsigma: ✅ | CTA: "What day works" ✅ | No em dashes: ✅ | No placeholders: ✅ | Unique proof: ✅ | Tone: conversational ✅ | <strong>MQS: 12/12 — PASS</strong>
+  </div>
+</div>
+
+<!-- 5. Satish Chavan — SailPoint -->
+<div class="card">
+  <h3>Satish Chavan — Senior Director, Engineering</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p><strong>Company:</strong> SailPoint | <strong>Email:</strong> satish.chavan@sailpoint.com | <strong>Location:</strong> Pune, India</p>
+  <p><strong>Apollo Person ID:</strong> 66ed1219caa0c2000105bbe8 | <strong>Email status:</strong> verified</p>
+  <p><strong>Source:</strong> Apollo People Search + Enrichment</p>
+  <p><strong>LinkedIn:</strong> <a href="http://www.linkedin.com/in/satish-chavan-36989b6">linkedin.com/in/satish-chavan</a></p>
+
+  <div class="email-draft">
+    <p><strong>Subject:</strong> Satish's engineering team at SailPoint</p>
+    <p>Hi Satish,
+
+As Senior Director at SailPoint, your engineering team is building identity security products that need robust test coverage across web, API, and multiple environments. Scaling that coverage usually means choosing between hiring more SDETs or accepting gaps.
+
+Nagra DTV automated 2,500 tests in 8 months with Testsigma, reducing their regression cycle by 75% without expanding the team.
+
+Is coverage scaling a constraint for your engineering org right now? What day works to see how this approach could fit SailPoint?</p>
+  </div>
+
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 79 ✅ | QM: 2 ✅ | Subject: SMYKM ✅ | HC1: ✅ | Challenge: ✅ | Proof: Nagra DTV (unique at SailPoint) ✅ | Testsigma: ✅ | CTA: "What day works" ✅ | No em dashes: ✅ | No placeholders: ✅ | Unique proof: ✅ | Tone: conversational ✅ | <strong>MQS: 12/12 — PASS</strong>
+  </div>
+</div>
+
+<!-- 6. Damir Cerovac — Celonis -->
+<div class="card">
+  <h3>Damir Cerovac — Quality Assurance Team Lead</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p><strong>Company:</strong> Celonis | <strong>Email:</strong> d.cerovac@celonis.de | <strong>Location:</strong> Munich, Germany</p>
+  <p><strong>Apollo Person ID:</strong> 61681ba8e5c0220001783f50 | <strong>Email status:</strong> verified</p>
+  <p><strong>Source:</strong> Apollo People Search + Enrichment</p>
+  <p><strong>LinkedIn:</strong> <a href="http://www.linkedin.com/in/damir-cerovac-5908a043">linkedin.com/in/damir-cerovac</a></p>
+  <p><strong>Note:</strong> LinkedIn headline says "AI Quality Engineering Manager @ Celonis"</p>
+
+  <div class="email-draft">
+    <p><strong>Subject:</strong> Damir's QA engineering at Celonis</p>
+    <p>Hi Damir,
+
+Leading QA engineering at Celonis, your team is probably managing test suites across a complex process mining platform with frequent product iterations. When maintenance keeps growing, the team spends more time fixing tests than building new coverage.
+
+Medibuddy automated 2,500 tests with Testsigma and cut test maintenance by 50%, freeing their team to focus on expanding coverage instead of fixing broken scripts.
+
+Is test maintenance eating into your team's coverage goals? What day works to see how this could work at Celonis?</p>
+  </div>
+
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 83 ✅ | QM: 2 ✅ | Subject: SMYKM ✅ | HC1: ✅ | Challenge: ✅ | Proof: Medibuddy (unique at Celonis) ✅ | Testsigma: ✅ | CTA: "What day works" ✅ | No em dashes: ✅ | No placeholders: ✅ | Unique proof: ✅ | Tone: conversational ✅ | <strong>MQS: 12/12 — PASS</strong>
+  </div>
+</div>
+
+<!-- 7. Manoj Sharma — Celonis -->
+<div class="card">
+  <h3>Manoj Sharma — Staff QA Engineer | Quality Engineering Lead</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p><strong>Company:</strong> Celonis | <strong>Email:</strong> m.sharma@celonis.de | <strong>Location:</strong> Stuttgart, Germany</p>
+  <p><strong>Apollo Person ID:</strong> 60edde72bebd800001541aba | <strong>Email status:</strong> verified</p>
+  <p><strong>Source:</strong> Apollo People Search + Enrichment</p>
+  <p><strong>LinkedIn:</strong> <a href="http://www.linkedin.com/in/manoj-s-a0184117">linkedin.com/in/manoj-s</a></p>
+
+  <div class="email-draft">
+    <p><strong>Subject:</strong> Manoj's quality engineering at Celonis</p>
+    <p>Hi Manoj,
+
+Leading quality engineering at Celonis means your team is responsible for ensuring the process mining platform works reliably across complex enterprise workflows. As the product grows, manual testing effort tends to grow faster than the team.
+
+Spendflo cut their manual testing effort by 50% after adopting Testsigma, using plain English test creation that let their team automate faster without heavy scripting.
+
+Is manual testing effort outpacing your team's automation progress? What day works to explore how this could fit Celonis?</p>
+  </div>
+
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 78 ✅ | QM: 2 ✅ | Subject: SMYKM ✅ | HC1: ✅ | Challenge: ✅ | Proof: Spendflo (unique at Celonis) ✅ | Testsigma: ✅ | CTA: "What day works" ✅ | No em dashes: ✅ | No placeholders: ✅ | Unique proof: ✅ | Tone: conversational ✅ | <strong>MQS: 12/12 — PASS</strong>
+  </div>
+</div>
+
+<!-- 8. Randy Wolfe — OSF HealthCare -->
+<div class="card">
+  <h3>Randy Wolfe — VP Technical Services</h3>
+  <span class="badge badge-enrolled">Enrolled</span>
+  <p><strong>Company:</strong> OSF HealthCare | <strong>Email:</strong> randy.wolfe@osfhealthcare.org | <strong>Location:</strong> Dunlap, IL</p>
+  <p><strong>Apollo Person ID:</strong> 60854f9ca227cd000183f151 | <strong>Apollo Contact ID:</strong> 67914d98554fff00018dab34 (already exists, no active sequences)</p>
+  <p><strong>Email status:</strong> verified</p>
+  <p><strong>Source:</strong> Apollo People Search + Enrichment (existing contact)</p>
+  <p><strong>LinkedIn:</strong> <a href="http://www.linkedin.com/in/randy-wolfe-44b07174">linkedin.com/in/randy-wolfe</a></p>
+
+  <div class="email-draft">
+    <p><strong>Subject:</strong> Randy's tech services at OSF HealthCare</p>
+    <p>Hi Randy,
+
+Overseeing technology services at OSF HealthCare, your team manages applications that support clinical operations across a 17-hospital network. When software updates roll out, testing those applications thoroughly before they reach care teams is critical but time-consuming.
+
+Sanofi was dealing with the same challenge and reduced their regression testing from 3 days to 80 minutes using Testsigma, validating releases faster without compromising compliance.
+
+Is application testing creating bottlenecks during your release cycles? What day works to see how this could help at OSF?</p>
+  </div>
+
+  <div class="qa-gate">
+    <strong>QA Gate:</strong> WC: 80 ✅ | QM: 2 ✅ | Subject: SMYKM ✅ | HC1: ✅ | Challenge: ✅ | Proof: Sanofi (unique at OSF) ✅ | Testsigma: ✅ | CTA: "What day works" ✅ | No em dashes: ✅ | No placeholders: ✅ | Unique proof: ✅ | Tone: conversational ✅ | <strong>MQS: 12/12 — PASS</strong>
+  </div>
+</div>
+
+<!-- BACKLOG -->
+<div class="backlog">
+  <h2>Backlog (3 contacts)</h2>
+  <p>These contacts were found during sourcing but could not be included in this batch:</p>
+  <ul>
+    <li><strong>Amir Aly</strong> (Procore, Director QA Engineering) — DUPLICATE: already contacted 2026-03-06 (Buyer Intent Email T2)</li>
+    <li><strong>Bogdan Mi***u</strong> (Celonis, Director of Engineering) — Enrichment returned no match</li>
+    <li><strong>Successive Technologies</strong> — Only 2 QA Leads found (no manager+ seniority). Thin account, consider Sales Nav deep sweep in future batch.</li>
+  </ul>
+</div>
+
+<!-- DEDUP LOG -->
+<div class="card">
+  <h2>Dedup Verification Log</h2>
+  <table class="proof-tracker">
+    <tr><th>Contact</th><th>MASTER_SENT</th><th>DNC</th><th>Apollo Contacts</th><th>Batch Dupe</th><th>TAM Domain</th><th>Result</th></tr>
+    <tr><td>Rana Tharwat</td><td>CLEAN</td><td>CLEAN</td><td>Not found</td><td>N/A</td><td>procore.com ✅</td><td>PASS</td></tr>
+    <tr><td>Lamya Sary</td><td>CLEAN</td><td>CLEAN</td><td>Not found</td><td>N/A</td><td>procore.com ✅</td><td>PASS</td></tr>
+    <tr><td>Anna Broitman</td><td>CLEAN</td><td>CLEAN</td><td>Not found</td><td>N/A</td><td>sailpoint.com ✅</td><td>PASS</td></tr>
+    <tr><td>Sandeep Enagala</td><td>CLEAN</td><td>CLEAN</td><td>Not found</td><td>N/A</td><td>sailpoint.com ✅</td><td>PASS</td></tr>
+    <tr><td>Satish Chavan</td><td>CLEAN</td><td>CLEAN</td><td>Not found</td><td>N/A</td><td>sailpoint.com ✅</td><td>PASS</td></tr>
+    <tr><td>Damir Cerovac</td><td>CLEAN</td><td>CLEAN</td><td>Not found</td><td>N/A</td><td>celonis.com ✅</td><td>PASS</td></tr>
+    <tr><td>Manoj Sharma</td><td>CLEAN</td><td>CLEAN</td><td>Not found</td><td>N/A</td><td>celonis.com ✅</td><td>PASS</td></tr>
+    <tr><td>Randy Wolfe</td><td>CLEAN</td><td>CLEAN</td><td>Exists (no sequence)</td><td>N/A</td><td>osfhealthcare.org ✅</td><td>PASS</td></tr>
+  </table>
+</div>
+
+</body>
+</html>

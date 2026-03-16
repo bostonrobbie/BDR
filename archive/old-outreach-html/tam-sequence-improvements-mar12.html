@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAM Sequence — Data-Driven Improvements · Mar 12, 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #0f1117;
+    color: #e0e0e0;
+    line-height: 1.65;
+    padding: 36px 24px;
+  }
+  .page { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 1.7rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .subtitle { font-size: 0.875rem; color: #6b7280; margin-bottom: 40px; }
+  h2 {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #9ca3af;
+    margin-bottom: 14px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #1f2937;
+  }
+
+  /* Tier badges */
+  .tier-block { margin-bottom: 44px; }
+  .tier-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+  .tier-p0 .tier-label { background: #7f1d1d; color: #fca5a5; }
+  .tier-p1 .tier-label { background: #78350f; color: #fcd34d; }
+  .tier-p2 .tier-label { background: #1e3a5f; color: #93c5fd; }
+
+  /* Improvement card */
+  .card {
+    background: #161b27;
+    border: 1px solid #1f2937;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid #1f2937;
+  }
+  .card-num {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #1f2937;
+    color: #9ca3af;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  .tier-p0 .card-num { background: #7f1d1d; color: #fca5a5; }
+  .tier-p1 .card-num { background: #78350f; color: #fcd34d; }
+  .tier-p2 .card-num { background: #1e3a5f; color: #93c5fd; }
+
+  .card-title-block { flex: 1; }
+  .card-title { font-size: 1rem; font-weight: 600; color: #f9fafb; line-height: 1.3; }
+  .doc-tags { margin-top: 5px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .doc-tag {
+    font-size: 0.67rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    background: #1f2937;
+    border: 1px solid #374151;
+    padding: 2px 7px;
+    border-radius: 3px;
+  }
+  .card-body { padding: 16px 20px; }
+
+  .section-label {
+    font-size: 0.67rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b7280;
+    margin-bottom: 5px;
+    margin-top: 12px;
+  }
+  .section-label:first-child { margin-top: 0; }
+  .card-body p { font-size: 0.875rem; color: #d1d5db; }
+  .card-body p + p { margin-top: 8px; }
+
+  .evidence-box {
+    background: #0f1117;
+    border: 1px solid #374151;
+    border-left: 3px solid #4b5563;
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    color: #9ca3af;
+    margin-top: 8px;
+  }
+  .tier-p0 .evidence-box { border-left-color: #ef4444; }
+  .tier-p1 .evidence-box { border-left-color: #f59e0b; }
+  .tier-p2 .evidence-box { border-left-color: #3b82f6; }
+
+  .fix-box {
+    background: #0d1f12;
+    border: 1px solid #166534;
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    color: #86efac;
+    margin-top: 8px;
+  }
+  code {
+    font-family: "SF Mono", "Fira Code", Consolas, monospace;
+    font-size: 0.8em;
+    background: #1f2937;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #a5b4fc;
+  }
+
+  .impact-row {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+  }
+  .impact-cell { flex: 1; }
+  .impact-cell .section-label { margin-top: 0; }
+
+  .stat { font-size: 1.2rem; font-weight: 700; color: #f9fafb; }
+  .tier-p0 .stat { color: #fca5a5; }
+  .tier-p1 .stat { color: #fcd34d; }
+  .tier-p2 .stat { color: #93c5fd; }
+
+  hr.divider { border: none; border-top: 1px solid #1f2937; margin: 48px 0; }
+
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    margin-top: 16px;
+  }
+  .summary-table th {
+    text-align: left;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b7280;
+    padding: 6px 12px;
+    border-bottom: 1px solid #1f2937;
+  }
+  .summary-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #1f2937;
+    vertical-align: top;
+    color: #d1d5db;
+  }
+  .summary-table tr:last-child td { border-bottom: none; }
+  .summary-table tr:hover td { background: #1a2030; }
+
+  .badge-p0 { color: #fca5a5; font-weight: 700; }
+  .badge-p1 { color: #fcd34d; font-weight: 700; }
+  .badge-p2 { color: #93c5fd; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>TAM Sequence — Data-Driven Improvements</h1>
+  <div class="subtitle">Mar 12, 2026 &nbsp;·&nbsp; 14 improvements across 8 documents &nbsp;·&nbsp; Based on 494 sends, 12 incidents, wave-by-wave analysis</div>
+
+  <!-- P0 CRITICAL -->
+  <div class="tier-block tier-p0">
+    <h2>Priority Tier</h2>
+    <span class="tier-label">P0 — Fix before next send</span>
+
+    <!-- #1 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-num">1</div>
+        <div class="card-title-block">
+          <div class="card-title">Apollo default sending address is wrong for TAM</div>
+          <div class="doc-tags">
+            <span class="doc-tag">apollo-config.md</span>
+            <span class="doc-tag">sop-tam-outbound.md</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="section-label">The problem</div>
+        <p><code>apollo-config.md</code> documents the Apollo default sending email as <code>robert.gorham@testsigma.net</code>. TAM outbound requires <code>robert.gorham@testsigma.com</code>. These are different inboxes with different deliverability histories. If the wrong one is selected during a sequence task, every email in that run goes from the wrong address — with no visible error.</p>
+        <div class="evidence-box">Evidence: apollo-config.md default address field + Part 6 of sop-tam-outbound.md ("sent via Apollo — robert.gorham@testsigma.com"). The two docs use different domain suffixes. No pre-send address verification step exists in the current checklist.</div>
+
+        <div class="section-label">The fix</div>
+        <div class="fix-box">
+          1. Add a mandatory "sending address" spot-check as Step 1 of the pre-send verification checklist in <code>sop-tam-outbound.md</code> Part 10 (or wherever the send checklist lives).<br><br>
+          2. Update <code>apollo-config.md</code> to mark <code>robert.gorham@testsigma.net</code> as "DEFAULT (WRONG FOR TAM)" and add a red-flag note: "TAM Outbound sequences must always use robert.gorham@testsigma.com as the linked account."<br><br>
+          3. Add a JS verification step to the INC-012 pre-send protocol that reads the "from" field before clicking Send, not just the body.
+        </div>
+
+        <div class="impact-row">
+          <div class="impact-cell">
+            <div class="section-label">Risk if unfixed</div>
+            <div class="stat">100%</div>
+            <p>of sends in a bad run land from wrong address — no detection, no correction</p>
+          </div>
+          <div class="impact-cell">
+            <div class="section-label">Fix time</div>
+            <div class="stat">~10 min</div>
+            <p>Documentation update only</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- #2 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-num">2</div>
+        <div class="card-title-block">
+          <div class="card-title">Email verification gate exists but wasn't enforced — 11% bounce rate is the consequence</div>
+          <div class="doc-tags">
+            <span class="doc-tag">sop-tam-outbound.md Part 5</span>
+            <span class="doc-tag">sop-prospect.md</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="section-label">The problem</div>
+        <p>Part 5 of <code>sop-tam-outbound.md</code> already includes email status guidance in the Research Quality Gate: verified → proceed, catchall → case-by-case, extrapolated → case-by-case. But this gate is checklist language, not a blocking step with teeth. Wave 1 went out with Humana hitting a 100% bounce rate, Commvault at 40%, Mastercard at 25%. The gate existed; it just wasn't operationalized as a hard stop.</p>
+        <div class="evidence-box">Evidence: MASTER_SENT_LIST.csv — 10 confirmed hard bounce rows. Humana block (multiple contacts), Commvault, Mastercard. Apollo custom field <code>678901dcd836ab01b09a6110 = "invalid"</code> correlates with bounce outcomes and could have been used as a pre-send filter but wasn't.</div>
+
+        <div class="section-label">The fix</div>
+        <div class="fix-box">
+          1. In the batch tracker template, add a mandatory "Email Status" column that must be filled before any contact moves to Draft column. Not a note — a required field with three valid values: ✅ Verified / ⚠️ Catchall / ⚠️ Extrapolated.<br><br>
+          2. Add to <code>sop-tam-outbound.md</code> Part 5 Research Quality Gate: "HARD STOP: If Apollo custom field 678901dcd836ab01b09a6110 = 'invalid' on this contact — do not enroll. Flag for re-enrichment and move to next contact."<br><br>
+          3. Add a batch-level pre-flight check: pull Apollo contact list filtered by invalid flag for the batch, verify count = 0 before sending.
+        </div>
+
+        <div class="impact-row">
+          <div class="impact-cell">
+            <div class="section-label">Bounce rate</div>
+            <div class="stat">11%</div>
+            <p>across TAM sends — hurts domain reputation cumulatively</p>
+          </div>
+          <div class="impact-cell">
+            <div class="section-label">Credits wasted</div>
+            <div class="stat">~54</div>
+            <p>of 494 sends likely bounced before reaching a real inbox</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- #3 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-num">3</div>
+        <div class="card-title-block">
+          <div class="card-title">sop-tam-outbound.md Part 6 T1 formula is behind the v4 update in sop-outreach.md</div>
+          <div class="doc-tags">
+            <span class="doc-tag">sop-tam-outbound.md Part 6</span>
+            <span class="doc-tag">sop-outreach.md (v4)</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="section-label">The problem</div>
+        <p>Part 6 of <code>sop-tam-outbound.md</code> (updated Mar 10) still instructs: <em>"Opener: MUST use HC1-compliant SMYKM opening: 'We have yet to be properly introduced, but I'm Rob with Testsigma.'"</em> The v4 formula in <code>sop-outreach.md</code> (updated today, Mar 12) made structural changes — connected paragraphs, named customer proof points, specific banned openers. Whether "We have yet to be properly introduced" survived v4 is ambiguous. The worked examples in v4 need to be propagated back to Part 6 so both docs agree.</p>
+        <p>Additionally: Part 6 uses the Challenge-Narrative structure (embedded context + bridge to proof point) while v4 uses P1/P2/P3 connected paragraph logic. Drafters reading only Part 6 are working from a different formula than v4.</p>
+        <div class="evidence-box">Evidence: sop-tam-outbound.md Part 6 lines 331-360 vs sop-outreach.md v4 structure. The two docs were updated on different days and haven't been reconciled.</div>
+
+        <div class="section-label">The fix</div>
+        <div class="fix-box">
+          1. Establish a single source of truth: <code>sop-outreach.md</code> is the formula definition doc. <code>sop-tam-outbound.md</code> Part 6 should REFERENCE it ("Use v4 formula from sop-outreach.md — current as of [date]") rather than maintaining a parallel copy of the formula.<br><br>
+          2. Audit the three v4 worked examples (BlackRock/Gil Leong, Cash App/Ralph Soto, Bungie/Sean Glynn) for whether any use the "We have yet to be properly introduced" opener. If none do, add a line to Part 6: "Note: 'We have yet to be properly introduced' HC1 opener is DEPRECATED as of v4. Do not use."<br><br>
+          3. Do this reconciliation before the next T1 batch draft.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end P0 -->
+
+  <!-- P1 THIS WEEK -->
+  <div class="tier-block tier-p1">
+    <span class="tier-label">P1 — Fix this week (impacts active waves)</span>
+
+    <!-- #4 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-num">4</div>
+        <div class="card-title-block">
+          <div class="card-title">Phone steps 4-6 (Days 15/21/28) exist in the sequence with zero SOP coverage</div>
+          <div class="doc-tags">
+            <span class="doc-tag">apollo-config.md</span>
+            <span class="doc-tag">sop-tam-outbound.md (missing section)</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="section-label">The problem</div>
+        <p>TAM Outbound has 7 steps. Email (Day 1), Email (Day 5), LinkedIn Connection (Day 10), Phone (Day 15), Phone (Day 21), Phone (Day 28), Breakup Email (Day 35). <code>apollo-config.md</code> documents the step IDs for phone steps 4-6. Wave 1 launched Feb 28 — phone steps will hit mid-March. There is no SOP coverage for: what to say on a voicemail, what to say if they pick up, how to log a call outcome, or what triggers a skip vs. attempt.</p>
+        <div class="evidence-box">Evidence: apollo-config.md step IDs for phone steps + sop-tam-outbound.md — no Part addressing phone. MASTER_SENT_LIST has no phone attempt rows. Wave 1 Day 15 phone step = ~Mar 14.</div>
+
+        <div class="section-label">The fix</div>
+        <div class="fix-box">
+          Add Part 8 to <code>sop-tam-outbound.md</code>: Phone Steps (Days 15/21/28). Minimum required:<br><br>
+          <strong>Voicemail script</strong> (15-18 seconds): "Hey [Name], it's Rob Gorham from Testsigma — I've sent a couple notes about [specific T1/T2 topic]. Totally understand if the timing isn't right, but wanted to try. If it's worth 15 minutes, you can grab time at [calendar link]. Otherwise no worries — I'll follow up one more time."<br><br>
+          <strong>Live answer script</strong>: One-liner hook → "Are you the right person for QA tooling decisions?" → if yes, 30-second pitch + calendar ask → if no, get referral.<br><br>
+          <strong>Skip trigger</strong>: If email T1 hard-bounced, skip all phone steps for that contact.<br><br>
+          <strong>Logging</strong>: Log to Apollo activity as "Phone attempt — VM left" or "Phone attempt — no answer." Update MASTER_SENT_LIST equivalent.
+        </div>
+
+        <div class="impact-row">
+          <div class="impact-cell">
+            <div class="section-label">Steps uncovered</div>
+            <div class="stat">3 of 7</div>
+            <p>sequence steps have no operational guidance</p>
+          </div>
+          <div class="impact-cell">
+            <div class="section-label">First phone step hits</div>
+            <div class="stat">~Mar 14</div>
+            <p>for Wave 1 (launched Feb 28)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- #5 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-num">5</div>
+        <div class="card-title-block">
+          <div class="card-title">sop-email.md T2 formula is now irrelevant to TAM — needs scope clarification or deprecation</div>
+          <div class="doc-tags">
+            <span class="doc-tag">sop-email.md</span>
+            <span class="doc-tag">sop-tam-outbound.md Part 7</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="section-label">The problem</div>
+        <p><code>sop-email.md</code> contains the "Multi-Channel T2 Email (After LinkedIn InMail T1)" Variant A formula — 5-part structure with a LinkedIn callback step built in. The LinkedIn InMail T1 path is deprecated for TAM. The TAM T2 formula now lives in <code>sop-tam-outbound.md</code> Part 7 (4-part structure, no LinkedIn callback, 15-minute meeting CTA). A drafter reading sop-email.md without context could apply the InMail-T1 formula to TAM T2 drafts — creating emails with a LinkedIn callback that never happened.</p>
+        <div class="evidence-box">Evidence: sop-email.md line 10: "When email is used as Touch 2 in the LinkedIn Outbound sequence (Day 5 after T1 InMail)." TAM T1 is always email, not InMail. The two formulas exist in parallel with no clear routing logic between them.</div>
+
+        <div class="section-label">The fix</div>
+        <div class="fix-box">
+          Add a scope banner to the top of <code>sop-email.md</code>:<br><br>
+          "⚠️ SCOPE: This SOP covers T2 email that follows a LinkedIn InMail T1. For TAM Outbound (email T1 → email T2), use sop-tam-outbound.md Part 7. Do not apply the LinkedIn callback step if T1 was email."<br><br>
+          Longer-term: evaluate whether sop-email.md is still active (is there a LinkedIn InMail T1 path running anywhere?) or archive it with a deprecation note.
+        </div>
+      </div>
+    </div>
+
+    <!-- #6 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-num">6</div>
+        <div class="card-title-block">
+          <div class="card-title">Proof point rotation isn't enforced at the account level — Wave 1 used Hansard for every account</div>
+          <div class="doc-tags">
+            <span class="doc-tag">target-accounts.md</span>
+            <span class="doc-tag">sop-tam-outbound.md Part 5</span>
+            <span class="doc-tag">batch tracker template</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="section-label">The problem</div>
+        <p>Wave 1 (Cboe, Fidelity, Chase, TruStage, Commvault) all received Hansard as their T1 proof point with no differentiation by company fit. When T2 drafts now go out for these contacts, the "new proof point" requirement means five different stories need to be assigned — but there's no system tracking which T1 story each account received to prevent T2 reuse.</p>
+        <p>Additionally, within an account (e.g., multiple contacts at Fidelity), different contacts can receive the same proof point — so a Fidelity QA Manager and a Fidelity SDET might both get Hansard in T1, which looks coordinated if compared.</p>
+        <div class="evidence-box">Evidence: target-accounts.md Wave 1 proof point assignments — all 5 accounts: Hansard. sop-tam-outbound.md Part 5 Research Quality Gate requires "Proof point assigned (distinct from other contacts at the same company)" — but no enforcement mechanism exists beyond the checklist.</div>
+
+        <div class="section-label">The fix</div>
+        <div class="fix-box">
+          1. Add "T1 Proof Point" and "T2 Proof Point" as required columns in the batch tracker template. Must be filled before draft is created — blocks drafting the same story twice for the same contact across touches.<br><br>
+          2. Add "T1 Proof Points Used" to the account block in <code>target-accounts.md</code> for each active account. Update at batch-build time, not at send time.<br><br>
+          3. Add explicit routing logic to <code>sop-tam-outbound.md</code> Part 7 T2 rules: "Before assigning T2 proof point, check target-accounts.md entry for this account — T2 story must differ from the T1 story listed there."<br><br>
+          4. For the five Wave 1 accounts: backfill the T1 proof point column in target-accounts.md now (all = Hansard) before T2 drafts begin.
+        </div>
+      </div>
+    </div>
+
+    <!-- #7 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-num">7</div>
+        <div class="card-title-block">
+          <div class="card-title">CTA data conflict is unresolved — "what day works" vs 15-minute ask, no test designed</div>
+          <div class="doc-tags">
+            <span class="doc-tag">sop-tam-outbound.md Part 7</span>
+            <span class="doc-tag">scoring-feedback.md</span>
+            <span class="doc-tag">CLAUDE.md preferences</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="section-label">The problem</div>
+        <p>CLAUDE.md preferences note: <em>"what day works" as default CTA (40.4% reply rate)</em> — but this data comes from earlier sends. The current T2 formula in <code>sop-tam-outbound.md</code> Part 7 uses a more specific "Would 15 minutes make sense to walk through how [Customer] made that shift and see if it applies?" CTA. These are different asks with different friction levels, and no A/B test has been run to determine which performs better in TAM context specifically.</p>
+        <p>Meanwhile, <code>scoring-feedback.md</code> lists CTA ask intensity as one of 7 testable variables — with documented split rules and reply tagging framework — but none of this infrastructure has been instantiated across any wave.</p>
+        <div class="evidence-box">Evidence: CLAUDE.md "what day works" = 40.4% reply rate. TAM T2 Part 7 CTA phrasing examples all use "Would 15 minutes be worth it..." style. scoring-feedback.md A/B Testing Rules — "Ask intensity" listed as testable variable #4. No batch has been tagged with a CTA variable code.</div>
+
+        <div class="section-label">The fix</div>
+        <div class="fix-box">
+          Design and run the test in Wave 5 or 6 T1 batch (25 contacts minimum per arm):<br><br>
+          <strong>Arm A:</strong> "What day works for a quick 15 minutes?" (direct, low friction)<br>
+          <strong>Arm B:</strong> "Would 15 minutes make sense to walk through how [Customer] did it and see if it applies?" (contextualized ask)<br><br>
+          Tag each batch with CTA variant code in the batch tracker. Read results at 7-day open window. Feed into pre-brief before next batch per scoring-feedback.md Pre-Brief protocol.<br><br>
+          Until data is in: use "what day works" as default for T1 (historical baseline), "Would 15 minutes make sense" for T2 (higher investment justified by longer touch).
+        </div>
+
+        <div class="impact-row">
+          <div class="impact-cell">
+            <div class="section-label">Historical "what day works" rate</div>
+            <div class="stat">40.4%</div>
+            <p>across all channels — but not isolated to TAM email</p>
+          </div>
+          <div class="impact-cell">
+            <div class="section-label">A/B framework status</div>
+            <div class="stat">Documented</div>
+            <p>Never instantiated across any wave</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- #8 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-num">8</div>
+        <div class="card-title-block">
+          <div class="card-title">Catchall domain sends have no downstream tracking — open/click is the only deliverability signal and it's not being monitored</div>
+          <div class="doc-tags">
+            <span class="doc-tag">sop-tam-outbound.md Part 5</span>
+            <span class="doc-tag">batch tracker template</span>
+            <span class="doc-tag">sop-email.md</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="section-label">The problem</div>
+        <p>8 of 12 Wave 6 Batch 2 companies have catchall domains. When you send to a catchall, a soft or undelivered email won't surface as a hard bounce — it silently disappears. The only deliverability proxy is open or click signal. But no SOP step currently says: "For ⚠️ catchall contacts, check Apollo open/click at 72 hours. If no open, mark as probable undelivered and skip next touch."</p>
+        <div class="evidence-box">Evidence: Wave 6 Batch 2 run learnings in sop-email.md — "8 of 12 companies have catchall domains (BeyondTrust, Jack Henry, Bluevine, hims & hers, SingleStore, Skedulo, EverBank, KIBO). Catchall means bounces won't show as hard bounces." No corresponding monitoring SOP exists.</div>
+
+        <div class="section-label">The fix</div>
+        <div class="fix-box">
+          1. Add a "Catchall Monitor" column to the batch tracker template (values: N/A / ⚠️ Catchall — check at 72hr).<br><br>
+          2. Add to <code>sop-tam-outbound.md</code> exit checklist: "For all ⚠️ catchall contacts: pull Apollo activity at 72 hours post-send. If email shows 0 opens on a catchall account, mark status as 'Probable undelivered — skip T2, re-enrich email before next touch.'"<br><br>
+          3. Optional longer-term: build a lightweight script that queries Apollo activity for all catchall-flagged contacts and outputs a deliverability summary.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end P1 -->
+
+  <!-- P2 STRUCTURAL -->
+  <div class="tier-block tier-p2">
+    <span class="tier-label">P2 — Structural improvements (implement this sprint)</span>
+
+    <!-- #9 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-num">9</div>
+        <div class="card-title-block">
+          <div class="card-title">MASTER_SENT_LIST missing company column — account-level dedup is manual and error-prone</div>
+          <div class="doc-tags">
+            <span class="doc-tag">MASTER_SENT_LIST.csv</span>
+            <span class="doc-tag">memory/playbooks/dedup-protocol.md</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="section-label">The problem</div>
+        <p>MASTER_SENT_LIST.csv tracks 494 sends by person (name + email + LinkedIn URL). There is no company column. Every account-level dedup check — "has anyone at Fidelity been contacted?" — requires either memory or a manual Apollo lookup. This makes it impossible to programmatically catch same-company double-sends, or to pull a company send history without manual cross-referencing.</p>
+        <div class="evidence-box">Evidence: Python parsing of MASTER_SENT_LIST.csv — no company/domain column present across all 494 rows. dedup-protocol.md references the list as the canonical dedup source but provides no guidance for company-level checks.</div>
+
+        <div class="section-label">The fix</div>
+        <div class="fix-box">
+          1. Add "Company" and "Domain" columns to MASTER_SENT_LIST.csv starting today. Every new entry must include both fields.<br><br>
+          2. Backfill from Apollo/LinkedIn for high-volume accounts (Wave 1-4 contacts) — any account with 3+ contacts is worth backfilling first.<br><br>
+          3. Add to dedup-protocol.md: "Before enrolling any contact at a company, filter MASTER_SENT_LIST by Company == [company name] to see all prior touches at that account."<br><br>
+          4. Update the batch tracker template: the "MASTER_SENT_LIST check" gate should note: "Check both person and company columns."
+        </div>
+      </div>
+    </div>
+
+    <!-- #10 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-num">10</div>
+        <div class="card-title-block">
+          <div class="card-title">50-sends/day target is inconsistent with the SOP's own research time estimates</div>
+          <div class="doc-tags">
+            <span class="doc-tag">sop-tam-outbound.md Part 5</span>
+            <span class="doc-tag">CLAUDE.md</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="section-label">The problem</div>
+        <p>CLAUDE.md states: "Target: 25-50 new contacts enrolled every send day." Part 5 of <code>sop-tam-outbound.md</code> documents Layer 1 Account Research Block at 8-12 min per company and Layer 2 contact research at 5-8 min per person. At 3 contacts per company and 8-12 companies to hit 25-36 contacts: 8-12 min (Layer 1) + 3 × 5-8 min (Layer 2) = 23-36 min per company × 8-12 companies = 3-7 hours of research before a single draft is written. Add drafting, QA, and Apollo enrollment and 50/day is not a realistic human solo target.</p>
+        <div class="evidence-box">Evidence: sop-tam-outbound.md Part 5 time estimates + CLAUDE.md target = mathematical inconsistency. Actual observed send volume: peak day was 84 sends on Mar 12 (a multi-wave catch-up day), average is closer to 20-30 for a normal batch run.</div>
+
+        <div class="section-label">The fix</div>
+        <div class="fix-box">
+          1. Update CLAUDE.md target: "Target: 15-25 new contacts enrolled per send session (quality research enforced). 30+ requires pre-built batch tracker from prior session."<br><br>
+          2. Add to Part 5 of <code>sop-tam-outbound.md</code>: "Daily capacity note: With full Layer 1+2 research, realistic throughput is 3-4 accounts (9-12 contacts) per 2-hour session. Pre-built batch trackers (started prior session) expand this to 5-6 accounts."<br><br>
+          3. Separate "prospecting day" (research + batch build) from "send day" (enroll + send from pre-built batch) in the SOP framing. These are different workflows.
+        </div>
+      </div>
+    </div>
+
+    <!-- #11 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-num">11</div>
+        <div class="card-title-block">
+          <div class="card-title">A/B testing framework has never been instantiated — 494 sends worth of data is untagged</div>
+          <div class="doc-tags">
+            <span class="doc-tag">scoring-feedback.md</span>
+            <span class="doc-tag">sop-tam-outbound.md</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="section-label">The problem</div>
+        <p><code>scoring-feedback.md</code> documents 7 testable variables (pain hook, proof point style, opener style, ask intensity, message length, email subject, email structure), proper split rules (even by persona/vertical, one variable per batch, 3+ batches for conclusions), and 7 reply tags for attribution. None of this has ever been applied to an actual wave. Every batch has gone out without a variable code, making it impossible to know which formula elements are driving results vs. which aren't.</p>
+        <p>The Pallavi Sheshadri lesson — the only warm reply this campaign came from an accidental premature Touch 3 email — is an isolated data point but hints that different timing and structure unlocked a response. Without A/B tagging, these lessons stay anecdotal.</p>
+        <div class="evidence-box">Evidence: scoring-feedback.md A/B Testing Rules (fully documented). MASTER_SENT_LIST.csv — no variable column exists. 494 sends = 0 tagged data points. Pallavi Sheshadri: replied to accidental Touch 3 structure (different from T1/T2 formula).</div>
+
+        <div class="section-label">The fix</div>
+        <div class="fix-box">
+          1. Add "AB_Variable" and "AB_Arm" columns to MASTER_SENT_LIST.csv going forward. Format: AB_Variable = "subject_style", AB_Arm = "A" or "B".<br><br>
+          2. Starting with Wave 5+, assign one test variable per batch before batch-build. Document in batch tracker header.<br><br>
+          3. Priority first test: Subject line format — "Name's QA at Company" (personal SMYKM) vs. "Testing Company's [product/platform]" (specific problem framed). Split even across first 40+ sends.<br><br>
+          4. Add reply tag to every pipeline-state.md entry when a reply comes in. One tag per reply from the 7 in scoring-feedback.md.<br><br>
+          5. Run pre-brief (5-line summary per scoring-feedback.md) before Wave 6 batch-build using whatever wave 5 data is available.
+        </div>
+      </div>
+    </div>
+
+    <!-- #12 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-num">12</div>
+        <div class="card-title-block">
+          <div class="card-title">Reply classification is unstructured — no tags, no pattern detection, no feedback loop</div>
+          <div class="doc-tags">
+            <span class="doc-tag">scoring-feedback.md</span>
+            <span class="doc-tag">memory/pipeline-state.md</span>
+            <span class="doc-tag">memory/warm-leads.md</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="section-label">The problem</div>
+        <p>Every reply that's come in (Pallavi Sheshadri positive, Abe Blanco decline, etc.) has been logged in <code>pipeline-state.md</code> or <code>warm-leads.md</code> as free text. There's no structured tag applied to attribute WHAT triggered the reply. The scoring-feedback.md reply tag system (Opener, Pain hook, Proof point, Timing, Referral, Not interested, Unknown) exists but has never been used. Without tags, the pre-brief can't surface "proof point X is in most replies" or "pain hook Y got zero engagement."</p>
+        <div class="evidence-box">Evidence: pipeline-state.md and warm-leads.md entries — all free text, no reply_tag field. scoring-feedback.md Reply Tagging table defined but not operationalized in any tracking doc.</div>
+
+        <div class="section-label">The fix</div>
+        <div class="fix-box">
+          1. Add "reply_tag" field to every pipeline-state.md and warm-leads.md entry at the time of logging. Retroactively tag Pallavi (Unknown → possibly CTA/structure) and Abe Blanco (Not interested).<br><br>
+          2. Add to the warm-leads.md SOP Response Rules: "When logging any reply, assign one reply tag from scoring-feedback.md before writing the outreach log entry."<br><br>
+          3. Add to session-handoff.md: "If any replies received this session, confirm reply_tag was applied to all."
+        </div>
+      </div>
+    </div>
+
+    <!-- #13 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-num">13</div>
+        <div class="card-title-block">
+          <div class="card-title">INC-012 pre-send verification is manual — same trigger, three separate wrong-body sends</div>
+          <div class="doc-tags">
+            <span class="doc-tag">incidents.md (INC-007/008/012)</span>
+            <span class="doc-tag">sop-tam-outbound.md</span>
+            <span class="doc-tag">Apollo send workflow</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="section-label">The problem</div>
+        <p>INC-007, INC-008, and INC-012 are three separate incidents with the same root cause: Quill API injection disconnects the DOM from Apollo's send payload, so the approved body and the sent body diverge. Three separate times. INC-012 adds Rules 12-A through 12-E (JS readback, zoom screenshot, explicit Rob approval, 60-second post-send Gmail check). But these rules are documented in <code>incidents.md</code> — not embedded into the actual send workflow SOP. A drafter following only <code>sop-tam-outbound.md</code> would not hit these checks.</p>
+        <div class="evidence-box">Evidence: incidents.md INC-007/008/012 — three incidents, same root cause. Rules 12-A through 12-E added reactively. sop-tam-outbound.md send section does not reference these rules.</div>
+
+        <div class="section-label">The fix</div>
+        <div class="fix-box">
+          1. Add a "Pre-Send Verification Block" to <code>sop-tam-outbound.md</code> Part 9 (or the send section) that inline-embeds the INC-012 rules — not just a reference to incidents.md. The drafter should not have to leave the SOP to find the safety checklist.<br><br>
+          2. The verification block should be a literal checklist, in order:<br>
+          &nbsp;&nbsp;[ ] Confirm sending address = robert.gorham@testsigma.com<br>
+          &nbsp;&nbsp;[ ] Do NOT use Quill API injection (dangerouslyPasteHTML / setText / setContents)<br>
+          &nbsp;&nbsp;[ ] JS readback: innerText.trim().slice(0,120) — match vs approved draft<br>
+          &nbsp;&nbsp;[ ] Zoom screenshot of body — present to Rob<br>
+          &nbsp;&nbsp;[ ] Wait for Rob's "looks good" / "send it" (separate from content APPROVE SEND)<br>
+          &nbsp;&nbsp;[ ] Post-send: Gmail MCP check within 60 seconds<br><br>
+          3. Add: "APPROVE SEND ≠ APPROVE CLICK. These are two separate gates. Never compress them."
+        </div>
+      </div>
+    </div>
+
+    <!-- #14 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-num">14</div>
+        <div class="card-title-block">
+          <div class="card-title">No breakup email (Day 35) template exists — it's in the sequence but undocumented</div>
+          <div class="doc-tags">
+            <span class="doc-tag">sop-tam-outbound.md (missing section)</span>
+            <span class="doc-tag">apollo-config.md</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="section-label">The problem</div>
+        <p>TAM Outbound Step 7 (Day 35) is a breakup email. Wave 1 launched Feb 28, so breakup emails start hitting around April 4. There is no documented formula, example, or rule set for the breakup. The sequence task will appear in Apollo with no SOP guidance for what to write.</p>
+        <div class="evidence-box">Evidence: apollo-config.md TAM Outbound sequence — Step 7 documented as "Breakup Email" with task note placeholder. sop-tam-outbound.md — no Part 9 or breakup section exists.</div>
+
+        <div class="section-label">The fix</div>
+        <div class="fix-box">
+          Add Part 9 to <code>sop-tam-outbound.md</code>: Breakup Email (Day 35).<br><br>
+          Core structure: 2-3 sentences max. Acknowledge the silence without pressure. Leave the door open with a future trigger offer. Never apologize for reaching out.<br><br>
+          Example: "I've sent a few notes about [specific angle from T1] — I'll leave it there. If [specific outcome, e.g., cutting regression time] becomes a priority down the road, happy to pick this back up. [Name], Testsigma"<br><br>
+          Rules: No em dashes. No "circling back." No "last attempt" framing. CTA = none (or future-trigger offer only). Length: 40-60 words max.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end P2 -->
+
+  <hr class="divider">
+
+  <!-- Summary Table -->
+  <h2>Improvement Summary — Quick Reference</h2>
+  <table class="summary-table">
+    <tr>
+      <th>#</th>
+      <th>Issue</th>
+      <th>Priority</th>
+      <th>Docs affected</th>
+      <th>Fix type</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Apollo sending address (.net vs .com)</td>
+      <td><span class="badge-p0">P0</span></td>
+      <td>apollo-config.md, sop-tam-outbound.md</td>
+      <td>Doc update + pre-send checklist</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Email verification gate not enforced (11% bounce)</td>
+      <td><span class="badge-p0">P0</span></td>
+      <td>sop-tam-outbound.md Part 5, batch tracker</td>
+      <td>Hard-stop gate + batch tracker field</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Part 6 T1 formula behind v4 update</td>
+      <td><span class="badge-p0">P0</span></td>
+      <td>sop-tam-outbound.md Part 6, sop-outreach.md</td>
+      <td>Cross-doc reconciliation + single source of truth</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Phone steps 4-6 — zero SOP coverage</td>
+      <td><span class="badge-p1">P1</span></td>
+      <td>sop-tam-outbound.md (new Part 8)</td>
+      <td>New section: talk tracks, voicemail, logging</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>sop-email.md T2 formula applied to wrong context</td>
+      <td><span class="badge-p1">P1</span></td>
+      <td>sop-email.md</td>
+      <td>Scope banner + routing clarification</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Proof point rotation not enforced at account level</td>
+      <td><span class="badge-p1">P1</span></td>
+      <td>target-accounts.md, batch tracker, sop-tam-outbound.md Part 7</td>
+      <td>Batch tracker field + target-accounts.md backfill</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>CTA data conflict — no A/B test designed</td>
+      <td><span class="badge-p1">P1</span></td>
+      <td>sop-tam-outbound.md Part 7, scoring-feedback.md</td>
+      <td>Design and run test in Wave 5+</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Catchall domain sends — no open/click monitoring</td>
+      <td><span class="badge-p1">P1</span></td>
+      <td>sop-tam-outbound.md exit checklist, batch tracker</td>
+      <td>72-hour monitor step + tracker flag</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>MASTER_SENT_LIST missing company column</td>
+      <td><span class="badge-p2">P2</span></td>
+      <td>MASTER_SENT_LIST.csv, dedup-protocol.md</td>
+      <td>Column addition + backfill</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>50-sends/day target inconsistent with research time</td>
+      <td><span class="badge-p2">P2</span></td>
+      <td>CLAUDE.md, sop-tam-outbound.md Part 5</td>
+      <td>Target recalibration to 15-25</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>A/B test framework never instantiated — 494 sends untagged</td>
+      <td><span class="badge-p2">P2</span></td>
+      <td>MASTER_SENT_LIST.csv, scoring-feedback.md, sop-tam-outbound.md</td>
+      <td>Add variable/arm columns + first test design</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>Reply classification — no tags, no pattern detection</td>
+      <td><span class="badge-p2">P2</span></td>
+      <td>pipeline-state.md, warm-leads.md, session-handoff.md</td>
+      <td>reply_tag field + retroactive tagging</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>INC-012 safety rules not in send SOP — same bug hit 3 times</td>
+      <td><span class="badge-p2">P2</span></td>
+      <td>sop-tam-outbound.md (new pre-send block)</td>
+      <td>Embed inline checklist in SOP</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>Breakup email (Day 35) — no template or rules</td>
+      <td><span class="badge-p2">P2</span></td>
+      <td>sop-tam-outbound.md (new Part 9)</td>
+      <td>New section with formula + rules</td>
+    </tr>
+  </table>
+
+  <hr class="divider">
+
+  <h2>What to implement first (if doing this in one session)</h2>
+  <div style="background:#161b27; border:1px solid #1f2937; border-radius:8px; padding:20px; font-size:0.875rem; color:#d1d5db; line-height:1.75;">
+    <p><strong style="color:#fca5a5;">Right now, before next send:</strong> Fix #1 (Apollo address), #3 (Part 6 vs v4 reconciliation), and add the pre-send address verification to the send checklist. These take 15 minutes and block a class of errors that can't be undone.</p>
+    <p style="margin-top:12px;"><strong style="color:#fcd34d;">Before Wave 5 T2 drafts:</strong> Fix #6 (proof point rotation — backfill Wave 1 accounts in target-accounts.md before T2 drafts begin) and #5 (sop-email.md scope banner). Both are needed before Mar 15 T2 window.</p>
+    <p style="margin-top:12px;"><strong style="color:#93c5fd;">This week in background:</strong> Write phone step SOP (#4) before Mar 14 Wave 1 Day 15 phone step hits. Add company/domain columns to MASTER_SENT_LIST (#9) as new entries come in. Design the CTA A/B test (#7) to run in Wave 5.</p>
+    <p style="margin-top:12px;"><strong style="color:#9ca3af;">Sprint work (no urgency deadline):</strong> A/B test activation (#11), reply tagging retroactive (#12), breakup email template (#14, due ~Apr 4 for Wave 1), 50/day target update (#10).</p>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tyler Referrals — Outreach Batch — Mar 10, 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f5f7; color: #1a1a2e; font-size: 14px; }
+
+  /* HEADER */
+  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 24px 32px; }
+  .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .header .subtitle { color: #a0aec0; font-size: 13px; margin-bottom: 20px; }
+  .batch-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+  .meta-pill { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 10px 16px; }
+  .meta-pill .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: #718096; margin-bottom: 2px; }
+  .meta-pill .value { font-size: 15px; font-weight: 700; color: #e2e8f0; }
+  .meta-pill .value.warn { color: #f6ad55; }
+  .meta-pill .value.danger { color: #fc8181; }
+  .meta-pill .value.good { color: #68d391; }
+
+  /* BANNER */
+  .banner { background: #fff3cd; border-left: 4px solid #f6ad55; padding: 12px 20px; margin: 0 32px; margin-top: 16px; border-radius: 0 6px 6px 0; font-size: 13px; color: #744210; }
+  .banner strong { font-weight: 700; }
+
+  /* SUMMARY TABLE */
+  .section { padding: 24px 32px 0; }
+  .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #718096; margin-bottom: 12px; }
+  .priority-table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .priority-table th { background: #f8fafc; padding: 10px 14px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #718096; font-weight: 600; border-bottom: 1px solid #e2e8f0; }
+  .priority-table td { padding: 11px 14px; border-bottom: 1px solid #f1f5f9; font-size: 13px; vertical-align: middle; }
+  .priority-table tr:last-child td { border-bottom: none; }
+  .priority-table tr:hover td { background: #fafbfc; }
+
+  /* BADGES */
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  .badge-red { background: #fff5f5; color: #c53030; border: 1px solid #fed7d7; }
+  .badge-orange { background: #fffaf0; color: #c05621; border: 1px solid #fbd38d; }
+  .badge-yellow { background: #fffff0; color: #975a16; border: 1px solid #faf089; }
+  .badge-blue { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+  .badge-green { background: #f0fff4; color: #276749; border: 1px solid #9ae6b4; }
+  .badge-purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+  .badge-gray { background: #f7fafc; color: #4a5568; border: 1px solid #e2e8f0; }
+  .channel-email { background: #e6fffa; color: #234e52; border: 1px solid #81e6d9; font-weight: 600; }
+  .channel-inmail { background: #faf5ff; color: #553c9a; border: 1px solid #d6bcfa; font-weight: 600; }
+  .status-draft { background: #f7fafc; color: #4a5568; border: 1px solid #e2e8f0; }
+  .status-sent { background: #f0fff4; color: #276749; border: 1px solid #9ae6b4; font-weight: 600; }
+  .touch-type { font-size: 11px; color: #718096; }
+
+  /* PROSPECT CARDS */
+  .cards-container { padding: 16px 32px 32px; display: flex; flex-direction: column; gap: 20px; }
+  .card { background: white; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; }
+  .card-header { padding: 18px 22px 16px; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; border-bottom: 1px solid #f1f5f9; }
+  .card-header-left { flex: 1; }
+  .card-name { font-size: 17px; font-weight: 700; color: #1a202c; margin-bottom: 3px; }
+  .card-meta { font-size: 13px; color: #4a5568; margin-bottom: 8px; }
+  .card-meta span { color: #718096; }
+  .card-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .card-header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  .mqs-score { font-size: 12px; font-weight: 700; color: #2d3748; background: #f7fafc; border: 2px solid #e2e8f0; border-radius: 8px; padding: 4px 10px; }
+  .mqs-score.good { border-color: #9ae6b4; color: #276749; background: #f0fff4; }
+  .card-notes { background: #fffbeb; border-left: 3px solid #f6ad55; padding: 10px 14px; margin: 0 22px 14px; border-radius: 0 6px 6px 0; font-size: 12px; color: #744210; line-height: 1.5; }
+  .card-notes strong { font-weight: 700; }
+
+  /* TABS */
+  .tabs { display: flex; border-bottom: 1px solid #e2e8f0; padding: 0 22px; }
+  .tab { padding: 10px 16px; font-size: 12px; font-weight: 600; color: #718096; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; white-space: nowrap; }
+  .tab:hover { color: #4a5568; }
+  .tab.active { color: #4c51bf; border-bottom-color: #4c51bf; }
+  .tab-content { display: none; padding: 18px 22px; }
+  .tab-content.active { display: block; }
+
+  /* MESSAGE BLOCK */
+  .message-block { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; margin-bottom: 14px; }
+  .message-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #f1f5f9; border-bottom: 1px solid #e2e8f0; }
+  .message-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #718096; }
+  .message-body { padding: 14px 16px; font-size: 13px; line-height: 1.7; white-space: pre-wrap; font-family: inherit; color: #2d3748; }
+  .copy-btn { background: #4c51bf; color: white; border: none; border-radius: 6px; padding: 5px 12px; font-size: 11px; font-weight: 600; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
+  .copy-btn:hover { background: #434190; }
+  .copy-btn.copied { background: #38a169; }
+  .subject-row { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: #edf2f7; border-bottom: 1px solid #e2e8f0; }
+  .subject-label { font-size: 11px; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 0.06em; min-width: 55px; }
+  .subject-value { font-size: 13px; font-weight: 600; color: #1a202c; flex: 1; }
+
+  /* OBJECTION */
+  .objection-block { background: #fffaf0; border: 1px solid #fbd38d; border-radius: 8px; padding: 14px 16px; }
+  .objection-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #c05621; margin-bottom: 8px; }
+  .objection-q { font-size: 13px; font-weight: 600; color: #744210; margin-bottom: 6px; }
+  .objection-a { font-size: 13px; color: #744210; line-height: 1.6; }
+
+  /* T3 */
+  .t3-note { font-size: 12px; color: #718096; font-style: italic; margin-bottom: 10px; }
+  .char-count { font-size: 11px; color: #718096; margin-top: 4px; }
+
+  /* SAME COMPANY FLAG */
+  .flag-block { background: #fff5f5; border: 1px solid #fed7d7; border-radius: 8px; padding: 12px 16px; margin-bottom: 14px; }
+  .flag-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #c53030; margin-bottom: 4px; }
+  .flag-text { font-size: 13px; color: #742a2a; line-height: 1.5; }
+
+  /* WORD COUNT */
+  .wc { font-size: 11px; color: #718096; margin-top: 4px; padding: 0 16px 8px; }
+
+  /* SUMMARY APPROVAL BOX */
+  .approval-box { margin: 0 32px 32px; background: #1a202c; color: #e2e8f0; border-radius: 10px; padding: 20px 24px; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.8; }
+  .approval-box .title { font-size: 14px; font-weight: 700; color: #68d391; margin-bottom: 12px; }
+  .approval-box span.key { color: #63b3ed; }
+  .approval-box span.val { color: #e2e8f0; }
+  .approval-box span.warn { color: #f6ad55; }
+  .approval-box span.ok { color: #68d391; }
+
+  hr.divider { border: none; border-top: 1px solid #e2e8f0; margin: 14px 0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Tyler Referrals — Outreach Drafts</h1>
+  <div class="subtitle">Tyler Kapeller referrals · All drafts · DO NOT SEND without APPROVE SEND · Mar 10, 2026</div>
+  <div class="batch-meta">
+    <div class="meta-pill">
+      <div class="label">Prospects</div>
+      <div class="value">7</div>
+    </div>
+    <div class="meta-pill">
+      <div class="label">InMail Credits Used</div>
+      <div class="value warn">1 of 4</div>
+    </div>
+    <div class="meta-pill">
+      <div class="label">Credits Remaining After</div>
+      <div class="value good">3</div>
+    </div>
+    <div class="meta-pill">
+      <div class="label">Same-Company Flag</div>
+      <div class="value danger">FCB × 3</div>
+    </div>
+    <div class="meta-pill">
+      <div class="label">Status</div>
+      <div class="value good">✅ ALL SENT — Mar 10, 2026</div>
+    </div>
+    <div class="meta-pill">
+      <div class="label">DNC Check</div>
+      <div class="value good">Clean</div>
+    </div>
+  </div>
+</div>
+
+<div class="banner" style="background:#f0fff4; border-left-color:#68d391; color:#276749;">
+  <strong>✅ All 7 T1 messages sent Mar 10, 2026.</strong> FCB same-company flag overridden — Tyler Kapeller referral, Rob approved sending all three. T2 follow-ups due <strong>Mar 14 (Day 5)</strong> for all. Vernon Bryant (Tractor Supply) reached via InMail (1 credit used, 3 remaining).
+</div>
+
+<!-- PRIORITY TABLE -->
+<div class="section">
+  <div class="section-title">Priority Overview</div>
+  <table class="priority-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Company</th>
+        <th>Title</th>
+        <th>T1 Channel</th>
+        <th>Email</th>
+        <th>Context</th>
+        <th>Priority</th>
+        <th>MQS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><strong>Gopinath Subramaniam</strong></td>
+        <td>Staples</td>
+        <td>Sr Quality Engineer</td>
+        <td><span class="badge channel-email">Email</span></td>
+        <td>gopinath.subramaniam@staples.com</td>
+        <td>$50K deal at Park, full POC done Sep 2025, reconverted yesterday</td>
+        <td><span class="badge badge-green">✅ Sent</span></td>
+        <td><span class="mqs-score good">11/12</span></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><strong>Pranati Thankala</strong></td>
+        <td>Aetna</td>
+        <td>Unknown</td>
+        <td><span class="badge channel-email">Email</span></td>
+        <td>pranati.thankala@aetna.com</td>
+        <td>Demo Dec 2, replied once, dark since Dec 17</td>
+        <td><span class="badge badge-orange">🟠 High</span></td>
+        <td><span class="mqs-score good">10/12</span></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><strong>Roy Life</strong></td>
+        <td>Sandia Nat'l Labs</td>
+        <td>Unknown</td>
+        <td><span class="badge channel-email">Email</span></td>
+        <td>ralife@sandia.gov</td>
+        <td>Full demo Dec 17-18, pricing sent, dark since</td>
+        <td><span class="badge badge-orange">🟠 High</span></td>
+        <td><span class="mqs-score good">10/12</span></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>Vernon Bryant</strong></td>
+        <td>Tractor Supply</td>
+        <td>Dir & Head of QA</td>
+        <td><span class="badge channel-inmail">InMail (1 cr)</span></td>
+        <td>InMail only (no email)</td>
+        <td>Cold, strong ICP, Director QA at $15.5B retailer, never contacted</td>
+        <td><span class="badge badge-orange">🟠 High</span></td>
+        <td><span class="mqs-score good">10/12</span></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>Devin Griffin</strong></td>
+        <td>First Citizens Bank</td>
+        <td>MD, Commercial PM</td>
+        <td><span class="badge channel-email">Email</span></td>
+        <td>devin.griffin@firstcitizens.com</td>
+        <td>Cold, SVB background, non-standard persona (Product Mgmt)</td>
+        <td><span class="badge badge-green">✅ Sent</span></td>
+        <td><span class="mqs-score good">10/12</span></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><strong>Jason Berube</strong></td>
+        <td>First Citizens Bank</td>
+        <td>Sr Mgr, Commercial PM</td>
+        <td><span class="badge channel-email">Email</span></td>
+        <td>jason.berube@firstcitizens.com</td>
+        <td>Cold, SVB background, same-company flag vs Devin</td>
+        <td><span class="badge badge-green">✅ Sent</span></td>
+        <td><span class="mqs-score good">10/12</span></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td><strong>Skie Kagulire</strong></td>
+        <td>First Citizens Bank</td>
+        <td>Sr Product Mgr</td>
+        <td><span class="badge channel-email">Email</span></td>
+        <td>skie.kagulire@firstcitizens.com</td>
+        <td>Cold, SVB background, same-company flag vs Devin + Jason</td>
+        <td><span class="badge badge-green">✅ Sent</span></td>
+        <td><span class="mqs-score good">10/12</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CARDS -->
+<div class="cards-container">
+
+<!-- ===================== CARD 1: GOPINATH ===================== -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-header-left">
+      <div class="card-name">Gopinath Subramaniam</div>
+      <div class="card-meta">Sr Quality Engineer · <span>Staples</span> · gopinath.subramaniam@staples.com · 📞 +1 425-306-6028</div>
+      <div class="card-badges">
+        <span class="badge badge-green">✅ SENT</span>
+        <span class="badge channel-email">Email T1</span>
+        <span class="badge badge-purple">Re-engagement</span>
+        <span class="badge badge-green">$50K Deal at Park</span>
+        <span class="badge status-sent">✅ Sent Mar 10 | T2 due Mar 14</span>
+      </div>
+    </div>
+    <div class="card-header-right">
+      <span class="mqs-score good">MQS 11/12</span>
+    </div>
+  </div>
+  <div class="card-notes">
+    <strong>Context:</strong> Full trial September 2025 (Trial Sync Sep 5, Sep 12 + POC Readout Sep 19 — Gopi personally in all three, 7-8 Staples attendees). $50K opp at Park stage. Nov-Jan procurement email thread to Claudine Dulude + 5 others. Gopi submitted "Product Webinar Submissions" form yesterday (same form he used in Jul 2025 to enter the deal). Reconversion flag triggered Mar 9. CEO Rukmangada personally marked as "Valid High Priority." Tyler alerted Rob Mar 9.
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(this, 'gopi-t1')">T1 · Email (Today)</div>
+    <div class="tab" onclick="switchTab(this, 'gopi-t2')">T2 · Email (Day 5)</div>
+    <div class="tab" onclick="switchTab(this, 'gopi-t3')">T3 · LI Connect (Day 10)</div>
+    <div class="tab" onclick="switchTab(this, 'gopi-obj')">Objection Prep</div>
+  </div>
+
+  <div class="tab-content active" id="gopi-t1">
+    <div class="message-block">
+      <div class="subject-row">
+        <div class="subject-label">Subject</div>
+        <div class="subject-value">Gopinath's test coverage at Staples</div>
+        <button class="copy-btn" onclick="copyText(this, 'Gopinath\'s test coverage at Staples')">Copy</button>
+      </div>
+      <div class="message-header">
+        <div class="message-label">Body</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('gopi-t1-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="gopi-t1-body">Hi Gopinath, I'm Rob with Testsigma. I saw you submitted a webinar request yesterday, and wanted to reach out directly.
+
+Staples ran a full trial with our team last September, and you were in all three sessions. Is test automation something the team is actively revisiting now?
+
+Since that evaluation, we've shipped Atto 2.0 with AI self-healing that wasn't part of the platform when you tested it. Medibuddy scaled to 2,500 automated tests while cutting maintenance in half.
+
+Is it worth picking up where September left off?
+
+Rob Gorham
+Testsigma</div>
+      <div class="wc">90 words · 2 question marks · Proof point: Medibuddy · Engagement CTA (reply-first, not meeting ask) · Channel: Email via Apollo</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="gopi-t2">
+    <div class="message-block">
+      <div class="subject-row">
+        <div class="subject-label">Subject</div>
+        <div class="subject-value">Staples + AI-assisted QA</div>
+        <button class="copy-btn" onclick="copyText(this, 'Staples + AI-assisted QA')">Copy</button>
+      </div>
+      <div class="message-header">
+        <div class="message-label">Body · Variant A</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('gopi-t2-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="gopi-t2-body">Staples operates digital commerce across web, mobile, and in-store touchpoints. I'd imagine keeping test coverage current across that entire stack — especially during platform updates — is a constant effort.
+
+Sent a note earlier this week about the changes to Testsigma since last year's evaluation.
+
+Hansard, a financial services team, cut their regression cycle from 8 weeks to 5 using the same self-healing tests. Coverage stopped breaking when the UI changed.
+
+Is test maintenance something the QA team is actively trying to get ahead of right now?
+
+Rob</div>
+      <div class="wc">84 words · Variant A: company fact → "I'd imagine" → callback → proof point → engagement CTA · NOT a meeting ask</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="gopi-t3">
+    <div class="t3-note">Day 10 · LinkedIn connection request · Goal: get accepted, not pitch · Max 250 chars</div>
+    <div class="message-block">
+      <div class="message-header">
+        <div class="message-label">Connection Note</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('gopi-t3-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="gopi-t3-body">Hi Gopinath, reached out about the Testsigma evaluation a couple times this week. Either way, glad to be connected. Rob</div>
+      <div class="wc">116 chars</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="gopi-obj">
+    <div class="objection-block">
+      <div class="objection-title">Most Likely Objection</div>
+      <div class="objection-q">"We looked at this last year and it didn't move forward. Budget / prioritization issues."</div>
+      <div class="objection-a">Totally fair. A lot has changed on the platform since then — Atto 2.0 ships self-healing and coverage discovery that weren't there. Would it make sense to take a fresh 20-minute look at what's new before deciding? No setup, no obligation to restart the eval.</div>
+    </div>
+    <hr class="divider">
+    <div class="objection-block">
+      <div class="objection-title">Secondary Objection</div>
+      <div class="objection-q">"I'm not the right person — talk to [Claudine / procurement]."</div>
+      <div class="objection-a">Appreciate that. Would you be comfortable copying Claudine on a quick intro, or I can reach out to her directly? I just want to make sure the technical context from your evaluation translates correctly to the business conversation.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CARD 2: PRANATI ===================== -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-header-left">
+      <div class="card-name">Pranati Thankala</div>
+      <div class="card-meta">QA / Testing · <span>Aetna</span> · pranati.thankala@aetna.com</div>
+      <div class="card-badges">
+        <span class="badge badge-orange">🟠 High Priority</span>
+        <span class="badge channel-email">Email T1</span>
+        <span class="badge badge-purple">Re-engagement</span>
+        <span class="badge status-sent">✅ Sent Mar 10 | T2 due Mar 14</span>
+      </div>
+    </div>
+    <div class="card-header-right">
+      <span class="mqs-score good">MQS 10/12</span>
+    </div>
+  </div>
+  <div class="card-notes">
+    <strong>Context:</strong> Demo Dec 2, 2025 (Tyler + Rob + Zac Taylor). Pranati replied Dec 17 asking for AI model testing use cases. Tyler replied, shared case studies. Tyler followed up Jan 13, Feb 4 ("Is this still a priority?"). Zero replies since Dec 17. Fresh BDR touch from Rob as new face. She specifically called out AI model testing interest — use this as the hook.
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(this, 'pranati-t1')">T1 · Email (Today)</div>
+    <div class="tab" onclick="switchTab(this, 'pranati-t2')">T2 · Email (Day 5)</div>
+    <div class="tab" onclick="switchTab(this, 'pranati-t3')">T3 · LI Connect (Day 10)</div>
+    <div class="tab" onclick="switchTab(this, 'pranati-obj')">Objection Prep</div>
+  </div>
+
+  <div class="tab-content active" id="pranati-t1">
+    <div class="message-block">
+      <div class="subject-row">
+        <div class="subject-label">Subject</div>
+        <div class="subject-value">Pranati's AI testing setup at Aetna</div>
+        <button class="copy-btn" onclick="copyText(this, 'Pranati\'s AI testing setup at Aetna')">Copy</button>
+      </div>
+      <div class="message-header">
+        <div class="message-label">Body</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('pranati-t1-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="pranati-t1-body">Hi Pranati, we met in December on the Testsigma demo with Tyler and Zac.
+
+You followed up asking about AI model testing use cases specifically. Is that still the priority for the evaluation at Aetna?
+
+Oscar Health used Testsigma to scale regression coverage across their digital health stack while cutting maintenance in half. The platform has added significant AI model testing capabilities since our demo.
+
+Is the AI model testing piece still active on your end?
+
+Rob Gorham
+Testsigma</div>
+      <div class="wc">79 words · 2 question marks · Proof point: Oscar Health · Engagement CTA (reply-first, references her Dec 17 ask) · Channel: Email via Apollo</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="pranati-t2">
+    <div class="message-block">
+      <div class="subject-row">
+        <div class="subject-label">Subject</div>
+        <div class="subject-value">Aetna digital health + AI testing</div>
+        <button class="copy-btn" onclick="copyText(this, 'Aetna digital health + AI testing')">Copy</button>
+      </div>
+      <div class="message-header">
+        <div class="message-label">Body · Variant A</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('pranati-t2-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="pranati-t2-body">Aetna's digital health platform serves millions of members across web and mobile. I'd imagine regulatory compliance adds a real layer of complexity to every release cycle on the QA side.
+
+Reached out last week about the AI model testing angle, since you'd flagged that specifically during the evaluation.
+
+Oscar Health, another digital health platform, scaled regression coverage from 30% to 90% with Testsigma's AI-generated tests while keeping the QA team at the same size.
+
+Is that kind of coverage growth something Aetna is working toward this year?
+
+Rob</div>
+      <div class="wc">88 words · Variant A structure · Engagement CTA, not meeting ask</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="pranati-t3">
+    <div class="t3-note">Day 10 · LinkedIn connection request · Warm, not salesy</div>
+    <div class="message-block">
+      <div class="message-header">
+        <div class="message-label">Connection Note</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('pranati-t3-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="pranati-t3-body">Hi Pranati, followed up on the Testsigma work at Aetna a couple times. Either way, great to be connected. Rob</div>
+      <div class="wc">109 chars</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="pranati-obj">
+    <div class="objection-block">
+      <div class="objection-title">Most Likely Objection</div>
+      <div class="objection-q">"This got deprioritized internally — not moving forward right now."</div>
+      <div class="objection-a">I appreciate you letting me know. Can I ask what shifted? If it's budget timing, the Atto 2.0 coverage discovery features actually reduce the initial setup cost significantly. Might be worth a 20-minute check-in before Q3 planning locks up the roadmap.</div>
+    </div>
+    <hr class="divider">
+    <div class="objection-block">
+      <div class="objection-title">Secondary Objection</div>
+      <div class="objection-q">"We already have a testing tool."</div>
+      <div class="objection-a">Totally understand — most teams we work with had something in place. What made you look at us initially? Usually it's the AI model testing angle you mentioned. Happy to show you specifically what Atto 2.0 does for that use case in 20 minutes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CARD 3: ROY LIFE ===================== -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-header-left">
+      <div class="card-name">Roy Life</div>
+      <div class="card-meta">Unknown title · <span>Sandia National Laboratories</span> · ralife@sandia.gov</div>
+      <div class="card-badges">
+        <span class="badge badge-orange">🟠 High Priority</span>
+        <span class="badge channel-email">Email T1</span>
+        <span class="badge badge-purple">Re-engagement</span>
+        <span class="badge status-sent">✅ Sent Mar 10 | T2 due Mar 14</span>
+      </div>
+    </div>
+    <div class="card-header-right">
+      <span class="mqs-score good">MQS 10/12</span>
+    </div>
+  </div>
+  <div class="card-notes">
+    <strong>Context:</strong> Full demo Dec 17-18, 2025 (1h 3min, Gong recorded). Pricing sent Dec 18. Tyler followed up Dec 22, Jan 26, Feb 4. Zero replies since the demo. Gong shows: "Demo Completed · $0 · Close date Dec 31, 2026." Two additional Sandia contacts: ambenso@sandia.gov + magome@sandia.gov (full names unknown). Government/national lab — procurement cycles are long by default. Fresh BDR touch needed.
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(this, 'roy-t1')">T1 · Email (Today)</div>
+    <div class="tab" onclick="switchTab(this, 'roy-t2')">T2 · Email (Day 5)</div>
+    <div class="tab" onclick="switchTab(this, 'roy-t3')">T3 · LI Connect (Day 10)</div>
+    <div class="tab" onclick="switchTab(this, 'roy-obj')">Objection Prep</div>
+  </div>
+
+  <div class="tab-content active" id="roy-t1">
+    <div class="message-block">
+      <div class="subject-row">
+        <div class="subject-label">Subject</div>
+        <div class="subject-value">Roy's test automation work at Sandia</div>
+        <button class="copy-btn" onclick="copyText(this, 'Roy\'s test automation work at Sandia')">Copy</button>
+      </div>
+      <div class="message-header">
+        <div class="message-label">Body</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('roy-t1-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="roy-t1-body">We have yet to be properly introduced, but I'm Rob with Testsigma, BDR on the Sandia account with Tyler.
+
+Sandia went through a full demo and pricing review in December. Is test automation something the team is still moving forward on this year?
+
+Since that demo, we've released Atto 2.0 with coverage discovery and AI self-healing. Cisco cut test suite maintenance by 90% across a complex distributed environment.
+
+Is there still appetite at Sandia to revisit the evaluation?
+
+Rob Gorham
+Testsigma</div>
+      <div class="wc">81 words · 2 question marks · Proof point: Cisco · Engagement CTA (reply-first, appropriate for long govt procurement cycles) · Channel: Email via Apollo</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="roy-t2">
+    <div class="message-block">
+      <div class="subject-row">
+        <div class="subject-label">Subject</div>
+        <div class="subject-value">Sandia's test automation priorities</div>
+        <button class="copy-btn" onclick="copyText(this, 'Sandia\'s test automation priorities')">Copy</button>
+      </div>
+      <div class="message-header">
+        <div class="message-label">Body · Variant A</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('roy-t2-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="roy-t2-body">Sandia operates complex multi-platform systems with strict security and compliance requirements. I'd imagine maintaining test coverage across those workflows takes significant manual effort with every update cycle.
+
+Reached out last week and mentioned the Atto 2.0 release, since it added capabilities that weren't available during your December evaluation.
+
+Cisco reduced their test maintenance by 90% after switching to AI self-healing automation. Tests fix themselves when the system changes, with no manual rework between cycles.
+
+Is there still appetite at Sandia to revisit the platform?
+
+Rob</div>
+      <div class="wc">86 words · Variant A structure · Engagement CTA, not meeting ask</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="roy-t3">
+    <div class="t3-note">Day 10 · LinkedIn connection request</div>
+    <div class="message-block">
+      <div class="message-header">
+        <div class="message-label">Connection Note</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('roy-t3-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="roy-t3-body">Hi Roy, followed up on the Testsigma evaluation at Sandia a couple times this month. Know these things move on their own timeline. Good to be connected either way. Rob</div>
+      <div class="wc">165 chars</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="roy-obj">
+    <div class="objection-block">
+      <div class="objection-title">Most Likely Objection</div>
+      <div class="objection-q">"Government procurement takes 12-18 months. We're still in the process."</div>
+      <div class="objection-a">That's exactly what I expected — and no pressure at all. I just want to make sure the platform you saw is still the most current picture, and that the team has what they need to keep the evaluation moving internally. Happy to send updated materials, no call needed.</div>
+    </div>
+    <hr class="divider">
+    <div class="objection-block">
+      <div class="objection-title">Secondary Objection</div>
+      <div class="objection-q">"Budget got cut / this isn't approved for this fiscal year."</div>
+      <div class="objection-a">Appreciate the transparency. Is the evaluation still live for a future cycle, or has it been formally shelved? I can keep you in the loop on what's changed without any commitment — might make it easier to restart when timing opens up.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CARD 4: VERNON BRYANT ===================== -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-header-left">
+      <div class="card-name">Vernon Jason Bryant <span style="font-size:13px;color:#718096;">(goes by Jason)</span></div>
+      <div class="card-meta">Director &amp; Head of Quality Engineering and Assurance · <span>Tractor Supply Company</span> · ⚠️ No email in Apollo</div>
+      <div class="card-badges">
+        <span class="badge badge-orange">🟠 High Priority</span>
+        <span class="badge channel-inmail">InMail · 1 Credit</span>
+        <span class="badge badge-blue">Cold ICP</span>
+        <span class="badge status-sent">✅ Sent Mar 10 | T2 due Mar 14</span>
+      </div>
+    </div>
+    <div class="card-header-right">
+      <span class="mqs-score good">MQS 10/12</span>
+    </div>
+  </div>
+  <div class="card-notes">
+    <strong>Context:</strong> Tyler referred Feb 2 with LinkedIn URL: linkedin.com/in/vernonjasonbryant/. Never contacted. Strong ICP — Director and Head of QA at Tractor Supply ($15.5B retailer, ~52,000 employees). Background: Little Caesars, Restaurant Brands International, SmileDirectClub, Optum. FCB tech stack: SAP, Salesforce, Python. No email in Apollo. InMail is the only channel. Tyler flagged as cold outreach target 5+ weeks ago — overdue to move on this.
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(this, 'vernon-t1')">T1 · InMail (Today)</div>
+    <div class="tab" onclick="switchTab(this, 'vernon-t2')">T2 · Email (Day 5)</div>
+    <div class="tab" onclick="switchTab(this, 'vernon-t3')">T3 · LI Connect (Day 10)</div>
+    <div class="tab" onclick="switchTab(this, 'vernon-obj')">Objection Prep</div>
+  </div>
+
+  <div class="tab-content active" id="vernon-t1">
+    <div class="message-block">
+      <div class="subject-row">
+        <div class="subject-label">Subject</div>
+        <div class="subject-value">QA coverage at Tractor Supply</div>
+        <button class="copy-btn" onclick="copyText(this, 'QA coverage at Tractor Supply')">Copy</button>
+      </div>
+      <div class="message-header">
+        <div class="message-label">Body · LinkedIn InMail</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('vernon-t1-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="vernon-t1-body">Hi Jason, is test maintenance limiting how fast the team can scale coverage as Tractor Supply updates its digital and mobile platforms?
+
+Large retailers with seasonal product cycles find test suites breaking with every major update. Testsigma's AI self-healing keeps tests current automatically when the product changes, so coverage holds without constant rework.
+
+KFC's QA team cut regression time by 40% and expanded coverage in the same release cycle.
+
+What day works to see how they handled it?
+
+Rob Gorham
+Testsigma</div>
+      <div class="wc">78 words · 2 question marks · Proof point: KFC (retail, vertical match) · Channel: InMail (1 credit)</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="vernon-t2">
+    <div class="message-block">
+      <div class="subject-row">
+        <div class="subject-label">Subject</div>
+        <div class="subject-value">Tractor Supply QA automation</div>
+        <button class="copy-btn" onclick="copyText(this, 'Tractor Supply QA automation')">Copy</button>
+      </div>
+      <div class="message-header">
+        <div class="message-label">Body · Variant A Email (Day 5 — use robert.gorham@testsigma.com via Apollo)</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('vernon-t2-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="vernon-t2-body">Tractor Supply operates digital commerce across web, mobile, and in-store systems. I'd imagine keeping test coverage current across those touchpoints, especially during seasonal platform pushes, is a constant maintenance challenge.
+
+Dropped a note on LinkedIn earlier this week about how retail QA teams are cutting that overhead.
+
+KFC reduced regression time by 40% using AI-generated tests that heal themselves when the UI changes. No manual fix cycle between releases.
+
+Is automated test maintenance something your team is actively prioritizing for this year?
+
+Rob Gorham
+Testsigma</div>
+      <div class="wc">84 words · Variant A · LinkedIn callback present · Engagement CTA, not meeting ask · Note: need email address — try RocketReach or Apollo Module A2</div>
+    </div>
+    <div class="flag-block">
+      <div class="flag-title">⚠️ Email Required for T2</div>
+      <div class="flag-text">No email found in Apollo for Vernon Bryant. Options: (1) RocketReach — rocketreach.co/jason-bryant-email_2926667, (2) Try Module A2 at send time in Sales Navigator, (3) Hold T2 and double down on T1 InMail response instead.</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="vernon-t3">
+    <div class="t3-note">Day 10 · LinkedIn connection request · Once accepted, future DMs are free (no more credit cost)</div>
+    <div class="message-block">
+      <div class="message-header">
+        <div class="message-label">Connection Note</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('vernon-t3-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="vernon-t3-body">Hi Jason, been following Tractor Supply's work in retail automation. Reached out about QA coverage a couple weeks back. Good to be connected either way. Rob</div>
+      <div class="wc">152 chars</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="vernon-obj">
+    <div class="objection-block">
+      <div class="objection-title">Most Likely Objection</div>
+      <div class="objection-q">"We're happy with our current test automation setup."</div>
+      <div class="objection-a">Totally fair. Quick question — is that Selenium/Cypress-based? Most retail teams that say that still spend 20-30% of sprint time on test upkeep when the UI changes. If that's not a problem you're running into, no need to talk. But if it is, what KFC did might be worth 20 minutes.</div>
+    </div>
+    <hr class="divider">
+    <div class="objection-block">
+      <div class="objection-title">Secondary Objection</div>
+      <div class="objection-q">"Not the right time / too busy."</div>
+      <div class="objection-a">No problem at all. When does test planning for the next cycle kick off? Happy to reach back out at a better moment. Just want to make sure you've seen the self-healing demo before you lock in the tooling decision.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CARD 5: DEVIN GRIFFIN ===================== -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-header-left">
+      <div class="card-name">Devin Griffin</div>
+      <div class="card-meta">Managing Director, Commercial Product Management · <span>First Citizens Bank</span> · devin.griffin@firstcitizens.com</div>
+      <div class="card-badges">
+        <span class="badge badge-green">✅ Sent</span>
+        <span class="badge channel-email">Email T1</span>
+        <span class="badge badge-blue">Cold · Non-Standard Persona</span>
+        <span class="badge status-sent">✅ Sent Mar 10 | T2 due Mar 14</span>
+      </div>
+    </div>
+    <div class="card-header-right">
+      <span class="mqs-score good">MQS 10/12</span>
+    </div>
+  </div>
+  <div class="card-notes">
+    <strong>Context:</strong> Tyler referred Feb 19. SVB alum (Director PM, Apr 2021–Mar 2023), now at FCB since Apr 2025. He's a commercial product manager, not a QA leader. FCB tech stack includes SAP, Salesforce, Selenium, TestNG, Cucumber. Tyler's angle for sending him is unclear — confirm intent before sending. Message drafted assuming he oversees digital commercial products that need QA support. LinkedIn: linkedin.com/in/devin-griffin-mba
+  </div>
+  <div class="flag-block" style="margin: 0 22px 14px;">
+    <div class="flag-title">⚠️ Same-Company Flag — Hold Until FCB Decision Made</div>
+    <div class="flag-text">Devin Griffin, Jason Berube, and Skie Kagulire are all at First Citizens Bank. SOP: only 1 contact per company per batch. If Rob wants to send to FCB contacts, pick 1 — recommend Devin (highest seniority) as the starting point and hold the others.</div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(this, 'devin-t1')">T1 · Email (Today)</div>
+    <div class="tab" onclick="switchTab(this, 'devin-t2')">T2 · Email (Day 5)</div>
+    <div class="tab" onclick="switchTab(this, 'devin-t3')">T3 · LI Connect (Day 10)</div>
+    <div class="tab" onclick="switchTab(this, 'devin-obj')">Objection Prep</div>
+  </div>
+
+  <div class="tab-content active" id="devin-t1">
+    <div class="message-block">
+      <div class="subject-row">
+        <div class="subject-label">Subject</div>
+        <div class="subject-value">Devin's commercial product testing at First Citizens</div>
+        <button class="copy-btn" onclick="copyText(this, 'Devin\'s commercial product testing at First Citizens')">Copy</button>
+      </div>
+      <div class="message-header">
+        <div class="message-label">Body</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('devin-t1-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="devin-t1-body">We have yet to be properly introduced, but I'm Rob with Testsigma. Tyler Kapeller passed your name along.
+
+At a bank First Citizens' size, commercial product releases involve multiple platform integrations. Is test upkeep slowing how fast your team can ship new capabilities?
+
+Spendflo cut QA maintenance by 50% with Testsigma. Tests write and fix themselves when the product changes, with no manual rework between releases.
+
+What day works to see how they got there?
+
+Rob Gorham
+Testsigma</div>
+      <div class="wc">75 words · 2 question marks · Proof point: Spendflo (commercial SaaS, maintenance reduction) · Channel: Email via Apollo</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="devin-t2">
+    <div class="message-block">
+      <div class="subject-row">
+        <div class="subject-label">Subject</div>
+        <div class="subject-value">First Citizens commercial product QA</div>
+        <button class="copy-btn" onclick="copyText(this, 'First Citizens commercial product QA')">Copy</button>
+      </div>
+      <div class="message-header">
+        <div class="message-label">Body · Variant A</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('devin-t2-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="devin-t2-body">First Citizens manages commercial banking products across a complex tech stack including SAP and Salesforce integrations. I'd imagine every release cycle involves significant test maintenance just to keep pace with platform changes.
+
+Reached out last week about how fintech teams are cutting that overhead with AI-generated automation.
+
+Spendflo eliminated their manual test maintenance entirely after switching, and shipped faster without expanding the QA team.
+
+Is test upkeep currently a blocker on the commercial product side?
+
+Rob</div>
+      <div class="wc">78 words · Variant A · Engagement CTA, not meeting ask</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="devin-t3">
+    <div class="t3-note">Day 10 · LinkedIn connection request</div>
+    <div class="message-block">
+      <div class="message-header">
+        <div class="message-label">Connection Note</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('devin-t3-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="devin-t3-body">Hi Devin, reached out about test automation for commercial banking products at First Citizens. Good to stay connected regardless. Rob</div>
+      <div class="wc">128 chars</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="devin-obj">
+    <div class="objection-block">
+      <div class="objection-title">Most Likely Objection</div>
+      <div class="objection-q">"I'm in product management, not QA — wrong person."</div>
+      <div class="objection-a">Fair point. Who on your team would be the right person to connect with on test automation for the commercial platform? Happy to reach out directly and leave you out of the thread.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CARD 6: JASON BERUBE ===================== -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-header-left">
+      <div class="card-name">Jason Berube</div>
+      <div class="card-meta">Senior Manager, Commercial Product Management · <span>First Citizens Bank</span> · jason.berube@firstcitizens.com</div>
+      <div class="card-badges">
+        <span class="badge badge-green">✅ Sent</span>
+        <span class="badge channel-email">Email T1</span>
+        <span class="badge badge-blue">Cold · Non-Standard Persona</span>
+        <span class="badge status-sent">✅ Sent Mar 10 | T2 due Mar 14</span>
+      </div>
+    </div>
+    <div class="card-header-right">
+      <span class="mqs-score good">MQS 10/12</span>
+    </div>
+  </div>
+  <div class="card-notes">
+    <strong>Context:</strong> Tyler referred Feb 19. SVB alum (Deloitte + SVB background), at FCB since May 2025. Sr Manager in Commercial PM — not a QA persona. Same-company flag with Devin and Skie. Hold until Rob decides on FCB contact priority. Different proof point from Devin's draft (CRED vs Spendflo). Location: Ventura, CA.
+  </div>
+  <div class="flag-block" style="margin: 0 22px 14px;">
+    <div class="flag-title">⚠️ Hold — Same-Company Flag (FCB)</div>
+    <div class="flag-text">Send Devin Griffin first. Only send Jason if Rob decides to contact multiple FCB contacts or if Devin doesn't reply and Jason is selected as the next attempt.</div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(this, 'jason-t1')">T1 · Email (Today)</div>
+    <div class="tab" onclick="switchTab(this, 'jason-t2')">T2 · Email (Day 5)</div>
+    <div class="tab" onclick="switchTab(this, 'jason-t3')">T3 · LI Connect (Day 10)</div>
+  </div>
+
+  <div class="tab-content active" id="jason-t1">
+    <div class="message-block">
+      <div class="subject-row">
+        <div class="subject-label">Subject</div>
+        <div class="subject-value">Jason's QA setup at First Citizens</div>
+        <button class="copy-btn" onclick="copyText(this, 'Jason\'s QA setup at First Citizens')">Copy</button>
+      </div>
+      <div class="message-header">
+        <div class="message-label">Body</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('jason-t1-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="jason-t1-body">We have yet to be properly introduced, but I'm Rob with Testsigma. Tyler Kapeller passed your name along.
+
+At a bank the size of First Citizens, commercial product updates involve multiple platform and integration dependencies. Is automated test coverage keeping up with how fast the commercial team is shipping?
+
+CRED went from 30% regression coverage to 90% with Testsigma while cutting release prep time in half.
+
+What day works to see how they got there?
+
+Rob Gorham
+Testsigma</div>
+      <div class="wc">75 words · 2 question marks · Proof point: CRED (fintech, coverage growth) · Channel: Email via Apollo</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="jason-t2">
+    <div class="message-block">
+      <div class="subject-row">
+        <div class="subject-label">Subject</div>
+        <div class="subject-value">First Citizens Jira sprint QA</div>
+        <button class="copy-btn" onclick="copyText(this, 'First Citizens Jira sprint QA')">Copy</button>
+      </div>
+      <div class="message-header">
+        <div class="message-label">Body · Variant A</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('jason-t2-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="jason-t2-body">First Citizens runs active development across commercial digital products. I'd imagine keeping test coverage current across Jira sprints is a constant challenge at this scale.
+
+Reached out last week about how fintech teams are automating QA to keep pace with sprint velocity.
+
+CRED scaled their regression coverage from 30% to 90% using Testsigma, without expanding the QA team.
+
+Is that kind of coverage efficiency something your product team is actively looking at?
+
+Rob</div>
+      <div class="wc">75 words · Variant A · Engagement CTA, not meeting ask</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="jason-t3">
+    <div class="t3-note">Day 10 · LinkedIn connection request</div>
+    <div class="message-block">
+      <div class="message-header">
+        <div class="message-label">Connection Note</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('jason-t3-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="jason-t3-body">Hi Jason, reached out about QA automation at First Citizens last week. Good to stay connected regardless. Rob</div>
+      <div class="wc">102 chars</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CARD 7: SKIE KAGULIRE ===================== -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-header-left">
+      <div class="card-name">Skie Kagulire</div>
+      <div class="card-meta">Senior Product Manager · <span>First Citizens Bank</span> · skie.kagulire@firstcitizens.com</div>
+      <div class="card-badges">
+        <span class="badge badge-green">✅ Sent</span>
+        <span class="badge channel-email">Email T1</span>
+        <span class="badge badge-blue">Cold · Non-Standard Persona</span>
+        <span class="badge status-sent">✅ Sent Mar 10 | T2 due Mar 14</span>
+      </div>
+    </div>
+    <div class="card-header-right">
+      <span class="mqs-score good">MQS 10/12</span>
+    </div>
+  </div>
+  <div class="card-notes">
+    <strong>Context:</strong> Tyler referred Feb 19. SVB alum, at FCB since Mar 2025. Sr Product Manager — not a QA persona. Same-company flag with Devin and Jason. Hold until FCB decision made. Location: Ashburn, VA. Different proof point from Devin (Spendflo) and Jason (CRED) — uses Hansard (financial services fit).
+  </div>
+  <div class="flag-block" style="margin: 0 22px 14px;">
+    <div class="flag-title">⚠️ Hold — Same-Company Flag (FCB)</div>
+    <div class="flag-text">Third FCB contact. Send only after Devin and Jason have been cleared and you've decided to contact multiple people at FCB — or use as a fallback if neither Devin nor Jason replies after full sequence.</div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(this, 'skie-t1')">T1 · Email (Today)</div>
+    <div class="tab" onclick="switchTab(this, 'skie-t2')">T2 · Email (Day 5)</div>
+    <div class="tab" onclick="switchTab(this, 'skie-t3')">T3 · LI Connect (Day 10)</div>
+  </div>
+
+  <div class="tab-content active" id="skie-t1">
+    <div class="message-block">
+      <div class="subject-row">
+        <div class="subject-label">Subject</div>
+        <div class="subject-value">Skie's product release coverage at First Citizens</div>
+        <button class="copy-btn" onclick="copyText(this, 'Skie\'s product release coverage at First Citizens')">Copy</button>
+      </div>
+      <div class="message-header">
+        <div class="message-label">Body</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('skie-t1-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="skie-t1-body">We have yet to be properly introduced, but I'm Rob with Testsigma. Tyler Kapeller passed your name along.
+
+Product teams at banks First Citizens' size often ship features faster than their test coverage can keep up. Is closing that gap something the team is actively working through?
+
+Hansard, a financial services team, cut their regression cycle from 8 weeks to 5 using Testsigma's AI self-healing. Tests update automatically when the product changes.
+
+What day works to see how they handled it?
+
+Rob Gorham
+Testsigma</div>
+      <div class="wc">81 words · 2 question marks · Proof point: Hansard (financial services, exact vertical match) · Channel: Email via Apollo</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="skie-t2">
+    <div class="message-block">
+      <div class="subject-row">
+        <div class="subject-label">Subject</div>
+        <div class="subject-value">First Citizens digital product testing</div>
+        <button class="copy-btn" onclick="copyText(this, 'First Citizens digital product testing')">Copy</button>
+      </div>
+      <div class="message-header">
+        <div class="message-label">Body · Variant A</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('skie-t2-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="skie-t2-body">First Citizens has expanded its digital banking product suite significantly over the past year. I'd imagine ensuring test coverage keeps up with that pace is a live challenge for your team.
+
+Reached out last week about how financial services teams are cutting regression cycle time with AI self-healing tests.
+
+Hansard cut their cycle from 8 weeks to 5. Tests repair themselves when the product changes.
+
+Is that kind of release speed relevant to what First Citizens is building right now?
+
+Rob</div>
+      <div class="wc">80 words · Variant A · Engagement CTA, not meeting ask</div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="skie-t3">
+    <div class="t3-note">Day 10 · LinkedIn connection request</div>
+    <div class="message-block">
+      <div class="message-header">
+        <div class="message-label">Connection Note</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('skie-t3-body').textContent)">Copy</button>
+      </div>
+      <div class="message-body" id="skie-t3-body">Hi Skie, reached out about test coverage at First Citizens this week. Would love to stay connected. Rob</div>
+      <div class="wc">100 chars</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end cards -->
+
+<!-- APPROVAL BLOCK -->
+<div class="approval-box">
+  <div class="title">BATCH SUMMARY — Tyler Referrals — Mar 10, 2026</div>
+  <span class="key">Prospects:</span> <span class="val">7 included | 0 deferred | 1 flagged (Vernon — no email)</span><br>
+  <span class="key">DNC check:</span> <span class="ok">Clean</span><br>
+  <span class="key">Dedup check:</span> <span class="ok">Clean (no MASTER_SENT_LIST matches)</span><br>
+  <span class="key">Same-company flags:</span> <span class="warn">FCB × 3 — Devin Griffin (P1), Jason Berube (hold), Skie Kagulire (hold). Rob to decide.</span><br>
+  <span class="key">Credit budget:</span> <span class="warn">1 credit required (Vernon InMail) | 3 remaining after</span><br>
+  <span class="key">Apollo no-match:</span> <span class="warn">Vernon Bryant — no email. RocketReach or Module A2 needed for T2.</span><br>
+  <span class="key">TAM account check:</span> <span class="warn">Not yet verified — confirm Staples, Aetna, Sandia, Tractor Supply, First Citizens are in tam-accounts-mar26.csv</span><br>
+  <span class="key">Channels:</span> <span class="val">6× Email (via Apollo robert.gorham@testsigma.com) | 1× InMail (Vernon)</span><br>
+  <span class="key">Proof points used:</span> <span class="val">Medibuddy (Gopi) | Oscar Health (Pranati) | Cisco (Roy) | KFC (Vernon) | Spendflo (Devin) | CRED (Jason B) | Hansard (Skie)</span><br>
+  <br>
+  <span style="color:#f6ad55;font-weight:700;">Reply APPROVE SEND to send all, or APPROVE SEND — [name] only for specific sends.<br>
+  Reply EDIT [prospect name] — [change] to request revisions.</span>
+</div>
+
+<script>
+function switchTab(clickedTab, contentId) {
+  const card = clickedTab.closest('.card');
+  card.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  card.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  clickedTab.classList.add('active');
+  const content = document.getElementById(contentId);
+  if (content) content.classList.add('active');
+}
+
+function copyText(btn, text) {
+  if (!text || text.trim() === '') {
+    const card = btn.closest('.message-block');
+    const body = card ? card.querySelector('.message-body') : null;
+    if (body) text = body.textContent;
+  }
+  navigator.clipboard.writeText(text.trim()).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text.trim();
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>

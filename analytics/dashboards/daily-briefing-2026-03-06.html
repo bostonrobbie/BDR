@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily BDR Briefing — Friday, March 6, 2026</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; }
+
+  .top-bar { background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%); padding: 24px 32px; border-bottom: 2px solid #3b82f6; display: flex; justify-content: space-between; align-items: center; }
+  .top-bar h1 { font-size: 1.6em; color: #60a5fa; font-weight: 700; }
+  .top-bar .meta { color: #94a3b8; font-size: 0.9em; text-align: right; }
+  .top-bar .meta strong { color: #f59e0b; }
+
+  .container { max-width: 1300px; margin: 0 auto; padding: 24px; }
+
+  /* ALERTS */
+  .alert-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .alert { border-radius: 10px; padding: 14px 18px; border-left: 4px solid; display: flex; align-items: flex-start; gap: 10px; }
+  .alert-red { background: rgba(220,38,38,0.15); border-color: #dc2626; }
+  .alert-yellow { background: rgba(245,158,11,0.15); border-color: #f59e0b; }
+  .alert-blue { background: rgba(59,130,246,0.15); border-color: #3b82f6; }
+  .alert-green { background: rgba(34,197,94,0.15); border-color: #22c55e; }
+  .alert-icon { font-size: 1.3em; flex-shrink: 0; margin-top: 2px; }
+  .alert-title { font-weight: 700; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .alert-text { font-size: 0.88em; color: #cbd5e1; }
+
+  /* SECTIONS */
+  .section { background: rgba(30,41,59,0.7); border: 1px solid rgba(71,85,105,0.4); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid rgba(71,85,105,0.4); }
+  .section-header h2 { font-size: 1.15em; color: #f1f5f9; font-weight: 700; }
+  .section-icon { font-size: 1.3em; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.75em; font-weight: 700; margin-left: 8px; }
+  .badge-red { background: #dc2626; color: white; }
+  .badge-yellow { background: #f59e0b; color: #000; }
+  .badge-green { background: #22c55e; color: #000; }
+  .badge-blue { background: #3b82f6; color: white; }
+  .badge-gray { background: #475569; color: white; }
+
+  /* DASHBOARD GRID */
+  .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+  .dash-card { background: rgba(15,23,42,0.6); border: 1px solid rgba(71,85,105,0.4); border-radius: 8px; padding: 14px; text-align: center; }
+  .dash-value { font-size: 1.8em; font-weight: 800; color: #60a5fa; }
+  .dash-value.warn { color: #f59e0b; }
+  .dash-value.crit { color: #ef4444; }
+  .dash-value.good { color: #22c55e; }
+  .dash-label { font-size: 0.78em; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+  /* SCHEDULE */
+  .schedule-grid { display: grid; gap: 8px; }
+  .sched-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: rgba(15,23,42,0.5); border-radius: 8px; border-left: 3px solid #475569; }
+  .sched-item.flag { border-left-color: #f59e0b; }
+  .sched-item.prospect { border-left-color: #22c55e; }
+  .sched-time { font-size: 0.82em; color: #94a3b8; min-width: 90px; }
+  .sched-name { font-weight: 600; font-size: 0.92em; }
+  .sched-note { font-size: 0.8em; color: #94a3b8; margin-left: auto; }
+  .sched-item .tag { font-size: 0.7em; padding: 2px 6px; border-radius: 4px; font-weight: 700; }
+  .tag-internal { background: rgba(71,85,105,0.5); color: #94a3b8; }
+  .tag-prospect { background: rgba(34,197,94,0.2); color: #22c55e; }
+  .tag-alert { background: rgba(245,158,11,0.2); color: #f59e0b; }
+
+  /* PROSPECT CARDS */
+  .prospect-card { background: rgba(15,23,42,0.6); border: 1px solid rgba(71,85,105,0.35); border-radius: 10px; padding: 18px; margin-bottom: 14px; }
+  .prospect-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .prospect-name { font-size: 1.05em; font-weight: 700; color: #f1f5f9; }
+  .prospect-meta { font-size: 0.84em; color: #94a3b8; margin-top: 2px; }
+  .priority-hot { color: #ef4444; font-weight: 700; font-size: 0.85em; }
+  .priority-warm { color: #f59e0b; font-weight: 700; font-size: 0.85em; }
+  .priority-std { color: #60a5fa; font-weight: 700; font-size: 0.85em; }
+
+  .msg-block { background: rgba(30,41,59,0.8); border: 1px solid rgba(71,85,105,0.4); border-radius: 8px; padding: 14px; margin-top: 10px; }
+  .msg-subject { font-size: 0.82em; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .msg-subline { font-weight: 700; color: #60a5fa; margin-bottom: 10px; font-size: 0.95em; }
+  .msg-body { font-size: 0.9em; color: #e2e8f0; white-space: pre-line; line-height: 1.7; }
+  .msg-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(71,85,105,0.3); }
+  .msg-stats { font-size: 0.78em; color: #94a3b8; }
+  .copy-btn { background: #3b82f6; color: white; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.8em; font-weight: 600; transition: background 0.2s; }
+  .copy-btn:hover { background: #2563eb; }
+  .copy-btn.copied { background: #22c55e; }
+  .copy-subj-btn { background: rgba(59,130,246,0.3); color: #93c5fd; border: 1px solid #3b82f6; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.78em; font-weight: 600; margin-right: 6px; transition: all 0.2s; }
+  .copy-subj-btn:hover { background: rgba(59,130,246,0.5); }
+
+  .qa-pass { color: #22c55e; font-size: 0.78em; }
+  .qa-warn { color: #f59e0b; font-size: 0.78em; }
+
+  /* TABLES */
+  table { width: 100%; border-collapse: collapse; font-size: 0.87em; }
+  th { background: rgba(15,23,42,0.8); color: #94a3b8; text-transform: uppercase; font-size: 0.75em; letter-spacing: 0.5px; padding: 10px 12px; text-align: left; border-bottom: 1px solid rgba(71,85,105,0.4); }
+  td { padding: 10px 12px; border-bottom: 1px solid rgba(71,85,105,0.2); vertical-align: top; }
+  tr:hover td { background: rgba(59,130,246,0.05); }
+  .strikethrough { text-decoration: line-through; color: #64748b; }
+  .dnc { color: #ef4444; font-weight: 700; font-size: 0.8em; }
+  .skip { color: #f59e0b; font-weight: 700; font-size: 0.8em; }
+
+  /* ACTION ITEMS */
+  .action-list { list-style: none; display: grid; gap: 10px; }
+  .action-item { display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px; background: rgba(15,23,42,0.5); border-radius: 8px; border-left: 3px solid; }
+  .action-item.urgent { border-color: #ef4444; }
+  .action-item.high { border-color: #f59e0b; }
+  .action-item.normal { border-color: #3b82f6; }
+  .action-item.low { border-color: #475569; }
+  .action-num { font-size: 1.2em; font-weight: 800; min-width: 28px; }
+  .action-num.urgent { color: #ef4444; }
+  .action-num.high { color: #f59e0b; }
+  .action-num.normal { color: #3b82f6; }
+  .action-title { font-weight: 700; color: #f1f5f9; font-size: 0.93em; }
+  .action-desc { font-size: 0.83em; color: #94a3b8; margin-top: 3px; }
+
+  /* INTEL CARD */
+  .intel-card { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 700px) { .intel-card { grid-template-columns: 1fr; } }
+  .intel-block { background: rgba(15,23,42,0.5); border-radius: 8px; padding: 14px; }
+  .intel-label { font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; margin-bottom: 6px; }
+  .intel-value { font-size: 0.9em; color: #e2e8f0; }
+
+  .signal-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid rgba(71,85,105,0.2); font-size: 0.86em; }
+  .signal-row:last-child { border-bottom: none; }
+  .sig-icon { font-size: 1em; }
+  .sig-text { color: #cbd5e1; }
+
+  /* TOGGLE */
+  .toggle-section { border: 1px solid rgba(71,85,105,0.3); border-radius: 8px; margin-bottom: 8px; overflow: hidden; }
+  .toggle-header { padding: 12px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: rgba(15,23,42,0.4); font-weight: 600; font-size: 0.9em; user-select: none; }
+  .toggle-header:hover { background: rgba(59,130,246,0.1); }
+  .toggle-body { display: none; padding: 14px 16px; border-top: 1px solid rgba(71,85,105,0.3); }
+  .toggle-body.open { display: block; }
+  .chevron { transition: transform 0.2s; }
+  .chevron.open { transform: rotate(180deg); }
+
+  /* STATUS PILL */
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.72em; font-weight: 700; }
+  .pill-overdue { background: rgba(220,38,38,0.3); color: #fca5a5; border: 1px solid rgba(220,38,38,0.4); }
+  .pill-due { background: rgba(245,158,11,0.3); color: #fcd34d; border: 1px solid rgba(245,158,11,0.4); }
+  .pill-pending { background: rgba(59,130,246,0.2); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
+  .pill-done { background: rgba(34,197,94,0.2); color: #86efac; border: 1px solid rgba(34,197,94,0.3); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+  hr { border: none; border-top: 1px solid rgba(71,85,105,0.3); margin: 16px 0; }
+
+  .subheading { font-size: 0.82em; text-transform: uppercase; letter-spacing: 0.8px; color: #64748b; margin-bottom: 10px; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div>
+    <h1>📋 Daily BDR Briefing</h1>
+    <div style="color:#94a3b8;font-size:0.88em;margin-top:4px;">Rob Gorham · Testsigma · Generated 2026-03-06</div>
+  </div>
+  <div class="meta">
+    <div><strong>Friday, March 6, 2026</strong></div>
+    <div>⚡ Good send day (Friday = 29.6% reply rate)</div>
+    <div>🕛 Best window: 12–1 PM local</div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- CRITICAL ALERTS -->
+<div class="alert-bar">
+  <div class="alert alert-red">
+    <div class="alert-icon">🚨</div>
+    <div>
+      <div class="alert-title">InMail Credits: WARNING</div>
+      <div class="alert-text">23 credits remaining (below 25 threshold). Batch 9 needs 13 + overflow Touch 2s need ~7. Leaves only 3 buffer. Triage carefully.</div>
+    </div>
+  </div>
+  <div class="alert alert-red">
+    <div class="alert-icon">⚠️</div>
+    <div>
+      <div class="alert-title">20 Premature Drafts in Gmail</div>
+      <div class="alert-text">All 20 Touch 3 email drafts created Mar 3 are before Day 9 eligibility. Review and hold or delete. 3 stale Pallavi drafts also present.</div>
+    </div>
+  </div>
+  <div class="alert alert-yellow">
+    <div class="alert-icon">📬</div>
+    <div>
+      <div class="alert-title">Massive Touch 2 Backlog</div>
+      <div class="alert-text">~125 prospects from Batches 5B/5A/6/7 + Buyer Intent overdue for Touch 2. Credits insufficient for InMail. Triage to email Touch 3 where possible.</div>
+    </div>
+  </div>
+  <div class="alert alert-yellow">
+    <div class="alert-icon">🔥</div>
+    <div>
+      <div class="alert-title">Pallavi Nudge Due Tomorrow</div>
+      <div class="alert-text">No reply since Rob's Mar 2 follow-up. Nudge deadline = Mar 7. Draft a light email nudge today in same thread.</div>
+    </div>
+  </div>
+  <div class="alert alert-blue">
+    <div class="alert-icon">🆕</div>
+    <div>
+      <div class="alert-title">Inbound Lead Assigned</div>
+      <div class="alert-text">Jason Dudley @ Baird (FinTech, Milwaukee). Assigned Mar 4. Strong ICP fit. Research done. Needs outreach drafted.</div>
+    </div>
+  </div>
+  <div class="alert alert-blue">
+    <div class="alert-icon">📅</div>
+    <div>
+      <div class="alert-title">Lexia Learning Prep Needed</div>
+      <div class="alert-text">Meeting on Monday Mar 9, 2–3 PM. Generate prep card before end of day today or first thing Monday.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PIPELINE DASHBOARD -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">📊</span>
+    <h2>Pipeline Dashboard</h2>
+  </div>
+  <div class="dash-grid">
+    <div class="dash-card">
+      <div class="dash-value">220</div>
+      <div class="dash-label">Total Sends (Lifetime)</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-value">204</div>
+      <div class="dash-label">InMails Sent</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-value">16</div>
+      <div class="dash-label">Emails Sent</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-value warn">23</div>
+      <div class="dash-label">⚠️ InMail Credits Left</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-value good">6,790</div>
+      <div class="dash-label">Apollo Enrichment Credits</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-value">3</div>
+      <div class="dash-label">Known Replies</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-value">2</div>
+      <div class="dash-label">Active Warm Leads</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-value crit">132+</div>
+      <div class="dash-label">Touch 2s Overdue / Due</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-value warn">13</div>
+      <div class="dash-label">Batch 9 Unsent</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-value">281</div>
+      <div class="dash-label">Apollo Q1 Priority (Active)</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-value">6</div>
+      <div class="dash-label">DNC List</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-value">~0.5–1 mo</div>
+      <div class="dash-label">Credit Runway (at 23/batch)</div>
+    </div>
+  </div>
+</div>
+
+<!-- TODAY'S SCHEDULE -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">📅</span>
+    <h2>Today's Schedule — Friday March 6</h2>
+  </div>
+  <div class="schedule-grid">
+    <div class="sched-item">
+      <div class="sched-time">5:30 – 6:30 AM</div>
+      <div class="sched-name">BD Knowledge Call <span class="tag tag-internal">✓ Done</span></div>
+    </div>
+    <div class="sched-item flag">
+      <div class="sched-time">8:00 – 8:15 AM</div>
+      <div class="sched-name">BD – NAMER || Connect <span class="tag tag-internal">Internal</span></div>
+      <div class="sched-note">Quick sync</div>
+    </div>
+    <div class="sched-item">
+      <div class="sched-time">~8:15 – 9:00 AM</div>
+      <div class="sched-name">BDR Activity Tracking + Weekly Recap – NAMER <span class="tag tag-internal">Internal</span></div>
+    </div>
+    <div class="sched-item flag">
+      <div class="sched-time">11:00 AM – 12:00 PM</div>
+      <div class="sched-name">Morning Dials <span class="tag tag-internal">Internal</span></div>
+      <div class="sched-note">Pre-dial: queue up today's sends</div>
+    </div>
+    <div class="sched-item prospect">
+      <div class="sched-time">12:00 – 1:00 PM</div>
+      <div class="sched-name">🎯 PRIME SEND WINDOW <span class="tag tag-prospect">56.5% reply rate</span></div>
+      <div class="sched-note">Overflow 7 Touch 2s + Batch 9 sends</div>
+    </div>
+    <div class="sched-item">
+      <div class="sched-time">3:00 – 5:00 PM</div>
+      <div class="sched-name">Afternoon Dials <span class="tag tag-internal">Internal</span></div>
+    </div>
+  </div>
+
+  <hr>
+  <div class="subheading" style="margin-top:14px;">Next Week Flags (Mar 9–10)</div>
+  <div class="schedule-grid" style="margin-top:10px;">
+    <div class="sched-item prospect">
+      <div class="sched-time">Mon Mar 9 · 2–3 PM</div>
+      <div class="sched-name">🟢 Lexia Learning &amp; Testsigma <span class="tag tag-prospect">PREP NEEDED</span></div>
+      <div class="sched-note">Generate prep card before EOD today</div>
+    </div>
+    <div class="sched-item">
+      <div class="sched-time">Mon Mar 9 · 10 AM</div>
+      <div class="sched-name">Outbound BDRs Meeting <span class="tag tag-internal">Internal</span></div>
+    </div>
+    <div class="sched-item">
+      <div class="sched-time">Tue Mar 10 · 10 AM</div>
+      <div class="sched-name">Robert / Mithun 1:1 <span class="tag tag-internal">Internal</span></div>
+    </div>
+    <div class="sched-item flag">
+      <div class="sched-time">Mon Mar 9 all week</div>
+      <div class="sched-name">⏰ Daylight Saving Time begins — clocks spring forward 1 hr <span class="tag tag-alert">Heads up</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- REPLY SCAN -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">📧</span>
+    <h2>Reply Scan — Last 48h</h2>
+    <span class="badge badge-gray">0 outbound replies</span>
+  </div>
+
+  <div style="color:#94a3b8;font-size:0.9em;margin-bottom:16px;">No new prospect replies to outbound outreach found in Gmail (since Mar 4). Clean inbox on that front.</div>
+
+  <div class="subheading">Warm Lead Status</div>
+  <div class="two-col">
+    <div class="prospect-card" style="border-color:rgba(245,158,11,0.4);">
+      <div class="prospect-header">
+        <div>
+          <div class="prospect-name">Pallavi Sheshadri <span style="font-size:0.75em;color:#f59e0b;">● WARM — No Reply</span></div>
+          <div class="prospect-meta">Origami Risk · QA</div>
+        </div>
+        <span class="pill pill-due">NUDGE DUE TOMORROW</span>
+      </div>
+      <div style="font-size:0.85em;color:#94a3b8;line-height:1.6;">
+        Rob sent follow-up Mar 2 (Hansard proof point). No reply in 4 days. Per warm-leads SOP: draft light nudge email in same thread by Mar 7.<br><br>
+        <strong style="color:#e2e8f0;">Suggested nudge angle:</strong> Keep it ultra short. Reference the Hansard angle briefly + ask if timing is better in a few weeks. No pressure tone.
+      </div>
+      <div class="msg-block" style="margin-top:12px;">
+        <div class="msg-subject">SUGGESTED NUDGE DRAFT (same thread reply)</div>
+        <div class="msg-body">Hey Pallavi,
+
+Wanted to circle back in case this got buried.
+
+Happy to reconnect whenever timing is better. What does your schedule look like in the next week or two?</div>
+        <div class="msg-footer">
+          <span class="msg-stats qa-pass">24 words · ultra-light · same thread</span>
+          <div>
+            <button class="copy-btn" onclick="copyMsg(this, 'Hey Pallavi,\n\nWanted to circle back in case this got buried.\n\nHappy to reconnect whenever timing is better. What does your schedule look like in the next week or two?')">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prospect-card" style="border-color:rgba(220,38,38,0.4);">
+      <div class="prospect-header">
+        <div>
+          <div class="prospect-name">Namita Jain <span style="font-size:0.75em;color:#ef4444;">● OVERDUE FOLLOW-UP</span></div>
+          <div class="prospect-meta">OverDrive · Software Quality Assurance</div>
+        </div>
+        <span class="pill pill-overdue">T2 WAS DUE MAR 4</span>
+      </div>
+      <div style="font-size:0.85em;color:#94a3b8;line-height:1.6;">
+        Touch 1 email sent Feb 27. No reply. Touch 2 was due ~Mar 4 (LinkedIn InMail per SOP). Now 2 days late. P1 warm lead based on double webinar engagement (AUG 2025 + FEB 2026).<br><br>
+        <strong style="color:#ef4444;">Action needed:</strong> Draft Touch 2 LinkedIn InMail today. Different angle from Touch 1 (coverage). Use Medibuddy or Sanofi proof point.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INBOUND LEAD -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">🆕</span>
+    <h2>Inbound Lead: Jason Dudley @ Baird</h2>
+    <span class="badge badge-green">Priority 4.5/5 · FinTech</span>
+  </div>
+
+  <div class="intel-card" style="margin-bottom:16px;">
+    <div class="intel-block">
+      <div class="intel-label">Contact</div>
+      <div class="intel-value"><strong>Jason Dudley</strong><br>Robert W. Baird &amp; Co. (Milwaukee, WI)<br>Role: QA/IT — confirm title via Sales Nav<br>Lead source: Salesforce assignment Mar 4</div>
+    </div>
+    <div class="intel-block">
+      <div class="intel-label">Company Intel</div>
+      <div class="intel-value">4,600+ associates · $305B AUM · Employee-owned · FinTech top vertical · Multiple business unit QA teams · Selenium + Azure DevOps stack</div>
+    </div>
+    <div class="intel-block">
+      <div class="intel-label">QA Signals</div>
+      <div class="intel-value">
+        <div class="signal-row"><span class="sig-icon">✅</span><span class="sig-text">Active QA automation hiring (Selenium + Java)</span></div>
+        <div class="signal-row"><span class="sig-icon">✅</span><span class="sig-text">Hybrid manual + automation model = high maintenance</span></div>
+        <div class="signal-row"><span class="sig-icon">✅</span><span class="sig-text">Multiple BU-aligned QA teams = fragmented coverage</span></div>
+        <div class="signal-row"><span class="sig-icon">✅</span><span class="sig-text">AI-driven platform launch (Baird Medical) = compliance testing pressure</span></div>
+        <div class="signal-row"><span class="sig-icon">⚠️</span><span class="sig-text">Financial services = slower sales cycle</span></div>
+      </div>
+    </div>
+    <div class="intel-block">
+      <div class="intel-label">Recommended Approach</div>
+      <div class="intel-value">
+        <strong style="color:#60a5fa;">Proof point:</strong> Medibuddy (2,500 tests, 50% maintenance cut)<br>
+        <strong style="color:#60a5fa;">Angle:</strong> Selenium suite sprawl + multi-BU coverage pressure<br>
+        <strong style="color:#60a5fa;">Vertical note:</strong> FinTech = second highest priority<br>
+        <strong style="color:#ef4444;">First step:</strong> Look up Jason in Sales Nav to confirm title, then create tracker entry BEFORE drafting
+      </div>
+    </div>
+  </div>
+  <div style="font-size:0.84em;color:#94a3b8;padding:10px 14px;background:rgba(15,23,42,0.5);border-radius:8px;border-left:3px solid #3b82f6;">
+    ⚠️ <strong style="color:#93c5fd;">Cannot access Salesforce</strong> (per tool rules). Confirm Jason's title + profile via Sales Navigator before any outreach. He must be in a tracker before a draft is created (Draft Safety Rule 3).
+  </div>
+</div>
+
+<!-- TODAY'S FOLLOW-UP QUEUE: OVERFLOW 7 TOUCH 2s -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">✉️</span>
+    <h2>Today's Follow-Up Queue — Overflow 7 Touch 2 InMails</h2>
+    <span class="badge badge-red">DUE TODAY</span>
+  </div>
+  <div style="font-size:0.85em;color:#94a3b8;margin-bottom:16px;">Touch 1 sent Mar 1. Day 5 = today (Mar 6). All 7 messages below are copy-paste ready. Send at 12–1 PM window. Credits: 7 needed (some may be free if 1st degree or Open Profile — verify in Sales Nav first).</div>
+
+  <!-- Prospect 1: Ron Trachman -->
+  <div class="toggle-section">
+    <div class="toggle-header" onclick="toggleSection(this)">
+      <span>1. Ron Trachman · Verint · Release Manager Team Lead <span class="pill pill-due">Touch 2 · Due Today</span></span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="toggle-body">
+      <div class="msg-block">
+        <div class="msg-subject">SUBJECT LINE</div>
+        <div class="msg-subline">Product release cycle time</div>
+        <div class="msg-body">Hansard saw 3 weeks come back in their release schedule. We see that translate across most teams once test automation gets smarter.
+
+A QA leader at Sanofi went from 3 days to 80 minutes on regression. Same validation, way fewer blockers.
+
+Would that kind of cycle boost be worth 15 minutes?</div>
+        <div class="msg-footer">
+          <span class="msg-stats qa-pass">✅ 45 words · Proof: Sanofi (≠ T1 Hansard) · 1 Q · HC1-10 pass · MQS 10/12</span>
+          <div>
+            <button class="copy-subj-btn" onclick="copyMsg(this,'Product release cycle time')">Copy Subject</button>
+            <button class="copy-btn" onclick="copyMsg(this,'Hansard saw 3 weeks come back in their release schedule. We see that translate across most teams once test automation gets smarter.\n\nA QA leader at Sanofi went from 3 days to 80 minutes on regression. Same validation, way fewer blockers.\n\nWould that kind of cycle boost be worth 15 minutes?')">Copy Body</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prospect 2: Laurie Nielsen -->
+  <div class="toggle-section">
+    <div class="toggle-header" onclick="toggleSection(this)">
+      <span>2. Laurie Nielsen · Cerner · Release Manager <span class="pill pill-due">Touch 2 · Due Today</span></span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="toggle-body">
+      <div class="msg-block">
+        <div class="msg-subject">SUBJECT LINE</div>
+        <div class="msg-subline">QA cycle time for compliance</div>
+        <div class="msg-body">Medibuddy cut their manual testing in half while keeping full coverage. They went from stretched capacity to shipping faster.
+
+For teams managing multiple customer versions, that's usually the biggest bottleneck.
+
+Would halving your manual test load be worth a conversation?</div>
+        <div class="msg-footer">
+          <span class="msg-stats qa-pass">✅ 49 words · Proof: Medibuddy (≠ T1 Hansard) · 1 Q · HC1-10 pass · MQS 10/12</span>
+          <div>
+            <button class="copy-subj-btn" onclick="copyMsg(this,'QA cycle time for compliance')">Copy Subject</button>
+            <button class="copy-btn" onclick="copyMsg(this,'Medibuddy cut their manual testing in half while keeping full coverage. They went from stretched capacity to shipping faster.\n\nFor teams managing multiple customer versions, that\'s usually the biggest bottleneck.\n\nWould halving your manual test load be worth a conversation?')">Copy Body</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prospect 3: Alan Gutherz -->
+  <div class="toggle-section">
+    <div class="toggle-header" onclick="toggleSection(this)">
+      <span>3. Alan Gutherz · Algonomy · Director of IT & Operations <span class="pill pill-due">Touch 2 · Due Today</span></span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="toggle-body">
+      <div class="msg-block">
+        <div class="msg-subject">SUBJECT LINE</div>
+        <div class="msg-subline">Test coverage for product velocity</div>
+        <div class="msg-body">A retail QA team we work with cut regression time by 80% using parallel execution. They kept launching at the same pace without hiring.
+
+Coverage stayed ahead. Cycles stayed short.
+
+If getting more from your existing QE capacity sounds useful, what's your availability look like?</div>
+        <div class="msg-footer">
+          <span class="msg-stats qa-pass">✅ 50 words · Proof: CRED (≠ T1 Medibuddy) · 1 Q · HC1-10 pass · MQS 10/12</span>
+          <div>
+            <button class="copy-subj-btn" onclick="copyMsg(this,'Test coverage for product velocity')">Copy Subject</button>
+            <button class="copy-btn" onclick="copyMsg(this,'A retail QA team we work with cut regression time by 80% using parallel execution. They kept launching at the same pace without hiring.\n\nCoverage stayed ahead. Cycles stayed short.\n\nIf getting more from your existing QE capacity sounds useful, what\'s your availability look like?')">Copy Body</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prospect 4: Derek Stanley -->
+  <div class="toggle-section">
+    <div class="toggle-header" onclick="toggleSection(this)">
+      <span>4. Derek Stanley · Kaseya · Sr. Manager, DevOps <span class="pill pill-due">Touch 2 · Due Today</span></span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="toggle-body">
+      <div class="msg-block">
+        <div class="msg-subject">SUBJECT LINE</div>
+        <div class="msg-subline">Multi-product test automation unification</div>
+        <div class="msg-body">CRED cut their regression execution time by 80%. That kind of speed usually comes from parallel test runs and better test selection.
+
+For teams managing acquisition integration, it's a big unlock.
+
+Worth exploring how they got there?</div>
+        <div class="msg-footer">
+          <span class="msg-stats qa-pass">✅ 44 words · Proof: CRED (≠ T1 Fortune 100) · 1 Q · HC1-10 pass · MQS 9/12</span>
+          <div>
+            <button class="copy-subj-btn" onclick="copyMsg(this,'Multi-product test automation unification')">Copy Subject</button>
+            <button class="copy-btn" onclick="copyMsg(this,'CRED cut their regression execution time by 80%. That kind of speed usually comes from parallel test runs and better test selection.\n\nFor teams managing acquisition integration, it\'s a big unlock.\n\nWorth exploring how they got there?')">Copy Body</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prospect 5: Nihal Elsayed -->
+  <div class="toggle-section">
+    <div class="toggle-header" onclick="toggleSection(this)">
+      <span>5. Nihal Elsayed · Oracle Cerner · Test Manager <span class="pill pill-due">Touch 2 · Due Today</span></span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="toggle-body">
+      <div class="msg-block">
+        <div class="msg-subject">SUBJECT LINE</div>
+        <div class="msg-subline">Healthcare regression at scale</div>
+        <div class="msg-body">Hansard moved from 8 weeks to 5 weeks on regression cycles. For teams managing HIPAA workflows and integration testing, that's usually where the biggest bottleneck sits.
+
+If freeing up 3 weeks of capacity per cycle would help, would that be worth a quick chat?</div>
+        <div class="msg-footer">
+          <span class="msg-stats qa-pass">✅ 48 words · Proof: Hansard (≠ T1 Sanofi) · 1 Q · HC1-10 pass · MQS 10/12</span>
+          <div>
+            <button class="copy-subj-btn" onclick="copyMsg(this,'Healthcare regression at scale')">Copy Subject</button>
+            <button class="copy-btn" onclick="copyMsg(this,'Hansard moved from 8 weeks to 5 weeks on regression cycles. For teams managing HIPAA workflows and integration testing, that\'s usually where the biggest bottleneck sits.\n\nIf freeing up 3 weeks of capacity per cycle would help, would that be worth a quick chat?')">Copy Body</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prospect 6: Sarah Kluivert -->
+  <div class="toggle-section">
+    <div class="toggle-header" onclick="toggleSection(this)">
+      <span>6. Sarah Kluivert · Bugasura · Head of QE & Test Operations <span class="pill pill-due">Touch 2 · Due Today</span></span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="toggle-body">
+      <div class="msg-block">
+        <div class="msg-subject">SUBJECT LINE</div>
+        <div class="msg-subline">Scaling single-person QA</div>
+        <div class="msg-body">Oscar Health reduced their QA cycle time significantly by automating the right tests. They kept their team lean and shipped faster.
+
+For startup QA teams, that's the actual blocker.
+
+Would automating your highest-effort tests be worth 15 minutes to explore?</div>
+        <div class="msg-footer">
+          <span class="msg-stats qa-pass">✅ 47 words · Proof: Oscar Health (≠ T1 Spendflo) · 1 Q · HC1-10 pass · MQS 10/12</span>
+          <div>
+            <button class="copy-subj-btn" onclick="copyMsg(this,'Scaling single-person QA')">Copy Subject</button>
+            <button class="copy-btn" onclick="copyMsg(this,'Oscar Health reduced their QA cycle time significantly by automating the right tests. They kept their team lean and shipped faster.\n\nFor startup QA teams, that\'s the actual blocker.\n\nWould automating your highest-effort tests be worth 15 minutes to explore?')">Copy Body</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prospect 7: Kanda Kaliappan -->
+  <div class="toggle-section">
+    <div class="toggle-header" onclick="toggleSection(this)">
+      <span>7. Kanda Kaliappan · Automation Anywhere · VP Eng (Head of Quality) <span class="pill pill-due">Touch 2 · Due Today</span></span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="toggle-body">
+      <div class="msg-block">
+        <div class="msg-subject">SUBJECT LINE</div>
+        <div class="msg-subline">RPA test automation maintenance</div>
+        <div class="msg-body">Hansard went from 8 weeks to 5 weeks on regression testing. They kept validation the same, just smarter about which tests ran in parallel.
+
+For intelligent automation platforms, that kind of efficiency usually wins.
+
+Would shrinking your regression window be worth exploring?</div>
+        <div class="msg-footer">
+          <span class="msg-stats qa-pass">✅ 49 words · Proof: Hansard (≠ T1 CRED) · 1 Q · HC1-10 pass · MQS 10/12</span>
+          <div>
+            <button class="copy-subj-btn" onclick="copyMsg(this,'RPA test automation maintenance')">Copy Subject</button>
+            <button class="copy-btn" onclick="copyMsg(this,'Hansard went from 8 weeks to 5 weeks on regression testing. They kept validation the same, just smarter about which tests ran in parallel.\n\nFor intelligent automation platforms, that kind of efficiency usually wins.\n\nWould shrinking your regression window be worth exploring?')">Copy Body</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BATCH 3 TOUCH 3 QUEUE -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">📨</span>
+    <h2>Batch 3 — Touch 3 Emails Now Eligible</h2>
+    <span class="badge badge-yellow">19 prospects eligible TODAY</span>
+  </div>
+  <div style="font-size:0.85em;color:#94a3b8;margin-bottom:14px;">Touch 1 sent Feb 25 → Day 9 = Mar 6. All Batch 3 prospects eligible for Touch 3 email starting today. Emails are free (no credits). Draft today, send at 12–1 PM window. <strong style="color:#f59e0b;">20 email drafts from Mar 3 may already exist but were created prematurely</strong> — re-use after QA Gate review, or rewrite fresh.</div>
+
+  <div style="font-size:0.83em;color:#ef4444;margin-bottom:12px;padding:10px 14px;background:rgba(220,38,38,0.1);border-radius:8px;border-left:3px solid #dc2626;">
+    ⛔ <strong>DNC/SKIP flags before sending:</strong> Abe Blanco (Kapitus) = DNC, skip entirely. Irfan Syed, Katie Hotard, Rachana Jagetia, Giang Hoang = Touch 3 already sent premature (INC-001), skip official T3.
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Company</th>
+        <th>Title</th>
+        <th>T1 Angle</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td class="strikethrough">Irfan Syed</td><td>Progress Software</td><td>Director of QA</td><td>Regression legacy+cloud</td><td><span class="skip">SKIP — T3 premature sent Feb 28</span></td></tr>
+      <tr><td>2</td><td class="strikethrough">Katie Hotard</td><td>Lucid Software</td><td>Director of QA</td><td>Coverage vs feature speed</td><td><span class="skip">SKIP — T3 premature sent Feb 28</span></td></tr>
+      <tr><td>3</td><td class="strikethrough">Rachana Jagetia</td><td>Housecall Pro</td><td>Director, QA Eng</td><td>Flaky tests before refresh</td><td><span class="skip">SKIP — T3 premature sent Feb 28</span></td></tr>
+      <tr><td>4</td><td class="strikethrough">Giang Hoang</td><td>Employee Navigator</td><td>Director of QA</td><td>Testing 500+ integrations</td><td><span class="skip">SKIP — T3 premature sent Feb 28</span></td></tr>
+      <tr><td>5</td><td>Kevin Caulfield</td><td>Bottomline</td><td>Director of QA</td><td>PCI regression cycles</td><td><span class="pill pill-due">Draft T3 today</span></td></tr>
+      <tr><td>6</td><td>Rick Kowaleski</td><td>Alteryx</td><td>Sr Principal SDET</td><td>Alteryx One expansion</td><td><span class="pill pill-due">Draft T3 (double-send, treat normal)</span></td></tr>
+      <tr><td>7</td><td>Tyler Hackett</td><td>Ava Labs</td><td>QA Eng Manager</td><td>Multi-chain test maintenance</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+      <tr><td>8</td><td class="strikethrough">Abe Blanco</td><td>Kapitus</td><td>QA Eng Manager</td><td>—</td><td><span class="dnc">DNC — Skip permanently</span></td></tr>
+      <tr><td>9</td><td>Susan Lin</td><td>Robinhood</td><td>Staff QA Engineer</td><td>Trading/crypto/derivatives</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+      <tr><td>10</td><td>Aliaksei Ausianka</td><td>NerdWallet</td><td>Staff QA Engineer</td><td>Device matrix regression</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+      <tr><td>11</td><td>Susan Cohan-Lendzian</td><td>BHG Financial</td><td>QA Eng Manager</td><td>Microservices at record volume</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+      <tr><td>12</td><td>Jayati Srivastava</td><td>Cvent</td><td>Principal SDET</td><td>Three codebases, one integration</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+      <tr><td>13</td><td>Suraphel Amde</td><td>BILL</td><td>Staff QA Engineer</td><td>AI agents + regression speed</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+      <tr><td>14</td><td>Christopher Edwards</td><td>Tanium</td><td>Staff QA Engineer</td><td>Agentic AI + endpoint expansion</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+      <tr><td>15</td><td>Max Iglehart</td><td>Amwell</td><td>Staff QA Engineer</td><td>AI in patient workflows</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+      <tr><td>16</td><td>Mazie Roxx</td><td>Phreesia</td><td>QA Director, Payments</td><td>PCI DSS regression</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+      <tr><td>17</td><td>Ram Bulusu</td><td>LiveRamp</td><td>Head of QA</td><td>Identity testing 3 clouds</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+      <tr><td>18</td><td>Dexter Alon</td><td>Blackhawk Network</td><td>SW QA Eng Manager</td><td>Tap-to-Pay testing speed</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+      <tr><td>19</td><td>Phil Jones</td><td>Litera</td><td>Director, Quality Eng</td><td>Test duplication post-acquisitions</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+      <tr><td>20</td><td>Sebastien Pambu</td><td>ecoATM Gazelle</td><td>Sr SDET / Test Architect</td><td>Kiosk testing 7,000 locations</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+      <tr><td>21</td><td>Shanil Jain</td><td>Sling TV</td><td>PM &amp; Test Architect</td><td>Kubernetes migration + streaming</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+      <tr><td>22</td><td>Andre Maestas</td><td>Unity</td><td>Sr SDET / XR QA Architect</td><td>XR device matrix</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+      <tr><td>23</td><td>Animesh Patcha</td><td>Arista Networks</td><td>Test Architect &amp; Eng Manager</td><td>HyperPorts regression</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+      <tr><td>24</td><td>Natalie Gitelman</td><td>Acentra Health</td><td>Test Architect, Sr Test Eng</td><td>UFT legacy + cloud migration</td><td><span class="pill pill-due">Draft T3</span></td></tr>
+    </tbody>
+  </table>
+  <div style="font-size:0.82em;color:#94a3b8;margin-top:10px;">📌 19 active T3 email drafts needed (5 skipped). Request T3 batch draft in next session if not generated by the 20 existing drafts in Gmail — after QA Gate review of those 20.</div>
+</div>
+
+<!-- BATCH 9 COMPLETION -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">📤</span>
+    <h2>Batch 9 — 13 Unsent Touch 1 InMails</h2>
+    <span class="badge badge-yellow">Complete today (13 credits)</span>
+  </div>
+  <div style="font-size:0.85em;color:#94a3b8;margin-bottom:14px;">Per adaptive logic: unsent batch exists → complete it before sourcing new. Credit math: 23 available − 7 (overflow Touch 2) = 16 remaining → 13 for Batch 9 = 3 buffer. Tight but workable. Send today at 12–1 PM after overflow Touch 2s.</div>
+
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Company</th><th>Title</th><th>T1 Subject</th><th>MQS</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>David Gustafson</td><td>HG Insights</td><td>Engineering Manager, QA</td><td>Test upkeep for HG's data platform</td><td><span class="qa-pass">11/12</span></td></tr>
+      <tr><td>2</td><td>Yuliya A</td><td>Planview</td><td>SDET</td><td>Automation coverage for Planview's suite</td><td><span class="qa-pass">11/12</span></td></tr>
+      <tr><td>3</td><td>Kanan Hasanzade</td><td>Datto</td><td>SDET</td><td>Keeping tests stable across Datto's releases</td><td><span class="qa-pass">12/12</span></td></tr>
+      <tr><td>4</td><td>Jiaping Shen</td><td>HackerRank</td><td>SDET</td><td>Regression coverage at HackerRank's pace</td><td><span class="qa-pass">11/12</span></td></tr>
+      <tr><td>5</td><td>Azam Quraishi</td><td>MTX Group</td><td>Sr Quality Engineer</td><td>Test coverage across MTX's Salesforce projects</td><td><span class="qa-warn">8/12 — review</span></td></tr>
+      <tr><td>6</td><td>Sravanti Krothapalli</td><td>Quorum Software</td><td>QA Manager</td><td>Maintaining QA across Quorum's energy suite</td><td><span class="qa-pass">11/12</span></td></tr>
+      <tr><td>7</td><td>Cooper Morrow</td><td>Jama Software</td><td>QA Manager</td><td>Test upkeep for Jama Connect</td><td><span class="qa-pass">12/12</span></td></tr>
+      <tr><td>8</td><td>Manigandan Kanagasabai</td><td>Mediaocean</td><td>SW QA Manager</td><td>Test stability after Innovid integration</td><td><span class="qa-pass">12/12</span></td></tr>
+      <tr><td>9</td><td>Denise Barnett</td><td>Progress Software</td><td>QA Manager</td><td>Regression coverage across Progress's products</td><td><span class="qa-pass">11/12</span></td></tr>
+      <tr><td>10</td><td>Leah Coates</td><td>Perforce Software</td><td>QA Manager</td><td>QA for Perforce's own product suite</td><td><span class="qa-pass">9/12</span></td></tr>
+      <tr><td>11</td><td>Grant Anderson</td><td>Lucid Software</td><td>QA Manager</td><td>QA coverage as Lucid expands the suite</td><td><span class="qa-pass">12/12</span></td></tr>
+      <tr><td>12</td><td>Jyothi Kudithipudi</td><td>Guidewire Software</td><td>Sr QA Manager</td><td>Regression cycles for Guidewire releases</td><td><span class="qa-pass">11/12</span></td></tr>
+      <tr><td>13</td><td>Axel Kerksiek</td><td>nCino</td><td>Sr Software Engineer in Test</td><td>Test maintenance on nCino's Salesforce stack</td><td><span class="qa-pass">11/12</span></td></tr>
+    </tbody>
+  </table>
+  <div style="font-size:0.82em;color:#f59e0b;margin-top:10px;">⚠️ Azam Quraishi MQS 8/12 — review and rewrite before sending. Open the Batch 9 tracker file to copy messages. Denise Barnett (Progress Software) — check if Irfan Syed (same company) is a conflict per same-company rules (different division likely OK but verify).</div>
+</div>
+
+<!-- DRAFT AUDIT -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">🗂️</span>
+    <h2>Gmail Draft Audit</h2>
+    <span class="badge badge-red">ACTION REQUIRED</span>
+  </div>
+  <div style="font-size:0.85em;color:#94a3b8;margin-bottom:14px;">23 total drafts found. All require review per Draft Safety Rule 6 (daily draft audit).</div>
+
+  <div class="two-col">
+    <div>
+      <div class="subheading">20 Touch 3 Email Drafts (Created Mar 3)</div>
+      <div style="font-size:0.85em;color:#94a3b8;margin-bottom:10px;">All subjects look like Touch 3s. Created Mar 3 — before Day 9 eligibility for any batch. For Batch 3 (T1 Feb 25), Day 9 = Mar 6 — eligible TODAY. For all other batches (5B, 5A, 6, 7), Day 9 is Mar 8-10 — still premature.</div>
+      <div style="padding:12px;background:rgba(245,158,11,0.1);border-radius:8px;border-left:3px solid #f59e0b;font-size:0.84em;">
+        <strong style="color:#f59e0b;">Action:</strong><br>
+        1. Cross-reference each draft recipient against their batch Touch 1 date<br>
+        2. If prospect is Batch 3 (T1 Feb 25-26): draft is NOW eligible — do QA Gate check (HC1-10, MQS ≥9) before keeping<br>
+        3. If prospect is any other batch: tag as [HOLD] or delete — re-draft when eligible<br>
+        4. Delete the 5 skips (Abe Blanco DNC + 4 INC-001 premature)
+      </div>
+    </div>
+    <div>
+      <div class="subheading">3 Pallavi "Re: Quick question" Drafts (Mar 2)</div>
+      <div style="font-size:0.85em;color:#94a3b8;margin-bottom:10px;">Rob sent the actual reply Mar 2. These 3 drafts are stale versions.</div>
+      <div style="padding:12px;background:rgba(220,38,38,0.1);border-radius:8px;border-left:3px solid #dc2626;font-size:0.84em;">
+        <strong style="color:#ef4444;">Action:</strong><br>
+        Delete all 3 stale Pallavi drafts. Use the fresh nudge draft above (from the Warm Leads section) for tomorrow's follow-up instead.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CREDIT MATH -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">💳</span>
+    <h2>Credit Allocation — Today</h2>
+  </div>
+  <table style="max-width:600px;">
+    <thead>
+      <tr><th>Use</th><th>Credits</th><th>Priority</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Overflow 7 Touch 2 InMails</td><td>~7 (some may be free)</td><td><span class="badge badge-red">DO FIRST</span></td></tr>
+      <tr><td>Batch 9 (13 unsent Touch 1s)</td><td>13</td><td><span class="badge badge-yellow">Do second</span></td></tr>
+      <tr style="background:rgba(34,197,94,0.05);"><td><strong>Remaining buffer</strong></td><td><strong>~3</strong></td><td><span class="badge badge-gray">Reserve</span></td></tr>
+      <tr style="background:rgba(15,23,42,0.5);"><td><strong>Total</strong></td><td><strong>23</strong></td><td>—</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:10px;font-size:0.83em;color:#94a3b8;">Touch 3 emails (Batch 3, and eventually 5B/5A/6/7) = <strong style="color:#22c55e;">FREE</strong> — no credits needed. Prioritize email queue for overdue Touch 2 backlog when credits run out. Overdue Touch 2 InMails for 5B/5A/6/7 will need to be converted to email Touch 3s for most prospects given credit constraints.</div>
+</div>
+
+<!-- ACTION ITEMS -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">✅</span>
+    <h2>Today's Action Items</h2>
+  </div>
+  <ul class="action-list">
+    <li class="action-item urgent">
+      <div class="action-num urgent">1</div>
+      <div>
+        <div class="action-title">Send Overflow 7 Touch 2 InMails at 12–1 PM</div>
+        <div class="action-desc">All 7 messages above are copy-paste ready. Open Sales Nav, paste subject + body for each. Verify 1st degree / Open Profile first (may be free). Log sends immediately after each.</div>
+      </div>
+    </li>
+    <li class="action-item urgent">
+      <div class="action-num urgent">2</div>
+      <div>
+        <div class="action-title">Draft Namita Jain (OverDrive) Touch 2 InMail — OVERDUE</div>
+        <div class="action-desc">P1 warm lead, double webinar engagement. Touch 2 was due Mar 4. Research: different angle from Feb 27 email coverage angle. Suggest Medibuddy or Sanofi proof point.</div>
+      </div>
+    </li>
+    <li class="action-item urgent">
+      <div class="action-num urgent">3</div>
+      <div>
+        <div class="action-title">Complete Batch 9 (13 unsent InMails) at 12–1 PM</div>
+        <div class="action-desc">After overflow 7 sends, continue with Batch 9 from the prospect-outreach-9-2026-03-03.html tracker. Fix Azam Quraishi message (MQS 8/12) before sending. Log each send.</div>
+      </div>
+    </li>
+    <li class="action-item high">
+      <div class="action-num high">4</div>
+      <div>
+        <div class="action-title">Gmail Draft Audit — Delete / Hold premature drafts</div>
+        <div class="action-desc">Delete 3 stale Pallavi drafts. For 20 Touch 3 drafts: cross-reference batch dates. Keep/QA-Gate Batch 3 eligible ones. Hold or delete everything else until Mar 8-10.</div>
+      </div>
+    </li>
+    <li class="action-item high">
+      <div class="action-num high">5</div>
+      <div>
+        <div class="action-title">Draft Pallavi nudge email (due tomorrow Mar 7)</div>
+        <div class="action-desc">Use the 24-word nudge draft above. Reply in same thread. APPROVE SEND before Rob sends. Last chance before she goes dormant.</div>
+      </div>
+    </li>
+    <li class="action-item high">
+      <div class="action-num high">6</div>
+      <div>
+        <div class="action-title">Research Jason Dudley in Sales Nav — Jason Dudley @ Baird</div>
+        <div class="action-desc">Intel card built (see above). Now look him up in Sales Nav to confirm title, seniority, and check for prior interaction. Create tracker entry. Then draft Touch 1. Req: APPROVE SEND before any outreach.</div>
+      </div>
+    </li>
+    <li class="action-item normal">
+      <div class="action-num normal">7</div>
+      <div>
+        <div class="action-title">Begin Batch 3 Touch 3 email batch (19 prospects eligible TODAY)</div>
+        <div class="action-desc">Emails are free. Draft 19 Touch 3 emails — different angle and proof point from Touch 1 for each. QA Gate all (HC1-10, MQS ≥9, 60-100 words). Subject: 5-6 words, problem-framed. Can queue the 20 Gmail drafts or rewrite fresh.</div>
+      </div>
+    </li>
+    <li class="action-item normal">
+      <div class="action-num normal">8</div>
+      <div>
+        <div class="action-title">Generate Lexia Learning meeting prep card (Mon Mar 9, 2–3 PM)</div>
+        <div class="action-desc">Run prep card generation for Lexia Learning before end of day or first thing Monday. Include attendees, company intel, open questions, and Testsigma proof points for their vertical.</div>
+      </div>
+    </li>
+    <li class="action-item normal">
+      <div class="action-num normal">9</div>
+      <div>
+        <div class="action-title">Triage overdue Touch 2 backlog (5B/5A/6/7 — 125+ prospects)</div>
+        <div class="action-desc">Credits insufficient for all InMail Touch 2s. Strategy: Convert overdue Touch 2s to Touch 3 emails (advance sequence) for prospects who have verified emails. Flag any hot prospects for InMail Touch 2 with remaining buffer credits.</div>
+      </div>
+    </li>
+    <li class="action-item normal">
+      <div class="action-num normal">10</div>
+      <div>
+        <div class="action-title">Update MASTER_SENT_LIST.csv after today's sends</div>
+        <div class="action-desc">Log all Batch 9 sends and any overflow sends. Update pipeline-state.md credits count after each session. Same-session logging rule (INC-003).</div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<!-- TOMORROW PREVIEW -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">🔮</span>
+    <h2>Tomorrow Preview — Weekend & Monday Mar 9</h2>
+  </div>
+  <div class="two-col">
+    <div>
+      <div class="subheading">Weekend (Sat–Sun)</div>
+      <div style="font-size:0.86em;color:#cbd5e1;line-height:1.8;">
+        ✅ Research + batch build only (no sends)<br>
+        ✅ Draft Batch 3 Touch 3 emails (all 19)<br>
+        ✅ QA Gate all T3 email drafts<br>
+        ✅ Stage Batch 3 T3 emails ready for Monday review<br>
+        ✅ Generate Lexia Learning prep card<br>
+        ✅ Triage Touch 2 backlog: which 125+ get email T3 vs InMail T2<br>
+        ⚠️ Send Pallavi nudge if not done today (in-thread email)
+      </div>
+    </div>
+    <div>
+      <div class="subheading">Monday Mar 9</div>
+      <div style="font-size:0.86em;color:#cbd5e1;line-height:1.8;">
+        ⚠️ <strong style="color:#f59e0b;">No Monday Touch 1 sends</strong> (22.9% rate — worst day)<br>
+        ✅ Review Lexia Learning prep card at 2 PM meeting<br>
+        ✅ Review + approve Batch 3 T3 emails<br>
+        ✅ Send Batch 3 T3 emails at 12–1 PM (free, no credits)<br>
+        🔄 Batch 8 (Batches 3/5B/5A/6/7) Touch 2 due: Mon Mar 9 — triage with 3 buffer credits<br>
+        📌 Track Daylight Saving time change (clocks spring forward)
+      </div>
+    </div>
+  </div>
+
+  <hr>
+  <div style="margin-top:14px;">
+    <div class="subheading">Touch 2 Due Monday (Mar 9) — Batch 8 Prospects</div>
+    <div style="font-size:0.84em;color:#94a3b8;margin-top:8px;">Batch 8 Day 1 (7 sent Mar 2): Touch 2 due Sat Mar 7 → defer to Monday Mar 9. 7 prospects: Venkata Upputuri (InvoiceCloud), Affan Rashid (Applied Systems), Anandbabu Singadurai (Elevate), Mohammad Mian (Acorns), Jake Durand (Phreesia), Subrato Sarkar (DrFirst), Vishesh Bagga (Okta). Only 3 buffer credits — send only Hot/Warm via InMail; send email T2 for Standard.</div>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<script>
+function toggleSection(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.chevron');
+  body.classList.toggle('open');
+  chevron.classList.toggle('open');
+}
+
+function copyMsg(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+// Auto-open first prospect
+document.addEventListener('DOMContentLoaded', () => {
+  const first = document.querySelector('.toggle-header');
+  if (first) toggleSection(first);
+});
+</script>
+
+</body>
+</html>

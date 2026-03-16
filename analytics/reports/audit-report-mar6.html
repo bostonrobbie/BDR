@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Audit Report — Mar 6, 2026</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 960px; margin: 0 auto; padding: 24px; color: #1a1a1a; background: #f5f5f5; }
+  h1 { color: #1e3a5f; border-bottom: 3px solid #1e3a5f; padding-bottom: 10px; }
+  h2 { color: #2c5282; margin-top: 32px; border-left: 4px solid #3182ce; padding-left: 12px; }
+  h3 { color: #2d3748; margin-top: 20px; }
+  .card { background: white; border-radius: 8px; padding: 20px; margin: 16px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0; }
+  .stat { background: white; border-radius: 8px; padding: 16px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .stat .num { font-size: 2.2em; font-weight: 700; color: #1e3a5f; }
+  .stat .label { font-size: 0.85em; color: #666; margin-top: 4px; }
+  .stat.warn .num { color: #c05621; }
+  .stat.ok .num { color: #276749; }
+  .stat.red .num { color: #c53030; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+  th { background: #2c5282; color: white; padding: 8px 12px; text-align: left; }
+  td { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+  tr:hover { background: #f7fafc; }
+  .ok { color: #276749; font-weight: 600; }
+  .warn { color: #c05621; font-weight: 600; }
+  .red { color: #c53030; font-weight: 600; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; font-weight: 600; }
+  .tag-gap { background: #fed7aa; color: #c05621; }
+  .tag-dup { background: #fbb6ce; color: #97266d; }
+  .tag-ok { background: #c6f6d5; color: #276749; }
+  .tag-known { background: #bee3f8; color: #2c5282; }
+  .tag-action { background: #e9d8fd; color: #553c9a; }
+  .section-note { background: #ebf8ff; border-left: 4px solid #3182ce; padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 12px 0; font-size: 0.9em; }
+  .callout { background: #fff5f5; border-left: 4px solid #fc8181; padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 12px 0; }
+  .callout.green { background: #f0fff4; border-left-color: #68d391; }
+  .callout.yellow { background: #fffff0; border-left-color: #f6e05e; }
+  .action-item { background: #e9d8fd; border-left: 4px solid #6b46c1; padding: 10px 14px; border-radius: 0 6px 6px 0; margin: 8px 0; font-size: 0.9em; }
+  ul { padding-left: 20px; }
+  li { margin: 4px 0; }
+</style>
+</head>
+<body>
+
+<h1>🔍 Pipeline Audit Report — March 6, 2026</h1>
+<p style="color:#666; font-size:0.9em;">Full cross-channel audit: Apollo enrollment gaps, double-sends, sequence anomalies, and action plan for Mar 9 sends.</p>
+
+<div class="summary-grid">
+  <div class="stat warn"><div class="num">10</div><div class="label">Apollo Enrollment Gaps</div></div>
+  <div class="stat red"><div class="num">6</div><div class="label">Known Double-Sends (InMail)</div></div>
+  <div class="stat warn"><div class="num">4</div><div class="label">Cross-Channel Overlaps (INC-001)</div></div>
+  <div class="stat ok"><div class="num">9</div><div class="label">Buyer Intent Cohort: CLEAN</div></div>
+</div>
+
+<div class="summary-grid">
+  <div class="stat warn"><div class="num">2</div><div class="label">Mystery Sequence Enrollments</div></div>
+  <div class="stat warn"><div class="num">3</div><div class="label">Duplicate Apollo Records</div></div>
+  <div class="stat warn"><div class="num">1</div><div class="label">CSV Double-Send Gap (Yassi Dastan)</div></div>
+  <div class="stat ok"><div class="num">228</div><div class="label">Total InMails Logged</div></div>
+</div>
+
+<!-- SECTION 1: CROSS-CHANNEL DOUBLE-SEND CHECK -->
+<h2>1. Cross-Channel Double-Send Analysis</h2>
+
+<div class="card">
+  <h3>1A. Buyer Intent Email Cohort → InMail Cross-Check</h3>
+  <div class="callout green">✅ CLEAN — All 9 Buyer Intent email recipients are email-only. None appear in InMail batches.</div>
+  <table>
+    <tr><th>Name</th><th>Email Send</th><th>InMail?</th><th>Status</th></tr>
+    <tr><td>Andy Nelsen</td><td>Feb 27 (Touch 1)</td><td>No</td><td class="ok">✅ Clean</td></tr>
+    <tr><td>Jose Moreno</td><td>Feb 27 (Touch 1)</td><td>No</td><td class="ok">✅ Clean</td></tr>
+    <tr><td>Tom Yang</td><td>Feb 27 (Touch 1)</td><td>No</td><td class="ok">✅ Clean</td></tr>
+    <tr><td>Eyal Luxenburg</td><td>Feb 27 (Touch 1)</td><td>No</td><td class="ok">✅ Clean</td></tr>
+    <tr><td>Hibatullah Ahmed</td><td>Feb 27 (Touch 1)</td><td>No</td><td class="ok">✅ Clean</td></tr>
+    <tr><td>Jeff Barnes</td><td>Feb 27 (Touch 1)</td><td>No</td><td class="ok">✅ Clean</td></tr>
+    <tr><td>Eduardo Menezes</td><td>Feb 27 (Touch 1)</td><td>No</td><td class="ok">✅ Clean</td></tr>
+    <tr><td>Todd Willms</td><td>Feb 27 (Touch 1)</td><td>No</td><td class="ok">✅ Clean</td></tr>
+    <tr><td>Jason Ruan</td><td>Feb 27 (Touch 1)</td><td>No</td><td class="ok">✅ Clean</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3>1B. INC-001 Premature Touch 3 Recipients → InMail Cross-Check</h3>
+  <div class="callout yellow">⚠️ 4 of 6 recipients also received Batch 3 InMails (Feb 26). This is the INC-001 incident — Touch 3 email sent before Touch 2 InMail. Already documented. No new surprise double-sends here.</div>
+  <table>
+    <tr><th>Name</th><th>Email (Feb 28 premature T3)</th><th>InMail?</th><th>Status</th></tr>
+    <tr><td>Irfan Syed</td><td>Yes</td><td>Batch 3 — Feb 26 ✓</td><td class="warn">⚠️ Cross-channel (INC-001, known)</td></tr>
+    <tr><td>Katie Hotard</td><td>Yes</td><td>Batch 3 — Feb 26 ✓</td><td class="warn">⚠️ Cross-channel (INC-001, known)</td></tr>
+    <tr><td>Rachana Jagetia</td><td>Yes</td><td>Batch 3 — Feb 26 ✓</td><td class="warn">⚠️ Cross-channel (INC-001, known)</td></tr>
+    <tr><td>Giang Hoang</td><td>Yes</td><td>Batch 3 — Feb 26 ✓</td><td class="warn">⚠️ Cross-channel (INC-001, known)</td></tr>
+    <tr><td>Pallavi Sheshadri</td><td>Yes</td><td>No InMail</td><td class="ok">✅ Email-only (warm reply now)</td></tr>
+    <tr><td>Gunasekaran Chandrasekaran</td><td>Yes</td><td>No InMail</td><td class="ok">✅ Email-only (needs tracker entry)</td></tr>
+  </table>
+  <div class="section-note">Irfan, Katie, Rachana, Giang: Touch 2 InMail still due (Touch 3 email was the out-of-order step). Normal Touch 2 cadence applies.</div>
+</div>
+
+<div class="card">
+  <h3>1C. InMail-Only Double-Sends (Same Person, Multiple Batches)</h3>
+  <div class="callout">6 confirmed double-sends — all previously known. One new CSV gap: Yassi Dastan's Batch 6 entry is missing from MASTER_SENT_LIST.csv (only Batch 8 is logged). CSV needs rebuild.</div>
+  <table>
+    <tr><th>Name</th><th>Send 1</th><th>Send 2</th><th>Gap (days)</th><th>Action</th></tr>
+    <tr><td>Chuck Smith</td><td>B1 Feb 23 (connection req)</td><td>B5B Feb 27 (InMail)</td><td>4</td><td>DNC — skip permanently</td></tr>
+    <tr><td>Abe Blanco</td><td>B3 Feb 26</td><td>B8 Mar 3</td><td>5</td><td>DNC — replied "not interested"</td></tr>
+    <tr><td>Rick Kowaleski</td><td>B3 Feb 26</td><td>B8 Mar 3</td><td>5</td><td>Monitor — Touch 2 ~Mar 8</td></tr>
+    <tr><td>Christie Howard</td><td>B5B Feb 27</td><td>B8 Mar 3</td><td>4</td><td>Monitor — Touch 2 ~Mar 8</td></tr>
+    <tr><td>Mohan Gummadi</td><td>B5B Feb 27</td><td>B8 Mar 3</td><td>4</td><td>Monitor — Touch 2 ~Mar 8</td></tr>
+    <tr><td><strong>Yassi Dastan</strong> ⚠️</td><td>B6 Feb 28</td><td>B8 Mar 3</td><td>3</td><td><span class="tag tag-action">CSV GAP</span> Only B8 in CSV. Rebuild master list.</td></tr>
+  </table>
+  <div class="action-item">🔧 ACTION: Rebuild MASTER_SENT_LIST.csv to add Yassi Dastan / Batch 6 entry. Run build_master_list.py from /sessions/practical-brave-goldberg/.</div>
+</div>
+
+<!-- SECTION 2: APOLLO ENROLLMENT GAPS -->
+<h2>2. Apollo Enrollment Gaps (Q1 Priority Accounts)</h2>
+
+<div class="section-note">Sequence: "LinkedIn Outbound - Q1 Priority Accounts" (ID: 69a05801fdd140001d3fc014). All sent/queued prospects should be enrolled here at Step 1 (active). Gaps = person cannot receive Step 2 follow-up InMail automatically queued in Apollo.</div>
+
+<div class="card">
+  <h3>2A. Batch 10 Sent — Apollo Gaps</h3>
+  <table>
+    <tr><th>Name</th><th>Company</th><th>Status</th><th>Issue</th><th>Apollo Email</th></tr>
+    <tr><td>Jason Poole</td><td>Vergent LMS</td><td class="warn">⚠️ GAP</td><td>Retired sequence only (finished). NOT in Q1 Priority Accounts.</td><td>jpoole@vergentlms.com</td></tr>
+    <tr><td>Tim Wiseman</td><td>Upland Software</td><td class="warn">⚠️ WRONG SEQ</td><td>Enrolled in Website Visitor Tier 1 only. NOT in Q1 Priority Accounts.</td><td>twiseman@uplandsoftware.com</td></tr>
+    <tr><td>Tom Goody</td><td>Ncontracts</td><td class="warn">⚠️ EXTRA SEQ</td><td>In Q1 Priority ✅ + enrolled in mystery "Outbound Calls (tyler) Only" by other Claude instance Mar 7. See Section 4.</td><td>tom.goody@ncontracts.com</td></tr>
+    <tr><td>LP Guo</td><td>Moody's</td><td class="warn">⚠️ DUP RECORD</td><td>2 Apollo records. Older record in Q1 Priority ✅. Newer record not enrolled. Dedup needed.</td><td>liping.guo@moodys.com</td></tr>
+    <tr><td>Francesco Leising</td><td>Fairfax Software</td><td class="ok">✅ Clean</td><td>—</td><td>—</td></tr>
+    <tr><td>Chet West</td><td>TempWorks</td><td class="ok">✅ Clean</td><td>—</td><td>—</td></tr>
+    <tr><td>Clint Parker</td><td>Simpro</td><td class="ok">✅ Clean</td><td>—</td><td>—</td></tr>
+    <tr><td>Josh Thayer</td><td>Jenius Bank</td><td class="ok">✅ Clean</td><td>Note: Jenius Bank wind-down risk — monitor.</td><td>—</td></tr>
+    <tr><td>Elena Lysenko</td><td>CFSB</td><td class="ok">✅ Clean</td><td>—</td><td>—</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3>2B. Batch 10 Queued (Mon Mar 9 Sends) — Apollo Gaps</h3>
+  <table>
+    <tr><th>Name</th><th>Company</th><th>Status</th><th>Issue</th><th>Apollo Email</th></tr>
+    <tr><td><strong>Sasa Lazarevic</strong></td><td>OneSource Virtual</td><td class="warn">⚠️ GAP</td><td>Retired sequence only (finished). NOT in Q1 Priority Accounts.</td><td>slazarevic@onesourcevirtual.com</td></tr>
+    <tr><td><strong>Christian Melville</strong></td><td>Drake Software</td><td class="warn">⚠️ GAP</td><td>Retired sequence only (finished). NOT in Q1 Priority Accounts.</td><td>christian.melville@drakesoftware.com</td></tr>
+    <tr><td>Srikanth Sy</td><td>Spiralyze</td><td class="ok">✅ Clean</td><td>—</td><td>srikanth@spiralyze.com</td></tr>
+    <tr><td>Sarah Ross</td><td>Aspire Software</td><td class="ok">✅ Clean</td><td>—</td><td>sross@youraspire.com</td></tr>
+    <tr><td>Niveditha Somasundaram</td><td>Propel PLM</td><td class="ok">✅ Clean</td><td>—</td><td>niveditha@propelplm.com</td></tr>
+    <tr><td>Stephen Burlingame</td><td>Assembly Software</td><td class="ok">✅ Clean</td><td>—</td><td>stephen@assemblysoftware.com</td></tr>
+    <tr><td>Dave Czoper</td><td>Smith Micro</td><td class="ok">✅ Clean</td><td>—</td><td>dczoper@smithmicro.com</td></tr>
+    <tr><td>Crys Simonca</td><td>Custard Insurance</td><td class="ok">✅ Clean</td><td>—</td><td>csimonca@custard.com</td></tr>
+  </table>
+  <div class="callout yellow">⚠️ Sasa Lazarevic and Christian Melville have InMails queued for Monday. They must be enrolled in Q1 Priority Accounts BEFORE their InMails go out, or they'll have no Apollo follow-up path. Enroll today (Fri).</div>
+</div>
+
+<div class="card">
+  <h3>2C. Batch 10 Skipped (No InMail Access) — Apollo Gaps</h3>
+  <div class="section-note">These 6 people had no InMail access on Sales Nav. The plan is to reach them via Apollo Step 3 (Manual Email). They must be enrolled in Q1 Priority Accounts to receive that email touch.</div>
+  <table>
+    <tr><th>Name</th><th>Company</th><th>Status</th><th>Apollo Email</th><th>Notes</th></tr>
+    <tr><td><strong>Gil Taub</strong></td><td>ISN</td><td class="warn">⚠️ GAP + 2 RECORDS</td><td>gtaub@isn.com</td><td>2 Apollo records (same person). Enroll primary record.</td></tr>
+    <tr><td><strong>Kristyn Burke</strong></td><td>Kahuna</td><td class="warn">⚠️ GAP</td><td>kristyn.burke@kahunaworkforce.com</td><td>Pipeline-state said "no Apollo match" but record exists. Verify email.</td></tr>
+    <tr><td><strong>Tim Hartgrave</strong></td><td>id Software</td><td class="warn">⚠️ GAP</td><td>tim.hartgrave@idsoftware.com</td><td>—</td></tr>
+    <tr><td><strong>Vince Delfini</strong></td><td>OUTFORM</td><td class="warn">⚠️ GAP</td><td>vince.delfini@outform.com</td><td>—</td></tr>
+    <tr><td><strong>Padmanaban Vadivelu</strong></td><td>Softcrylic</td><td class="warn">⚠️ GAP</td><td>padmanabanv@softcrylic.com</td><td>—</td></tr>
+    <tr><td><strong>Ravi Nag</strong></td><td>Ana-Data Consulting</td><td class="warn">⚠️ GAP</td><td>ravi@ana-data.com</td><td>—</td></tr>
+  </table>
+  <div class="action-item">🔧 ACTION: Enroll all 6 in Q1 Priority Accounts. No InMail was sent, so this is a first-touch email outreach. Use flags: sequence_no_email: false (they DO have email), sequence_active_in_other_campaigns: true.</div>
+</div>
+
+<!-- SECTION 3: OLDER BATCH SPOT-CHECKS -->
+<h2>3. Older Batch Enrollment Spot-Check (B3–B9)</h2>
+
+<div class="card">
+  <div class="callout green">✅ All 6 spot-checked contacts from B3/B5B/B6/B7/B9 are correctly enrolled in Q1 Priority Accounts (Active, Step 1). The Mar 3 enrollment audit covered B1 and B8, and earlier batches were enrolled during their build sessions (around Feb 28).</div>
+  <table>
+    <tr><th>Name</th><th>Batch</th><th>Q1 Priority Accts</th><th>Notes</th></tr>
+    <tr><td>Irfan Syed</td><td>B3</td><td class="ok">✅ Active Step 1</td><td>Added Feb 28. Also in retired seq (finished).</td></tr>
+    <tr><td>Rick Kowaleski</td><td>B3+B8</td><td class="ok">✅ Active Step 1</td><td>Double-send. Added Feb 28. Touch 2 due ~Mar 8.</td></tr>
+    <tr><td>Christie Howard</td><td>B5B+B8</td><td class="ok">✅ Active Step 1</td><td>Double-send. Added Feb 28. Touch 2 due ~Mar 8.</td></tr>
+    <tr><td>Yassi Dastan</td><td>B6+B8</td><td class="ok">✅ Active Step 1</td><td>2 Apollo records. Primary enrolled Feb 28. Also enrolled in calls sequence (see Section 4).</td></tr>
+    <tr><td>Samata Yarlagadda</td><td>B8</td><td class="ok">✅ Active Step 1</td><td>Added Mar 3.</td></tr>
+    <tr><td>Mohan Guruswamy</td><td>B9</td><td class="ok">✅ Active Step 1</td><td>Added Mar 3. Also in "Outbound Calls (tyler) Only" sequence — see Section 4.</td></tr>
+  </table>
+</div>
+
+<!-- SECTION 4: MYSTERY SEQUENCE -->
+<h2>4. Mystery Sequence: "Outbound Calls (tyler) Only"</h2>
+
+<div class="card">
+  <div class="callout">
+    <strong>Sequence ID:</strong> 6904f70577baa100190e4858<br>
+    <strong>Sequence Name:</strong> Outbound Calls (tyler) Only<br>
+    <strong>Created:</strong> Oct 31, 2025<br>
+    <strong>Status:</strong> Active (not archived)<br>
+    <strong>Enrolled by:</strong> Another Claude Cowork instance, Mar 7
+  </div>
+  <p>Two of Rob's contacts were enrolled in this Tyler-owned calls sequence by another Claude instance on Mar 7:</p>
+  <table>
+    <tr><th>Name</th><th>Company</th><th>Also in Q1 Priority?</th><th>Action</th></tr>
+    <tr><td>Tom Goody</td><td>Ncontracts</td><td class="ok">✅ Yes</td><td>Monitor. Rob clarified: called but never spoke = OK to keep in outreach. No action unless Tyler's team has had live conversations.</td></tr>
+    <tr><td>Mohan Guruswamy</td><td>Tavant</td><td class="ok">✅ Yes</td><td>Same — monitor. Verify with Rob if Tyler ever spoke with either person.</td></tr>
+  </table>
+  <div class="action-item">❓ QUESTION FOR ROB: Did Tyler or anyone on the team ever have a live conversation with Tom Goody (Ncontracts) or Mohan Guruswamy (Tavant)? If yes → DNC for both. If never spoke → safe to keep in Q1 Priority Accounts outreach per your rule.</div>
+</div>
+
+<!-- SECTION 5: DUPLICATE APOLLO RECORDS -->
+<h2>5. Duplicate Apollo Records</h2>
+<div class="card">
+  <table>
+    <tr><th>Name</th><th>Company</th><th>Issue</th><th>Action</th></tr>
+    <tr><td>Yassi Dastan</td><td>Cvent</td><td>2 records. Primary enrolled in Q1 Priority (Feb 28). Secondary unlinked.</td><td>Keep primary. Leave secondary as-is unless it causes enrollment issues.</td></tr>
+    <tr><td>Georgii Petrosian</td><td>AuditBoard</td><td>2 records. B11 sent Mar 6. Primary enrolled in Q1 Priority.</td><td>Monitor. Do not enroll secondary.</td></tr>
+    <tr><td>LP Guo</td><td>Moody's</td><td>2 records. Older in Q1 Priority. Newer not enrolled.</td><td>Keep older enrolled record. Leave newer alone.</td></tr>
+    <tr><td>Gil Taub</td><td>ISN</td><td>2 records for same person. Neither in Q1 Priority Accounts.</td><td>Enroll primary record only.</td></tr>
+  </table>
+</div>
+
+<!-- SECTION 6: ACTION PLAN -->
+<h2>6. Prioritized Action Plan for Mar 7–9</h2>
+
+<div class="card">
+  <h3>🔴 Urgent — Before Monday Mar 9 InMails</h3>
+  <table>
+    <tr><th>#</th><th>Action</th><th>Who</th><th>Why</th></tr>
+    <tr><td>1</td><td>Enroll <strong>Sasa Lazarevic</strong> (OneSource Virtual) in Q1 Priority Accounts</td><td>Claude + Rob approval</td><td>InMail queued Mon Mar 9. Must be enrolled before send.</td></tr>
+    <tr><td>2</td><td>Enroll <strong>Christian Melville</strong> (Drake Software) in Q1 Priority Accounts</td><td>Claude + Rob approval</td><td>InMail queued Mon Mar 9. Must be enrolled before send.</td></tr>
+    <tr><td>3</td><td>Enroll <strong>Jason Poole</strong> (Vergent LMS) in Q1 Priority Accounts</td><td>Claude + Rob approval</td><td>InMail already sent Mar 6. Needs sequence for Touch 2 (~Mar 11).</td></tr>
+    <tr><td>4</td><td>Enroll <strong>Tim Wiseman</strong> (Upland Software) in Q1 Priority Accounts</td><td>Claude + Rob approval</td><td>InMail already sent Mar 6. Currently in wrong sequence (Website Visitor).</td></tr>
+  </table>
+
+  <h3>🟡 This Week — Skipped B10 Email Outreach</h3>
+  <table>
+    <tr><th>#</th><th>Action</th><th>Contacts</th><th>Why</th></tr>
+    <tr><td>5</td><td>Enroll all 6 B10 skipped contacts in Q1 Priority Accounts for email Touch 1</td><td>Gil Taub, Kristyn Burke, Tim Hartgrave, Vince Delfini, Padmanaban Vadivelu, Ravi Nag</td><td>No InMail access — email is only channel.</td></tr>
+  </table>
+
+  <h3>🟢 This Week — Maintenance</h3>
+  <table>
+    <tr><th>#</th><th>Action</th><th>Notes</th></tr>
+    <tr><td>6</td><td>Rebuild MASTER_SENT_LIST.csv</td><td>Yassi Dastan Batch 6 entry is missing. Run build_master_list.py.</td></tr>
+    <tr><td>7</td><td>Confirm with Rob: Tom Goody + Mohan Guruswamy — did Tyler ever speak with them?</td><td>If yes → DNC. If no → keep in outreach.</td></tr>
+    <tr><td>8</td><td>Pam Bice Touch 2 — OVERDUE since Mar 4</td><td>Pipeline-state flagged. Send ASAP.</td></tr>
+    <tr><td>9</td><td>Gunasekaran Chandrasekaran — create tracker entry, draft Touch 2</td><td>INC-001 orphan. Still pending from Feb 28.</td></tr>
+  </table>
+</div>
+
+<!-- SECTION 7: MASTER CHANNEL SUMMARY -->
+<h2>7. Full Cross-Channel Contact Matrix</h2>
+<div class="card">
+  <table>
+    <tr><th>Channel</th><th>Count</th><th>Status</th></tr>
+    <tr><td>LinkedIn InMail (Sales Nav)</td><td>212</td><td class="ok">✅ Primary channel. 6 known double-sends documented.</td></tr>
+    <tr><td>LinkedIn Connection Request (B1)</td><td>23</td><td class="ok">✅ B1 only. No InMail credits used. All enrolled in Q1 Priority Mar 3.</td></tr>
+    <tr><td>LinkedIn InMail (credit, B10–B11)</td><td>10</td><td class="ok">✅ Clean. 4 credits remaining.</td></tr>
+    <tr><td>LinkedIn InMail (Open Profile free)</td><td>2</td><td class="ok">✅ Clean.</td></tr>
+    <tr><td>LinkedIn DM (1st degree free)</td><td>1</td><td class="ok">✅ Clean (Olga Norton).</td></tr>
+    <tr><td>Email — Buyer Intent (Apollo seq)</td><td>9</td><td class="ok">✅ CLEAN. Zero InMail overlap.</td></tr>
+    <tr><td>Email — INC-001 premature Touch 3</td><td>6</td><td class="warn">⚠️ 4 also got InMail (Irfan, Katie, Rachana, Giang) — INC-001, known. Pallavi + Gunasekaran email-only.</td></tr>
+    <tr><td>Email — Warm reply follow-up</td><td>1</td><td class="ok">✅ Pallavi Sheshadri, Mar 2. Warm lead.</td></tr>
+    <tr><td><strong>TOTAL UNIQUE CONTACTS</strong></td><td><strong>~206</strong></td><td>248 CSV entries incl. 6 double-sends + 1 Yassi Dastan CSV gap</td></tr>
+  </table>
+</div>
+
+<div style="margin-top:32px; padding:16px; background:#1e3a5f; color:white; border-radius:8px; font-size:0.85em;">
+  Generated Mar 6, 2026 | Testsigma BDR Pipeline Audit | 3 Claude Cowork instances active
+</div>
+
+</body>
+</html>

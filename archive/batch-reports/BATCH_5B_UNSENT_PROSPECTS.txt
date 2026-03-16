@@ -1,0 +1,455 @@
+================================================================================
+BATCH 5B: UNSENT PROSPECTS SUMMARY (as of 2026-02-27)
+================================================================================
+
+EXCLUDED (Already Sent):
+- Lyle Landry
+- Iftikhar Hussain
+- Rahul Pandey
+- Christie Howard
+
+UNSENT PROSPECTS: 21 Total
+
+================================================================================
+PROSPECT DETAILS
+================================================================================
+
+1. Amanda Mao
+   Title: QA Manager
+   Company: Veeva Systems
+   Priority Score: Not specified in HTML
+   LinkedIn URL: Not found in HTML
+   ---
+   Touch 1 Subject: Vault CRM migrations
+   Touch 1 Message:
+   Hey Amanda,
+   
+   With 7 of the top 20 pharmas migrating to Vault CRM and new agent features rolling out through next year, what takes more QA time, validating the migration paths or regression across the core Vault platform?
+   
+   Platform migration waves usually mean the QA team is testing old and new simultaneously, which doubles the regression surface.
+   
+   Sanofi cut regression from 3 days to 80 minutes using Testsigma while maintaining pharma compliance rigor.
+   
+   If 80-minute regression runs would help manage the migration wave, what day works for a quick look at how they did it?
+   
+   Rob
+
+2. Anthony Kent
+   Title: QA Manager
+   Company: Apiture
+   Priority Score: Not specified in HTML
+   LinkedIn URL: Not found in HTML
+   ---
+   Touch 1 Subject: Post-acquisition testing at Apiture
+   Touch 1 Message:
+   Hey Anthony,
+   
+   After the CSI acquisition, what's harder on the QA side, integrating the Apiture cloud platform with CSI's core banking system or keeping regression stable across 200+ fintech partner integrations?
+   
+   Post-acquisition platform merges usually mean the QA team is validating two systems simultaneously while partners keep shipping updates.
+   
+   Sanofi cut regression from 3 days to 80 minutes using Testsigma while managing complex system integrations and compliance requirements.
+   
+   If 80-minute regression would help the post-acquisition integration timeline, what day works for a quick look at how they did it?
+   
+   Rob
+
+3. Arun Bhatia
+   Title: Sr Director QA
+   Company: Aspen Technology
+   Priority Score: Not specified in HTML
+   LinkedIn URL: Not found in HTML
+   ---
+   Touch 1 Subject: V15 expansion testing
+   Touch 1 Message:
+   Hey Arun,
+   
+   With the V15 expansion plus new sustainability domains, what creates more QA pressure, regression across the core simulation engine or coverage for the new green hydrogen and sustainability modules?
+   
+   Industrial software teams adding AI features usually see the test surface grow faster than the QA team.
+   
+   Medibuddy automated 2,500 tests and cut maintenance in half while expanding into new product domains.
+   
+   If halving maintenance would help manage the V15 expansion, what day works for a quick look at how they did it?
+   
+   Rob
+
+4. Cherishma Perikala
+   Title: QA Manager
+   Company: GoGuardian
+   Priority Score: Not specified in HTML
+   LinkedIn URL: Not found in HTML
+   ---
+   Touch 1 Subject: Multi-platform EdTech QA
+   Touch 1 Message:
+   Hey Cherishma,
+   
+   With 14+ product updates shipping across ChromeOS, Windows, macOS, iOS, and Android, what takes more QA time, keeping cross-platform regression stable or testing new features like Hall Pass and Pear Deck AI?
+   
+   EdTech teams shipping across 5 OS platforms usually find that each OS update breaks a chain of existing tests.
+   
+   Spendflo (similar team size) used Testsigma to cut manual testing by 50% and saw ROI in the first quarter.
+   
+   If cutting manual testing in half would buy breathing room for new product releases, what day works for a quick look at how they did it?
+   
+   Rob
+
+5. Chuck Smith
+   Title: Director Quality Engineering
+   Company: Aventiv Technologies
+   Priority Score: Not specified in HTML
+   LinkedIn URL: Not found in HTML
+   ---
+   Touch 1 Subject: Multi-facility platform QA
+   Touch 1 Message:
+   Hey Chuck,
+   
+   Across 1,800 facilities running on the platform, what creates more QA pressure, testing the tablet hardware integrations or keeping the Securus One platform regression stable?
+   
+   Multi-facility platforms usually see regression compound as each facility configuration adds test permutations. Each site variation creates different test requirements.
+   
+   Cisco cut regression by 35% using Testsigma across their enterprise platform, similar multi-site complexity.
+   
+   If 35% less regression would help the platform rollout, what day works for a quick look at how they did it?
+   
+   Rob
+
+6. Edwin Gozun
+   Title: Sr Principal Test Architect
+   Company: Arm
+   Priority Score: Not specified in HTML
+   LinkedIn URL: Not found in HTML
+   ---
+   Touch 1 Subject: IP verification at scale
+   Touch 1 Message:
+   Hey Edwin,
+   
+   With 1,000+ SoC derivatives using Arm IP, what creates more testing pressure, regression across the IP reuse matrix or keeping coverage current as new cores ship?
+   
+   Chip design teams usually see verification complexity compound with every new IP block and derivative.
+   
+   Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma across their distributed platform.
+   
+   If 4x faster test execution would help the IP validation pipeline, what day works for a quick look at how they did it?
+   
+   Rob
+
+7. Federico Romano
+   Title: QA Manager
+   Company: Legion Technologies
+   Priority Score: Not specified in HTML
+   LinkedIn URL: Not found in HTML
+   ---
+   Touch 1 Subject: AI feature testing velocity
+   Touch 1 Message:
+   Hey Federico,
+   
+   With 5 new features shipping this year plus real-time HRIS and POS integrations, what takes more QA time, validating the scheduling outputs across all integrations or keeping integration regression stable?
+   
+   Teams rolling out multiple AI features usually see testing complexity multiply as each model creates new behavioral paths.
+   
+   CRED hit 90% regression automation and 5x faster execution using Testsigma while managing complex platform integrations.
+   
+   What day works to see how they kept release confidence high while shipping that fast?
+   
+   Rob
+
+8. Gopinath Venu
+   Title: Sr Software Test Lead/QA Manager
+   Company: Teradata
+   Priority Score: Not specified in HTML
+   LinkedIn URL: Not found in HTML
+   ---
+   Touch 1 Subject: Multi-cloud regression
+   Touch 1 Message:
+   Hey Gopinath,
+   
+   With deployments across AWS, Azure, GCP, and on-prem, what takes more QA time, keeping regression stable across all four environments or testing the new ModelOps AI features?
+   
+   Platforms across multiple clouds usually see test maintenance multiply as each environment has different infrastructure behavior.
+   
+   Medibuddy automated 2,500 tests and cut maintenance in half while managing multi-platform complexity.
+   
+   If halving maintenance would help manage the multi-cloud testing load, what day works for a quick look at how they did it?
+   
+   Rob
+
+9. Heleen Vs
+   Title: QA Manager
+   Company: 10Pearls
+   Priority Score: Not specified in HTML
+   LinkedIn URL: Not found in HTML
+   ---
+   Touch 1 Subject: Scaling QA delivery
+   Touch 1 Message:
+   Hey Heleen,
+   
+   Your team tests across fintech, healthcare, and IoT clients simultaneously, right? That means juggling different security rules, compliance deadlines, and release cycles all at once.
+   
+   The challenge most services firms hit is that each client's tech stack requires a different test approach, which makes centralizing automation nearly impossible.
+   
+   Cisco manages massive platform testing complexity and cut regression by 35% using AI-powered self-healing, which works across any stack.
+   
+   If 35% less regression effort across your client teams would help, what day works for a quick look at how they did it?
+   
+   Rob
+
+10. Jamie Kurt
+    Title: QA Manager
+    Company: Vertafore
+    Priority Score: Not specified in HTML
+    LinkedIn URL: Not found in HTML
+    ---
+    Touch 1 Subject: Carrier integration testing
+    Touch 1 Message:
+    Hey Jamie,
+    
+    With 100+ carrier integrations on the platform and new efficiency features shipping continuously, what takes more QA time, keeping the carrier connectivity tests stable or regression on the agency management suite?
+    
+    Insurance SaaS platforms usually see test maintenance grow with every carrier API update.
+    
+    Hansard cut regression from 8 to 5 weeks using Testsigma's AI to auto-fix tests when insurance workflows changed.
+    
+    If 3 fewer weeks of regression would help the release cadence for agencies, what day works for a quick look at how they did it?
+    
+    Rob
+
+11. Konduru Srinivasulu
+    Title: QA Mgr/Field Solution Architect
+    Company: Kaleris
+    Priority Score: Not specified in HTML
+    LinkedIn URL: Not found in HTML
+    ---
+    Touch 1 Subject: Post-acquisition testing
+    Touch 1 Message:
+    Hey Konduru,
+    
+    After the Locus and CAMS acquisitions, what's harder on the QA side, merging the test suites from acquired codebases or keeping regression stable while feature velocity stays high?
+    
+    Post-acquisition teams usually see test maintenance double as they consolidate platforms.
+    
+    Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma during a similar multi-platform integration.
+    
+    If 4x faster execution would help the consolidation timeline, what day works for a quick look at how they did it?
+    
+    Rob
+
+12. Lance Silverman
+    Title: Perf Test Architect & Manager
+    Company: Healthfirst
+    Priority Score: Not specified in HTML
+    LinkedIn URL: Not found in HTML
+    ---
+    Touch 1 Subject: Open enrollment load testing
+    Touch 1 Message:
+    Hey Lance,
+    
+    With open enrollment driving seasonal load spikes every fall, what takes more QA time, performance testing for the enrollment surge or keeping regression stable across the member portal year-round?
+    
+    Healthcare teams usually need both locked down before enrollment, but test maintenance eats the prep time.
+    
+    Medibuddy automated 2,500 tests and cut maintenance in half while managing seasonal complexity in healthcare.
+    
+    If halving maintenance would give more time for enrollment readiness, what day works for a quick look at how they did it?
+    
+    Rob
+
+13. Marcos Guerrero
+    Title: QA Manager
+    Company: Plume
+    Priority Score: Not specified in HTML
+    LinkedIn URL: Not found in HTML
+    ---
+    Touch 1 Subject: IoT device matrix testing
+    Touch 1 Message:
+    Hey Marcos,
+    
+    With 200+ partner devices and apps running across iOS, Android, Windows, and Linux, what takes more QA time, keeping device compatibility tests current or regression on the cloud platform?
+    
+    IoT platforms usually see the test matrix explode with every new device partner and OS update.
+    
+    Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma across their multi-device streaming platform.
+    
+    If 4x faster execution would help manage the device partner matrix, what day works for a quick look at how they did it?
+    
+    Rob
+
+14. Mohan Gummadi
+    Title: Sr Director QA
+    Company: Verisk
+    Priority Score: Not specified in HTML
+    LinkedIn URL: Not found in HTML
+    ---
+    Touch 1 Subject: AI platform validation
+    Touch 1 Message:
+    Hey Mohan,
+    
+    With three new product launches this year, what's harder on the QA side, validating the outputs across all platforms or keeping regression stable on the core analytics platform?
+    
+    Teams rolling out AI features usually see test maintenance spike as models create new behavioral paths to validate.
+    
+    Sanofi cut regression from 3 days to 80 minutes using Testsigma while maintaining regulatory validation rigor.
+    
+    If 80-minute regression would help the AI launch cadence, what day works for a quick look at how they did it?
+    
+    Rob
+
+15. Rachael Schroeder
+    Title: QA Manager (LEGO Fortnite)
+    Company: Epic Games
+    Priority Score: Not specified in HTML
+    LinkedIn URL: Not found in HTML
+    ---
+    Touch 1 Subject: Cross-platform game testing
+    Touch 1 Message:
+    Hey Rachael,
+    
+    With LEGO Fortnite running across PC, console, mobile, and cloud, what takes more QA time, keeping regression stable across all four platforms or testing new seasonal content before chapter launches?
+    
+    Cross-platform game teams usually see the test matrix multiply with every new platform and content update.
+    
+    Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma across their multi-platform streaming service.
+    
+    If 4x faster test execution would help the seasonal launch cadence, what day works for a quick look at how they did it?
+    
+    Rob
+
+16. Rich Kowalski
+    Title: PS QA Lead Architect
+    Company: Genesys
+    Priority Score: Not specified in HTML
+    LinkedIn URL: Not found in HTML
+    ---
+    Touch 1 Subject: Omnichannel regression
+    Touch 1 Message:
+    Hey Rich,
+    
+    With voice, chat, SMS, WhatsApp, and live agents running through the platform, what takes more QA time, testing the omnichannel routing or regression across the 200+ AppFoundry integrations?
+    
+    Contact center platforms usually see their test matrix explode as each new channel multiplies the integration paths.
+    
+    Medibuddy automated 2,500 tests and cut maintenance in half while scaling across complex platform integrations.
+    
+    If halving test maintenance would help manage the integration sprawl, what day works for a quick look at how they did it?
+    
+    Rob
+
+17. Ryan Aspleaf
+    Title: Sr Director QA Engineering
+    Company: VIZIO
+    Priority Score: Not specified in HTML
+    LinkedIn URL: Not found in HTML
+    ---
+    Touch 1 Subject: Smart TV test matrix
+    Touch 1 Message:
+    Hey Ryan,
+    
+    With 100+ OTT apps across 20+ TV models and firmware versions, what creates more QA pressure, keeping app compatibility tests current or regression on the Home OS across all the SKUs?
+    
+    Connected device platforms usually see the test matrix explode with every new model and firmware update.
+    
+    Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma across their streaming platform.
+    
+    If 4x faster execution would help manage the TV model matrix, what day works for a quick look at how they did it?
+    
+    Rob
+
+18. Sanjay Singh
+    Title: QA Lead Automation Engineer
+    Company: ServiceTitan
+    Priority Score: Not specified in HTML
+    LinkedIn URL: Not found in HTML
+    ---
+    Touch 1 Subject: Post-IPO regression discipline
+    Touch 1 Message:
+    Hey Sanjay,
+    
+    Now that ServiceTitan is public, what's putting more pressure on QA, keeping regression tight across the 5 core modules or testing the fintech expansion products?
+    
+    Post-IPO companies usually see regression standards tighten as customer-facing quality becomes investor-visible.
+    
+    Hansard cut regression from 8 weeks down to 5 with Testsigma's AI to auto-fix tests when product workflows changed.
+    
+    If 3 fewer weeks of regression would help the post-IPO release cadence, what day works for a quick look at how they did it?
+    
+    Rob
+
+19. Sebren Green
+    Title: Sr Director QA / Head of QA Eng
+    Company: Riot Games
+    Priority Score: Not specified in HTML
+    LinkedIn URL: Not found in HTML
+    ---
+    Touch 1 Subject: Valorant Mobile testing
+    Touch 1 Message:
+    Hey Sebren,
+    
+    With Valorant Mobile launching globally and 100K daily tests already running, what's harder to manage, building mobile test coverage or keeping regression stable across PC, console, and mobile simultaneously?
+    
+    Cross-platform game teams usually see the test matrix explode when adding a new platform, especially mobile with its device fragmentation.
+    
+    Nagra DTV automated 2,500 tests in 8 months and ran 4x faster using Testsigma across their multi-device platform.
+    
+    If 4x faster execution would help the mobile launch timeline, what day works for a quick look at how they did it?
+    
+    Rob
+
+20. Shantel Gillette
+    Title: QA Manager
+    Company: Lucid Software
+    Priority Score: Not specified in HTML
+    LinkedIn URL: Not found in HTML
+    ---
+    Touch 1 Subject: Integration regression at Lucid
+    Touch 1 Message:
+    Hey Shantel,
+    
+    With 200+ integrations across Lucidchart, Lucidspark, and Lucidscale, what takes more QA time, keeping the integration tests stable or regression on the real-time collaboration features?
+    
+    Visual collaboration platforms usually see integration maintenance grow faster than the team as partners update their APIs. Each API change requires test rewrites.
+    
+    CRED hit 90% regression automation and 5x faster execution using Testsigma while managing dozens of third-party integrations.
+    
+    What day works to see how they kept integration coverage tight while cutting execution by 5x?
+    
+    Rob
+
+21. Terene Lee
+    Title: QA Manager
+    Company: Impartner Software
+    Priority Score: Not specified in HTML
+    LinkedIn URL: Not found in HTML
+    ---
+    Touch 1 Subject: Post-migration regression
+    Touch 1 Message:
+    Hey Terene,
+    
+    After the PX migration and Europe data center launch, what's putting more pressure on QA, stabilizing regression on the new infrastructure or keeping coverage tight across regions?
+    
+    Post-migration teams usually see test maintenance spike as the new platform surfaces unexpected behavior.
+    
+    Sanofi cut regression from 3 days to 80 minutes using Testsigma while maintaining compliance across regions.
+    
+    If 80-minute regression would help stabilize the post-migration release cadence, what day works for a quick look at how they did it?
+    
+    Rob
+
+================================================================================
+NOTES
+================================================================================
+
+1. LinkedIn Sales Navigator URLs: The HTML file does not contain LinkedIn profile URLs. 
+   These must be looked up separately in Sales Navigator or Apollo.
+
+2. Priority Scores: Priority scoring data is not present in the HTML file. 
+   These must be sourced from Sales Navigator or the original prospect tracker.
+
+3. All 21 unsent prospects have complete Touch 1 InMail copy ready for sending.
+
+4. A/B Group assignment: Some prospects are in "Group A" (named customers) and 
+   some in "Group B" (anonymous outcomes) based on the batch testing strategy.
+
+5. Email addresses: Some prospects have email addresses available (example: Shantel 
+   Gillette has sgillette@lucid.co for Touch 3 email follow-up).
+
+================================================================================

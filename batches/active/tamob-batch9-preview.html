@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Batch 9 — Email Preview (45 contacts)</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f1f5f9; margin: 0; padding: 24px; }
+  h1 { color: #0f172a; font-size: 20px; margin-bottom: 4px; }
+  .meta { color: #64748b; font-size: 13px; margin-bottom: 24px; }
+  .company-header { background: #0f172a; color: white; padding: 8px 16px; border-radius: 6px 6px 0 0; font-size: 13px; font-weight: 600; margin-top: 28px; }
+  .card { background: white; border: 1px solid #e2e8f0; border-top: none; padding: 20px 24px; }
+  .card + .card { border-top: 1px solid #f1f5f9; }
+  .card:last-of-type { border-radius: 0 0 6px 6px; }
+  .card-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+  .contact-name { font-weight: 700; font-size: 15px; color: #0f172a; }
+  .contact-title { color: #64748b; font-size: 12px; }
+  .subject-line { background: #f8fafc; border-left: 3px solid #cbd5e1; padding: 6px 12px; margin-bottom: 16px; font-size: 13px; color: #475569; }
+  .subject-line strong { color: #0f172a; }
+  .email-body { font-size: 14px; line-height: 1.75; color: #1e293b; font-family: Georgia, 'Times New Roman', serif; }
+  .email-body p { margin: 0 0 14px 0; }
+  .email-body p:last-child { margin-bottom: 0; }
+  .proof-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; color: white; margin-left: 8px; }
+  .mqs { font-size: 11px; color: #94a3b8; margin-left: auto; }
+  .sig { color: #64748b; font-size: 13px; margin-top: 14px; border-top: 1px solid #f1f5f9; padding-top: 12px; }
+</style>
+</head>
+<body>
+<h1>Batch 9 — Email Preview</h1>
+<div class="meta">45 enrolled contacts · Mar 14, 2026 · TAM Outbound T1</div>
+
+<div class="company-header">SailPoint — 4 contacts</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Cory Davies</span>
+    <span class="contact-title">Sr Director of Engineering</span>
+    <span class="proof-badge" style="background:#2563eb">Cisco</span>
+    <span class="mqs">#1 · wc=91 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Cory&#x27;s engineering scale at SailPoint</div>
+  <div class="email-body"><p>Hi Cory,</p><p>Running senior engineering across an identity governance platform usually means test suite brittleness finds its way into your release cycle before you have time to fix it. Is your team spending more sprint cycles chasing broken tests than building new coverage?</p><p>Cisco was dealing with the same brittleness problem and cut regression runtime by 35% on Testsigma, without adding engineers. Their team stopped manually patching broken locators every sprint.</p><p>At SailPoint&#x27;s scale, that drag compounds across every release. Is test brittleness something your team is actively trying to get ahead of?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Matt Domsch</span>
+    <span class="contact-title">Sr Director of Engineering</span>
+    <span class="proof-badge" style="background:#7c3aed">CRED</span>
+    <span class="mqs">#2 · wc=90 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Matt&#x27;s engineering quality at SailPoint</div>
+  <div class="email-body"><p>Hi Matt,</p><p>Senior engineering leadership at a multi-tenant identity platform usually means your regression suite is always playing catch-up with the product roadmap. Where does your team spend more sprint time, building new test coverage, or keeping existing tests from breaking?</p><p>CRED&#x27;s QA team was dealing with the same catch-up problem and reached 90% regression coverage on Testsigma, running tests 5x faster. Their engineers stopped spending sprints on test repair.</p><p>SailPoint&#x27;s product complexity makes that gap hard to close manually. How does your team currently approach keeping up with that coverage demand?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Remi Philippe</span>
+    <span class="contact-title">Sr Director of Engineering, Identity</span>
+    <span class="proof-badge" style="background:#059669">Hansard</span>
+    <span class="mqs">#3 · wc=90 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Remi&#x27;s identity engineering at SailPoint</div>
+  <div class="email-body"><p>Hi Remi,</p><p>Directing identity engineering at SailPoint usually means your team owns the most regression-sensitive workflows in the product. Is your current test cycle fast enough to keep up with the releases that depend on it?</p><p>Hansard was dealing with the same cycle pressure and cut their regression from 8 to 5 weeks on Testsigma, without overhauling the team. Their engineers stopped spending half their sprints on manual test maintenance.</p><p>At SailPoint&#x27;s scale, that cycle time directly shapes release confidence. How does your current regression cycle hold up against your release pace?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Matt Ramirez</span>
+    <span class="contact-title">Director of Engineering</span>
+    <span class="proof-badge" style="background:#dc2626">Fortune 100</span>
+    <span class="mqs">#4 · wc=98 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Matt&#x27;s engineering velocity at SailPoint</div>
+  <div class="email-body"><p>Hi Matt,</p><p>Running engineering on a governance SaaS platform usually means test coverage gets stretched across a broader surface area every sprint. Is your current automation keeping pace with the product, or is the gap quietly growing?</p><p>A Fortune 100 financial services firm was watching the same coverage gap grow and tripled their test coverage in 4 months on Testsigma, without expanding the QA org. Their teams stopped treating coverage debt as something they&#x27;d address next quarter.</p><p>At SailPoint&#x27;s scale, that gap shows up as release risk. How is your team currently managing that coverage gap as the platform scales?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="company-header">Farmers Insurance — 5 contacts</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Suresh Vincent</span>
+    <span class="contact-title">Director of QA &amp; Systems, P&amp;C Guidewire</span>
+    <span class="proof-badge" style="background:#059669">Hansard</span>
+    <span class="mqs">#5 · wc=98 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Suresh&#x27;s QA leadership at Farmers Insurance</div>
+  <div class="email-body"><p>Hi Suresh,</p><p>Directing QA across Guidewire at a carrier like Farmers usually means regression cycles tied to P&amp;C workflows carry real cost when they run long. Is that kind of cycle pressure something your team is navigating right now?</p><p>Hansard was dealing with the same long regression cycles and cut their test cycle from 8 to 5 weeks on Testsigma, without overhauling the QA team. Their testers stopped manually re-running the same scenarios every release.</p><p>P&amp;C regression at Farmers&#x27; scale gets expensive fast when something slips. What does a typical Guidewire regression cycle look like for your team right now?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Bret Wiener</span>
+    <span class="contact-title">Sr Director of Engineering</span>
+    <span class="proof-badge" style="background:#7c3aed">CRED</span>
+    <span class="mqs">#6 · wc=87 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Bret&#x27;s engineering leadership at Farmers Insurance</div>
+  <div class="email-body"><p>Hi Bret,</p><p>Senior engineering leadership at a carrier like Farmers usually means test infrastructure has to hold across policy, claims, and billing workflows all at once. Where does your team spend more time, adding new coverage, or keeping existing tests from breaking?</p><p>CRED was dealing with the same coverage-versus-maintenance tradeoff and reached 90% regression coverage on Testsigma, running tests 5x faster. Their QA team stopped playing catch-up with every new release.</p><p>Carriers can&#x27;t let regression gaps compound across product lines. How does your team currently manage that coverage-versus-maintenance tradeoff?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Deepa Krishnamoorthy</span>
+    <span class="contact-title">Sr Director of Engineering</span>
+    <span class="proof-badge" style="background:#d97706">Medibuddy</span>
+    <span class="mqs">#7 · wc=91 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Deepa&#x27;s engineering delivery at Farmers Insurance</div>
+  <div class="email-body"><p>Hi Deepa,</p><p>Leading senior engineering at a carrier like Farmers usually means your teams own test coverage across high-stakes systems where reliability is non-negotiable. Is your current automation approach keeping up, or is maintenance eating into your engineers&#x27; capacity?</p><p>Medibuddy was dealing with the same maintenance drain and built 2,500 automated tests on Testsigma while cutting maintenance effort by 50%. Their engineers stopped spending sprints on broken test upkeep.</p><p>At Farmers&#x27; scale, that maintenance overhead adds up quickly across product lines. Is test maintenance overhead something your team is actively working to reduce?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Siva Ranjani</span>
+    <span class="contact-title">Sr Automation Lead</span>
+    <span class="proof-badge" style="background:#2563eb">Cisco</span>
+    <span class="mqs">#8 · wc=98 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Siva&#x27;s automation leadership at Farmers Insurance</div>
+  <div class="email-body"><p>Hi Siva,</p><p>Leading automation at a carrier like Farmers usually means your suite is always under pressure as policies evolve and new products roll in. Is your current framework scaling with what&#x27;s being shipped, or are you spending more time fixing tests than writing them?</p><p>Cisco was dealing with the same fix-versus-write imbalance and cut regression time by 35% on Testsigma, without adding headcount. Their team stopped manually maintaining brittle test scripts every sprint.</p><p>Keeping a healthy suite across Farmers&#x27; complexity is a constant balancing act. How does your team currently balance between fixing existing tests and building new ones?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Vaibhav Shah</span>
+    <span class="contact-title">Director of Engineering</span>
+    <span class="proof-badge" style="background:#dc2626">Fortune 100</span>
+    <span class="mqs">#9 · wc=98 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Vaibhav&#x27;s engineering velocity at Farmers Insurance</div>
+  <div class="email-body"><p>Hi Vaibhav,</p><p>Directing engineering at a carrier like Farmers usually means coverage gaps appear as soon as products change faster than the test suite can follow. Is your current tooling keeping pace with the release cadence, or is the gap growing?</p><p>A Fortune 100 firm was dealing with the same growing coverage gap and tripled their automated test coverage in 4 months on Testsigma, without expanding the QA org. Their teams stopped treating those gaps as an accepted risk.</p><p>At Farmers&#x27; scale, coverage gaps show up in production. How is your team currently keeping coverage up as your products change?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="company-header">Bethesda Softworks — 5 contacts</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">James Ackermann</span>
+    <span class="contact-title">QA Manager</span>
+    <span class="proof-badge" style="background:#0891b2">Samsung</span>
+    <span class="mqs">#10 · wc=94 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> James&#x27;s QA coverage at Bethesda</div>
+  <div class="email-body"><p>Hi James,</p><p>Managing QA at a studio like Bethesda usually means cross-platform coverage across PC, console, and multiple SKUs is a baseline expectation, not a stretch goal. Is your current automation giving you the cross-platform depth you actually need?</p><p>Samsung was dealing with the same cross-platform coverage challenge and maintained consistent coverage on Testsigma, without scaling the QA team to match device fragmentation. Their testers stopped manually re-running test passes for each platform.</p><p>At a studio like Bethesda, cross-platform coverage gaps show up at launch. How does your team currently handle cross-platform coverage across your SKUs?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Erik Mabry</span>
+    <span class="contact-title">QA Manager</span>
+    <span class="proof-badge" style="background:#059669">Hansard</span>
+    <span class="mqs">#11 · wc=92 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Erik&#x27;s QA operations at Bethesda</div>
+  <div class="email-body"><p>Hi Erik,</p><p>Managing QA at a studio like Bethesda usually means regression cycles tied to major title releases have a hard deadline, and running long isn&#x27;t an option. Is your current approach fast enough to support your shipping cadence?</p><p>Hansard was dealing with the same deadline pressure and cut their regression cycle from 8 to 5 weeks on Testsigma, without adding QA headcount. Their team stopped letting test cycles dictate release timelines.</p><p>Game release schedules don&#x27;t flex around slow regression runs. What does your current regression timeline look like relative to your release windows?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Joseph Farrell</span>
+    <span class="contact-title">Sr Software Engineer Manager</span>
+    <span class="proof-badge" style="background:#7c3aed">CRED</span>
+    <span class="mqs">#12 · wc=92 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Joseph&#x27;s engineering reliability at Bethesda</div>
+  <div class="email-body"><p>Hi Joseph,</p><p>Senior software engineering at a studio like Bethesda usually means test brittleness during crunch creates a real drag on the team right when they can least afford it. Is your regression suite holding up when feature work is most intense?</p><p>CRED was dealing with the same brittleness drag and reached 90% regression coverage on Testsigma, running tests 5x faster. Their engineers stopped spending crunch weeks chasing failing tests.</p><p>At Bethesda&#x27;s scope, that drag has a direct line to release confidence. Is test brittleness during crunch something your team is actively working through?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Yousef Ebrahimi</span>
+    <span class="contact-title">Sr Software Engineer Manager</span>
+    <span class="proof-badge" style="background:#d97706">Medibuddy</span>
+    <span class="mqs">#13 · wc=95 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Yousef&#x27;s software reliability at Bethesda</div>
+  <div class="email-body"><p>Hi Yousef,</p><p>Senior engineering management at a studio like Bethesda usually means test maintenance overhead during feature-heavy sprints quietly chips away at velocity. Is your team spending a meaningful chunk of sprint time just keeping existing tests from breaking?</p><p>Medibuddy was dealing with the same maintenance overhead and built 2,500 automated tests on Testsigma while cutting maintenance effort by 50%. Their engineers stopped treating broken tests as a normal cost of doing business.</p><p>At a studio shipping at Bethesda&#x27;s pace, that overhead adds up fast. How is your team currently managing test maintenance overhead during sprint cycles?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Daniel Ward</span>
+    <span class="contact-title">Software Engineer Manager</span>
+    <span class="proof-badge" style="background:#dc2626">Fortune 100</span>
+    <span class="mqs">#14 · wc=94 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Daniel&#x27;s engineering at Bethesda</div>
+  <div class="email-body"><p>Hi Daniel,</p><p>Running software engineering at a studio like Bethesda usually means test coverage gaps stack up quickly when features are shipping fast. Is your regression suite keeping up with what your team is actually shipping?</p><p>A Fortune 100 enterprise was dealing with the same coverage gap and tripled their automated test coverage in 4 months on Testsigma, without growing the QA org. Their teams stopped treating those gaps as an accepted backlog item.</p><p>At Bethesda&#x27;s release scale, uncovered workflows find their way into production. How is your team currently thinking about closing that coverage gap?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="company-header">hims &amp; hers — 3 contacts</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Michael Hart</span>
+    <span class="contact-title">VP of Engineering</span>
+    <span class="proof-badge" style="background:#7c3aed">CRED</span>
+    <span class="mqs">#15 · wc=94 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Michael&#x27;s engineering scale at hims &amp; hers</div>
+  <div class="email-body"><p>Hi Michael,</p><p>VP of Engineering at a consumer health platform like hims &amp; hers usually means fast product iteration and test automation have to move at the same pace, or coverage falls behind. Is your regression suite scaling with the product, or is it always playing catch-up?</p><p>CRED was dealing with the same coverage lag and reached 90% regression coverage on Testsigma, running tests 5x faster. Their QA team stopped being a bottleneck on every release.</p><p>Health and wellness platforms can&#x27;t afford coverage gaps that reach production. How is your team currently approaching that coverage-versus-speed challenge?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Eric Spencer</span>
+    <span class="contact-title">Director of Software Engineering</span>
+    <span class="proof-badge" style="background:#2563eb">Cisco</span>
+    <span class="mqs">#16 · wc=96 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Eric&#x27;s software engineering at hims &amp; hers</div>
+  <div class="email-body"><p>Hi Eric,</p><p>Directing software engineering at a consumer health platform like hims &amp; hers usually means test infrastructure has to keep pace with rapid product cycles, not just headcount. Is your current pipeline giving you the regression coverage your release cadence actually requires?</p><p>Cisco was dealing with the same pipeline gap and cut regression time by 35% on Testsigma, without adding engineers. Their team stopped manually patching tests every time the product changed.</p><p>At hims &amp; hers&#x27; pace, that kind of overhead slows every release. How does your current pipeline hold up against the release cadence you&#x27;re running?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Jen Moltke</span>
+    <span class="contact-title">Software Engineer Manager</span>
+    <span class="proof-badge" style="background:#dc2626">Fortune 100</span>
+    <span class="mqs">#17 · wc=99 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Jen&#x27;s engineering at hims &amp; hers</div>
+  <div class="email-body"><p>Hi Jen,</p><p>Running software engineering at a fast-moving consumer health platform usually means test maintenance becomes a recurring drag during high-velocity sprints. Is keeping your test suite healthy taking time away from your team&#x27;s actual feature work?</p><p>A Fortune 100 enterprise was dealing with the same maintenance drag and tripled their automated test coverage in 4 months on Testsigma, without growing the QA org. Their teams stopped spending sprint capacity on manual test upkeep.</p><p>At hims &amp; hers&#x27; pace of shipping, that saved time goes directly back to product. How much sprint time is your team currently spending on test maintenance?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="company-header">Rocket Software — 5 contacts</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Glenn Chambers</span>
+    <span class="contact-title">QA Manager</span>
+    <span class="proof-badge" style="background:#7c3aed">CRED</span>
+    <span class="mqs">#18 · wc=90 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Glenn&#x27;s QA leadership at Rocket Software</div>
+  <div class="email-body"><p>Hi Glenn,</p><p>Managing QA at an enterprise software company like Rocket usually means regression coverage across complex, modernization-heavy workflows is always being stretched thin. Is your current automation approach keeping pace with how fast the product is changing?</p><p>CRED was dealing with the same coverage stretch and reached 90% regression coverage on Testsigma, running tests 5x faster. Their QA team stopped letting coverage slip every time the codebase shifted.</p><p>At Rocket&#x27;s scale of enterprise products, that kind of gap compounds fast. How is your team currently managing coverage as the product changes?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Jianhua Zhou</span>
+    <span class="contact-title">Software Engineer Manager</span>
+    <span class="proof-badge" style="background:#059669">Hansard</span>
+    <span class="mqs">#19 · wc=97 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Jianhua&#x27;s engineering at Rocket Software</div>
+  <div class="email-body"><p>Hi Jianhua,</p><p>Software engineering management at an enterprise company like Rocket usually means test brittleness across complex codebases is a constant drain on velocity, and it gets worse as the product grows. Is your team spending more time fixing broken tests than writing new ones?</p><p>Hansard was dealing with the same brittleness drain and cut their regression time from 8 to 5 weeks on Testsigma, freeing engineers from constant maintenance. Their team stopped treating broken tests as background noise.</p><p>Enterprise modernization at Rocket&#x27;s scale makes that drag expensive. How much sprint capacity is going toward test maintenance right now?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Mandar Bapat</span>
+    <span class="contact-title">Software Engineer Manager</span>
+    <span class="proof-badge" style="background:#2563eb">Cisco</span>
+    <span class="mqs">#20 · wc=95 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Mandar&#x27;s engineering at Rocket Software</div>
+  <div class="email-body"><p>Hi Mandar,</p><p>Software engineering management at an enterprise company like Rocket usually means keeping regression reliable across an actively evolving codebase is a real daily challenge. Is your current automation holding up as the product changes, or are tests breaking faster than your team can fix them?</p><p>Cisco was in the same position and cut regression time by 35% on Testsigma, without additional engineering investment. Their team stopped chasing false failures every sprint.</p><p>At Rocket&#x27;s scale, reliable regression is what separates fast releases from slow ones. How is your team currently handling the breaking-tests problem right now?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Mingtao Liu</span>
+    <span class="contact-title">Software Engineer Manager</span>
+    <span class="proof-badge" style="background:#d97706">Medibuddy</span>
+    <span class="mqs">#21 · wc=97 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Mingtao&#x27;s engineering at Rocket Software</div>
+  <div class="email-body"><p>Hi Mingtao,</p><p>Software engineering management at an enterprise company like Rocket usually means test maintenance overhead during active development phases quietly accumulates into a real drag on delivery. Is your team&#x27;s automation keeping up, or is maintenance eating into sprint capacity?</p><p>Medibuddy was dealing with the same maintenance accumulation and built 2,500 automated tests on Testsigma while cutting maintenance effort by 50%. Their engineers reclaimed the sprint time they&#x27;d been losing to broken test fixes.</p><p>At Rocket&#x27;s scale of modernization projects, that overhead slows every release cycle. Is test maintenance overhead something your team is actively working to reduce?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Kishor Chaudhary</span>
+    <span class="contact-title">Sr Software Engineer Manager</span>
+    <span class="proof-badge" style="background:#dc2626">Fortune 100</span>
+    <span class="mqs">#22 · wc=95 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Kishor&#x27;s engineering reliability at Rocket Software</div>
+  <div class="email-body"><p>Hi Kishor,</p><p>Senior engineering management at Rocket usually means keeping coverage solid across a growing product portfolio is a constant balancing act. Is your current tooling scaling with the pace of change, or is coverage slipping as the product expands?</p><p>A Fortune 100 enterprise was dealing with the same slipping coverage and tripled their test coverage in 4 months on Testsigma, without expanding the QA org. Their teams stopped treating coverage debt as something to tackle next quarter.</p><p>At Rocket&#x27;s scale, that debt compounds quickly. How is your team currently keeping coverage solid as the portfolio expands?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="company-header">Lemonade — 1 contact</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Itay Benari</span>
+    <span class="contact-title">Sr Director of Engineering</span>
+    <span class="proof-badge" style="background:#0891b2">Samsung</span>
+    <span class="mqs">#23 · wc=94 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Itay&#x27;s senior engineering at Lemonade</div>
+  <div class="email-body"><p>Hi Itay,</p><p>Senior engineering at a digital-first insurer like Lemonade usually means your test architecture has to hold across web and mobile simultaneously, and both channels move fast. Is your cross-channel regression coverage keeping up with your release velocity?</p><p>Samsung was dealing with the same cross-channel coverage gap and maintained consistent coverage on Testsigma, without scaling QA headcount proportionally. Their team stopped falling behind on mobile coverage when the web product shipped.</p><p>At Lemonade&#x27;s pace of iteration, coverage gaps between channels create real risk. How is your team currently maintaining coverage parity across web and mobile?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="company-header">Zimmer Biomet — 2 contacts</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Kamran Shamaei</span>
+    <span class="contact-title">VP of Engineering</span>
+    <span class="proof-badge" style="background:#059669">Hansard</span>
+    <span class="mqs">#24 · wc=98 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Kamran&#x27;s engineering leadership at Zimmer Biomet</div>
+  <div class="email-body"><p>Hi Kamran,</p><p>VP of Engineering at a MedTech company like Zimmer Biomet usually means test automation reliability is non-negotiable, especially where software intersects with clinical systems. Is your current automation keeping your regression cycles tight enough to support continuous improvement?</p><p>Hansard was dealing with the same regression cycle pressure and cut their test cycle from 8 to 5 weeks on Testsigma, without adding QA resources. Their team stopped letting long regression cycles slow down clinical software releases.</p><p>In MedTech, slow test cycles carry real downstream cost. How does your current regression cycle hold up against the release pace you need?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Marc Blair</span>
+    <span class="contact-title">Software Engineer Manager</span>
+    <span class="proof-badge" style="background:#2563eb">Cisco</span>
+    <span class="mqs">#25 · wc=98 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Marc&#x27;s software engineering at Zimmer Biomet</div>
+  <div class="email-body"><p>Hi Marc,</p><p>Software engineering management at a MedTech company like Zimmer Biomet usually means test reliability across software that touches clinical systems is a hard requirement, not a nice-to-have. Is your current automation holding up as the product evolves and the codebase grows?</p><p>Cisco was dealing with the same reliability pressure and cut regression time by 35% on Testsigma, without additional engineering investment. Their team stopped having to manually re-run tests every time the product changed.</p><p>In MedTech, brittle tests carry more risk than most domains. How does your team currently approach keeping those tests reliable as the product evolves?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="company-header">Anaplan — 6 contacts</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Iain Duffield</span>
+    <span class="contact-title">QA Manager</span>
+    <span class="proof-badge" style="background:#2563eb">Cisco</span>
+    <span class="mqs">#26 · wc=91 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Iain&#x27;s QA coverage at Anaplan</div>
+  <div class="email-body"><p>Hi Iain,</p><p>Managing QA at a connected planning platform like Anaplan usually means regression coverage across complex financial model integrations is under constant pressure. Is your current automation approach holding up as the integration surface grows?</p><p>Cisco was dealing with the same integration coverage pressure and cut regression time by 35% on Testsigma, without additional headcount. Their team stopped manually re-running integration tests after every product change.</p><p>At Anaplan&#x27;s scale of customer integrations, brittle coverage compounds into real release risk. How is your team currently managing regression coverage as the integration surface grows?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Jason Cowley</span>
+    <span class="contact-title">Director of Engineering</span>
+    <span class="proof-badge" style="background:#7c3aed">CRED</span>
+    <span class="mqs">#27 · wc=93 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Jason&#x27;s engineering delivery at Anaplan</div>
+  <div class="email-body"><p>Hi Jason,</p><p>Directing engineering at a connected planning platform like Anaplan usually means test coverage has to stay reliable across complex, customer-facing product layers while the release cadence keeps accelerating. Is your regression suite keeping pace, or is it falling behind as the product grows?</p><p>CRED was dealing with the same coverage-versus-speed tension and reached 90% regression coverage on Testsigma, running tests 5x faster. Their team stopped treating coverage depth as something to trade off against release speed.</p><p>Planning software bugs surface in customer workflows fast. How is your team currently navigating that coverage-versus-speed tension?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Stephen O&#x27;Neill</span>
+    <span class="contact-title">Director of Engineering</span>
+    <span class="proof-badge" style="background:#059669">Hansard</span>
+    <span class="mqs">#28 · wc=95 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Stephen&#x27;s engineering at Anaplan</div>
+  <div class="email-body"><p>Hi Stephen,</p><p>Directing engineering at a connected planning platform like Anaplan usually means regression cycles across complex financial workflows directly shape when you can ship. Is your current test cycle fast enough to support the release cadence you&#x27;re working toward?</p><p>Hansard was dealing with the same cycle bottleneck and cut their regression from 8 to 5 weeks on Testsigma, freeing engineers from manual test maintenance drag. Their teams stopped letting regression cycles push release dates.</p><p>At Anaplan&#x27;s scale, slow regression has a direct cost. What does your current regression cycle look like relative to your release cadence?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Keren Sher</span>
+    <span class="contact-title">Director of Engineering</span>
+    <span class="proof-badge" style="background:#0891b2">Samsung</span>
+    <span class="mqs">#29 · wc=98 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Keren&#x27;s engineering at Anaplan</div>
+  <div class="email-body"><p>Hi Keren,</p><p>Directing engineering at a platform like Anaplan usually means test reliability across multi-environment deployments is an ongoing challenge that gets harder as the customer base grows. Is your current coverage approach giving you confidence across all the environments you&#x27;re shipping to?</p><p>Samsung was dealing with the same multi-environment coverage gap and maintained consistent coverage across configurations on Testsigma, without scaling QA proportionally. Their team stopped having coverage gaps appear in environments that weren&#x27;t getting attention.</p><p>Multi-tenant SaaS regression is hard to cover completely without the right tooling. How does your team currently maintain coverage confidence across your environments?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Tom Baldwin</span>
+    <span class="contact-title">Sr Director of Engineering</span>
+    <span class="proof-badge" style="background:#d97706">Medibuddy</span>
+    <span class="mqs">#30 · wc=96 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Tom&#x27;s senior engineering at Anaplan</div>
+  <div class="email-body"><p>Hi Tom,</p><p>Leading senior engineering at a connected planning platform like Anaplan usually means test maintenance overhead compounds quickly as the product scales and the integration surface expands. Is your team spending more time maintaining tests than building new coverage?</p><p>Medibuddy was dealing with the same compounding maintenance overhead and built 2,500 automated tests on Testsigma while cutting maintenance effort by 50%. Their engineers stopped losing sprint time to brittle test upkeep.</p><p>At Anaplan&#x27;s scale, that overhead has a direct line to delivery speed. How much sprint time is your team currently spending on maintenance versus new coverage?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Michelina Vitello</span>
+    <span class="contact-title">Sr Director of Engineering</span>
+    <span class="proof-badge" style="background:#dc2626">Fortune 100</span>
+    <span class="mqs">#31 · wc=98 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Michelina&#x27;s engineering leadership at Anaplan</div>
+  <div class="email-body"><p>Hi Michelina,</p><p>Leading senior engineering at a connected planning platform like Anaplan usually means test automation has to scale with product complexity without a proportional headcount increase. Is your current coverage approach keeping up with the roadmap, or is QA always the constraint?</p><p>A Fortune 100 firm was dealing with the same QA constraint and tripled their test coverage in 4 months on Testsigma, without growing QA. Their teams stopped letting coverage be the constraint on velocity.</p><p>Enterprise planning software has zero tolerance for regression in customer workflows. Is QA coverage being a constraint on your release velocity right now?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="company-header">Bungie — 2 contacts</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Ryan Wagoner</span>
+    <span class="contact-title">Software Engineer Manager</span>
+    <span class="proof-badge" style="background:#0891b2">Samsung</span>
+    <span class="mqs">#32 · wc=94 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Ryan&#x27;s engineering at Bungie</div>
+  <div class="email-body"><p>Hi Ryan,</p><p>Software engineering management at a studio like Bungie usually means cross-platform test reliability across PC, console, and live-service builds is a constant challenge. Is your current automation giving you the cross-platform coverage you actually need?</p><p>Samsung was dealing with the same cross-platform coverage challenge and maintained consistent coverage on Testsigma, without scaling QA headcount in proportion to the device surface. Their team stopped manually re-running test passes for each platform.</p><p>Live-service games at Bungie&#x27;s scale can&#x27;t afford regression gaps on any platform. How does your team currently maintain cross-platform coverage as the title evolves?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Jeff Fox</span>
+    <span class="contact-title">Sr Test Manager, Marathon</span>
+    <span class="proof-badge" style="background:#059669">Hansard</span>
+    <span class="mqs">#33 · wc=98 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Jeff&#x27;s test management at Bungie</div>
+  <div class="email-body"><p>Hi Jeff,</p><p>Senior test management on a live-service title like Marathon usually means regression cycles tied to each content drop carry real schedule risk if they run long. Is your current approach fast enough to keep pace with your shipping cadence?</p><p>Hansard was dealing with the same release schedule pressure and cut their regression cycle from 8 to 5 weeks on Testsigma, without adding QA resources. Their team stopped letting test cycle length dictate when they could ship.</p><p>Live-service schedules don&#x27;t flex around slow regression runs. What does your current test cycle look like relative to your content drop schedule?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="company-header">Celonis — 2 contacts</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Michael Guntsch</span>
+    <span class="contact-title">VP of Engineering</span>
+    <span class="proof-badge" style="background:#dc2626">Fortune 100</span>
+    <span class="mqs">#34 · wc=98 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Michael&#x27;s engineering leadership at Celonis</div>
+  <div class="email-body"><p>Hi Michael,</p><p>VP of Engineering at a process intelligence platform like Celonis usually means test automation has to scale across complex enterprise integrations without slowing delivery. Is your current coverage keeping up with the deployment footprint?</p><p>A Fortune 100 firm was dealing with the same integration gap and tripled their test coverage in 4 months on Testsigma, without growing the QA org. Their teams stopped treating integration coverage as a backlog item they&#x27;d get to.</p><p>At Celonis&#x27; scale, gaps in integration coverage surface in the most visible customer workflows. How is your team currently managing coverage across that integration footprint?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Felipe Lora</span>
+    <span class="contact-title">VP of Engineering, Platform</span>
+    <span class="proof-badge" style="background:#7c3aed">CRED</span>
+    <span class="mqs">#35 · wc=96 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Felipe&#x27;s platform engineering at Celonis</div>
+  <div class="email-body"><p>Hi Felipe,</p><p>Leading platform engineering at Celonis usually means test coverage has to stay reliable across a complex, integration-heavy layer where any gap can affect multiple customers at once. Is your regression suite keeping up with how fast the platform is evolving?</p><p>CRED was dealing with the same coverage-versus-speed tradeoff and reached 90% regression coverage on Testsigma, running tests 5x faster. Their team stopped trading off coverage depth against release speed.</p><p>At Celonis&#x27; platform scale, a missed regression can ripple across your whole customer base. How is your team currently balancing coverage depth against the platform&#x27;s release pace?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="company-header">Check Point Software — 2 contacts</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Yogesh Garg</span>
+    <span class="contact-title">QA Group Manager</span>
+    <span class="proof-badge" style="background:#0891b2">Samsung</span>
+    <span class="mqs">#36 · wc=96 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Yogesh&#x27;s QA management at Check Point</div>
+  <div class="email-body"><p>Hi Yogesh,</p><p>Managing a QA group at Check Point usually means cross-product coverage across a multi-platform security portfolio is a constant challenge, especially as the product surface grows. Is your current automation approach giving you the depth across product lines you actually need?</p><p>Samsung was dealing with the same cross-product coverage challenge and maintained consistent coverage on Testsigma, without scaling QA headcount proportionally. Their team stopped falling behind on coverage when new products shipped.</p><p>Security products at Check Point&#x27;s scale can&#x27;t afford gaps in regression coverage. How does your team currently manage coverage depth across your product lines?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Shlomo Yeret</span>
+    <span class="contact-title">Director of Software Engineering</span>
+    <span class="proof-badge" style="background:#dc2626">Fortune 100</span>
+    <span class="mqs">#37 · wc=97 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Shlomo&#x27;s software engineering at Check Point</div>
+  <div class="email-body"><p>Hi Shlomo,</p><p>Directing software engineering at Check Point usually means test automation has to scale across a complex product portfolio without slowing release cycles. Is your current tooling scaling with the product, or is coverage always lagging behind what&#x27;s being shipped?</p><p>A Fortune 100 firm was dealing with the same coverage lag and tripled their test coverage in 4 months on Testsigma, without growing QA. Their teams stopped letting coverage be the constraint on release velocity.</p><p>Security software regression at Check Point&#x27;s scale leaves little room for gaps. How is your team currently keeping coverage pace with the portfolio?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="company-header">DraftKings — 4 contacts</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Miroslav Kazakov</span>
+    <span class="contact-title">QA Manager</span>
+    <span class="proof-badge" style="background:#059669">Hansard</span>
+    <span class="mqs">#38 · wc=99 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Miroslav&#x27;s QA leadership at DraftKings</div>
+  <div class="email-body"><p>Hi Miroslav,</p><p>Managing QA at a regulated gaming platform like DraftKings usually means regression cycles tied to live product updates have a hard deadline, and running long creates real deployment risk. Is your current automation approach fast enough to support your release cadence?</p><p>Hansard was dealing with the same deadline-driven cycle pressure and cut their regression from 8 to 5 weeks on Testsigma, without adding QA resources. Their team stopped letting test cycle length hold up deployments.</p><p>In regulated gaming, a slow regression cycle has a direct cost. What does your current regression cycle look like relative to your deployment windows?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Ankur Arora</span>
+    <span class="contact-title">Director of Engineering</span>
+    <span class="proof-badge" style="background:#7c3aed">CRED</span>
+    <span class="mqs">#39 · wc=94 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Ankur&#x27;s engineering at DraftKings</div>
+  <div class="email-body"><p>Hi Ankur,</p><p>Directing engineering at a live gaming platform like DraftKings usually means test coverage has to hold across high-frequency product changes where any regression gap can surface immediately in production. Is your current regression suite keeping up with your release pace?</p><p>CRED was dealing with the same high-frequency coverage pressure and reached 90% regression coverage on Testsigma, running tests 5x faster. Their team stopped letting regression gaps accumulate across sprint cycles.</p><p>Live gaming platforms ship too fast to let coverage slip. How is your team currently managing coverage as the product ships at this pace?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Will Hester</span>
+    <span class="contact-title">Director of Engineering</span>
+    <span class="proof-badge" style="background:#d97706">Medibuddy</span>
+    <span class="mqs">#40 · wc=97 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Will&#x27;s engineering delivery at DraftKings</div>
+  <div class="email-body"><p>Hi Will,</p><p>Directing engineering at a live gaming platform like DraftKings usually means test maintenance overhead during high-velocity sprints creates a real drag on delivery right when you can least afford it. Is your current automation approach sustainable as the product grows?</p><p>Medibuddy was dealing with the same sprint maintenance drag and built 2,500 automated tests on Testsigma while cutting maintenance effort by 50%. Their engineers stopped having broken tests eat into sprint capacity.</p><p>At DraftKings&#x27; release pace, that maintenance drag has a direct line to delivery. How much sprint capacity is your team currently spending on test maintenance?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Rick Bartlett</span>
+    <span class="contact-title">Director of Engineering, iGaming</span>
+    <span class="proof-badge" style="background:#2563eb">Cisco</span>
+    <span class="mqs">#41 · wc=93 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Rick&#x27;s iGaming engineering at DraftKings</div>
+  <div class="email-body"><p>Hi Rick,</p><p>Directing iGaming engineering at DraftKings usually means test reliability across regulated product workflows is a daily requirement, and any regression that reaches production carries real compliance risk. Is your current automation approach keeping up with your release cadence?</p><p>Cisco was dealing with the same regulatory reliability gap and cut regression time by 35% on Testsigma, without additional headcount. Their team stopped manually chasing failures in a suite that couldn&#x27;t keep up with the product.</p><p>In regulated gaming, regression coverage isn&#x27;t optional. How does your team currently ensure test reliability across your regulated workflows?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="company-header">Zebra Technologies — 4 contacts</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Marek Kana</span>
+    <span class="contact-title">Director of QA</span>
+    <span class="proof-badge" style="background:#059669">Hansard</span>
+    <span class="mqs">#42 · wc=97 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Marek&#x27;s QA leadership at Zebra Technologies</div>
+  <div class="email-body"><p>Hi Marek,</p><p>Directing QA at a platform company like Zebra usually means regression coverage across hardware-software intersections multiplies in complexity as the portfolio grows. Is your current approach fast enough to support your release cadence across all the product lines you own?</p><p>Hansard was dealing with the same growing cycle length problem and cut their regression from 8 to 5 weeks on Testsigma, without adding QA resources. Their team stopped letting cycle length determine when they could ship.</p><p>At Zebra&#x27;s scale, compressing those cycles directly impacts delivery. What does your current regression cycle look like across your product lines?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Amit Maheshwari</span>
+    <span class="contact-title">SW QA Manager</span>
+    <span class="proof-badge" style="background:#7c3aed">CRED</span>
+    <span class="mqs">#43 · wc=98 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Amit&#x27;s QA management at Zebra Technologies</div>
+  <div class="email-body"><p>Hi Amit,</p><p>Managing software QA at Zebra usually means maintaining regression coverage across a product line that spans hardware-software integrations is a constant challenge. Is your current automation approach scaling with the number of products and configurations your team actually has to cover?</p><p>CRED was dealing with the same configuration-versus-coverage challenge and reached 90% regression coverage on Testsigma, running tests 5x faster. Their QA team stopped letting the number of configurations outpace their test coverage.</p><p>At Zebra&#x27;s scale, that coverage gap compounds across every product line. How is your team currently keeping coverage up across all the configurations you support?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Bob Liu</span>
+    <span class="contact-title">Director of Engineering</span>
+    <span class="proof-badge" style="background:#d97706">Medibuddy</span>
+    <span class="mqs">#44 · wc=94 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Bob&#x27;s engineering at Zebra Technologies</div>
+  <div class="email-body"><p>Hi Bob,</p><p>Directing engineering at Zebra usually means test maintenance overhead across a broad hardware-software product portfolio compounds quickly, and the more products you own, the worse it gets. Is your team spending more sprint capacity maintaining existing tests than adding new coverage?</p><p>Medibuddy was dealing with the same compounding overhead and built 2,500 automated tests on Testsigma while cutting maintenance effort by 50%. Their engineers stopped losing sprint time to brittle test upkeep.</p><p>At Zebra&#x27;s scale, that overhead slows every product line. How much sprint time is your team currently spending on maintenance right now?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <span class="contact-name">Matthew Horner</span>
+    <span class="contact-title">Director of Engineering</span>
+    <span class="proof-badge" style="background:#dc2626">Fortune 100</span>
+    <span class="mqs">#45 · wc=98 q?=2 ts=✓ closer=✓</span>
+  </div>
+  <div class="subject-line"><strong>Subject:</strong> Matthew&#x27;s engineering at Zebra Technologies</div>
+  <div class="email-body"><p>Hi Matthew,</p><p>Directing engineering at Zebra usually means test automation has to scale across a broad product portfolio without QA headcount growing at the same rate. Is your current tooling keeping up with the portfolio&#x27;s growth, or is coverage playing catch-up?</p><p>A Fortune 100 firm was dealing with the same portfolio coverage gap and tripled their test coverage in 4 months on Testsigma, without expanding the QA org. Their teams stopped letting portfolio growth outpace their coverage.</p><p>At Zebra&#x27;s scale, that gap shows up across every product line simultaneously. How is your team currently keeping coverage pace with portfolio growth?</p>
+  <div class="sig"><br>Cheers,<br>Rob Gorham<br>Business Development · Testsigma<br>robert.gorham@testsigma.com</div>
+  </div>
+</div>
+</body></html>

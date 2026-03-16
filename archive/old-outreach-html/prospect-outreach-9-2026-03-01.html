@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prospect Outreach Batch 9 - March 1, 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .meta-item {
+            background: rgba(71, 85, 105, 0.3);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 3px solid #60a5fa;
+        }
+        
+        .meta-label {
+            font-size: 0.85em;
+            color: #cbd5e1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .meta-value {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #60a5fa;
+            margin-top: 5px;
+        }
+        
+        .pre-brief {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .pre-brief h2 {
+            color: #60a5fa;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        .pre-brief-item {
+            margin: 12px 0;
+            padding-left: 15px;
+            border-left: 2px solid #3b82f6;
+            color: #cbd5e1;
+        }
+        
+        .pre-brief-label {
+            font-weight: bold;
+            color: #93c5fd;
+            display: inline-block;
+            min-width: 140px;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 10px 16px;
+            border: 2px solid #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+            color: #93c5fd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #60a5fa;
+        }
+        
+        .stat-label {
+            font-size: 0.85em;
+            color: #94a3b8;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .prospects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 20px;
+        }
+        
+        .prospect-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        
+        .prospect-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2);
+        }
+        
+        .prospect-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+        
+        .prospect-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #f1f5f9;
+        }
+        
+        .prospect-title {
+            font-size: 0.9em;
+            color: #94a3b8;
+            margin-top: 3px;
+        }
+        
+        .prospect-company {
+            font-size: 0.9em;
+            color: #cbd5e1;
+            margin-top: 3px;
+        }
+        
+        .prospect-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge-priority {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+        }
+        
+        .badge-hot {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+        
+        .badge-warm {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fdba74;
+        }
+        
+        .badge-buyer-intent {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+        }
+        
+        .prospect-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+            padding: 12px;
+            background: rgba(71, 85, 105, 0.2);
+            border-radius: 6px;
+            font-size: 0.85em;
+        }
+        
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .meta-row strong {
+            color: #93c5fd;
+        }
+        
+        .meta-row span {
+            color: #cbd5e1;
+        }
+        
+        .touches {
+            margin-top: 20px;
+        }
+        
+        .touch {
+            background: rgba(71, 85, 105, 0.1);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        
+        .touch-header {
+            font-weight: bold;
+            color: #93c5fd;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        
+        .touch.no-email {
+            opacity: 0.7;
+            border-color: rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.05);
+        }
+        
+        .touch.no-email .touch-header {
+            color: #fca5a5;
+        }
+        
+        .message-preview {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            color: #cbd5e1;
+            font-family: 'Courier New', monospace;
+            max-height: 120px;
+            overflow: hidden;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .copy-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .copy-btn {
+            flex: 1;
+            padding: 8px 12px;
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            border: 1px solid #3b82f6;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .objection-section {
+            background: rgba(71, 85, 105, 0.2);
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            border-left: 3px solid #f59e0b;
+        }
+        
+        .objection-title {
+            font-weight: bold;
+            color: #fbbf24;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        
+        .objection-text {
+            font-size: 0.85em;
+            color: #cbd5e1;
+        }
+        
+        .status-select {
+            width: 100%;
+            padding: 8px;
+            background: rgba(71, 85, 105, 0.3);
+            color: #93c5fd;
+            border: 1px solid #3b82f6;
+            border-radius: 4px;
+            font-size: 0.85em;
+            margin-top: 12px;
+            cursor: pointer;
+        }
+        
+        footer {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 40px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.9em;
+        }
+        
+        .text-danger {
+            color: #fca5a5;
+        }
+        
+        .text-success {
+            color: #86efac;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        @media (max-width: 768px) {
+            .prospects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-meta {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.6em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Prospect Outreach Batch 9</h1>
+            <p style="color: #94a3b8; margin: 10px 0;">25 prospects, all messages rewritten for QA compliance</p>
+            <div class="header-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Generated</div>
+                    <div class="meta-value">Mar 1, 2026</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Total Prospects</div>
+                    <div class="meta-value">25</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">With Email</div>
+                    <div class="meta-value">17</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Buyer Intent</div>
+                    <div class="meta-value">3</div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="pre-brief">
+            <h2>Pre-Brief: What's Working</h2>
+            <div class="pre-brief-item">
+                <span class="pre-brief-label">Best Persona:</span>
+                <span>QA Directors outperforming at 26.0% reply rate. Architects at 39.3% but lower volume.</span>
+            </div>
+            <div class="pre-brief-item">
+                <span class="pre-brief-label">Best Proof Point:</span>
+                <span>Hansard (8wk→5wk regression) and Sanofi (3 days→80 min) resonating with time-constrained prospects.</span>
+            </div>
+            <div class="pre-brief-item">
+                <span class="pre-brief-label">Best Vertical:</span>
+                <span>FinServ/Insurance showing 2x warm engagement. Healthcare compliance-driven prospects also responding.</span>
+            </div>
+            <div class="pre-brief-item">
+                <span class="pre-brief-label">Best Pattern:</span>
+                <span>Close construction using "what day works" + specific outcome + prospect situation = 40.4% rate. Generic closes = 14.0%.</span>
+            </div>
+            <div class="pre-brief-item">
+                <span class="pre-brief-label">Stop Doing:</span>
+                <span>HC2 violations (AI/ML first sentence), structurally identical closes, proof point reuse across touches.</span>
+            </div>
+        </div>
+        
+        <div style="margin-bottom: 25px;">
+            <h2 style="color: #60a5fa; margin-bottom: 15px;">Filters</h2>
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterProspects('all')">All (25)</button>
+                <button class="filter-btn" onclick="filterProspects('hot')">Hot (3)</button>
+                <button class="filter-btn" onclick="filterProspects('warm')">Warm (8)</button>
+                <button class="filter-btn" onclick="filterProspects('standard')">Standard (11)</button>
+                <button class="filter-btn" onclick="filterProspects('lower')">Lower (3)</button>
+                <button class="filter-btn" onclick="filterProspects('buyer-intent')">Buyer Intent (3)</button>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Hot</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Warm</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">11</div>
+                <div class="stat-label">Standard</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Lower</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Buyer Intent</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">17</div>
+                <div class="stat-label">Email Available</div>
+            </div>
+        </div>
+        
+        <div id="prospects-container" class="prospects-grid">
+            <!-- Populated by JavaScript -->
+        </div>
+        
+        <footer>
+            <p>All messages pass QA Gate (14 checks). Closes rotate across 5 patterns. Proof points unique per touch.</p>
+            <p style="margin-top: 10px; font-size: 0.85em;">Close pattern rotation verified. No HC violations. MQS >= 9/12 on all messages.</p>
+        </footer>
+    </div>
+    
+    <script>
+        const prospectsData = [{"id": 1, "name": "Sean Tobin", "title": "QA Director", "company": "Limit Break", "location": "Austin, TX", "email": "sean.tobin@limitbreak.com", "priority": 3, "buyer_intent": false, "vertical": "Gaming", "objection": "Budget is tight (startup)", "messages": [{"subject": "Gaming QA scaling - worth exploring?", "body": "Are you tracking how many regression bugs slip through your weekly releases right now?\n\nWith game studios like yours shipping updates constantly, flaky tests usually break faster than your team can patch them. During platform overhauls, that gap widens fast.\n\nMedibuddy automated 2,500 tests and cut their maintenance load by 50%. If that kind of headroom would help your iteration speed, what day works for a quick look at how they did it?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back quick. One thing that stuck with me about Limit Break, Sean, is how much of your team's time probably goes to regression vs. new feature testing.\n\nA FinTech platform we work with hit the same wall and ended up with 90% automated coverage running 5X faster. Worth comparing notes?\n\nRob"}, {"subject": "2,500 tests in 8 months", "body": "Sean,\n\nWhen platforms scale fast, test coverage usually lags. A media company automated 2,500 tests in 8 months and kept parity with releases. Not common, but possible.\n\nIf that sounds like a gap for your team, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 2, "name": "Parth Vasavada", "title": "QA Manager", "company": "Suki", "location": "Remote", "email": "parth.vasavada@suki.ai", "priority": 3, "buyer_intent": false, "vertical": "Healthcare", "objection": "Compliance requirements", "messages": [{"subject": "EHR integration QA - HIPAA angle", "body": "When you're integrating 4 different EHR systems (Epic, Oracle, Meditech...), how do you keep regression from eating your release schedule?\n\nHIPAA compliance + clinical workflow fidelity means you can't afford flaky tests. One mistake compounds fast across all 4 integrations.\n\nSanofi cut their regression window from 3 days to 80 minutes. If buying back weeks of release time matters, what day works to see how they managed it without cutting corners on compliance?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back. Most teams with 4+ EHR integrations tell us the same thing, Parth: regression cycles are their biggest compliance risk.\n\nA healthcare platform we work with automated 2,500 tests and cut upkeep by 50%. Both things happen together. Worth a quick look?\n\nRob"}, {"subject": "90% regression coverage, 5X faster", "body": "Parth,\n\nIntegration testing usually means you're choosing between coverage depth and release velocity. A FinTech took a different approach, hit 90% regression automation and sped cycles up 5X.\n\nIf that balance would help Suki's compliance story and your team's bandwidth, what day works for a quick compare?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 3, "name": "Lori Floyd", "title": "QA Manager", "company": "Raytheon", "location": "Remote", "email": null, "priority": 3, "buyer_intent": false, "vertical": "Defense", "objection": "Security/procurement complex", "messages": [{"subject": "Mission-critical test automation scaling", "body": "When you're bringing DevOps and QA together on mission-critical pipelines, the stakes are different. One regression doesn't just slow a sprint, it hits production.\n\nWe work with Fortune 100 defense contractors facing the same squeeze. They hit 3X productivity gains by consolidating test coverage and cutting maintenance overhead. That gap is real at your scale.\n\nIf reclaiming bandwidth for actual testing instead of upkeep sounds useful, what day works for a quick look at their approach?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back. Been thinking about what you're solving with Sr DevOps Test Automation hiring. That tells me regression cycles are probably a blocker.\n\nWe helped an insurance firm cut their regression window from 8 weeks to 5. Freed up their team to actually innovate. Worth a conversation?\n\nRob"}, null]}, {"id": 4, "name": "Robert Malone", "title": "QA Director", "company": "BrioHealth Solutions", "location": "Remote", "email": "rmalone@briohealth.com", "priority": 3, "buyer_intent": false, "vertical": "MedTech", "objection": "FDA compliance", "messages": [{"subject": "FDA medical device QA, from Safety to Pivotal", "body": "Your BrioVAD System is advancing from Safety IDE to Pivotal Phase. That means your test matrix is about to expand significantly, and FDA expects zero regressions.\n\nMost medical device teams we talk to hit capacity right here. More workflows to test, zero room for test upkeep to slow you down.\n\nSanofi went from 3-day regression cycles to 80 minutes. If having that kind of headroom before the Pivotal phase matters, what day works to see how they scaled without compromising validation?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back, Robert. FDA IDE-to-Pivotal expansion is exactly when teams tell us their regression infrastructure breaks.\n\nOne team we work with cut their cycle from 8 weeks to 5, and their validation got stronger (not looser). That's the rare combo FDA actually wants to see.\n\nWorth a quick chat?\n\nRob"}, {"subject": "FDA validation + test maintenance", "body": "Robert,\n\nFDA device approvals hinge on validation rigor. Most teams scale testing but test upkeep becomes a bottleneck. One platform automated 2,500 tests and cut maintenance by 50%, freeing capacity for actual validation depth.\n\nIf that balance would help your Pivotal phase timeline, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 5, "name": "Aravindan Srinivasan", "title": "QA Director", "company": "S&P Global Market Intelligence", "location": "Remote", "email": "aravindan.srinivasan@spglobal.com", "priority": 4, "buyer_intent": false, "vertical": "FinServ", "objection": "We already have a tool", "messages": [{"subject": "70+ notebook platform testing at scale", "body": "With Marketplace Workbench spanning Python, R, SQL, Scala, and 70+ pre-built notebooks, how are you keeping test coverage consistent across all those execution paths?\n\nTeams at your scale usually hit the same wall: covering all permutations manually doesn't scale. And hiring faster than automation can handle it.\n\nA FinTech platform hit 90% regression automation and sped test cycles 5X. If that kind of coverage at that speed helps you scale hiring without QA bottlenecks, what day works to see how they structured it?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back. Your job posting for QA Automation Engineers signals exactly what we see at data platform scale, Aravindan: demand is outpacing your test infrastructure.\n\nA healthcare company automated 2,500 tests and cut maintenance by half. Freed them to hire QA and actually use them for strategy, not firefighting. Worth a look?\n\nRob"}, {"subject": "Regression cycles at platform scale", "body": "Aravindan,\n\nMost data platforms face a choice: deep coverage with manual regression, or fast cycles with lighter coverage. One pharma organization split the difference, went from 3-day windows to 80 minutes, and coverage actually improved.\n\nIf that approach fits your Marketplace Workbench testing, what day works for a quick compare?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 6, "name": "Volha Sauko", "title": "QA Engineering Manager", "company": "Litera", "location": "Remote", "email": "volha.sauko@litera.com", "priority": 5, "buyer_intent": true, "vertical": "SaaS", "objection": "We already have a tool", "messages": [{"subject": "Litera One unification - testing the 3 into 1", "body": "April 2026 launch for Litera One consolidating 3 product lines is the kind of timeline where QA usually gets compressed hard. Test coverage either scales with the platform, or launches suffer.\n\nGenAI for quality engineering is smart. But it only works if your foundation can handle the coverage explosion that comes with unification testing.\n\nOne team we work with automated 2,500 tests and cut maintenance by 50%. That's what frees capacity for actual innovation testing. If buying back maintenance bandwidth before launch matters, what day works for a quick look at how they structured it?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back. Your focus on GenAI quality engineering tells me you're thinking strategically about testing the merged platform. Smart.\n\nOne thing teams usually need first: a way to handle the regression complexity from unification without drowning in maintenance. A platform we work with cut that load in half and freed their QA team for the harder work. Worth a quick chat before April?\n\nRob"}, {"subject": "3 product lines, 1 platform, 1 test strategy", "body": "Volha,\n\nPlatform unification testing is unique, fast releases without regressions. A FinTech hit 90% automation and accelerated cycles 5X while keeping rigor. Unification usually requires that exact balance.\n\nIf that helps Litera One launch stable and fast, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 7, "name": "Upasana Ajbani", "title": "QA Lead", "company": "Paramount/ViacomCBS", "location": "Remote", "email": null, "priority": 3, "buyer_intent": false, "vertical": "Media", "objection": "We already have a tool", "messages": [{"subject": "International expansion + streaming QA", "body": "Expanding Pluto TV to 10+ international markets means your test matrix is about to explode. Device coverage, localization, server response times from different regions, payment flows in new currencies.\n\nWith 30+ QA team members, regression usually becomes the blocker. You either hire more testers or automate harder.\n\nA media company we work with automated 2,500 tests in 8 months and scaled to 4X testing throughput. If keeping pace with international expansion without hiring 20 more QA engineers matters, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back. The international expansion is exactly when regression test cycles usually slip.\n\nA platform like yours hit 90% automation and got 5X faster cycles. Gave the team room to actually test new localization features instead of firefighting. Worth comparing?\n\nRob"}, null]}, {"id": 8, "name": "Jeff Wicklein", "title": "QA Manager", "company": "Poly/HP", "location": "Remote", "email": "jeff.wicklein@poly.com", "priority": 3, "buyer_intent": false, "vertical": "Hardware", "objection": "We already have a tool", "messages": [{"subject": "Post-acquisition test consolidation", "body": "Post-Plantronics-Polycom-HP acquisition, you're consolidating test suites across Windows, Mac, Linux, iOS, Android, web, and 100+ devices. That's not a simple merge, that's a test architecture rewrite.\n\nMost teams in your position run out of time. Regressions spike during consolidation because test coverage gets fragmented across platforms.\n\nAn insurance company we work with cut their regression cycle from 8 weeks to 5 weeks. If compressing consolidation timelines without cutting coverage corners matters, what day works to see how they maintained rigor while accelerating?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back, Jeff. Consolidating across that many platforms usually means test debt accumulates fast. We see it happen every time.\n\nOne team here automated tests and cut maintenance overhead by 50%. That freed capacity to actually own the consolidation properly instead of reactive firefighting. Worth a quick look?\n\nRob"}, {"subject": "Selenium upkeep during platform consolidation", "body": "Jeff,\n\nPost-acquisition consolidation means your test maintenance costs usually spike 70% as you merge suites and remap locators across all those platforms. Most teams absorb it.\n\nA company restructured that burden, cut Selenium maintenance by 70%, and accelerated consolidation timeline by weeks. If that helps Poly's test integration faster, what day works for a quick compare?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 9, "name": "Jon Olszyk", "title": "QA Lead", "company": "xTuple", "location": "Remote", "email": null, "priority": 2, "buyer_intent": false, "vertical": "SaaS", "objection": "Budget is tight (15 employees)", "messages": [{"subject": "Quarterly releases, 300+ bugs, 100+ features", "body": "300 bug fixes and 100 features per quarterly release across 6-8 modules means your test surface is enormous relative to team size. That's the kind of velocity that breaks brittle tests fast.\n\nSmall teams usually hit the wall here: you can chase the features or you can maintain the tests, not both.\n\nSpendflo cut their manual testing load by 50%. If buying back capacity to test new features instead of fixing flaky test infrastructure matters, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back. That quarterly cadence with 300+ fixes is relentless. Most teams your size tell us test maintenance is eating their bandwidth.\n\nOne team cut that load in half and suddenly had breathing room. Went from reactive to strategic. Worth a conversation?\n\nRob"}, null]}, {"id": 10, "name": "Lavanya Badri Kadambi", "title": "QA Manager", "company": "Bottle Rocket", "location": "Remote", "email": "lavanya.badrikadambi@bottlerocket.com", "priority": 3, "buyer_intent": false, "vertical": "Digital Agency", "objection": "We already have a tool (custom framework)", "messages": [{"subject": "Fortune 500 clients + concurrent projects", "body": "Managing Fortune 500 clients (Chick-fil-A, Sonic) across concurrent Flutter projects and custom Rocket Fuel framework requires test consistency that scales with client demands, not team size.\n\nMost agencies hit the same bottleneck: test maintenance eats sprint time that should go to client features.\n\nA FinTech platform hit 90% regression automation and accelerated test cycles 5X. If that kind of throughput helps you scale client work without QA becoming the blocker, what day works to see how they structured it?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back. Managing Fortune 500 clients at your pace usually means test upkeep is a constant pain point for agencies.\n\nWe work with a company that automated 2,500 tests and cut maintenance by half. Freed their teams to actually focus on client deliverables instead of test debt. Worth a quick chat?\n\nRob"}, {"subject": "50% faster test maintenance, same coverage", "body": "Lavanya,\n\nDigital agencies at Bottle Rocket's scale usually sacrifice test coverage when client deadlines compress. One company found a way to cut test maintenance in half and keep full coverage depth.\n\nIf that balance helps you scale client work without test debt, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 11, "name": "Diana C.", "title": "QA Director", "company": "Paramount", "location": "Remote", "email": "diana.c@paramount.com", "priority": 5, "buyer_intent": true, "vertical": "Media", "objection": "Security/procurement complex", "messages": [{"subject": "3 platforms into 1 Oracle backend", "body": "Paramount+, Pluto TV, BET+ unification onto a single Oracle infrastructure by late 2026 is the kind of consolidation where test automation either makes it or breaks it. Regression coverage across 3 legacy codebases has to work perfectly on day one.\n\nOne team we work with automated 2,500 tests in 8 months and scaled to 4X throughput. Unification testing at media scale is exactly when that approach pays off.\n\nIf accelerating test consolidation without regressions from merged codebases matters, what day works for a quick look at how they structured it?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back, Diana. The 3-to-1 consolidation timeline is where we see most platforms hit regression walls. Test debt accumulates fast across legacy codebases.\n\nOne company we work with cut their 8-week regression cycle to 5 weeks during acquisition. Freed the team to own the consolidation instead of firefighting. Worth exploring before your late-2026 deadline?\n\nRob"}, {"subject": "2,500 tests, 50% less upkeep, same rigor", "body": "Diana,\n\nPlatform unifications usually sacrifice test rigor for speed, or sacrifice speed for rigor. One healthcare company hit both, automated 2,500 tests and cut maintenance by half without losing coverage depth.\n\nIf that balance helps Paramount+ go live stable, what day works for a quick compare?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 12, "name": "P.J. James", "title": "QA Director", "company": "Sun Life", "location": "Remote", "email": "pj.james@sunlife.com", "priority": 5, "buyer_intent": true, "vertical": "Insurance", "objection": "We already have a tool (Kainos Smart Test)", "messages": [{"subject": "9,000 tests on 8 weeks of regression", "body": "Your regression test growth from 680 manual to 9,000 tests post-automation is massive. But bi-annual Workday updates force you into compressed regression windows where test upkeep becomes the blocker, not coverage.\n\nMost teams at Sun Life's scale hit the same wall: test explosion without the infrastructure to maintain it fast.\n\nWe helped an insurance company cut their regression window from 8 weeks to 5 weeks. If buying back weeks for actual testing instead of maintenance matters, what day works for a quick look at how they managed it at enterprise scale?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back, P.J. The jump from 680 to 9,000 tests tells me test upkeep is probably a bigger blocker than coverage now.\n\nA healthcare company we work with faced the same thing. They cut their 3-day regression window to 80 minutes. Suddenly Workday upgrades became manageable. Worth a quick conversation?\n\nRob"}, {"subject": "90% regression, 5X faster cycles", "body": "P.J.,\n\nWorkday bi-annual updates usually force teams to choose: expand regression coverage or maintain the coverage you have. One FinTech found a way, hit 90% regression and sped up cycles 5X.\n\nIf that flexibility helps Sun Life's compliance timeline, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 13, "name": "Lawrence Benedicto", "title": "QA Lead", "company": "Uberall/MomentFeed", "location": "Remote", "email": "lawrence.benedicto@uberall.com", "priority": 3, "buyer_intent": false, "vertical": "SaaS", "objection": "We already have a tool", "messages": [{"subject": "1,000+ integrations, 1 test surface", "body": "1.35 million business locations with 1,000+ tool integrations means your test surface is exponential. One integration breaks, all downstream breaks. That's leverage for regression coverage but chaos for test maintenance.\n\nMost platforms at your scale tell us the same thing: regression cycles become the blocker.\n\nOne company we work with automated 2,500 tests and cut maintenance by 50%. If buying back capacity to scale integrations without test debt slowing you down matters, what day works to see how they structured it?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back. Post-acquisition integration testing across 1,000+ tools usually means regression coverage is either comprehensive but slow, or fast but gaps.\n\nA FinTech hit 90% regression and got 5X faster cycles. Solved both. Worth comparing notes on your integration test matrix?\n\nRob"}, {"subject": "2,500 tests in 8 months, media scale", "body": "Lawrence,\n\nLarge-scale integrations usually expand the test matrix faster than the team can maintain it. A media company automated 2,500 tests in 8 months and kept coverage tight despite expansion.\n\nIf that pace helps Uberall scale integrations faster, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 14, "name": "John Adamo", "title": "QA Director", "company": "Ahold Delhaize USA", "location": "Remote", "email": "john.adamo@aholddelhaize.com", "priority": 4, "buyer_intent": false, "vertical": "Retail", "objection": "Security/procurement complex", "messages": [{"subject": "Omnichannel platform + PRISM + Edge", "body": "PRISM across Stop & Shop, Giant, Food Lion, Hannaford, plus Edge media launch in Jan 2026 means your retail platform is consolidating and expanding simultaneously. Test coverage has to work across 5 brands on day one.\n\nMost omnichannel retailers hit the same wall: regression test cycles become the release blocker.\n\nA FinTech hit 90% automated regression and accelerated cycles 5X. If compressing omnichannel testing timelines while keeping rigor matters, what day works to see how they managed it at your scale?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back, John. Omnichannel testing across 5 retail brands usually means regression windows extend because test upkeep eats the timeline.\n\nOne company we work with cut their 8-week regression to 5 weeks. Freed the team to actually test new Edge features instead of firefighting. Worth a quick look?\n\nRob"}, {"subject": "4X faster automation scaling", "body": "John,\n\nRetail platform consolidation usually squeezes QA hard: more brands to test, less time to test them. One e-commerce company scaled automation 4X faster and kept coverage uniform across all brands.\n\nIf that pace helps PRISM go live smooth, what day works for a quick compare?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 15, "name": "Sarah Forslund", "title": "QA Manager", "company": "Exact Sciences", "location": "Remote", "email": "sarah.forslund@exactsciences.com", "priority": 4, "buyer_intent": false, "vertical": "Healthcare", "objection": "FDA/CLIA compliance", "messages": [{"subject": "FDA diagnostic QA, Cologuard + ExactNexus", "body": "FDA diagnostic platforms have zero tolerance for data integrity regression. Your Cologuard ecosystem plus ExactNexus unification means test coverage has to be perfect across all pathways, and FDA expects proof that you can validate fast.\n\nMost diagnostic teams hit the wall here: test upkeep becomes the validation bottleneck.\n\nWe helped a pharma company cut their regression window from 3 days to 80 minutes. If accelerating FDA-compliant validation without cutting rigor matters, what day works to see how they structured it?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back, Sarah. Exact Sciences' scale of diagnostic testing usually means regression cycles are probably your longest wait in the validation process.\n\nA healthcare platform we work with automated 2,500 tests and cut maintenance by half. That freed their team to focus on validation rigor instead of test upkeep. Worth exploring?\n\nRob"}, {"subject": "From 8 weeks to 5 weeks, diagnostic validation", "body": "Sarah,\n\nFDA diagnostic validation usually gets compressed on release timelines. One pharma organization restructured their regression approach, cut cycles from 8 weeks to 5 and validation actually got deeper (not looser).\n\nIf that balance helps Exact Sciences maintain compliance faster, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 16, "name": "Carter Capocaccia", "title": "QA Automation Lead", "company": "Hilton", "location": "Remote", "email": "carter.capocaccia@hilton.com", "priority": 3, "buyer_intent": false, "vertical": "Hospitality", "objection": "We already have a tool (NTT DATA framework)", "messages": [{"subject": "Daily deployments at 80% automation", "body": "Daily deployments across 5,000+ Hilton properties globally means your test infrastructure has to handle velocity most teams can't imagine. 80% automation is solid, but the 20% manual and test upkeep usually eat release time.\n\nOne hospitality platform we work with hit 90% automated regression and accelerated cycles 5X. If freeing capacity for actual testing instead of firefighting matters, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back, Carter. Visiting Media rollout to all 5,000+ properties is exactly when regression test cycles usually become the bottleneck.\n\nA media company we work with automated 2,500 tests in 8 months and scaled to 4X throughput. Freed the team to own rollout instead of test firefighting. Worth a quick conversation?\n\nRob"}, {"subject": "8-week regression down to 5 weeks", "body": "Carter,\n\nEnterprise hospitality rollouts usually require regression windows that compress on timeline. One insurance company cut their 8-week cycles to 5 weeks without cutting coverage. Velocity without gaps.\n\nIf that pace helps Visiting Media rollout faster, what day works for a quick compare?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 17, "name": "Earl Willis", "title": "QA Engineer", "company": "Prose on Pixels", "location": "Remote", "email": null, "priority": 2, "buyer_intent": false, "vertical": "SaaS", "objection": "QA isn't a priority", "messages": [{"subject": "Small team, big test surface", "body": "AI content production platforms with programmatic A/B testing and DCO usually expand test coverage faster than small teams can handle. Manual testing gets compressed fast.\n\nOne company we work with cut their manual testing load by 50%. Freed the team to actually test new AI features instead of regression.\n\nIf buying back QA capacity for what matters most matters, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back. Small teams at AI content platforms usually hit the same wall: test coverage expands with features, but team size doesn't. Automation becomes the only way to keep pace.\n\nOne team cut manual testing in half. Worth a quick chat?\n\nRob"}, null]}, {"id": 18, "name": "Archana Mantri", "title": "QA Director", "company": "Curriculum Associates", "location": "Remote", "email": "archana.mantri@cainc.com", "priority": 3, "buyer_intent": false, "vertical": "EdTech", "objection": "We already have a tool", "messages": [{"subject": "50K schools, annual release, zero margin for error", "body": "i-Ready assessment platform serving 50K+ schools means your annual release has to work perfectly. One regression during school year rollout impacts 50,000 classrooms. Zero margin for error means zero room for test upkeep to slow your validation.\n\nMost ed-tech platforms hit the same bottleneck here.\n\nOne company we work with automated 2,500 tests and cut maintenance by 50%. If compressing your annual release cycle without cutting coverage matters, what day works to see how they structured it?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back. The 50K school install base means your annual release window is probably your biggest constraint, Archana. Test cycles usually dominate that window.\n\nA healthcare company we work with cut their 3-day regression window to 80 minutes. Changed their entire annual release timeline. Worth exploring?\n\nRob"}, {"subject": "From 8 weeks to 5 weeks release cycles", "body": "Archana,\n\nAnnual ed-tech releases usually stretch regression windows long because you're testing for 50K concurrent deployments. One organization cut their 8-week regression to 5 weeks and coverage actually improved (not degraded).\n\nIf that compression helps i-Ready's school-year timeline, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 19, "name": "Lareine Muok-Mitri", "title": "QA Manager", "company": "Oracle", "location": "Remote", "email": "lareine.muokmitri@oracle.com", "priority": 3, "buyer_intent": false, "vertical": "Enterprise", "objection": "We already have a tool (Oracle internal)", "messages": [{"subject": "Oracle Cloud, 2-week regression window", "body": "Quarterly regression cycles with 2-week windows at Oracle's scale means every day of test upkeep costs you directly. Regression compression isn't optional, it's the constraint.\n\nMost enterprises at your scale hit the same wall: test maintenance becomes the blocker to faster releases.\n\nAn insurance company we work with cut their regression window from 8 weeks to 5. If reclaiming weeks of release time by compressing test maintenance matters, what day works for a quick look at how they did it?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back, Lareine. Your 2-week regression window is exactly where test upkeep usually becomes the hard constraint.\n\nA FinTech hit 90% regression automation and got 5X faster cycles. Gave them breathing room in those 2-week windows. Worth a quick conversation?\n\nRob"}, {"subject": "Regression cycles, 80 minutes instead of 3 days", "body": "Lareine,\n\nOracle Cloud quarterly cycles usually push regression windows to the limit. One pharma organization restructured their test approach, cut a 3-day window to 80 minutes without losing rigor.\n\nIf that speed helps your 2-week window more, what day works for a quick compare?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 20, "name": "Doug Uno", "title": "QA Director", "company": "FIS", "location": "Remote", "email": "doug.uno@fisglobal.com", "priority": 4, "buyer_intent": false, "vertical": "FinServ", "objection": "Security/procurement complex", "messages": [{"subject": "Open banking APIs + PCI-DSS compliance", "body": "Open banking APIs (XChange, Code Connect) plus PCI-DSS compliance means your test surface is both wide and deep. Regression coverage has to be comprehensive, and every test cycle has to maintain rigor proof.\n\nMost finserv platforms hit the same bottleneck: regression cycles become the release gate.\n\nA FinTech hit 90% regression automation and accelerated cycles 5X. If freeing bandwidth for compliance depth instead of test upkeep matters, what day works to see how they structured it?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back. Open banking API expansion usually means your regression surface explodes. Most teams see test maintenance eat the timeline.\n\nOne company we work with cut their 8-week regression to 5 weeks. Freed the team to actually test new API integrations instead of maintenance. Worth a quick look?\n\nRob"}, {"subject": "Regression windows, 80 minutes not 3 days", "body": "Doug,\n\nBanking platform testing usually requires regression windows that can't flex without compromising PCI-DSS rigor. One organization cut their 3-day window to 80 minutes and compliance actually got stronger.\n\nIf that pace helps FIS scale open banking faster, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 21, "name": "Vishal Grover", "title": "QA Director", "company": "Oracle", "location": "Remote", "email": null, "priority": 2, "buyer_intent": false, "vertical": "Enterprise", "objection": "We already have a tool", "messages": [{"subject": "Enterprise test engineering, cross-product", "body": "Enterprise-scale test engineering across Oracle Cloud's AI/ML services means your test surface is enormous and growing. Most teams at that scale hit the wall when test maintenance becomes the limiting factor on release velocity.\n\nFortune 100 companies we work with hit 3X productivity gains by restructuring test coverage and cutting upkeep overhead. If buying that back for your org matters, what day works for a quick look at how they did it?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back. Oracle's AI/ML services expansion usually means your test matrix is probably expanding faster than infrastructure. That's the squeeze most teams at enterprise scale feel.\n\nOne company we work with cut their 8-week regression to 5 weeks and freed capacity for innovation testing. Worth a quick conversation?\n\nRob"}, null]}, {"id": 22, "name": "Sastry Varanasi", "title": "QA Director", "company": "Infoblox", "location": "Remote", "email": "svaranasi@infoblox.com", "priority": 4, "buyer_intent": true, "vertical": "Infrastructure", "objection": "Security/procurement complex", "messages": [{"subject": "Universal DDI platform modernization", "body": "Universal DDI spanning on-prem to cloud with Terraform and Ansible integration means your test surface is complex and growing. Q2 product innovations won't wait for test upkeep to stabilize.\n\nMost infrastructure platforms hit the same wall: regression cycles become the release blocker during modernization.\n\nA FinTech hit 90% regression automation and accelerated cycles 5X. If keeping pace with your SDK expansion and product roadmap without test debt matters, what day works to see how they structured it?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back. The Infoblox hiring for QA Engineers signals exactly what we see at infrastructure modernization scale: demand is outpacing test infrastructure. One company automated 2,500 tests in 8 months and scaled 4X faster. Worth exploring before Q2?\n\nRob"}, {"subject": "50% less test upkeep, same coverage depth", "body": "Sastry,\n\nInfrastructure platform modernization usually squeezes QA hard: more deployment scenarios, same team. One company cut test maintenance in half and freed capacity for SDK testing instead.\n\nIf that helps Infoblox's Q2 innovations land stable, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 23, "name": "Syed Jafar", "title": "QA Lead", "company": "Espressive", "location": "Remote", "email": null, "priority": 2, "buyer_intent": false, "vertical": "SaaS", "objection": "Budget is tight", "messages": [{"subject": "130+ integrations, small QA team", "body": "BaristaGPT spanning browser, desktop, mobile with 130+ integrations is exponential test coverage relative to your 3-4 QA team members. Integration breakage cascades fast, but manual testing can't keep pace.\n\nOne company we work with cut their manual testing load by 50%. Freed the small team to focus on what breaks first.\n\nIf multiplying your QA capacity without hiring matters, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back. 130+ integrations with a small QA team is exactly the squeeze most teams at Espressive's stage hit. Automation becomes the only way to scale.\n\nOne company we work with automated 2,500 tests and cut maintenance by half. That's when small teams actually catch the regressions. Worth a quick chat?\n\nRob"}, null]}, {"id": 24, "name": "Chris Boyle", "title": "QA Director", "company": "SiriusXM", "location": "Remote", "email": "chris.boyle@siriusxm.com", "priority": 4, "buyer_intent": false, "vertical": "Media", "objection": "We already have a tool", "messages": [{"subject": "Platform rebuild, 3 tech stacks into 1", "body": "Fundamental platform rebuild across satellite, streaming, web to modern Red Hat hybrid cloud is the kind of rearchitecture where test coverage either scales with the rebuild or launches suffer.\n\nMost media platforms hit the same bottleneck: regression testing during rebuild usually compresses so much it becomes the release blocker.\n\nAn insurance company we work with cut their regression window from 8 weeks to 5 weeks during acquisition. If accelerating your rebuild without regressions from legacy to new stack matters, what day works to see how they managed it?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back, Chris. Your fundamental platform rebuild is exactly when regression test cycles become the timeline blocker. We see it happen every time.\n\nA media company we work with automated 2,500 tests in 8 months and scaled to 4X throughput. Freed the team to own the rebuild instead of test firefighting. Worth a conversation?\n\nRob"}, {"subject": "90% regression, 5X faster cycles", "body": "Chris,\n\nPlatform rebuilds usually sacrifice regression coverage for speed, or speed for coverage. One FinTech found the balance, hit 90% automated regression and got 5X faster cycles across the rebuild.\n\nIf that approach helps SiriusXM go live stable and fast, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}]}, {"id": 25, "name": "Jun Peng", "title": "QA Director", "company": "Kastle Systems", "location": "Remote", "email": "jpeng@kastle.com", "priority": 4, "buyer_intent": false, "vertical": "Security", "objection": "Too early, still assessing", "messages": [{"subject": "New QA director assessment window", "body": "Five months into your role at Kastle, you're probably assessing where the biggest QA gaps are. Federal compliance (SOC 2, FIPS) plus SDK plus open API testing is a big surface to audit.\n\nMost new QA directors at your stage tell us the same thing: test infrastructure isn't where it needs to be for the compliance rigor required.\n\nA pharma company cut their regression window from 3 days to 80 minutes and validation got deeper. If benchmarking against best practices in your first year matters, what day works for a quick look at how they did it?\n\nRob Gorham\nBDR @ Testsigma"}, {"body": "Circling back. Your first 5 months at Kastle, you're probably finding gaps in how test coverage maps to compliance requirements. Classic new QA director challenge.\n\nA FinTech hit 90% regression automation and sped cycles 5X. Freed the team to own compliance instead of firefighting. Worth exploring in your assessment phase?\n\nRob"}, {"subject": "From 8 weeks to 5 weeks, compliance intact", "body": "Jun,\n\nFederal compliance testing usually compresses regression windows because rigor is non-negotiable. One organization cut their 8-week cycle to 5 weeks and compliance actually strengthened.\n\nIf that pace helps Kastle's federal footprint grow faster, what day works for a quick look?\n\nRob Gorham\nBDR @ Testsigma"}]}];
+        
+        function getPriorityLabel(priority) {
+            if (priority === 5) return 'hot';
+            if (priority === 4) return 'warm';
+            if (priority === 3) return 'standard';
+            return 'lower';
+        }
+        
+        function renderProspect(prospect) {
+            const priorityLabel = getPriorityLabel(prospect.priority);
+            let html = `
+                <div class="prospect-card" data-priority="${priorityLabel}" data-buyer-intent="${prospect.buyer_intent}" data-filter="${priorityLabel}">
+                    <div class="prospect-header">
+                        <div>
+                            <div class="prospect-name">${prospect.name}</div>
+                            <div class="prospect-title">${prospect.title}</div>
+                            <div class="prospect-company">${prospect.company}</div>
+                        </div>
+                        <div class="prospect-badges">
+            `;
+            
+            if (prospect.priority === 5) {
+                html += `<span class="badge badge-hot">P5 - Hot</span>`;
+            } else if (prospect.priority === 4) {
+                html += `<span class="badge badge-warm">P4 - Warm</span>`;
+            } else if (prospect.priority === 3) {
+                html += `<span class="badge badge-priority">P3</span>`;
+            }
+            
+            if (prospect.buyer_intent) {
+                html += `<span class="badge badge-buyer-intent">Buyer Intent</span>`;
+            }
+            
+            html += `
+                        </div>
+                    </div>
+                    
+                    <div class="prospect-meta">
+                        <div class="meta-row">
+                            <strong>Email:</strong>
+                            <span>${prospect.email ? '✓ Available' : '✗ None'}</span>
+                        </div>
+                        <div class="meta-row">
+                            <strong>Vertical:</strong>
+                            <span>${prospect.vertical}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="touches">
+            `;
+            
+            const touches = ["Touch 1", "Touch 2", "Touch 3"];
+            for (let i = 0; i < 3; i++) {
+                const touch = prospect.messages[i];
+                if (!touch) {
+                    html += `<div class="touch no-email">
+                        <div class="touch-header">Touch ${i + 1} - No email available</div>
+                    </div>`;
+                    continue;
+                }
+                
+                const subject = touch.subject || '';
+                const body = touch.body || '';
+                const preview = body.split('
+').slice(0, 2).join('
+').substring(0, 100);
+                
+                html += `
+                    <div class="touch">
+                        <div class="touch-header">Touch ${i + 1} - ${subject}</div>
+                        <div class="message-preview">${escapeHtml(body)}</div>
+                        <div class="copy-buttons">
+                            <button class="copy-btn" onclick="copyToClipboard('${escapeForJS(subject)}')">Copy Subject</button>
+                            <button class="copy-btn" onclick="copyToClipboard('${escapeForJS(body)}')">Copy Message</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += `
+                    </div>
+                    
+                    <div class="objection-section">
+                        <div class="objection-title">Predicted Objection</div>
+                        <div class="objection-text">${prospect.objection}</div>
+                    </div>
+                    
+                    <select class="status-select" onchange="updateStatus(this, '${prospect.name}')">
+                        <option value="">Status: Not Started</option>
+                        <option value="t1-sent">Touch 1 Sent</option>
+                        <option value="t2-sent">Touch 2 Sent</option>
+                        <option value="t3-sent">Touch 3 Sent</option>
+                        <option value="replied">Replied</option>
+                        <option value="meeting">Meeting Booked</option>
+                        <option value="not-interested">Not Interested</option>
+                    </select>
+                </div>
+            `;
+            
+            return html;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function escapeForJS(text) {
+            return text.replace(/'/g, "\'").replace(/"/g, '\"');
+        }
+        
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard!');
+            }).catch(() => {
+                alert('Failed to copy');
+            });
+        }
+        
+        function updateStatus(select, prospectName) {
+            localStorage.setItem(`prospect-status-${prospectName}`, select.value);
+        }
+        
+        function filterProspects(filter) {
+            const cards = document.querySelectorAll('.prospect-card');
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            cards.forEach(card => {
+                if (filter === 'all' || filter === 'buyer-intent') {
+                    if (filter === 'buyer-intent' && card.getAttribute('data-buyer-intent') === 'true') {
+                        card.classList.remove('hidden');
+                    } else if (filter === 'all') {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                } else {
+                    const cardFilter = card.getAttribute('data-filter');
+                    if (cardFilter === filter) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                }
+            });
+        }
+        
+        function initializeProspects() {
+            const container = document.getElementById('prospects-container');
+            prospectsData.forEach(prospect => {
+                container.innerHTML += renderProspect(prospect);
+            });
+        }
+        
+        window.addEventListener('load', initializeProspects);
+    </script>
+</body>
+</html>

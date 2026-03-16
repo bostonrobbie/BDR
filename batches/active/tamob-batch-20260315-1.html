@@ -35,7 +35,7 @@
 <body>
 
 <h1>TAM Outbound — Batch 10 Mar 15</h1>
-<p class="meta">Created: 2026-03-15 | Session: 39 | Contacts: 18 | Status: 15 Enrolled | 3 Blocked | APPROVE SEND ✅ Mar 15</p>
+<p class="meta">Created: 2026-03-15 | Session: 39 | Contacts: 18 | Status: 10 Enrolled (Sends Mon Mar 16) | 1 Pulled — #17 Stacey Schmidt (60-day re-engage Apr 24+) | 4 CVS Blocked (Dead Opportunity) | 3 Other Blocked | APPROVE SEND ✅ Mar 15 | Updated: Mar 15 Session 40</p>
 
 <!-- BATCH SUMMARY -->
 <div class="summary">
@@ -45,7 +45,7 @@
   <p><strong>Send-from:</strong> robert.gorham@testsigma.com (<code>68e3b53ceaaf74001d36c206</code>)</p>
   <p><strong>T2 due:</strong> Mar 20–23 (Day 5–8 from T1 send)</p>
   <p><strong>MASTER_SENT_LIST before append:</strong> 597 rows &nbsp;|&nbsp; <strong>After:</strong> 612 rows (+15)</p>
-  <p><strong>Enrollment notes:</strong> 15 enrolled | 3 blocked (Amaresh Shukla, Colin Dwyer, Deepa Pabbathi — Apollo API silent rejection, need manual UI fix) | 7 new contacts created | 2 override: active_in_other (Brendan McCarthy, Stacey Schmidt) | ⚠️ Avani Vaidya enrolled but email null on record — needs manual email attachment in Apollo UI</p>
+  <p><strong>Enrollment notes:</strong> 11 active in TAM Outbound (tasks queued Mon Mar 16, APAC schedule M-F 8-5) | 4 CVS Health contacts FAILED enrollment — <strong>failure_reason: account_stage_safeguard</strong> (CVS Health account = "Dead Opportunity" stage in Apollo — must change account stage before re-enrolling) | 3 other blocked: Amaresh Shukla (BlackRock), Colin Dwyer (EmblemHealth), Deepa Pabbathi (Vertafore) — API silent rejection, need manual UI fix | 2 override enrolled: Brendan McCarthy, Stacey Schmidt | ⚠️ NO sends confirmed in Gmail for Mar 15 — prior session "Send Now" click on Avani was false positive (enrollment had already failed)</p>
 </div>
 
 <!-- PROOF POINT ROTATION TRACKER -->
@@ -80,9 +80,8 @@
 <!-- #1 Avani Vaidya -->
 <div class="card">
   <h3>#1 — Avani Vaidya</h3>
-  <span class="badge badge-enrolled">Enrolled</span>
-  <span class="badge badge-warning">⚠️ Email Null — Needs Manual Fix</span>
-  <div class="override-note">⚠️ Enrolled in sequence but email field is null on Apollo contact record (6904a84eea986d00191ba7f1). Manually attach avani.vaidya@cvshealth.com in Apollo UI before T1 send.</div>
+  <span class="badge badge-blocked">❌ FAILED — CVS Dead Opportunity</span>
+  <div class="override-note">❌ Enrollment failed: failure_reason = account_stage_safeguard. CVS Health account is "Dead Opportunity" stage in Apollo. Must change CVS Health account stage before re-enrolling. No email was sent. (Prior session "Send Now" click was false positive — task never existed.)</div>
   <p class="contact-meta"><strong>Title:</strong> QE Manager / QA Lead &nbsp;|&nbsp; <strong>Company:</strong> CVS Health &nbsp;|&nbsp; <strong>Domain:</strong> cvshealth.com</p>
   <p class="contact-meta"><strong>Email:</strong> avani.vaidya@cvshealth.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 6904a84eea986d00191ba7f1</p>
   <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
@@ -106,7 +105,8 @@ Rob</div>
 <!-- #2 Swapna Bitra -->
 <div class="card">
   <h3>#2 — Swapna Bitra</h3>
-  <span class="badge badge-enrolled">Enrolled</span>
+  <span class="badge badge-blocked">❌ FAILED — CVS Dead Opportunity</span>
+  <div class="override-note">❌ Enrollment failed: account_stage_safeguard + contacts_without_ownership_permission. CVS Health = Dead Opportunity. No email sent.</div>
   <p class="contact-meta"><strong>Title:</strong> SDET Lead &nbsp;|&nbsp; <strong>Company:</strong> CVS Health &nbsp;|&nbsp; <strong>Domain:</strong> cvshealth.com</p>
   <p class="contact-meta"><strong>Email:</strong> swapna.bitra@cvshealth.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 65b65a521a070102ea51e374</p>
   <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
@@ -130,7 +130,8 @@ Rob</div>
 <!-- #3 Tarun Sharma -->
 <div class="card">
   <h3>#3 — Tarun Sharma</h3>
-  <span class="badge badge-enrolled">Enrolled</span>
+  <span class="badge badge-blocked">❌ FAILED — CVS Dead Opportunity</span>
+  <div class="override-note">❌ Enrollment failed: account_stage_safeguard + contacts_without_ownership_permission. CVS Health = Dead Opportunity. No email sent.</div>
   <p class="contact-meta"><strong>Title:</strong> QA Lead &nbsp;|&nbsp; <strong>Company:</strong> CVS Health &nbsp;|&nbsp; <strong>Domain:</strong> cvshealth.com</p>
   <p class="contact-meta"><strong>Email:</strong> tarun.sharma@cvshealth.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 65b659a81a070101ae52c83b</p>
   <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
@@ -154,7 +155,8 @@ Rob</div>
 <!-- #4 Divya Paul -->
 <div class="card">
   <h3>#4 — Divya Paul</h3>
-  <span class="badge badge-enrolled">Enrolled</span>
+  <span class="badge badge-blocked">❌ FAILED — CVS Dead Opportunity</span>
+  <div class="override-note">❌ Enrollment failed: account_stage_safeguard + contacts_without_ownership_permission. CVS Health = Dead Opportunity. No email sent.</div>
   <p class="contact-meta"><strong>Title:</strong> QA Lead &nbsp;|&nbsp; <strong>Company:</strong> CVS Health &nbsp;|&nbsp; <strong>Domain:</strong> cvshealth.com</p>
   <p class="contact-meta"><strong>Email:</strong> divya.paul@cvshealth.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 65b65a021a070101ae52c962</p>
   <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
@@ -184,6 +186,7 @@ Rob</div>
 <div class="card">
   <h3>#5 — Usman Khan</h3>
   <span class="badge badge-enrolled">Enrolled</span>
+  <span class="badge badge-warning">⏳ Task Queued Mon Mar 16</span>
   <p class="contact-meta"><strong>Title:</strong> QA Automation Lead &nbsp;|&nbsp; <strong>Company:</strong> Citizens Bank &nbsp;|&nbsp; <strong>Domain:</strong> citizensbank.com</p>
   <p class="contact-meta"><strong>Email:</strong> usman.khan@citizensbank.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 68add76d2c0dd60001dc078c</p>
   <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
@@ -208,6 +211,7 @@ Rob</div>
 <div class="card">
   <h3>#6 — Mehul Savalia</h3>
   <span class="badge badge-enrolled">Enrolled</span>
+  <span class="badge badge-warning">⏳ Task Queued Mon Mar 16</span>
   <p class="contact-meta"><strong>Title:</strong> QA Lead &nbsp;|&nbsp; <strong>Company:</strong> Citizens Bank &nbsp;|&nbsp; <strong>Domain:</strong> citizensbank.com</p>
   <p class="contact-meta"><strong>Email:</strong> mehul.savalia@citizensbank.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 692c569cb621bb0001522410</p>
   <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
@@ -266,6 +270,7 @@ Rob</div>
 <div class="card">
   <h3>#8 — Minu Prabhakaran</h3>
   <span class="badge badge-enrolled">Enrolled</span>
+  <span class="badge badge-warning">⏳ Task Queued Mon Mar 16</span>
   <p class="contact-meta"><strong>Title:</strong> QA Manager &nbsp;|&nbsp; <strong>Company:</strong> DISH Network &nbsp;|&nbsp; <strong>Domain:</strong> dish.com</p>
   <p class="contact-meta"><strong>Email:</strong> minu.prabhakaran@dish.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 69b73c3f1f42de001557b84a <em>(new contact created)</em></p>
   <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
@@ -290,6 +295,7 @@ Rob</div>
 <div class="card">
   <h3>#9 — Jacob Wyman</h3>
   <span class="badge badge-enrolled">Enrolled</span>
+  <span class="badge badge-warning">⏳ Task Queued Mon Mar 16</span>
   <p class="contact-meta"><strong>Title:</strong> SQA Engineering Manager &nbsp;|&nbsp; <strong>Company:</strong> DISH Network &nbsp;|&nbsp; <strong>Domain:</strong> dish.com</p>
   <p class="contact-meta"><strong>Email:</strong> jake.wyman@dish.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 69b73bd01f42de00112d6d12 <em>(new contact created)</em></p>
   <p class="contact-meta"><strong>Source:</strong> Apollo People Search + People Match</p>
@@ -314,6 +320,7 @@ Rob</div>
 <div class="card">
   <h3>#10 — Roger Tonneman</h3>
   <span class="badge badge-enrolled">Enrolled</span>
+  <span class="badge badge-warning">⏳ Task Queued Mon Mar 16</span>
   <p class="contact-meta"><strong>Title:</strong> Sr QA Manager &nbsp;|&nbsp; <strong>Company:</strong> DISH Network &nbsp;|&nbsp; <strong>Domain:</strong> dish.com</p>
   <p class="contact-meta"><strong>Email:</strong> roger.tonneman@dish.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 69b73bd21f42de00112d6d1a <em>(new contact created)</em></p>
   <p class="contact-meta"><strong>Source:</strong> Apollo People Search + People Match</p>
@@ -343,6 +350,7 @@ Rob</div>
 <div class="card">
   <h3>#11 — Shikha Jayant</h3>
   <span class="badge badge-enrolled">Enrolled</span>
+  <span class="badge badge-warning">⏳ Task Queued Mon Mar 16</span>
   <p class="contact-meta"><strong>Title:</strong> Software QA Manager &nbsp;|&nbsp; <strong>Company:</strong> Dun &amp; Bradstreet &nbsp;|&nbsp; <strong>Domain:</strong> dnb.com</p>
   <p class="contact-meta"><strong>Email:</strong> jayants@dnb.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 69b73bd41f42de001557b816 <em>(new contact created)</em></p>
   <p class="contact-meta"><strong>Source:</strong> Apollo People Search + People Match</p>
@@ -367,6 +375,7 @@ Rob</div>
 <div class="card">
   <h3>#12 — Collins Chellaswamy</h3>
   <span class="badge badge-enrolled">Enrolled</span>
+  <span class="badge badge-warning">⏳ Task Queued Mon Mar 16</span>
   <p class="contact-meta"><strong>Title:</strong> Sr Manager QA &nbsp;|&nbsp; <strong>Company:</strong> Dun &amp; Bradstreet &nbsp;|&nbsp; <strong>Domain:</strong> dnb.com</p>
   <p class="contact-meta"><strong>Email:</strong> chellaswamyc@dnb.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 69b73bd51f42de001557b81e <em>(new contact created)</em></p>
   <p class="contact-meta"><strong>Source:</strong> Apollo People Search + People Match</p>
@@ -392,6 +401,7 @@ Rob</div>
   <h3>#13 — Brendan McCarthy</h3>
   <span class="badge badge-enrolled">Enrolled</span>
   <span class="badge badge-warning">⚠️ Active in Other Campaign — Override Required</span>
+  <span class="badge badge-warning">⏳ Task Queued Mon Mar 16</span>
   <p class="contact-meta"><strong>Title:</strong> Sr QA Manager &nbsp;|&nbsp; <strong>Company:</strong> Dun &amp; Bradstreet &nbsp;|&nbsp; <strong>Domain:</strong> dnb.com</p>
   <p class="contact-meta"><strong>Email:</strong> mccarthyb@dnb.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 67887b650a8721000111da37</p>
   <p class="contact-meta"><strong>Source:</strong> Apollo People Search + People Match</p>
@@ -447,6 +457,7 @@ Rob</div>
 <div class="card">
   <h3>#15 — Dawn McCartha</h3>
   <span class="badge badge-enrolled">Enrolled</span>
+  <span class="badge badge-warning">⏳ Task Queued Mon Mar 16</span>
   <p class="contact-meta"><strong>Title:</strong> Testing Manager &nbsp;|&nbsp; <strong>Company:</strong> EmblemHealth &nbsp;|&nbsp; <strong>Domain:</strong> emblemhealth.com</p>
   <p class="contact-meta"><strong>Email:</strong> dmccartha@emblemhealth.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 69b73bd77b9ccd00193ed12c <em>(new contact created)</em></p>
   <p class="contact-meta"><strong>Source:</strong> Apollo People Search + People Match</p>
@@ -499,12 +510,11 @@ Rob</div>
 <!-- #17 Stacey Schmidt -->
 <div class="card">
   <h3>#17 — Stacey Schmidt</h3>
-  <span class="badge badge-enrolled">Enrolled</span>
-  <span class="badge badge-warning">⚠️ Active in Other Campaign — Override Required</span>
+  <span class="badge badge-blocked">🚫 PULLED — Do Not Send</span>
   <p class="contact-meta"><strong>Title:</strong> QA Manager &nbsp;|&nbsp; <strong>Company:</strong> Vertafore &nbsp;|&nbsp; <strong>Domain:</strong> vertafore.com</p>
   <p class="contact-meta"><strong>Email:</strong> sschmidt@vertafore.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 664daebc65e77601ebdaa628</p>
   <p class="contact-meta"><strong>Source:</strong> Apollo People Search</p>
-  <div class="override-note">⚠️ Enrollment Override: <code>active_in_other_campaigns: true</code> — Contact is in another sequence. NOT in MASTER_SENT_LIST — clear to enroll in our sequence with override flag.</div>
+  <div class="override-note">🚫 PULLED Mar 15 (Session 40) — Prior campaign finished Feb 23, 2026 (20 days ago). <code>inactive_reason: "talked on phone"</code>. Sent from robert.gorham@testsigma.net. <code>call_opted_out: true</code>. Violates 60-day re-engagement minimum. Rob decision: do not send. Re-engage after Apr 24, 2026.</div>
   <div class="email-draft">
     <div class="subject">Subject: Stacey's QA coverage at Vertafore</div>
     <div class="body">Hi Stacey,
@@ -531,6 +541,7 @@ Rob</div>
 <div class="card">
   <h3>#18 — Praveen Gali</h3>
   <span class="badge badge-enrolled">Enrolled</span>
+  <span class="badge badge-warning">⏳ Task Queued Mon Mar 16</span>
   <p class="contact-meta"><strong>Title:</strong> Sr QE Leader &nbsp;|&nbsp; <strong>Company:</strong> Safelite &nbsp;|&nbsp; <strong>Domain:</strong> safelite.com</p>
   <p class="contact-meta"><strong>Email:</strong> praveen.gali@safelite.com &nbsp;|&nbsp; <strong>Email status:</strong> verified &nbsp;|&nbsp; <strong>Apollo ID:</strong> 69b73bd97b9ccd00193ed134 <em>(new contact created)</em></p>
   <p class="contact-meta"><strong>Source:</strong> Apollo People Search + People Match</p>

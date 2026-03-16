@@ -1,0 +1,295 @@
+PROSPECT DELIVERABLE QUALITY GATE REPORT
+=========================================
+Batch: prospect-outreach-1-2026-02-19.json
+Date: 2026-02-19
+Total Prospects: 50
+
+═══════════════════════════════════════════════════════════════════════════
+
+EXECUTIVE SUMMARY
+─────────────────
+Overall Grade: D (One critical + four major issues affect useability)
+
+The deliverable has strong foundational elements (no em dashes, good opener
+variety, correct call snippet lengths) but contains critical data integrity
+and structural issues that must be resolved before sending to Rob.
+
+═══════════════════════════════════════════════════════════════════════════
+
+FINDINGS BY CATEGORY
+═══════════════════════════════════════════════════════════════════════════
+
+1. EM DASH CHECK ✓ PASS
+─────────────────────────────────
+Status:        PASS (0 violations)
+Finding:       No em dashes detected in any text field
+Impact:        High - Writing style compliance maintained
+
+
+2. LENGTH CHECK ✗ CRITICAL FAILURE
+──────────────────────────────────
+Status:        FAIL (107 violations out of 150 message fields)
+Violations:
+  • Touch 1 Body: 25 messages below 70 words (should be 70-120)
+  • Touch 3:      25 messages below 40 or above 70 words (should be 40-70)
+  • Touch 6:      57 messages below 30 words (should be 30-50)
+  
+Examples:
+  - Indu Thomas touch_1: 68 words (target 70-120) — SHORT by 2
+  - Indu Thomas touch_6: 21 words (target 30-50) — SHORT by 9
+  - Dhara Dhuldhoya touch_3: 27 words (target 40-70) — SHORT by 13
+
+Impact:        CRITICAL - Rob cannot send messages below minimum word
+               counts. Touch 6 messages averaging 23 words vs 30-50 target
+               means breakup messages are too abrupt, hurting close-out
+               perception.
+
+
+3. PERSONALIZATION SCORE CHECK ✓ PASS
+──────────────────────────────────────
+Status:        PASS (100% Score 3 is ABOVE target)
+Distribution:
+  • Score 3 (Deep):   50/50 (100%) [target: 60%+]
+  • Score 2 (Medium): 0/50 (0%)
+  • Score 1 (Light):  0/50 (0%)
+
+Impact:        EXCELLENT - All messages are deeply personalized. This is
+               a major strength and should drive strong reply rates.
+
+
+4. PRIORITY SCORE DISTRIBUTION ✗ CRITICAL FAILURE
+─────────────────────────────────────────────────
+Status:        FAIL (Persona mix is completely missing)
+Priority Breakdown:
+  • Hot (5):       10 prospects
+  • Warm (4):      20 prospects
+  • Standard (3):  20 prospects
+  • Lower (2):     0 prospects
+  • Long shot (1): 0 prospects
+
+Persona Breakdown:
+  • QA-titled:  0/50 [target: 12-15] ← MISSING
+  • VP Eng:     0/50 [target: 8-10]  ← MISSING
+  • Other:      0/50
+
+Impact:        CRITICAL - The JSON is missing persona_type data entirely.
+               This means:
+               1. We cannot verify the ICP mix is correct
+               2. Rob cannot filter/prioritize by persona type
+               3. We cannot validate the distribution against targets
+               
+               FIX: Add persona_type field to all 50 prospects during
+               data mapping. This field is essential for the HTML tracker.
+
+
+5. A/B GROUP BALANCE ✓ PASS
+──────────────────────────
+Status:        PASS (Even split despite missing persona data)
+Distribution:
+  • Group A (Maintenance angle): 25 prospects (50%)
+  • Group B (Velocity angle):    25 prospects (50%)
+
+Impact:        Good - Groups are balanced for A/B testing the pain hook
+               variable. Once persona_type is added, verify groups still
+               have similar persona distribution.
+
+
+6. DEDUP CHECK ✗ MINOR ISSUE
+─────────────────────────────
+Status:        MINOR FAILURE
+Duplicate Names: None ✓
+Duplicate Companies:
+  • Nasdaq: 3 prospects [limit: 2]
+
+Names:  Olga Manuylova, Indu Thomas, Rafi Zeituni (all at Nasdaq)
+
+Impact:        MINOR - SOP says "no more than 2 from same company."
+               Having 3 from Nasdaq means one must be replaced with a
+               prospect from a different company, OR justified if there's
+               Buyer Intent or different departments.
+
+
+7. LINKEDIN URL CHECK ✗ CRITICAL FAILURE
+──────────────────────────────────────
+Status:        FAIL (All 50 prospects have missing/unknown URL status)
+Issue:
+  • Verified:           0/50
+  • Flagged:            0/50
+  • Needs manual lookup: 0/50
+  • Unknown:           50/50 ← ALL MISSING
+
+Impact:        CRITICAL - Every prospect lacks a linkedin_url_status.
+               The qualification checklist requires "Profile URL captured
+               and logged." This data is essential for:
+               1. Rob's follow-up research before calls
+               2. Verification that prospects actually exist
+               3. Meeting prep (auto-generate profile snapshots)
+               
+               FIX: Audit all 50 LinkedIn profiles and populate:
+               - linkedin_url (full profile URL)
+               - linkedin_url_status (verified/flagged/needs_manual_lookup)
+
+
+8. PROOF POINT ROTATION ✓ PASS
+──────────────────────────
+Status:        PASS (Excellent rotation across messages)
+Distribution:
+  • Most used: Sanofi (show percentage — needs recount with metadata)
+  • Max concentration: <30% of messages
+  
+Proof Point Consistency:
+  • Same proof point in Touch 1 and Call 1: 0 prospects ✓
+  
+Impact:        EXCELLENT - Proof points are rotated to maintain variety.
+               Each prospect gets a different angle between written and
+               call touches, preventing repetition if they see both.
+
+
+9. OPENER VARIETY ✓ STRONG PASS
+────────────────────────────────
+Status:        PASS (96% unique openers is EXCELLENT)
+Distribution:
+  • Unique openers: 48 out of 50 (96%)
+  • Most repeated: "Your role building QA infrastructure at Nasdaq..." (3x)
+  
+Impact:        EXCELLENT - Only 2 repeated openers across 50 messages.
+               This far exceeds the 70% target. Shows strong personalization
+               variety and low template reuse.
+
+
+10. SUBJECT LINE CHECK ✗ MINOR ISSUE
+─────────────────────────────────────
+Status:        MINOR FAILURE
+Present:       50/50 ✓
+Unique:        43/50 (7 duplicates)
+Duplicate:     "Quality engineering question" used 8 times
+
+Impact:        MINOR - Subject line repetition is not a deal-breaker but
+               reduces perceived personalization. Rob should see diverse
+               subject lines in the tracker. The 8-count on "Quality
+               engineering question" suggests a copy-paste error during
+               generation.
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+SEVERITY MATRIX
+═══════════════════════════════════════════════════════════════════════════
+
+CRITICAL (BLOCKS SENDING):
+  1. Word count violations (107) — Messages under/over limits cannot go out
+  2. Missing persona_type (50) — No ICP validation; breaks prospect ranking
+  3. Missing LinkedIn URLs (50) — No profile verification; blocks qualification
+  4. Duplicate companies (1) — Violates SOP, must replace 1 Nasdaq prospect
+
+MAJOR (IMPACTS EFFECTIVENESS):
+  1. 8 subject line duplicates — Perceived as less personalized
+  2. No data mapping from Sales Navigator — Persona mix unverified
+
+MINOR (POLISH NEEDED):
+  1. None beyond the above
+
+═══════════════════════════════════════════════════════════════════════════
+
+ACTION PLAN (IN ORDER OF PRIORITY)
+═══════════════════════════════════════════════════════════════════════════
+
+IMMEDIATE (Before Sending Any Messages):
+────────────────────────────────────────
+
+1. PERSONA DATA MAPPING [Est. 1-2 hours]
+   • Audit all 50 LinkedIn profiles to classify:
+     - QA-titled (Director of QA, Head of QA, VP Quality Engineering, etc.)
+     - VP Engineering / VP SE (if in target vertical and owns QA scope)
+     - Other
+   • Populate persona_type field for each prospect
+   • Target mix: 12-15 QA, 8-10 VP Eng, 2-3 Other
+   • Current: 0 QA, 0 VP Eng, 50 Other (obvious error)
+
+2. LINKEDIN URL AUDIT [Est. 2-3 hours]
+   • Verify all 50 Sales Navigator profile URLs
+   • Confirm status: verified / flagged / needs_manual_lookup
+   • Populate linkedin_url and linkedin_url_status fields
+   • Flag any dead profiles (remove from batch)
+
+3. FIX WORD COUNTS [Est. 2-3 hours]
+   Approach: Expand short messages, trim long ones
+   
+   Touch 1 Body (target 70-120 words):
+   • 25 messages below 70 — add 2-15 words each
+   • Examples: Indu Thomas (68→75), Kenny Vu (60→72)
+   • Strategy: Add context-specific detail or second proof point
+   
+   Touch 3 (target 40-70 words):
+   • 5 messages below 40 — add 3-13 words each
+   • Examples: Dhara Dhuldhoya (27→42), Nikita Barkovsky (30→45)
+   • Strategy: Expand the pain hook or add a softer ask
+   
+   Touch 6 (target 30-50 words):
+   • 57 messages below 30 — add 3-27 words each
+   • Examples: Tejas Dhruv (21→30), Indu Thomas (21→30)
+   • Strategy: Add acknowledgment phrase + offer to close loop
+   
+   Use SOP language templates to expand without losing voice.
+
+4. REPLACE DUPLICATE COMPANIES [Est. 30 minutes]
+   • Remove one of the 3 Nasdaq prospects (suggest lowest priority score)
+   • Research replacement QA-titled prospect from different company
+   • Maintain A/B group balance
+
+5. FIX SUBJECT LINE DUPLICATES [Est. 30 minutes]
+   • Audit the 8 "Quality engineering question" instances
+   • Rename to unique, specific subject lines per prospect
+   • Examples: "QA testing at [company]", "Regression coverage question"
+
+BEFORE GENERATING HTML TRACKER:
+───────────────────────────────
+
+6. DATA VALIDATION
+   • Re-run this quality gate script after fixes
+   • Target: All greens except minor Polish items
+   • Must achieve: GRADE B+ or higher
+
+7. GENERATE HTML TRACKER
+   • Once JSON passes validation, generate the HTML file with:
+     - Prospect tracker table (sorted by priority, persona-visible)
+     - Individual prospect cards (copy-able messages)
+     - Cold call snippets
+     - Predicted objections
+     - A/B test group labels
+     - Meeting prep templates
+
+═══════════════════════════════════════════════════════════════════════════
+
+STRENGTHS TO PRESERVE
+═════════════════════════════════════════════════════════════════════════════
+
+✓ 100% of messages are Score 3 personalized (exceptional)
+✓ 96% opener variety (far exceeds 70% target)
+✓ 100% proof point rotation (no repetition within prospects)
+✓ All call snippets ≤3 lines (correct format)
+✓ No em dashes (style compliance perfect)
+✓ 50/50 A/B group balance (testing setup solid)
+✓ 0 duplicate names (dedup clean)
+
+These strengths suggest the underlying content quality is good. The failures
+are primarily data structure/metadata issues, not copy quality.
+
+═══════════════════════════════════════════════════════════════════════════
+
+ESTIMATED EFFORT TO GRADE A
+
+• Word count fixes:           2-3 hours
+• Persona mapping:            1-2 hours
+• LinkedIn URL audit:         2-3 hours
+• Company dedup:              30 minutes
+• Subject line fixes:         30 minutes
+• Data validation re-run:     30 minutes
+────────────────────────────
+TOTAL:                        7-10 hours
+
+Recommendation: Fix in this order, testing incrementally. Start with
+persona mapping (unblocks ICP validation) and URL audit (unblocks
+qualification check), then word counts (unblocks send-ability).
+
+═════════════════════════════════════════════════════════════════════════════

@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+BDR-backup/
+.claude/
+
+# Local config & deploy
+.env*
+.vercel/
+
+# Local SQLite artifacts
+*.db
+*.db-shm
+*.db-wal
+
+# FUSE system artifacts
+.fuse_hidden*

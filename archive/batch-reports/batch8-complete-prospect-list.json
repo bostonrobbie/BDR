@@ -1,0 +1,644 @@
+{
+  "batch": "Batch 8",
+  "generated": "2026-03-02",
+  "total_count": 91,
+  "prospects": [
+    {
+      "id": 1,
+      "name": "Abe Blanco",
+      "company": "Kapitus",
+      "title": "QA Engineering Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 2,
+      "name": "Affan Rashid",
+      "company": "Applied Systems",
+      "title": "Sr SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 3,
+      "name": "Akshaya Ponnappa",
+      "company": "Vitech Systems Group",
+      "title": "Senior Director Quality Assurance",
+      "apollo_id": null
+    },
+    {
+      "id": 4,
+      "name": "Amir Aly",
+      "company": "Procore Technologies",
+      "title": "Director, QA Engineering",
+      "apollo_id": null
+    },
+    {
+      "id": 5,
+      "name": "Amira Survil",
+      "company": "TradeStation",
+      "title": "Sr. SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 6,
+      "name": "Amrita Jha",
+      "company": "Majesco",
+      "title": "Quality Assurance Lead",
+      "apollo_id": null
+    },
+    {
+      "id": 7,
+      "name": "Anandbabu Singadurai",
+      "company": "Elevate",
+      "title": "Senior SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 8,
+      "name": "Animesh Roy",
+      "company": "Majesco",
+      "title": "Software Test Architect",
+      "apollo_id": null
+    },
+    {
+      "id": 9,
+      "name": "Autumn Kennedy",
+      "company": "Tala",
+      "title": "Senior SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 10,
+      "name": "Avijit Sur",
+      "company": "Solera Holdings, LLC.",
+      "title": "Sr. Director || Quality, Performance & Risk Assurance",
+      "apollo_id": null
+    },
+    {
+      "id": 11,
+      "name": "Balwinder Singh",
+      "company": "iManage",
+      "title": "Staff Quality Assurance Engineer",
+      "apollo_id": null
+    },
+    {
+      "id": 12,
+      "name": "Brian Liu",
+      "company": "CCC Intelligent Solutions",
+      "title": "Sr SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 13,
+      "name": "Chris O'Neill",
+      "company": "Jack Henry",
+      "title": "Senior SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 14,
+      "name": "Christie Howard",
+      "company": "LastPass",
+      "title": "Sr Director, QA Engineering",
+      "apollo_id": null
+    },
+    {
+      "id": 15,
+      "name": "Christina Fullbright",
+      "company": "Eptura",
+      "title": "Principal Quality Assurance Engineer",
+      "apollo_id": null
+    },
+    {
+      "id": 16,
+      "name": "Christopher Brown",
+      "company": "Simplify Healthcare",
+      "title": "Director of Quality Assurance",
+      "apollo_id": null
+    },
+    {
+      "id": 17,
+      "name": "Christopher Page",
+      "company": "Everbridge",
+      "title": "Senior Software Quality Engineer, SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 18,
+      "name": "Clayton Gould",
+      "company": "OpenX",
+      "title": "Senior SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 19,
+      "name": "Courtney Corbin",
+      "company": "Vizient, Inc",
+      "title": "Quality Assurance Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 20,
+      "name": "Crystal Howard",
+      "company": "DeliverHealth",
+      "title": "QA Engineering Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 21,
+      "name": "Deepa Krishnamoorthy",
+      "company": "Nextiva",
+      "title": "Sr. Director of QE",
+      "apollo_id": null
+    },
+    {
+      "id": 22,
+      "name": "Dickson Wu",
+      "company": "AuditBoard",
+      "title": "Senior Director Quality Engineering",
+      "apollo_id": null
+    },
+    {
+      "id": 23,
+      "name": "Emre Ozdemir",
+      "company": "The Options Clearing Corporation (OCC)",
+      "title": "Associate Principal, SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 24,
+      "name": "Geoffrey Juma",
+      "company": "Solera Holdings, LLC.",
+      "title": "Software QA Engineering Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 25,
+      "name": "Ghada Harb",
+      "company": "ELLKAY",
+      "title": "QA Engineering Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 26,
+      "name": "Irina Shitova",
+      "company": "STRATACACHE",
+      "title": "Senior SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 27,
+      "name": "Jake Durand",
+      "company": "Phreesia",
+      "title": "Senior SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 28,
+      "name": "Jamie Kurt",
+      "company": "Vertafore",
+      "title": "QA Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 29,
+      "name": "Jared McHaffie",
+      "company": "Realtor.com",
+      "title": "Senior SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 30,
+      "name": "Jason Schwichtenberg",
+      "company": "WebMD",
+      "title": "Quality Assurance Manager / Sr QA Lead",
+      "apollo_id": null
+    },
+    {
+      "id": 31,
+      "name": "Jeff Chartos",
+      "company": "Early Warning",
+      "title": "Director Quality Engineering",
+      "apollo_id": null
+    },
+    {
+      "id": 32,
+      "name": "Jeremy Haage",
+      "company": "Virtru",
+      "title": "Senior SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 33,
+      "name": "Jim Lenihan",
+      "company": "Waystar",
+      "title": "Quality Assurance Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 34,
+      "name": "Jorge Garcia",
+      "company": "Commure",
+      "title": "Sr QA Engineering Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 35,
+      "name": "Joseph Lee",
+      "company": "Hinge Health",
+      "title": "QA Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 36,
+      "name": "Julia Mitchum",
+      "company": "Blue Yonder",
+      "title": "QA Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 37,
+      "name": "Kaitlyn Kirchhausen",
+      "company": "Hometap",
+      "title": "QA Engineering Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 38,
+      "name": "Karen Motyka",
+      "company": "Quickbase",
+      "title": "Senior Director Quality Engineering",
+      "apollo_id": null
+    },
+    {
+      "id": 39,
+      "name": "Kartik Punekar",
+      "company": "Vonage",
+      "title": "Senior Director of Quality",
+      "apollo_id": null
+    },
+    {
+      "id": 40,
+      "name": "Keith Schofield",
+      "company": "Fullsteam",
+      "title": "Quality Assurance Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 41,
+      "name": "Kenny Liu",
+      "company": "ModMed",
+      "title": "Sr. Director, QA",
+      "apollo_id": null
+    },
+    {
+      "id": 42,
+      "name": "Kerri McGee",
+      "company": "Sapiens",
+      "title": "Director of Quality Assurance",
+      "apollo_id": null
+    },
+    {
+      "id": 43,
+      "name": "Konstantin Diachenko",
+      "company": "Paymentus",
+      "title": "QA Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 44,
+      "name": "Kyung Kim",
+      "company": "WebMD",
+      "title": "Director QA",
+      "apollo_id": null
+    },
+    {
+      "id": 45,
+      "name": "Lakshmi Raghavan",
+      "company": "Point",
+      "title": "Senior SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 46,
+      "name": "Larry Sutton",
+      "company": "Solera Holdings, LLC.",
+      "title": "QA Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 47,
+      "name": "Lidia Utesheva",
+      "company": "SonderMind",
+      "title": "Senior SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 48,
+      "name": "Lizmarie Pantoja",
+      "company": "Insulet Corporation",
+      "title": "QA Engineering Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 49,
+      "name": "Lyle Landry",
+      "company": "Availity",
+      "title": "Quality Assurance Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 50,
+      "name": "Meraj Mohammed",
+      "company": "BlackLine",
+      "title": "Sr SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 51,
+      "name": "Mihir Kumar",
+      "company": "Netskope",
+      "title": "Senior SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 52,
+      "name": "Mikhail Nekhaenok",
+      "company": "Together AI",
+      "title": "Senior SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 53,
+      "name": "Mohammad Mian",
+      "company": "Acorns",
+      "title": "Sr. SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 54,
+      "name": "Mohan Gummadi",
+      "company": "Verisk",
+      "title": "Senior Director Quality Assurance",
+      "apollo_id": null
+    },
+    {
+      "id": 55,
+      "name": "Monica Taduru",
+      "company": "Aya Healthcare",
+      "title": "QA Engineering Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 56,
+      "name": "Morya Moyal",
+      "company": "Hippo Insurance",
+      "title": "QA Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 57,
+      "name": "Nabil Ahmed",
+      "company": "Progyny, Inc.",
+      "title": "Senior SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 58,
+      "name": "Niraj Pandey",
+      "company": "TraceLink",
+      "title": "Senior SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 59,
+      "name": "Niveditha Bharadwaj",
+      "company": "Lendbuzz",
+      "title": "QA Engineering Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 60,
+      "name": "Olga Norton",
+      "company": "Popmenu",
+      "title": "QA Engineering Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 61,
+      "name": "Olivia Pereiraclarke",
+      "company": "Sapiens",
+      "title": "QA Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 62,
+      "name": "Priya Khemani",
+      "company": "GetInsured",
+      "title": "Director of Quality Assurance",
+      "apollo_id": null
+    },
+    {
+      "id": 63,
+      "name": "Priya Sethuvinayakam",
+      "company": "AliveCor",
+      "title": "QA Engineering Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 64,
+      "name": "Rashad Fambro",
+      "company": "MedeAnalytics",
+      "title": "Director, Quality Assurance",
+      "apollo_id": null
+    },
+    {
+      "id": 65,
+      "name": "Raye Rivera",
+      "company": "VIAVI Solutions",
+      "title": "QA Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 66,
+      "name": "Renata Jundo-Scensnovic",
+      "company": "Centerfield",
+      "title": "QA Engineering Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 67,
+      "name": "Rian Musial",
+      "company": "CCC Intelligent Solutions",
+      "title": "Lead SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 68,
+      "name": "Rick Jasper",
+      "company": "Infoblox",
+      "title": "Principal Quality Assurance Engineer",
+      "apollo_id": null
+    },
+    {
+      "id": 69,
+      "name": "Rick Kowaleski",
+      "company": "Alteryx",
+      "title": "Sr. Director QA",
+      "apollo_id": null
+    },
+    {
+      "id": 70,
+      "name": "Roni Kaya",
+      "company": "Pathward",
+      "title": "Sr. SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 71,
+      "name": "Samata Yarlagadda",
+      "company": "Coupa",
+      "title": "Sr. Director Quality Engineering",
+      "apollo_id": null
+    },
+    {
+      "id": 72,
+      "name": "Sara Triehy",
+      "company": "Dynata",
+      "title": "QA Engineering Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 73,
+      "name": "Scott Carruth",
+      "company": "Abrigo",
+      "title": "Senior Director QA",
+      "apollo_id": null
+    },
+    {
+      "id": 74,
+      "name": "Shana Johnson",
+      "company": "Quest Analytics",
+      "title": "Senior Director QA",
+      "apollo_id": null
+    },
+    {
+      "id": 75,
+      "name": "Shefali Singh",
+      "company": "ON24",
+      "title": "Sr. Director Quality Assurance",
+      "apollo_id": null
+    },
+    {
+      "id": 76,
+      "name": "Shivaleela Devarangadi",
+      "company": "RxSense",
+      "title": "Head of Quality Engineering",
+      "apollo_id": null
+    },
+    {
+      "id": 77,
+      "name": "Shobha Gunupuru",
+      "company": "CyberArk",
+      "title": "Senior Software Development Engineer In Test",
+      "apollo_id": null
+    },
+    {
+      "id": 78,
+      "name": "Sneha Bairappa",
+      "company": "AAMC",
+      "title": "Sr SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 79,
+      "name": "Sonya Laplante",
+      "company": "Claritev",
+      "title": "Quality Assurance Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 80,
+      "name": "Sowjanya Palleti",
+      "company": "Roku",
+      "title": "QA Engineering Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 81,
+      "name": "Sridharan Gopal",
+      "company": "Bottomline",
+      "title": "Senior Director Quality Engineering",
+      "apollo_id": null
+    },
+    {
+      "id": 82,
+      "name": "Stephen Starnaud",
+      "company": "biBerk Business Insurance",
+      "title": "QA Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 83,
+      "name": "Subrato Sarkar",
+      "company": "DrFirst",
+      "title": "Sr. SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 84,
+      "name": "Tracy Grooms",
+      "company": "Buildertrend",
+      "title": "Sr. Director of QA",
+      "apollo_id": null
+    },
+    {
+      "id": 85,
+      "name": "Venkata Upputuri",
+      "company": "InvoiceCloud",
+      "title": "Sr SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 86,
+      "name": "Victor Ionin",
+      "company": "Aurora Solar",
+      "title": "QA Engineering Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 87,
+      "name": "Vinayak Singh",
+      "company": "PURE Insurance",
+      "title": "Director of QA",
+      "apollo_id": null
+    },
+    {
+      "id": 88,
+      "name": "Vishesh Bagga",
+      "company": "Okta",
+      "title": "Senior SDET",
+      "apollo_id": null
+    },
+    {
+      "id": 89,
+      "name": "William Busch",
+      "company": "Zynga",
+      "title": "QA Manager",
+      "apollo_id": null
+    },
+    {
+      "id": 90,
+      "name": "Yassi Dastan",
+      "company": "Cvent",
+      "title": "Senior Director Quality Engineering",
+      "apollo_id": null
+    },
+    {
+      "id": 91,
+      "name": "Yuehli Dewolf",
+      "company": "Vertafore",
+      "title": "Senior Director QA",
+      "apollo_id": null
+    }
+  ]
+}

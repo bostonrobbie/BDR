@@ -1,0 +1,80 @@
+
+================================================================================
+SAMPLE MESSAGES - FULL TEXT
+================================================================================
+
+
+PROSPECT #3: Rachana Jagetia @ Housecall Pro
+Title: Director, QA Eng
+Priority: Warm
+Email: rachana.jagetia@housecallpro.com
+LinkedIn: https://www.linkedin.com/in/rachana-jagetia-791343138
+
+SUBJECT:
+Flaky tests before the refresh
+
+MESSAGE BODY:
+Hello Rachana,
+
+Are flaky Selenium tests already slowing your monthly releases, or is it more of a problem you're bracing for when the 2026 platform refresh hits?
+
+During mobile overhauls, brittle tests usually break faster than the team can fix them, especially on Selenium with iOS and Android both in play. Most of the sprint ends up going to test repairs instead of new coverage.
+
+One company in a similar spot cut Selenium test upkeep by 70% after switching to Testsigma.
+
+If 70% less Selenium maintenance before the refresh sounds useful, what day works for a quick look?
+
+Best,
+Rob
+
+---
+
+PROSPECT #5: Kevin Caulfield @ Bottomline
+Title: Director of QA
+Priority: Warm
+Email: kcaulfield@bottomline.com
+LinkedIn: https://www.linkedin.com/in/kevin-caulfield-6608bb2
+
+SUBJECT:
+PCI regression cycles
+
+MESSAGE BODY:
+Hello Kevin,
+
+How much of your regression cycle is PCI and AML compliance retesting versus actual new coverage?
+
+In payment platforms, compliance requirements tend to eat most of the cycle, and the team ends up fixing old tests instead of validating new features. Every new payment corridor or rule change adds more tests to maintain, and the backlog compounds fast.
+
+One financial services company with a similar compliance load cut their regression window from 8 to 5 weeks using Testsigma.
+
+If getting 3 weeks back in your regression cycle would help, what day works for a quick chat?
+
+Best,
+Rob
+
+---
+
+PROSPECT #9: Susan Lin @ Robinhood
+Title: Staff QA Engineer
+Priority: Warm
+Email: susan.lin@robinhood.com
+LinkedIn: https://www.linkedin.com/in/susan-lin-1a016947
+
+SUBJECT:
+Trading, crypto, and derivatives coverage
+
+MESSAGE BODY:
+Hello Susan,
+
+With Cortex AI autonomous trading, prediction markets, and the Bitstamp acquisition all shipping on a Server-Driven UI architecture, is regression coverage keeping up across trading, crypto, and derivatives?
+
+Every product launch multiplies test permutations, and test fixes consume the time you need for new coverage. Three verticals on one architecture compounds that fast.
+
+CRED automated 90% of regression and cut execution 5X with Testsigma while scaling features across multiple product lines.
+
+What day works to compare how CRED kept coverage ahead of releases without growing the team?
+
+Best,
+Rob
+
+---

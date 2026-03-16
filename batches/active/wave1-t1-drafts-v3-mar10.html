@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wave 1 — T1 Email Drafts v3 | Mar 10, 2026</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --card2: #20243a;
+    --border: #2d3148;
+    --accent: #6366f1;
+    --accent2: #22c55e;
+    --warn: #f59e0b;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --sub: #64748b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.6; padding: 24px; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+  .stats-bar { display: flex; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 18px; }
+  .stat-val { font-size: 24px; font-weight: 700; color: var(--accent); }
+  .stat-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .formula-box { background: var(--card2); border: 1px solid var(--accent); border-radius: 10px; padding: 18px 22px; margin-bottom: 28px; }
+  .formula-box h2 { font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .formula-steps { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .fstep { display: flex; gap: 10px; align-items: flex-start; font-size: 12px; }
+  .fstep-num { background: var(--accent); color: white; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; flex-shrink: 0; margin-top: 1px; }
+  .fstep-txt { color: var(--text); }
+  .fstep-txt b { color: #a5b4fc; }
+  .fstep-txt span.pp { color: var(--accent2); font-weight: 700; font-size: 11px; }
+
+  .rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .rules-col { background: #0d1117; border-radius: 8px; padding: 10px 14px; }
+  .rules-col h3 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+  .rules-col.good h3 { color: var(--accent2); }
+  .rules-col.bad h3 { color: var(--red); }
+  .rule-item { font-size: 12px; color: var(--muted); margin-bottom: 3px; }
+  .rule-item span.pp { color: var(--accent2); font-weight: 700; font-size: 11px; }
+  .rule-item span.pp.neg { color: var(--red); }
+
+  .v3-banner { background: #0f2d0f; border: 1px solid #166534; border-left: 4px solid var(--accent2); border-radius: 8px; padding: 12px 16px; margin-bottom: 24px; font-size: 12px; color: #86efac; }
+  .v3-banner b { color: var(--accent2); }
+
+  .company-section { margin-bottom: 36px; }
+  .company-header { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; background: var(--card2); border: 1px solid var(--border); border-radius: 10px 10px 0 0; border-bottom: 2px solid var(--accent); flex-wrap: wrap; }
+  .company-name { font-size: 16px; font-weight: 700; }
+  .company-meta { font-size: 12px; color: var(--muted); }
+  .company-badge { background: var(--accent); color: white; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
+  .proof-badge { background: #1e3a5f; color: #60a5fa; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
+  .acct-angle { font-size: 12px; color: #a5b4fc; margin-top: 8px; padding: 7px 10px; background: #13152a; border-radius: 5px; border-left: 3px solid var(--accent); width: 100%; }
+
+  .contact-card { background: var(--card); border: 1px solid var(--border); border-left: none; border-right: none; border-top: none; padding: 18px 20px; }
+  .contact-card:last-child { border-radius: 0 0 10px 10px; border-bottom: 1px solid var(--border); }
+  .contact-name { font-size: 15px; font-weight: 700; }
+  .contact-title { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .contact-email { font-size: 12px; color: #60a5fa; margin-top: 2px; font-family: monospace; }
+  .badge-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
+  .badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+  .b-ready { background: #14532d; color: #86efac; }
+  .b-wc { background: #1e293b; color: #94a3b8; }
+  .b-qm { background: #2d1b69; color: #c4b5fd; }
+  .b-mqs { background: #1c1809; color: #fcd34d; }
+  .b-signal { background: #1c3a1c; color: #4ade80; }
+
+  .email-block { background: #0d1117; border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; margin-top: 12px; position: relative; }
+  .email-subject { font-size: 12px; font-weight: 700; color: var(--warn); margin-bottom: 10px; display: flex; gap: 8px; align-items: center; }
+  .email-subject span.lbl { color: var(--sub); font-weight: 400; }
+  .email-body { font-size: 13px; color: var(--text); white-space: pre-wrap; line-height: 1.85; font-family: 'Segoe UI', sans-serif; }
+  .email-sig { font-size: 12px; color: var(--muted); white-space: pre-wrap; line-height: 1.6; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); font-style: italic; }
+  .copy-btn { position: absolute; top: 10px; right: 10px; background: var(--accent); color: white; border: none; border-radius: 5px; padding: 4px 10px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.15s; }
+  .copy-btn:hover { background: #4f46e5; }
+  .copy-btn.copied { background: #16a34a; }
+
+  .struct-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .struct-label.challenge { color: #7dd3fc; }
+  .struct-label.proof { color: #86efac; }
+  .struct-label.why { color: #fcd34d; }
+  .struct-label.question { color: #f9a8d4; }
+  .struct-label.sig { color: var(--sub); }
+
+  .research-note { font-size: 11px; color: #7dd3fc; margin-top: 8px; padding: 6px 10px; background: #0a1520; border-radius: 5px; border-left: 3px solid #1e40af; }
+  .research-note b { color: #93c5fd; }
+
+  .hold-card { background: #1c1409; border: 1px solid #78350f; border-left: 3px solid var(--warn); padding: 14px 18px; border-radius: 8px; margin-top: 10px; }
+  .hold-card .hold-name { font-size: 14px; font-weight: 700; color: var(--warn); }
+  .hold-card .hold-reason { font-size: 12px; color: #d97706; margin-top: 4px; }
+
+  .section-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin: 28px 0 12px; }
+
+  .toc { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin-bottom: 28px; }
+  .toc h2 { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .toc-row { display: flex; gap: 24px; flex-wrap: wrap; }
+  .toc-item a { color: var(--accent); text-decoration: none; font-size: 13px; }
+  .toc-item a:hover { text-decoration: underline; }
+  .toc-count { color: var(--sub); font-size: 12px; }
+</style>
+</head>
+<body>
+
+<h1>Wave 1 — T1 Email Drafts <span style="color:#86efac">v3</span></h1>
+<p class="subtitle">Batch: wave1-t1-drafts-v3-mar10.html &nbsp;|&nbsp; 23 enrolled contacts &nbsp;|&nbsp; 6 accounts &nbsp;|&nbsp; Revised Mar 10, 2026</p>
+
+<div class="v3-banner">
+  <b>v3 structural changes from v2:</b> (1) Start with "Hi [Name]," not HC1. (2) No meeting ask — open-ended engagement question at the close. (3) HC1 intro moved to the bottom of every email. (4) New formula: Challenge → Proof → Why you (TIIWW) → Open question → Sig + intro. Goal: get a reply, not a meeting commitment.
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-val">23</div><div class="stat-lbl">T1 Drafts</div></div>
+  <div class="stat"><div class="stat-val">4</div><div class="stat-lbl">On Hold</div></div>
+  <div class="stat"><div class="stat-val">2</div><div class="stat-lbl">? Marks Each</div></div>
+  <div class="stat"><div class="stat-val">0</div><div class="stat-lbl">Meeting Asks</div></div>
+  <div class="stat"><div class="stat-val">0</div><div class="stat-lbl">Named Customers</div></div>
+</div>
+
+<div class="formula-box">
+  <h2>T1 Formula — v3 (Reply-First)</h2>
+  <div class="formula-steps">
+    <div class="fstep"><div class="fstep-num">1</div><div class="fstep-txt"><b>Greeting:</b> "Hi [Name]," — always start here, never with intro</div></div>
+    <div class="fstep"><div class="fstep-num">2</div><div class="fstep-txt"><b>Challenge:</b> The problem they likely face, tied to their specific role + company context. Include one embedded Q-mark here.</div></div>
+    <div class="fstep"><div class="fstep-num">3</div><div class="fstep-txt"><b>Proof:</b> "One [vertical] team we work with..." + specific stat. No named customers. <span class="pp">+9.0pp</span> "test maintenance" / <span class="pp">+7.4pp</span> "release cycles"</div></div>
+    <div class="fstep"><div class="fstep-num">4</div><div class="fstep-txt"><b>Why you (TIIWW):</b> "Thought it would be worth reaching out because [specific trigger — job posting, company signal, role change, tech stack]." <span class="pp">+12.6pp</span></div></div>
+    <div class="fstep"><div class="fstep-num">5</div><div class="fstep-txt"><b>Open question:</b> "Is that something you're seeing?" / "Does that resonate?" / "Is that relevant to what you're working on?" — NO meeting ask, NO "What day works"</div></div>
+    <div class="fstep"><div class="fstep-num">6</div><div class="fstep-txt"><b>Sig + intro (BOTTOM):</b> Rob Gorham | Testsigma + one line: "We have yet to be properly introduced. I work with [QA/Eng] leaders at enterprise companies."</div></div>
+  </div>
+  <div class="rules-grid">
+    <div class="rules-col good">
+      <h3>✅ Keep</h3>
+      <div class="rule-item"><span class="pp">+12.6pp</span> "thought it would be worth" in why-you line</div>
+      <div class="rule-item"><span class="pp">+9.0pp</span> "test maintenance" in body</div>
+      <div class="rule-item"><span class="pp">+7.4pp</span> "release cycles" in body</div>
+      <div class="rule-item"><span class="pp">+6.4pp</span> Specific stats (%, numbers)</div>
+      <div class="rule-item">Exactly 2 question marks · 80-97 word body</div>
+    </div>
+    <div class="rules-col bad">
+      <h3>🚫 Never</h3>
+      <div class="rule-item"><span class="pp neg">−9.2pp</span> Named customers · AI/ML language</div>
+      <div class="rule-item"><span class="pp neg">−6.2pp</span> "self-healing" (any form)</div>
+      <div class="rule-item"><span class="pp neg">−11.9pp</span> "flaky tests" · <span class="pp neg">−5.1pp</span> "CI/CD"</div>
+      <div class="rule-item"><span class="pp neg">−3.1pp</span> "you're the [title]" role reference</div>
+      <div class="rule-item">Meeting ask ("What day works") in T1</div>
+    </div>
+  </div>
+</div>
+
+<div class="toc">
+  <h2>Quick Nav</h2>
+  <div class="toc-row">
+    <div class="toc-item"><a href="#cboe">Cboe</a> <span class="toc-count">(3)</span></div>
+    <div class="toc-item"><a href="#fidelity">Fidelity</a> <span class="toc-count">(8)</span></div>
+    <div class="toc-item"><a href="#chase">Chase</a> <span class="toc-count">(1 + 3 hold)</span></div>
+    <div class="toc-item"><a href="#commvault">Commvault</a> <span class="toc-count">(5)</span></div>
+    <div class="toc-item"><a href="#trustage">TruStage</a> <span class="toc-count">(3 + 1 hold)</span></div>
+    <div class="toc-item"><a href="#youtube">YouTube</a> <span class="toc-count">(3)</span></div>
+  </div>
+</div>
+
+
+<!-- ===== CBOE ===== -->
+<div class="company-section" id="cboe">
+  <div class="company-header">
+    <div style="flex:1">
+      <div class="company-name">Cboe Global Markets</div>
+      <div class="company-meta">Finance · Enterprise · HIGH ICP · Jan 2026 — Demo x2, Signup x2</div>
+    </div>
+    <div class="company-badge">Factor A-Signal</div>
+    <div class="proof-badge">Proof: "one financial services team" — 8 to 5 weeks</div>
+    <div class="acct-angle"><b>Account hook:</b> Cboe is actively hiring for Playwright on newer clearing systems while Selenium covers the legacy stack. Dual-framework migration = test maintenance peaks before it improves. All 3 contacts get this specific hook — but each from a different vantage point (strategy, team ops, DnA-specific).</div>
+  </div>
+
+  <!-- Rick Brandt -->
+  <div class="contact-card" id="rick-brandt">
+    <div class="contact-name">Rick Brandt</div>
+    <div class="contact-title">Senior Director, Quality Assurance Engineering</div>
+    <div class="contact-email">rbrandt@cboe.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~88 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 11/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Rick's QA roadmap at Cboe</div>
+      <div class="email-body" id="body-rick">Hi Rick,
+
+Running Selenium and Playwright side by side through a migration makes sense, but maintaining two stacks at once is usually where test maintenance overhead peaks before it comes back down. Familiar with that tension?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 by having tests automatically update when the UI changed, without manual locator fixes.
+
+Thought it would be worth reaching out because Cboe's been hiring for Playwright on newer clearing systems while Selenium still covers the older stack. Is that transition creating maintenance pressure for your team?</div>
+      <div class="email-sig" id="sig-rick">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA and engineering leaders at enterprise companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-rick','sig-rick',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Trigger:</b> Cboe job postings confirm Playwright hiring for Digital/clearing systems alongside legacy Selenium. Rick = Sr. Director QA Eng = owns the framework strategy. The "Familiar with that tension?" mid-Q is natural for a director who made the migration call.</div>
+  </div>
+
+  <!-- Maurice Saunders -->
+  <div class="contact-card" id="maurice-saunders">
+    <div class="contact-name">Maurice Saunders</div>
+    <div class="contact-title">Senior Manager, Quality Assurance</div>
+    <div class="contact-email">msaunders@cboe.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~86 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 10/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Maurice's QA team at Cboe</div>
+      <div class="email-body" id="body-maurice">Hi Maurice,
+
+When a QA team is maintaining Selenium and Playwright at the same time, locator breaks from one framework's update don't always sync with the other. That dual-maintenance backlog tends to land on the team manager's plate every sprint. Is that the cycle you're managing right now?
+
+One financial services team we work with reduced test maintenance by 90% once broken locators started updating automatically, without manual intervention.
+
+Thought it would be worth reaching out because of Cboe's current framework transition. Does that maintenance picture resonate?</div>
+      <div class="email-sig" id="sig-maurice">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise financial services companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-maurice','sig-maurice',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Persona:</b> Sr. Manager = feels the daily maintenance backlog most directly. 90% maintenance reduction stat fits this persona better than the "8 to 5 weeks" cycle stat (which is more relevant to Directors). Q1 mid-email, Q2 at close.</div>
+  </div>
+
+  <!-- Snezhana Ruseva -->
+  <div class="contact-card" id="snezhana-ruseva">
+    <div class="contact-name">Snezhana Ruseva</div>
+    <div class="contact-title">Manager, DnA Software Engineering, Test</div>
+    <div class="contact-email">sruseva@cboe.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~89 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 11/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Snezhana's testing scope at Cboe</div>
+      <div class="email-body" id="body-snezhana">Hi Snezhana,
+
+Data and Analytics testing at a firm like Cboe means covering pipeline logic, transformation accuracy, dashboard UI, and API layers across every release cycle. As the stack evolves with both Selenium and Playwright in play, is keeping all those layers covered and current getting harder?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 by having tests automatically correct when the underlying stack changed.
+
+Thought it would be worth reaching out because Cboe's ongoing framework migration seems like it would compound that multi-layer coverage challenge. Does that match what your team is navigating?</div>
+      <div class="email-sig" id="sig-snezhana">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise financial services companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-snezhana','sig-snezhana',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Specificity:</b> "DnA" = Data and Analytics — pipeline + transformation + dashboard + API is a genuinely different test scope from Rick/Maurice (who own UI/regression QA). This email would make no sense sent to anyone else on the Cboe team. Q1 mid, Q2 close.</div>
+  </div>
+</div>
+
+
+<!-- ===== FIDELITY ===== -->
+<div class="company-section" id="fidelity">
+  <div class="company-header">
+    <div style="flex:1">
+      <div class="company-name">Fidelity Investments</div>
+      <div class="company-meta">Finance · Enterprise · HIGH ICP · Aug 2025 — G2, Use-case page</div>
+    </div>
+    <div class="company-badge">Factor A-Signal</div>
+    <div class="proof-badge">Proof: Rotated across all 8 — no two contacts get same stat</div>
+    <div class="acct-angle"><b>Account hook:</b> Fidelity uses a "Test Engineering Chapter" model — QA embedded in squads, coordinated by Chapter Leaders. Padma is a Chapter Leader (unique). VPs own cross-chapter standards. Multi-framework stack: Java + Cucumber + Playwright + Cypress + TestNG. Challenge = consistency across autonomous squads. Proof rotation: Seth=FinTech 90%, Chris P=8→5 weeks, Christopher B=3X productivity, Eric=35% reduction, Nithya=8→5 weeks, Richelle=8→5 weeks, Sourabh=8→5 weeks (Green Meadows specific), Padma=70% maintenance.</div>
+  </div>
+
+  <!-- Seth Drummond -->
+  <div class="contact-card" id="seth-drummond">
+    <div class="contact-name">Seth Drummond</div>
+    <div class="contact-title">Vice President, Quality Assurance</div>
+    <div class="contact-email">seth.drummond@fidelity.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~84 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 11/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Seth's QA org at Fidelity</div>
+      <div class="email-body" id="body-seth">Hi Seth,
+
+Fidelity's Test Engineering Chapter model means VP QA isn't accountable for one team's coverage, it's accountable for standards across many. When each chapter runs a different automation approach, how do you keep regression quality consistent across all of them?
+
+One FinTech team we work with reached 90% regression coverage across their entire product suite by standardizing test creation across distributed squads.
+
+Thought it would be worth reaching out because that chapter-level consistency challenge seems particularly pronounced at Fidelity's scale. Does any of that resonate with where things are?</div>
+      <div class="email-sig" id="sig-seth">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise financial services companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-seth','sig-seth',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Proof:</b> CRED angle — "one FinTech team, 90% coverage." Q1 = "how do you keep regression quality consistent across all of them?" (genuine curiosity, not rhetorical). Q2 = "Does any of that resonate?" The chapter model hook is specific to Seth's exact role structure at Fidelity.</div>
+  </div>
+
+  <!-- Chris Pendergast -->
+  <div class="contact-card" id="chris-pendergast">
+    <div class="contact-name">Chris Pendergast</div>
+    <div class="contact-title">Vice President, Quality Engineering</div>
+    <div class="contact-email">chris.pendergast@fidelity.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~83 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 10/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Chris's quality engineering approach at Fidelity</div>
+      <div class="email-body" id="body-chris-p">Hi Chris,
+
+At a firm like Fidelity, VP Quality Engineering typically means managing test coverage across dozens of platforms at once. The pressure usually comes from two directions: keeping test maintenance manageable while release cycles get tighter. Which of those is the bigger constraint right now?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 by having tests correct broken locators automatically.
+
+Thought it would be worth reaching out given Fidelity's delivery pace and platform breadth. Is maintenance the main bottleneck on your team?</div>
+      <div class="email-sig" id="sig-chris-p">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with quality engineering leaders at enterprise financial services companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-chris-p','sig-chris-p',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Proof:</b> Hansard angle — 8 to 5 weeks. Q1 = "Which of those is the bigger constraint?" invites a substantive reply. Q2 = "Is maintenance the main bottleneck?" is a softer close that could get a yes/no reply to start the thread.</div>
+  </div>
+
+  <!-- Christopher Bilcz -->
+  <div class="contact-card" id="christopher-bilcz">
+    <div class="contact-name">Christopher Bilcz</div>
+    <div class="contact-title">Vice President, Quality Engineering</div>
+    <div class="contact-email">christopher.bilcz@fmr.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~84 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 10/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Christopher's testing coverage at Fidelity</div>
+      <div class="email-body" id="body-cbilcz">Hi Christopher,
+
+VP QA at a firm like Fidelity means managing coverage across hundreds of services, multiple teams, and release windows that keep getting tighter. At that scale, how do you keep test maintenance from crowding out new coverage?
+
+One enterprise technology team we work with saw a 3X increase in QA productivity once test maintenance dropped off their backlog entirely.
+
+Thought it would be worth reaching out given the scale and pace of delivery across Fidelity's platforms. Is that maintenance-to-coverage tradeoff something you're actively managing?</div>
+      <div class="email-sig" id="sig-cbilcz">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with quality engineering leaders at enterprise companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-cbilcz','sig-cbilcz',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Proof:</b> Fortune 100 angle — "one enterprise technology team, 3X productivity." Different proof stat from Seth (FinTech 90%) and Chris P (8→5 weeks). Q1 = how question, Q2 = is-this-relevant close.</div>
+  </div>
+
+  <!-- Eric Pearson -->
+  <div class="contact-card" id="eric-pearson">
+    <div class="contact-name">Eric Pearson</div>
+    <div class="contact-title">VP, Quality Assurance — Asset Allocation Technology</div>
+    <div class="contact-email">ep@fidelity.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~85 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 11/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Eric's regression coverage at Fidelity</div>
+      <div class="email-body" id="body-eric">Hi Eric,
+
+Asset Allocation Technology at Fidelity runs tight release cycles with a lot riding on every regression pass. The tradeoff at that level is usually between how much coverage confidence you can get and how long it takes before each release. Is that the tension you're managing?
+
+One enterprise team we work with cut total regression volume by 35% by eliminating redundant tests and automating the correction cycle.
+
+Thought it would be worth reaching out specifically because of the stakes around financial technology releases. Is speeding up coverage confidence something you're actively working on?</div>
+      <div class="email-sig" id="sig-eric">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise financial services companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-eric','sig-eric',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Proof:</b> Cisco angle — "one enterprise team, 35% regression reduction." "Asset Allocation Technology" called out directly — this team handles investment-grade releases, making regression quality stakes notably high. Q1 mid, Q2 close.</div>
+  </div>
+
+  <!-- Nithya Arunkumar -->
+  <div class="contact-card" id="nithya-arunkumar">
+    <div class="contact-name">Nithya Arunkumar</div>
+    <div class="contact-title">Director, Quality Assurance (Apollo shows stale "Principal SE" — using confirmed Director title)</div>
+    <div class="contact-email">n.arunkumar@fidelity.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~83 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 10/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Nithya's QA work at Fidelity</div>
+      <div class="email-body" id="body-nithya">Hi Nithya,
+
+QA Director roles at Fidelity sit close enough to delivery teams to feel every sprint's maintenance pressure, while staying accountable for coverage standards across multiple products. Does that dual pressure sound familiar?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 by having broken locators update automatically between sprints, without pulling engineers off new work.
+
+Thought it would be worth reaching out given the pace of delivery across Fidelity's products. Is test maintenance consuming more sprint bandwidth than you'd like?</div>
+      <div class="email-sig" id="sig-nithya">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise financial services companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-nithya','sig-nithya',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Note:</b> Apollo headline stale ("Principal SE") — email uses Director framing confirmed by Fidelity org research. "Does that dual pressure sound familiar?" is a low-barrier Q that invites a simple yes/no reply to open the thread.</div>
+  </div>
+
+  <!-- Richelle Lacamera -->
+  <div class="contact-card" id="richelle-lacamera">
+    <div class="contact-name">Richelle Lacamera</div>
+    <div class="contact-title">Director, QA Management</div>
+    <div class="contact-email">richelle.lacamera@fidelity.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~84 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 10/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Richelle's QA team at Fidelity</div>
+      <div class="email-body" id="body-richelle">Hi Richelle,
+
+QA Management at a firm like Fidelity means accountability for both people and process: keeping test suites healthy while delivery teams keep shipping. Test maintenance is usually where sprint capacity quietly disappears. Is that where most of the team's bandwidth goes right now?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 once broken locators started auto-correcting instead of becoming manual fix tickets.
+
+Thought it would be worth reaching out because that maintenance burden tends to be most visible at the QA management layer. Does that match what you're seeing?</div>
+      <div class="email-sig" id="sig-richelle">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise financial services companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-richelle','sig-richelle',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Persona angle:</b> "QA Management" title signals people + process accountability. "Where most of the team's bandwidth goes" is a natural management-level question. "Does that match what you're seeing?" invites a reply without asking for a meeting.</div>
+  </div>
+
+  <!-- Sourabh Roy -->
+  <div class="contact-card" id="sourabh-roy">
+    <div class="contact-name">Sourabh Roy</div>
+    <div class="contact-title">Director of QA — Green Meadows</div>
+    <div class="contact-email">sourabh.roy2@fmr.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~88 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 11/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Sourabh's testing approach at Fidelity</div>
+      <div class="email-body" id="body-sourabh">Hi Sourabh,
+
+The Green Meadows team at Fidelity moves fast. In a product area with tight release cycles, keeping regression coverage solid without slowing the team down is usually the sharpest tension QA directors feel. Is test maintenance creating friction in your release cadence?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 by having tests automatically correct when the UI changed, without sprint time spent on manual fixes.
+
+Thought it would be worth reaching out specifically because Green Meadows is one of Fidelity's faster-moving product areas. Does that resonate?</div>
+      <div class="email-sig" id="sig-sourabh">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise financial services companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-sourabh','sig-sourabh',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Personalization 3/3:</b> "Green Meadows" named directly. Only Sourabh would see his team's name in the email. "Faster-moving product areas" is accurate for Green Meadows in Fidelity's org structure. Clean 2-Q structure.</div>
+  </div>
+
+  <!-- Padma Srikanth -->
+  <div class="contact-card" id="padma-srikanth">
+    <div class="contact-name">Padma Srikanth</div>
+    <div class="contact-title">Chapter Leader — Director of Quality Assurance</div>
+    <div class="contact-email">padma.srikanth@fmr.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~80 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 12/12</span>
+      <span class="badge b-signal">🎯 Highest personalization in batch</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Padma's chapter leadership at Fidelity</div>
+      <div class="email-body" id="body-padma">Hi Padma,
+
+Chapter Leader is a distinctive role inside Fidelity's model: setting automation standards across product teams without direct control over their day-to-day execution. When each squad owns its own approach, how do you drive consistency across all of them?
+
+One financial services team we work with standardized automation across distributed squads and reduced test maintenance overhead by 70%.
+
+Thought it would be worth reaching out because that influence-without-authority challenge is specific to the chapter model. Is standardizing automation quality across chapters something you're actively solving for?</div>
+      <div class="email-sig" id="sig-padma">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise financial services companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-padma','sig-padma',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>MQS 12/12:</b> "Chapter Leader," "influence-without-authority," and "distributed squads" are all specific to Fidelity's Spotify-model QA structure. No one else in the batch would recognize this email as being for them. Q1 = genuine process question. Q2 = soft close on relevance.</div>
+  </div>
+</div>
+
+
+<!-- ===== CHASE ===== -->
+<div class="company-section" id="chase">
+  <div class="company-header">
+    <div style="flex:1">
+      <div class="company-name">JPMorgan Chase</div>
+      <div class="company-meta">Finance · Enterprise · HIGH ICP · Oct 2025 — Pricing, Signup x2, Use-case x3, web x7 (Highest signal volume)</div>
+    </div>
+    <div class="company-badge">Factor A-Signal 🔥</div>
+    <div class="proof-badge">Proof: "one financial services team" — 8 to 5 weeks</div>
+    <div class="acct-angle"><b>Account hook:</b> Neeraj Tati — Engineering Director (Cloud Platform, IAM, SRE, DevOps) — Apollo employment history shows current role ~Feb 2025. New leader, broad engineering scope. Not a QA title, so pitch = platform coverage complexity for a multi-domain engineering director. DNC: Jitesh Biswal (@jpmorgan.com) — different domain, no conflict with Neeraj (@chase.com).</div>
+  </div>
+
+  <!-- Neeraj Tati -->
+  <div class="contact-card" id="neeraj-tati">
+    <div class="contact-name">Neeraj Tati</div>
+    <div class="contact-title">Director, Software Engineering — Cloud Platform · IAM · SRE · DevOps</div>
+    <div class="contact-email">neeraj.tati@chase.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~89 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 10/12</span>
+      <span class="badge b-signal">⚡ New in role ~Feb 2025</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Neeraj's testing coverage at Chase</div>
+      <div class="email-body" id="body-neeraj">Hi Neeraj,
+
+Engineering Director scope covering cloud platform, IAM, and SRE at Chase means test coverage has to keep pace with a lot of moving parts at once. As the stack evolves, maintenance tends to compound across platform services, security workflows, and infrastructure changes. Is that somewhere you're feeling the friction?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 by having tests automatically correct when the underlying platform changed.
+
+Thought it would be worth reaching out because that broad platform coverage challenge is particularly acute in multi-domain engineering director roles. Does that resonate?</div>
+      <div class="email-sig" id="sig-neeraj">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering and QA leaders at enterprise financial services companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-neeraj','sig-neeraj',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Signal:</b> Apollo shows ~Feb 2025 role start. New Engineering Director = still evaluating automation approach. His headline explicitly says "Cloud Platform, IAM, SRE, DevOps" — broad engineering scope, not a QA-specific title. Challenge framed around platform coverage complexity, not QA basics. "Is that somewhere you're feeling the friction?" opens a low-commitment reply path.</div>
+  </div>
+
+  <div class="section-title" style="margin-top:16px;">⏸ Chase — On Hold (Rob Decision Required)</div>
+  <div class="hold-card">
+    <div class="hold-name">Rose Serao — VP Quality Assurance Manager</div>
+    <div class="hold-reason">Email: rose.serao@chase.com — ⚠️ Extrapolated (not Apollo-verified). Must approve before drafting.</div>
+  </div>
+  <div class="hold-card" style="margin-top:8px;">
+    <div class="hold-name">Justin Hutchinson — Executive Director, Quality Analysis</div>
+    <div class="hold-reason">Email verified. HOLD: "Quality Analysis" may be ops/risk QA, not software testing. Rob must confirm before enrolling.</div>
+  </div>
+  <div class="hold-card" style="margin-top:8px;">
+    <div class="hold-name">Nikki Urlaub — VP Quality Analysis Manager</div>
+    <div class="hold-reason">Email verified. Same "Quality Analysis" ops-QA concern as Justin. Rob must confirm software testing scope.</div>
+  </div>
+</div>
+
+
+<!-- ===== COMMVAULT ===== -->
+<div class="company-section" id="commvault">
+  <div class="company-header">
+    <div style="flex:1">
+      <div class="company-name">Commvault</div>
+      <div class="company-meta">Technology · Enterprise · HIGH ICP · Jun 2025 — G2, Signup x2, web x6</div>
+    </div>
+    <div class="company-badge">Factor A-Signal</div>
+    <div class="proof-badge">Proof: Rotated — 3X productivity, 35% regression cut, 90% maintenance, 2500 tests/50%</div>
+    <div class="acct-angle"><b>Account hook:</b> Commvault = enterprise data protection/backup/recovery SaaS. Complex platform, high reliability expectation from enterprise customers. Sucheth Ramgiri is Principal QA Engineer III, AI and Automation Strategy — IC influencer, gets peer-to-peer tone. His headline: "Cloud and Storage Testing (AWS, Azure, NetApp, Pure)" — use those exact terms. Proof rotation: Brahmaiah=3X, Arun=35%, Jennifer=90%, Prasad=2500/50%, Sucheth=90% framed as comparison.</div>
+  </div>
+
+  <!-- Brahmaiah Vallabhaneni -->
+  <div class="contact-card" id="brahmaiah">
+    <div class="contact-name">Brahmaiah Vallabhaneni</div>
+    <div class="contact-title">Vice President of Engineering</div>
+    <div class="contact-email">bvallabhaneni@commvault.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~86 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 10/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Brahmaiah's engineering org at Commvault</div>
+      <div class="email-body" id="body-brahmaiah">Hi Brahmaiah,
+
+Commvault's platform spans data protection, backup, and recovery across some of the most complex enterprise environments in the market. At VP Engineering level, owning a wide test surface and tight release windows at the same time is a real operational challenge. Is test coverage keeping pace with the platform's growth?
+
+One enterprise technology team we work with saw a 3X increase in QA productivity once manual test maintenance dropped off their backlog.
+
+Thought it would be worth reaching out given Commvault's platform complexity and customer reliability expectations. Does any of that resonate?</div>
+      <div class="email-sig" id="sig-brahmaiah">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with VP Engineering and QA leaders at enterprise technology companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-brahmaiah','sig-brahmaiah',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Proof:</b> Fortune 100 angle — "one enterprise technology team, 3X QA productivity." Platform complexity + reliability expectations = specific to Commvault's positioning in the data protection market.</div>
+  </div>
+
+  <!-- Arun Amarendran -->
+  <div class="contact-card" id="arun-amarendran">
+    <div class="contact-name">Arun Amarendran</div>
+    <div class="contact-title">Vice President of Engineering</div>
+    <div class="contact-email">aamarendran@commvault.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~87 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 10/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Arun's QA coverage at Commvault</div>
+      <div class="email-body" id="body-arun">Hi Arun,
+
+Commvault's reliability promise to customers puts a lot of weight on every regression pass. VP Engineering at a data protection platform typically means balancing comprehensive coverage with release velocity, two things that tend to push against each other. Is that the main tension you're managing?
+
+One enterprise platform team we work with cut total regression volume by 35% by eliminating redundant tests and automating the correction cycle.
+
+Thought it would be worth reaching out given how much Commvault's customers depend on release quality. Does that dynamic sound familiar?</div>
+      <div class="email-sig" id="sig-arun">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with VP Engineering leaders at enterprise technology companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-arun','sig-arun',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Proof:</b> Cisco angle — "one enterprise platform team, 35% regression reduction." Rotated from Brahmaiah's 3X. "Reliability promise" is specific to Commvault's brand positioning in data protection.</div>
+  </div>
+
+  <!-- Jennifer Wang -->
+  <div class="contact-card" id="jennifer-wang">
+    <div class="contact-name">Jennifer Wang</div>
+    <div class="contact-title">Director of Engineering</div>
+    <div class="contact-email">jenniferwang@commvault.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~87 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 10/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Jennifer's test coverage at Commvault</div>
+      <div class="email-body" id="body-jennifer-w">Hi Jennifer,
+
+Engineering Director roles at Commvault sit close to the codebase and feel every regression cycle. Data protection software means the test suite has to cover a wide range of system configurations, and keeping that coverage current as the platform evolves is a significant ongoing commitment. Sound like a familiar problem?
+
+One enterprise engineering team we work with reduced test maintenance overhead by 90% once broken tests started correcting automatically between releases.
+
+Thought it would be worth reaching out because that configuration-coverage challenge is particularly demanding at a platform like Commvault. Is test maintenance where most of the overhead lands for your team?</div>
+      <div class="email-sig" id="sig-jennifer-w">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-jennifer-w','sig-jennifer-w',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Proof:</b> 90% maintenance reduction. "Data protection software means test suite covers wide range of system configurations" = specific to Commvault's product, not applicable to generic SaaS. Q1="Sound like a familiar problem?" Q2="Is test maintenance where most of the overhead lands?"</div>
+  </div>
+
+  <!-- Prasad Alapati -->
+  <div class="contact-card" id="prasad-alapati">
+    <div class="contact-name">Prasad Alapati</div>
+    <div class="contact-title">Senior QA Manager</div>
+    <div class="contact-email">palapati@commvault.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~87 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 10/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Prasad's QA workflow at Commvault</div>
+      <div class="email-body" id="body-prasad">Hi Prasad,
+
+QA teams at Commvault have a particularly wide test surface: storage, cloud, backup, disaster recovery, and everything in between. At the manager level, the challenge usually isn't whether to automate more, it's how to keep what's already automated from breaking every sprint. Is that the cycle you're managing?
+
+One team at a similarly complex platform automated 2,500 tests and cut ongoing maintenance by 50%, without adding headcount.
+
+Thought it would be worth reaching out because that maintenance-at-scale challenge is most visible at the QA manager layer. Does that resonate?</div>
+      <div class="email-sig" id="sig-prasad">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-prasad','sig-prasad',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Proof:</b> Medibuddy angle — "one team at a similarly complex platform, 2,500 tests, 50% maintenance cut, without adding headcount." "Without adding headcount" is a strong close for a Senior Manager who can't hire freely. Rotated from all other Commvault contacts.</div>
+  </div>
+
+  <!-- Sucheth Ramgiri -->
+  <div class="contact-card" id="sucheth-ramgiri">
+    <div class="contact-name">Sucheth Ramgiri</div>
+    <div class="contact-title">Principal QA Engineer III — AI &amp; Automation Strategy</div>
+    <div class="contact-email">sramgiri@commvault.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~87 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 12/12</span>
+      <span class="badge b-signal">🎯 Peer-to-peer — IC Influencer</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Sucheth's automation strategy at Commvault</div>
+      <div class="email-body" id="body-sucheth">Hi Sucheth,
+
+Cloud and storage testing across AWS, Azure, NetApp, and Pure is a genuinely complex coverage problem, especially when resiliency and performance scenarios run alongside functional regression. Is the maintenance side of that workload a bottleneck right now?
+
+One enterprise platform we work with at similar scale reduced test maintenance by 90% without reducing coverage scope, which freed the team for net-new scenarios.
+
+Thought it would be worth reaching out because your automation strategy scope at Commvault seems like a good benchmark conversation. What does your current approach to keeping tests current across environments look like?</div>
+      <div class="email-sig" id="sig-sucheth">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with automation strategy leads at enterprise technology companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-sucheth','sig-sucheth',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>MQS 12/12:</b> AWS, Azure, NetApp, Pure are pulled verbatim from his LinkedIn headline. Nobody else at Commvault would recognize this email as being written for them. Tone = peer comparison, not a vendor pitch. "What does your current approach look like?" invites a substantive reply, not a yes/no.</div>
+  </div>
+</div>
+
+
+<!-- ===== TRUSTAGE ===== -->
+<div class="company-section" id="trustage">
+  <div class="company-header">
+    <div style="flex:1">
+      <div class="company-name">TruStage (CUNA Mutual Group)</div>
+      <div class="company-meta">Finance/Insurance · Enterprise · HIGH ICP · Feb 3 2026 — Demo x1, Outbound x11 (Confirmed Shakeel's, clear to prospect)</div>
+    </div>
+    <div class="company-badge">Factor A-Signal ✅ Clear</div>
+    <div class="proof-badge">Proof: "one financial services team" — 8 to 5 weeks</div>
+    <div class="acct-angle"><b>Account hook:</b> Chamath Guneratne started IT Director QE in Sep 2025 (~6 months ago) — new leader, likely still building approach. Maggie Redden and Jennifer Drangstveit on @cunamutual.com (old domain still active per Apollo). Insurance + financial services = deep compliance/regression requirements. Each contact framed from a different accountability angle: Chamath=QE strategy, Maggie=delivery speed vs. quality, Jennifer=what actually ships.</div>
+  </div>
+
+  <!-- Chamath Guneratne -->
+  <div class="contact-card" id="chamath-guneratne">
+    <div class="contact-name">Chamath Guneratne</div>
+    <div class="contact-title">IT Director, Quality Engineering</div>
+    <div class="contact-email">chamath.guneratne@trustage.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~83 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 11/12</span>
+      <span class="badge b-signal">⚡ New in role Sep 2025</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Chamath's QE approach at TruStage</div>
+      <div class="email-body" id="body-chamath">Hi Chamath,
+
+Insurance and financial services platforms carry deep regression requirements: compliance checkpoints, wide coverage breadth, and tightening release windows, all at once. Is building a scalable automation approach that meets all three one of the current priorities for your QE team?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5, with no additional QA headcount.
+
+Thought it would be worth reaching out because TruStage sits at exactly that intersection of insurance requirements and delivery pressure. Does that resonate with what you're working on?</div>
+      <div class="email-sig" id="sig-chamath">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with quality engineering leaders at enterprise financial services and insurance companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-chamath','sig-chamath',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>New leader angle:</b> "Is building a scalable automation approach...one of the current priorities?" is natural for someone 6 months into an IT Director QE role. Avoids explicit "you just started" phrasing that would trigger the -3.1pp role reference penalty. "Does that resonate with what you're working on?" is a soft, open-ended close.</div>
+  </div>
+
+  <!-- Maggie Redden -->
+  <div class="contact-card" id="maggie-redden">
+    <div class="contact-name">Maggie Redden</div>
+    <div class="contact-title">Director, Software Engineering</div>
+    <div class="contact-email">maggie.redden@cunamutual.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~88 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 10/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Maggie's testing workflow at TruStage</div>
+      <div class="email-body" id="body-maggie">Hi Maggie,
+
+Software Engineering Director roles at TruStage carry accountability for both delivery speed and quality. Insurance platforms tend to have deep regression requirements, and test maintenance usually ends up being where release velocity gets compromised first. Is that a tradeoff you're navigating?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5 by having tests automatically update when the UI changed.
+
+Thought it would be worth reaching out because TruStage's insurance scope makes that delivery-quality tension particularly acute. Is test maintenance contributing to release friction right now?</div>
+      <div class="email-sig" id="sig-maggie">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise financial services companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-maggie','sig-maggie',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Note:</b> @cunamutual.com address — Apollo confirmed this domain still active for Maggie. Challenge angle = delivery speed vs. quality (Software Engineering Director cares more about shipping than coverage standards). Different from Chamath's QE strategy angle.</div>
+  </div>
+
+  <!-- Jennifer Drangstveit -->
+  <div class="contact-card" id="jennifer-drangstveit">
+    <div class="contact-name">Jennifer Drangstveit</div>
+    <div class="contact-title">IT Director, Solution Delivery</div>
+    <div class="contact-email">jennifer.drangstveit@cunamutual.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~82 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 10/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Jennifer's delivery quality at TruStage</div>
+      <div class="email-body" id="body-jennifer-d">Hi Jennifer,
+
+IT Director for Solution Delivery means accountability for what actually ships. When regression coverage doesn't keep pace with delivery velocity, the gap shows up as release delays or escaped defects. Is that a gap you're managing right now?
+
+One financial services team we work with cut regression cycles from 8 weeks to 5, without expanding the QA team.
+
+Thought it would be worth reaching out because TruStage's insurance complexity and delivery pace make that coverage challenge particularly real. Does any of that resonate with where things stand?</div>
+      <div class="email-sig" id="sig-jennifer-d">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with IT directors at enterprise financial services companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-jennifer-d','sig-jennifer-d',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Persona:</b> "Solution Delivery" = outcomes-accountable. "What actually ships" is the right language for this role. "Release delays or escaped defects" are the two consequences that matter most to a delivery-accountable IT Director. No em dashes used.</div>
+  </div>
+
+  <div class="section-title" style="margin-top:16px;">⏸ TruStage — On Hold</div>
+  <div class="hold-card">
+    <div class="hold-name">Shawn Woods — QA / Release Manager</div>
+    <div class="hold-reason">Below Director threshold (3 Directors enrolled). Rob must decide whether to add given existing coverage.</div>
+  </div>
+</div>
+
+
+<!-- ===== YOUTUBE ===== -->
+<div class="company-section" id="youtube">
+  <div class="company-header">
+    <div style="flex:1">
+      <div class="company-name">YouTube / Google</div>
+      <div class="company-meta">Technology · Enterprise (100K+ employees) · HIGH ICP · Sep 2025 — Signup, alt page, web x4</div>
+    </div>
+    <div class="company-badge">Factor A-Signal</div>
+    <div class="proof-badge">Proof: "one media platform" — 2,500 tests, 75% execution time reduction (Nagra DTV angle)</div>
+    <div class="acct-angle"><b>Account hook:</b> YouTube is a mega-enterprise — each contact owns a different product area and gets a different angle. John Harding = Music and Premium (paying subscribers, release quality = subscriber experience). Des Keane = Video Infrastructure (platform reliability, billions of streams). Hrishikesh Aradhye = Music and Podcasts (multi-stream release complexity). Proof stat: "cut execution time by 75%" not "4X faster" — reduction framing outperforms multiplier framing per data rules. Rotate proof stats across all 3.</div>
+  </div>
+
+  <!-- John Harding -->
+  <div class="contact-card" id="john-harding">
+    <div class="contact-name">John Harding</div>
+    <div class="contact-title">VP Engineering, YouTube Music &amp; Premium</div>
+    <div class="contact-email">jharding@youtube.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~83 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 11/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> John's testing coverage at YouTube</div>
+      <div class="email-body" id="body-john">Hi John,
+
+VP Engineering for YouTube Music and Premium means every release touches a product paying subscribers notice immediately. Automation at that scale needs to keep up with feature velocity and stay low-maintenance at the same time. Is the test suite keeping pace with the release cadence?
+
+One media platform we work with automated 2,500 tests and cut execution time by 75%, covering both UI and API layers.
+
+Thought it would be worth reaching out because Music and Premium's subscriber experience makes release quality particularly high-stakes. Does that resonate with the challenges on your team?</div>
+      <div class="email-sig" id="sig-john">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at large-scale technology and media companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-john','sig-john',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Specificity:</b> "paying subscribers notice immediately" = YouTube Premium/Music has paying users who experience quality differently than free YouTube. "Feature velocity + low-maintenance" is the dual constraint at VP Eng level for a subscription product. 75% execution time reduction (not "4X faster").</div>
+  </div>
+
+  <!-- Des Keane -->
+  <div class="contact-card" id="des-keane">
+    <div class="contact-name">Des Keane</div>
+    <div class="contact-title">Engineering Director, Video Infrastructure</div>
+    <div class="contact-email">des@google.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~88 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 11/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Des's infrastructure testing at YouTube</div>
+      <div class="email-body" id="body-des">Hi Des,
+
+Engineering Director for Video Infrastructure means changes at your layer ripple across billions of streams. Regression coverage at that scale has to be both comprehensive and fast enough to match release cycles. Is the speed of the test suite ever the constraint holding up a release?
+
+One media platform we work with built a 2,500-test automation suite in 8 months and cut execution time by 75%, across UI and API layers.
+
+Thought it would be worth reaching out because infrastructure-level testing at YouTube's scale is a genuinely unique coverage challenge. Does any of that resonate?</div>
+      <div class="email-sig" id="sig-des">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at large-scale technology and media companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-des','sig-des',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Specificity:</b> "billions of streams" is factually accurate for YouTube Video Infrastructure. "Changes at your layer ripple across billions of streams" is a real-scale observation only applicable to Des's exact role. Q1 = does test speed constrain releases? Q2 = soft resonance close. Note: Apollo shows stale "Coach" headline — real Engineering Director role confirmed from web research.</div>
+  </div>
+
+  <!-- Hrishikesh Aradhye -->
+  <div class="contact-card" id="hrishi-aradhye">
+    <div class="contact-name">Hrishikesh Aradhye</div>
+    <div class="contact-title">Sr. Director, Music &amp; Podcasts</div>
+    <div class="contact-email">hrishi@google.com</div>
+    <div class="badge-row">
+      <span class="badge b-ready">✅ Ready</span>
+      <span class="badge b-wc">~84 words</span>
+      <span class="badge b-qm">2 Q-marks</span>
+      <span class="badge b-mqs">MQS: 11/12</span>
+    </div>
+    <div class="email-block">
+      <div class="email-subject"><span class="lbl">SUBJECT:</span> Hrishi's testing approach at YouTube</div>
+      <div class="email-body" id="body-hrishi">Hi Hrishi,
+
+Sr. Director for Music and Podcasts at YouTube means releases hit from multiple angles: music catalog improvements, podcast platform updates, and monetization changes all shipping in parallel. Is keeping up with that multi-stream cadence a challenge for the test suite?
+
+One media platform we work with reduced ongoing test maintenance by 50% while scaling coverage across new product areas.
+
+Thought it would be worth reaching out because that multi-stream release complexity seems like it puts particular pressure on regression quality. Is test maintenance adding to the release pressure?</div>
+      <div class="email-sig" id="sig-hrishi">Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at large-scale technology and media companies.</div>
+      <button class="copy-btn" onclick="copyFull('body-hrishi','sig-hrishi',this)">Copy</button>
+    </div>
+    <div class="research-note"><b>Specificity:</b> "music catalog improvements, podcast platform updates, and monetization changes all shipping in parallel" = three distinct workstreams unique to Hrishi's role. Different proof stat (50% maintenance reduction) vs. John (75% execution time reduction) and Des (2,500 tests in 8 months). All use "one media platform" framing.</div>
+  </div>
+</div>
+
+
+<script>
+function copyFull(bodyId, sigId, btn) {
+  const body = document.getElementById(bodyId);
+  const sig = document.getElementById(sigId);
+  if (!body || !sig) return;
+  const full = body.innerText + '\n\n' + sig.innerText;
+  navigator.clipboard.writeText(full).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2200);
+  });
+}
+</script>
+</body>
+</html>

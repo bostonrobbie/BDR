@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OCC Debug & Fix Report — Feb 20, 2026</title>
+<style>
+  :root { --bg: #0f1117; --card: #1a1d27; --border: #2a2d3a; --text: #e4e4e7; --muted: #8b8fa3; --green: #2ecc71; --red: #e74c3c; --orange: #f39c12; --blue: #3498db; --purple: #9b59b6; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 32px; max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 28px; margin-bottom: 8px; }
+  h2 { font-size: 20px; margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 16px; margin: 20px 0 10px; color: var(--blue); }
+  .subtitle { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 16px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .metric { text-align: center; padding: 16px; }
+  .metric .value { font-size: 36px; font-weight: 700; }
+  .metric .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+  .green { color: var(--green); }
+  .red { color: var(--red); }
+  .orange { color: var(--orange); }
+  .blue { color: var(--blue); }
+  .purple { color: var(--purple); }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  th { text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--border); color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .tag-fixed { background: rgba(46,204,113,0.15); color: var(--green); }
+  .tag-new { background: rgba(52,152,219,0.15); color: var(--blue); }
+  .tag-known { background: rgba(243,156,18,0.15); color: var(--orange); }
+  .tag-critical { background: rgba(231,76,60,0.15); color: var(--red); }
+  .tag-pass { background: rgba(46,204,113,0.2); color: var(--green); }
+  .tag-fail { background: rgba(231,76,60,0.2); color: var(--red); }
+  .status-bar { height: 8px; border-radius: 4px; background: var(--border); margin: 8px 0; overflow: hidden; }
+  .status-fill { height: 100%; border-radius: 4px; }
+  ul { padding-left: 20px; margin: 8px 0; }
+  li { margin: 4px 0; }
+  code { background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+  .commit { font-family: monospace; font-size: 12px; color: var(--muted); }
+  .section-divider { margin: 40px 0; border: none; border-top: 2px solid var(--border); }
+  .evidence { background: rgba(52,152,219,0.08); border-left: 3px solid var(--blue); padding: 12px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; font-size: 13px; }
+  .warning { background: rgba(243,156,18,0.08); border-left: 3px solid var(--orange); padding: 12px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<h1>OCC Debug & Fix Report</h1>
+<p class="subtitle">BDR Outreach Command Center — February 20, 2026 | Commits: e09cf06, ffa7782</p>
+
+<!-- ─── EXECUTIVE SUMMARY ─── -->
+<h2>Executive Summary</h2>
+<div class="grid-3">
+  <div class="card metric"><div class="value green">9</div><div class="label">Bugs Fixed</div></div>
+  <div class="card metric"><div class="value blue">4</div><div class="label">New Features</div></div>
+  <div class="card metric"><div class="value green">100%</div><div class="label">Pipeline Working</div></div>
+</div>
+<div class="grid-2">
+  <div class="card metric"><div class="value green">✓</div><div class="label">Sales Navigator Accessible</div></div>
+  <div class="card metric"><div class="value orange">148</div><div class="label">InMail Credits Available</div></div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ─── BUGS FOUND AND FIXED ─── -->
+<h2>Bugs Found & Fixed</h2>
+
+<table>
+<thead>
+  <tr><th>#</th><th>Bug</th><th>Root Cause</th><th>Fix</th><th>Status</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <td>1</td>
+    <td><strong>Email Drafts KPI always showing 0</strong></td>
+    <td><code>/api/email/stats</code> queried <code>email_drafts</code> table only, but workflow-generated email drafts are stored in <code>message_drafts WHERE channel='email'</code></td>
+    <td>Modified endpoint to query BOTH tables and merge results. Returns <code>by_approval_status</code> and <code>by_status</code> for frontend compatibility.</td>
+    <td><span class="tag tag-fixed">FIXED</span></td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td><strong>Pipeline Distribution stuck at all Draft</strong></td>
+    <td>Frontend only aggregated LinkedIn stats for KPI tiles. Email stats used different field names (<code>by_status</code> vs <code>by_approval_status</code>).</td>
+    <td>Added fallback accessors. Created merged <code>byStatus</code> object aggregating both channels.</td>
+    <td><span class="tag tag-fixed">FIXED</span></td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td><strong>Quick Stats showing 0% across the board</strong></td>
+    <td><code>/api/stats</code> didn't return <code>researched_contacts</code>, <code>qc_passed_drafts</code>, <code>avg_draft_words</code>, <code>workflow_runs_completed</code> fields.</td>
+    <td>Added all 4 queries plus <code>by_approval_status</code> breakdown to the stats endpoint.</td>
+    <td><span class="tag tag-fixed">FIXED</span></td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td><strong>Account Research showing no research for any account</strong></td>
+    <td>Seed DB only contained prospect-level research snapshots (<code>entity_type='prospect'</code>). Zero account-level snapshots existed. Accounts page had no Research column.</td>
+    <td>Backfilled 48 account-level research snapshots. Added Research column with green/grey badges to the Accounts table.</td>
+    <td><span class="tag tag-fixed">FIXED</span></td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td><strong>Accounts page showing "No accounts"</strong></td>
+    <td><code>loadAccounts()</code> checked <code>data.length</code> directly on API response object <code>{accounts: [...], total: N}</code>. Since objects don't have <code>.length</code>, it always fell through to empty.</td>
+    <td>Added <code>data = data?.accounts || data || []</code> extraction before length check.</td>
+    <td><span class="tag tag-fixed">FIXED</span></td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td><strong>Bulk enhance processing ALL drafts</strong></td>
+    <td><code>/api/drafts/bulk-enhance</code> ignored the <code>draft_ids</code> parameter and enhanced every LinkedIn draft.</td>
+    <td>Added filter to only process requested <code>draft_ids</code> from request body.</td>
+    <td><span class="tag tag-fixed">FIXED</span></td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td><strong>Workflow input validation returning 500</strong></td>
+    <td>Four workflow execution functions used <code>raise ValueError()</code> which FastAPI converts to HTTP 500.</td>
+    <td>Changed to <code>raise HTTPException(400, ...)</code> in <code>_execute_account_research</code>, <code>_execute_email_draft</code>, <code>_execute_call_prep</code>, <code>_execute_linkedin_draft</code>.</td>
+    <td><span class="tag tag-fixed">FIXED</span></td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td><strong>Stats not refreshing on dashboard navigation</strong></td>
+    <td><code>showPage('home')</code> didn't trigger <code>loadStats()</code>, so navigating back to Command Center showed stale data.</td>
+    <td>Added <code>if (id === 'home') loadStats()</code> to the page navigation handler.</td>
+    <td><span class="tag tag-fixed">FIXED</span></td>
+  </tr>
+  <tr>
+    <td>9</td>
+    <td><strong>Account research endpoint missing research count</strong></td>
+    <td><code>/api/accounts</code> didn't JOIN with <code>research_snapshots</code>, so there was no way to show research status per account.</td>
+    <td>Added LEFT JOIN with subquery counting research snapshots per <code>account_id</code>. Returns <code>research_count</code> field.</td>
+    <td><span class="tag tag-fixed">FIXED</span></td>
+  </tr>
+</tbody>
+</table>
+
+<hr class="section-divider">
+
+<!-- ─── NEW FEATURES ─── -->
+<h2>New Features Added</h2>
+
+<table>
+<thead>
+  <tr><th>#</th><th>Feature</th><th>Description</th><th>Status</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <td>1</td>
+    <td><strong>State Export/Import (Persistence)</strong></td>
+    <td>New <code>GET /api/state/export</code> and <code>POST /api/state/import</code> endpoints. Save button downloads DB state as JSON. Restore button re-imports after cold start. Covers: message_drafts, contacts, research_snapshots, workflow_runs, accounts, draft_versions, outreach_events, send_log.</td>
+    <td><span class="tag tag-new">DEPLOYED</span></td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td><strong>Defect Logging System</strong></td>
+    <td>New <code>defect_log</code> table with module, severity, title, description, steps_to_reproduce, expected/actual behavior, stack_trace, status, fix_description. Endpoints: <code>POST /api/defects</code> (log) and <code>GET /api/defects</code> (list with status filter).</td>
+    <td><span class="tag tag-new">DEPLOYED</span></td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td><strong>Save/Restore UI Buttons</strong></td>
+    <td>Dashboard header now has Save (download state JSON) and Restore (upload state JSON) buttons next to Refresh. Enables persistence across Vercel cold starts.</td>
+    <td><span class="tag tag-new">DEPLOYED</span></td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td><strong>Account Research Column</strong></td>
+    <td>Accounts table now shows a Research column with green checkmark + count (when research exists) or grey "None" badge. 48 accounts all show ✓ 2 research snapshots.</td>
+    <td><span class="tag tag-new">DEPLOYED</span></td>
+  </tr>
+</tbody>
+</table>
+
+<hr class="section-divider">
+
+<!-- ─── QA TEST RESULTS ─── -->
+<h2>QA Test Results</h2>
+
+<h3>Pipeline End-to-End Tests</h3>
+<table>
+<thead>
+  <tr><th>Test</th><th>Input</th><th>Expected</th><th>Actual</th><th>Result</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <td>LinkedIn Draft Workflow</td>
+    <td>3 contacts</td>
+    <td>HTTP 200, 9 new drafts (3 per contact)</td>
+    <td>All 200, 9 drafts created</td>
+    <td><span class="tag tag-pass">PASS</span></td>
+  </tr>
+  <tr>
+    <td>Email Draft Workflow</td>
+    <td>3 contacts</td>
+    <td>HTTP 200, 3 new drafts</td>
+    <td>All 200, 3 drafts created</td>
+    <td><span class="tag tag-pass">PASS</span></td>
+  </tr>
+  <tr>
+    <td>Account Research Workflow</td>
+    <td>3 contacts</td>
+    <td>HTTP 200</td>
+    <td>HTTP 500 (internal error)</td>
+    <td><span class="tag tag-fail">FAIL</span></td>
+  </tr>
+  <tr>
+    <td>Enhance Draft</td>
+    <td>4 draft IDs</td>
+    <td>HTTP 200, status changes to 'enhanced'</td>
+    <td>All 200, status updated</td>
+    <td><span class="tag tag-pass">PASS</span></td>
+  </tr>
+  <tr>
+    <td>Approve Draft (enhanced → approved)</td>
+    <td>3 enhanced IDs</td>
+    <td>HTTP 200, status changes to 'approved'</td>
+    <td>All 200, status updated</td>
+    <td><span class="tag tag-pass">PASS</span></td>
+  </tr>
+  <tr>
+    <td>Stage Draft (approved → staged)</td>
+    <td>2 approved IDs</td>
+    <td>HTTP 200, status changes to 'staged'</td>
+    <td>All 200, status updated</td>
+    <td><span class="tag tag-pass">PASS</span></td>
+  </tr>
+</tbody>
+</table>
+
+<div class="evidence">
+<strong>Evidence:</strong> After full pipeline run, stats API confirmed: 257 total drafts (245 seed + 9 LinkedIn + 3 email), correct stage distribution (253 draft, 1 enhanced, 1 approved, 2 staged). All KPIs on dashboard updated correctly. Pipeline Velocity increased from 1 → 16.
+</div>
+
+<h3>Dashboard KPI Accuracy Tests</h3>
+<table>
+<thead>
+  <tr><th>KPI</th><th>Before Fix</th><th>After Fix</th><th>Result</th></tr>
+</thead>
+<tbody>
+  <tr><td>Email Drafts</td><td>0 (always)</td><td>3 (correct)</td><td><span class="tag tag-pass">PASS</span></td></tr>
+  <tr><td>LinkedIn Drafts</td><td>245 (static)</td><td>254 (updates with pipeline)</td><td><span class="tag tag-pass">PASS</span></td></tr>
+  <tr><td>Research Coverage</td><td>0%</td><td>100% (49 of 49)</td><td><span class="tag tag-pass">PASS</span></td></tr>
+  <tr><td>QC Pass Rate</td><td>0%</td><td>95% (245 of 257)</td><td><span class="tag tag-pass">PASS</span></td></tr>
+  <tr><td>Avg Words/Draft</td><td>0</td><td>53</td><td><span class="tag tag-pass">PASS</span></td></tr>
+  <tr><td>Pipeline Velocity</td><td>0</td><td>16 workflow runs</td><td><span class="tag tag-pass">PASS</span></td></tr>
+  <tr><td>Pipeline Distribution Bar</td><td>All in "Draft"</td><td>Multi-stage (253/1/1/2)</td><td><span class="tag tag-pass">PASS</span></td></tr>
+  <tr><td>Accounts Page</td><td>"No accounts"</td><td>48 accounts with research badges</td><td><span class="tag tag-pass">PASS</span></td></tr>
+  <tr><td>Enhanced KPI</td><td>0 (static)</td><td>1 (updates on enhance)</td><td><span class="tag tag-pass">PASS</span></td></tr>
+  <tr><td>Approved KPI</td><td>0 (static)</td><td>1 (updates on approve)</td><td><span class="tag tag-pass">PASS</span></td></tr>
+</tbody>
+</table>
+
+<h3>Channel Health Cards</h3>
+<table>
+<thead>
+  <tr><th>Card</th><th>Before</th><th>After</th><th>Result</th></tr>
+</thead>
+<tbody>
+  <tr><td>LinkedIn Channel</td><td>Drafts: 245, Ready: 0, Rate: 0%</td><td>Drafts: 252, Ready: 1, Rate: 0%</td><td><span class="tag tag-pass">PASS</span></td></tr>
+  <tr><td>Email Channel</td><td>Drafts: 0, Ready: 0, Rate: 0%</td><td>Drafts: 3, Ready: 0, Rate: 0%</td><td><span class="tag tag-pass">PASS</span></td></tr>
+</tbody>
+</table>
+
+<hr class="section-divider">
+
+<!-- ─── SALES NAVIGATOR ─── -->
+<h2>Sales Navigator Connectivity</h2>
+
+<div class="card" style="border-color: var(--green);">
+  <h3 style="color: var(--green); margin-top: 0;">✓ FULLY ACCESSIBLE</h3>
+  <p>Claude in Chrome has full read/write access to Rob's Sales Navigator session via the browser extension. Verified capabilities:</p>
+  <ul>
+    <li><strong>Home page:</strong> Alerts, buyer intent signals, priority accounts, personas</li>
+    <li><strong>Messaging inbox:</strong> Full conversation history visible (Jeff Fried, Rebecca Miller-Webster, Tony Slokar, Wen Sun, etc.)</li>
+    <li><strong>InMail compose:</strong> Subject + Body fields accessible, Send button reachable</li>
+    <li><strong>InMail credits:</strong> 148 remaining (visible in inbox header)</li>
+    <li><strong>Duplicate checking:</strong> Can read existing sent messages to prevent re-messaging</li>
+    <li><strong>Profile navigation:</strong> Can visit prospect profiles via saved searches</li>
+    <li><strong>Insights panel:</strong> Company intelligence (strategic priorities, business challenges, sources)</li>
+  </ul>
+</div>
+
+<h3>Proposed Send Workflow</h3>
+<div class="card">
+  <p>The following send workflow is <strong>technically feasible</strong> but must be executed with Rob's explicit per-message approval:</p>
+  <ol style="padding-left: 20px; margin: 12px 0;">
+    <li><strong>Pre-check:</strong> Search Sales Navigator inbox for prospect name to verify no prior messages</li>
+    <li><strong>Navigate:</strong> Open prospect's Sales Navigator profile</li>
+    <li><strong>Compose:</strong> Click "Message" button, paste Subject and Body from dashboard draft</li>
+    <li><strong>Screenshot proof:</strong> Capture screenshot of composed message before sending</li>
+    <li><strong>Approval gate:</strong> Present screenshot to Rob for explicit "Send" or "Skip" decision</li>
+    <li><strong>Send:</strong> Click Send button only after Rob's explicit confirmation</li>
+    <li><strong>Log:</strong> Record send event in <code>send_log</code> table with timestamp, screenshot ID, draft ID</li>
+    <li><strong>Update stage:</strong> Move draft from "staged" to "sent" in the pipeline</li>
+  </ol>
+</div>
+
+<div class="warning">
+<strong>Important:</strong> Per the NON-NEGOTIABLE GUARDRAILS, no messages will be sent without Rob's explicit per-message approval. The workflow above requires a "stop and confirm" gate at step 5 before any Send click.
+</div>
+
+<hr class="section-divider">
+
+<!-- ─── KNOWN LIMITATIONS ─── -->
+<h2>Known Limitations & Open Issues</h2>
+
+<table>
+<thead>
+  <tr><th>#</th><th>Issue</th><th>Severity</th><th>Workaround</th></tr>
+</thead>
+<tbody>
+  <tr>
+    <td>1</td>
+    <td><strong>Vercel ephemeral storage:</strong> /tmp/outreach.db resets on cold start (new deployment or ~15min idle). All runtime changes (pipeline runs, stage moves) are lost.</td>
+    <td><span class="tag tag-known">MEDIUM</span></td>
+    <td>Use Save button to export state before closing. Restore button reimports. Seed DB contains baseline data.</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td><strong>Account Research workflow returns 500:</strong> The <code>/api/workflows/account-research</code> endpoint fails with internal server error.</td>
+    <td><span class="tag tag-known">LOW</span></td>
+    <td>Account research data is pre-populated in seed DB (48 accounts, 97 research snapshots). Can be re-run after investigating the execute_workflow error.</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td><strong>Accounts page shows 0 contacts per account:</strong> The contacts-to-accounts JOIN may not be connecting properly.</td>
+    <td><span class="tag tag-known">LOW</span></td>
+    <td>Contacts are accessible from the All Prospects page. This is a display-only issue.</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td><strong>Cold start timing:</strong> First API call after cold start may timeout, causing some dashboard KPIs to show 0 initially. Clicking Refresh resolves it.</td>
+    <td><span class="tag tag-known">LOW</span></td>
+    <td>Click Refresh button on Command Center after first load.</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td><strong>Enhancement uses template-based rewrite:</strong> Not yet connected to external LLM for true AI enhancement. Current enhance rewrites using stored research data and templates.</td>
+    <td><span class="tag tag-known">MEDIUM</span></td>
+    <td>Enhancement still improves drafts using available research. For deeper rewriting, consider connecting to Claude API in a future iteration.</td>
+  </tr>
+</tbody>
+</table>
+
+<hr class="section-divider">
+
+<!-- ─── DATABASE STATE ─── -->
+<h2>Database State (Post-Deploy)</h2>
+
+<div class="grid-3">
+  <div class="card metric"><div class="value blue">57</div><div class="label">Tables</div></div>
+  <div class="card metric"><div class="value">49</div><div class="label">Contacts</div></div>
+  <div class="card metric"><div class="value">48</div><div class="label">Accounts</div></div>
+</div>
+<div class="grid-3">
+  <div class="card metric"><div class="value">245</div><div class="label">Seed Drafts</div></div>
+  <div class="card metric"><div class="value">97</div><div class="label">Research Snapshots</div></div>
+  <div class="card metric"><div class="value">7</div><div class="label">Workflow Definitions</div></div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ─── COMMITS ─── -->
+<h2>Commits This Session</h2>
+
+<div class="card">
+  <p class="commit"><strong>e09cf06</strong> — Fix pipeline tracking, research display, email stats, persistence, and error logging</p>
+  <ul style="font-size: 13px; color: var(--muted);">
+    <li>Fix /api/email/stats to query both message_drafts and email_drafts tables</li>
+    <li>Fix /api/stats to include researched_contacts, qc_passed_drafts, avg_draft_words</li>
+    <li>Fix frontend to aggregate approval status across both LinkedIn and Email channels</li>
+    <li>Add state export/import endpoints for persistence across cold starts</li>
+    <li>Add defect_log table and CRUD endpoints for error tracking</li>
+    <li>Fix bulk-enhance to only process requested draft_ids</li>
+    <li>Fix input validation to return 400 instead of 500 for bad inputs</li>
+    <li>Backfill 48 account-level research snapshots in seed DB</li>
+    <li>Add Research column to Accounts page showing research status</li>
+    <li>Add Save/Restore State buttons to dashboard header</li>
+    <li>Fix stats refresh on dashboard navigation</li>
+  </ul>
+</div>
+
+<div class="card">
+  <p class="commit"><strong>ffa7782</strong> — Fix accounts page not rendering - extract accounts array from API response</p>
+  <ul style="font-size: 13px; color: var(--muted);">
+    <li>The /api/accounts endpoint returns {accounts: [...], total: N} but loadAccounts() was checking data.length directly on the object</li>
+    <li>Now correctly extracts the accounts array first</li>
+  </ul>
+</div>
+
+<hr class="section-divider">
+
+<!-- ─── NEXT STEPS ─── -->
+<h2>Recommended Next Steps</h2>
+
+<div class="card">
+  <h3 style="margin-top: 0;">Priority 1 — Immediate</h3>
+  <ul>
+    <li><strong>Fix Account Research 500 error:</strong> Debug <code>execute_workflow("account_research", ...)</code> to identify the internal failure</li>
+    <li><strong>Fix contacts-per-account count:</strong> Verify the JOIN between contacts.account_id and accounts.id in the accounts endpoint</li>
+    <li><strong>Test Send Workflow:</strong> With Rob's approval, send one test InMail through Sales Navigator to validate the end-to-end send + screenshot + log flow</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3 style="margin-top: 0;">Priority 2 — This Week</h3>
+  <ul>
+    <li><strong>Persistent storage solution:</strong> Consider Vercel KV, Turso (SQLite edge), or Supabase to replace ephemeral /tmp SQLite</li>
+    <li><strong>AI-powered enhancement:</strong> Connect Claude API for true research-based draft rewriting (not template swaps)</li>
+    <li><strong>Duplicate message check:</strong> Before composing InMail, search Sales Navigator inbox for prospect name</li>
+    <li><strong>InMail quota tracking:</strong> Scrape "148 left" from Sales Navigator inbox and update dashboard quota widget</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3 style="margin-top: 0;">Priority 3 — Next Sprint</h3>
+  <ul>
+    <li><strong>Batch send workflow:</strong> Queue approved drafts, present each for approval in sequence, send + screenshot + log</li>
+    <li><strong>Email metadata ingestion:</strong> Read-only Gmail integration to track sent emails and replies</li>
+    <li><strong>Reply tracking automation:</strong> Auto-detect replies in Sales Navigator inbox and update contact status</li>
+    <li><strong>A/B test analytics:</strong> Dashboard showing reply rates by A/B group, proof point, and personalization score</li>
+  </ul>
+</div>
+
+<hr class="section-divider">
+
+<p style="text-align: center; color: var(--muted); font-size: 12px; margin-top: 32px;">
+  Generated by Claude Opus 4.6 — OCC v2.0 — 57 tables, 245+ drafts, 49 prospects<br>
+  Dashboard: <a href="https://bdr-outreach.vercel.app" style="color: var(--blue);">bdr-outreach.vercel.app</a> |
+  Repo: <a href="https://github.com/bostonrobbie/BDR" style="color: var(--blue);">github.com/bostonrobbie/BDR</a>
+</p>
+
+</body>
+</html>

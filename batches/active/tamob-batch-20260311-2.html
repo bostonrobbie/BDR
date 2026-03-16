@@ -1,0 +1,2759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TAM Outbound Batch — 2026-03-11 #2</title>
+<style>
+  :root {
+    --bg:#f8fafc; --card:#fff; --border:#e2e8f0;
+    --text:#1e293b; --muted:#64748b; --accent:#0f172a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);padding:24px}
+  h1{font-size:1.5rem;font-weight:700;margin-bottom:4px}
+  .meta{color:var(--muted);font-size:.875rem;margin-bottom:20px}
+  .stats-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+  .stat{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 18px;min-width:100px;text-align:center}
+  .stat-val{font-size:1.75rem;font-weight:700;line-height:1}
+  .stat-lbl{font-size:.75rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.05em}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
+  .filters select,.filters input{border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:.875rem;background:#fff}
+  .filters label{font-size:.875rem;color:var(--muted)}
+  .company-group{margin-bottom:28px}
+  .company-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+  .company-dot{width:12px;height:12px;border-radius:50%}
+  .company-name{font-size:1.1rem;font-weight:700}
+  .company-count{background:#f1f5f9;color:var(--muted);border-radius:12px;padding:2px 8px;font-size:.75rem}
+  .perso-badge{font-size:.75rem;color:#92400e;background:#fef3c7;border-radius:4px;padding:2px 6px}
+  .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(520px,1fr));gap:14px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:box-shadow .15s}
+  .card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08)}
+  .card-header{padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+  .card-id{font-size:.75rem;color:var(--muted);min-width:24px}
+  .card-name{font-weight:600;font-size:.9rem;flex:1}
+  .card-title{font-size:.75rem;color:var(--muted)}
+  .badge{font-size:.7rem;font-weight:600;border-radius:4px;padding:2px 7px;white-space:nowrap}
+  .card-body{padding:12px 14px}
+  .email-row{display:flex;align-items:center;gap:6px;margin-bottom:8px;font-size:.8rem;color:var(--muted)}
+  .verified{color:#10b981}
+  .extrapolated{color:#f59e0b}
+  .email-text{font-family:monospace;font-size:.8rem}
+  .field-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:3px;margin-top:8px}
+  .copy-box{background:#f8fafc;border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:.82rem;position:relative;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+  .copy-btn{position:absolute;top:6px;right:6px;background:#fff;border:1px solid var(--border);border-radius:4px;padding:2px 8px;font-size:.7rem;cursor:pointer;color:var(--muted)}
+  .copy-btn:hover{background:#f1f5f9}
+  .copy-btn.copied{color:#10b981;border-color:#10b981}
+  .status-row{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+  .status-label{font-size:.75rem;color:var(--muted)}
+  .status-select{font-size:.75rem;border:1px solid var(--border);border-radius:4px;padding:3px 6px;background:#fff;cursor:pointer}
+  .mqs-bar{width:100%;height:4px;background:#e2e8f0;border-radius:2px;margin-top:6px;overflow:hidden}
+  .mqs-fill{height:100%;border-radius:2px}
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+<h1>TAM Outbound Batch — 2026-03-11 #2</h1>
+<div class="meta">Wave 4 · 48 contacts · 19 companies · Built Mar 11, 2026 · All steps manual · Sequence: TAM Outbound</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-val">48</div><div class="stat-lbl">Total</div></div>
+  <div class="stat"><div class="stat-val" style="color:#ef4444">8</div><div class="stat-lbl">P5 HOT</div></div>
+  <div class="stat"><div class="stat-val" style="color:#f97316">16</div><div class="stat-lbl">P4 WARM</div></div>
+  <div class="stat"><div class="stat-val" style="color:#3b82f6">22</div><div class="stat-lbl">P3 STD</div></div>
+  <div class="stat"><div class="stat-val" style="color:#94a3b8">2</div><div class="stat-lbl">P2 LOW</div></div>
+  <div class="stat"><div class="stat-val" style="color:#10b981">21</div><div class="stat-lbl">A Group</div></div>
+  <div class="stat"><div class="stat-val" style="color:#8b5cf6">27</div><div class="stat-lbl">B Group</div></div>
+  <div class="stat"><div class="stat-val">11.8</div><div class="stat-lbl">Avg MQS</div></div>
+  <div class="stat"><div class="stat-val" style="color:#10b981">48/48</div><div class="stat-lbl">QA Pass</div></div>
+</div>
+
+<div class="filters">
+  <label>Filter:</label>
+  <select id="fPriority" onchange="applyFilters()">
+    <option value="">All Priorities</option>
+    <option>P5</option><option>P4</option><option>P3</option><option>P2</option>
+  </select>
+  <select id="fAB" onchange="applyFilters()">
+    <option value="">A + B Groups</option>
+    <option value="A">Group A (MediBuddy/Hansard)</option>
+    <option value="B">Group B (CRED/Cisco/Nagra)</option>
+  </select>
+  <select id="fStatus" onchange="applyFilters()">
+    <option value="">All Statuses</option>
+    <option>Ready</option><option>Enrolled</option><option>Skip</option>
+  </select>
+  <input id="fSearch" type="text" placeholder="Search name / company…" oninput="applyFilters()" style="width:200px">
+  <button onclick="resetFilters()" style="font-size:.8rem;padding:6px 12px;border:1px solid var(--border);border-radius:6px;background:#fff;cursor:pointer">Reset</button>
+</div>
+
+<div id="main-content">
+<div class="company-group" data-company="E*TRADE / Morgan Stanley">
+<div class="company-header">
+  <div class="company-dot" style="background:#004b87"></div>
+  <div class="company-name">E*TRADE / Morgan Stanley</div>
+  <div class="company-count">1 contact</div>
+  <div class="perso-badge">★ Std</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P4" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="brett linde"
+     data-company="e*trade / morgan stanley">
+  <div class="card-header">
+    <div class="card-id">#1</div>
+    <div style="flex:1">
+      <div class="card-name">Brett Linde</div>
+      <div class="card-title">QA Manager</div>
+    </div>
+    <span class="badge" style="color:#f97316;background:#fff7ed">WARM</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">brett.linde@etrade.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-1">Still rewriting broken test cases?<button class="copy-btn" onclick="copyField('subj-1',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(85w · 2QM)</span></div>
+    <div class="copy-box" id="body-1">How much of your team's sprint capacity goes toward fixing tests that break when the UI updates?
+
+Most QA managers at financial platforms say test maintenance is the biggest drag on coverage velocity, not creating new tests. The E*TRADE and Morgan Stanley integration likely expanded that test surface area considerably.
+
+Testsigma's AI self-healing engine auto-repairs broken locators without manual intervention, keeping suites stable through every release. MediBuddy reduced test maintenance by 50% across 2,500 active tests.
+
+Worth a quick walkthrough sometime soon. What day works?<button class="copy-btn" onclick="copyField('body-1',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-1" onchange="setStatus(1,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:85 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="Broadcom">
+<div class="company-header">
+  <div class="company-dot" style="background:#cc0000"></div>
+  <div class="company-name">Broadcom</div>
+  <div class="company-count">5 contacts</div>
+  <div class="perso-badge">★★ Med</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P4" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="chyehar tyler"
+     data-company="broadcom">
+  <div class="card-header">
+    <div class="card-id">#2</div>
+    <div style="flex:1">
+      <div class="card-name">Chyehar Tyler</div>
+      <div class="card-title">Software QA Manager</div>
+    </div>
+    <span class="badge" style="color:#f97316;background:#fff7ed">WARM</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">chyehar.tyler@broadcom.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-2">Regression cycles still weeks long?<button class="copy-btn" onclick="copyField('subj-2',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(91w · 2QM)</span></div>
+    <div class="copy-box" id="body-2">How does your team currently handle regression when a new software release touches multiple product lines?
+
+Managing QA across Broadcom's broad software portfolio means any significant release can trigger hundreds of test failures. Most teams end up in a cycle of rewriting the same tests every sprint without making real coverage progress.
+
+Testsigma's AI self-healing cuts that maintenance loop by catching and repairing broken locators automatically. Hansard reduced their full regression cycle from 8 weeks down to 5 using the same approach.
+
+Would a 30-minute walkthrough be worthwhile. What day works?<button class="copy-btn" onclick="copyField('body-2',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-2" onchange="setStatus(2,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:91 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P4" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="hai su"
+     data-company="broadcom">
+  <div class="card-header">
+    <div class="card-id">#3</div>
+    <div style="flex:1">
+      <div class="card-name">Hai Su</div>
+      <div class="card-title">Senior Software QA Manager</div>
+    </div>
+    <span class="badge" style="color:#f97316;background:#fff7ed">WARM</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">hai.su@broadcom.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-3">VMware QA complexity worth discussing?<button class="copy-btn" onclick="copyField('subj-3',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(91w · 2QM)</span></div>
+    <div class="copy-box" id="body-3">How is your team managing regression coverage across Broadcom's expanded software stack since the VMware acquisition?
+
+Integrating two major product portfolios tends to multiply the number of test surfaces, and most QA teams absorb that increase through manual effort and longer cycles. Coverage gaps widen faster than teams can close them with existing tooling.
+
+Testsigma's AI platform lets teams write tests in plain English and scale coverage without scaling headcount. CRED hit 90% regression coverage while moving 5x faster on test execution.
+
+Open to a quick 20-minute walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-3',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-3" onchange="setStatus(3,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:91 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P4" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="jeremy sabin"
+     data-company="broadcom">
+  <div class="card-header">
+    <div class="card-id">#4</div>
+    <div style="flex:1">
+      <div class="card-name">Jeremy Sabin</div>
+      <div class="card-title">Sr QA Manager CloudSWG</div>
+    </div>
+    <span class="badge" style="color:#f97316;background:#fff7ed">WARM</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#3b82f6;background:#f8fafc">10/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">jeremy.sabin@broadcom.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:83%;background:#3b82f6"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-4">Cloud networking QA keeping pace?<button class="copy-btn" onclick="copyField('subj-4',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(93w · 2QM)</span></div>
+    <div class="copy-box" id="body-4">How does your team maintain test coverage when the CloudSWG product surface is changing as fast as it is?
+
+Cloud networking products see constant configuration changes and new integrations. QA teams either slow down releases waiting on test updates or ship with coverage gaps they know exist but cannot close fast enough with the current approach.
+
+Testsigma runs parallel test execution across environments so QA keeps pace without adding headcount. Cisco moved from days to hours on full regression runs using the same approach.
+
+Worth a short conversation this week. What day works?<button class="copy-btn" onclick="copyField('body-4',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-4" onchange="setStatus(4,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:93 · MQS:10/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P4" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="justin yune"
+     data-company="broadcom">
+  <div class="card-header">
+    <div class="card-id">#5</div>
+    <div style="flex:1">
+      <div class="card-name">Justin Yune</div>
+      <div class="card-title">Manager SW QA</div>
+    </div>
+    <span class="badge" style="color:#f97316;background:#fff7ed">WARM</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">justin.yune@broadcom.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-5">Test creation speed a bottleneck?<button class="copy-btn" onclick="copyField('subj-5',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(91w · 2QM)</span></div>
+    <div class="copy-box" id="body-5">How long does it typically take your team to build out automation coverage for a new feature release?
+
+Most QA teams at Broadcom's scale spend more time writing and maintaining tests than actually running them. New feature backlogs pile up faster than coverage can be created, especially given the complexity added after the VMware integration.
+
+Testsigma lets engineers write tests in plain English and generates the automation layer automatically. Nagra DTV cut test creation time by 70% using that same NLP-first approach.
+
+Could be worth a quick call. What day works?<button class="copy-btn" onclick="copyField('body-5',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-5" onchange="setStatus(5,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:91 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P3" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="piyamas sattaboot"
+     data-company="broadcom">
+  <div class="card-header">
+    <div class="card-id">#6</div>
+    <div style="flex:1">
+      <div class="card-name">Piyamas Sattaboot</div>
+      <div class="card-title">Sr QA Lead Engineer, Mainframe SW</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">11/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">piyamas.sattaboot@broadcom.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:91%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-6">Mainframe regression cycle still long?<button class="copy-btn" onclick="copyField('subj-6',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(87w · 2QM)</span></div>
+    <div class="copy-box" id="body-6">How often does your mainframe software regression cycle delay a release waiting on test results?
+
+Mainframe QA tends to accumulate years of fragile, hard-to-maintain test scripts. Even small UI or API changes cascade into hours of manual triage and script repair before a cycle can complete reliably.
+
+Testsigma's AI self-healing keeps regression suites stable by auto-repairing broken test logic without manual intervention. Hansard compressed their full regression cycle from 8 weeks down to 5 with the same capability.
+
+Open to a quick comparison call. What day works?<button class="copy-btn" onclick="copyField('body-6',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-6" onchange="setStatus(6,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:87 · MQS:11/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="Humana">
+<div class="company-header">
+  <div class="company-dot" style="background:#007078"></div>
+  <div class="company-name">Humana</div>
+  <div class="company-count">5 contacts</div>
+  <div class="perso-badge">★★ Med</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P3" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="aswini nagabooshanam"
+     data-company="humana">
+  <div class="card-header">
+    <div class="card-id">#7</div>
+    <div style="flex:1">
+      <div class="card-name">Aswini Nagabooshanam</div>
+      <div class="card-title">QA Lead</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">anagabooshanam@humana.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-7">Test maintenance eating sprint time?<button class="copy-btn" onclick="copyField('subj-7',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(88w · 2QM)</span></div>
+    <div class="copy-box" id="body-7">How much of your team's sprint time goes toward maintaining existing tests versus building new coverage?
+
+Digital health platforms like Humana's see constant UI updates across member portals, benefits tools, and mobile apps. That cadence keeps QA teams in a reactive maintenance loop instead of expanding coverage where it actually matters.
+
+Testsigma's AI self-healing handles broken locators automatically so your engineers spend time on coverage, not repairs. MediBuddy cut test maintenance by 50% across 2,500 active tests using the same platform.
+
+Worth a quick conversation. What day works?<button class="copy-btn" onclick="copyField('body-7',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-7" onchange="setStatus(7,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:88 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P3" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="vibha singh"
+     data-company="humana">
+  <div class="card-header">
+    <div class="card-id">#8</div>
+    <div style="flex:1">
+      <div class="card-name">Vibha Singh</div>
+      <div class="card-title">QA Lead</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">vsingh57@humana.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-8">Coverage gaps growing each sprint?<button class="copy-btn" onclick="copyField('subj-8',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(92w · 2QM)</span></div>
+    <div class="copy-box" id="body-8">How does your team decide which features get full regression coverage versus spot checking when cycles are tight?
+
+Health insurance platforms carry serious risk in every release. Most QA leads we talk to at organizations like Humana say coverage gaps are not a resource problem, they are a test creation speed problem that compounds every sprint.
+
+Testsigma lets teams write test cases in plain English and auto-generates the underlying automation. CRED scaled to 90% regression coverage across their platform while executing 5x faster.
+
+Open to a quick 20-minute demo. What day works?<button class="copy-btn" onclick="copyField('body-8',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-8" onchange="setStatus(8,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:92 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P3" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="samatha gangyshetty"
+     data-company="humana">
+  <div class="card-header">
+    <div class="card-id">#9</div>
+    <div style="flex:1">
+      <div class="card-name">Samatha Gangyshetty</div>
+      <div class="card-title">Quality Assurance Lead</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">sgangyshetty2@humana.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-9">Regression still taking too long?<button class="copy-btn" onclick="copyField('subj-9',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(91w · 2QM)</span></div>
+    <div class="copy-box" id="body-9">How long does a full regression cycle take your team before a major Humana platform release?
+
+Health insurance platforms ship on tight compliance timelines, and QA cycles that stretch past a week start compressing testing into corners. Most teams either accept coverage gaps or delay the release, and neither option is good for the business.
+
+Testsigma compresses regression through parallel execution and AI-assisted test generation. Hansard shortened their full regression cycle from 8 weeks to 5 using the same approach without adding headcount.
+
+Worth a quick 20-minute walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-9',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-9" onchange="setStatus(9,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:91 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P3" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="ahmet cakar"
+     data-company="humana">
+  <div class="card-header">
+    <div class="card-id">#10</div>
+    <div style="flex:1">
+      <div class="card-name">Ahmet Cakar</div>
+      <div class="card-title">Automation Test Lead/SDET</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">11/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="extrapolated">~</span>
+      <span class="email-text">acakar@humana.com</span>
+      <span style="color:var(--muted);font-size:.7rem">extrapolated</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:91%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-10">AI self-healing worth exploring now?<button class="copy-btn" onclick="copyField('subj-10',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(93w · 2QM)</span></div>
+    <div class="copy-box" id="body-10">How much time does your team spend diagnosing and repairing flaky tests versus writing new automation coverage?
+
+Most SDETs at health insurance platforms say UI changes upstream create a cascade of broken locators downstream. The maintenance burden grows every quarter and eats into the time available for building real coverage on new functionality.
+
+Testsigma's AI self-healing engine detects and repairs those locator failures automatically, without manual intervention. CRED cut regression maintenance overhead significantly and now runs 5x faster across their full suite.
+
+Would a brief walkthrough be worth your time. What day works?<button class="copy-btn" onclick="copyField('body-10',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-10" onchange="setStatus(10,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:93 · MQS:11/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P3" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="sakib alam"
+     data-company="humana">
+  <div class="card-header">
+    <div class="card-id">#11</div>
+    <div style="flex:1">
+      <div class="card-name">Sakib Alam</div>
+      <div class="card-title">Automation Lead</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">salam4@humana.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-11">Test creation still the bottleneck?<button class="copy-btn" onclick="copyField('subj-11',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(95w · 2QM)</span></div>
+    <div class="copy-box" id="body-11">How fast can your team build automation coverage for a new Humana feature from requirements to a running test?
+
+Most automation leads at digital health platforms say the gap between test creation speed and release cadence is the core problem. Engineers spend more time writing and rewriting tests than actually validating new functionality each sprint.
+
+Testsigma lets teams create tests in plain English and generates the automation layer automatically. Nagra DTV reduced test creation time by 70% using that same NLP approach across their platform.
+
+Worth a quick call to compare notes. What day works?<button class="copy-btn" onclick="copyField('body-11',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-11" onchange="setStatus(11,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:95 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="Corewell Health">
+<div class="company-header">
+  <div class="company-dot" style="background:#00a94f"></div>
+  <div class="company-name">Corewell Health</div>
+  <div class="company-count">1 contact</div>
+  <div class="perso-badge">★ Std</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P3" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="ganesh mallina"
+     data-company="corewell health">
+  <div class="card-header">
+    <div class="card-id">#12</div>
+    <div style="flex:1">
+      <div class="card-name">Ganesh Mallina</div>
+      <div class="card-title">Test Automation Engineer</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">ganesh.mallina@spectrumhealth.org</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-12">Health system automation scaling up?<button class="copy-btn" onclick="copyField('subj-12',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(92w · 2QM)</span></div>
+    <div class="copy-box" id="body-12">How is your team handling test automation coverage as Corewell continues expanding its digital health platform?
+
+Health system QA teams tend to face a familiar squeeze: more applications, tighter release windows, and the same headcount. Building automation from scratch for each new system is not sustainable, and most teams already know it.
+
+Testsigma lets engineers write tests in plain English and scales coverage without requiring deep coding expertise across the team. MediBuddy built and maintained 2,500 automated tests while cutting maintenance overhead by 50%.
+
+Worth a quick 20-minute walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-12',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-12" onchange="setStatus(12,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:92 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="BCBS Illinois">
+<div class="company-header">
+  <div class="company-dot" style="background:#003087"></div>
+  <div class="company-name">BCBS Illinois</div>
+  <div class="company-count">1 contact</div>
+  <div class="perso-badge">★ Std</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P4" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="valerie jefferies"
+     data-company="bcbs illinois">
+  <div class="card-header">
+    <div class="card-id">#13</div>
+    <div style="flex:1">
+      <div class="card-name">Valerie Jefferies</div>
+      <div class="card-title">Testing and QA Manager</div>
+    </div>
+    <span class="badge" style="color:#f97316;background:#fff7ed">WARM</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">valerie_jefferies@bcbsil.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-13">QA keeping pace with releases?<button class="copy-btn" onclick="copyField('subj-13',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(90w · 2QM)</span></div>
+    <div class="copy-box" id="body-13">How does your QA team manage test coverage across BCBS Illinois's member-facing platforms when release cadence picks up?
+
+Health insurance QA carries real regulatory and member experience stakes. Most testing managers at organizations your size say keeping automation stable when the UI changes is the biggest ongoing drain, not building new tests from scratch.
+
+Testsigma's AI self-healing repairs broken locators automatically, keeping suites stable across releases without manual intervention. MediBuddy maintained 2,500 active tests and cut maintenance overhead by 50%.
+
+Worth a 20-minute walkthrough sometime this week. What day works?<button class="copy-btn" onclick="copyField('body-13',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-13" onchange="setStatus(13,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11">T1 Sent Mar11 ✓</option>
+        <option value="Blocked" selected>Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:90 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="Blue Cross MN">
+<div class="company-header">
+  <div class="company-dot" style="background:#005eb8"></div>
+  <div class="company-name">Blue Cross MN</div>
+  <div class="company-count">1 contact</div>
+  <div class="perso-badge">★ Std</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P3" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="kris berg"
+     data-company="blue cross mn">
+  <div class="card-header">
+    <div class="card-id">#14</div>
+    <div style="flex:1">
+      <div class="card-name">Kris Berg</div>
+      <div class="card-title">Quality Assurance Lead</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">kris.berg@bluecrossmn.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-14">Test maintenance slowing down coverage?<button class="copy-btn" onclick="copyField('subj-14',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(90w · 2QM)</span></div>
+    <div class="copy-box" id="body-14">How much of your sprint cycle at Blue Cross MN goes toward repairing broken tests versus expanding automation coverage?
+
+Health insurance platforms ship on tight timelines with real member impact if something breaks. Most QA leads say keeping existing automation stable consumes more bandwidth than building new coverage, especially as portals and mobile apps evolve each sprint.
+
+Testsigma's AI self-healing auto-fixes broken locators each cycle, eliminating that repair overhead. MediBuddy cut test maintenance by 50% across their full suite of 2,500 tests.
+
+Open to a 20-minute walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-14',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-14" onchange="setStatus(14,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:90 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="BCBS Texas">
+<div class="company-header">
+  <div class="company-dot" style="background:#0066cc"></div>
+  <div class="company-name">BCBS Texas</div>
+  <div class="company-count">1 contact</div>
+  <div class="perso-badge">★ Std</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P3" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="ranjith reddy"
+     data-company="bcbs texas">
+  <div class="card-header">
+    <div class="card-id">#15</div>
+    <div style="flex:1">
+      <div class="card-name">Ranjith Reddy</div>
+      <div class="card-title">QA Lead</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">ranjith_reddy@bcbstx.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-15">Automation coverage growing fast enough?<button class="copy-btn" onclick="copyField('subj-15',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(95w · 2QM)</span></div>
+    <div class="copy-box" id="body-15">How is your team at BCBS Texas keeping automation coverage in sync with the pace of new feature development?
+
+Health insurance QA teams face a constant tradeoff: spend time maintaining existing test suites or build coverage for new functionality. When UI changes break locators across multiple applications, that maintenance backlog grows faster than teams can clear it.
+
+Testsigma's AI self-healing repairs broken tests automatically, so your team can focus on expanding coverage instead. MediBuddy cut test maintenance by 50% across 2,500 active tests using the same platform.
+
+Worth a quick 20-minute walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-15',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-15" onchange="setStatus(15,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:95 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="Blue Cross KC">
+<div class="company-header">
+  <div class="company-dot" style="background:#0057a8"></div>
+  <div class="company-name">Blue Cross KC</div>
+  <div class="company-count">1 contact</div>
+  <div class="perso-badge">★ Std</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P3" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="yvonne stephen"
+     data-company="blue cross kc">
+  <div class="card-header">
+    <div class="card-id">#16</div>
+    <div style="flex:1">
+      <div class="card-name">Yvonne Stephen</div>
+      <div class="card-title">Quality Assurance Lead</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">yvonne.stephen@bluekc.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-16">Test suite stability a concern?<button class="copy-btn" onclick="copyField('subj-16',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(90w · 2QM)</span></div>
+    <div class="copy-box" id="body-16">How does your team handle test suite maintenance when UI updates hit member portals and benefits platforms at Blue Cross KC?
+
+Health insurance QA lives in a difficult spot: releases carry real member stakes, but test suites break with every UI sprint, and there is never enough bandwidth to keep up with both.
+
+Testsigma's AI self-healing fixes broken locators automatically without manual triage. MediBuddy cut test maintenance overhead by 50% across 2,500 active tests and redirected that time toward coverage growth.
+
+Worth a short conversation this week. What day works?<button class="copy-btn" onclick="copyField('body-16',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-16" onchange="setStatus(16,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:90 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="Mastercard">
+<div class="company-header">
+  <div class="company-dot" style="background:#eb001b"></div>
+  <div class="company-name">Mastercard</div>
+  <div class="company-count">8 contacts</div>
+  <div class="perso-badge">★★★ High</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P5" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="ksenia shchelkonogova"
+     data-company="mastercard">
+  <div class="card-header">
+    <div class="card-id">#17</div>
+    <div style="flex:1">
+      <div class="card-name">Ksenia Shchelkonogova</div>
+      <div class="card-title">Director of Quality Assurance</div>
+    </div>
+    <span class="badge" style="color:#ef4444;background:#fef2f2">HOT 🔥</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">ksenia.shchelkonogova@mastercard.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-17">QA keeping pace with payments scale?<button class="copy-btn" onclick="copyField('subj-17',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(89w · 2QM)</span></div>
+    <div class="copy-box" id="body-17">How does your organization approach regression coverage when payment platform changes can touch hundreds of integration points simultaneously?
+
+Mastercard's transaction processing scale means any regression gap has outsized risk. Directors at payment platforms say the challenge is not test strategy, it is execution speed: keeping full coverage without letting regression cycles hold up release timelines.
+
+Testsigma runs parallel regression across environments and integrations to compress cycle time. Cisco reduced full regression runs from days to hours using the same parallel execution model.
+
+Worth a 20-minute conversation. What day works?<button class="copy-btn" onclick="copyField('body-17',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-17" onchange="setStatus(17,this)">
+        <option value="Ready" selected>Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11">T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:89 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P5" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="glen hudson"
+     data-company="mastercard">
+  <div class="card-header">
+    <div class="card-id">#18</div>
+    <div style="flex:1">
+      <div class="card-name">Glen Hudson</div>
+      <div class="card-title">Director Quality Engineering</div>
+    </div>
+    <span class="badge" style="color:#ef4444;background:#fef2f2">HOT 🔥</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">glen.hudson@mastercard.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-18">Quality engineering at payments scale?<button class="copy-btn" onclick="copyField('subj-18',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(91w · 2QM)</span></div>
+    <div class="copy-box" id="body-18">How does your quality engineering function balance speed and coverage across Mastercard's global transaction infrastructure?
+
+At payments scale, every release carries compounding risk: a single integration failure can cascade across partner banks and merchant networks. Most QE directors say the pressure is less about finding bugs and more about proving coverage is complete before each release window.
+
+Testsigma's AI-generated test coverage maps entire application surfaces and runs in parallel across environments. Cisco compressed full regression from days to hours with that same model.
+
+Open to a 20-minute walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-18',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-18" onchange="setStatus(18,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:91 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P3" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="sibghatullah veedy"
+     data-company="mastercard">
+  <div class="card-header">
+    <div class="card-id">#19</div>
+    <div style="flex:1">
+      <div class="card-name">Sibghatullah Veedy</div>
+      <div class="card-title">Sr SDET (QA Lead)</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">sibghatullah.veedy@mastercard.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-19">Flaky tests a constant headache?<button class="copy-btn" onclick="copyField('subj-19',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(92w · 2QM)</span></div>
+    <div class="copy-box" id="body-19">How much of your automation work at Mastercard goes toward diagnosing and stabilizing tests that fail inconsistently?
+
+Flaky tests are the silent coverage killer at fintech scale. SDETs spend hours chasing intermittent failures that often trace back to timing issues, environment inconsistencies, or brittle locators, none of which map to actual product bugs worth shipping around.
+
+Testsigma's AI self-healing identifies and repairs unstable tests automatically, reducing that diagnostic overhead. MediBuddy eliminated 50% of their test maintenance burden across 2,500 tests using the same approach.
+
+Worth a quick comparison call. What day works?<button class="copy-btn" onclick="copyField('body-19',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-19" onchange="setStatus(19,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:92 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P3" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="vijay durairaj"
+     data-company="mastercard">
+  <div class="card-header">
+    <div class="card-id">#20</div>
+    <div style="flex:1">
+      <div class="card-name">Vijay Durairaj</div>
+      <div class="card-title">Automation Lead</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">vijay.durairaj@mastercard.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-20">Automation coverage keeping up?<button class="copy-btn" onclick="copyField('subj-20',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(96w · 2QM)</span></div>
+    <div class="copy-box" id="body-20">How does your automation team keep test coverage current as Mastercard's payment platform adds new products and API integrations each quarter?
+
+Growing a payment platform means the test surface expands constantly. Most automation leads say the creation bottleneck is real: writing new automation is slow, and the backlog grows faster than the team can close it with existing tools.
+
+Testsigma lets teams write tests in plain English and generates the underlying automation automatically. Nagra DTV cut test creation time by 70% using the same NLP approach across their platform.
+
+Worth a quick walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-20',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-20" onchange="setStatus(20,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:96 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P3" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="yvonne oliver"
+     data-company="mastercard">
+  <div class="card-header">
+    <div class="card-id">#21</div>
+    <div style="flex:1">
+      <div class="card-name">Yvonne Oliver</div>
+      <div class="card-title">Project QA Lead</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">yvonne.oliver@mastercard.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-21">QA delivery keeping up with sprints?<button class="copy-btn" onclick="copyField('subj-21',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(95w · 2QM)</span></div>
+    <div class="copy-box" id="body-21">How does your team manage QA delivery across Mastercard project timelines when test environments and builds shift week to week?
+
+Project QA leads at payment platforms face the same core tension: every project has its own test surface, but the automation tooling is not flexible enough to spin up coverage quickly without significant setup time and ramp overhead.
+
+Testsigma's unified platform handles web, API, and mobile testing without requiring separate toolchains per project. CRED achieved 90% regression coverage while executing 5x faster using a single platform.
+
+Worth a quick demo this week. What day works?<button class="copy-btn" onclick="copyField('body-21',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-21" onchange="setStatus(21,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11">T1 Sent Mar11 ✓</option>
+        <option value="Blocked" selected>Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:95 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P3" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="ketan rathod"
+     data-company="mastercard">
+  <div class="card-header">
+    <div class="card-id">#22</div>
+    <div style="flex:1">
+      <div class="card-name">Ketan Rathod</div>
+      <div class="card-title">Lead SDET</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">11/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">ketan.rathod@mastercard.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:91%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-22">Test maintenance still a time sink?<button class="copy-btn" onclick="copyField('subj-22',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(93w · 2QM)</span></div>
+    <div class="copy-box" id="body-22">How much time does your SDET team spend each sprint repairing tests that break due to upstream UI or API changes?
+
+At fintech scale, even minor platform updates can cascade into dozens of broken test scripts. Lead SDETs end up spending more time stabilizing existing coverage than building automation for new features that actually need validation.
+
+Testsigma's AI self-healing detects and repairs broken locators automatically each cycle, eliminating that stabilization overhead. MediBuddy cut test maintenance burden by 50% across 2,500 active tests using the same platform.
+
+Worth a 20-minute walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-22',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-22" onchange="setStatus(22,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:93 · MQS:11/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P4" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="geethavani dodda"
+     data-company="mastercard">
+  <div class="card-header">
+    <div class="card-id">#23</div>
+    <div style="flex:1">
+      <div class="card-name">Geethavani Dodda</div>
+      <div class="card-title">Software Engineering Manager</div>
+    </div>
+    <span class="badge" style="color:#f97316;background:#fff7ed">WARM</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">vani.dodda@mastercard.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-23">Test automation scaling with the team?<button class="copy-btn" onclick="copyField('subj-23',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(88w · 2QM)</span></div>
+    <div class="copy-box" id="body-23">How does your engineering team balance feature development velocity with test automation coverage at Mastercard's scale?
+
+Engineering managers at payment platforms often describe the same tension: developers ship features quickly, but automation coverage lags because writing tests requires separate tooling expertise and significant ramp time from engineers already stretched thin.
+
+Testsigma lets developers write test cases in plain English without deep QA tooling knowledge, generating the automation layer automatically. CRED scaled to 90% regression coverage while executing tests 5x faster.
+
+Worth a quick 20-minute walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-23',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-23" onchange="setStatus(23,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:88 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P3" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="koushal ram"
+     data-company="mastercard">
+  <div class="card-header">
+    <div class="card-id">#24</div>
+    <div style="flex:1">
+      <div class="card-name">Koushal Ram</div>
+      <div class="card-title">QA Lead Manual Testing</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">ram.k@mastercard.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-24">Moving from manual to automated QA?<button class="copy-btn" onclick="copyField('subj-24',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(95w · 2QM)</span></div>
+    <div class="copy-box" id="body-24">How is your team thinking about transitioning manual test cases to automation coverage across Mastercard's payment platform?
+
+Manual QA at financial platforms is thorough, but it does not scale when release cadence accelerates. Most QA leads managing manual processes say the bottleneck is not willingness to automate, it is the skill gap and time required to write automation scripts from scratch.
+
+Testsigma converts manual test cases to automated coverage using plain English, no scripting expertise required. Nagra DTV cut test creation time by 70% using that NLP approach.
+
+Worth a quick demo. What day works?<button class="copy-btn" onclick="copyField('body-24',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-24" onchange="setStatus(24,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:95 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="Anaplan">
+<div class="company-header">
+  <div class="company-dot" style="background:#0e7fe1"></div>
+  <div class="company-name">Anaplan</div>
+  <div class="company-count">1 contact</div>
+  <div class="perso-badge">★ Std</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P4" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="irina baxter"
+     data-company="anaplan">
+  <div class="card-header">
+    <div class="card-id">#25</div>
+    <div style="flex:1">
+      <div class="card-name">Irina Baxter</div>
+      <div class="card-title">Senior Manager QA</div>
+    </div>
+    <span class="badge" style="color:#f97316;background:#fff7ed">WARM</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">irina.baxter@anaplan.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-25">SaaS regression cycles still costly?<button class="copy-btn" onclick="copyField('subj-25',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(94w · 2QM)</span></div>
+    <div class="copy-box" id="body-25">How does your QA team at Anaplan manage regression coverage when the platform ships frequent updates to connected planning workflows?
+
+Enterprise SaaS QA carries a particular challenge: customers build complex configurations on top of your platform, and regression has to cover both the core product and customer-impacting integration paths. That multiplies the test surface with every release.
+
+Testsigma's AI-generated coverage and parallel execution compress regression without requiring manual test expansion. Hansard reduced their full regression cycle from 8 weeks down to 5 using the same approach.
+
+Worth a quick 20-minute walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-25',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-25" onchange="setStatus(25,this)">
+        <option value="Ready" selected>Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11">T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:94 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="DraftKings">
+<div class="company-header">
+  <div class="company-dot" style="background:#53d337"></div>
+  <div class="company-name">DraftKings</div>
+  <div class="company-count">2 contacts</div>
+  <div class="perso-badge">★ Std</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P4" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="mike seal"
+     data-company="draftkings">
+  <div class="card-header">
+    <div class="card-id">#26</div>
+    <div style="flex:1">
+      <div class="card-name">Mike Seal</div>
+      <div class="card-title">QA Engineering Manager</div>
+    </div>
+    <span class="badge" style="color:#f97316;background:#fff7ed">WARM</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">m.seal@draftkings.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-26">Real-time platform QA under pressure?<button class="copy-btn" onclick="copyField('subj-26',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(90w · 2QM)</span></div>
+    <div class="copy-box" id="body-26">How does your QA engineering team handle regression coverage for DraftKings' real-time betting platform when release windows are tight?
+
+Real-money gaming platforms have zero tolerance for production failures. QA engineering managers in this space say the core challenge is running comprehensive regression fast enough to match the pace of new feature development without blocking deployments.
+
+Testsigma runs parallel regression across all environments and surfaces, compressing full cycles significantly. Cisco moved from days to hours on full regression using the same parallel execution model.
+
+Worth a 20-minute conversation. What day works?<button class="copy-btn" onclick="copyField('body-26',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-26" onchange="setStatus(26,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:90 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P3" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="francky sergile"
+     data-company="draftkings">
+  <div class="card-header">
+    <div class="card-id">#27</div>
+    <div style="flex:1">
+      <div class="card-name">Francky Sergile</div>
+      <div class="card-title">Lead QA Engineer</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">fsergile@draftkings.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-27">Flaky tests blocking real-time releases?<button class="copy-btn" onclick="copyField('subj-27',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(93w · 2QM)</span></div>
+    <div class="copy-box" id="body-27">How much of your time at DraftKings goes toward stabilizing automation that breaks between releases on the live platform?
+
+Lead QA engineers at real-money gaming platforms say the same thing: flaky, brittle tests erode confidence in the automation suite until teams stop trusting it and start manually verifying more. That loop is hard to break without better underlying tooling.
+
+Testsigma's AI self-healing detects and repairs unstable tests automatically, restoring suite reliability without manual intervention. MediBuddy cut their entire test maintenance burden by 50% across 2,500 tests.
+
+Worth a quick walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-27',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-27" onchange="setStatus(27,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:93 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="Cleveland Clinic">
+<div class="company-header">
+  <div class="company-dot" style="background:#094fa3"></div>
+  <div class="company-name">Cleveland Clinic</div>
+  <div class="company-count">1 contact</div>
+  <div class="perso-badge">★ Std</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P4" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="david schraff"
+     data-company="cleveland clinic">
+  <div class="card-header">
+    <div class="card-id">#28</div>
+    <div style="flex:1">
+      <div class="card-name">David Schraff</div>
+      <div class="card-title">Manager, Testing & QA Center of Excellence</div>
+    </div>
+    <span class="badge" style="color:#f97316;background:#fff7ed">WARM</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">david.schraff@ccf.org</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-28">QA CoE scaling to system demand?<button class="copy-btn" onclick="copyField('subj-28',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(94w · 2QM)</span></div>
+    <div class="copy-box" id="body-28">How is your Testing and QA Center of Excellence at Cleveland Clinic approaching coverage standardization across the health system's digital platforms?
+
+CoE teams carry both the execution responsibility and the tooling mandate for the entire organization. The challenge is scaling that coverage without requiring every team to develop deep automation expertise independently from scratch.
+
+Testsigma's AI platform lets teams write tests in plain English and generates the automation layer automatically, standardizing coverage across any application type. MediBuddy built 2,500 tests while cutting maintenance overhead by 50%.
+
+Worth a quick 20-minute walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-28',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-28" onchange="setStatus(28,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:94 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="Microchip Technology">
+<div class="company-header">
+  <div class="company-dot" style="background:#e40000"></div>
+  <div class="company-name">Microchip Technology</div>
+  <div class="company-count">1 contact</div>
+  <div class="perso-badge">★ Std</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P3" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="ted machicek"
+     data-company="microchip technology">
+  <div class="card-header">
+    <div class="card-id">#29</div>
+    <div style="flex:1">
+      <div class="card-name">Ted Machicek</div>
+      <div class="card-title">Staff PM, Software and Solutions QA</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">ted.machicek@microchip.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-29">Software QA delivery still a bottleneck?<button class="copy-btn" onclick="copyField('subj-29',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(94w · 2QM)</span></div>
+    <div class="copy-box" id="body-29">How does your team manage software and solutions QA coverage when Microchip's software stack spans embedded, desktop, and cloud-connected tools?
+
+Software PMs at semiconductor companies often describe the same challenge: hardware ships on a defined timeline, but software QA is the variable that compresses as that deadline approaches. Test creation speed is usually the constraint, not test execution capacity.
+
+Testsigma lets teams write tests in plain English and generates automation automatically without scripting overhead. Nagra DTV cut test creation time by 70% using the same NLP-first approach.
+
+Worth a quick conversation. What day works?<button class="copy-btn" onclick="copyField('body-29',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-29" onchange="setStatus(29,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:94 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="GEICO">
+<div class="company-header">
+  <div class="company-dot" style="background:#003865"></div>
+  <div class="company-name">GEICO</div>
+  <div class="company-count">4 contacts</div>
+  <div class="perso-badge">★★ Med</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P4" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="satish krishnan"
+     data-company="geico">
+  <div class="card-header">
+    <div class="card-id">#30</div>
+    <div style="flex:1">
+      <div class="card-name">Satish Krishnan</div>
+      <div class="card-title">Software Engineering Manager QA</div>
+    </div>
+    <span class="badge" style="color:#f97316;background:#fff7ed">WARM</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">skrishnan@geico.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-30">QA scaling with engineering velocity?<button class="copy-btn" onclick="copyField('subj-30',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(89w · 2QM)</span></div>
+    <div class="copy-box" id="body-30">How does your team at GEICO balance software quality coverage with the pace of new feature releases across digital insurance products?
+
+Engineering managers managing QA in fast-moving insurance environments say the hardest part is keeping automation coverage current when the underlying systems change every sprint. Suites break, triage takes time, and coverage gaps quietly accumulate.
+
+Testsigma's AI self-healing keeps test suites stable automatically when UI or API changes break locators. MediBuddy cut their test maintenance burden by 50% across 2,500 active tests.
+
+Worth a quick walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-30',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-30" onchange="setStatus(30,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:89 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P4" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="april brenay"
+     data-company="geico">
+  <div class="card-header">
+    <div class="card-id">#31</div>
+    <div style="flex:1">
+      <div class="card-name">April Brenay</div>
+      <div class="card-title">Quality Assurance Manager</div>
+    </div>
+    <span class="badge" style="color:#f97316;background:#fff7ed">WARM</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">abrenay@geico.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-31">Test maintenance eating sprint cycles?<button class="copy-btn" onclick="copyField('subj-31',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(93w · 2QM)</span></div>
+    <div class="copy-box" id="body-31">How much of your QA team's bandwidth at GEICO goes toward repairing existing tests when applications update versus building new coverage?
+
+Insurance platforms release frequently: new quote flows, mobile app updates, claims portal changes. Every one of those releases can break existing automation, and QA managers end up managing a repair backlog rather than expanding coverage where it actually matters.
+
+Testsigma's AI self-healing auto-fixes broken locators each cycle, eliminating that maintenance overhead. MediBuddy cut test maintenance by 50% across 2,500 active tests using the same platform.
+
+Worth a 20-minute demo. What day works?<button class="copy-btn" onclick="copyField('body-31',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-31" onchange="setStatus(31,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:93 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P4" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="manohar shrestha"
+     data-company="geico">
+  <div class="card-header">
+    <div class="card-id">#32</div>
+    <div style="flex:1">
+      <div class="card-name">Manohar Shrestha</div>
+      <div class="card-title">Software Engineering Manager</div>
+    </div>
+    <span class="badge" style="color:#f97316;background:#fff7ed">WARM</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">mashrestha@geico.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-32">Test coverage keeping up with releases?<button class="copy-btn" onclick="copyField('subj-32',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(97w · 2QM)</span></div>
+    <div class="copy-box" id="body-32">How does your engineering team at GEICO manage the gap between feature development speed and QA automation coverage?
+
+Software engineers at insurance platforms ship features fast, but test automation coverage often lags. Writing automation is slower than writing code, and that gap widens every sprint until it becomes a release risk your team has to manage around carefully.
+
+Testsigma lets engineers write test cases in plain English without scripting expertise, cutting the time from requirements to running automation. CRED scaled to 90% regression coverage while executing tests 5x faster.
+
+Worth a quick 20-minute walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-32',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-32" onchange="setStatus(32,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:97 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P4" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="ketan peddabachi"
+     data-company="geico">
+  <div class="card-header">
+    <div class="card-id">#33</div>
+    <div style="flex:1">
+      <div class="card-name">Ketan Peddabachi</div>
+      <div class="card-title">Software Engineering Manager</div>
+    </div>
+    <span class="badge" style="color:#f97316;background:#fff7ed">WARM</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">kpeddabachi@geico.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-33">Automation coverage still a gap?<button class="copy-btn" onclick="copyField('subj-33',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(95w · 2QM)</span></div>
+    <div class="copy-box" id="body-33">How does your team think about closing the automation coverage gap as GEICO's digital platform continues to grow?
+
+Digital insurance platforms ship across web, mobile, and API channels simultaneously, but most automation frameworks were not built for that breadth. Engineering managers at organizations like GEICO say unified coverage is the goal, but the tooling overhead to get there is substantial.
+
+Testsigma handles web, mobile, and API testing in one platform with AI-generated tests from plain English. CRED reached 90% regression coverage across their platform and runs 5x faster.
+
+Worth a quick demo. What day works?<button class="copy-btn" onclick="copyField('body-33',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-33" onchange="setStatus(33,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:95 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="Electronic Arts">
+<div class="company-header">
+  <div class="company-dot" style="background:#ff4747"></div>
+  <div class="company-name">Electronic Arts</div>
+  <div class="company-count">6 contacts</div>
+  <div class="perso-badge">★★★ High</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P5" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="divya sathish"
+     data-company="electronic arts">
+  <div class="card-header">
+    <div class="card-id">#34</div>
+    <div style="flex:1">
+      <div class="card-name">Divya Sathish</div>
+      <div class="card-title">Development Director, Software QA</div>
+    </div>
+    <span class="badge" style="color:#ef4444;background:#fef2f2">HOT 🔥</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">11/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">dsathish@ea.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:91%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-34">Regression coverage across game titles?<button class="copy-btn" onclick="copyField('subj-34',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(94w · 2QM)</span></div>
+    <div class="copy-box" id="body-34">How does your team approach regression coverage when a new EA game release affects multiple shared platform components across titles?
+
+Shared platform changes create compounding regression risk at game studios: one engine update can cascade into dozens of title-level failures, and QA teams rarely have the bandwidth to run full coverage across every affected product before the launch window closes.
+
+Testsigma's AI-generated regression and parallel execution compress that cycle without expanding the QA team. CRED achieved 90% regression coverage across their platform while executing 5x faster.
+
+Worth a quick 20-minute walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-34',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-34" onchange="setStatus(34,this)">
+        <option value="Ready" selected>Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11">T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:94 · MQS:11/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P5" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="jiadong shen"
+     data-company="electronic arts">
+  <div class="card-header">
+    <div class="card-id">#35</div>
+    <div style="flex:1">
+      <div class="card-name">Jiadong Shen</div>
+      <div class="card-title">Development Director, QA</div>
+    </div>
+    <span class="badge" style="color:#ef4444;background:#fef2f2">HOT 🔥</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">11/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">jshen@ea.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:91%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-35">Game QA cycles still weeks long?<button class="copy-btn" onclick="copyField('subj-35',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(96w · 2QM)</span></div>
+    <div class="copy-box" id="body-35">How does your team manage QA cycle time when EA releases are shipping on global launch schedules across multiple platforms?
+
+Development directors at major game studios say the QA bottleneck is not finding bugs, it is running comprehensive coverage fast enough to meet ship dates. Manual testing does not scale with the complexity of modern titles, and automation is only useful if it runs reliably.
+
+Testsigma compresses QA cycles through parallel execution and AI-assisted test generation. Cisco reduced full regression from days to hours using the same parallel model.
+
+Worth a 20-minute conversation. What day works?<button class="copy-btn" onclick="copyField('body-35',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-35" onchange="setStatus(35,this)">
+        <option value="Ready" selected>Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11">T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:96 · MQS:11/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P5" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="ed yiu"
+     data-company="electronic arts">
+  <div class="card-header">
+    <div class="card-id">#36</div>
+    <div style="flex:1">
+      <div class="card-name">Ed Yiu</div>
+      <div class="card-title">Director, QA</div>
+    </div>
+    <span class="badge" style="color:#ef4444;background:#fef2f2">HOT 🔥</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">11/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">eyiu@ea.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:91%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-36">QA scaling with title launch pace?<button class="copy-btn" onclick="copyField('subj-36',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(96w · 2QM)</span></div>
+    <div class="copy-box" id="body-36">How does your QA organization scale coverage and execution speed when multiple EA titles are in active release cycles simultaneously?
+
+QA directors at large game publishers face a structural challenge: each title has its own surface area, but your team validates across all of them on overlapping timelines. The only lever most teams have is headcount, which does not scale.
+
+Testsigma's AI platform lets smaller teams maintain deep coverage through automated test generation and parallel execution. CRED achieved 90% regression coverage across their platform while executing 5x faster.
+
+Worth a quick 20-minute demo. What day works?<button class="copy-btn" onclick="copyField('body-36',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-36" onchange="setStatus(36,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:96 · MQS:11/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P5" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="william xie"
+     data-company="electronic arts">
+  <div class="card-header">
+    <div class="card-id">#37</div>
+    <div style="flex:1">
+      <div class="card-name">William Xie</div>
+      <div class="card-title">QA Development Director</div>
+    </div>
+    <span class="badge" style="color:#ef4444;background:#fef2f2">HOT 🔥</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">11/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">wixie@ea.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:91%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-37">Test automation keeping pace with builds?<button class="copy-btn" onclick="copyField('subj-37',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(97w · 2QM)</span></div>
+    <div class="copy-box" id="body-37">How does your automation strategy at EA hold up when build frequency increases as a title approaches launch?
+
+QA development directors describe the same launch-cycle pattern: test runs become critical exactly when flaky tests and broken locators are most likely to surface. The automation suite that worked well in development starts slowing the team down at the worst possible moment.
+
+Testsigma's AI self-healing keeps test suites stable automatically, even as builds change rapidly near launch. MediBuddy cut test maintenance overhead by 50% across 2,500 active tests using the same approach.
+
+Worth a quick walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-37',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-37" onchange="setStatus(37,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:97 · MQS:11/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P5" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="janel jolly"
+     data-company="electronic arts">
+  <div class="card-header">
+    <div class="card-id">#38</div>
+    <div style="flex:1">
+      <div class="card-name">Janel Jolly</div>
+      <div class="card-title">QA Development Director</div>
+    </div>
+    <span class="badge" style="color:#ef4444;background:#fef2f2">HOT 🔥</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">11/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">jjolly@ea.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:91%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-38">Cross-platform coverage still manual?<button class="copy-btn" onclick="copyField('subj-38',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(91w · 2QM)</span></div>
+    <div class="copy-box" id="body-38">How does your team handle regression coverage across EA's cross-platform releases when each platform has its own test surface and failure modes?
+
+QA development directors at game publishers say cross-platform coverage is the hardest part to automate reliably: platform-specific behaviors, different UI rendering, and varying API responses mean generic automation tools often miss the most important failures.
+
+Testsigma's unified platform handles web, mobile, and API testing from a single plain-English interface, making cross-platform coverage consistent. CRED reached 90% regression coverage while running 5x faster.
+
+Worth a 20-minute walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-38',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-38" onchange="setStatus(38,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:91 · MQS:11/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P5" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="simon crawford"
+     data-company="electronic arts">
+  <div class="card-header">
+    <div class="card-id">#39</div>
+    <div style="flex:1">
+      <div class="card-name">Simon Crawford</div>
+      <div class="card-title">QA Director</div>
+    </div>
+    <span class="badge" style="color:#ef4444;background:#fef2f2">HOT 🔥</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#3b82f6;background:#f8fafc">10/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">scrawford@ea.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:83%;background:#3b82f6"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-39">QA org scaling for global launches?<button class="copy-btn" onclick="copyField('subj-39',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(93w · 2QM)</span></div>
+    <div class="copy-box" id="body-39">How does your QA organization manage coverage and execution capacity when EA launches titles across multiple regions and platforms simultaneously?
+
+Global game launches compress QA timelines: regional builds, platform certification requirements, and live-service patches all run concurrently. QA directors at publishers your size say the hardest thing is proving coverage is complete when the test surface shifts daily.
+
+Testsigma's AI generates test coverage from plain English requirements and runs parallel execution across environments. Cisco moved full regression from days to hours using the same parallel model.
+
+Worth a quick conversation. What day works?<button class="copy-btn" onclick="copyField('body-39',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-39" onchange="setStatus(39,this)">
+        <option value="Ready" selected>Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11">T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:93 · MQS:10/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="HashiCorp">
+<div class="company-header">
+  <div class="company-dot" style="background:#7b42bc"></div>
+  <div class="company-name">HashiCorp</div>
+  <div class="company-count">2 contacts</div>
+  <div class="perso-badge">★ Std</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P3" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="adit shah"
+     data-company="hashicorp">
+  <div class="card-header">
+    <div class="card-id">#40</div>
+    <div style="flex:1">
+      <div class="card-name">Adit Shah</div>
+      <div class="card-title">Staff QA Security Engineer</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">adit.shah@hashicorp.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-40">Security QA keeping up with releases?<button class="copy-btn" onclick="copyField('subj-40',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(96w · 2QM)</span></div>
+    <div class="copy-box" id="body-40">How does your security QA function at HashiCorp verify coverage across the full product surface as Vault, Terraform, and Consul ship updates in parallel?
+
+Security-focused QA at an infrastructure platform carries unique pressure: a coverage gap is not just a product bug, it is a potential vulnerability. QA engineers say the challenge is deep coverage across multiple tools without siloing efforts per product.
+
+Testsigma's unified AI platform covers web, API, and backend testing from one interface. CRED achieved 90% regression coverage running 5x faster using the same approach.
+
+Worth a quick 20-minute walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-40',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-40" onchange="setStatus(40,this)">
+        <option value="Ready" selected>Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11">T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:96 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P4" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="devashish patel"
+     data-company="hashicorp">
+  <div class="card-header">
+    <div class="card-id">#41</div>
+    <div style="flex:1">
+      <div class="card-name">Devashish Patel</div>
+      <div class="card-title">Engineering Manager</div>
+    </div>
+    <span class="badge" style="color:#f97316;background:#fff7ed">WARM</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">devashish.patel@hashicorp.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-41">Test automation slowing release velocity?<button class="copy-btn" onclick="copyField('subj-41',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(95w · 2QM)</span></div>
+    <div class="copy-box" id="body-41">How does your engineering team at HashiCorp manage test automation coverage when infrastructure products like Vault and Terraform ship updates on independent cadences?
+
+Engineering managers at DevOps-first companies know the gap: teams move fast, but QA tooling was not designed for the same velocity. Automation coverage lags, confidence drops, and developers bypass QA gates to hit deadlines.
+
+Testsigma integrates natively with CI/CD pipelines and lets engineers write tests in plain English so QA keeps pace with development. CRED scaled to 90% regression coverage while running 5x faster.
+
+Worth a quick 20-minute conversation. What day works?<button class="copy-btn" onclick="copyField('body-41',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-41" onchange="setStatus(41,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:95 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="KKR">
+<div class="company-header">
+  <div class="company-dot" style="background:#1a1a2e"></div>
+  <div class="company-name">KKR</div>
+  <div class="company-count">2 contacts</div>
+  <div class="perso-badge">★ Std</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P2" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="josh klesel"
+     data-company="kkr">
+  <div class="card-header">
+    <div class="card-id">#42</div>
+    <div style="flex:1">
+      <div class="card-name">Josh Klesel</div>
+      <div class="card-title">Director Information Technology</div>
+    </div>
+    <span class="badge" style="color:#94a3b8;background:#f1f5f9">LOW</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">josh.klesel@kkr.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-42">Enterprise platform QA worth discussing?<button class="copy-btn" onclick="copyField('subj-42',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(97w · 2QM)</span></div>
+    <div class="copy-box" id="body-42">How does KKR's IT organization currently approach quality assurance for the internal platforms and investor-facing applications your team supports?
+
+Financial services IT directors managing enterprise applications say QA is often the last function to get modernized. Teams are still running manual regression or maintaining brittle automation suites built years ago, and the cost in delayed releases and production incidents adds up.
+
+Testsigma's AI platform replaces manual and legacy automation with plain-English test creation and AI self-healing maintenance. MediBuddy cut test maintenance by 50% across 2,500 active tests.
+
+Worth a quick conversation sometime this week. What day works?<button class="copy-btn" onclick="copyField('body-42',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-42" onchange="setStatus(42,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:97 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P2" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="kenny qi"
+     data-company="kkr">
+  <div class="card-header">
+    <div class="card-id">#43</div>
+    <div style="flex:1">
+      <div class="card-name">Kenny Qi</div>
+      <div class="card-title">Tech Engineering Manager</div>
+    </div>
+    <span class="badge" style="color:#94a3b8;background:#f1f5f9">LOW</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">kenny.qi@kkr.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-43">Tech platform testing keeping up?<button class="copy-btn" onclick="copyField('subj-43',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(93w · 2QM)</span></div>
+    <div class="copy-box" id="body-43">How does your tech engineering team at KKR handle QA for internal and investor-facing platforms when release cycles accelerate?
+
+Financial services tech teams often inherit QA processes built for slower, waterfall-era delivery cycles. When the business wants faster releases but the test suite is fragile and slow, engineering managers end up owning the tension between speed and confidence in every sprint.
+
+Testsigma's AI-powered automation eliminates brittle test maintenance and compresses regression through parallel execution. Cisco compressed full regression from days to hours using the same model.
+
+Worth a 20-minute walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-43',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-43" onchange="setStatus(43,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:93 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="Datamatics">
+<div class="company-header">
+  <div class="company-dot" style="background:#e4002b"></div>
+  <div class="company-name">Datamatics</div>
+  <div class="company-count">3 contacts</div>
+  <div class="perso-badge">★★ Med</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P3" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="mohan raj"
+     data-company="datamatics">
+  <div class="card-header">
+    <div class="card-id">#44</div>
+    <div style="flex:1">
+      <div class="card-name">Mohan Raj</div>
+      <div class="card-title">QA Lead</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">mohan.j@digital.datamatics.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-44">Test creation still slowing delivery?<button class="copy-btn" onclick="copyField('subj-44',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(95w · 2QM)</span></div>
+    <div class="copy-box" id="body-44">How does your QA team at Datamatics manage test creation speed when client delivery timelines are tight across multiple concurrent engagements?
+
+IT services QA leads face the sharpest capacity problem: every new client engagement comes with a new test surface, and building automation from scratch each time is not sustainable. Most teams default to manual testing to hit dates.
+
+Testsigma's NLP-first platform creates automation from plain English, cutting setup time significantly per engagement. Nagra DTV reduced test creation time by 70% using the same approach across their platform.
+
+Worth a quick walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-44',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-44" onchange="setStatus(44,this)">
+        <option value="Ready" selected>Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11">T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:95 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P4" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="shilendra sharma"
+     data-company="datamatics">
+  <div class="card-header">
+    <div class="card-id">#45</div>
+    <div style="flex:1">
+      <div class="card-name">Shilendra Sharma</div>
+      <div class="card-title">QA Project Manager</div>
+    </div>
+    <span class="badge" style="color:#f97316;background:#fff7ed">WARM</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">shilendra.s@datamatics.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-45">QA delivery timelines still slipping?<button class="copy-btn" onclick="copyField('subj-45',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(96w · 2QM)</span></div>
+    <div class="copy-box" id="body-45">How does your team at Datamatics keep QA delivery on schedule when client projects have shifting requirements and tight automation deadlines?
+
+QA project managers at IT services firms say the most common slippage point is automation ramp time. Requirements change, automation must follow, and the gap between client expectations and actual delivery capacity creates real risk on every engagement.
+
+Testsigma's plain-English test creation and AI self-healing reduce both ramp time and ongoing maintenance burden. MediBuddy cut maintenance overhead by 50% across 2,500 active tests with the same platform.
+
+Worth a quick 20-minute demo. What day works?<button class="copy-btn" onclick="copyField('body-45',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-45" onchange="setStatus(45,this)">
+        <option value="Ready" selected>Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11">T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:96 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P3" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="poonam patil"
+     data-company="datamatics">
+  <div class="card-header">
+    <div class="card-id">#46</div>
+    <div style="flex:1">
+      <div class="card-name">Poonam Patil</div>
+      <div class="card-title">Project QA Lead</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">poonam_chaudhari@datamaticstech.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-46">Automation ramp time a bottleneck?<button class="copy-btn" onclick="copyField('subj-46',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(94w · 2QM)</span></div>
+    <div class="copy-box" id="body-46">How does your team handle automation ramp time when a new Datamatics project kicks off and needs coverage fast?
+
+Project QA leads in IT services face a constant setup problem: every project is new, automation must be built from scratch, and client timelines rarely leave room for thorough ramp. Teams that spin up coverage fast have a real delivery edge.
+
+Testsigma's NLP platform creates test automation from plain English descriptions with minimal setup overhead. Nagra DTV cut test creation time by 70% using the same approach.
+
+Worth a quick comparison call. What day works?<button class="copy-btn" onclick="copyField('body-46',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-46" onchange="setStatus(46,this)">
+        <option value="Ready" selected>Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11">T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:94 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+<div class="company-group" data-company="OneMain Financial">
+<div class="company-header">
+  <div class="company-dot" style="background:#b5151c"></div>
+  <div class="company-name">OneMain Financial</div>
+  <div class="company-count">2 contacts</div>
+  <div class="perso-badge">★ Std</div>
+</div>
+<div class="cards-grid">
+<div class="card" 
+     data-priority="P3" 
+     data-ab="A" 
+     data-status="Ready"
+     data-name="michelle crawford"
+     data-company="onemain financial">
+  <div class="card-header">
+    <div class="card-id">#47</div>
+    <div style="flex:1">
+      <div class="card-name">Michelle Crawford</div>
+      <div class="card-title">Quality Assurance Specialist</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#10b981;background:#ecfdf5">Grp A</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">michelle.crawford@omf.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-47">Consumer lending QA keeping pace?<button class="copy-btn" onclick="copyField('subj-47',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(96w · 2QM)</span></div>
+    <div class="copy-box" id="body-47">How does your QA team at OneMain Financial handle test coverage when lending platform updates touch loan origination, servicing, and member-facing applications simultaneously?
+
+Consumer lending platforms carry high compliance stakes: a coverage gap on loan calculation or disclosure logic is a regulatory exposure, not just a bug. Most QA specialists say keeping automation stable without maintenance eating the sprint is the hardest part.
+
+Testsigma's AI self-healing keeps test suites stable automatically when UI or API changes break locators. MediBuddy reduced test maintenance overhead by 50% across 2,500 active tests.
+
+Worth a quick conversation. What day works?<button class="copy-btn" onclick="copyField('body-47',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-47" onchange="setStatus(47,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:96 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+<div class="card" 
+     data-priority="P3" 
+     data-ab="B" 
+     data-status="Ready"
+     data-name="jessica harris"
+     data-company="onemain financial">
+  <div class="card-header">
+    <div class="card-id">#48</div>
+    <div style="flex:1">
+      <div class="card-name">Jessica Harris</div>
+      <div class="card-title">Quality Assurance Specialist</div>
+    </div>
+    <span class="badge" style="color:#3b82f6;background:#eff6ff">STD</span>
+    <span class="badge" style="color:#8b5cf6;background:#f5f3ff">Grp B</span>
+    <span class="badge" style="color:#10b981;background:#f8fafc">12/12</span>
+  </div>
+  <div class="card-body">
+    <div class="email-row">
+      <span class="verified">✓</span>
+      <span class="email-text">jessica.j.harris@omf.com</span>
+      <span style="color:var(--muted);font-size:.7rem">verified</span>
+    </div>
+    <div class="mqs-bar"><div class="mqs-fill" style="width:100%;background:#10b981"></div></div>
+    
+    <div class="field-label">Subject</div>
+    <div class="copy-box" id="subj-48">Lending platform QA scaling up?<button class="copy-btn" onclick="copyField('subj-48',this)">Copy</button></div>
+    
+    <div class="field-label">Body <span style="color:var(--muted);font-weight:400">(95w · 2QM)</span></div>
+    <div class="copy-box" id="body-48">How does your team manage regression coverage at OneMain when digital lending products release on compressed timelines?
+
+Consumer lending QA has to be thorough and fast simultaneously. Loan origination, payment processing, and portal changes all have compliance implications, and automation coverage that cannot keep up with the release cadence creates real regulatory risk.
+
+Testsigma's AI platform generates automated test coverage from plain English requirements and runs parallel regression to compress cycle time. Cisco moved full regression runs from days to hours using the same parallel execution approach.
+
+Worth a quick 20-minute walkthrough. What day works?<button class="copy-btn" onclick="copyField('body-48',this)">Copy</button></div>
+    
+    <div class="status-row">
+      <span class="status-label">Status:</span>
+      <select class="status-select" id="status-48" onchange="setStatus(48,this)">
+        <option value="Ready">Ready</option>
+        <option value="Enrolled">Enrolled ✓</option>
+        <option value="Skip">Skip ✗</option>
+        <option value="Replied">Replied 💬</option>
+        <option value="T1SentMar11" selected>T1 Sent Mar11 ✓</option>
+        <option value="Blocked">Blocked ✗</option>
+      </select>
+      <span style="flex:1"></span>
+      <span style="font-size:.7rem;color:var(--muted)">WC:95 · MQS:12/12</span>
+    </div>
+  </div>
+</div>
+</div></div>
+</div>
+
+<script>
+function copyField(id, btn) {
+  const el = document.getElementById(id);
+  const text = el.childNodes[0].textContent.trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+function setStatus(id, sel) {
+  const card = sel.closest('.card');
+  card.dataset.status = sel.value;
+  applyFilters();
+}
+
+function applyFilters() {
+  const fp = document.getElementById('fPriority').value;
+  const fab = document.getElementById('fAB').value;
+  const fs = document.getElementById('fStatus').value;
+  const fq = document.getElementById('fSearch').value.toLowerCase();
+  
+  document.querySelectorAll('.card').forEach(card => {
+    const show = (!fp || card.dataset.priority === fp)
+              && (!fab || card.dataset.ab === fab)
+              && (!fs || card.dataset.status === fs)
+              && (!fq || card.dataset.name.includes(fq) || card.dataset.company.includes(fq));
+    card.classList.toggle('hidden', !show);
+  });
+  
+  // Hide company groups with all cards hidden
+  document.querySelectorAll('.company-group').forEach(grp => {
+    const visible = [...grp.querySelectorAll('.card')].some(c => !c.classList.contains('hidden'));
+    grp.classList.toggle('hidden', !visible);
+  });
+}
+
+function resetFilters() {
+  document.getElementById('fPriority').value = '';
+  document.getElementById('fAB').value = '';
+  document.getElementById('fStatus').value = '';
+  document.getElementById('fSearch').value = '';
+  applyFilters();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+
+BATCH 5A EXTRACTION REPORT
+==========================
+
+Source File: /sessions/confident-laughing-ritchie/mnt/Work/prospect-outreach-5a-2026-02-26.html
+Generated: 2026-02-27
+
+EXTRACTION SUMMARY
+==================
+
+Total Prospects Extracted: 25
+
+Priority Distribution:
+- Priority 5 (Hot): 3
+- Priority 4 (Warm): 10
+- Priority 3 (Standard): 12
+
+A/B Group Distribution:
+- Group A: 13
+- Group B: 12
+
+Email Availability:
+- With Email: 0
+- No Email: 25
+
+Message Completion:
+- All 3 touches present: 25
+
+DELIVERABLES CREATED
+====================
+
+1. batch_5a_prospects.json
+   - Structured JSON with all prospect data and messages
+   - Location: /sessions/confident-laughing-ritchie/mnt/Work/batch_5a_prospects.json
+
+2. BATCH_5A_PROSPECTS.csv
+   - CSV export for easy spreadsheet use
+   - Location: /sessions/confident-laughing-ritchie/mnt/Work/BATCH_5A_PROSPECTS.csv
+
+3. BATCH_5A_EXTRACTION.md
+   - Markdown summary with all prospects and messages
+   - Location: /sessions/confident-laughing-ritchie/mnt/Work/BATCH_5A_EXTRACTION.md
+
+HOW TO USE THIS DATA
+====================
+
+For InMail Sends:
+1. Copy prospect name, company, title, priority score, LinkedIn URL from the JSON
+2. Copy Touch 1 subject and body from the JSON
+3. Paste into Sales Navigator InMail composer
+4. Send manually (Claude drafts, Rob executes)
+
+For Follow-ups:
+- Touch 2 (Day 5): Use InMail Follow-up subject/body from JSON
+- Touch 3 (Day 10): Use Email subject/body from JSON (send via Gmail or Apollo)
+
+All messages are ready to use - no editing needed.
+
+DATA EXTRACTION NOTES
+====================
+
+- No email addresses were enriched in this batch (all prospects show "No email available")
+- All 25 prospects have complete 3-touch sequences ready to copy
+- LinkedIn URLs are formatted as direct profile links (http://www.linkedin.com/in/...)
+- Message bodies are clean text, ready for copy-paste
+- Priority scores range from 3-5 (best: 5, warmest: 4)
+- A/B test variable: Proof Point Style (Group A vs Group B)
+

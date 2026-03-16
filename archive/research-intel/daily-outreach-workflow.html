@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Outreach Workflow — Testsigma BDR</title>
+<style>
+  :root {
+    --bg: #0f1117; --surface: #1a1d27; --surface2: #242836; --border: #2e3345;
+    --text: #e4e7ef; --text2: #9ca3b8; --accent: #6C8EFF; --accent2: #4ECDC4;
+    --green: #4ade80; --yellow: #fbbf24; --red: #f87171; --purple: #a78bfa; --orange: #fb923c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); }
+
+  .header { background: linear-gradient(135deg, #1e2235 0%, #161927 100%); border-bottom: 1px solid var(--border); padding: 28px 32px; }
+  .header h1 { font-size: 24px; font-weight: 700; }
+  .header .trigger { margin-top: 8px; display: inline-block; background: var(--accent); color: #fff; padding: 6px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; font-family: monospace; }
+  .header .subtitle { color: var(--text2); font-size: 13px; margin-top: 10px; }
+
+  .main { max-width: 1100px; margin: 0 auto; padding: 32px; }
+
+  .overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 36px; }
+  .overview-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; }
+  .overview-card .number { font-size: 28px; font-weight: 700; color: var(--accent); }
+  .overview-card .label { font-size: 12px; color: var(--text2); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .phase { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 24px; overflow: hidden; }
+  .phase-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px; cursor: pointer; user-select: none; }
+  .phase-header:hover { background: var(--surface2); }
+  .phase-num { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .p1 .phase-num { background: var(--accent); }
+  .p2 .phase-num { background: var(--green); }
+  .p3 .phase-num { background: var(--yellow); color: #1a1d27; }
+  .p4 .phase-num { background: var(--purple); }
+  .p5 .phase-num { background: var(--orange); }
+  .phase-title { font-size: 17px; font-weight: 700; }
+  .phase-meta { font-size: 12px; color: var(--text2); }
+  .phase-time { margin-left: auto; font-size: 13px; color: var(--text2); background: var(--bg); padding: 4px 12px; border-radius: 12px; white-space: nowrap; }
+  .phase-chevron { color: var(--text2); font-size: 18px; transition: transform 0.2s; }
+  .phase.open .phase-chevron { transform: rotate(90deg); }
+
+  .phase-body { display: none; padding: 0 24px 24px; border-top: 1px solid var(--border); }
+  .phase.open .phase-body { display: block; padding-top: 20px; }
+
+  .step { display: flex; gap: 14px; margin-bottom: 16px; }
+  .step-num { width: 28px; height: 28px; border-radius: 8px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--text2); flex-shrink: 0; margin-top: 2px; }
+  .step-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .step-content p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+  .step-tools { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .tool-tag { font-size: 11px; padding: 2px 8px; border-radius: 6px; background: rgba(108,142,255,0.1); color: var(--accent); border: 1px solid rgba(108,142,255,0.2); }
+
+  .output-box { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-top: 16px; }
+  .output-box h5 { font-size: 12px; text-transform: uppercase; color: var(--accent2); letter-spacing: 0.5px; margin-bottom: 8px; }
+  .output-box p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  .decision-box { background: rgba(251,191,36,0.05); border: 1px solid rgba(251,191,36,0.2); border-radius: 10px; padding: 16px; margin-top: 16px; }
+  .decision-box h5 { font-size: 12px; text-transform: uppercase; color: var(--yellow); letter-spacing: 0.5px; margin-bottom: 8px; }
+  .decision-box p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  .trigger-section { background: var(--surface); border: 2px solid var(--accent); border-radius: 14px; padding: 28px; margin-bottom: 36px; }
+  .trigger-section h2 { font-size: 18px; margin-bottom: 12px; }
+  .trigger-list { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+  .trigger-phrase { background: var(--bg); border: 1px solid var(--accent); color: var(--accent); padding: 8px 18px; border-radius: 24px; font-family: monospace; font-size: 14px; font-weight: 600; }
+  .trigger-desc { font-size: 13px; color: var(--text2); line-height: 1.7; }
+
+  .timeline { display: flex; gap: 4px; margin-bottom: 36px; align-items: stretch; }
+  .tl-block { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 10px; text-align: center; min-width: 0; }
+  .tl-block .tl-time { font-size: 11px; color: var(--text2); margin-bottom: 4px; }
+  .tl-block .tl-name { font-size: 12px; font-weight: 600; }
+  .tl-block.active { border-color: var(--accent); background: rgba(108,142,255,0.08); }
+
+  .goals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 36px; }
+  .goal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .goal-card h4 { font-size: 14px; margin-bottom: 8px; }
+  .goal-card .target { font-size: 22px; font-weight: 700; color: var(--green); }
+  .goal-card .context { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+  .conditions-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+  .conditions-table th { text-align: left; font-size: 12px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .conditions-table td { font-size: 13px; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  .conditions-table tr:last-child td { border-bottom: none; }
+
+  h2.section-title { font-size: 18px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Daily Outreach Workflow</h1>
+  <div class="trigger">"run the daily"</div>
+  <div class="subtitle">One phrase triggers the full pipeline: intel scan, reply processing, follow-up drafts, new prospects, and daily deliverable.</div>
+</div>
+
+<div class="main">
+
+  <div class="trigger-section">
+    <h2>Trigger Phrases</h2>
+    <div class="trigger-list">
+      <span class="trigger-phrase">run the daily</span>
+      <span class="trigger-phrase">daily run</span>
+      <span class="trigger-phrase">morning run</span>
+      <span class="trigger-phrase">start outreach</span>
+      <span class="trigger-phrase">run outreach</span>
+    </div>
+    <div class="trigger-desc">
+      Any of these phrases tells Claude to execute the full 5-phase daily outreach workflow autonomously. Claude reads CLAUDE.md for context, scans all connected tools (Gmail, Calendar, Apollo, batch trackers), builds everything, and presents the daily deliverable for your review. You review, approve, and execute sends manually.
+    </div>
+  </div>
+
+  <h2 class="section-title">Daily Targets</h2>
+  <div class="goals-grid">
+    <div class="goal-card">
+      <h4>Weekly Send Target</h4>
+      <div class="target">20-25</div>
+      <div class="context">Across all touch types (InMail, Email)</div>
+    </div>
+    <div class="goal-card">
+      <h4>Daily Touch 2/3 Queue</h4>
+      <div class="target">5-10</div>
+      <div class="context">Follow-ups for prospects hitting Day 5 or Day 10</div>
+    </div>
+    <div class="goal-card">
+      <h4>New Prospects per Batch</h4>
+      <div class="target">20-25</div>
+      <div class="context">When credits allow, 1-2 new batches per week</div>
+    </div>
+    <div class="goal-card">
+      <h4>Reply Rate Target</h4>
+      <div class="target">28.7%</div>
+      <div class="context">Based on historical 1,326 conversation analysis</div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Timeline (Typical Day)</h2>
+  <div class="timeline">
+    <div class="tl-block"><div class="tl-time">5 min</div><div class="tl-name">Intel Scan</div></div>
+    <div class="tl-block"><div class="tl-time">10-20 min</div><div class="tl-name">Replies</div></div>
+    <div class="tl-block"><div class="tl-time">20-30 min</div><div class="tl-name">Follow-Ups</div></div>
+    <div class="tl-block"><div class="tl-time">60-90 min</div><div class="tl-name">New Pipeline</div></div>
+    <div class="tl-block"><div class="tl-time">10 min</div><div class="tl-name">Deliverable</div></div>
+  </div>
+
+  <h2 class="section-title">Workflow Phases</h2>
+
+  <!-- PHASE 1 -->
+  <div class="phase p1 open" onclick="this.classList.toggle('open')">
+    <div class="phase-header">
+      <div class="phase-num">1</div>
+      <div>
+        <div class="phase-title">Intel Scan</div>
+        <div class="phase-meta">Pipeline state, replies, calendar, credit budget</div>
+      </div>
+      <div class="phase-time">~5 min</div>
+      <div class="phase-chevron">&#9654;</div>
+    </div>
+    <div class="phase-body">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Read Pipeline State</h4><p>Load CLAUDE.md for DNC list, active warm leads, send totals, and InMail credit count. Read latest batch tracker files to get all send dates and current statuses.</p><div class="step-tools"><span class="tool-tag">CLAUDE.md</span><span class="tool-tag">Batch Trackers</span></div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Check for Replies</h4><p>Search Gmail for replies from prospects (search: "to:robert.gorham@testsigma.com" with recent date filter). Check for InMail reply notifications. Flag any new replies for Phase 2 processing.</p><div class="step-tools"><span class="tool-tag">Gmail MCP</span></div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Check Calendar</h4><p>Pull today's calendar events. Flag any meetings with prospects (meeting prep needed). Note blocked time windows for send timing.</p><div class="step-tools"><span class="tool-tag">Google Calendar MCP</span></div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Calculate Follow-Up Queue</h4><p>From all batch send dates, identify which prospects hit Day 5 (Touch 2 InMail due) or Day 10 (Touch 3 Email due) today. Build the follow-up work queue for Phase 3.</p><div class="step-tools"><span class="tool-tag">Batch Trackers</span><span class="tool-tag">Date Math</span></div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><h4>Credit Budget Check</h4><p>Report current InMail credit count. Calculate how many credits are needed today (Touch 2s use credits, Touch 3 emails don't). Flag if credits are low (&lt;10 remaining).</p><div class="step-tools"><span class="tool-tag">LinkedIn</span></div></div></div>
+      <div class="output-box"><h5>Phase 1 Output</h5><p>Intel summary: reply count, follow-up queue (Touch 2s due, Touch 3s due), today's calendar, credit budget, any warm lead updates, and pipeline totals.</p></div>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="phase p2" onclick="this.classList.toggle('open')">
+    <div class="phase-header">
+      <div class="phase-num">2</div>
+      <div>
+        <div class="phase-title">Reply Processing</div>
+        <div class="phase-meta">Classify, draft responses, tag in tracker</div>
+      </div>
+      <div class="phase-time">~10-20 min</div>
+      <div class="phase-chevron">&#9654;</div>
+    </div>
+    <div class="phase-body">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Classify Each Reply</h4><p>Read the full reply text. Classify into one of 8 types: Positive (11.3%), Polite (34.5%), Negative (14.5%), Referral (8.2%), Has Tool (2.6%), Timing (2.4%), Curiosity (0.8%), Other (25.0%). Log the classification.</p><div class="step-tools"><span class="tool-tag">Gmail MCP</span><span class="tool-tag">Reply Playbook</span></div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Draft Responses</h4><p>For each reply, draft a response following the Reply Handling Playbook: Positive → bridge to meeting with calendar times. Referral → thank referrer + research referred person + draft outreach. Negative → log reason, check re-engagement eligibility. Polite → follow up with value. Curiosity → answer directly with one proof point, bridge to meeting.</p><div class="step-tools"><span class="tool-tag">Reply Playbook</span><span class="tool-tag">Proof Points</span></div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Meeting Booking (if Positive)</h4><p>If prospect is interested, check Rob's calendar for available slots. Suggest 2-3 times (prefer lunch window). Draft a short meeting confirmation. Generate Meeting Prep Card from existing research.</p><div class="step-tools"><span class="tool-tag">Google Calendar MCP</span></div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Present for Approval</h4><p>Show Rob all reply drafts with classification, original message context, and recommended response. Wait for approval before any sends.</p></div></div>
+      <div class="decision-box"><h5>Decision Point</h5><p>If zero replies found, skip to Phase 3. Reply processing always takes priority over new outreach — warm leads are 10x more valuable than cold sends.</p></div>
+      <div class="output-box"><h5>Phase 2 Output</h5><p>Reply drafts (copy-paste ready), reply tags for batch tracker update, meeting prep cards for any bookings, referral research for any referrals.</p></div>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="phase p3" onclick="this.classList.toggle('open')">
+    <div class="phase-header">
+      <div class="phase-num">3</div>
+      <div>
+        <div class="phase-title">Follow-Up Queue</div>
+        <div class="phase-meta">Touch 2 InMails (Day 5) and Touch 3 Emails (Day 10)</div>
+      </div>
+      <div class="phase-time">~20-30 min</div>
+      <div class="phase-chevron">&#9654;</div>
+    </div>
+    <div class="phase-body">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Identify Day 5 Prospects (Touch 2)</h4><p>From the follow-up queue calculated in Phase 1, pull all prospects whose Touch 1 was sent 5+ days ago and haven't replied. Load their original Touch 1 message and research notes.</p><div class="step-tools"><span class="tool-tag">Batch Trackers</span></div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Draft Touch 2 InMails</h4><p>For each Day 5 prospect: Use a DIFFERENT angle and proof point than Touch 1. Keep it 40-70 words. Reference that you reached out before ("Circling back quick...") but keep it light. Add one new piece of value. End with softer but specific close tied to new proof point. Run QA Gate.</p><div class="step-tools"><span class="tool-tag">C2 Style</span><span class="tool-tag">QA Gate</span><span class="tool-tag">Proof Points</span></div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Identify Day 10 Prospects (Touch 3)</h4><p>Pull prospects whose Touch 1 was sent 10+ days ago, Touch 2 was sent 5+ days ago, and they haven't replied. Must have a verified email address from Apollo enrichment.</p><div class="step-tools"><span class="tool-tag">Batch Trackers</span><span class="tool-tag">Apollo</span></div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Draft Touch 3 Emails</h4><p>For each Day 10 prospect: Fresh approach with a DIFFERENT proof point than Touches 1 and 2. 60-100 words. Slightly more direct tone than InMail. Subject line: 5-6 words, problem-framed. 1-2 question marks. "What day works" close. Run QA Gate.</p><div class="step-tools"><span class="tool-tag">C2 Style</span><span class="tool-tag">QA Gate</span><span class="tool-tag">Email SOP</span></div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><h4>Credit Budget Decision</h4><p>Touch 2 InMails use credits. Touch 3 Emails are free. If credits are low (&lt;10), prioritize Hot/Warm prospects for Touch 2 and skip Standard/Lower priority. All Touch 3 emails proceed regardless of credit balance.</p></div></div>
+      <div class="decision-box"><h5>Decision Point</h5><p>If follow-up queue is empty (no Day 5 or Day 10 prospects), skip to Phase 4. If queue is large (15+), this phase may take longer and Phase 4 may be shortened or deferred.</p></div>
+      <div class="output-box"><h5>Phase 3 Output</h5><p>Follow-up messages in copy-paste format, sorted by priority. Touch 2 InMails ready for Sales Navigator send. Touch 3 Emails ready for Gmail send. All messages QA Gate validated.</p></div>
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="phase p4" onclick="this.classList.toggle('open')">
+    <div class="phase-header">
+      <div class="phase-num">4</div>
+      <div>
+        <div class="phase-title">New Pipeline</div>
+        <div class="phase-meta">Source, research, draft, and build new batch</div>
+      </div>
+      <div class="phase-time">~60-90 min</div>
+      <div class="phase-chevron">&#9654;</div>
+    </div>
+    <div class="phase-body">
+      <div class="decision-box"><h5>Gate Check: Should We Build a New Batch Today?</h5><p><strong>YES if:</strong> Follow-up queue is light (&lt;10 follow-ups), InMail credits &gt;10, previous batch sends are 3+ days old, no unsent batches waiting for review.<br><strong>NO if:</strong> Heavy follow-up queue (&gt;15), InMail credits &lt;5, unsent batch waiting for review (Batch 8), or Rob already has a full day of sends. In this case, skip to Phase 5.</p></div>
+      <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Pre-Brief (Feedback Loop)</h4><p>Read ALL previous batch tracker files. Generate 5-line "What's Working" summary: best persona, best proof point, best vertical, best pattern, and one thing to stop doing. This goes at the top of the new batch file.</p><div class="step-tools"><span class="tool-tag">Batch Trackers</span></div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Source Prospects</h4><p>Open Sales Navigator saved searches. Click "Show X new results" for fresh prospects only. Apply ICP filters: Manager+, QA/testing titles, US-based, software companies. Check for Buyer Intent signals. Target the Prospect Mix Ratio (10-12 Manager/Lead, 4-6 Director, 3-5 Architect, 2-3 Buyer Intent, max 2 VP).</p><div class="step-tools"><span class="tool-tag">Sales Navigator</span><span class="tool-tag">Chrome Browser</span></div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Apollo Enrichment</h4><p>For each prospect: Search Apollo contacts (dedup check) → Enrich person (email, phone, title) → Enrich organization (tech stack, industry, size, funding). Log all data. This feeds proof point selection and objection mapping.</p><div class="step-tools"><span class="tool-tag">Apollo MCP</span></div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><h4>3-Source Research (Parallel)</h4><p>Launch parallel Task agents for company research. Source 1: LinkedIn profile (Sales Nav) — QA scope, team signals, tech stack, career trajectory. Source 2: Apollo data — confirmed tech stack, industry, growth signals. Source 3: Company external — product pages, engineering blog, job postings, press releases. Tag each finding with which message element it feeds.</p><div class="step-tools"><span class="tool-tag">Sales Navigator</span><span class="tool-tag">Apollo MCP</span><span class="tool-tag">Web Search</span><span class="tool-tag">Task Agents</span></div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><h4>C2 Message Drafting</h4><p>For each prospect, execute Pre-Draft Steps 1-4: Single Theme Rule, QA-Relevant Research Filter, Plain Language Pass, Close Construction. Draft all 3 touches (Touch 1 InMail 80-120w, Touch 2 InMail 40-70w, Touch 3 Email 60-100w). Each touch uses a different proof point. Assign priority score, personalization score, A/B group, predicted objection.</p><div class="step-tools"><span class="tool-tag">C2 Structure</span><span class="tool-tag">Proof Points</span><span class="tool-tag">Objection Map</span></div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-content"><h4>QA Gate (14 Checks)</h4><p>Run full QA Gate on every message: Hard Constraint scan (HC1-HC10), MQS computation (must be &ge;9/12), word count check, question count check, structural dedup, evidence check, angle rotation, phrase toxicity scan, CTA validation, hyphen audit, paragraph spacing, close dedup, research depth check. Auto-rewrite any failures.</p><div class="step-tools"><span class="tool-tag">QA Gate Checklist</span></div></div></div>
+      <div class="step"><div class="step-num">7</div><div class="step-content"><h4>Build HTML Tracker</h4><p>Generate the batch HTML file with all prospect cards, copy-paste messages, priority scores, tags, A/B groups, predicted objections, and prep cards. Save to Work folder with naming convention: outreach-batch[N]-unsent.html</p><div class="step-tools"><span class="tool-tag">HTML Generator</span></div></div></div>
+      <div class="output-box"><h5>Phase 4 Output</h5><p>New batch HTML tracker (20-25 prospects), sorted by priority score. All messages pass QA Gate (MQS &ge;9/12). Pre-Brief at top. A/B test defined. Ready for Rob's review.</p></div>
+    </div>
+  </div>
+
+  <!-- PHASE 5 -->
+  <div class="phase p5" onclick="this.classList.toggle('open')">
+    <div class="phase-header">
+      <div class="phase-num">5</div>
+      <div>
+        <div class="phase-title">Daily Deliverable</div>
+        <div class="phase-meta">Package everything, update logs, preview tomorrow</div>
+      </div>
+      <div class="phase-time">~10 min</div>
+      <div class="phase-chevron">&#9654;</div>
+    </div>
+    <div class="phase-body">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Daily Briefing Summary</h4><p>Generate a consolidated summary: replies processed, follow-ups drafted, new prospects sourced, credit budget status, pipeline totals. Format as a scannable 2-minute briefing.</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Update Daily Work Log</h4><p>Add entries to daily-work-log.html for everything done in this session. Categories: outreach, docs, research, system, planning, meeting, incident, milestone.</p><div class="step-tools"><span class="tool-tag">Daily Log</span></div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Tomorrow Preview</h4><p>Calculate what's coming tomorrow: which prospects hit Day 5/10, any warm lead follow-ups due, any re-engagement triggers, suggested send timing.</p></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Action Items for Rob</h4><p>Clear, numbered list of what Rob needs to do manually: approve and send follow-ups, approve and send new batch, respond to any positive replies, book any meetings. Priority-sorted with time estimates.</p></div></div>
+      <div class="output-box"><h5>Phase 5 Output: The Daily Deliverable</h5><p>One message to Rob containing: (1) Intel summary, (2) Reply drafts with approval prompts, (3) Follow-up messages ready to send, (4) New batch tracker link, (5) Credit budget, (6) Tomorrow preview, (7) Numbered action items. Everything Rob needs to execute the day's outreach in one place.</p></div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Adaptive Logic (Smart Decisions)</h2>
+  <p style="color:var(--text2); font-size:13px; margin-bottom:16px; line-height:1.7;">The workflow adapts automatically based on current pipeline state. Claude reads the situation and adjusts which phases run and how much time each gets.</p>
+
+  <table class="conditions-table">
+    <thead>
+      <tr><th>Condition</th><th>Adaptation</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>InMail credits &lt; 5</td><td>Skip new batch Touch 1s. Focus on Touch 3 emails (free) and reply processing. Flag for Rob to request more credits.</td></tr>
+      <tr><td>InMail credits &lt; 10</td><td>Only draft Touch 2 for Hot/Warm prospects. Defer Standard/Lower priority follow-ups.</td></tr>
+      <tr><td>Heavy reply day (5+ replies)</td><td>Extend Phase 2, shorten or defer Phase 4. Replies are higher value than new outreach.</td></tr>
+      <tr><td>No replies, light follow-up queue</td><td>Skip Phase 2, minimize Phase 3, maximize Phase 4 (build larger batch).</td></tr>
+      <tr><td>Unsent batch exists (e.g., Batch 8)</td><td>Phase 4 focuses on fixing and finalizing the unsent batch instead of sourcing new prospects.</td></tr>
+      <tr><td>Monday</td><td>Don't send Touch 1s today (22.9% reply rate). Focus on research, batch building, and scheduling sends for Tuesday-Thursday.</td></tr>
+      <tr><td>Thursday</td><td>Prioritize sends (42.1% reply rate). Maximize send volume today. Push research/building to Friday.</td></tr>
+      <tr><td>Meeting booked today</td><td>Add call prep to Phase 2. Generate Meeting Prep Card with discovery questions, proof points, and predicted objections.</td></tr>
+      <tr><td>Weekend / Saturday</td><td>Research and batch building only. No sends (save for Monday-Friday). Draft everything, queue for next business day.</td></tr>
+      <tr><td>Warm lead reply detected</td><td>Priority override: process warm lead FIRST, even before other replies. Same-day response target.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="section-title" style="margin-top:36px">Weekly Rhythm</h2>
+  <table class="conditions-table">
+    <thead>
+      <tr><th>Day</th><th>Primary Focus</th><th>Send Activity</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Monday</strong></td><td>Reply processing, batch building, research</td><td>Follow-up Touch 2/3 only. No new Touch 1s (worst send day: 22.9%).</td></tr>
+      <tr><td><strong>Tuesday</strong></td><td>New batch sends + follow-ups</td><td>Touch 1 sends (29.6% reply rate). Touch 2/3 follow-ups. Target: 12-1 PM.</td></tr>
+      <tr><td><strong>Wednesday</strong></td><td>Follow-ups + reply processing</td><td>Touch 2/3 follow-ups. Monitor Tue sends for quick replies. Research for Thu batch.</td></tr>
+      <tr><td style="color:var(--green)"><strong>Thursday</strong></td><td>PEAK SEND DAY — maximize volume</td><td>New Touch 1 batch (42.1% reply rate). All follow-ups. 12-1 PM send window.</td></tr>
+      <tr><td><strong>Friday</strong></td><td>Follow-ups + batch prep for next week</td><td>Touch 2/3 follow-ups (29.6%). Build next week's batch. Weekly review.</td></tr>
+      <tr><td style="color:var(--text2)"><strong>Weekend</strong></td><td>Research, batch building, doc work</td><td>No sends. Draft everything, queue for Monday/Tuesday.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="section-title" style="margin-top:36px">Outreach Velocity Goals</h2>
+  <table class="conditions-table">
+    <thead>
+      <tr><th>Metric</th><th>Weekly Target</th><th>Monthly Target</th><th>Current Pace</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>New Touch 1 Sends</td><td>20-25</td><td>80-100</td><td>148 in ~2 weeks (ahead of pace)</td></tr>
+      <tr><td>Touch 2 Follow-Ups</td><td>15-20</td><td>60-80</td><td>Starting Mar 3 (first Day 5 cycle)</td></tr>
+      <tr><td>Touch 3 Emails</td><td>10-15</td><td>40-60</td><td>Starting Mar 8 (first Day 10 cycle)</td></tr>
+      <tr><td>Replies Processed</td><td>5-7</td><td>20-30</td><td>Pending (first replies expected Mar 1-3)</td></tr>
+      <tr><td>Meetings Booked</td><td>1-2</td><td>4-8</td><td>Pending</td></tr>
+      <tr><td>New Batches Built</td><td>1-2</td><td>4-6</td><td>8 batches built in 2 weeks (ahead)</td></tr>
+    </tbody>
+  </table>
+
+</div>
+
+<script>
+// Open all phases by default on load
+// (They start closed except Phase 1)
+</script>
+
+</body>
+</html>

@@ -1,0 +1,209 @@
+BATCH 7 — PROSPECT QUICK REFERENCE (25 Total)
+Generated Feb 27, 2026
+
+ARCHITECTS (8) — Highest reply rate personas (39.3%)
+════════════════════════════════════════════════════════════════════════════
+1. Sasa Lazarevic | QA Architect/Director | OneSource Virtual | Sarasota, FL
+   Email: slazarevic@onesourcevirtual.com
+   Focus: Workday API test maintenance
+   Vertical: SaaS | Employees: 880
+   Personalization Score: 3
+
+2. Joseph Douglas | Senior QA Architect | Kuvare Holdings | West Monroe, LA
+   Email: jdouglas@kuvare.com
+   Focus: Modernizing legacy insurance QA
+   Vertical: Insurance | Employees: 500
+   Personalization Score: 3
+
+3. Chandan Singh | QA Architect and Lead | American Fidelity | Oklahoma City, OK
+   Email: (Not available)
+   Focus: Benefits platform test automation
+   Vertical: Insurance | Employees: 2300
+   Personalization Score: 3
+
+4. Gil Taub | Advanced Lead QA Architect | ISN | Allen, TX
+   Email: gtaub@isn.com
+   Focus: Contractor compliance testing at scale
+   Vertical: SaaS | Employees: 700
+   Personalization Score: 3
+
+5. Satya Harish | QA Automation Architect/Lead | Mr. Cooper | Westfield, IN
+   Email: (Not available)
+   Focus: Mortgage core system migration testing
+   Vertical: FinServ | Employees: 5900
+   Personalization Score: 3
+
+6. Santiago Rodriguez | Senior QA Architect | Blue Yonder | College Park, MD
+   Email: santiago.rodriguez@blueyonder.com
+   Focus: Supply chain integration test cycles
+   Vertical: SaaS | Employees: 8400
+   Personalization Score: 3
+
+7. Uma Pallapolu | QA Automation Lead/Architect | Cotiviti | Atlanta, GA
+   Email: uma.pallapolu@cotiviti.com
+   Focus: Analytics platform compliance testing
+   Vertical: Healthcare | Employees: 5500
+   Personalization Score: 3
+
+8. Priyadarshini Komala | Lead QA Automation Architect | Omnicell | (No location)
+   Email: priyadarshini.komala@omnicell.com
+   Focus: Medical device software regression cycles
+   Vertical: Healthcare | Employees: 3700
+   Personalization Score: 3
+
+
+DIRECTORS (4) — Budget authority personas (26.0%)
+════════════════════════════════════════════════════════════════════════════
+9. Luis Sanchez | Senior Director, QA Engineering | Drata | San Diego, CA
+   Email: luis@drata.com
+   Focus: Automation scaling during Drata's growth
+   Vertical: SaaS | Employees: 610
+   Personalization Score: 3
+
+10. Joyce McColley | Senior Director Quality Assurance | Worldpay | Round Rock, TX
+    Email: joyce.maynard@worldpay.com
+    Focus: Payment processing regression testing
+    Vertical: FinTech | Employees: 9600
+    Personalization Score: 3
+
+11. Taylor Hayes | Sr. Director of Quality Assurance | QGenda | Atlanta, GA
+    Email: taylor.hayes@qgenda.com
+    Focus: Workforce scheduling platform QA scaling
+    Vertical: SaaS | Employees: 790
+    Personalization Score: 3
+
+12. Tracy Grooms | Sr. Director of Quality Assurance | Buildertrend | Omaha, NE
+    Email: tracy.grooms@buildertrend.com
+    Focus: Construction platform test maintenance
+    Vertical: SaaS | Employees: 820
+    Personalization Score: 3
+
+
+MANAGERS (12) — High-volume reply personas (26.8%)
+════════════════════════════════════════════════════════════════════════════
+13. Jason Schwichtenberg | QA Manager / Sr QA Lead | WebMD | Bolingbrook, IL
+    Email: jschwichtenberg@webmd.net
+    Focus: High-traffic health platform testing
+    Vertical: Healthcare | Employees: 3100
+
+14. Konstantin Diachenko | QA Manager | Paymentus | Charlotte, NC
+    Email: kdiachenko@paymentus.com
+    Focus: Bill payment processing regression
+    Vertical: FinTech | Employees: 1400
+
+15. Edwina Nowicki | QA Manager | Toast | Cambridge, MA
+    Email: (Not available)
+    Focus: POS platform release velocity testing
+    Vertical: SaaS | Employees: 5700
+
+16. Jasmin Loucks | QA Manager | CPI Card Group | Aurora, CO
+    Email: jloucks@cpicardgroup.com
+    Focus: Card platform digital testing
+    Vertical: FinTech | Employees: 1500
+
+17. Melissa Boston | QA Manager | Velera | Zephyrhills, FL
+    Email: melissa.boston@velera.com
+    Focus: Transaction scale regression testing
+    Vertical: FinTech | Employees: 5000
+
+18. Eric Hutson | QA Manager | hims & hers | Phoenix, AZ
+    Email: (Not available)
+    Focus: Telehealth platform growth testing
+    Vertical: Healthcare | Employees: 2000
+
+19. Shikeela Hayes | QA Manager | NationsBenefits | Douglasville, GA
+    Email: shayes@nationsbenefits.com
+    Focus: Benefits platform configuration testing
+    Vertical: Healthcare | Employees: 1100
+
+20. Dhivya Gopalan | QA Manager | GetInsured | San Jose, CA
+    Email: dhivya.gopalan@getinsured.com
+    Focus: ACA marketplace test cycles
+    Vertical: Healthcare | Employees: 650
+
+21. Leonid Lopez-Duenas | QA Manager | Genoa Healthcare | San Francisco, CA
+    Email: llopez-duenas@genoahealthcare.com
+    Focus: Pharmacy-telehealth integration testing
+    Vertical: Healthcare | Employees: 2700
+
+22. Bhargavi Potti | Quality Assurance Manager | HealthStream | Nashville, TN
+    Email: bhargavi.potti@healthstream.com
+    Focus: Learning platform module consolidation
+    Vertical: SaaS | Employees: 1100
+
+23. Terrence Adams | Quality Assurance Manager | GoodLeap | Austin, TX
+    Email: tadams@loanpal.com
+    Focus: Point-of-sale financing testing
+    Vertical: FinTech | Employees: 1300
+
+24. Markus Parker | Quality Assurance Manager | Inmar Intelligence | Winston-Salem, NC
+    Email: markus.parker@inmar.com
+    Focus: Commerce data pipeline testing
+    Vertical: SaaS | Employees: 3100
+
+25. Carlos Rodrigues | Quality Assurance Manager | Harris Computer | Warwick, RI
+    Email: crodrigues@harriscomputer.com
+    Focus: Government system integration testing
+    Vertical: SaaS | Employees: 2900
+
+
+VERTICAL SUMMARY
+════════════════════════════════════════════════════════════════════════════
+SaaS (7):           Sasa, Gil, Luis, Taylor, Tracy, Edwina, Bhargavi, Markus
+Healthcare (8):     Uma, Priyadarshini, Jason, Eric, Shikeela, Dhivya, Leonid
+FinTech (6):        Satya, Joyce, Konstantin, Jasmin, Melissa, Terrence
+Insurance (2):      Joseph, Chandan
+Other (2):          Santiago (Supply Chain), Carlos (Government)
+
+
+PROOF POINTS BY VERTICAL
+════════════════════════════════════════════════════════════════════════════
+Insurance (2):
+  - Hansard: 8 weeks → 5 weeks (regression cycle reduction)
+  - Sanofi: 3 days → 80 minutes (compliance testing acceleration)
+
+Healthcare (8):
+  - Medibuddy: 2,500 tests, 50% maintenance reduction
+  - Sanofi: 3 days → 80 minutes (regulated product regression)
+
+FinTech (6):
+  - CRED: 90% automation coverage, 5X faster execution
+
+SaaS (7):
+  - Nagra DTV: 2,500 tests across complex integrations, 4X faster
+  - CRED: 90% automation coverage, 5X faster execution
+
+Other:
+  - Santiago: Nagra DTV (supply chain focus)
+  - Carlos: Hansard (government/legacy focus)
+
+
+SEND SEQUENCE RECOMMENDATION
+════════════════════════════════════════════════════════════════════════════
+High Priority (Architects, newest in role, strongest signals):
+Day 1: Sasa, Joseph, Chandan, Gil, Satya (5 sends, space 3 min apart)
+Day 2: Santiago, Uma, Priyadarshini, Luis, Joyce (5 sends)
+Day 3: Taylor, Tracy, Jason, Konstantin, Edwina (5 sends)
+Day 4: Jasmin, Melissa, Eric, Shikeela, Dhivya (5 sends)
+Day 5: Leonid, Bhargavi, Terrence, Markus, Carlos (5 sends)
+
+LinkedIn safety: Max 8/day, space 3 minutes apart
+Optimal send time: 12-1 PM local time (56.5% reply rate)
+Optimal send day: Thursday (42.1%)
+
+
+NEXT STEPS
+════════════════════════════════════════════════════════════════════════════
+1. Open prospect-outreach-7-2026-02-27.html in browser
+2. Review all 25 prospects in the table
+3. Click rows to expand and review research summary
+4. Copy messages and send via LinkedIn Sales Navigator (manual)
+5. Update status/reply tags after each send
+6. Track first replies (expected by day 2-3)
+7. Follow up with Touch 2 (InMail) on day 5
+8. Send Touch 3 (Email) on day 10 for prospects with available email
+
+Expected reply rate: 28.7% overall (7-8 replies from this batch)
+Best persona reply rate: Architects at 39.3%
+
+════════════════════════════════════════════════════════════════════════════

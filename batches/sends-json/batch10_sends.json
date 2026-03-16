@@ -1,0 +1,114 @@
+[
+  {
+    "id": "6904a84eea986d00191ba7f1",
+    "num": 1,
+    "name": "Avani Vaidya",
+    "email": "avani.vaidya@cvshealth.com",
+    "subject": "Avani's QA coverage at CVS Health",
+    "body": "Hi Avani,\n\nManaging QE at a health platform like CVS usually means your coverage backlog grows faster than your team can build new tests. Is the gap between what's covered and what's shipping something you're actively trying to close?\n\nCRED was dealing with the same coverage gap and reached 90% regression coverage, 5x faster on Testsigma, without adding headcount. Their team stopped manually writing test cases for every new feature.\n\nAt CVS Health's scale, uncovered pharmacy and digital health workflows can hold up releases across every sprint. Is closing that coverage gap a priority for your team right now?\n\nRob"
+  },
+  {
+    "id": "65b65a521a070102ea51e374",
+    "num": 2,
+    "name": "Swapna Bitra",
+    "email": "swapna.bitra@cvshealth.com",
+    "subject": "Swapna's test maintenance at CVS Health",
+    "body": "Hi Swapna,\n\nBeing an SDET lead at CVS usually means a growing share of each sprint goes to fixing broken tests rather than building new coverage. Is test maintenance eating more of your team's capacity than it should?\n\nMedibuddy was dealing with the same maintenance drain and scaled to 2,500 automated tests on Testsigma while cutting maintenance by 50%. Their team stopped manually patching locators every time the UI changed.\n\nAt CVS Health's scale, that maintenance overhead slows every release cycle. Is reducing test maintenance load something your team is actively working on?\n\nRob"
+  },
+  {
+    "id": "65b659a81a070101ae52c83b",
+    "num": 3,
+    "name": "Tarun Sharma",
+    "email": "tarun.sharma@cvshealth.com",
+    "subject": "Tarun's regression cycle at CVS Health",
+    "body": "Hi Tarun,\n\nQA leads at large health systems usually find that regression cycles stretch as product surfaces multiply across pharmacy, benefits, and patient-facing platforms. Is your team running multi-day regression before every release window?\n\nHansard was dealing with the same regression cycle problem and cut from 8 weeks to 5 on Testsigma, through parallel execution and automated test repair. Their team stopped blocking releases on exhaustive manual test passes.\n\nAt CVS Health's scale, a slow regression cycle adds delays across every sprint. Is shrinking that window something your team is actively working on?\n\nRob"
+  },
+  {
+    "id": "65b65a021a070101ae52c962",
+    "num": 4,
+    "name": "Divya Paul",
+    "email": "divya.paul@cvshealth.com",
+    "subject": "Divya's test brittleness at CVS Health",
+    "body": "Hi Divya,\n\nQA leads at health platforms like CVS usually find that UI changes upstream break downstream tests faster than the team can fix them. Is your team spending more time chasing broken tests than shipping new coverage?\n\nCisco was dealing with the same brittleness problem and cut regression runtime by 35% on Testsigma, without adding engineers. Their team stopped manually patching broken locators after every sprint.\n\nAt CVS Health's scale, brittle tests create compounding drag on every release. Is test brittleness something your team is actively trying to get ahead of?\n\nRob"
+  },
+  {
+    "id": "68add76d2c0dd60001dc078c",
+    "num": 5,
+    "name": "Usman Khan",
+    "email": "usman.khan@citizensbank.com",
+    "subject": "Usman's regression cycle at Citizens Bank",
+    "body": "Hi Usman,\n\nLeading QA automation at a bank like Citizens usually means a large regression suite and tight release windows. Is the time to run a full regression cycle becoming a constraint on how fast your team can ship?\n\nHansard was dealing with the same regression cycle problem and cut from 8 weeks to 5 on Testsigma, through parallel execution and automated test repair. Their team stopped blocking releases on slow manual runs.\n\nAt Citizens Bank's scale, a compressed release window makes long regression cycles especially costly. Is cutting that cycle time something your team is actively working on?\n\nRob"
+  },
+  {
+    "id": "692c569cb621bb0001522410",
+    "num": 6,
+    "name": "Mehul Savalia",
+    "email": "mehul.savalia@citizensbank.com",
+    "subject": "Mehul's QA coverage at Citizens Bank",
+    "body": "Hi Mehul,\n\nQA leads at financial services firms usually find that expanding coverage across a growing product surface takes more manual effort than the team can sustain. Is your team falling behind on coverage for new features as the roadmap accelerates?\n\nCRED was dealing with the same coverage gap and reached 90% regression coverage, 5x faster on Testsigma, without hiring more engineers. Their team stopped writing code-based tests that only senior engineers could create.\n\nAt Citizens Bank's scale, coverage gaps in core banking workflows carry real risk. Is closing that gap something your team is actively working on?\n\nRob"
+  },
+  {
+    "id": "69b73c3f1f42de001557b84a",
+    "num": 8,
+    "name": "Minu Prabhakaran",
+    "email": "minu.prabhakaran@dish.com",
+    "subject": "Minu's test maintenance at DISH Network",
+    "body": "Hi Minu,\n\nQA managers at media and streaming companies usually find that test maintenance grows alongside the product surface, as web, app, and device coverage all need ongoing upkeep. Is maintenance eating more of your team's sprint than actual test creation?\n\nMedibuddy was dealing with the same maintenance drain and scaled to 2,500 automated tests on Testsigma while cutting maintenance by 50%. Their team stopped manually fixing locators every time the interface changed.\n\nAt DISH's scale, that maintenance load compounds across platforms and release cycles. Is reducing test maintenance something your QA team is actively working on?\n\nRob"
+  },
+  {
+    "id": "69b73bd01f42de00112d6d12",
+    "num": 9,
+    "name": "Jacob Wyman",
+    "email": "jake.wyman@dish.com",
+    "subject": "Jacob's SQA coverage at DISH Network",
+    "body": "Hi Jacob,\n\nSQA engineering managers at media companies usually face the challenge of building coverage across a fast-moving product portfolio without proportionally scaling the team. Is your coverage keeping pace with what the engineering org is shipping?\n\nA Fortune 100 tech company was dealing with the same coverage gap and tripled test coverage on Testsigma in under four months, without adding QA headcount. Their team stopped being the bottleneck on feature releases.\n\nAt DISH's scale, falling behind on coverage slows every downstream release. Is closing that coverage gap something your SQA team is actively working on?\n\nRob"
+  },
+  {
+    "id": "69b73bd21f42de00112d6d1a",
+    "num": 10,
+    "name": "Roger Tonneman",
+    "email": "roger.tonneman@dish.com",
+    "subject": "Roger's regression cycle at DISH Network",
+    "body": "Hi Roger,\n\nSenior QA managers at media companies usually find that full regression cycles stretch as the product surface expands, while the pressure to release faster only increases. Is your regression cycle a consistent constraint on release timelines?\n\nCRED was dealing with the same regression cycle problem and reached 90% coverage running 5x faster on Testsigma, without expanding the team. Their team stopped letting slow test cycles hold up production releases.\n\nAt DISH's scale, a slow regression cycle blocks releases across every product line. Is shrinking that cycle something your team is actively trying to get ahead of?\n\nRob"
+  },
+  {
+    "id": "69b73bd41f42de001557b816",
+    "num": 11,
+    "name": "Shikha Jayant",
+    "email": "jayants@dnb.com",
+    "subject": "Shikha's regression cycle at Dun &amp; Bradstreet",
+    "body": "Hi Shikha,\n\nSoftware QA managers at data-heavy platforms usually find that regression cycles stretch as more APIs, web surfaces, and data workflows are added. Is running a full regression cycle before each release taking longer than your team can afford?\n\nHansard was dealing with the same regression cycle problem and cut from 8 weeks to 5 on Testsigma, through parallel execution and automated test repair. Their team stopped blocking releases on exhaustive manual test passes.\n\nAt D&B's scale, slow regression adds compounding delays across every product release. Is shrinking that window something your team is actively working on?\n\nRob"
+  },
+  {
+    "id": "69b73bd51f42de001557b81e",
+    "num": 12,
+    "name": "Collins Chellaswamy",
+    "email": "chellaswamyc@dnb.com",
+    "subject": "Collins's QA coverage at Dun &amp; Bradstreet",
+    "body": "Hi Collins,\n\nSenior QA managers at multi-product platforms like D&B usually find that coverage breadth can't keep pace with what engineering is shipping across product lines. Is your team consistently falling behind on coverage for new features?\n\nCRED was dealing with the same coverage gap and reached 90% regression coverage, 5x faster on Testsigma, without adding engineers. Their team stopped relying on only senior engineers to write new test cases.\n\nAt D&B's scale, coverage gaps across multiple product lines mean quality risks compound quietly. Is expanding coverage without expanding the team something your practice is working on?\n\nRob"
+  },
+  {
+    "id": "67887b650a8721000111da37",
+    "num": 13,
+    "name": "Brendan McCarthy",
+    "email": "mccarthyb@dnb.com",
+    "subject": "Brendan's coverage gap at Dun &amp; Bradstreet",
+    "body": "Hi Brendan,\n\nSenior QA managers at enterprise data platforms usually find coverage can't keep up with a fast-moving roadmap, especially when the QA team is smaller than the engineering org. Is your coverage consistently falling behind what's shipping?\n\nA Fortune 100 tech company was dealing with the same coverage gap and tripled test coverage on Testsigma in under four months, without adding QA headcount. Their team stopped treating coverage as something that waited for headcount to grow.\n\nAt D&B's scale, that gap can slow releases across every product line. Is closing the coverage gap a priority for your quality engineering team?\n\nRob"
+  },
+  {
+    "id": "69b73bd77b9ccd00193ed12c",
+    "num": 15,
+    "name": "Dawn McCartha",
+    "email": "dmccartha@emblemhealth.com",
+    "subject": "Dawn's regression cycle at EmblemHealth",
+    "body": "Hi Dawn,\n\nTesting managers at health plan companies usually carry long regression cycles, especially when coverage spans member applications, claims systems, and compliance workflows. Is your team running multi-day regression before every release window?\n\nHansard was dealing with the same regression cycle problem and cut from 8 weeks to 5 on Testsigma, through parallel execution and automated test repair. Their team stopped holding releases until every manual pass completed.\n\nAt EmblemHealth's scale, a slow regression cycle creates pressure on compliance-sensitive release timelines. Is shrinking that cycle something your testing team is actively working on?\n\nRob"
+  },
+  {
+    "id": "69b73bd97b9ccd00193ed134",
+    "num": 18,
+    "name": "Praveen Gali",
+    "email": "praveen.gali@safelite.com",
+    "subject": "Praveen's QE coverage at Safelite",
+    "body": "Hi Praveen,\n\nSenior QE leaders at service-operations companies like Safelite usually find that coverage across customer-facing apps and scheduling platforms can't keep pace with new features. Is your coverage consistently behind what the product team is shipping?\n\nCRED was dealing with the same coverage gap and reached 90% regression coverage, 5x faster on Testsigma, without adding engineers. Their team stopped manually writing test cases for every new feature and shifted to plain English instead.\n\nAt Safelite's scale, uncovered scheduling or customer experience workflows carry real release risk. Is closing that coverage gap something your QE team is actively working on?\n\nRob"
+  }
+]

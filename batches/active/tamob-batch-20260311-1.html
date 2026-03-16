@@ -1,0 +1,2637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAM Outbound Batch — 2026-03-11</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #1e293b; }
+  .header { background: linear-gradient(135deg, #1e3a5f 0%, #1e40af 100%); color: white; padding: 24px 32px; }
+  .header h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 4px; }
+  .header .meta { font-size: 0.85rem; opacity: 0.85; }
+  .summary-bar { background: #1e293b; color: white; padding: 12px 32px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .summary-bar .label { font-size: 0.8rem; opacity: 0.7; margin-right: 4px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.72rem; font-weight: 600; color: white; margin: 1px; white-space: nowrap; }
+  .badge-outline { background: transparent !important; border: 1px solid #94a3b8; color: #94a3b8 !important; }
+  .ab-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; }
+  .ab-a { background: #dbeafe; color: #1d4ed8; }
+  .ab-b { background: #fce7f3; color: #9d174d; }
+  .controls { padding: 16px 32px; background: white; border-bottom: 1px solid #e2e8f0; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .controls label { font-size: 0.8rem; font-weight: 600; color: #64748b; }
+  .controls select { padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem; background: white; }
+  .table-section { padding: 16px 32px 0; }
+  .table-section h2 { font-size: 1rem; font-weight: 700; margin-bottom: 12px; color: #334155; }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 24px; }
+  th { background: #1e293b; color: white; padding: 10px 12px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; text-align: left; }
+  td { padding: 9px 12px; font-size: 0.85rem; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
+  tr:hover td { background: #f8fafc; }
+  .cards-section { padding: 0 32px 32px; }
+  .cards-section h2 { font-size: 1rem; font-weight: 700; margin: 20px 0 12px; color: #334155; padding-top: 8px; border-top: 2px solid #e2e8f0; }
+  .account-group { margin-bottom: 8px; }
+  .account-header { font-size: 1.05rem; font-weight: 800; padding: 12px 0 6px; color: #1e293b; display: flex; align-items: center; gap: 10px; }
+  .card { background: white; border-radius: 10px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; transition: box-shadow 0.2s; }
+  .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+  .card-header { padding: 14px 18px 12px; background: #f8fafc; }
+  .card-title-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; flex-wrap: wrap; gap: 8px; }
+  .prospect-name { font-size: 1.1rem; font-weight: 700; color: #1e293b; }
+  .prospect-meta { font-size: 0.8rem; color: #64748b; margin-top: 2px; }
+  .prospect-email { font-size: 0.8rem; margin-top: 3px; }
+  .prospect-email a { color: #2563eb; text-decoration: none; }
+  .card-body { padding: 14px 18px; }
+  .section-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-top: 12px; margin-bottom: 4px; }
+  .section-label:first-child { margin-top: 0; }
+  .angle-text { font-size: 0.85rem; color: #475569; background: #f1f5f9; padding: 8px 10px; border-radius: 6px; border-left: 3px solid #6366f1; }
+  .proof-text { font-size: 0.85rem; color: #475569; background: #f0fdf4; padding: 8px 10px; border-radius: 6px; border-left: 3px solid #16a34a; }
+  .message-section { margin-top: 12px; }
+  .subject-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 10px 12px; font-size: 0.9rem; font-weight: 600; color: #1e40af; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .body-box { background: #fafafa; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-top: 8px; position: relative; }
+  .body-box pre { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.85rem; white-space: pre-wrap; line-height: 1.55; color: #1e293b; }
+  .copy-btn { background: #2563eb; color: white; border: none; padding: 5px 12px; border-radius: 5px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+  .copy-btn:hover { background: #1d4ed8; }
+  .copy-btn.copied { background: #16a34a; }
+  .body-box .copy-btn { position: absolute; top: 10px; right: 10px; }
+  .objection-section { margin-top: 12px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 10px 12px; }
+  .objection-box { font-size: 0.82rem; color: #78350f; }
+  .objection-response { color: #92400e; display: inline-block; margin-top: 4px; }
+  .status-select { padding: 4px 8px; border: 1px solid #cbd5e1; border-radius: 5px; font-size: 0.8rem; }
+  .hidden { display: none !important; }
+  .stats-row { display: flex; gap: 16px; flex-wrap: wrap; padding: 16px 32px; background: white; border-bottom: 1px solid #e2e8f0; }
+  .stat-box { text-align: center; }
+  .stat-num { font-size: 1.5rem; font-weight: 800; color: #1e3a5f; }
+  .stat-label { font-size: 0.72rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
+  @media (max-width: 768px) { .controls, .table-section, .cards-section { padding-left: 16px; padding-right: 16px; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>TAM Outbound — Wave 3 Batch</h1>
+  <div class="meta">tamob-batch-20260311-1 &bull; Created 2026-03-11 &bull; Apollo Sequence: TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e) &bull; Send from: robert.gorham@testsigma.com</div>
+</div>
+
+<div class="summary-bar">
+  <span class="label">ACCOUNTS:</span>
+  <span class="badge" style="background:#b45309;">L3Harris: 9</span> <span class="badge" style="background:#6366f1;">Yahoo: 7</span> <span class="badge" style="background:#0891b2;">Veradigm: 6</span> <span class="badge" style="background:#16a34a;">Georgia-Pacific: 5</span> <span class="badge" style="background:#059669;">Charlie Health: 4</span> <span class="badge" style="background:#7c3aed;">TELUS: 2</span> <span class="badge" style="background:#dc2626;">GE HealthCare: 2</span> 
+  <span style="margin-left:12px;" class="label">A/B:</span>
+  <span class="badge" style="background:#1d4ed8;">Group A: 17</span>
+  <span class="badge" style="background:#9d174d;">Group B: 18</span>
+  <span style="margin-left:12px;" class="label">TEST:</span>
+  <span style="font-size:0.8rem;color:#94a3b8;">Pain Hook: A=Maintenance angle / B=Coverage-gap angle</span>
+</div>
+
+<div class="stats-row">
+  <div class="stat-box"><div class="stat-num">35</div><div class="stat-label">Total Prospects</div></div>
+  <div class="stat-box"><div class="stat-num">7</div><div class="stat-label">Accounts</div></div>
+  <div class="stat-box"><div class="stat-num">12</div><div class="stat-label">MQS 12/12</div></div>
+  <div class="stat-box"><div class="stat-num">6</div><div class="stat-label">P4-P5 HOT</div></div>
+  <div class="stat-box"><div class="stat-num">8</div><div class="stat-label">P3 STD</div></div>
+  <div class="stat-box"><div class="stat-num">11</div><div class="stat-label">Deep Personalization</div></div>
+  <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">DNC Flags</div></div>
+  <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">Dedup Conflicts</div></div>
+</div>
+
+<div class="controls">
+  <label>Filter by Account:</label>
+  <select onchange="filterCards('account', this.value)">
+    <option value="">All Accounts</option>
+    <option value="Charlie Health">Charlie Health (4)</option><option value="GE HealthCare">GE HealthCare (2)</option><option value="Georgia-Pacific">Georgia-Pacific (5)</option><option value="L3Harris">L3Harris (9)</option><option value="TELUS">TELUS (2)</option><option value="Veradigm">Veradigm (6)</option><option value="Yahoo">Yahoo (7)</option>
+  </select>
+  <label>Priority:</label>
+  <select onchange="filterCards('priority', this.value)">
+    <option value="">All Priorities</option>
+    <option value="5">P5 HOT</option>
+    <option value="4">P4 WARM</option>
+    <option value="3">P3 STD</option>
+    <option value="2">P2 LOW</option>
+  </select>
+  <label>A/B Group:</label>
+  <select onchange="filterCards('ab', this.value)">
+    <option value="">Both Groups</option>
+    <option value="A">Group A (Maintenance)</option>
+    <option value="B">Group B (Coverage-gap)</option>
+  </select>
+  <label>MQS:</label>
+  <select onchange="filterCards('mqs', this.value)">
+    <option value="">All MQS</option>
+    <option value="12">12/12 only</option>
+    <option value="11">11+</option>
+  </select>
+  <button class="copy-btn" onclick="resetFilters()">Reset Filters</button>
+</div>
+
+<div class="table-section">
+  <h2>Prospect Overview (sorted by priority &darr;)</h2>
+  <table id="prospect-table">
+    <thead><tr>
+      <th>#</th><th>Name</th><th>Title</th><th>Account</th>
+      <th>Priority</th><th>Pers</th><th>MQS</th><th>A/B</th><th>Email</th>
+    </tr></thead>
+    <tbody><tr onclick="scrollToCard('T02')">
+      <td>1</td>
+      <td><a href="#card-T02" style="color:#1d4ed8;font-weight:600;">Stephanie Carlos</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director of Quality Assurance</td>
+      <td><span class="badge" style="background:#7c3aed;">TELUS</span></td>
+      <td><span class="badge" style="background:#dc2626;">P5 HOT</span></td>
+      <td style="font-size:0.85rem;">★★★</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 12/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">stephanie.carlos@telushealth.com</td>
+    </tr><tr onclick="scrollToCard('GE02')">
+      <td>2</td>
+      <td><a href="#card-GE02" style="color:#1d4ed8;font-weight:600;">Brooks Foley</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director of Quality Assurance Engineering</td>
+      <td><span class="badge" style="background:#dc2626;">GE HealthCare</span></td>
+      <td><span class="badge" style="background:#ea580c;">P4 WARM</span></td>
+      <td style="font-size:0.85rem;">★★★</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 12/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">brooks.foley@gehealthcare.com</td>
+    </tr><tr onclick="scrollToCard('GE01')">
+      <td>3</td>
+      <td><a href="#card-GE01" style="color:#1d4ed8;font-weight:600;">Chelsey Erickson</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Senior Director Quality Assurance</td>
+      <td><span class="badge" style="background:#dc2626;">GE HealthCare</span></td>
+      <td><span class="badge" style="background:#ea580c;">P4 WARM</span></td>
+      <td style="font-size:0.85rem;">★★★</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 12/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">chelsey.erickson@gehealthcare.com</td>
+    </tr><tr onclick="scrollToCard('GP05')">
+      <td>4</td>
+      <td><a href="#card-GP05" style="color:#1d4ed8;font-weight:600;">Felecia Brown</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Quality Engineering Leader</td>
+      <td><span class="badge" style="background:#16a34a;">Georgia-Pacific</span></td>
+      <td><span class="badge" style="background:#ea580c;">P4 WARM</span></td>
+      <td style="font-size:0.85rem;">★★★</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 12/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">felecia.brown@gapac.com</td>
+    </tr><tr onclick="scrollToCard('GP03')">
+      <td>5</td>
+      <td><a href="#card-GP03" style="color:#1d4ed8;font-weight:600;">Ryan Filpi</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director SW Eng Transformation</td>
+      <td><span class="badge" style="background:#16a34a;">Georgia-Pacific</span></td>
+      <td><span class="badge" style="background:#ea580c;">P4 WARM</span></td>
+      <td style="font-size:0.85rem;">★★★</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 12/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">ryan.filpi@gapac.com</td>
+    </tr><tr onclick="scrollToCard('T01')">
+      <td>6</td>
+      <td><a href="#card-T01" style="color:#1d4ed8;font-weight:600;">Christine Gamache</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">QA Director</td>
+      <td><span class="badge" style="background:#7c3aed;">TELUS</span></td>
+      <td><span class="badge" style="background:#ea580c;">P4 WARM</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 12/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">christine.gamache@telus.com</td>
+    </tr><tr onclick="scrollToCard('CH01')">
+      <td>7</td>
+      <td><a href="#card-CH01" style="color:#1d4ed8;font-weight:600;">Sampson Reider</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">VP of Engineering</td>
+      <td><span class="badge" style="background:#059669;">Charlie Health</span></td>
+      <td><span class="badge" style="background:#ca8a04;">P3 STD</span></td>
+      <td style="font-size:0.85rem;">★★★</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 12/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">sam.reider@charliehealth.com</td>
+    </tr><tr onclick="scrollToCard('GP01')">
+      <td>8</td>
+      <td><a href="#card-GP01" style="color:#1d4ed8;font-weight:600;">Brad Suderman</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director of Software Engineering</td>
+      <td><span class="badge" style="background:#16a34a;">Georgia-Pacific</span></td>
+      <td><span class="badge" style="background:#ca8a04;">P3 STD</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">brad.suderman@gapac.com</td>
+    </tr><tr onclick="scrollToCard('GP04')">
+      <td>9</td>
+      <td><a href="#card-GP04" style="color:#1d4ed8;font-weight:600;">Rafael Amorim</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">VP Software Engineering and Integration</td>
+      <td><span class="badge" style="background:#16a34a;">Georgia-Pacific</span></td>
+      <td><span class="badge" style="background:#ca8a04;">P3 STD</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">rafael.amorim@gapac.com</td>
+    </tr><tr onclick="scrollToCard('GP02')">
+      <td>10</td>
+      <td><a href="#card-GP02" style="color:#1d4ed8;font-weight:600;">Tyler Hart</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Vice President of Engineering</td>
+      <td><span class="badge" style="background:#16a34a;">Georgia-Pacific</span></td>
+      <td><span class="badge" style="background:#ca8a04;">P3 STD</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">tyler.hart@gapac.com</td>
+    </tr><tr onclick="scrollToCard('V05')">
+      <td>11</td>
+      <td><a href="#card-V05" style="color:#1d4ed8;font-weight:600;">Bhanu Sunkara</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Manager - Software Quality Assurance</td>
+      <td><span class="badge" style="background:#0891b2;">Veradigm</span></td>
+      <td><span class="badge" style="background:#ca8a04;">P3 STD</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">bhanu.sunkara@allscripts.com</td>
+    </tr><tr onclick="scrollToCard('V03')">
+      <td>12</td>
+      <td><a href="#card-V03" style="color:#1d4ed8;font-weight:600;">Sachin Joshi</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Sr Quality Engineering Manager</td>
+      <td><span class="badge" style="background:#0891b2;">Veradigm</span></td>
+      <td><span class="badge" style="background:#ca8a04;">P3 STD</span></td>
+      <td style="font-size:0.85rem;">★★★</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 12/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">sachin.joshi@veradigm.com</td>
+    </tr><tr onclick="scrollToCard('V01')">
+      <td>13</td>
+      <td><a href="#card-V01" style="color:#1d4ed8;font-weight:600;">Ted Barker</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director, Quality Engineering</td>
+      <td><span class="badge" style="background:#0891b2;">Veradigm</span></td>
+      <td><span class="badge" style="background:#ca8a04;">P3 STD</span></td>
+      <td style="font-size:0.85rem;">★★★</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 12/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">ted.barker@veradigm.com</td>
+    </tr><tr onclick="scrollToCard('Y01')">
+      <td>14</td>
+      <td><a href="#card-Y01" style="color:#1d4ed8;font-weight:600;">Sarah Huang</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">QA Director</td>
+      <td><span class="badge" style="background:#6366f1;">Yahoo</span></td>
+      <td><span class="badge" style="background:#ca8a04;">P3 STD</span></td>
+      <td style="font-size:0.85rem;">★★★</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 12/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">sarah.huang@yahooinc.com</td>
+    </tr><tr onclick="scrollToCard('CH04')">
+      <td>15</td>
+      <td><a href="#card-CH04" style="color:#1d4ed8;font-weight:600;">Ashwin Vaswani</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Senior Engineering Manager</td>
+      <td><span class="badge" style="background:#059669;">Charlie Health</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★★</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 12/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">ashwin.vaswani@charliehealth.com</td>
+    </tr><tr onclick="scrollToCard('CH02')">
+      <td>16</td>
+      <td><a href="#card-CH02" style="color:#1d4ed8;font-weight:600;">Madina Zabran</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director of Engineering</td>
+      <td><span class="badge" style="background:#059669;">Charlie Health</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">madina.zabran@charliehealth.com</td>
+    </tr><tr onclick="scrollToCard('CH03')">
+      <td>17</td>
+      <td><a href="#card-CH03" style="color:#1d4ed8;font-weight:600;">Madison Waterman</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Engineering Manager</td>
+      <td><span class="badge" style="background:#059669;">Charlie Health</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">madison.waterman@charliehealth.com</td>
+    </tr><tr onclick="scrollToCard('L09')">
+      <td>18</td>
+      <td><a href="#card-L09" style="color:#1d4ed8;font-weight:600;">David Street</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Advanced Quality Engineering Manager</td>
+      <td><span class="badge" style="background:#b45309;">L3Harris</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★★</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 12/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">david.street@l3harris.com</td>
+    </tr><tr onclick="scrollToCard('L04')">
+      <td>19</td>
+      <td><a href="#card-L04" style="color:#1d4ed8;font-weight:600;">Garrick Scott</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director, Software Engineering</td>
+      <td><span class="badge" style="background:#b45309;">L3Harris</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">garrick.scott@l3harris.com</td>
+    </tr><tr onclick="scrollToCard('L07')">
+      <td>20</td>
+      <td><a href="#card-L07" style="color:#1d4ed8;font-weight:600;">Mark Gates</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Quality Engineering Manager</td>
+      <td><span class="badge" style="background:#b45309;">L3Harris</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">mark.gates@l3harris.com</td>
+    </tr><tr onclick="scrollToCard('L03')">
+      <td>21</td>
+      <td><a href="#card-L03" style="color:#1d4ed8;font-weight:600;">Michael Cahill</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director Software Engineering</td>
+      <td><span class="badge" style="background:#b45309;">L3Harris</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">michael.cahill@l3harris.com</td>
+    </tr><tr onclick="scrollToCard('L06')">
+      <td>22</td>
+      <td><a href="#card-L06" style="color:#1d4ed8;font-weight:600;">Michael Stringer</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Software Engineering Director</td>
+      <td><span class="badge" style="background:#b45309;">L3Harris</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">michael.stringer@l3harris.com</td>
+    </tr><tr onclick="scrollToCard('L01')">
+      <td>23</td>
+      <td><a href="#card-L01" style="color:#1d4ed8;font-weight:600;">Nathan French</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director, Quality Engineering</td>
+      <td><span class="badge" style="background:#b45309;">L3Harris</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">nathan.french@l3harris.com</td>
+    </tr><tr onclick="scrollToCard('L02')">
+      <td>24</td>
+      <td><a href="#card-L02" style="color:#1d4ed8;font-weight:600;">Pete Grissom</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director of Software Engineering</td>
+      <td><span class="badge" style="background:#b45309;">L3Harris</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">pete.grissom@l3harris.com</td>
+    </tr><tr onclick="scrollToCard('L05')">
+      <td>25</td>
+      <td><a href="#card-L05" style="color:#1d4ed8;font-weight:600;">Rachel Fingeroth</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director of Software Engineering</td>
+      <td><span class="badge" style="background:#b45309;">L3Harris</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">rachel.fingeroth@l3harris.com</td>
+    </tr><tr onclick="scrollToCard('L08')">
+      <td>26</td>
+      <td><a href="#card-L08" style="color:#1d4ed8;font-weight:600;">Tracy Beloskur</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Quality Engineering Manager</td>
+      <td><span class="badge" style="background:#b45309;">L3Harris</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">tracy.beloskur@l3harris.com</td>
+    </tr><tr onclick="scrollToCard('V04')">
+      <td>27</td>
+      <td><a href="#card-V04" style="color:#1d4ed8;font-weight:600;">Aleck Gandel</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Manager Dev - Quality Engineering</td>
+      <td><span class="badge" style="background:#0891b2;">Veradigm</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">aleck.gandel@allscripts.com</td>
+    </tr><tr onclick="scrollToCard('V06')">
+      <td>28</td>
+      <td><a href="#card-V06" style="color:#1d4ed8;font-weight:600;">Manpreet Burmi</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Manager Dev - Quality Engineering</td>
+      <td><span class="badge" style="background:#0891b2;">Veradigm</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">manpreet.burmi@allscripts.com</td>
+    </tr><tr onclick="scrollToCard('V02')">
+      <td>29</td>
+      <td><a href="#card-V02" style="color:#1d4ed8;font-weight:600;">Matthew Bennett</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director of Engineering</td>
+      <td><span class="badge" style="background:#0891b2;">Veradigm</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">matthew.bennett@allscripts.com</td>
+    </tr><tr onclick="scrollToCard('Y02')">
+      <td>30</td>
+      <td><a href="#card-Y02" style="color:#1d4ed8;font-weight:600;">Ash Pedgaonkar</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director of Software Engineering</td>
+      <td><span class="badge" style="background:#6366f1;">Yahoo</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">ash@yahooinc.com</td>
+    </tr><tr onclick="scrollToCard('Y03')">
+      <td>31</td>
+      <td><a href="#card-Y03" style="color:#1d4ed8;font-weight:600;">Matthew Lauprete</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director of Software Engineering</td>
+      <td><span class="badge" style="background:#6366f1;">Yahoo</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">matthew.lauprete@yahooinc.com</td>
+    </tr><tr onclick="scrollToCard('Y05')">
+      <td>32</td>
+      <td><a href="#card-Y05" style="color:#1d4ed8;font-weight:600;">Raj Chopde</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director of Software Engineering</td>
+      <td><span class="badge" style="background:#6366f1;">Yahoo</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">rchopde@yahooinc.com</td>
+    </tr><tr onclick="scrollToCard('Y04')">
+      <td>33</td>
+      <td><a href="#card-Y04" style="color:#1d4ed8;font-weight:600;">Robert Israel</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director of Software Engineering</td>
+      <td><span class="badge" style="background:#6366f1;">Yahoo</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">robert.israel@yahooinc.com</td>
+    </tr><tr onclick="scrollToCard('Y07')">
+      <td>34</td>
+      <td><a href="#card-Y07" style="color:#1d4ed8;font-weight:600;">Sergii Simonov</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director of Software Engineering</td>
+      <td><span class="badge" style="background:#6366f1;">Yahoo</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-a">A</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">sergii.simonov@yahooinc.com</td>
+    </tr><tr onclick="scrollToCard('Y06')">
+      <td>35</td>
+      <td><a href="#card-Y06" style="color:#1d4ed8;font-weight:600;">Suchith Chandran</a></td>
+      <td style="font-size:0.8rem;color:#6b7280;">Director of Software Engineering</td>
+      <td><span class="badge" style="background:#6366f1;">Yahoo</span></td>
+      <td><span class="badge" style="background:#2563eb;">P2 LOW</span></td>
+      <td style="font-size:0.85rem;">★★☆</td>
+      <td><span class="badge" style="background:#16a34a;">MQS 11/12</span></td>
+      <td><span class="ab-badge ab-b">B</span></td>
+      <td style="font-size:0.8rem;color:#6b7280;">suchith@yahooinc.com</td>
+    </tr></tbody>
+  </table>
+</div>
+
+<div class="cards-section">
+  <h2>T1 Draft Cards — All 35 Prospects</h2>
+  
+<div class="card" id="card-T02" data-account="TELUS" data-priority="5" data-ab="B" data-mqs="12">
+  <div class="card-header" style="border-left: 5px solid #7c3aed;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#7c3aed;">TELUS</span>
+        <span class="badge" style="background:#dc2626;">P5 HOT</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 12/12</span>
+        <span class="badge badge-outline">Pers: ★★★</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('T02', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Stephanie Carlos</div>
+    <div class="prospect-meta">Director of Quality Assurance &bull; QC, Canada</div>
+    <div class="prospect-email"><a href="mailto:stephanie.carlos@telushealth.com">stephanie.carlos@telushealth.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">TELUS Health digital health platform → EHR + pharmacy + patient app integrations compound regression</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Healthcare tech — 50% regression reduction / multi-system clinical coverage</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Stephanie's QA coverage at TELUS Health
+        <button class="copy-btn" onclick="copyText(`Stephanie's QA coverage at TELUS Health`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Stephanie,
+
+Healthcare platforms have a specific test coverage burden: every release has to validate not just core functionality but downstream effects across integrated systems. When those integrations multiply, test maintenance compounds faster than coverage does. Is keeping regression current across TELUS Health's integrated systems something your team manages actively?
+
+One healthcare technology team we work with cut regression time by 50% while maintaining coverage across multiple integrated clinical systems.
+
+Thought it would be worth reaching out because TELUS Health's platform spans clinical and patient-facing products. What does your current approach to cross-system test coverage look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Stephanie,
+
+Healthcare platforms have a specific test coverage burden: every release has to validate not just core functionality but downstream effects across integrated systems. When those integrations multiply, test maintenance compounds faster than coverage does. Is keeping regression current across TELUS Health's integrated systems something your team manages actively?
+
+One healthcare technology team we work with cut regression time by 50% while maintaining coverage across multiple integrated clinical systems.
+
+Thought it would be worth reaching out because TELUS Health's platform spans clinical and patient-facing products. What does your current approach to cross-system test coverage look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"Healthcare compliance requirements are complex"</strong><br><span class="objection-response">↳ Totally fair. We work with several large healthcare IT teams. We offer on-prem, private cloud, and are SOC2 Type II + HIPAA certified. Happy to walk through the compliance story.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-GE02" data-account="GE HealthCare" data-priority="4" data-ab="B" data-mqs="12">
+  <div class="card-header" style="border-left: 5px solid #dc2626;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#dc2626;">GE HealthCare</span>
+        <span class="badge" style="background:#ea580c;">P4 WARM</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 12/12</span>
+        <span class="badge badge-outline">Pers: ★★★</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('GE02', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Brooks Foley</div>
+    <div class="prospect-meta">Director of Quality Assurance Engineering &bull; Cary, IL</div>
+    <div class="prospect-email"><a href="mailto:brooks.foley@gehealthcare.com">brooks.foley@gehealthcare.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">GE HealthCare scaling QA engineering → framework must support compliance AND stay maintainable</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Healthcare tech — compliance-grade regression / 50% maintenance reduction</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Brooks's QA engineering at GE HealthCare
+        <button class="copy-btn" onclick="copyText(`Brooks's QA engineering at GE HealthCare`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Brooks,
+
+Building a QA engineering function at a medical device software company means the framework has to support compliance-grade regression while staying maintainable as the product scope grows. At that intersection, test maintenance is usually where the overhead compounds. Is that something your team is managing actively?
+
+One healthcare technology team we work with maintained compliance-grade regression and cut test maintenance overhead by 50% as their product portfolio expanded.
+
+Thought it would be worth reaching out because GE HealthCare's been scaling its QA engineering function. What does your current approach to automation framework maintenance look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Brooks,
+
+Building a QA engineering function at a medical device software company means the framework has to support compliance-grade regression while staying maintainable as the product scope grows. At that intersection, test maintenance is usually where the overhead compounds. Is that something your team is managing actively?
+
+One healthcare technology team we work with maintained compliance-grade regression and cut test maintenance overhead by 50% as their product portfolio expanded.
+
+Thought it would be worth reaching out because GE HealthCare's been scaling its QA engineering function. What does your current approach to automation framework maintenance look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We need on-prem for regulated environments"</strong><br><span class="objection-response">↳ We support on-prem, private cloud, and hybrid deployments. SOC2 Type II and HIPAA certified. Several Fortune 500 healthcare teams run us behind their firewall. Happy to walk through the architecture.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-GE01" data-account="GE HealthCare" data-priority="4" data-ab="A" data-mqs="12">
+  <div class="card-header" style="border-left: 5px solid #dc2626;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#dc2626;">GE HealthCare</span>
+        <span class="badge" style="background:#ea580c;">P4 WARM</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 12/12</span>
+        <span class="badge badge-outline">Pers: ★★★</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('GE01', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Chelsey Erickson</div>
+    <div class="prospect-meta">Senior Director Quality Assurance &bull; Waukesha, WI</div>
+    <div class="prospect-email"><a href="mailto:chelsey.erickson@gehealthcare.com">chelsey.erickson@gehealthcare.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Medical device software → validated regression + documentation trail + release cadence balance</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Healthcare tech — compliance-grade regression / 3 days → 80 min</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Chelsey's QA strategy at GE HealthCare
+        <button class="copy-btn" onclick="copyText(`Chelsey's QA strategy at GE HealthCare`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Chelsey,
+
+Medical device software requires validated regression with a documentation trail that holds up to regulatory scrutiny. Maintaining that standard across a platform that spans imaging, diagnostics, and monitoring, without slowing release cycles, is a specific challenge. Is that balance something your team is actively managing?
+
+One healthcare technology team we work with maintained compliance-grade regression and cut regression time from 3 days to 80 minutes as their product portfolio expanded.
+
+Thought it would be worth reaching out because GE HealthCare's software portfolio is expanding post-spinoff. What does your approach to compliance-aware test coverage look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Chelsey,
+
+Medical device software requires validated regression with a documentation trail that holds up to regulatory scrutiny. Maintaining that standard across a platform that spans imaging, diagnostics, and monitoring, without slowing release cycles, is a specific challenge. Is that balance something your team is actively managing?
+
+One healthcare technology team we work with maintained compliance-grade regression and cut regression time from 3 days to 80 minutes as their product portfolio expanded.
+
+Thought it would be worth reaching out because GE HealthCare's software portfolio is expanding post-spinoff. What does your approach to compliance-aware test coverage look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We have regulated validation processes"</strong><br><span class="objection-response">↳ Completely understand. We work with several medical device and healthcare software teams with similar requirements. Happy to walk through how validation documentation integrates. SOC2 + HIPAA certified.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-GP05" data-account="Georgia-Pacific" data-priority="4" data-ab="A" data-mqs="12">
+  <div class="card-header" style="border-left: 5px solid #16a34a;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#16a34a;">Georgia-Pacific</span>
+        <span class="badge" style="background:#ea580c;">P4 WARM</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 12/12</span>
+        <span class="badge badge-outline">Pers: ★★★</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('GP05', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Felecia Brown</div>
+    <div class="prospect-meta">Quality Engineering Leader &bull; Atlanta, GA</div>
+    <div class="prospect-email"><a href="mailto:felecia.brown@gapac.com">felecia.brown@gapac.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">QE Leader at GP + mabl-vs-selenium visit signal = evaluating test automation options</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Manufacturing tech — 70% maintenance reduction / coverage expanded on growing portfolio</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Felecia's test automation at Georgia-Pacific
+        <button class="copy-btn" onclick="copyText(`Felecia's test automation at Georgia-Pacific`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Felecia,
+
+When software engineering capabilities grow quickly, QE teams often reach a point where the existing automation approach stops scaling. Frameworks built for a smaller portfolio require more upkeep than they return in coverage. Is evaluating test automation options something you're actively working through at Georgia-Pacific?
+
+One manufacturing technology team we work with cut test maintenance overhead by 70% and expanded coverage across a growing digital portfolio.
+
+Thought it would be worth reaching out because Georgia-Pacific's software build-out has been moving fast. What does your team's current test automation coverage approach look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Felecia,
+
+When software engineering capabilities grow quickly, QE teams often reach a point where the existing automation approach stops scaling. Frameworks built for a smaller portfolio require more upkeep than they return in coverage. Is evaluating test automation options something you're actively working through at Georgia-Pacific?
+
+One manufacturing technology team we work with cut test maintenance overhead by 70% and expanded coverage across a growing digital portfolio.
+
+Thought it would be worth reaching out because Georgia-Pacific's software build-out has been moving fast. What does your team's current test automation coverage approach look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We've been evaluating options already"</strong><br><span class="objection-response">↳ Good timing then. Happy to share what this manufacturing team prioritized in their eval — maintenance overhead reduction vs. coverage breadth vs. setup speed. Might be useful comparison data.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-GP03" data-account="Georgia-Pacific" data-priority="4" data-ab="A" data-mqs="12">
+  <div class="card-header" style="border-left: 5px solid #16a34a;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#16a34a;">Georgia-Pacific</span>
+        <span class="badge" style="background:#ea580c;">P4 WARM</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 12/12</span>
+        <span class="badge badge-outline">Pers: ★★★</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('GP03', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Ryan Filpi</div>
+    <div class="prospect-meta">Director SW Eng Transformation &bull; Alpharetta, GA</div>
+    <div class="prospect-email"><a href="mailto:ryan.filpi@gapac.com">ryan.filpi@gapac.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Software Transformation Director → legacy replacement + new platform = test maintenance peaks mid-transition</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Manufacturing tech — 70% maintenance reduction / modernization without pausing delivery</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Ryan's test automation at Georgia-Pacific
+        <button class="copy-btn" onclick="copyText(`Ryan's test automation at Georgia-Pacific`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Ryan,
+
+Software transformation at an industrial company creates a specific test coverage challenge: as legacy apps get replaced, the automation layer has to cover old and new simultaneously. That's usually when test maintenance overhead peaks. Is managing that coverage gap through the transformation something your team is navigating?
+
+One manufacturing technology team we work with cut test maintenance overhead by 70% during a similar application modernization without pausing delivery.
+
+Thought it would be worth reaching out because Georgia-Pacific's transformation pace is aggressive. What does your current approach to test automation coverage through the transition look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Ryan,
+
+Software transformation at an industrial company creates a specific test coverage challenge: as legacy apps get replaced, the automation layer has to cover old and new simultaneously. That's usually when test maintenance overhead peaks. Is managing that coverage gap through the transformation something your team is navigating?
+
+One manufacturing technology team we work with cut test maintenance overhead by 70% during a similar application modernization without pausing delivery.
+
+Thought it would be worth reaching out because Georgia-Pacific's transformation pace is aggressive. What does your current approach to test automation coverage through the transition look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"Transformation is the priority, not tooling"</strong><br><span class="objection-response">↳ Makes sense. The teams we see benefit most are those where test overhead is slowing the transformation itself. This team cut maintenance by 70% without pausing a single delivery milestone. Worth a quick look?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-T01" data-account="TELUS" data-priority="4" data-ab="A" data-mqs="12">
+  <div class="card-header" style="border-left: 5px solid #7c3aed;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#7c3aed;">TELUS</span>
+        <span class="badge" style="background:#ea580c;">P4 WARM</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 12/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('T01', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Christine Gamache</div>
+    <div class="prospect-meta">QA Director &bull; Montreal, QC, Canada</div>
+    <div class="prospect-email"><a href="mailto:christine.gamache@telus.com">christine.gamache@telus.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Large telecom multi-product portfolio → wide surface area, automation standards at scale</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Enterprise tech — 75% test maintenance reduction / expanded web + mobile + API coverage</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Christine's QA coverage at TELUS
+        <button class="copy-btn" onclick="copyText(`Christine's QA coverage at TELUS`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Christine,
+
+Running QA across a telecom portfolio of mobile, web portal, and digital services means covering a wide surface area while keeping automation standards consistent. At that scale, test maintenance is usually the central constraint. Is that balance something your team is actively managing?
+
+One enterprise technology team we work with cut test maintenance overhead by 75% while expanding coverage across web, mobile, and API layers.
+
+Thought it would be worth reaching out because TELUS operates across a wide range of digital products. What does your current approach to maintaining that coverage at scale look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Christine,
+
+Running QA across a telecom portfolio of mobile, web portal, and digital services means covering a wide surface area while keeping automation standards consistent. At that scale, test maintenance is usually the central constraint. Is that balance something your team is actively managing?
+
+One enterprise technology team we work with cut test maintenance overhead by 75% while expanding coverage across web, mobile, and API layers.
+
+Thought it would be worth reaching out because TELUS operates across a wide range of digital products. What does your current approach to maintaining that coverage at scale look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We already use SmartBear tools"</strong><br><span class="objection-response">↳ Totally fair. A few teams we work with had SmartBear as well. The gap they kept hitting was test maintenance overhead when UI changed. Worth a 20-minute comparison on that specific point?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-CH01" data-account="Charlie Health" data-priority="3" data-ab="B" data-mqs="12">
+  <div class="card-header" style="border-left: 5px solid #059669;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#059669;">Charlie Health</span>
+        <span class="badge" style="background:#ca8a04;">P3 STD</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 12/12</span>
+        <span class="badge badge-outline">Pers: ★★★</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('CH01', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Sampson Reider</div>
+    <div class="prospect-meta">VP of Engineering &bull; San Francisco, CA</div>
+    <div class="prospect-email"><a href="mailto:sam.reider@charliehealth.com">sam.reider@charliehealth.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Charlie Health scaling fast → shipping velocity outpaces test coverage</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Digital health — 2,500 tests / 50% maintenance reduction during rapid growth</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Sam's quality coverage at Charlie Health
+        <button class="copy-btn" onclick="copyText(`Sam's quality coverage at Charlie Health`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Sam,
+
+Scaling an engineering org fast creates a predictable tension: shipping velocity outpaces test coverage, and the gap between what's built and what's validated grows quietly. Is keeping test coverage in sync with your team's pace something Charlie Health is actively working through?
+
+One digital health team we work with automated 2,500 tests and cut test maintenance by 50% during a period of rapid engineering growth.
+
+Thought it would be worth reaching out because Charlie Health's been investing significantly in engineering infrastructure. Is test coverage automation part of what your Core Platform team owns?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at healthcare technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Sam,
+
+Scaling an engineering org fast creates a predictable tension: shipping velocity outpaces test coverage, and the gap between what's built and what's validated grows quietly. Is keeping test coverage in sync with your team's pace something Charlie Health is actively working through?
+
+One digital health team we work with automated 2,500 tests and cut test maintenance by 50% during a period of rapid engineering growth.
+
+Thought it would be worth reaching out because Charlie Health's been investing significantly in engineering infrastructure. Is test coverage automation part of what your Core Platform team owns?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at healthcare technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We're a young engineering team still building infrastructure"</strong><br><span class="objection-response">↳ That's exactly when this matters most. The teams that built automation into the foundation early saved months of test debt cleanup later. This team did it during a similar growth phase. Worth a look?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-GP01" data-account="Georgia-Pacific" data-priority="3" data-ab="A" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #16a34a;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#16a34a;">Georgia-Pacific</span>
+        <span class="badge" style="background:#ca8a04;">P3 STD</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('GP01', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Brad Suderman</div>
+    <div class="prospect-meta">Director of Software Engineering &bull; Wichita, KS</div>
+    <div class="prospect-email"><a href="mailto:brad.suderman@gapac.com">brad.suderman@gapac.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Georgia-Pacific digital transformation scaling SW engineering → conventional automation may not scale</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Manufacturing tech — 70% test maintenance reduction / expanding portfolio</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Brad's automation stack at Georgia-Pacific
+        <button class="copy-btn" onclick="copyText(`Brad's automation stack at Georgia-Pacific`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Brad,
+
+As companies scale software engineering capabilities, the test automation question usually arrives at the same time: whether the framework that worked for the first few apps can hold up as the portfolio grows. Is evaluating test automation options something Georgia-Pacific is actively working through?
+
+One manufacturing technology team we work with cut test maintenance overhead by 70% while scaling coverage across an expanding software portfolio.
+
+Thought it would be worth reaching out because Georgia-Pacific's digital transformation is adding software engineering at a significant pace. What does your current approach to test automation coverage look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Brad,
+
+As companies scale software engineering capabilities, the test automation question usually arrives at the same time: whether the framework that worked for the first few apps can hold up as the portfolio grows. Is evaluating test automation options something Georgia-Pacific is actively working through?
+
+One manufacturing technology team we work with cut test maintenance overhead by 70% while scaling coverage across an expanding software portfolio.
+
+Thought it would be worth reaching out because Georgia-Pacific's digital transformation is adding software engineering at a significant pace. What does your current approach to test automation coverage look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We're still building out our software org"</strong><br><span class="objection-response">↳ That's actually the best time to get the automation layer right. Teams that set this up early avoid the test debt ramp. Happy to share what this manufacturing team did in their early build-out phase.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-GP04" data-account="Georgia-Pacific" data-priority="3" data-ab="B" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #16a34a;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#16a34a;">Georgia-Pacific</span>
+        <span class="badge" style="background:#ca8a04;">P3 STD</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('GP04', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Rafael Amorim</div>
+    <div class="prospect-meta">VP Software Engineering and Integration &bull; Atlanta, GA</div>
+    <div class="prospect-email"><a href="mailto:rafael.amorim@gapac.com">rafael.amorim@gapac.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">'Integration' in title → connecting new platforms to legacy + operational data = regression complexity peaks</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Manufacturing tech — 70% maintenance reduction / multi-system integration</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Rafael's integration testing at Georgia-Pacific
+        <button class="copy-btn" onclick="copyText(`Rafael's integration testing at Georgia-Pacific`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Rafael,
+
+When a manufacturer connects new platforms to legacy systems, integration testing is where regression complexity peaks. Each new integration point adds test cases, and maintaining coverage as the portfolio evolves creates significant overhead. Is that integration test maintenance challenge something your team manages?
+
+One manufacturing technology team we work with cut test maintenance overhead by 70% across a complex multi-system integration environment.
+
+Thought it would be worth reaching out because Georgia-Pacific's integration layer is one of the more complex parts of its transformation. What does your current approach to that coverage challenge look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Rafael,
+
+When a manufacturer connects new platforms to legacy systems, integration testing is where regression complexity peaks. Each new integration point adds test cases, and maintaining coverage as the portfolio evolves creates significant overhead. Is that integration test maintenance challenge something your team manages?
+
+One manufacturing technology team we work with cut test maintenance overhead by 70% across a complex multi-system integration environment.
+
+Thought it would be worth reaching out because Georgia-Pacific's integration layer is one of the more complex parts of its transformation. What does your current approach to that coverage challenge look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"Integration testing is handled by each team"</strong><br><span class="objection-response">↳ That's the standard approach. The challenge shows up when integrations change and coverage across all downstream systems has to be updated in parallel. Is that creating overhead in your current setup?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-GP02" data-account="Georgia-Pacific" data-priority="3" data-ab="B" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #16a34a;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#16a34a;">Georgia-Pacific</span>
+        <span class="badge" style="background:#ca8a04;">P3 STD</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('GP02', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Tyler Hart</div>
+    <div class="prospect-meta">Vice President of Engineering &bull; Atlanta, GA</div>
+    <div class="prospect-email"><a href="mailto:tyler.hart@gapac.com">tyler.hart@gapac.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">VP Eng at manufacturer doing serious digital transformation → quality standards must scale with SW portfolio</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Manufacturing tech — 70% maintenance reduction / digital portfolio scaling</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Tyler's engineering quality at Georgia-Pacific
+        <button class="copy-btn" onclick="copyText(`Tyler's engineering quality at Georgia-Pacific`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Tyler,
+
+Manufacturers scaling software engineering often face a quality challenge distinct from pure-play tech companies: applications control physical systems, and test coverage has to account for that. As Georgia-Pacific's software portfolio grows, how does your engineering org maintain quality standards across it?
+
+One manufacturing technology team we work with cut test maintenance overhead by 70% as their digital app portfolio scaled.
+
+Thought it would be worth reaching out because Georgia-Pacific's build-out pace makes this coverage challenge one of the first things engineering leaders run into. Is that something you're actively solving for?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Tyler,
+
+Manufacturers scaling software engineering often face a quality challenge distinct from pure-play tech companies: applications control physical systems, and test coverage has to account for that. As Georgia-Pacific's software portfolio grows, how does your engineering org maintain quality standards across it?
+
+One manufacturing technology team we work with cut test maintenance overhead by 70% as their digital app portfolio scaled.
+
+Thought it would be worth reaching out because Georgia-Pacific's build-out pace makes this coverage challenge one of the first things engineering leaders run into. Is that something you're actively solving for?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We have a dedicated QE team for this"</strong><br><span class="objection-response">↳ That's good to hear. The question is usually whether the QE team's capacity is keeping up with the build-out pace. If coverage gaps are showing up, worth a 20-minute look.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-V05" data-account="Veradigm" data-priority="3" data-ab="B" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #0891b2;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#0891b2;">Veradigm</span>
+        <span class="badge" style="background:#ca8a04;">P3 STD</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('V05', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Bhanu Sunkara</div>
+    <div class="prospect-meta">Manager - Software Quality Assurance &bull; NC</div>
+    <div class="prospect-email"><a href="mailto:bhanu.sunkara@allscripts.com">bhanu.sunkara@allscripts.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Healthcare SQA Manager → manual QA becomes bottleneck as platform grows</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Healthcare tech — 2,500 tests / 50% manual testing reduction</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Bhanu's QA coverage at Veradigm
+        <button class="copy-btn" onclick="copyText(`Bhanu's QA coverage at Veradigm`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Bhanu,
+
+When a healthcare software platform grows quickly, manual QA can become the bottleneck. Test runs that took hours start taking days, and QA ends up on the critical path of every release. Is reducing manual testing overhead something your team is working on?
+
+One healthcare technology team we work with automated 2,500 tests and cut their manual testing burden by 50% while the product scope expanded.
+
+Thought it would be worth reaching out because Veradigm's been scaling its product portfolio quickly. What does your current split between manual and automated testing look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Bhanu,
+
+When a healthcare software platform grows quickly, manual QA can become the bottleneck. Test runs that took hours start taking days, and QA ends up on the critical path of every release. Is reducing manual testing overhead something your team is working on?
+
+One healthcare technology team we work with automated 2,500 tests and cut their manual testing burden by 50% while the product scope expanded.
+
+Thought it would be worth reaching out because Veradigm's been scaling its product portfolio quickly. What does your current split between manual and automated testing look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We're increasing automation already"</strong><br><span class="objection-response">↳ Great timing then. The question is usually whether the automation layer requires manual maintenance after every release. Is that something you're running into?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-V03" data-account="Veradigm" data-priority="3" data-ab="A" data-mqs="12">
+  <div class="card-header" style="border-left: 5px solid #0891b2;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#0891b2;">Veradigm</span>
+        <span class="badge" style="background:#ca8a04;">P3 STD</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 12/12</span>
+        <span class="badge badge-outline">Pers: ★★★</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('V03', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Sachin Joshi</div>
+    <div class="prospect-meta">Sr Quality Engineering Manager &bull; Antioch, TN</div>
+    <div class="prospect-email"><a href="mailto:sachin.joshi@veradigm.com">sachin.joshi@veradigm.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Veradigm's new Ambient Scribe launch adds complex EHR integration regression requirements</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Healthcare tech — 2,500 tests across EHR integrations / 50% regression time reduction</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Sachin's test coverage at Veradigm
+        <button class="copy-btn" onclick="copyText(`Sachin's test coverage at Veradigm`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Sachin,
+
+When a healthcare IT platform launches new capabilities with complex EHR integration requirements, QE teams have to validate not just the feature but every integration point it touches. That's usually where test maintenance overhead peaks. Is cross-system regression something your team is actively managing?
+
+One healthcare technology team we work with automated 2,500 tests across their EHR integrations and cut regression time by 50%.
+
+Thought it would be worth reaching out because Veradigm's new capabilities add real complexity to the regression scope. What does your current approach to that cross-system coverage look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Sachin,
+
+When a healthcare IT platform launches new capabilities with complex EHR integration requirements, QE teams have to validate not just the feature but every integration point it touches. That's usually where test maintenance overhead peaks. Is cross-system regression something your team is actively managing?
+
+One healthcare technology team we work with automated 2,500 tests across their EHR integrations and cut regression time by 50%.
+
+Thought it would be worth reaching out because Veradigm's new capabilities add real complexity to the regression scope. What does your current approach to that cross-system coverage look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"HIPAA/compliance concerns"</strong><br><span class="objection-response">↳ Totally fair. We work with several large healthcare IT teams. We offer on-prem, private cloud, and are SOC2 Type II + HIPAA certified. Happy to walk through the compliance story.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-V01" data-account="Veradigm" data-priority="3" data-ab="A" data-mqs="12">
+  <div class="card-header" style="border-left: 5px solid #0891b2;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#0891b2;">Veradigm</span>
+        <span class="badge" style="background:#ca8a04;">P3 STD</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 12/12</span>
+        <span class="badge badge-outline">Pers: ★★★</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('V01', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Ted Barker</div>
+    <div class="prospect-meta">Director, Quality Engineering &bull; Alameda, CA</div>
+    <div class="prospect-email"><a href="mailto:ted.barker@veradigm.com">ted.barker@veradigm.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Veradigm 25% ACV growth → more customers = more EHR configurations to validate</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Healthcare tech — 2,500 tests / 50% maintenance reduction / scaling to new envs</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Ted's QA coverage at Veradigm
+        <button class="copy-btn" onclick="copyText(`Ted's QA coverage at Veradigm`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Ted,
+
+Healthcare IT platforms have a specific test coverage challenge: every new customer brings EHR integration configurations that regression has to validate. As Veradigm's customer base grows, how does your QE team keep coverage from becoming a bottleneck?
+
+One healthcare technology team we work with automated 2,500 tests and cut test maintenance overhead by 50% while scaling to new customer environments.
+
+Thought it would be worth reaching out because Veradigm's been closing deals at a strong pace this year. Is expanding QE coverage to match that growth something you're actively working through?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Ted,
+
+Healthcare IT platforms have a specific test coverage challenge: every new customer brings EHR integration configurations that regression has to validate. As Veradigm's customer base grows, how does your QE team keep coverage from becoming a bottleneck?
+
+One healthcare technology team we work with automated 2,500 tests and cut test maintenance overhead by 50% while scaling to new customer environments.
+
+Thought it would be worth reaching out because Veradigm's been closing deals at a strong pace this year. Is expanding QE coverage to match that growth something you're actively working through?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We have an existing QE process"</strong><br><span class="objection-response">↳ Makes total sense. A lot of QE directors we work with had established processes. The gap was usually scaling coverage without growing headcount linearly. Worth comparing how this team handled it?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-Y01" data-account="Yahoo" data-priority="3" data-ab="A" data-mqs="12">
+  <div class="card-header" style="border-left: 5px solid #6366f1;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#6366f1;">Yahoo</span>
+        <span class="badge" style="background:#ca8a04;">P3 STD</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 12/12</span>
+        <span class="badge badge-outline">Pers: ★★★</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('Y01', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Sarah Huang</div>
+    <div class="prospect-meta">QA Director &bull; San Jose, CA</div>
+    <div class="prospect-email"><a href="mailto:sarah.huang@yahooinc.com">sarah.huang@yahooinc.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Yahoo full product suite rebuild → regression coverage must keep up across every property</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Media platform — 2,500 tests / 75% maintenance reduction</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Sarah's regression coverage at Yahoo
+        <button class="copy-btn" onclick="copyText(`Sarah's regression coverage at Yahoo`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Sarah,
+
+When a full product suite gets rebuilt, the regression suite has to keep up across every property. Any automation tied to old layouts turns into upkeep instead of coverage. Is that test maintenance challenge something your team is actively working through?
+
+One media platform team we work with built 2,500 automated tests in 8 months while cutting test maintenance overhead by 75%.
+
+Thought it would be worth reaching out because the Yahoo product refresh touches every major property at once. What does your current approach to regression coverage across the suite look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Sarah,
+
+When a full product suite gets rebuilt, the regression suite has to keep up across every property. Any automation tied to old layouts turns into upkeep instead of coverage. Is that test maintenance challenge something your team is actively working through?
+
+One media platform team we work with built 2,500 automated tests in 8 months while cutting test maintenance overhead by 75%.
+
+Thought it would be worth reaching out because the Yahoo product refresh touches every major property at once. What does your current approach to regression coverage across the suite look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We have an in-house QA process"</strong><br><span class="objection-response">↳ Totally makes sense. A lot of teams we work with had existing processes too. The gap they kept hitting was test upkeep eating into sprint capacity. Worth comparing?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-CH04" data-account="Charlie Health" data-priority="2" data-ab="A" data-mqs="12">
+  <div class="card-header" style="border-left: 5px solid #059669;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#059669;">Charlie Health</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 12/12</span>
+        <span class="badge badge-outline">Pers: ★★★</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('CH04', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Ashwin Vaswani</div>
+    <div class="prospect-meta">Senior Engineering Manager &bull; US</div>
+    <div class="prospect-email"><a href="mailto:ashwin.vaswani@charliehealth.com">ashwin.vaswani@charliehealth.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Core Platform owns code quality → test automation standardization across squads hardest problem</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Healthcare tech — standardized automation / 50% maintenance reduction across teams</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Ashwin's test automation at Charlie Health
+        <button class="copy-btn" onclick="copyText(`Ashwin's test automation at Charlie Health`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Ashwin,
+
+When a Core Platform team owns code quality, test coverage standardization is the hardest thing to keep consistent across squads. Every team builds its own approach, and gaps show up as release risk. Is that something your team is working through?
+
+One healthcare technology team we work with standardized automation across multiple product teams and cut test maintenance overhead by 50%.
+
+Thought it would be worth reaching out because Charlie Health's code quality mandate tends to surface this challenge quickly. What does your current approach to shared test infrastructure look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at healthcare technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Ashwin,
+
+When a Core Platform team owns code quality, test coverage standardization is the hardest thing to keep consistent across squads. Every team builds its own approach, and gaps show up as release risk. Is that something your team is working through?
+
+One healthcare technology team we work with standardized automation across multiple product teams and cut test maintenance overhead by 50%.
+
+Thought it would be worth reaching out because Charlie Health's code quality mandate tends to surface this challenge quickly. What does your current approach to shared test infrastructure look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at healthcare technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We're building our own testing infrastructure"</strong><br><span class="objection-response">↳ Makes sense for a platform team. The decision point is usually build vs. buy at the automation layer. Happy to share what this team considered before they chose — might be useful input for your eval.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-CH02" data-account="Charlie Health" data-priority="2" data-ab="A" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #059669;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#059669;">Charlie Health</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('CH02', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Madina Zabran</div>
+    <div class="prospect-meta">Director of Engineering &bull; US</div>
+    <div class="prospect-email"><a href="mailto:madina.zabran@charliehealth.com">madina.zabran@charliehealth.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">React/Python stack shipping fast → test upkeep becomes a part-time job for engineers</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Digital health — 50% test maintenance reduction / engineers freed to build</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Madina's test coverage at Charlie Health
+        <button class="copy-btn" onclick="copyText(`Madina's test coverage at Charlie Health`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Madina,
+
+When a product team is shipping fast on a React and Python stack, test upkeep tends to be the first casualty. Engineers end up fixing broken tests instead of building features, and releases carry more unverified risk. Is test maintenance something your team is actively working to reduce?
+
+One digital health team we work with cut test maintenance overhead by 50% while keeping engineers focused on building.
+
+Thought it would be worth reaching out because Charlie Health's engineering team has been growing quickly. What does your current approach to automated test coverage look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at healthcare technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Madina,
+
+When a product team is shipping fast on a React and Python stack, test upkeep tends to be the first casualty. Engineers end up fixing broken tests instead of building features, and releases carry more unverified risk. Is test maintenance something your team is actively working to reduce?
+
+One digital health team we work with cut test maintenance overhead by 50% while keeping engineers focused on building.
+
+Thought it would be worth reaching out because Charlie Health's engineering team has been growing quickly. What does your current approach to automated test coverage look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at healthcare technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"Engineers write tests as part of their workflow"</strong><br><span class="objection-response">↳ That's the right culture to have. The challenge is usually when those tests start failing after UI changes and someone has to fix them. Is that upkeep visible in your current sprints?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-CH03" data-account="Charlie Health" data-priority="2" data-ab="B" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #059669;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#059669;">Charlie Health</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('CH03', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Madison Waterman</div>
+    <div class="prospect-meta">Engineering Manager &bull; Seattle, WA</div>
+    <div class="prospect-email"><a href="mailto:madison.waterman@charliehealth.com">madison.waterman@charliehealth.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Fast-growing digital health → release cadence outpaces test coverage capacity</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Healthcare tech — 50% maintenance reduction / engineers refocused on building</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Madison's regression coverage at Charlie Health
+        <button class="copy-btn" onclick="copyText(`Madison's regression coverage at Charlie Health`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Madison,
+
+At fast-growing digital health companies, engineering managers often hit the same tension: release cadence outpaces test coverage, and the automation layer requires more upkeep than the team has capacity for. Is that test maintenance gap something your team is running into?
+
+One healthcare technology team we work with cut test maintenance overhead by 50% and shifted their engineers back to building features.
+
+Thought it would be worth reaching out because Charlie Health's engineering org has been scaling quickly. What does your team's current test coverage approach look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at healthcare technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Madison,
+
+At fast-growing digital health companies, engineering managers often hit the same tension: release cadence outpaces test coverage, and the automation layer requires more upkeep than the team has capacity for. Is that test maintenance gap something your team is running into?
+
+One healthcare technology team we work with cut test maintenance overhead by 50% and shifted their engineers back to building features.
+
+Thought it would be worth reaching out because Charlie Health's engineering org has been scaling quickly. What does your team's current test coverage approach look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at healthcare technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"Small team, tight budget"</strong><br><span class="objection-response">↳ Totally get it. One team your size cut manual testing 50% and saw ROI in the first quarter. Happy to share what the setup looked like if budget is the key question.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-L09" data-account="L3Harris" data-priority="2" data-ab="A" data-mqs="12">
+  <div class="card-header" style="border-left: 5px solid #b45309;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#b45309;">L3Harris</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 12/12</span>
+        <span class="badge badge-outline">Pers: ★★★</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('L09', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">David Street</div>
+    <div class="prospect-meta">Advanced Quality Engineering Manager &bull; Rochester, NY</div>
+    <div class="prospect-email"><a href="mailto:david.street@l3harris.com">david.street@l3harris.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Advanced QE ceiling with conventional automation → framework power comes with engineering overhead</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Enterprise tech — 35% maintenance reduction / framework-rewrite-free adaptation</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">David's advanced QE at L3Harris
+        <button class="copy-btn" onclick="copyText(`David's advanced QE at L3Harris`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi David,
+
+Advanced QE teams often hit a ceiling with conventional automation: frameworks are powerful but require engineering overhead to maintain and extend. That cost grows as the program portfolio expands. Is test framework maintenance something your team is actively working to reduce?
+
+One enterprise technology team we work with reduced test maintenance overhead by 35% by moving to automation that adapts without requiring framework rewrites.
+
+Thought it would be worth reaching out because long-term framework maintenance tends to be where advanced QE programs lose the most time. What does your current approach look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi David,
+
+Advanced QE teams often hit a ceiling with conventional automation: frameworks are powerful but require engineering overhead to maintain and extend. That cost grows as the program portfolio expands. Is test framework maintenance something your team is actively working to reduce?
+
+One enterprise technology team we work with reduced test maintenance overhead by 35% by moving to automation that adapts without requiring framework rewrites.
+
+Thought it would be worth reaching out because long-term framework maintenance tends to be where advanced QE programs lose the most time. What does your current approach look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We've invested heavily in our current framework"</strong><br><span class="objection-response">↳ Totally fair investment to protect. The teams we work with in this situation usually run a parallel eval on a specific program to compare maintenance overhead directly. No disruption, clear data. Worth exploring?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-L04" data-account="L3Harris" data-priority="2" data-ab="B" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #b45309;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#b45309;">L3Harris</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('L04', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Garrick Scott</div>
+    <div class="prospect-meta">Director, Software Engineering &bull; San Diego, CA</div>
+    <div class="prospect-email"><a href="mailto:garrick.scott@l3harris.com">garrick.scott@l3harris.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Defense systems with hardware-software integrations → test coverage grows with integration points</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Enterprise tech — 35% maintenance reduction / multi-system integration</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Garrick's software testing at L3Harris
+        <button class="copy-btn" onclick="copyText(`Garrick's software testing at L3Harris`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Garrick,
+
+Software that interfaces with hardware has test coverage requirements that grow with every integration point. When automation frameworks aren't built to adapt, they require constant updates as configurations change. Is managing that test maintenance across hardware-software integrations something your team runs into?
+
+One enterprise technology team we work with reduced test maintenance overhead by 35% across a multi-system integration environment.
+
+Thought it would be worth reaching out because defense systems at L3Harris's level involve high-complexity integration environments. What does your current approach to maintaining coverage across those integration points look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Garrick,
+
+Software that interfaces with hardware has test coverage requirements that grow with every integration point. When automation frameworks aren't built to adapt, they require constant updates as configurations change. Is managing that test maintenance across hardware-software integrations something your team runs into?
+
+One enterprise technology team we work with reduced test maintenance overhead by 35% across a multi-system integration environment.
+
+Thought it would be worth reaching out because defense systems at L3Harris's level involve high-complexity integration environments. What does your current approach to maintaining coverage across those integration points look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"Hardware-software testing is a specialized domain"</strong><br><span class="objection-response">↳ Absolutely right. The teams we've worked with in similar environments use us for the software layer specifically, where the regression and integration testing lives. Happy to walk through where it fits.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-L07" data-account="L3Harris" data-priority="2" data-ab="B" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #b45309;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#b45309;">L3Harris</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('L07', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Mark Gates</div>
+    <div class="prospect-meta">Quality Engineering Manager &bull; Cincinnati, OH</div>
+    <div class="prospect-email"><a href="mailto:mark.gates@l3harris.com">mark.gates@l3harris.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">QE Manager with growing test suite → sprint capacity going to fixing automation vs. expanding it</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Enterprise tech — 35% maintenance reduction / capacity reclaimed for new coverage</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Mark's test maintenance at L3Harris
+        <button class="copy-btn" onclick="copyText(`Mark's test maintenance at L3Harris`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Mark,
+
+Test suites tend to grow faster than the team's capacity to maintain them. Eventually, a significant share of each sprint goes to fixing automation rather than expanding coverage. Is that kind of test upkeep burden something your team is dealing with at L3Harris?
+
+One enterprise technology team we work with cut test maintenance overhead by 35% and reclaimed that capacity for net-new coverage.
+
+Thought it would be worth reaching out because long-running defense software programs tend to compound this challenge. What does your team's current approach to managing that maintenance load look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Mark,
+
+Test suites tend to grow faster than the team's capacity to maintain them. Eventually, a significant share of each sprint goes to fixing automation rather than expanding coverage. Is that kind of test upkeep burden something your team is dealing with at L3Harris?
+
+One enterprise technology team we work with cut test maintenance overhead by 35% and reclaimed that capacity for net-new coverage.
+
+Thought it would be worth reaching out because long-running defense software programs tend to compound this challenge. What does your team's current approach to managing that maintenance load look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We handle maintenance in each sprint"</strong><br><span class="objection-response">↳ That's a healthy process. The teams that got the most value were those where maintenance was already on the radar but taking 20-30% of capacity. Is that in the right range for your team?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-L03" data-account="L3Harris" data-priority="2" data-ab="A" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #b45309;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#b45309;">L3Harris</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('L03', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Michael Cahill</div>
+    <div class="prospect-meta">Director Software Engineering &bull; Rochester, NY</div>
+    <div class="prospect-email"><a href="mailto:michael.cahill@l3harris.com">michael.cahill@l3harris.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Defense program fixed milestones → unmaintained regression suites compress validation time</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Enterprise tech — 35% regression reduction / delivery schedules maintained</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Michael's regression coverage at L3Harris
+        <button class="copy-btn" onclick="copyText(`Michael's regression coverage at L3Harris`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Michael,
+
+Defense software programs have fixed delivery milestones, and unmaintained regression suites start compressing the time available for actual validation. Teams end up choosing between thorough testing and meeting the date. Is that test maintenance overhead something your team is managing against program milestones?
+
+One enterprise technology team we work with reduced regression time by 35% and kept delivery schedules without cutting test coverage.
+
+Thought it would be worth reaching out because program-driven software development at L3Harris's scale tends to surface this kind of tension. What does your current approach to keeping regression manageable look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Michael,
+
+Defense software programs have fixed delivery milestones, and unmaintained regression suites start compressing the time available for actual validation. Teams end up choosing between thorough testing and meeting the date. Is that test maintenance overhead something your team is managing against program milestones?
+
+One enterprise technology team we work with reduced regression time by 35% and kept delivery schedules without cutting test coverage.
+
+Thought it would be worth reaching out because program-driven software development at L3Harris's scale tends to surface this kind of tension. What does your current approach to keeping regression manageable look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We can't slow down delivery for tooling changes"</strong><br><span class="objection-response">↳ That's exactly why this team's approach stood out. They cut regression time by 35% without pausing delivery. The setup took less than two weeks. Worth a quick look at how they structured it?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-L06" data-account="L3Harris" data-priority="2" data-ab="A" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #b45309;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#b45309;">L3Harris</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('L06', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Michael Stringer</div>
+    <div class="prospect-meta">Software Engineering Director &bull; Rochester, NY</div>
+    <div class="prospect-email"><a href="mailto:michael.stringer@l3harris.com">michael.stringer@l3harris.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Defense software must work in field conditions → pre-deployment regression critical, coverage gap costly</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Enterprise tech — 35% maintenance reduction / expanded pre-deployment validation</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Michael's test coverage at L3Harris
+        <button class="copy-btn" onclick="copyText(`Michael's test coverage at L3Harris`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Michael,
+
+Defense software has to work in conditions hard to replicate, making pre-deployment regression critical. When the regression suite falls behind software changes, teams rely on field testing to catch what automation should have caught first. Is that kind of coverage gap something your team is managing?
+
+One enterprise technology team we work with reduced test maintenance by 35% while expanding their pre-deployment validation coverage.
+
+Thought it would be worth reaching out because the pre-deployment validation bar in defense software is high. What does your team's current approach to keeping regression coverage comprehensive look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Michael,
+
+Defense software has to work in conditions hard to replicate, making pre-deployment regression critical. When the regression suite falls behind software changes, teams rely on field testing to catch what automation should have caught first. Is that kind of coverage gap something your team is managing?
+
+One enterprise technology team we work with reduced test maintenance by 35% while expanding their pre-deployment validation coverage.
+
+Thought it would be worth reaching out because the pre-deployment validation bar in defense software is high. What does your team's current approach to keeping regression coverage comprehensive look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We do thorough pre-deployment testing already"</strong><br><span class="objection-response">↳ That's the right standard to hold. The question is usually how much of that is automated vs. manual. This team cut the manual portion significantly while keeping the same validation bar. Worth comparing?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-L01" data-account="L3Harris" data-priority="2" data-ab="A" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #b45309;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#b45309;">L3Harris</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('L01', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Nathan French</div>
+    <div class="prospect-meta">Director, Quality Engineering &bull; Palm Bay, FL</div>
+    <div class="prospect-email"><a href="mailto:nathan.french@l3harris.com">nathan.french@l3harris.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Defense software QE → V&V requirements across multiple programs = test maintenance compounds</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Enterprise tech — 35% maintenance reduction / distributed engineering</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Nathan's QE coverage at L3Harris
+        <button class="copy-btn" onclick="copyText(`Nathan's QE coverage at L3Harris`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Nathan,
+
+Defense software QE has a specific burden: coverage has to span verification and validation requirements across multiple programs simultaneously. At L3Harris's scale, keeping that manageable without growing headcount linearly is the central challenge. Is test maintenance across your program portfolio something your team is working through?
+
+One enterprise technology team we work with cut test maintenance overhead by 35% while expanding regression coverage across a large, distributed engineering org.
+
+Thought it would be worth reaching out because V&V requirements compound as the portfolio grows. What does your current approach to managing that coverage look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Nathan,
+
+Defense software QE has a specific burden: coverage has to span verification and validation requirements across multiple programs simultaneously. At L3Harris's scale, keeping that manageable without growing headcount linearly is the central challenge. Is test maintenance across your program portfolio something your team is working through?
+
+One enterprise technology team we work with cut test maintenance overhead by 35% while expanding regression coverage across a large, distributed engineering org.
+
+Thought it would be worth reaching out because V&V requirements compound as the portfolio grows. What does your current approach to managing that coverage look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"Defense software has unique requirements"</strong><br><span class="objection-response">↳ Absolutely. We work with large enterprise engineering orgs in regulated environments. The platform is flexible — web, desktop, API, and custom integrations. Happy to walk through configurations that fit defense program structures.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-L02" data-account="L3Harris" data-priority="2" data-ab="B" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #b45309;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#b45309;">L3Harris</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('L02', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Pete Grissom</div>
+    <div class="prospect-meta">Director of Software Engineering &bull; Forest, VA</div>
+    <div class="prospect-email"><a href="mailto:pete.grissom@l3harris.com">pete.grissom@l3harris.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Distributed defense SW eng org → coverage falls unevenly, gaps at shared components</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Enterprise tech — 35% maintenance reduction / standardized regression across teams</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Pete's test coverage at L3Harris
+        <button class="copy-btn" onclick="copyText(`Pete's test coverage at L3Harris`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Pete,
+
+In distributed defense software orgs, test coverage responsibility tends to fall unevenly: program teams write tests for their own deliverables, but regression across shared components becomes everyone's problem and no one's priority. Is cross-team coverage consistency something your engineering org deals with?
+
+One enterprise technology team we work with cut test maintenance overhead by 35% by standardizing automated regression across distributed engineering teams.
+
+Thought it would be worth reaching out because multi-program orgs like L3Harris tend to surface this challenge. What does your current approach to regression coverage across programs look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Pete,
+
+In distributed defense software orgs, test coverage responsibility tends to fall unevenly: program teams write tests for their own deliverables, but regression across shared components becomes everyone's problem and no one's priority. Is cross-team coverage consistency something your engineering org deals with?
+
+One enterprise technology team we work with cut test maintenance overhead by 35% by standardizing automated regression across distributed engineering teams.
+
+Thought it would be worth reaching out because multi-program orgs like L3Harris tend to surface this challenge. What does your current approach to regression coverage across programs look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We have program-specific test ownership"</strong><br><span class="objection-response">↳ That's the standard setup. The challenge usually surfaces at the integration layer. When shared services change, every program team has to update their tests. Is that creating overhead right now?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-L05" data-account="L3Harris" data-priority="2" data-ab="B" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #b45309;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#b45309;">L3Harris</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('L05', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Rachel Fingeroth</div>
+    <div class="prospect-meta">Director of Software Engineering &bull; US</div>
+    <div class="prospect-email"><a href="mailto:rachel.fingeroth@l3harris.com">rachel.fingeroth@l3harris.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Senior engineers spending time on test infrastructure instead of delivering requirements</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Enterprise tech — 35% maintenance reduction / senior engineers freed</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Rachel's engineering coverage at L3Harris
+        <button class="copy-btn" onclick="copyText(`Rachel's engineering coverage at L3Harris`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Rachel,
+
+A hidden cost in defense software orgs is senior engineers maintaining test infrastructure instead of delivering requirements. When automation requires code-level expertise to update, testing becomes a drag on the teams that can least afford it. Is that kind of test maintenance overhead something your teams deal with?
+
+One enterprise technology team we work with cut test maintenance by 35% and freed senior engineers from test upkeep.
+
+Thought it would be worth reaching out because large defense orgs tend to feel this in their highest-pressure delivery teams. Is that something you're seeing on your side?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Rachel,
+
+A hidden cost in defense software orgs is senior engineers maintaining test infrastructure instead of delivering requirements. When automation requires code-level expertise to update, testing becomes a drag on the teams that can least afford it. Is that kind of test maintenance overhead something your teams deal with?
+
+One enterprise technology team we work with cut test maintenance by 35% and freed senior engineers from test upkeep.
+
+Thought it would be worth reaching out because large defense orgs tend to feel this in their highest-pressure delivery teams. Is that something you're seeing on your side?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"Our engineers are comfortable with the current setup"</strong><br><span class="objection-response">↳ Good to hear. The indicator we hear most often is how much of each sprint goes to test maintenance vs. new development. If it's under 15%, you're in good shape. If it's higher, worth a conversation.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-L08" data-account="L3Harris" data-priority="2" data-ab="B" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #b45309;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#b45309;">L3Harris</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('L08', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Tracy Beloskur</div>
+    <div class="prospect-meta">Quality Engineering Manager &bull; Palm Bay, FL</div>
+    <div class="prospect-email"><a href="mailto:tracy.beloskur@l3harris.com">tracy.beloskur@l3harris.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">QE team supporting multiple defense programs → cross-program coverage coordination challenge</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Enterprise tech — 35% maintenance reduction / multi-program QE portfolio</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Tracy's QE coverage at L3Harris
+        <button class="copy-btn" onclick="copyText(`Tracy's QE coverage at L3Harris`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Tracy,
+
+When a QE team covers multiple defense programs, each with its own requirements and test environment, managing coverage without redundant test maintenance becoming a bottleneck is a real challenge. Is that kind of cross-program coordination something your team is managing actively?
+
+One enterprise technology team we work with cut test maintenance overhead by 35% across a multi-program QE portfolio.
+
+Thought it would be worth reaching out because L3Harris's multi-program structure tends to amplify this kind of challenge. What does your team's current approach to managing coverage across programs look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Tracy,
+
+When a QE team covers multiple defense programs, each with its own requirements and test environment, managing coverage without redundant test maintenance becoming a bottleneck is a real challenge. Is that kind of cross-program coordination something your team is managing actively?
+
+One enterprise technology team we work with cut test maintenance overhead by 35% across a multi-program QE portfolio.
+
+Thought it would be worth reaching out because L3Harris's multi-program structure tends to amplify this kind of challenge. What does your team's current approach to managing coverage across programs look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"Each program has different test requirements"</strong><br><span class="objection-response">↳ Exactly why this matters in a multi-program environment. This team built a shared automation layer that adapted to each program's requirements without separate maintenance tracks. Worth seeing how it was structured?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-V04" data-account="Veradigm" data-priority="2" data-ab="A" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #0891b2;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#0891b2;">Veradigm</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('V04', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Aleck Gandel</div>
+    <div class="prospect-meta">Manager Dev - Quality Engineering &bull; Los Angeles, CA</div>
+    <div class="prospect-email"><a href="mailto:aleck.gandel@allscripts.com">aleck.gandel@allscripts.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Dev QE Manager during rapid velocity increase → test upkeep outpaces sprint cycles</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Healthcare tech — 50% test maintenance reduction / doubled feature output</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Aleck's QE coverage at Veradigm
+        <button class="copy-btn" onclick="copyText(`Aleck's QE coverage at Veradigm`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Aleck,
+
+When development velocity increases, QE teams often reach a point where test upkeep takes longer than the sprint cycles they're meant to validate. That gap between development and coverage tends to widen quietly. Is test maintenance keeping pace with your current velocity?
+
+One healthcare technology team we work with cut test maintenance overhead by 50% while their development team doubled the features being shipped.
+
+Thought it would be worth reaching out because Veradigm's been shipping new capabilities quickly in 2025. What does your current approach to staying ahead on coverage look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Aleck,
+
+When development velocity increases, QE teams often reach a point where test upkeep takes longer than the sprint cycles they're meant to validate. That gap between development and coverage tends to widen quietly. Is test maintenance keeping pace with your current velocity?
+
+One healthcare technology team we work with cut test maintenance overhead by 50% while their development team doubled the features being shipped.
+
+Thought it would be worth reaching out because Veradigm's been shipping new capabilities quickly in 2025. What does your current approach to staying ahead on coverage look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We manage it with our current toolset"</strong><br><span class="objection-response">↳ Good to hear. The teams that got the most out of switching were usually on frameworks that required code-level updates for every UI change. Does that sound familiar?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-V06" data-account="Veradigm" data-priority="2" data-ab="B" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #0891b2;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#0891b2;">Veradigm</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('V06', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Manpreet Burmi</div>
+    <div class="prospect-meta">Manager Dev - Quality Engineering &bull; Morrisville, NC</div>
+    <div class="prospect-email"><a href="mailto:manpreet.burmi@allscripts.com">manpreet.burmi@allscripts.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Multi-customer EHR environments → regression must cover all configuration variants</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Healthcare tech — standardized coverage across envs / 50% regression time reduction</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Manpreet's regression coverage at Veradigm
+        <button class="copy-btn" onclick="copyText(`Manpreet's regression coverage at Veradigm`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Manpreet,
+
+Healthcare IT platforms like Veradigm run across many customer environments with different EHR configurations. When something changes in the platform, regression has to cover all the variants, and that's usually where the test upkeep load compounds. Is that regression coverage challenge something your team runs into?
+
+One healthcare technology team we work with standardized test coverage across multiple environments and cut regression time by 50%.
+
+Thought it would be worth reaching out because Veradigm's growing customer base means more configurations to validate. What does your team's current approach to that coverage challenge look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Manpreet,
+
+Healthcare IT platforms like Veradigm run across many customer environments with different EHR configurations. When something changes in the platform, regression has to cover all the variants, and that's usually where the test upkeep load compounds. Is that regression coverage challenge something your team runs into?
+
+One healthcare technology team we work with standardized test coverage across multiple environments and cut regression time by 50%.
+
+Thought it would be worth reaching out because Veradigm's growing customer base means more configurations to validate. What does your team's current approach to that coverage challenge look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with QA leaders at healthcare technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"Each customer environment is different"</strong><br><span class="objection-response">↳ That's exactly the problem this team solved. The key was building automation that adapted to environment-specific configurations without requiring separate test suites for each. Worth a quick look?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-V02" data-account="Veradigm" data-priority="2" data-ab="B" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #0891b2;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#0891b2;">Veradigm</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('V02', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Matthew Bennett</div>
+    <div class="prospect-meta">Director of Engineering &bull; San Francisco, CA</div>
+    <div class="prospect-email"><a href="mailto:matthew.bennett@allscripts.com">matthew.bennett@allscripts.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Rapid product growth at Veradigm → features shipped faster than automation coverage grows</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Healthcare tech — 2,500 tests / 50% regression reduction / no added headcount</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Matthew's engineering velocity at Veradigm
+        <button class="copy-btn" onclick="copyText(`Matthew's engineering velocity at Veradigm`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Matthew,
+
+When an engineering team is growing fast, the ratio of features shipped to automation coverage can get out of balance quickly. New features land in production, but the test layer doesn't always keep up. Is that coverage gap something your team is managing actively?
+
+One healthcare technology team we work with automated 2,500 tests and cut regression overhead by 50% without adding headcount.
+
+Thought it would be worth reaching out because Veradigm's been growing quickly in 2025. What does your team's current approach to keeping coverage current look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at healthcare technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Matthew,
+
+When an engineering team is growing fast, the ratio of features shipped to automation coverage can get out of balance quickly. New features land in production, but the test layer doesn't always keep up. Is that coverage gap something your team is managing actively?
+
+One healthcare technology team we work with automated 2,500 tests and cut regression overhead by 50% without adding headcount.
+
+Thought it would be worth reaching out because Veradigm's been growing quickly in 2025. What does your team's current approach to keeping coverage current look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at healthcare technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We're in high growth mode, not focused on tooling"</strong><br><span class="objection-response">↳ That's actually when teams tend to benefit most. The point where test debt compounds fastest is during rapid growth. This team added 2,500 tests without slowing delivery. Worth a quick look?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-Y02" data-account="Yahoo" data-priority="2" data-ab="A" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #6366f1;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#6366f1;">Yahoo</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('Y02', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Ash Pedgaonkar</div>
+    <div class="prospect-meta">Director of Software Engineering &bull; San Mateo, CA</div>
+    <div class="prospect-email"><a href="mailto:ash@yahooinc.com">ash@yahooinc.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Test maintenance spike during Yahoo's ground-up product rebuild</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Media platform — 70% test maintenance reduction during product refresh</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Ash's test coverage at Yahoo
+        <button class="copy-btn" onclick="copyText(`Ash's test coverage at Yahoo`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Ash,
+
+When engineering teams ship a ground-up rebuild across multiple products, test maintenance tends to spike before it stabilizes, especially when automation is tied to UI elements that changed. Curious if your team is seeing that test upkeep climb as the new Yahoo products hit production?
+
+One media platform team we work with cut test maintenance overhead by 70% while shipping across a full product refresh cycle.
+
+Thought it would be worth reaching out because Yahoo's been rebuilding Mail, Finance, and Sports simultaneously. Is managing that test maintenance load something your team is actively solving for?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Ash,
+
+When engineering teams ship a ground-up rebuild across multiple products, test maintenance tends to spike before it stabilizes, especially when automation is tied to UI elements that changed. Curious if your team is seeing that test upkeep climb as the new Yahoo products hit production?
+
+One media platform team we work with cut test maintenance overhead by 70% while shipping across a full product refresh cycle.
+
+Thought it would be worth reaching out because Yahoo's been rebuilding Mail, Finance, and Sports simultaneously. Is managing that test maintenance load something your team is actively solving for?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We use Playwright/Selenium already"</strong><br><span class="objection-response">↳ Makes sense for a team your size. The shift was less about the framework and more about reducing the time engineers spend maintaining it. Worth a look?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-Y03" data-account="Yahoo" data-priority="2" data-ab="B" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #6366f1;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#6366f1;">Yahoo</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('Y03', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Matthew Lauprete</div>
+    <div class="prospect-meta">Director of Software Engineering &bull; Kingston, NY</div>
+    <div class="prospect-email"><a href="mailto:matthew.lauprete@yahooinc.com">matthew.lauprete@yahooinc.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">UI changes during product rebuild break existing automation → coverage gap grows</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Enterprise tech — 70% regression maintenance reduction</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Matthew's automation coverage at Yahoo
+        <button class="copy-btn" onclick="copyText(`Matthew's automation coverage at Yahoo`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Matthew,
+
+Shipping across a rebuilt product stack means every UI update can break existing automation. Over time that creates a gap between what's covered and what's in production. Is keeping automation current through continuous changes something your team handles manually?
+
+One enterprise technology team we work with cut regression test maintenance by 70% by having tests adapt automatically when UI elements changed.
+
+Thought it would be worth reaching out because Yahoo's been rebuilding across its full product line. Does that maintenance gap show up in your release cycles?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Matthew,
+
+Shipping across a rebuilt product stack means every UI update can break existing automation. Over time that creates a gap between what's covered and what's in production. Is keeping automation current through continuous changes something your team handles manually?
+
+One enterprise technology team we work with cut regression test maintenance by 70% by having tests adapt automatically when UI elements changed.
+
+Thought it would be worth reaching out because Yahoo's been rebuilding across its full product line. Does that maintenance gap show up in your release cycles?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"Not a priority right now"</strong><br><span class="objection-response">↳ Totally fair. Most teams bring this up when they're mid-rebuild and the test debt is visible. Happy to share what the timeline looked like for this team if that's useful later.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-Y05" data-account="Yahoo" data-priority="2" data-ab="B" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #6366f1;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#6366f1;">Yahoo</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('Y05', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Raj Chopde</div>
+    <div class="prospect-meta">Director of Software Engineering &bull; Urbana, IL</div>
+    <div class="prospect-email"><a href="mailto:rchopde@yahooinc.com">rchopde@yahooinc.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Product rebuilt at speed → test coverage falls behind release cadence</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Media platform — 70% maintenance reduction / coverage kept current with releases</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Raj's QA velocity at Yahoo
+        <button class="copy-btn" onclick="copyText(`Raj's QA velocity at Yahoo`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Raj,
+
+When a product suite gets rebuilt fast, coverage can fall behind if automation requires manual updates after every UI change. That's where teams end up shipping features that are tested in name but not in practice. Is test coverage keeping up with your current release cadence?
+
+One media platform team we work with cut test maintenance overhead by 70% and kept coverage aligned with weekly releases.
+
+Thought it would be worth reaching out because Yahoo's been shipping across its full product line simultaneously. What does your current approach to keeping coverage current look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Raj,
+
+When a product suite gets rebuilt fast, coverage can fall behind if automation requires manual updates after every UI change. That's where teams end up shipping features that are tested in name but not in practice. Is test coverage keeping up with your current release cadence?
+
+One media platform team we work with cut test maintenance overhead by 70% and kept coverage aligned with weekly releases.
+
+Thought it would be worth reaching out because Yahoo's been shipping across its full product line simultaneously. What does your current approach to keeping coverage current look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We're focused on shipping, not tooling"</strong><br><span class="objection-response">↳ That's usually the right priority. The teams we see benefit most are those where tooling is creating the slowdown, not the fix. Quick way to tell: how much of each sprint goes to fixing broken tests?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-Y04" data-account="Yahoo" data-priority="2" data-ab="B" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #6366f1;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#6366f1;">Yahoo</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('Y04', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Robert Israel</div>
+    <div class="prospect-meta">Director of Software Engineering &bull; Ashburn, VA</div>
+    <div class="prospect-email"><a href="mailto:robert.israel@yahooinc.com">robert.israel@yahooinc.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Multiple Yahoo product teams = fragmented testing → coverage gaps at the seams</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Enterprise tech — standardized automation / 70% maintenance reduction</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Robert's automation strategy at Yahoo
+        <button class="copy-btn" onclick="copyText(`Robert's automation strategy at Yahoo`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Robert,
+
+When multiple engineering teams each own a different Yahoo product, regression testing can end up fragmented: every team has its own approach, and coverage gaps appear at the seams. How does your team currently handle automation consistency across different product lines?
+
+One enterprise technology team we work with standardized automation across distributed product teams and cut test maintenance overhead by 70%.
+
+Thought it would be worth reaching out because Yahoo's product rebuild is touching Mail, Finance, Sports, and News at the same time. Is cross-product testing coverage something you're actively solving for?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Robert,
+
+When multiple engineering teams each own a different Yahoo product, regression testing can end up fragmented: every team has its own approach, and coverage gaps appear at the seams. How does your team currently handle automation consistency across different product lines?
+
+One enterprise technology team we work with standardized automation across distributed product teams and cut test maintenance overhead by 70%.
+
+Thought it would be worth reaching out because Yahoo's product rebuild is touching Mail, Finance, Sports, and News at the same time. Is cross-product testing coverage something you're actively solving for?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"Each team owns their own testing"</strong><br><span class="objection-response">↳ That's exactly the setup we see most often. The challenge usually surfaces when a shared service changes and coverage gaps appear across teams. Worth comparing how this team solved it?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-Y07" data-account="Yahoo" data-priority="2" data-ab="A" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #6366f1;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#6366f1;">Yahoo</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: A</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('Y07', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Sergii Simonov</div>
+    <div class="prospect-meta">Director of Software Engineering &bull; Seattle, WA</div>
+    <div class="prospect-email"><a href="mailto:sergii.simonov@yahooinc.com">sergii.simonov@yahooinc.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Yahoo engineering priorities shifting to mobile → mobile regression automation gap</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Enterprise tech — coverage across web + mobile + API / 70% maintenance reduction</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Sergii's mobile automation at Yahoo
+        <button class="copy-btn" onclick="copyText(`Sergii's mobile automation at Yahoo`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Sergii,
+
+Mobile app quality is harder to automate than web, and when engineering velocity is centered on mobile features, test coverage can lag behind releases on that layer. Is mobile regression coverage something your team has scaled, or is that still a gap?
+
+One enterprise technology team we work with extended automated coverage across web, mobile, and API while cutting test maintenance overhead by 70%.
+
+Thought it would be worth reaching out because Yahoo's engineering priorities are shifting toward mobile feature velocity. What does your team's current mobile test automation coverage look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Sergii,
+
+Mobile app quality is harder to automate than web, and when engineering velocity is centered on mobile features, test coverage can lag behind releases on that layer. Is mobile regression coverage something your team has scaled, or is that still a gap?
+
+One enterprise technology team we work with extended automated coverage across web, mobile, and API while cutting test maintenance overhead by 70%.
+
+Thought it would be worth reaching out because Yahoo's engineering priorities are shifting toward mobile feature velocity. What does your team's current mobile test automation coverage look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"Mobile testing is a different challenge"</strong><br><span class="objection-response">↳ Exactly right. That's part of why this team's approach stood out — they unified web, mobile, and API coverage under one layer without separate frameworks. Worth seeing how they did it?</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="card-Y06" data-account="Yahoo" data-priority="2" data-ab="B" data-mqs="11">
+  <div class="card-header" style="border-left: 5px solid #6366f1;">
+    <div class="card-title-row">
+      <div>
+        <span class="badge" style="background:#6366f1;">Yahoo</span>
+        <span class="badge" style="background:#2563eb;">P2 LOW</span>
+        <span class="badge" style="background:#374151;">A/B: B</span>
+        <span class="badge" style="background:#16a34a;">MQS 11/12</span>
+        <span class="badge badge-outline">Pers: ★★☆</span>
+      </div>
+      <div class="status-wrap">
+        <select class="status-select" onchange="updateStatus('Y06', this.value)">
+          <option>Draft Ready</option><option>Sent</option><option>Replied</option><option>Deferred</option><option>DNC</option>
+        </select>
+      </div>
+    </div>
+    <div class="prospect-name">Suchith Chandran</div>
+    <div class="prospect-meta">Director of Software Engineering &bull; Fremont, CA</div>
+    <div class="prospect-email"><a href="mailto:suchith@yahooinc.com">suchith@yahooinc.com</a></div>
+  </div>
+  <div class="card-body">
+    <div class="section-label">ANGLE</div>
+    <div class="angle-text">Yahoo multi-property portfolio → test maintenance scales linearly with product count</div>
+    <div class="section-label">PROOF POINT</div>
+    <div class="proof-text">Enterprise tech — 70% maintenance reduction / coverage across web + mobile + API</div>
+    <div class="message-section">
+      <div class="section-label">T1 SUBJECT</div>
+      <div class="subject-box">Suchith's test automation at Yahoo
+        <button class="copy-btn" onclick="copyText(`Suchith's test automation at Yahoo`, this)">Copy Subject</button>
+      </div>
+      <div class="section-label">T1 EMAIL BODY</div>
+      <div class="body-box"><pre>Hi Suchith,
+
+Yahoo's products span web, mobile, and data-heavy applications, each with its own testing demands. When automation is built per-product without a shared layer, test maintenance scales with the product count. Is maintaining coverage across all of Yahoo's properties something you're running into?
+
+One enterprise technology team we work with reduced test maintenance by 70% while expanding coverage across web, mobile, and API layers simultaneously.
+
+Thought it would be worth reaching out because the product rebuild adds testing requirements across every property at once. What does your current approach to that maintenance overhead look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.</pre>
+        <button class="copy-btn" onclick="copyText(`Hi Suchith,
+
+Yahoo's products span web, mobile, and data-heavy applications, each with its own testing demands. When automation is built per-product without a shared layer, test maintenance scales with the product count. Is maintaining coverage across all of Yahoo's properties something you're running into?
+
+One enterprise technology team we work with reduced test maintenance by 70% while expanding coverage across web, mobile, and API layers simultaneously.
+
+Thought it would be worth reaching out because the product rebuild adds testing requirements across every property at once. What does your current approach to that maintenance overhead look like?
+
+Rob Gorham | Testsigma
+We have yet to be properly introduced. I work with engineering leaders at enterprise technology companies.`, this)">Copy Message</button>
+      </div>
+    </div>
+    <div class="objection-section">
+      <div class="section-label">PREDICTED OBJECTION</div>
+      <div class="objection-box"><strong>"We have separate test frameworks per product"</strong><br><span class="objection-response">↳ That's the setup most multi-product orgs start with. The overhead shows up when shared components change and multiple frameworks need updating. Is that showing up yet?</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+function scrollToCard(id) {
+  const el = document.getElementById('card-' + id);
+  if (el) { el.scrollIntoView({behavior: 'smooth', block: 'center'}); el.style.boxShadow = '0 0 0 3px #2563eb'; setTimeout(() => el.style.boxShadow = '', 2000); }
+}
+
+function filterCards(attr, value) {
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    if (!value) { card.classList.remove('hidden'); return; }
+    const cardVal = card.dataset[attr];
+    if (attr === 'mqs') {
+      card.classList.toggle('hidden', parseInt(cardVal) < parseInt(value));
+    } else {
+      card.classList.toggle('hidden', cardVal !== value);
+    }
+  });
+  const rows = document.querySelectorAll('#prospect-table tbody tr');
+  rows.forEach(row => {
+    const cardId = row.querySelector('a')?.getAttribute('href')?.replace('#card-','');
+    if (!cardId) return;
+    const card = document.getElementById('card-' + cardId);
+    row.classList.toggle('hidden', card?.classList.contains('hidden') || false);
+  });
+}
+
+function resetFilters() {
+  document.querySelectorAll('.controls select').forEach(s => s.value = '');
+  document.querySelectorAll('.card, #prospect-table tbody tr').forEach(el => el.classList.remove('hidden'));
+}
+
+function updateStatus(id, val) {
+  const card = document.getElementById('card-' + id);
+  if (val === 'Sent') card.style.opacity = '0.7';
+  else if (val === 'Replied') card.style.borderColor = '#16a34a';
+  else if (val === 'Deferred') card.style.opacity = '0.5';
+  else card.style.opacity = '1';
+}
+</script>
+</body>
+</html>

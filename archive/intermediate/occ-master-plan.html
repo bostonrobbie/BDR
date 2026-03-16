@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outreach Command Center - Master Plan v2</title>
+<style>
+:root{--bg:#0f1117;--s:#1a1d27;--s2:#232733;--b:#2d3140;--t:#e2e4e9;--td:#8b8fa3;--a:#6366f1;--al:#818cf8;--g:#22c55e;--y:#eab308;--r:#ef4444;--o:#f97316;--c:#06b6d4;--p:#ec4899}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--t);line-height:1.6}
+.nav{position:sticky;top:0;z-index:100;background:rgba(15,17,23,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--b);padding:10px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.nav h1{font-size:16px;font-weight:700;color:var(--al);white-space:nowrap}
+.nav a{color:var(--td);text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px}
+.nav a:hover{color:var(--t);background:var(--s)}
+.c{max-width:1100px;margin:0 auto;padding:24px 20px}
+.sn{display:inline-block;background:var(--a);color:#fff;font-size:11px;font-weight:700;padding:2px 10px;border-radius:12px;margin-bottom:6px}
+h2{font-size:24px;font-weight:700;margin-bottom:4px;background:linear-gradient(135deg,var(--al),var(--c));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.ss{color:var(--td);font-size:14px;margin-bottom:20px}
+h3{font-size:17px;font-weight:600;margin:20px 0 8px;color:var(--t)}
+h4{font-size:14px;font-weight:600;margin:14px 0 6px;color:var(--al)}
+section{margin-bottom:48px}
+.cd{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:16px 20px;margin-bottom:14px}
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.tg{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:8px;margin:1px 2px}
+.tp{background:rgba(99,102,241,.15);color:var(--al)}.tgr{background:rgba(34,197,94,.15);color:var(--g)}.ty{background:rgba(234,179,8,.15);color:var(--y)}.tr{background:rgba(239,68,68,.15);color:var(--r)}.tc{background:rgba(6,182,212,.15);color:var(--c)}.to{background:rgba(249,115,22,.15);color:var(--o)}.tpk{background:rgba(236,72,153,.15);color:var(--p)}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+th{text-align:left;padding:8px 12px;background:var(--s2);color:var(--td);font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--b)}
+td{padding:8px 12px;border-bottom:1px solid var(--b);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.cn{font-weight:600;color:var(--al);white-space:nowrap}
+code{font-family:'SF Mono','Fira Code',monospace;font-size:12px;background:var(--s2);padding:1px 5px;border-radius:3px;color:var(--c)}
+pre{background:var(--s2);padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:12px;line-height:1.5;margin:10px 0;border:1px solid var(--b)}
+pre code{background:none;padding:0}
+details{margin-bottom:10px}
+details summary{cursor:pointer;font-weight:600;font-size:14px;padding:10px 14px;background:var(--s);border:1px solid var(--b);border-radius:8px;list-style:none}
+details summary:hover{background:var(--s2)}
+details summary::before{content:"▸ ";font-size:11px;color:var(--td)}
+details[open] summary::before{content:"▾ "}
+details summary::-webkit-details-marker{display:none}
+details .db{padding:14px 16px;border:1px solid var(--b);border-top:none;border-radius:0 0 8px 8px;background:var(--s)}
+ul,ol{margin:6px 0 6px 18px}li{margin-bottom:3px;font-size:13px}p{margin-bottom:8px;font-size:13px}
+.dm{color:var(--td)}.bd{font-weight:600}
+hr{border:none;border-top:1px solid var(--b);margin:28px 0}
+.ms{border-left:3px solid var(--a);padding:14px 18px;margin-bottom:14px;background:var(--s);border-radius:0 8px 8px 0}
+.ml{font-size:11px;font-weight:700;color:var(--al);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.grade{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;font-size:24px;font-weight:800;border:3px solid}
+.src{font-size:12px;color:var(--td);margin-top:4px}
+.src a{color:var(--c);text-decoration:none}
+.src a:hover{text-decoration:underline}
+@media(max-width:768px){.cg{grid-template-columns:1fr}.nav{flex-direction:column;align-items:flex-start;gap:6px}}
+</style>
+</head>
+<body>
+<div class="nav">
+<h1>OCC Master Plan v2</h1>
+<a href="#research">Research</a>
+<a href="#ops">Operating Model</a>
+<a href="#blueprint">Blueprint</a>
+<a href="#roadmap">Roadmap</a>
+<a href="#grade">Grade</a>
+<a href="#next">Next Steps</a>
+</div>
+<div class="c">
+
+<div style="text-align:center;padding:32px 0 24px">
+<h1 style="font-size:32px;font-weight:800;background:linear-gradient(135deg,var(--al),var(--c));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Outreach Command Center</h1>
+<p style="color:var(--td);font-size:15px;margin-top:6px">Master Plan v2: Research, Operating Model, Blueprint, Roadmap &amp; Grade</p>
+<p style="color:var(--td);font-size:12px;margin-top:3px">Rob Gorham, BDR @ Testsigma &nbsp;|&nbsp; February 2026</p>
+</div>
+
+<!-- ===== SECTION 1: RESEARCH ===== -->
+<section id="research">
+<span class="sn">Section 1</span>
+<h2>BDR Research: What Top Performers Do</h2>
+<p class="ss">Benchmarks, daily workflows, metrics, and improvement loops from credible sources.</p>
+
+<div class="cd">
+<h3 style="margin-top:0">Daily Activity Benchmarks (2025 Data)</h3>
+<table>
+<tr><th>Metric</th><th>Average</th><th>Top Performer</th><th>Source</th></tr>
+<tr><td class="cn">Total activities/day</td><td>94.4 (35.9 calls, 32.6 emails, 15.3 VMs, 7 social)</td><td>100+ focused activities</td><td class="src"><a href="https://optif.ai/learn/questions/sdr-productivity-benchmark/">Optifai 2025</a></td></tr>
+<tr><td class="cn">Calls/day</td><td>50-80</td><td>65+ with research</td><td class="src"><a href="https://salesso.com/blog/sdr-productivity-statistics/">SalesSo</a></td></tr>
+<tr><td class="cn">Emails/day</td><td>30-50</td><td>50-100 (quality over volume)</td><td class="src"><a href="https://optif.ai/learn/questions/sdr-productivity-benchmark/">Optifai 2025</a></td></tr>
+<tr><td class="cn">LinkedIn touches/day</td><td>15-25</td><td>20-30 with personalization</td><td class="src"><a href="https://optif.ai/learn/questions/sdr-productivity-benchmark/">Optifai 2025</a></td></tr>
+<tr><td class="cn">Quality conversations/day</td><td>3.6</td><td>5-7</td><td class="src"><a href="https://salesso.com/blog/outbound-sdr-statistics/">SalesSo Outbound</a></td></tr>
+<tr><td class="cn">Meetings booked/month</td><td>8-10 (outbound)</td><td>12-15 qualified</td><td class="src"><a href="https://www.gradient.works/blog/benchmarks-for-metrics-that-matter-to-sales-development">Gradient Works</a></td></tr>
+</table>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0">Conversion Benchmarks</h3>
+<table>
+<tr><th>Stage</th><th>Rate</th><th>Notes</th></tr>
+<tr><td class="cn">Cold call connect rate</td><td>3-10%</td><td>US market average. Below 3% = data quality issue.</td></tr>
+<tr><td class="cn">Cold email reply rate</td><td>1-2%</td><td>Personalized outbound. Rob's current: ~1%.</td></tr>
+<tr><td class="cn">LinkedIn InMail reply rate</td><td>3-5%</td><td>Higher than email when personalized.</td></tr>
+<tr><td class="cn">Attempts per quality conversation</td><td>11.3</td><td>Multi-touch required. Single-channel approaches fail.</td></tr>
+<tr><td class="cn">Attempts per contact (full cadence)</td><td>21 touches</td><td>~5 social, ~8 calls, ~8 emails avg.</td></tr>
+<tr><td class="cn">Meeting show rate</td><td>50-60% (avg), 90% (top)</td><td>Show rate directly impacts opportunity creation.</td></tr>
+<tr><td class="cn">Meeting-to-opportunity ratio</td><td>1:3 to 1:5 (best)</td><td>Every 3-5 meetings = 1 qualified opportunity.</td></tr>
+<tr><td class="cn">Multi-channel vs single-channel</td><td>287% higher engagement</td><td>LinkedIn + email + call >> any single channel.</td></tr>
+</table>
+<p class="src">Sources: <a href="https://6sense.com/science-of-b2b/the-2025-science-of-b2b-bdr-benchmark-succeeding-in-a-changing-landscape/">6sense State of the BDR 2025</a>, <a href="https://www.gradient.works/blog/benchmarks-for-metrics-that-matter-to-sales-development">Gradient Works</a>, <a href="https://salesso.com/blog/sdr-productivity-statistics/">SalesSo 2025</a>, <a href="https://operatix.net/blogs/sdr-metrics-outbound-inbound-teams/">Operatix</a></p>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0">Pipeline and Revenue Benchmarks</h3>
+<table>
+<tr><th>Metric</th><th>Benchmark</th></tr>
+<tr><td class="cn">Median yearly pipeline per BDR</td><td>$3M</td></tr>
+<tr><td class="cn">Monthly pipeline (ACV &lt; $25K)</td><td>~$191K</td></tr>
+<tr><td class="cn">Monthly pipeline (ACV &gt; $25K)</td><td>$600-700K</td></tr>
+<tr><td class="cn">Quota attainment (top performers)</td><td>88%</td></tr>
+<tr><td class="cn">Quota attainment (market average)</td><td>43-57%</td></tr>
+<tr><td class="cn">BDR contribution to total pipeline</td><td>46-73% of conversion</td></tr>
+<tr><td class="cn">SDR-to-AE ratio</td><td>1 SDR : 2.6 AEs</td></tr>
+<tr><td class="cn">Multithreading (contacts per account)</td><td>9 individuals/account (up from 6.4)</td></tr>
+<tr><td class="cn">Cadence length before moving on</td><td>53 days average</td></tr>
+</table>
+<p class="src">Sources: <a href="https://6sense.com/science-of-b2b/the-2025-science-of-b2b-bdr-benchmark-succeeding-in-a-changing-landscape/">6sense 2025</a>, <a href="https://blog.bridgegroupinc.com/sales-development-metrics">Bridge Group</a>, <a href="https://execviva.com/executive-hub/bdr-kpis">ExecViva</a></p>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0">Key Takeaways for Our System</h3>
+<div class="cg">
+<div class="cd" style="border-color:var(--g)">
+<h4 style="margin-top:0;color:var(--g)">1. Quality > Volume</h4>
+<p>BDRs making 80+ calls/day with poor targeting underperform those making 50 calls with better research. Our system should optimize for research quality, not activity count. Top performers hit 14.5% meaningful conversation rates through better targeting.</p>
+</div>
+<div class="cd" style="border-color:var(--c)">
+<h4 style="margin-top:0;color:var(--c)">2. Multi-Channel is Non-Negotiable</h4>
+<p>287% higher engagement from multi-channel vs single-channel. 90% of BDRs now multithread (up from 83%). Our 6-touch multi-channel sequence is aligned with industry best practice. Average 21 attempts per contact across channels.</p>
+</div>
+<div class="cd" style="border-color:var(--y)">
+<h4 style="margin-top:0;color:var(--y)">3. Opportunity > Meeting</h4>
+<p>Industry shifting from "meetings booked" to "opportunities created" as primary KPI. 74% of BDRs hand off as Opportunity (not Lead). Meeting show rate (50-90%) is a critical gap. Our system should track the full chain: touch → reply → meeting → show → opportunity.</p>
+</div>
+<div class="cd" style="border-color:var(--p)">
+<h4 style="margin-top:0;color:var(--p)">4. Time is the Scarcest Resource</h4>
+<p>SDRs spend just 2 hours/day actually selling. The rest is admin and research. Our agent system should maximize that 2 hours by doing all research and drafting in advance. Rob should spend his time sending and having conversations, not researching.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ===== SECTION 2: OPERATING MODEL ===== -->
+<section id="ops">
+<span class="sn">Section 2</span>
+<h2>BDR Operating Model</h2>
+<p class="ss">Daily workflow, time blocks, KPI hierarchy, and improvement loops.</p>
+
+<div class="cd">
+<h3 style="margin-top:0">Daily Time Block Schedule</h3>
+<table>
+<tr><th style="width:120px">Time (PT)</th><th style="width:180px">Block</th><th>Activities</th></tr>
+<tr><td class="cn">7:30-8:00</td><td><span class="tg tp">PREP</span> Morning Review</td><td>Open dashboard Home page. Review Today's Actions: overdue follow-ups, replies to handle, calls due. Prioritize top 3 actions.</td></tr>
+<tr><td class="cn">8:00-9:30</td><td><span class="tg tgr">CALLS</span> Power Hour</td><td>West Coast call window opens. Work the Calls Workspace queue, priority 5 (Hot) first. Log outcomes immediately. Aim for 5-7 quality conversations.</td></tr>
+<tr><td class="cn">9:30-10:00</td><td><span class="tg tc">REPLIES</span> Reply Handling</td><td>Handle any replies from Reply Queue. Classify intent, take recommended next action. Positive replies = book meeting within the hour.</td></tr>
+<tr><td class="cn">10:00-11:30</td><td><span class="tg tp">LINKEDIN</span> Outreach Block</td><td>Open LinkedIn Workspace. Send queued InMails (Touch 1, 3, or 6). Copy, paste, send. Mark as sent. Aim for 15-20 sends.</td></tr>
+<tr><td class="cn">11:30-12:00</td><td><span class="tg to">EMAIL</span> Email Block</td><td>Open Email Workspace. Send queued emails (Touch 5). Copy subject + body, paste in Gmail, send. Mark as sent.</td></tr>
+<tr><td class="cn">12:00-1:00</td><td>Lunch / Learning</td><td>Read prospect industry news. Note potential re-engagement triggers. Optional: review one competitor.</td></tr>
+<tr><td class="cn">1:00-2:00</td><td><span class="tg tp">RESEARCH</span> Agent Work</td><td>Trigger agent research for next batch or individual prospects. Review agent outputs. Edit and approve drafts.</td></tr>
+<tr><td class="cn">2:00-3:00</td><td><span class="tg tgr">CALLS</span> Call Block 2</td><td>Second call window. East Coast prospects in afternoon. Follow up on voicemails from morning.</td></tr>
+<tr><td class="cn">3:00-4:00</td><td><span class="tg tp">LINKEDIN</span> Follow-up Block</td><td>Send remaining LinkedIn follow-ups. Check for new replies. Handle late-day responses.</td></tr>
+<tr><td class="cn">4:00-4:30</td><td><span class="tg ty">ADMIN</span> End of Day</td><td>Update all statuses in dashboard. Log any remaining call notes. Review pipeline snapshot. Plan tomorrow's top 3.</td></tr>
+</table>
+<p class="dm" style="margin-top:8px;font-size:12px">Note: Calls are scheduled around prospect time zones. 8-11 AM PT = West Coast prime. 3-6 PM PT = also good for West Coast. East Coast morning calls should happen 6-8 AM PT if feasible.</p>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0">KPI Hierarchy: From Activity to Opportunity</h3>
+<pre><code>
+                         NORTH STAR
+                    ┌─────────────────┐
+                    │  OPPORTUNITIES   │
+                    │    CREATED       │
+                    └────────┬────────┘
+                             │
+              ┌──────────────┼──────────────┐
+              │              │              │
+     ┌────────┴──────┐ ┌────┴─────┐ ┌──────┴────────┐
+     │ Meeting Show  │ │ Meetings │ │ Meeting-to-   │
+     │ Rate (target: │ │ Booked   │ │ Opp Conversion│
+     │ >80%)         │ │ (10+/mo) │ │ (target: >33%)│
+     └────────┬──────┘ └────┬─────┘ └───────────────┘
+              │              │
+     ┌────────┴──────────────┴──────────────┐
+     │           REPLY QUALITY               │
+     │  Positive replies, referrals, timing  │
+     │  Target: >1.5% reply rate             │
+     └────────────────┬─────────────────────┘
+                      │
+     ┌────────────────┼────────────────┐
+     │                │                │
+┌────┴─────┐   ┌─────┴─────┐   ┌─────┴─────┐
+│LinkedIn  │   │  Email     │   │  Call      │
+│InMail    │   │  Reply     │   │  Connect   │
+│Reply Rate│   │  Rate      │   │  Rate      │
+│(3-5%)    │   │  (1-2%)    │   │  (3-10%)   │
+└────┬─────┘   └─────┬─────┘   └─────┬─────┘
+     │               │               │
+┌────┴───────────────┴───────────────┴────┐
+│         OUTREACH QUALITY                 │
+│  Personalization score, proof point      │
+│  match, research depth, message QC       │
+└────────────────┬─────────────────────────┘
+                 │
+┌────────────────┴────────────────────────┐
+│         RESEARCH QUALITY                 │
+│  ICP fit, company context, pain         │
+│  indicators, tech stack signals          │
+└─────────────────────────────────────────┘
+</code></pre>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0">Metrics to Track (Required vs Optional)</h3>
+<table>
+<tr><th>Metric</th><th>Type</th><th>Frequency</th><th>Target</th></tr>
+<tr><td class="cn">Opportunities created</td><td><span class="tg tr">North Star</span></td><td>Monthly</td><td>4-6/month</td></tr>
+<tr><td class="cn">Meetings booked</td><td><span class="tg to">Lagging</span></td><td>Weekly</td><td>10-15/month</td></tr>
+<tr><td class="cn">Meeting show rate</td><td><span class="tg to">Lagging</span></td><td>Weekly</td><td>>80%</td></tr>
+<tr><td class="cn">Meeting-to-opp conversion</td><td><span class="tg to">Lagging</span></td><td>Monthly</td><td>>33%</td></tr>
+<tr><td class="cn">Positive replies</td><td><span class="tg ty">Leading</span></td><td>Daily</td><td>Track trend</td></tr>
+<tr><td class="cn">Reply rate (all channels)</td><td><span class="tg ty">Leading</span></td><td>Weekly</td><td>>1.5%</td></tr>
+<tr><td class="cn">LinkedIn sends</td><td><span class="tg tp">Activity</span></td><td>Daily</td><td>15-20/day</td></tr>
+<tr><td class="cn">Emails sent</td><td><span class="tg tp">Activity</span></td><td>Daily</td><td>10-15/day</td></tr>
+<tr><td class="cn">Calls made</td><td><span class="tg tp">Activity</span></td><td>Daily</td><td>20-30/day</td></tr>
+<tr><td class="cn">Call connect rate</td><td><span class="tg ty">Leading</span></td><td>Weekly</td><td>>5%</td></tr>
+<tr><td class="cn">Personalization score avg</td><td><span class="tg tc">Quality</span></td><td>Per batch</td><td>>2.5 avg</td></tr>
+<tr><td class="cn">QC pass rate</td><td><span class="tg tc">Quality</span></td><td>Per batch</td><td>>95%</td></tr>
+<tr><td class="cn">Follow-up compliance</td><td><span class="tg tc">Quality</span></td><td>Weekly</td><td>>90%</td></tr>
+<tr><td class="cn">Pipeline $ generated</td><td><span class="tg tr">North Star</span></td><td>Monthly</td><td>Track trend</td></tr>
+<tr><td class="cn">AE feedback score</td><td><span class="tg tpk">Optional</span></td><td>Per meeting</td><td>Qualitative</td></tr>
+</table>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0">Weekly Review Process</h3>
+<table>
+<tr><th style="width:60px">Day</th><th style="width:160px">Activity</th><th>What to Review</th></tr>
+<tr><td class="cn">Friday PM</td><td>Weekly Numbers Review</td><td>Open Intelligence page. Review: touches sent (by channel), replies received, meetings booked, opportunities created. Compare to last week and 4-week average. Identify: what changed? What worked? What needs adjustment?</td></tr>
+<tr><td class="cn">Friday PM</td><td>Message Audit</td><td>Review 3-5 messages that got replies and 3-5 that didn't. What's the pattern? Was the proof point relevant? Was the personalization deep enough? Was the ask right? Update reply tags if not done.</td></tr>
+<tr><td class="cn">Friday PM</td><td>Pipeline Health Check</td><td>Review pipeline funnel. How many prospects are stuck? Who needs a follow-up? Are there stale prospects that should go dormant? Any re-engagement triggers firing?</td></tr>
+<tr><td class="cn">Monday AM</td><td>Plan the Week</td><td>Review pre-brief (if new batch coming). Set 3 goals for the week. Prioritize hot prospects. Block calendar for call windows.</td></tr>
+</table>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0">Monthly Retro and Experiment Cycle</h3>
+<table>
+<tr><th style="width:180px">Activity</th><th>Details</th></tr>
+<tr><td class="cn">Full Month Analysis</td><td>Run the Insights Agent. Generate: reply rate by persona, vertical, proof point. Touch effectiveness. Opportunity attribution. Compare to previous month.</td></tr>
+<tr><td class="cn">Experiment Review</td><td>Review completed A/B tests. Were results conclusive? Lock in winners. Sunset losers. Plan next month's test variable.</td></tr>
+<tr><td class="cn">AE Feedback Loop</td><td>Ask AEs: "Of the meetings I booked, which ones were high quality? Which were misqualified? Why?" Feed back into targeting and qualification criteria.</td></tr>
+<tr><td class="cn">Playbook Update</td><td>Update sales-playbook.md with: new winning proof points, new objection responses from live calls, new opener patterns that worked.</td></tr>
+<tr><td class="cn">Template Refresh</td><td>If reply rate is trending down, refresh messaging templates. New angles, new proof points, updated company references.</td></tr>
+</table>
+</div>
+</section>
+
+<!-- ===== SECTION 3: BLUEPRINT ===== -->
+<section id="blueprint">
+<span class="sn">Section 3</span>
+<h2>Product Blueprint</h2>
+<p class="ss">Pages, data model, agent swarm, controls, learning loop, and integrations.</p>
+
+<div class="cd">
+<h3 style="margin-top:0">Pages and Navigation (12 Pages)</h3>
+<table>
+<tr><th>Page</th><th>Purpose</th><th>Key Components</th></tr>
+<tr><td class="cn">Home</td><td>Daily cockpit</td><td>Action queue, pipeline funnel, hot prospects, reply queue, weekly scorecard, pre-brief card</td></tr>
+<tr><td class="cn">Pipeline</td><td>Unified prospect view</td><td>Filterable table, right-side detail panel (research, messages, timeline, next actions, meeting prep)</td></tr>
+<tr><td class="cn">LinkedIn</td><td>Primary prospecting</td><td>3-column: batch manager + prospect card + research panel. Message editor. Batch config.</td></tr>
+<tr><td class="cn">Email</td><td>Email outreach</td><td>Email queue, composer with subject line, mobile preview, follow-up calendar, template library</td></tr>
+<tr><td class="cn">Calls</td><td>Call execution</td><td>Call queue (priority + timezone sort), call card with 3-line snippet, outcome buttons, post-call notes</td></tr>
+<tr><td class="cn">Accounts</td><td>Company management</td><td>Account list, company research cards, contact list per account, signal history</td></tr>
+<tr><td class="cn">Contacts</td><td>People management</td><td>Contact search and filter, detail view, research history, touchpoint timeline</td></tr>
+<tr><td class="cn">Signals</td><td>Intent and triggers</td><td>Buyer intent dashboard, job posting alerts, funding events, leadership changes, re-engagement recommendations</td></tr>
+<tr><td class="cn">Drafts</td><td>Message management</td><td>Draft library, sequence builder, template versioning, approval workflow</td></tr>
+<tr><td class="cn">Experiments</td><td>A/B testing</td><td>Create experiments, view active tests, analyze results, rotation planner</td></tr>
+<tr><td class="cn">Intelligence</td><td>Analytics brain</td><td>7 charts (persona, vertical, proof point, personalization, funnel, touch effectiveness, attribution), insights feed</td></tr>
+<tr><td class="cn">Agent Logs</td><td>Transparency</td><td>Run history, QA flags, token usage, error log</td></tr>
+</table>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0">Agent Swarm Architecture</h3>
+<p>Coordinator + Worker pattern. A Supervisor Agent orchestrates 11 specialized worker agents. Each has a defined role, input/output contract, and safety constraints.</p>
+<pre><code>
+Supervisor (Coordinator)
+├── Research Cluster
+│   ├── Prospector Agent        (finds + qualifies prospects from Sales Nav)
+│   ├── Research Agent          (builds person + company briefs with citations)
+│   └── Signal Scanner Agent    (detects intent, job postings, funding, leadership)
+├── Draft Cluster
+│   ├── Message Writer Agent    (writes all touches in Rob's voice)
+│   ├── Sequencer Agent         (schedules follow-ups, optimizes timing)
+│   ├── Call Prep Agent         (builds call cards, discovery questions)
+│   ├── Reply Triage Agent      (classifies replies, recommends next step)
+│   └── Quality Gate Agent      (10 QC checks, blocks bad output)
+└── Analysis Cluster
+    ├── Pre-Brief Agent         (5-line batch summary from historical data)
+    ├── Insights Agent          (weekly analytics and recommendations)
+    └── Experiment Analyst Agent (A/B test evaluation and conclusions)
+</code></pre>
+<p class="dm" style="font-size:12px;margin-top:8px">Full agent specifications, communication protocol, and safety constraints documented in <a href="https://github.com/bostonrobbie/BDR/blob/main/docs/AGENT_SWARM.md" style="color:var(--c)">AGENT_SWARM.md</a></p>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0">Database Schema (15 Tables)</h3>
+<p>SQLite with 15 tables, 22 indexes, and full audit logging. See <a href="https://github.com/bostonrobbie/BDR/blob/main/docs/DATA_MODEL.md" style="color:var(--c)">DATA_MODEL.md</a> for complete field-level documentation.</p>
+<table>
+<tr><th>Table</th><th>Purpose</th><th>Key Fields</th></tr>
+<tr><td class="cn">accounts</td><td>Company records</td><td>name, industry, employee_count, known_tools, buyer_intent</td></tr>
+<tr><td class="cn">contacts</td><td>Person records</td><td>title, persona_type, stage, priority_score, predicted_objection</td></tr>
+<tr><td class="cn">icp_scores</td><td>Qualification scoring</td><td>title_match, vertical_match, total_score</td></tr>
+<tr><td class="cn">signals</td><td>Intent and triggers</td><td>signal_type, description, source_url, detected_at</td></tr>
+<tr><td class="cn">research_snapshots</td><td>Cached research</td><td>entity_type, summary, tech_stack_signals, sources</td></tr>
+<tr><td class="cn">message_drafts</td><td>Versioned messages</td><td>channel, touch_type, body, personalization_score, qc_passed</td></tr>
+<tr><td class="cn">touchpoints</td><td>Sent actions (user confirmed)</td><td>channel, touch_number, sent_at, outcome</td></tr>
+<tr><td class="cn">replies</td><td>Reply classification</td><td>intent, reply_tag, recommended_next_step</td></tr>
+<tr><td class="cn">followups</td><td>Scheduled follow-ups</td><td>due_date, state, message_draft_id</td></tr>
+<tr><td class="cn">opportunities</td><td>The North Star</td><td>status, trigger_touchpoint_id, attribution_*</td></tr>
+<tr><td class="cn">batches</td><td>Batch grouping</td><td>batch_number, ab_variable, pre_brief, status</td></tr>
+<tr><td class="cn">batch_prospects</td><td>Batch-contact join</td><td>ab_group, sequence_status</td></tr>
+<tr><td class="cn">experiments</td><td>A/B tests</td><td>variable, group_a/b metrics, winner, conclusion</td></tr>
+<tr><td class="cn">agent_runs</td><td>Agent audit trail</td><td>run_type, inputs, outputs, tokens_used, status</td></tr>
+<tr><td class="cn">audit_log</td><td>Change tracking</td><td>table_name, action, old_values, new_values</td></tr>
+</table>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0">Controls and Safety</h3>
+<table>
+<tr><th>Control</th><th>What It Does</th></tr>
+<tr><td class="cn">Manual Send Only</td><td>No "send" button in the system. Only "Copy" buttons. Rob pastes and sends manually in Sales Nav and Gmail.</td></tr>
+<tr><td class="cn">Approval Workflow</td><td>Drafts start as "draft" status. Rob reviews and marks "ready" before using. Can edit any field.</td></tr>
+<tr><td class="cn">Quality Gate</td><td>10 automated checks on every message. Failed messages are blocked until fixed. QC flags visible in UI.</td></tr>
+<tr><td class="cn">Confidence Score</td><td>Each draft shows what evidence was used (research data, proof point, sources). No black box.</td></tr>
+<tr><td class="cn">No Hallucination</td><td>Customer names must exist in proof points table. Stats must match known data. Placeholder detection blocks "[Name]" style text.</td></tr>
+<tr><td class="cn">Voice Enforcement</td><td>No em dashes, word count within range, one question max, opener variety check, no feature dumping.</td></tr>
+<tr><td class="cn">Full Audit Trail</td><td>Every change to every record is logged with who changed it (user or agent), when, and what the old/new values were.</td></tr>
+</table>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0">Learning Loop</h3>
+<p>The system improves through 4 feedback mechanisms:</p>
+<table>
+<tr><th>Mechanism</th><th>Data Source</th><th>What It Adjusts</th></tr>
+<tr><td class="cn">Reply Attribution</td><td>reply_tag + touchpoint + message_draft</td><td>Which proof points, openers, and pain hooks get replies. Use more of what works.</td></tr>
+<tr><td class="cn">Opportunity Attribution</td><td>opportunities + touchpoints + messages</td><td>Which full message + angle + channel created real pipeline. This is the ultimate signal.</td></tr>
+<tr><td class="cn">A/B Experiments</td><td>experiments + batch_prospects</td><td>Controlled tests of one variable at a time. Lock in winners, test new hypotheses.</td></tr>
+<tr><td class="cn">Pre-Brief Engine</td><td>All historical data across batches</td><td>Before each new batch: what's working, what's not, what to do differently.</td></tr>
+</table>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0">Integration Approach</h3>
+<table>
+<tr><th>Integration</th><th>Method</th><th>Priority</th></tr>
+<tr><td class="cn">LinkedIn Sales Navigator</td><td>Chrome MCP tools (read page, extract data). Rob navigates, agent reads.</td><td><span class="tg tr">Core</span></td></tr>
+<tr><td class="cn">Gmail (work)</td><td>Gmail MCP tools (search, read). Read-only for thread context. Drafts are copy-paste.</td><td><span class="tg to">Important</span></td></tr>
+<tr><td class="cn">Apollo</td><td>Optional. Requires 2FA. Used for email enrichment only if Rob provides access.</td><td><span class="tg ty">Optional</span></td></tr>
+<tr><td class="cn">Google Calendar</td><td>Calendar MCP tools. Check meeting availability when proposing times.</td><td><span class="tg tgr">Nice to have</span></td></tr>
+<tr><td class="cn">Web Search</td><td>WebSearch tool for company research, news, job postings.</td><td><span class="tg tr">Core</span></td></tr>
+</table>
+</div>
+</section>
+
+<!-- ===== SECTION 4: ROADMAP ===== -->
+<section id="roadmap">
+<span class="sn">Section 4</span>
+<h2>Roadmap &amp; GitHub Execution Plan</h2>
+<p class="ss">MVP → v1 → v2 with user stories, tasks, tests, and validation criteria.</p>
+
+<div class="ms" style="border-color:var(--g)">
+<div class="ml" style="color:var(--g)">Phase 1: MVP</div>
+<h4 style="margin-top:0">Database + LinkedIn Workspace + Pipeline View</h4>
+<p>Replace standalone HTML batch files. All data goes into SQLite. Basic research and drafting via agents.</p>
+<table>
+<tr><th>Category</th><th>Tasks</th></tr>
+<tr><td class="cn">Backend</td><td>SQLite schema (15 tables), FastAPI CRUD for core entities, priority + ICP scoring endpoints, message draft CRUD, touchpoint logging</td></tr>
+<tr><td class="cn">Frontend</td><td>Home page (action queue), Pipeline (filterable table), LinkedIn Workspace (batch manager + prospect cards + message editor with copy buttons)</td></tr>
+<tr><td class="cn">Agents</td><td>Research Agent (person + company), Draft Agent (all 6 touches), basic QC (em dash, word count)</td></tr>
+<tr><td class="cn">Data Migration</td><td>Import existing prospect-outreach-25.html data into the new database</td></tr>
+<tr><td class="cn">Tests</td><td>Unit: ICP scoring, priority scoring, follow-up dates, word count. Integration: create account → contact → research → draft flow.</td></tr>
+<tr><td class="cn">Validation</td><td>Build one 25-prospect batch end-to-end. All data in DB. Batch time &lt;2 hours.</td></tr>
+</table>
+</div>
+
+<div class="ms" style="border-color:var(--y)">
+<div class="ml" style="color:var(--y)">Phase 2: v1</div>
+<h4 style="margin-top:0">Full Multi-Channel + Tracking + QC Automation</h4>
+<p>All 3 workspaces functional. Full touchpoint tracking. QC Agent with all 10 checks. Meeting prep. Opportunity tracking.</p>
+<table>
+<tr><th>Category</th><th>Tasks</th></tr>
+<tr><td class="cn">Backend</td><td>Email workspace API, Call workspace API (queue sorting), Reply classification API, Meeting prep generation, Full audit log triggers, Follow-up overdue detection, Opportunity creation + attribution</td></tr>
+<tr><td class="cn">Frontend</td><td>Email Workspace (composer, mobile preview), Calls Workspace (queue, card, outcome buttons), Reply modal, Meeting prep card, Timeline view, Accounts &amp; Contacts pages</td></tr>
+<tr><td class="cn">Agents</td><td>Full Quality Gate (10 checks), Reply Triage, Call Prep, Sequencer</td></tr>
+<tr><td class="cn">Tests</td><td>Stage transitions, proof point rotation, A/B assignment balance. Integration: full touchpoint → reply → opportunity. E2E: LinkedIn flow end-to-end.</td></tr>
+<tr><td class="cn">Validation</td><td>3 workspaces functional. Follow-up compliance &gt;90%. QC pass rate &gt;95%. Reply handling &lt;4 hours.</td></tr>
+</table>
+</div>
+
+<div class="ms" style="border-color:var(--a)">
+<div class="ml">Phase 3: v2</div>
+<h4 style="margin-top:0">Intelligence + Agent Swarm + Learning Loop</h4>
+<p>System actively learns and improves. Full analytics. Swarm orchestration. Re-engagement automation.</p>
+<table>
+<tr><th>Category</th><th>Tasks</th></tr>
+<tr><td class="cn">Backend</td><td>Intelligence API (aggregation queries), Experiment engine, Pre-brief generation, Signal Scanner, Re-engagement triggers, Token tracking, Weekly insights</td></tr>
+<tr><td class="cn">Frontend</td><td>Intelligence page (7 charts), Experiments page, Agent Logs, Signals page, Batch comparison dashboard, Settings/Admin</td></tr>
+<tr><td class="cn">Agents</td><td>Supervisor Agent (full orchestration), Pre-Brief, Insights, Experiment Analyst, Signal Scanner. Full swarm protocol.</td></tr>
+<tr><td class="cn">Tests</td><td>Experiment statistical analysis, pre-brief from mock data. Integration: full batch lifecycle with learning. E2E: multi-batch improvement loop.</td></tr>
+<tr><td class="cn">Validation</td><td>Reply rate &gt;1.5%. Meeting-to-opp conversion &gt;40%. Token cost decreasing. Pre-briefs accurate.</td></tr>
+</table>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0">GitHub Branch Strategy</h3>
+<pre><code>main
+├── feat/database-schema      # Phase 1
+├── feat/api-core             # Phase 1
+├── feat/linkedin-workspace   # Phase 1
+├── feat/email-workspace      # Phase 2
+├── feat/calls-workspace      # Phase 2
+├── feat/agent-research       # Phase 1
+├── feat/agent-draft          # Phase 1
+├── feat/agent-qc             # Phase 2
+├── feat/agent-swarm          # Phase 3
+├── feat/analytics            # Phase 3
+├── feat/experiments          # Phase 3
+└── fix/*                     # Bugfixes
+</code></pre>
+</div>
+</section>
+
+<!-- ===== SECTION 5: GRADE ===== -->
+<section id="grade">
+<span class="sn">Section 5</span>
+<h2>Current Grade</h2>
+<p class="ss">Honest assessment of where the system is today.</p>
+
+<div class="cd" style="text-align:center;padding:28px">
+<div class="grade" style="border-color:var(--y);color:var(--y)">6.5</div>
+<h3 style="margin-top:12px">6.5 out of 10</h3>
+<p class="dm" style="font-size:14px">Strong design and SOPs. No working software yet.</p>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0">Scoring Breakdown</h3>
+<table>
+<tr><th>Dimension</th><th style="width:60px">Score</th><th>Why</th></tr>
+<tr><td class="cn">Design Completeness</td><td>8/10</td><td>Architecture doc, data model (15 tables), agent swarm design (11 agents), 12-page UI map, full roadmap. Very thorough.</td></tr>
+<tr><td class="cn">SOP Quality</td><td>9/10</td><td>CLAUDE.md is comprehensive. Writing rules, message structure, proof points, objection mapping, priority scoring, re-engagement triggers, all codified. This is a real operating manual.</td></tr>
+<tr><td class="cn">Working Software</td><td>2/10</td><td>Only deliverable so far is the static HTML batch file (prospect-outreach-25.html) and the architecture HTML. No database, no API, no interactive dashboard, no running agents.</td></tr>
+<tr><td class="cn">Agent Capability</td><td>5/10</td><td>Claude can already do research and drafting via Cowork session. But there's no persistent agent orchestration, no swarm coordination, no automated QC pipeline, no learning loop running.</td></tr>
+<tr><td class="cn">Data Infrastructure</td><td>3/10</td><td>Schema is designed and init script exists. But no database is running, no data is persisted across sessions, no CRUD API, no migration system.</td></tr>
+<tr><td class="cn">Learning Loop</td><td>4/10</td><td>The design for reply attribution, A/B testing, and pre-briefs is solid. But none of it is implemented. Historical data from batch 1 is in HTML format only, not queryable.</td></tr>
+<tr><td class="cn">Practicality</td><td>8/10</td><td>Designed for a real BDR workflow. Time blocks, channel-specific workspaces, copy-paste-ready messages, call snippets. Very practical if built.</td></tr>
+<tr><td class="cn">Reliability</td><td>4/10</td><td>No tests, no error handling, no backup strategy running, no monitoring. The system is all design, no resilience.</td></tr>
+</table>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0">Biggest Risks</h3>
+<table>
+<tr><th style="width:60px">Risk</th><th>Description</th><th>Mitigation</th></tr>
+<tr><td><span class="tg tr">HIGH</span></td><td>No working software. Everything is documentation. Rob can't use the dashboard today.</td><td>Start MVP build immediately. Get the database and LinkedIn workspace running first.</td></tr>
+<tr><td><span class="tg tr">HIGH</span></td><td>Data doesn't persist between Cowork sessions. SQLite DB and research files need to be in the mounted Work folder.</td><td>All persistent data must live in /mnt/Work/. DB path, research cache, everything.</td></tr>
+<tr><td><span class="tg to">MED</span></td><td>Agent swarm is over-designed for current needs. 11 agents might be more complexity than necessary for MVP.</td><td>Start with 3 agents (Research, Draft, QC). Add Supervisor and specialists in v2.</td></tr>
+<tr><td><span class="tg to">MED</span></td><td>Token costs could escalate quickly with deep research on 25 prospects per batch.</td><td>Implement company research caching from day one. Structured extraction over free-form.</td></tr>
+<tr><td><span class="tg ty">LOW</span></td><td>Sales Navigator DOM changes could break the extraction logic.</td><td>Use get_page_text instead of DOM selectors. More resilient to layout changes.</td></tr>
+</table>
+</div>
+</section>
+
+<!-- ===== SECTION 6: NEXT STEPS ===== -->
+<section id="next">
+<span class="sn">Section 6</span>
+<h2>Next Steps to Reach 10/10</h2>
+<p class="ss">Prioritized checklist: P0 (do now), P1 (do next), P2 (do after).</p>
+
+<div class="cd">
+<h3 style="margin-top:0"><span class="tg tr">P0</span> Do Now (Gets us to 7.5/10)</h3>
+<table>
+<tr><th style="width:40px">#</th><th>Task</th><th>Effort</th><th>Impact</th></tr>
+<tr><td>1</td><td class="cn">Initialize SQLite database in Work folder</td><td>30 min</td><td>Data persistence across sessions. Foundation for everything.</td></tr>
+<tr><td>2</td><td class="cn">Build FastAPI CRUD for accounts, contacts, messages</td><td>2-3 hours</td><td>Programmatic data access. No more HTML-only storage.</td></tr>
+<tr><td>3</td><td class="cn">Build LinkedIn Workspace page (basic)</td><td>3-4 hours</td><td>Rob can see prospects, copy messages, mark as sent.</td></tr>
+<tr><td>4</td><td class="cn">Migrate batch 1 data (25 prospects) into the database</td><td>1 hour</td><td>Historical data becomes queryable. Learning loop can start.</td></tr>
+<tr><td>5</td><td class="cn">Wire up Research Agent to store structured snapshots</td><td>2 hours</td><td>Research results persist and are reusable across sessions.</td></tr>
+<tr><td>6</td><td class="cn">Wire up Draft Agent to store messages in DB with QC flags</td><td>2 hours</td><td>Message generation is tracked and auditable.</td></tr>
+<tr><td>7</td><td class="cn">Push all docs and code to GitHub repo</td><td>30 min</td><td>Version control. Collaboration. Deploy to Cloud Code later.</td></tr>
+</table>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0"><span class="tg to">P1</span> Do Next (Gets us to 8.5/10)</h3>
+<table>
+<tr><th style="width:40px">#</th><th>Task</th><th>Effort</th><th>Impact</th></tr>
+<tr><td>8</td><td class="cn">Build Home page with daily action queue</td><td>2-3 hours</td><td>Rob knows exactly what to do each morning.</td></tr>
+<tr><td>9</td><td class="cn">Build Pipeline page with filters and detail panel</td><td>3-4 hours</td><td>Unified view of all prospects across channels.</td></tr>
+<tr><td>10</td><td class="cn">Add Email Workspace</td><td>2-3 hours</td><td>Second channel fully functional.</td></tr>
+<tr><td>11</td><td class="cn">Add Calls Workspace with call queue and outcome logging</td><td>2-3 hours</td><td>Third channel. Complete multi-channel coverage.</td></tr>
+<tr><td>12</td><td class="cn">Implement follow-up scheduling engine</td><td>2 hours</td><td>Automatic follow-up reminders. No manual tracking needed.</td></tr>
+<tr><td>13</td><td class="cn">Implement reply classification and next-action engine</td><td>2-3 hours</td><td>Faster reply handling. Better next-step recommendations.</td></tr>
+<tr><td>14</td><td class="cn">Build Quality Gate Agent (all 10 checks)</td><td>3 hours</td><td>Automated QC catches errors before Rob sees them.</td></tr>
+<tr><td>15</td><td class="cn">Write unit tests for scoring logic</td><td>2 hours</td><td>Confidence that calculations are correct.</td></tr>
+<tr><td>16</td><td class="cn">Add opportunity tracking with full attribution</td><td>2 hours</td><td>The North Star metric is finally measurable.</td></tr>
+</table>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0"><span class="tg ty">P2</span> Do After (Gets us to 10/10)</h3>
+<table>
+<tr><th style="width:40px">#</th><th>Task</th><th>Effort</th><th>Impact</th></tr>
+<tr><td>17</td><td class="cn">Build Intelligence page with 7 analytics charts</td><td>4-5 hours</td><td>Data-driven decisions. See what's working at a glance.</td></tr>
+<tr><td>18</td><td class="cn">Build Experiments page with A/B test management</td><td>3-4 hours</td><td>Systematic improvement through controlled tests.</td></tr>
+<tr><td>19</td><td class="cn">Implement Pre-Brief Agent</td><td>2-3 hours</td><td>Each batch starts with insights from all previous batches.</td></tr>
+<tr><td>20</td><td class="cn">Implement Signal Scanner for re-engagement triggers</td><td>3-4 hours</td><td>Dormant prospects get resurfaced with fresh reasons.</td></tr>
+<tr><td>21</td><td class="cn">Build Supervisor Agent for swarm orchestration</td><td>4-5 hours</td><td>One command triggers the full batch build pipeline.</td></tr>
+<tr><td>22</td><td class="cn">Build Agent Logs page with token tracking</td><td>2-3 hours</td><td>Full transparency into agent behavior and costs.</td></tr>
+<tr><td>23</td><td class="cn">Integration tests for full prospect lifecycle</td><td>3-4 hours</td><td>Confidence that the full flow works end-to-end.</td></tr>
+<tr><td>24</td><td class="cn">Backup automation (DB snapshot before each batch)</td><td>1 hour</td><td>Data safety. Never lose work.</td></tr>
+<tr><td>25</td><td class="cn">Deploy to Vercel or Cloud Code for persistent hosting</td><td>3-4 hours</td><td>Always-on dashboard. No more starting/stopping.</td></tr>
+</table>
+</div>
+
+<div class="cd">
+<h3 style="margin-top:0">Dependencies Map</h3>
+<pre><code>
+P0 #1 (DB init) ──→ P0 #2 (API) ──→ P0 #3 (LinkedIn page)
+                                  ├──→ P0 #4 (Data migration)
+                                  ├──→ P1 #8 (Home page)
+                                  ├──→ P1 #9 (Pipeline page)
+                                  ├──→ P1 #10 (Email workspace)
+                                  └──→ P1 #11 (Calls workspace)
+
+P0 #5 (Research agent) ──→ P0 #6 (Draft agent) ──→ P1 #14 (QC agent)
+                                                 └──→ P2 #21 (Supervisor)
+
+P1 #12 (Follow-ups) + P1 #13 (Replies) + P1 #16 (Opportunities)
+    └──→ P2 #17 (Intelligence) + P2 #18 (Experiments) + P2 #19 (Pre-Brief)
+</code></pre>
+</div>
+
+<div class="cd" style="text-align:center;padding:20px">
+<h3 style="margin-top:0">What "10/10" Looks Like</h3>
+<p style="font-size:15px;color:var(--al);max-width:600px;margin:8px auto">Rob opens the dashboard each morning, sees exactly who to call, what to send, and why. Every message is personalized, QC'd, and copy-paste ready. Every reply is classified with a recommended next step. Every opportunity traces back to the exact message that created it. The system gets smarter every week, and Rob spends his time talking to prospects instead of researching them.</p>
+</div>
+</section>
+
+<hr>
+<div style="text-align:center;padding:20px 0;color:var(--td);font-size:12px">
+<p>Outreach Command Center Master Plan v2 | Rob Gorham, BDR @ Testsigma | February 2026</p>
+<p style="margin-top:4px">Sources: <a href="https://6sense.com/science-of-b2b/the-2025-science-of-b2b-bdr-benchmark-succeeding-in-a-changing-landscape/" style="color:var(--c)">6sense BDR 2025</a> | <a href="https://www.gradient.works/blog/benchmarks-for-metrics-that-matter-to-sales-development" style="color:var(--c)">Gradient Works</a> | <a href="https://salesso.com/blog/sdr-productivity-statistics/" style="color:var(--c)">SalesSo</a> | <a href="https://optif.ai/learn/questions/sdr-productivity-benchmark/" style="color:var(--c)">Optifai</a> | <a href="https://execviva.com/executive-hub/bdr-kpis" style="color:var(--c)">ExecViva</a> | <a href="https://blog.bridgegroupinc.com/sales-development-metrics" style="color:var(--c)">Bridge Group</a> | <a href="https://smithdigital.io/blog/bdr-kpis-to-track" style="color:var(--c)">Smith Digital</a> | <a href="https://operatix.net/blogs/sdr-metrics-outbound-inbound-teams/" style="color:var(--c)">Operatix</a></p>
+</div>
+</div>
+
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
+</script>
+</body>
+</html>

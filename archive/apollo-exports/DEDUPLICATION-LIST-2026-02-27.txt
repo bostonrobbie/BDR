@@ -1,0 +1,110 @@
+PROSPECT DEDUPLICATION LIST - Feb 27, 2026
+============================================================
+Extracted from all outreach batch tracker files for dedup checking.
+Use this list to verify NO NEW prospects overlap with existing pipeline.
+
+Total Unique Prospects: 70
+============================================================
+
+MASTER DEDUP LIST (sorted alphabetically by name):
+
+1. Alanna Klein @ CNA Insurance
+2. Amanda Mao @ Veeva Systems
+3. Amita Prabhu @ thomsonreuters.com
+4. Angela Firari @ Trek Bicycle
+5. Anthony Kent @ Apiture
+6. Arun Bhatia @ Aspen Technology
+7. Bazil D'Souza @ costar.com
+8. Brenden Gibbons @ squarerobot.com
+9. Calvin Fulgham @ FTD
+10. Cherishma Perikala @ GoGuardian
+11. Chris Hughes @ giantskull.com
+12. Chris O'Neill @ Jack Henry
+13. Christie Howard @ LastPass
+14. Chuck Smith @ Aventiv Technologies
+15. Cindy Holsinger @ Early Warning
+16. Derek Curtis @ iPipeline
+17. Diane Marrero @ Fitch Ratings
+18. Donald Burlingham @ Imperial PFS
+19. Edwin Gozun @ Arm
+20. Elias Yousef @ jpmchase.com
+21. Federico Romano @ Legion Technologies
+22. Francisco Trindade @ braze.com
+23. Gianna di Franco @ ESP Logistics Technology
+24. Gopinath Venu @ Teradata
+25. Harvindar Pinglia @ nexaq.io
+26. Heleen Vs @ 10Pearls
+27. Iftikhar Hussain @ Sabre Corporation
+28. Jamie Kurt @ Vertafore
+29. Jason Baron @ thirtycapital.com
+30. Jeff Roberts @ WebstaurantStore
+31. Jewetta Dobson @ Reliance Matrix
+32. Joe Cannon @ regions.com
+33. John Cunningham @ Great American Insurance Group
+34. Juan Gomez @ ideafinancial.com
+35. Karthiga Puthianayagam @ syf.com
+36. Kenneth Whitham @ TreviPay
+37. Kerri McGee @ Sapiens
+38. Kevin Niekamp @ Lument
+39. Konduru Srinivasulu @ Kaleris
+40. Lance Silverman @ Healthfirst
+41. Lyle Landry @ Availity
+42. Marcos Guerrero @ Plume
+43. Marcy Vallee @ Syndigo
+44. Michelle Stark @ Citizens Property Insurance
+45. Mike Balderree @ Cricut
+46. Mohan Gummadi @ Verisk
+47. Muhammad Ali @ dtexsystems.com
+48. Nisha Mathew @ Exeter Finance
+49. Pam Bice @ Bread Financial
+50. Rachael Schroeder @ Epic Games
+51. Rahul Pandey @ CareFirst BCBS
+52. Ramnath Jayakumar @ Envestnet
+53. Rich Kowalski @ Genesys
+54. Robert Catalano @ openlending.com
+55. Ryan Aspleaf @ VIZIO
+56. Sanchit Malhotra @ The NPD Group
+57. Sara Gilliam @ Reinsurance Group of America
+58. Satish Chandrasekaran @ Cirrus Logic
+59. Scott Paliani @ honeywell.com
+60. Sebren Green @ Riot Games
+61. Shantel Gillette @ Lucid Software
+62. Stacy Wyatt @ Beyond Finance
+63. Stephen Weber @ lplfinancial.com
+64. Sundy Comer @ Essent
+65. Temi Sulaimon @ jpmorgan.com
+66. Terene Lee @ Impartner Software
+67. Usha K @ BigCommerce
+68. Vandy Lee @ vectorsolutions.com
+69. Varun Soni @ mediaocean.com
+70. Yong Zu @ gs.com
+
+============================================================
+CRITICAL NOTES:
+
+1. SANJAY SINGH @ SERVICETITAN
+   - Status: DO NOT CONTACT
+   - Reason: Hostile reply to prior outreach from 2022 (mabl era)
+   - Appears in: outreach-sent-feb27-batch5b.html
+   - Action: This contact should NEVER be contacted again
+
+2. TERENE LEE @ IMPARTNER SOFTWARE
+   - Status: UNSENT (not in "sent" status)
+   - Last known action: Touch 1 not sent as of Feb 27
+
+3. For new batch prospects: CROSS-CHECK every new prospect against this list
+   to prevent duplicate outreach to the same person @ same company.
+
+============================================================
+DATA SOURCE:
+- outreach-sent-feb13-batch1.html (Batch 1)
+- outreach-sent-feb13-batch1-v2.html (Batch 1 v2)
+- outreach-sent-feb26-batch3.html (Batch 3)
+- outreach-sent-feb27-batch5a.html (Batch 5A)
+- outreach-sent-feb27-batch5b.html (Batch 5B)
+- outreach-batch6-unsent.html (Batch 6)
+- outreach-batch2-unsent.html (Batch 2 - unsent, archived)
+- outreach-batch2-v2-unsent.html (Batch 2 v2 - unsent, archived)
+
+Generated: Feb 27, 2026 by Claude Code
+Last Updated: Feb 27, 2026 16:40 PT

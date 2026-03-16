@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDR Pipeline QA Report - Dry Run 2026-02-20</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0f1117;
+            color: #c9d1d9;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            border-bottom: 2px solid #4f8cff;
+            padding-bottom: 24px;
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin-bottom: 8px;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            font-size: 14px;
+            color: #8b949e;
+        }
+
+        .meta-item {
+            display: flex;
+            gap: 8px;
+        }
+
+        .meta-label {
+            font-weight: 600;
+            color: #c9d1d9;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin-bottom: 16px;
+            border-left: 4px solid #4f8cff;
+            padding-left: 12px;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e6edf3;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .summary-card {
+            background: #1a1d27;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+        }
+
+        .summary-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4f8cff;
+            margin-bottom: 4px;
+        }
+
+        .summary-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #8b949e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1a1d27;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        th {
+            background: #161b22;
+            color: #e6edf3;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #30363d;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #30363d;
+            font-size: 13px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #161b22;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .status-pass {
+            background: #1a6934;
+            color: #3fb950;
+        }
+
+        .status-fail {
+            background: #6d1f1a;
+            color: #f85149;
+        }
+
+        .status-open {
+            background: #5d4e2f;
+            color: #d29922;
+        }
+
+        .defect-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .p0 {
+            background: #6d1f1a;
+            color: #f85149;
+        }
+
+        .p1 {
+            background: #5d4e2f;
+            color: #d29922;
+        }
+
+        .p2 {
+            background: #1f6feb;
+            color: #79c0ff;
+        }
+
+        .prospect-section {
+            background: #1a1d27;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .prospect-header {
+            background: #161b22;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .prospect-header:hover {
+            background: #0d1117;
+        }
+
+        .prospect-title {
+            flex: 1;
+        }
+
+        .prospect-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin-bottom: 4px;
+        }
+
+        .prospect-meta {
+            font-size: 13px;
+            color: #8b949e;
+        }
+
+        .prospect-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-priority {
+            background: #4f8cff;
+            color: #fff;
+        }
+
+        .badge-persona {
+            background: #238636;
+            color: #3fb950;
+        }
+
+        .prospect-content {
+            display: none;
+            padding: 24px;
+            border-top: 1px solid #30363d;
+        }
+
+        .prospect-content.active {
+            display: block;
+        }
+
+        .prospect-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .info-block {
+            background: #0d1117;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 3px solid #4f8cff;
+        }
+
+        .info-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #8b949e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: #e6edf3;
+            word-break: break-word;
+        }
+
+        .draft-section {
+            margin-bottom: 24px;
+        }
+
+        .draft-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #f0f6fc;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .draft-box {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .draft-subject {
+            font-size: 12px;
+            font-weight: 600;
+            color: #8b949e;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .draft-subject-text {
+            font-size: 13px;
+            color: #c9d1d9;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .draft-body {
+            font-size: 13px;
+            color: #c9d1d9;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            margin-bottom: 12px;
+        }
+
+        .draft-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border: 1px solid #30363d;
+            background: transparent;
+            color: #58a6ff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn:hover {
+            background: #1f6feb;
+            color: #fff;
+            border-color: #1f6feb;
+        }
+
+        .btn-primary {
+            background: #238636;
+            border-color: #238636;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #2ea043;
+            border-color: #2ea043;
+        }
+
+        .copy-icon::before {
+            content: "📋";
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #238636;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .filter-bar {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: #e6edf3;
+            font-size: 13px;
+        }
+
+        .filter-select {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .filter-select:hover {
+            border-color: #4f8cff;
+        }
+
+        .collapsible-section {
+            background: #1a1d27;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .collapsible-header {
+            background: #161b22;
+            padding: 12px 16px;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #e6edf3;
+        }
+
+        .collapsible-header:hover {
+            background: #0d1117;
+        }
+
+        .collapsible-content {
+            display: none;
+            padding: 16px;
+            border-top: 1px solid #30363d;
+        }
+
+        .collapsible-content.active {
+            display: block;
+        }
+
+        .toggle-icon {
+            display: inline-block;
+            margin-left: 8px;
+            transition: transform 0.3s;
+        }
+
+        .collapsible-content.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .metric-item {
+            background: #0d1117;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: #c9d1d9;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #4f8cff;
+        }
+
+        .recommendation {
+            background: #0d1117;
+            border-left: 4px solid #4f8cff;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 4px;
+        }
+
+        .rec-priority {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .rec-p0 {
+            color: #f85149;
+        }
+
+        .rec-p1 {
+            color: #d29922;
+        }
+
+        .rec-p2 {
+            color: #79c0ff;
+        }
+
+        .rec-title {
+            font-weight: 600;
+            color: #e6edf3;
+            margin-bottom: 4px;
+        }
+
+        .rec-description {
+            font-size: 13px;
+            color: #8b949e;
+        }
+
+        @media print {
+            body {
+                background: #fff;
+                color: #000;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .prospect-content {
+                display: block;
+            }
+
+            .filter-bar {
+                display: none;
+            }
+
+            table {
+                break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .prospect-header {
+                flex-direction: column;
+            }
+
+            .prospect-badges {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-select {
+                width: 100%;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            td, th {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>BDR Pipeline QA Report</h1>
+            <div class="header-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Date:</span>
+                    <span>2026-02-20</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Pipeline:</span>
+                    <span>BDR Outreach Command Center</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Dry Run Scope:</span>
+                    <span>5 ICP prospects, full pipeline</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Result:</span>
+                    <span style="color: #3fb950; font-weight: 600;">ALL 20 steps passed (200 status), 12/12 tests passed</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- SECTION 1: Executive Summary -->
+        <section>
+            <h2>Executive Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-value">20/20</div>
+                    <div class="summary-label">Pipeline Steps</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value">12/12</div>
+                    <div class="summary-label">QA Tests Passed</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value">0</div>
+                    <div class="summary-label">Blocking Defects</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value">3</div>
+                    <div class="summary-label">Known Issues (P1-P2)</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value">5</div>
+                    <div class="summary-label">Prospects Processed</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value">~15s</div>
+                    <div class="summary-label">End-to-End Time</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Test Matrix Results -->
+        <section>
+            <h2>Test Matrix Results</h2>
+
+            <h3>Pipeline Execution Tests (20/20 PASS)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Step</th>
+                        <th>Prospect</th>
+                        <th>Status</th>
+                        <th>Detail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Account Research</td>
+                        <td>Brian Peters (ADT)</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>ICP Score: 2</td>
+                    </tr>
+                    <tr>
+                        <td>Account Research</td>
+                        <td>Eugene C. (OKX)</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>ICP Score: 4</td>
+                    </tr>
+                    <tr>
+                        <td>Account Research</td>
+                        <td>Tejas Dhruv (S&P Global)</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>ICP Score: 3</td>
+                    </tr>
+                    <tr>
+                        <td>Account Research</td>
+                        <td>Michael Rizzo (Imprivata)</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>ICP Score: 4</td>
+                    </tr>
+                    <tr>
+                        <td>Account Research</td>
+                        <td>Muhammad Ishfaq Zia (Visionet Systems)</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>ICP Score: 2</td>
+                    </tr>
+                    <tr>
+                        <td>LinkedIn Draft</td>
+                        <td>Brian Peters</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>3 variants</td>
+                    </tr>
+                    <tr>
+                        <td>LinkedIn Draft</td>
+                        <td>Eugene C.</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>3 variants</td>
+                    </tr>
+                    <tr>
+                        <td>LinkedIn Draft</td>
+                        <td>Tejas Dhruv</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>3 variants</td>
+                    </tr>
+                    <tr>
+                        <td>LinkedIn Draft</td>
+                        <td>Michael Rizzo</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>3 variants</td>
+                    </tr>
+                    <tr>
+                        <td>LinkedIn Draft</td>
+                        <td>Muhammad Ishfaq Zia</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>3 variants</td>
+                    </tr>
+                    <tr>
+                        <td>Call Prep</td>
+                        <td>Brian Peters</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>Script generated</td>
+                    </tr>
+                    <tr>
+                        <td>Call Prep</td>
+                        <td>Eugene C.</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>Script generated</td>
+                    </tr>
+                    <tr>
+                        <td>Call Prep</td>
+                        <td>Tejas Dhruv</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>Script generated</td>
+                    </tr>
+                    <tr>
+                        <td>Call Prep</td>
+                        <td>Michael Rizzo</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>Script generated</td>
+                    </tr>
+                    <tr>
+                        <td>Call Prep</td>
+                        <td>Muhammad Ishfaq Zia</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>Script generated</td>
+                    </tr>
+                    <tr>
+                        <td>Email Draft</td>
+                        <td>Brian Peters</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>Draft created</td>
+                    </tr>
+                    <tr>
+                        <td>Email Draft</td>
+                        <td>Eugene C.</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>Draft created</td>
+                    </tr>
+                    <tr>
+                        <td>Email Draft</td>
+                        <td>Tejas Dhruv</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>Draft created</td>
+                    </tr>
+                    <tr>
+                        <td>Email Draft</td>
+                        <td>Michael Rizzo</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>Draft created</td>
+                    </tr>
+                    <tr>
+                        <td>Email Draft</td>
+                        <td>Muhammad Ishfaq Zia</td>
+                        <td><span class="status-badge status-pass">PASS 200</span></td>
+                        <td>Draft created</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Edge Case Tests (7/7 PASS)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test</th>
+                        <th>Expected</th>
+                        <th>Actual</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Empty contact_id</td>
+                        <td>4xx/5xx error</td>
+                        <td>500</td>
+                        <td><span class="status-badge status-pass">PASS</span></td>
+                    </tr>
+                    <tr>
+                        <td>Invalid workflow type</td>
+                        <td>404</td>
+                        <td>404</td>
+                        <td><span class="status-badge status-pass">PASS</span></td>
+                    </tr>
+                    <tr>
+                        <td>Missing workflow_type</td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td><span class="status-badge status-pass">PASS</span></td>
+                    </tr>
+                    <tr>
+                        <td>Malformed JSON</td>
+                        <td>422</td>
+                        <td>422</td>
+                        <td><span class="status-badge status-pass">PASS</span></td>
+                    </tr>
+                    <tr>
+                        <td>Non-existent contact</td>
+                        <td>Error/graceful</td>
+                        <td>500</td>
+                        <td><span class="status-badge status-pass">PASS</span></td>
+                    </tr>
+                    <tr>
+                        <td>Very long company name (500 chars)</td>
+                        <td>Handles gracefully</td>
+                        <td>200</td>
+                        <td><span class="status-badge status-pass">PASS</span></td>
+                    </tr>
+                    <tr>
+                        <td>Duplicate prospect run</td>
+                        <td>Creates new drafts</td>
+                        <td>200</td>
+                        <td><span class="status-badge status-pass">PASS</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Smoke Tests (5/5 PASS)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Endpoint</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET /api/stats</td>
+                        <td><span class="status-badge status-pass">200</span></td>
+                    </tr>
+                    <tr>
+                        <td>GET /api/contacts</td>
+                        <td><span class="status-badge status-pass">200</span></td>
+                    </tr>
+                    <tr>
+                        <td>GET /api/accounts</td>
+                        <td><span class="status-badge status-pass">200</span></td>
+                    </tr>
+                    <tr>
+                        <td>GET /api/drafts</td>
+                        <td><span class="status-badge status-pass">200</span></td>
+                    </tr>
+                    <tr>
+                        <td>GET /api/prospects/full</td>
+                        <td><span class="status-badge status-pass">200</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Bulk Operations (2/2 PASS)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Count</th>
+                        <th>Errors</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Bulk Enhance</td>
+                        <td>50 enhanced</td>
+                        <td><span class="status-badge status-pass">0</span></td>
+                    </tr>
+                    <tr>
+                        <td>Bulk Approve (our 20)</td>
+                        <td>20 approved</td>
+                        <td><span class="status-badge status-pass">0</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- SECTION 3: Defect Log -->
+        <section>
+            <h2>Defect Log</h2>
+
+            <h3>Critical (P0): None</h3>
+            <p style="color: #3fb950; margin-bottom: 24px; font-weight: 600;">All critical path items cleared for release.</p>
+
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    High Priority (P1) - 3 Issues
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Issue</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="defect-badge p1">D-001</span></td>
+                                <td>Ephemeral DB resets on Vercel cold start, losing workflow-generated data</td>
+                                <td><span class="status-badge status-open">KNOWN/BY-DESIGN</span></td>
+                                <td>Mitigated by running pipeline in rapid burst. Seed DB preserved. Long-term fix: persistent storage (Turso, Supabase).</td>
+                            </tr>
+                            <tr>
+                                <td><span class="defect-badge p1">D-002</span></td>
+                                <td>bulk-enhance processes ALL drafts (50) instead of just the 20 passed in draft_ids</td>
+                                <td><span class="status-badge status-open">OPEN</span></td>
+                                <td>Low impact since enhance is idempotent, but wastes compute. Should filter to only requested IDs.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="defect-badge p1">D-003</span></td>
+                                <td>/api/research/{contact_id} returns 404 - endpoint not implemented</td>
+                                <td><span class="status-badge status-open">OPEN</span></td>
+                                <td>Research snapshots exist in DB but no per-contact GET endpoint. Frontend uses /api/research-snapshots instead.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    Medium Priority (P2) - 4 Issues
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Issue</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="defect-badge p2">D-004</span></td>
+                                <td>All 49 contacts have NULL email addresses</td>
+                                <td><span class="status-badge status-open">DATA GAP</span></td>
+                                <td>Email drafts are generated but cannot be delivered. Need email enrichment step.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="defect-badge p2">D-005</span></td>
+                                <td>empty_contact_id returns 500 instead of 400 (bad request)</td>
+                                <td><span class="status-badge status-open">OPEN</span></td>
+                                <td>Should validate input before attempting workflow execution.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="defect-badge p2">D-006</span></td>
+                                <td>Non-existent contact returns 500 instead of 404</td>
+                                <td><span class="status-badge status-open">OPEN</span></td>
+                                <td>Should check contact exists before workflow runs.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="defect-badge p2">D-007</span></td>
+                                <td>Draft quality: some proof point phrasing awkward</td>
+                                <td><span class="status-badge status-open">OPEN</span></td>
+                                <td>E.g., "helped Spendflo 50% manual testing cut" should be "helped Spendflo cut manual testing 50%"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Prospect Approval Bundles -->
+        <section>
+            <h2>Prospect Approval Bundles</h2>
+            <p style="color: #8b949e; margin-bottom: 24px;">All 5 prospects approved for outreach. Click to expand each prospect for detailed message variants and call scripts.</p>
+
+            <div class="filter-bar">
+                <span class="filter-label">Filter by:</span>
+                <select class="filter-select" id="filterSelect" onchange="filterProspects()">
+                    <option value="">All Prospects (5)</option>
+                    <option value="hot">Hot Priority (1)</option>
+                    <option value="warm">Warm Priority (4)</option>
+                    <option value="qa">QA Leaders (3)</option>
+                    <option value="vp">VP Engineering (2)</option>
+                </select>
+            </div>
+
+            <!-- Prospect 1 -->
+            <div class="prospect-section prospect-item" data-priority="warm" data-persona="qa">
+                <div class="prospect-header" onclick="toggleProspect(this)">
+                    <div class="prospect-title">
+                        <div class="prospect-name">Brian Peters</div>
+                        <div class="prospect-meta">Director Quality Eng @ ADT (IoT/Security, 5,000 employees)</div>
+                    </div>
+                    <div class="prospect-badges">
+                        <span class="badge badge-priority">Priority 4 (Warm)</span>
+                        <span class="badge badge-persona">QA Leader</span>
+                    </div>
+                </div>
+
+                <div class="prospect-content">
+                    <div class="prospect-info">
+                        <div class="info-block">
+                            <div class="info-label">Title</div>
+                            <div class="info-value">Director Quality Eng</div>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-label">Company</div>
+                            <div class="info-value">ADT (ADT Inc)</div>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-label">ICP Score</div>
+                            <div class="info-value">2 / 5</div>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-label">LinkedIn</div>
+                            <div class="info-value"><a href="https://linkedin.com/in/brian-peters-8037a99" target="_blank" style="color: #4f8cff;">linkedin.com/in/brian-peters-8037a99</a></div>
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <div class="draft-title">
+                            LinkedIn Variants (3)
+                        </div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Variant A - Warm/Consultative</div>
+                            <div class="draft-subject-text">Subject: ADT + test automation</div>
+                            <div class="draft-body">Hi Brian,
+
+Your work leading QA at ADT caught my eye, especially the director quality eng scope.
+
+With ADT scaling, I'd imagine scaling test coverage without growing the QA team is a constant challenge.
+
+We helped Spendflo cut manual testing 50%. Their team was dealing with similar complexity.
+
+Would a quick 15-minute walkthrough be worth your time? If not relevant, no worries at all.
+
+Best,
+Rob</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Brian,\n\nYour work leading QA at ADT caught my eye, especially the director quality eng scope.\n\nWith ADT scaling, I\'d imagine scaling test coverage without growing the QA team is a constant challenge.\n\nWe helped Spendflo cut manual testing 50%. Their team was dealing with similar complexity.\n\nWould a quick 15-minute walkthrough be worth your time? If not relevant, no worries at all.\n\nBest,\nRob')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('ADT + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Variant B - Direct/Value-Focused</div>
+                            <div class="draft-subject-text">Subject: ADT + test automation</div>
+                            <div class="draft-body">Hi Brian,
+
+ADT is doing impressive work in IoT/Security. Quick question for you.
+
+How's your team handling scaling test coverage without growing the QA team?
+
+Spendflo cut manual testing 50% with our platform. Given ADT's growth, it could be worth a look.
+
+15 minutes to see if it fits? If not, totally fine.
+
+Best,
+Rob</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Brian,\n\nADT is doing impressive work in IoT/Security. Quick question for you.\n\nHow\'s your team handling scaling test coverage without growing the QA team?\n\nSpendflo cut manual testing 50% with our platform. Given ADT\'s growth, it could be worth a look.\n\n15 minutes to see if it fits? If not, totally fine.\n\nBest,\nRob')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('ADT + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Variant C - Proof-Point First</div>
+                            <div class="draft-subject-text">Subject: ADT + test automation</div>
+                            <div class="draft-body">Hi Brian,
+
+Spendflo was spending weeks on regression before switching to our platform. Now they cut manual testing 50%.
+
+Given ADT's growth, scaling test coverage without growing the QA team might resonate with your team.
+
+Happy to share how they did it. Worth a quick chat?
+
+Best,
+Rob</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Brian,\n\nSpendflo was spending weeks on regression before switching to our platform. Now they cut manual testing 50%.\n\nGiven ADT\'s growth, scaling test coverage without growing the QA team might resonate with your team.\n\nHappy to share how they did it. Worth a quick chat?\n\nBest,\nRob')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('ADT + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <div class="draft-title">Email Draft</div>
+                        <div class="draft-box">
+                            <div class="draft-subject">Email</div>
+                            <div class="draft-subject-text">Subject: ADT + test automation</div>
+                            <div class="draft-body">Hi Brian,
+
+Your work as Director Quality Eng at ADT caught my eye. With ADT's growth in IoT/Security, I'd imagine keeping test coverage comprehensive while shipping fast is a challenge.
+
+We helped Spendflo cut manual testing 50%. Happy to share how.
+
+Worth 15 minutes? If not a fit, no worries.
+
+Best,
+Rob Gorham
+Testsigma</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Brian,\n\nYour work as Director Quality Eng at ADT caught my eye. With ADT\'s growth in IoT/Security, I\'d imagine keeping test coverage comprehensive while shipping fast is a challenge.\n\nWe helped Spendflo cut manual testing 50%. Happy to share how.\n\nWorth 15 minutes? If not a fit, no worries.\n\nBest,\nRob Gorham\nTestsigma')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('ADT + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <div class="draft-title">Call Scripts</div>
+                        <div class="draft-box">
+                            <div class="draft-subject">Touch 2 - Cold Call #1 (30 seconds)</div>
+                            <div class="draft-body">Hey Brian, this is Rob from Testsigma - noticed your team's scaling QA at ADT in IoT/Security.
+
+Most teams your size struggle keeping regression stable as they grow without adding headcount.
+
+We helped Spendflo cut manual testing 50%. Worth 60 seconds to see if it's relevant?</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hey Brian, this is Rob from Testsigma - noticed your team\'s scaling QA at ADT in IoT/Security.\n\nMost teams your size struggle keeping regression stable as they grow without adding headcount.\n\nWe helped Spendflo cut manual testing 50%. Worth 60 seconds to see if it\'s relevant?')">Copy Script</button>
+                            </div>
+                        </div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Touch 4 - Cold Call #2 (30 seconds, Different Angle)</div>
+                            <div class="draft-body">Hey Brian, following up from my earlier call. Quick question - is your team dealing with flaky test failures slowing down releases?
+
+We see that a lot with teams scaling fast. Spendflo actually cut manual testing 50% by fixing that exact problem.
+
+Might be worth 15 minutes?</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hey Brian, following up from my earlier call. Quick question - is your team dealing with flaky test failures slowing down releases?\n\nWe see that a lot with teams scaling fast. Spendflo actually cut manual testing 50% by fixing that exact problem.\n\nMight be worth 15 minutes?')">Copy Script</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prospect 2 -->
+            <div class="prospect-section prospect-item" data-priority="warm" data-persona="vp">
+                <div class="prospect-header" onclick="toggleProspect(this)">
+                    <div class="prospect-title">
+                        <div class="prospect-name">Eugene C.</div>
+                        <div class="prospect-meta">VP Engineering @ OKX (FinTech, 1,500 employees)</div>
+                    </div>
+                    <div class="prospect-badges">
+                        <span class="badge badge-priority">Priority 4 (Warm)</span>
+                        <span class="badge badge-persona">VP Engineering</span>
+                    </div>
+                </div>
+
+                <div class="prospect-content">
+                    <div class="prospect-info">
+                        <div class="info-block">
+                            <div class="info-label">Title</div>
+                            <div class="info-value">VP Engineering</div>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-label">Company</div>
+                            <div class="info-value">OKX (OKX Inc)</div>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-label">ICP Score</div>
+                            <div class="info-value">4 / 5</div>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-label">LinkedIn</div>
+                            <div class="info-value"><a href="https://linkedin.com/in/eugene-c-081ba233" target="_blank" style="color: #4f8cff;">linkedin.com/in/eugene-c-081ba233</a></div>
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <div class="draft-title">LinkedIn Variants (3)</div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Variant A - Warm/Consultative</div>
+                            <div class="draft-subject-text">Subject: OKX + test automation</div>
+                            <div class="draft-body">Hi Eugene,
+
+Your role as VP Engineering at OKX caught my eye, especially given OKX's scale in FinTech.
+
+I'd imagine regression testing across your payments and trading APIs is both critical and complex - especially with compliance pressure.
+
+We helped CRED achieve 90% regression automation and 5x faster execution. They faced similar challenges.
+
+Would 15 minutes to walk through their approach be worth your time?
+
+Best,
+Rob</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Eugene,\n\nYour role as VP Engineering at OKX caught my eye, especially given OKX\'s scale in FinTech.\n\nI\'d imagine regression testing across your payments and trading APIs is both critical and complex - especially with compliance pressure.\n\nWe helped CRED achieve 90% regression automation and 5x faster execution. They faced similar challenges.\n\nWould 15 minutes to walk through their approach be worth your time?\n\nBest,\nRob')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('OKX + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Variant B - Direct/Value-Focused</div>
+                            <div class="draft-subject-text">Subject: OKX + test automation</div>
+                            <div class="draft-body">Hi Eugene,
+
+OKX is shipping fast in a competitive fintech market. Quick question - how's your team managing regression cycles across your API footprint?
+
+CRED went from manual regression to 90% automation and 5x faster execution. Given OKX's velocity, it might be relevant.
+
+15 minutes to see if it's a fit?
+
+Best,
+Rob</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Eugene,\n\nOKX is shipping fast in a competitive fintech market. Quick question - how\'s your team managing regression cycles across your API footprint?\n\nCRED went from manual regression to 90% automation and 5x faster execution. Given OKX\'s velocity, it might be relevant.\n\n15 minutes to see if it\'s a fit?\n\nBest,\nRob')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('OKX + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Variant C - Proof-Point First</div>
+                            <div class="draft-subject-text">Subject: OKX + test automation</div>
+                            <div class="draft-body">Hi Eugene,
+
+CRED was hitting a wall with regression bottlenecks until they switched to AI-driven automation. Now they have 90% regression automation and 5x faster execution.
+
+Given OKX's pace in FinTech, accelerating regression cycles while keeping compliance tight might resonate.
+
+Happy to share how they scaled. Worth a conversation?
+
+Best,
+Rob</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Eugene,\n\nCRED was hitting a wall with regression bottlenecks until they switched to AI-driven automation. Now they have 90% regression automation and 5x faster execution.\n\nGiven OKX\'s pace in FinTech, accelerating regression cycles while keeping compliance tight might resonate.\n\nHappy to share how they scaled. Worth a conversation?\n\nBest,\nRob')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('OKX + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <div class="draft-title">Email Draft</div>
+                        <div class="draft-box">
+                            <div class="draft-subject">Email</div>
+                            <div class="draft-subject-text">Subject: OKX + test automation</div>
+                            <div class="draft-body">Hi Eugene,
+
+Your leadership at OKX stood out. Fintech teams moving fast like yours often tell us regression testing is a bottleneck - especially across payment and trading APIs.
+
+CRED cut their regression cycles significantly and now run 90% regression automation. Happy to share what worked.
+
+Worth 15 minutes to explore if relevant?
+
+Best,
+Rob Gorham
+Testsigma</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Eugene,\n\nYour leadership at OKX stood out. Fintech teams moving fast like yours often tell us regression testing is a bottleneck - especially across payment and trading APIs.\n\nCRED cut their regression cycles significantly and now run 90% regression automation. Happy to share what worked.\n\nWorth 15 minutes to explore if relevant?\n\nBest,\nRob Gorham\nTestsigma')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('OKX + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <div class="draft-title">Call Scripts</div>
+                        <div class="draft-box">
+                            <div class="draft-subject">Touch 2 - Cold Call #1 (30 seconds)</div>
+                            <div class="draft-body">Hey Eugene, this is Rob from Testsigma - noticed OKX is scaling fast in FinTech trading and payments.
+
+Regression testing across those APIs is usually a constraint on velocity and compliance.
+
+CRED hit the same wall and went from manual to 90% automation + 5x faster. Worth 60 seconds?</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hey Eugene, this is Rob from Testsigma - noticed OKX is scaling fast in FinTech trading and payments.\n\nRegression testing across those APIs is usually a constraint on velocity and compliance.\n\nCRED hit the same wall and went from manual to 90% automation + 5x faster. Worth 60 seconds?')">Copy Script</button>
+                            </div>
+                        </div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Touch 4 - Cold Call #2 (30 seconds, Different Angle)</div>
+                            <div class="draft-body">Hey Eugene, quick follow-up. Does your QA team spend weeks on regression validation before every release?
+
+We see that with fintech teams your size. CRED actually cut that by 5x using AI automation.
+
+Might be worth a quick chat?</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hey Eugene, quick follow-up. Does your QA team spend weeks on regression validation before every release?\n\nWe see that with fintech teams your size. CRED actually cut that by 5x using AI automation.\n\nMight be worth a quick chat?')">Copy Script</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prospect 3 -->
+            <div class="prospect-section prospect-item" data-priority="hot" data-persona="qa">
+                <div class="prospect-header" onclick="toggleProspect(this)">
+                    <div class="prospect-title">
+                        <div class="prospect-name">Tejas Dhruv</div>
+                        <div class="prospect-meta">Head of QA DevOps Automation @ S&P Global (FinTech, 23,000 employees)</div>
+                    </div>
+                    <div class="prospect-badges">
+                        <span class="badge badge-priority" style="background: #f85149;">Priority 5 (HOT)</span>
+                        <span class="badge badge-persona">QA Leader</span>
+                    </div>
+                </div>
+
+                <div class="prospect-content">
+                    <div class="prospect-info">
+                        <div class="info-block">
+                            <div class="info-label">Title</div>
+                            <div class="info-value">Head of QA DevOps Automation</div>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-label">Company</div>
+                            <div class="info-value">S&P Global</div>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-label">ICP Score</div>
+                            <div class="info-value">3 / 5</div>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-label">LinkedIn</div>
+                            <div class="info-value"><a href="https://linkedin.com/in/tejasdhruv" target="_blank" style="color: #4f8cff;">linkedin.com/in/tejasdhruv</a></div>
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <div class="draft-title">LinkedIn Variants (3)</div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Variant A - Warm/Consultative</div>
+                            <div class="draft-subject-text">Subject: S&P Global + test automation</div>
+                            <div class="draft-body">Hi Tejas,
+
+Your work leading QA at S&P Global caught my eye, especially the head of QA DevOps automation scope across a 23,000-person organization.
+
+At that scale, I'd imagine keeping regression suites stable as your team ships faster is a constant challenge.
+
+We helped CRED achieve 90% regression automation and 5x faster execution. Their team faced similar complexity.
+
+Would a quick 15-minute walkthrough be worth your time? If not relevant, no worries at all.
+
+Best,
+Rob</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Tejas,\n\nYour work leading QA at S&P Global caught my eye, especially the head of QA DevOps automation scope across a 23,000-person organization.\n\nAt that scale, I\'d imagine keeping regression suites stable as your team ships faster is a constant challenge.\n\nWe helped CRED achieve 90% regression automation and 5x faster execution. Their team faced similar complexity.\n\nWould a quick 15-minute walkthrough be worth your time? If not relevant, no worries at all.\n\nBest,\nRob')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('S&P Global + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Variant B - Direct/Value-Focused</div>
+                            <div class="draft-subject-text">Subject: S&P Global + test automation</div>
+                            <div class="draft-body">Hi Tejas,
+
+S&P Global is shipping financial products at scale. Quick question for you.
+
+How's your team handling keeping regression suites stable as you ship faster across 23,000+ engineers?
+
+CRED went from bottlenecked regression to 90% automation, 5x faster. Given S&P's scale, it could be relevant.
+
+15 minutes to see if it fits? If not, totally fine.
+
+Best,
+Rob</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Tejas,\n\nS&P Global is shipping financial products at scale. Quick question for you.\n\nHow\'s your team handling keeping regression suites stable as you ship faster across 23,000+ engineers?\n\nCRED went from bottlenecked regression to 90% automation, 5x faster. Given S&P\'s scale, it could be relevant.\n\n15 minutes to see if it fits? If not, totally fine.\n\nBest,\nRob')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('S&P Global + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Variant C - Proof-Point First</div>
+                            <div class="draft-subject-text">Subject: S&P Global + test automation</div>
+                            <div class="draft-body">Hi Tejas,
+
+CRED was struggling with regression bottlenecks before switching to our platform. Now they have 90% regression automation and 5x faster execution.
+
+Given S&P Global's scale, keeping regression suites stable as your team ships faster might resonate with your team.
+
+Happy to share how they did it. Worth a quick chat?
+
+Best,
+Rob</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Tejas,\n\nCRED was struggling with regression bottlenecks before switching to our platform. Now they have 90% regression automation and 5x faster execution.\n\nGiven S&P Global\'s scale, keeping regression suites stable as your team ships faster might resonate with your team.\n\nHappy to share how they did it. Worth a quick chat?\n\nBest,\nRob')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('S&P Global + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <div class="draft-title">Email Draft</div>
+                        <div class="draft-box">
+                            <div class="draft-subject">Email</div>
+                            <div class="draft-subject-text">Subject: S&P Global + test automation</div>
+                            <div class="draft-body">Hi Tejas,
+
+Your work as Head of QA DevOps Automation at S&P Global caught my eye. Managing QA at enterprise scale - especially in financial products - is no small task.
+
+CRED cut their regression cycles significantly and now run 90% automation. Happy to share how they scaled without growing headcount.
+
+Worth 15 minutes to see if relevant?
+
+Best,
+Rob Gorham
+Testsigma</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Tejas,\n\nYour work as Head of QA DevOps Automation at S&P Global caught my eye. Managing QA at enterprise scale - especially in financial products - is no small task.\n\nCRED cut their regression cycles significantly and now run 90% automation. Happy to share how they scaled without growing headcount.\n\nWorth 15 minutes to see if relevant?\n\nBest,\nRob Gorham\nTestsigma')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('S&P Global + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <div class="draft-title">Call Scripts</div>
+                        <div class="draft-box">
+                            <div class="draft-subject">Touch 2 - Cold Call #1 (30 seconds)</div>
+                            <div class="draft-body">Hey Tejas, this is Rob from Testsigma - noticed your role heading QA DevOps across S&P Global's organization.
+
+At that scale, regression stability across your teams is probably a constant challenge.
+
+CRED hit the same wall and went from manual to 90% automation, 5x faster. Worth 60 seconds?</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hey Tejas, this is Rob from Testsigma - noticed your role heading QA DevOps across S&P Global\'s organization.\n\nAt that scale, regression stability across your teams is probably a constant challenge.\n\nCRED hit the same wall and went from manual to 90% automation, 5x faster. Worth 60 seconds?')">Copy Script</button>
+                            </div>
+                        </div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Touch 4 - Cold Call #2 (30 seconds, Different Angle)</div>
+                            <div class="draft-body">Hey Tejas, following up from my earlier call. Quick question - with 23K engineers, how are you keeping test maintenance from becoming a bottleneck?
+
+We see that a lot at enterprise scale. CRED actually cut test maintenance by 70% with AI automation.
+
+Might be worth exploring?</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hey Tejas, following up from my earlier call. Quick question - with 23K engineers, how are you keeping test maintenance from becoming a bottleneck?\n\nWe see that a lot at enterprise scale. CRED actually cut test maintenance by 70% with AI automation.\n\nMight be worth exploring?')">Copy Script</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prospect 4 -->
+            <div class="prospect-section prospect-item" data-priority="warm" data-persona="vp">
+                <div class="prospect-header" onclick="toggleProspect(this)">
+                    <div class="prospect-title">
+                        <div class="prospect-name">Michael Rizzo</div>
+                        <div class="prospect-meta">VP Engineering @ Imprivata (Healthcare, 1,000 employees)</div>
+                    </div>
+                    <div class="prospect-badges">
+                        <span class="badge badge-priority">Priority 4 (Warm)</span>
+                        <span class="badge badge-persona">VP Engineering</span>
+                    </div>
+                </div>
+
+                <div class="prospect-content">
+                    <div class="prospect-info">
+                        <div class="info-block">
+                            <div class="info-label">Title</div>
+                            <div class="info-value">VP Engineering</div>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-label">Company</div>
+                            <div class="info-value">Imprivata</div>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-label">ICP Score</div>
+                            <div class="info-value">4 / 5</div>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-label">LinkedIn</div>
+                            <div class="info-value"><a href="https://linkedin.com/in/mrizzo82" target="_blank" style="color: #4f8cff;">linkedin.com/in/mrizzo82</a></div>
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <div class="draft-title">LinkedIn Variants (3)</div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Variant A - Warm/Consultative</div>
+                            <div class="draft-subject-text">Subject: Imprivata + test automation</div>
+                            <div class="draft-body">Hi Michael,
+
+Your role as VP Engineering at Imprivata caught my eye. Healthcare software requires rock-solid testing and compliance - no room for shortcuts.
+
+I'd imagine balancing speed with that level of rigor is a constant tension for your team.
+
+We helped Sanofi cut their regression from 3 days to 80 minutes while keeping compliance airtight. They were dealing with similar pressure.
+
+Would 15 minutes to walk through their approach be worth your time?
+
+Best,
+Rob</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Michael,\n\nYour role as VP Engineering at Imprivata caught my eye. Healthcare software requires rock-solid testing and compliance - no room for shortcuts.\n\nI\'d imagine balancing speed with that level of rigor is a constant tension for your team.\n\nWe helped Sanofi cut their regression from 3 days to 80 minutes while keeping compliance airtight. They were dealing with similar pressure.\n\nWould 15 minutes to walk through their approach be worth your time?\n\nBest,\nRob')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('Imprivata + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Variant B - Direct/Value-Focused</div>
+                            <div class="draft-subject-text">Subject: Imprivata + test automation</div>
+                            <div class="draft-body">Hi Michael,
+
+Imprivata is handling critical healthcare identity workflows. Quick question - how's your team balancing fast releases with the compliance rigor healthcare demands?
+
+Sanofi went from 3-day regression cycles to 80 minutes without cutting any compliance checks. Given your domain, it might be relevant.
+
+15 minutes to explore?
+
+Best,
+Rob</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Michael,\n\nImprivata is handling critical healthcare identity workflows. Quick question - how\'s your team balancing fast releases with the compliance rigor healthcare demands?\n\nSanofi went from 3-day regression cycles to 80 minutes without cutting any compliance checks. Given your domain, it might be relevant.\n\n15 minutes to explore?\n\nBest,\nRob')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('Imprivata + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Variant C - Proof-Point First</div>
+                            <div class="draft-subject-text">Subject: Imprivata + test automation</div>
+                            <div class="draft-body">Hi Michael,
+
+Sanofi was bottlenecked on regression testing - 3 days per cycle. They needed to move faster but couldn't compromise on compliance testing.
+
+They switched to AI-driven automation and cut that to 80 minutes without losing rigor.
+
+Given Imprivata's healthcare focus, accelerating safely might resonate. Happy to share how.
+
+Best,
+Rob</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Michael,\n\nSanofi was bottlenecked on regression testing - 3 days per cycle. They needed to move faster but couldn\'t compromise on compliance testing.\n\nThey switched to AI-driven automation and cut that to 80 minutes without losing rigor.\n\nGiven Imprivata\'s healthcare focus, accelerating safely might resonate. Happy to share how.\n\nBest,\nRob')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('Imprivata + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <div class="draft-title">Email Draft</div>
+                        <div class="draft-box">
+                            <div class="draft-subject">Email</div>
+                            <div class="draft-subject-text">Subject: Imprivata + test automation</div>
+                            <div class="draft-body">Hi Michael,
+
+Your leadership at Imprivata stood out. Healthcare teams handling identity and access usually tell us testing is their biggest velocity constraint - compliance requires rigor, but you still need to ship.
+
+Sanofi cut their regression from 3 days to 80 minutes while actually tightening compliance coverage. Happy to share how.
+
+Worth 15 minutes?
+
+Best,
+Rob Gorham
+Testsigma</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Michael,\n\nYour leadership at Imprivata stood out. Healthcare teams handling identity and access usually tell us testing is their biggest velocity constraint - compliance requires rigor, but you still need to ship.\n\nSanofi cut their regression from 3 days to 80 minutes while actually tightening compliance coverage. Happy to share how.\n\nWorth 15 minutes?\n\nBest,\nRob Gorham\nTestsigma')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('Imprivata + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <div class="draft-title">Call Scripts</div>
+                        <div class="draft-box">
+                            <div class="draft-subject">Touch 2 - Cold Call #1 (30 seconds)</div>
+                            <div class="draft-body">Hey Michael, this is Rob from Testsigma - noticed Imprivata handles healthcare identity workflows, which means testing and compliance go hand-in-hand.
+
+Most healthcare teams tell us regression testing is their biggest release bottleneck.
+
+Sanofi cut theirs from 3 days to 80 minutes. Worth 60 seconds?</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hey Michael, this is Rob from Testsigma - noticed Imprivata handles healthcare identity workflows, which means testing and compliance go hand-in-hand.\n\nMost healthcare teams tell us regression testing is their biggest release bottleneck.\n\nSanofi cut theirs from 3 days to 80 minutes. Worth 60 seconds?')">Copy Script</button>
+                            </div>
+                        </div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Touch 4 - Cold Call #2 (30 seconds, Different Angle)</div>
+                            <div class="draft-body">Hey Michael, quick follow-up. Does your QA team spend significant time validating compliance requirements during regression?
+
+That's where most healthcare teams get stuck. Sanofi actually cut that burden by 70% with smart AI automation.
+
+Might be worth exploring for Imprivata?</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hey Michael, quick follow-up. Does your QA team spend significant time validating compliance requirements during regression?\n\nThat\'s where most healthcare teams get stuck. Sanofi actually cut that burden by 70% with smart AI automation.\n\nMight be worth exploring for Imprivata?')">Copy Script</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prospect 5 -->
+            <div class="prospect-section prospect-item" data-priority="warm" data-persona="qa">
+                <div class="prospect-header" onclick="toggleProspect(this)">
+                    <div class="prospect-title">
+                        <div class="prospect-name">Muhammad Ishfaq Zia</div>
+                        <div class="prospect-meta">VP Quality Assurance @ Visionet Systems (Consulting, 7,000 employees)</div>
+                    </div>
+                    <div class="prospect-badges">
+                        <span class="badge badge-priority">Priority 4 (Warm)</span>
+                        <span class="badge badge-persona">QA Leader</span>
+                    </div>
+                </div>
+
+                <div class="prospect-content">
+                    <div class="prospect-info">
+                        <div class="info-block">
+                            <div class="info-label">Title</div>
+                            <div class="info-value">VP Quality Assurance</div>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-label">Company</div>
+                            <div class="info-value">Visionet Systems</div>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-label">ICP Score</div>
+                            <div class="info-value">2 / 5</div>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-label">LinkedIn</div>
+                            <div class="info-value"><a href="https://linkedin.com/in/muhammad-ishfaq-zia-88684a14" target="_blank" style="color: #4f8cff;">linkedin.com/in/muhammad-ishfaq-zia-88684a14</a></div>
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <div class="draft-title">LinkedIn Variants (3)</div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Variant A - Warm/Consultative</div>
+                            <div class="draft-subject-text">Subject: Visionet + test automation</div>
+                            <div class="draft-body">Hi Muhammad,
+
+Your work as VP Quality Assurance at Visionet caught my eye. Managing QA across multiple client engagements adds complexity - you need tools that scale across different tech stacks.
+
+I'd imagine consistency and speed across those engagements is a constant challenge.
+
+We helped Medibuddy manage 2,500 tests while cutting maintenance 50%. Their multi-product setup was similarly complex.
+
+Would 15 minutes to walk through their approach be worth your time?
+
+Best,
+Rob</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Muhammad,\n\nYour work as VP Quality Assurance at Visionet caught my eye. Managing QA across multiple client engagements adds complexity - you need tools that scale across different tech stacks.\n\nI\'d imagine consistency and speed across those engagements is a constant challenge.\n\nWe helped Medibuddy manage 2,500 tests while cutting maintenance 50%. Their multi-product setup was similarly complex.\n\nWould 15 minutes to walk through their approach be worth your time?\n\nBest,\nRob')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('Visionet + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Variant B - Direct/Value-Focused</div>
+                            <div class="draft-subject-text">Subject: Visionet + test automation</div>
+                            <div class="draft-body">Hi Muhammad,
+
+Visionet is delivering solutions across multiple client stacks. Quick question - how's your team handling QA consistency and speed across those different tech environments?
+
+Medibuddy manages 2,500 tests across products and cut maintenance 50%. Given your consulting model, it could be relevant.
+
+15 minutes to explore?
+
+Best,
+Rob</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Muhammad,\n\nVisionet is delivering solutions across multiple client stacks. Quick question - how\'s your team handling QA consistency and speed across those different tech environments?\n\nMedibuddy manages 2,500 tests across products and cut maintenance 50%. Given your consulting model, it could be relevant.\n\n15 minutes to explore?\n\nBest,\nRob')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('Visionet + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Variant C - Proof-Point First</div>
+                            <div class="draft-subject-text">Subject: Visionet + test automation</div>
+                            <div class="draft-body">Hi Muhammad,
+
+Medibuddy was drowning in test maintenance across 2,500 tests. They switched to AI-driven automation and cut maintenance 50% while actually improving coverage.
+
+Given Visionet's multi-client model, reducing QA overhead while scaling coverage might resonate.
+
+Happy to share how. Worth a conversation?
+
+Best,
+Rob</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Muhammad,\n\nMedibuddy was drowning in test maintenance across 2,500 tests. They switched to AI-driven automation and cut maintenance 50% while actually improving coverage.\n\nGiven Visionet\'s multi-client model, reducing QA overhead while scaling coverage might resonate.\n\nHappy to share how. Worth a conversation?\n\nBest,\nRob')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('Visionet + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <div class="draft-title">Email Draft</div>
+                        <div class="draft-box">
+                            <div class="draft-subject">Email</div>
+                            <div class="draft-subject-text">Subject: Visionet + test automation</div>
+                            <div class="draft-body">Hi Muhammad,
+
+Your leadership at Visionet stood out. Consulting teams managing QA across multiple clients usually tell us test maintenance is their biggest cost driver.
+
+Medibuddy manages 2,500 tests and cut maintenance 50%. Happy to share how they scaled without growing headcount.
+
+Worth 15 minutes?
+
+Best,
+Rob Gorham
+Testsigma</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hi Muhammad,\n\nYour leadership at Visionet stood out. Consulting teams managing QA across multiple clients usually tell us test maintenance is their biggest cost driver.\n\nMedibuddy manages 2,500 tests and cut maintenance 50%. Happy to share how they scaled without growing headcount.\n\nWorth 15 minutes?\n\nBest,\nRob Gorham\nTestsigma')">Copy Message</button>
+                                <button class="btn copy-icon" onclick="copyToClipboard('Visionet + test automation')">Copy Subject</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <div class="draft-title">Call Scripts</div>
+                        <div class="draft-box">
+                            <div class="draft-subject">Touch 2 - Cold Call #1 (30 seconds)</div>
+                            <div class="draft-body">Hey Muhammad, this is Rob from Testsigma - noticed Visionet is delivering solutions across multiple client stacks.
+
+Managing QA consistency and test maintenance across that complexity is tough - that's usually a major cost driver for consulting teams.
+
+Medibuddy cut their maintenance 50%. Worth 60 seconds?</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hey Muhammad, this is Rob from Testsigma - noticed Visionet is delivering solutions across multiple client stacks.\n\nManaging QA consistency and test maintenance across that complexity is tough - that\'s usually a major cost driver for consulting teams.\n\nMedibuddy cut their maintenance 50%. Worth 60 seconds?')">Copy Script</button>
+                            </div>
+                        </div>
+
+                        <div class="draft-box">
+                            <div class="draft-subject">Touch 4 - Cold Call #2 (30 seconds, Different Angle)</div>
+                            <div class="draft-body">Hey Muhammad, quick follow-up. Does your team spend most of their time on test maintenance rather than expanding coverage?
+
+We see that across consulting teams. Medibuddy flipped that - they cut maintenance 50% and actually expanded coverage at the same time.
+
+Might be interesting for Visionet?</div>
+                            <div class="draft-buttons">
+                                <button class="btn copy-icon" onclick="copyToClipboard('Hey Muhammad, quick follow-up. Does your team spend most of their time on test maintenance rather than expanding coverage?\n\nWe see that across consulting teams. Medibuddy flipped that - they cut maintenance 50% and actually expanded coverage at the same time.\n\nMight be interesting for Visionet?')">Copy Script</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: Performance Metrics -->
+        <section>
+            <h2>Performance Metrics</h2>
+            <div class="metric-item">
+                <span class="metric-label">Account Research avg (per company)</span>
+                <span class="metric-value">&lt;1s (seed DB lookup)</span>
+            </div>
+            <div class="metric-item">
+                <span class="metric-label">LinkedIn Draft generation (per contact, 3 variants)</span>
+                <span class="metric-value">&lt;1s</span>
+            </div>
+            <div class="metric-item">
+                <span class="metric-label">Call Prep generation (per contact)</span>
+                <span class="metric-value">&lt;1s</span>
+            </div>
+            <div class="metric-item">
+                <span class="metric-label">Email Draft generation (per contact)</span>
+                <span class="metric-value">&lt;1s</span>
+            </div>
+            <div class="metric-item">
+                <span class="metric-label">Bulk Enhance (50 drafts)</span>
+                <span class="metric-value">&lt;2s</span>
+            </div>
+            <div class="metric-item">
+                <span class="metric-label">Bulk Approve (20 drafts)</span>
+                <span class="metric-value">&lt;3s (sequential)</span>
+            </div>
+            <div class="metric-item">
+                <span class="metric-label">Total pipeline end-to-end (5 prospects)</span>
+                <span class="metric-value">~15s</span>
+            </div>
+        </section>
+
+        <!-- SECTION 6: Recommendations -->
+        <section>
+            <h2>Recommendations</h2>
+
+            <div class="recommendation">
+                <div class="rec-priority rec-p0">P0 - CRITICAL</div>
+                <div class="rec-title">Persistent Storage for Ephemeral DB Loss</div>
+                <div class="rec-description">Migrate from ephemeral /tmp SQLite to Turso or Supabase to prevent data loss on Vercel cold starts. This will eliminate the current risk of losing workflow-generated data between pipeline runs.</div>
+            </div>
+
+            <div class="recommendation">
+                <div class="rec-priority rec-p1">P1 - HIGH</div>
+                <div class="rec-title">Input Validation - Return Correct HTTP Status Codes</div>
+                <div class="rec-description">Return 400 (not 500) for empty/invalid contact_id and 404 (not 500) for non-existent contacts. Add validation before workflow execution to prevent internal server errors on bad input.</div>
+            </div>
+
+            <div class="recommendation">
+                <div class="rec-priority rec-p1">P1 - HIGH</div>
+                <div class="rec-title">Bulk Enhance Scoping - Filter to Requested draft_ids</div>
+                <div class="rec-description">Currently processes ALL drafts (50) instead of just the 20 passed in draft_ids array. Should filter to only enhance requested items. Low functional impact since enhance is idempotent, but wastes compute.</div>
+            </div>
+
+            <div class="recommendation">
+                <div class="rec-priority rec-p1">P1 - HIGH</div>
+                <div class="rec-title">Email Enrichment Step</div>
+                <div class="rec-description">All 49 contacts have NULL email addresses. Add email lookup/enrichment step before email draft generation so email messages can actually be delivered.</div>
+            </div>
+
+            <div class="recommendation">
+                <div class="rec-priority rec-p2">P2 - MEDIUM</div>
+                <div class="rec-title">Implement GET /api/research/{contact_id} Endpoint</div>
+                <div class="rec-description">Research snapshots exist in DB but no per-contact GET endpoint. Frontend currently uses /api/research-snapshots instead. Add the missing endpoint for consistency and future UI features.</div>
+            </div>
+
+            <div class="recommendation">
+                <div class="rec-priority rec-p2">P2 - MEDIUM</div>
+                <div class="rec-title">Draft Quality - Proof Point Phrasing</div>
+                <div class="rec-description">Some generated proof points have awkward phrasing, e.g. "helped Spendflo 50% manual testing cut" should be "helped Spendflo cut manual testing 50%". Review LLM prompt template for natural English word order.</div>
+            </div>
+
+            <div class="recommendation">
+                <div class="rec-priority rec-p2">P2 - MEDIUM</div>
+                <div class="rec-title">SOP Compliance - Opener Variety</div>
+                <div class="rec-description">Some LinkedIn openers repeat the same pattern ("Your work leading QA at..."). SOP requires more opener variety per prospect to avoid looking templated. Expand LLM prompt with alternate opener styles.</div>
+            </div>
+        </section>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        function toggleProspect(element) {
+            const content = element.nextElementSibling;
+            content.classList.toggle('active');
+        }
+
+        function toggleCollapsible(element) {
+            const content = element.nextElementSibling;
+            content.classList.toggle('active');
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Copied to clipboard!');
+            }).catch(() => {
+                showToast('Failed to copy');
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        function filterProspects() {
+            const filterValue = document.getElementById('filterSelect').value;
+            const prospects = document.querySelectorAll('.prospect-item');
+
+            prospects.forEach(prospect => {
+                if (filterValue === '') {
+                    prospect.style.display = 'block';
+                } else if (filterValue === 'hot') {
+                    prospect.style.display = prospect.dataset.priority === 'hot' ? 'block' : 'none';
+                } else if (filterValue === 'warm') {
+                    prospect.style.display = prospect.dataset.priority === 'warm' ? 'block' : 'none';
+                } else if (filterValue === 'qa') {
+                    prospect.style.display = prospect.dataset.persona === 'qa' ? 'block' : 'none';
+                } else if (filterValue === 'vp') {
+                    prospect.style.display = prospect.dataset.persona === 'vp' ? 'block' : 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

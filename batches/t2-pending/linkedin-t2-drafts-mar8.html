@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkedIn Touch 2 Drafts — Mar 8, 2026</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #1a1a1a; }
+
+.page-header {
+  background: #0a1628;
+  color: white;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.page-header h1 { font-size: 18px; font-weight: 700; letter-spacing: 0.3px; }
+.page-header .meta { font-size: 12px; color: #8899aa; margin-top: 2px; }
+.credit-badge { background: #ff4444; color: white; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; }
+
+.sop-box {
+  background: #fff3cd;
+  border: 1.5px solid #f0b40a;
+  border-radius: 8px;
+  margin: 20px 20px 0;
+  padding: 18px 20px;
+}
+.sop-box h2 { font-size: 14px; font-weight: 700; color: #7a5a00; margin-bottom: 10px; }
+.sop-box p { font-size: 13px; color: #5a4200; line-height: 1.6; margin-bottom: 8px; }
+.sop-box .method { background: white; border: 1px solid #e0c060; border-radius: 6px; padding: 12px 14px; margin: 8px 0; }
+.sop-box .method h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.sop-box .method p { color: #333; margin: 0; }
+.method-free { border-left: 4px solid #28a745; }
+.method-credit { border-left: 4px solid #dc3545; }
+
+.section-header {
+  margin: 24px 20px 12px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.section-urgent { background: #ffeaea; border: 1.5px solid #ff4444; }
+.section-normal { background: #e8f4fd; border: 1.5px solid #2196F3; }
+.section-header h2 { font-size: 15px; font-weight: 700; }
+.section-urgent h2 { color: #cc0000; }
+.section-normal h2 { color: #1565c0; }
+.section-header .count { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 12px; }
+.section-urgent .count { background: #ff4444; color: white; }
+.section-normal .count { background: #2196F3; color: white; }
+
+.cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 20px 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  overflow: hidden;
+  border: 1px solid #e5e9f0;
+}
+.card.urgent { border-left: 4px solid #ff4444; }
+.card.normal { border-left: 4px solid #2196F3; }
+.card.sent { border-left: 4px solid #28a745; opacity: 0.7; }
+
+.card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid #f0f2f5;
+  gap: 12px;
+}
+.card-name { font-size: 15px; font-weight: 700; color: #0a1628; }
+.card-sub { font-size: 12px; color: #667788; margin-top: 2px; }
+.card-badges { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+.badge { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 12px; white-space: nowrap; }
+.badge-due { background: #fff3cd; color: #7a5a00; border: 1px solid #f0b40a; }
+.badge-urgent { background: #ffeaea; color: #cc0000; border: 1px solid #ff4444; }
+.badge-ok { background: #e8f4fd; color: #1565c0; border: 1px solid #2196F3; }
+.badge-p2 { background: #f3e5f5; color: #7b1fa2; }
+.badge-p3 { background: #e8f5e9; color: #1b5e20; }
+.badge-p4 { background: #fff3cd; color: #7a5a00; }
+
+.card-body { padding: 12px 16px; }
+
+.proof-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+.proof-label { color: #888; font-weight: 600; white-space: nowrap; }
+.proof-t1 { background: #ffeaea; color: #cc0000; padding: 3px 8px; border-radius: 10px; font-size: 11px; }
+.proof-arrow { color: #aaa; }
+.proof-t2 { background: #e8f5e9; color: #1b5e20; padding: 3px 8px; border-radius: 10px; font-size: 11px; }
+
+.draft-label { font-size: 11px; font-weight: 700; color: #667788; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.draft-box {
+  background: #f8f9fb;
+  border: 1px solid #dee2e8;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.65;
+  color: #2a2a2a;
+  position: relative;
+}
+.draft-box.prebuilt {
+  background: #f0f8ff;
+  border-color: #b0d4f0;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #0a1628;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+.copy-btn:hover { opacity: 1; }
+.copy-btn.copied { background: #28a745; opacity: 1; }
+
+.word-count { font-size: 11px; color: #888; margin-top: 5px; text-align: right; }
+
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #f0f2f5;
+}
+.status-btns { display: flex; gap: 6px; }
+.status-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 12px;
+  border: 1.5px solid;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-draft { border-color: #ccc; color: #666; background: white; }
+.btn-draft.active { background: #f0f0f0; }
+.btn-ready { border-color: #2196F3; color: #2196F3; background: white; }
+.btn-ready.active { background: #2196F3; color: white; }
+.btn-sent { border-color: #28a745; color: #28a745; background: white; }
+.btn-sent.active { background: #28a745; color: white; }
+.inmail-note { font-size: 11px; color: #888; }
+
+.stats-bar {
+  display: flex;
+  gap: 16px;
+  padding: 12px 20px;
+  background: white;
+  border-bottom: 1px solid #e5e9f0;
+  font-size: 13px;
+}
+.stat { display: flex; flex-direction: column; align-items: center; }
+.stat .n { font-size: 22px; font-weight: 800; color: #0a1628; }
+.stat .l { font-size: 11px; color: #667788; text-transform: uppercase; }
+.stat.red .n { color: #cc0000; }
+.stat.green .n { color: #28a745; }
+.stat.blue .n { color: #1565c0; }
+
+.section-sub { font-size: 12px; color: #888; margin-top: 2px; }
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  padding: 10px 20px;
+  background: white;
+  border-bottom: 1px solid #e5e9f0;
+  overflow-x: auto;
+}
+.filter-btn {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  border: 1.5px solid #ddd;
+  background: white;
+  cursor: pointer;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.filter-btn.active { background: #0a1628; color: white; border-color: #0a1628; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-header h1" style="font-size:18px;font-weight:700;">LinkedIn Touch 2 InMail Drafts</div>
+    <div class="meta">Built Mar 8, 2026 · B9 (urgent) + B10 + B11 · 30 prospects total</div>
+  </div>
+  <div class="credit-badge">⚡ 4 InMail Credits Remaining</div>
+</div>
+
+<!-- SOP Box -->
+<div class="sop-box">
+  <h2>📋 Touch 2 InMail Process — Sales Navigator SOP</h2>
+  <p>Rob's question: "Can we just reply to our first InMail?" Answer: <strong>Yes — as a thread continuation from the Inbox, and it's FREE.</strong> Here's the exact process:</p>
+
+  <div class="method method-free">
+    <h3>✅ METHOD A: Thread Continuation (FREE — recommended)</h3>
+    <p>Go to Sales Nav → Messages/Inbox → Sent. Find the T1 thread. Click to open. Type your T2 message in the reply field at the bottom. Hit Send. This adds a follow-up to the existing conversation thread without using a new InMail credit. LinkedIn allows thread continuation at no cost. <strong>This is the correct T2 approach when credits are low.</strong></p>
+  </div>
+
+  <div class="method method-credit">
+    <h3>⚠️ METHOD B: New InMail from Profile (COSTS 1 CREDIT — avoid)</h3>
+    <p>Going to the prospect's LinkedIn profile and clicking "Send InMail" creates a brand-new InMail conversation — this costs 1 credit and is separate from the original thread. Only use this if the original T1 thread is missing or expired (&gt;90 days).</p>
+  </div>
+
+  <p style="margin-top:8px;"><strong>Bottom line:</strong> For all B9/B10/B11 T2s — go to Sales Nav Inbox → find T1 thread → add message at bottom. Free. No credit consumed.</p>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat red"><span class="n">17</span><span class="l">B9 Urgent</span></div>
+  <div class="stat blue"><span class="n">9</span><span class="l">B10 Due Mar 11</span></div>
+  <div class="stat blue"><span class="n">4</span><span class="l">B11 Due Mar 11</span></div>
+  <div class="stat"><span class="n">30</span><span class="l">Total T2 Drafts</span></div>
+  <div class="stat green"><span class="n">4</span><span class="l">Credits Left</span></div>
+</div>
+
+<!-- SECTION 1: B9 URGENT -->
+<div class="section-header section-urgent">
+  <div>
+    <h2>🚨 BATCH 9 — Touch 2 URGENT</h2>
+    <div class="section-sub">Sent Mar 3-4 · T2 due TODAY Mar 8 / TOMORROW Mar 9</div>
+  </div>
+  <span class="count">17 prospects</span>
+</div>
+
+<div class="cards-grid">
+
+<!-- B9-1: Mohan Guruswamy -->
+<div class="card urgent" id="b9-1">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Mohan Guruswamy</div>
+      <div class="card-sub">QA Lead · Tavant Technologies · Costa Mesa, CA</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p4">P4 HOT</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">CRED: 90% regression, 5x faster</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Medibuddy: 2,500 tests, 50% maintenance</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-1">
+FinTech QA teams at Tavant's scale often find that as product complexity grows, test maintenance becomes the hidden cost that slows every release. One team managing 2,500 tests cut their maintenance overhead by 50% using a shared AI framework. If reducing that burden across your product builds would help, what day works for a quick look?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-1', this)">Copy</button>
+    </div>
+    <div class="word-count">~56 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 2nd degree → 1 InMail credit · Sales Nav → Inbox → search "Mohan" → open thread → send</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-1')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-1')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-1')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B9-2: Lueanne Fitzhugh -->
+<div class="card urgent" id="b9-2">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Lueanne Fitzhugh</div>
+      <div class="card-sub">QA Manager · Cerner Corporation · Beaverton, OR</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p4">P4 HOT</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Sanofi: 3 days → 80 min</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Hansard: 8 weeks → 5 weeks</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-2">
+Platform migrations at Cerner's scale tend to surface coverage gaps in workflows that passed on the old system but break on the new one. One regulated healthcare team cut their regression cycle from 8 weeks to 5 while keeping full compliance coverage intact. If compressing that window during Oracle's migration would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-2', this)">Copy</button>
+    </div>
+    <div class="word-count">~57 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 3rd degree → 1 InMail credit · Sales Nav → Inbox → search "Lueanne" → open thread → send</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-2')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-2')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-2')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B9-3: Jeremy Cira -->
+<div class="card urgent" id="b9-3">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Jeremy Cira</div>
+      <div class="card-sub">QA Manager II · Kaseya · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p4">P4 HOT</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Cisco: 35% regression reduction</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Medibuddy: 2,500 tests, 50% maintenance</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-3">
+IT management platforms with multiple product lines tend to accumulate test debt in the connectors and integrations that change most often. One team managing 2,500 tests cut their maintenance overhead by 50% using a unified framework. If keeping coverage current across Kaseya's suite without the growing maintenance load would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-3', this)">Copy</button>
+    </div>
+    <div class="word-count">~54 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 3rd degree → 1 InMail credit · Sales Nav → Inbox → search "Jeremy" → open thread → send</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-3')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-3')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-3')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B9-4: Chandana Ray -->
+<div class="card urgent" id="b9-4">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Chandana Ray</div>
+      <div class="card-sub">QA Lead · Persistent Systems · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p3">P3</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Medibuddy: 2,500 tests, 50% maintenance</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Sanofi: 3 days → 80 min</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-4">
+Consulting teams at Persistent's scale often find regression cycles become a bottleneck across client engagements when each project's test suite has to be maintained separately. One team compressed their cycle from 3 days to 80 minutes per engagement. If shortening QA turnaround across projects would help, what day works for a quick look?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-4', this)">Copy</button>
+    </div>
+    <div class="word-count">~54 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 3rd degree → 1 InMail credit · Sales Nav → Inbox → search "Chandana" → open thread → send</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-4')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-4')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-4')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B9-5: Martha Horns -->
+<div class="card urgent" id="b9-5">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Martha Horns</div>
+      <div class="card-sub">Quality Manager · Greenway Health · Tampa, FL</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p3">P3</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Sanofi: 3 days → 80 min</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Hansard: 8 weeks → 5 weeks</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-5">
+Healthcare SaaS platforms with compliance-driven testing usually see regression cycles stretch when the product updates in multiple areas at once. One regulated software team cut their window from 8 weeks to 5 without dropping coverage. If compressing your cycle during Greenway's platform updates would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-5', this)">Copy</button>
+    </div>
+    <div class="word-count">~51 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 3rd degree → 1 InMail credit · Sales Nav → Inbox → search "Martha" → open thread → send</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-5')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-5')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-5')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B9-6: David Gustafson -->
+<div class="card urgent" id="b9-6">
+  <div class="card-head">
+    <div>
+      <div class="card-name">David Gustafson</div>
+      <div class="card-sub">Engineering Manager, QA · HG Insights · Santa Barbara, CA</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p3">P3</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">90% maintenance reduction (self-healing)</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">CRED: 90% automation, 5x faster</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-6">
+Data intelligence platforms that track tech stacks and buying signals tend to ship dashboard and API updates frequently, and coverage gaps build up in the areas that evolve most. One similar team automated 90% of their regression and ran tests 5x faster. If closing those gaps without adding QA headcount would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-6', this)">Copy</button>
+    </div>
+    <div class="word-count">~55 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 3rd degree → 1 InMail credit · Sales Nav → Inbox → search "David" → open thread → send</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-6')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-6')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-6')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B9-7: Jiaping Shen -->
+<div class="card urgent" id="b9-7">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Jiaping Shen</div>
+      <div class="card-sub">SDET · HackerRank · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p3">P3</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Spendflo: 50% manual testing cut</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">CRED: 90% automation, 5x faster</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-7">
+Assessment platforms shipping new question types and editor features frequently tend to see test suites fall behind when engineering moves faster than QA can write tests. One team automated 90% of their regression and ran tests 5x faster. If keeping pace with HackerRank's release cadence would help, what day works for a quick look?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-7', this)">Copy</button>
+    </div>
+    <div class="word-count">~52 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 2nd degree → 1 InMail credit · Sales Nav → Inbox → search "Jiaping" → open thread → send</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-7')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-7')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-7')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B9-8: Sravanti Krothapalli -->
+<div class="card urgent" id="b9-8">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Sravanti Krothapalli</div>
+      <div class="card-sub">QA Manager · Quorum Software · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p3">P3</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Sanofi: 3 days → 80 min</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Medibuddy: 2,500 tests, 50% maintenance</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-8">
+Energy software QA teams tend to build out coverage as product capabilities expand, but test maintenance costs grow in proportion. One team managing 2,500 tests cut their maintenance overhead by 50% using a single AI framework. If managing that growth at Quorum's pace without extra headcount would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-8', this)">Copy</button>
+    </div>
+    <div class="word-count">~51 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 2nd degree → 1 InMail credit · Sales Nav → Inbox → search "Sravanti" → open thread → send</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-8')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-8')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-8')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B9-9: Cooper Morrow -->
+<div class="card urgent" id="b9-9">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Cooper Morrow</div>
+      <div class="card-sub">QA Manager · Jama Software · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p3">P3</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Spendflo: 50% manual testing cut</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Hansard: 8 weeks → 5 weeks</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-9">
+Requirements management platforms with compliance dependencies tend to see regression cycles resist compression, even when release pressure is high. One regulated software team cut their window from 8 weeks to 5 without dropping coverage. If shortening your cycle without compliance risk would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-9', this)">Copy</button>
+    </div>
+    <div class="word-count">~48 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 2nd degree → 1 InMail credit · Sales Nav → Inbox → search "Cooper" → open thread → send</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-9')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-9')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-9')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B9-10: Manigandan Kanagasabai -->
+<div class="card urgent" id="b9-10">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Manigandan Kanagasabai</div>
+      <div class="card-sub">Software QA Manager · Mediaocean · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p3">P3</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">70% maintenance reduction vs Selenium</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">CRED: 90% automation, 5x faster</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-10">
+Ad platforms shipping bidding logic and campaign workflow updates frequently tend to see coverage fall behind in the areas that change most. One team automated 90% of their regression and ran tests 5x faster. If closing those gaps without slowing delivery would help, what day works for a quick look?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-10', this)">Copy</button>
+    </div>
+    <div class="word-count">~50 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 2nd degree → 1 InMail credit · Sales Nav → Inbox → search "Manigandan" → open thread → send</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-10')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-10')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-10')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B9-11: Leah Coates -->
+<div class="card urgent" id="b9-11">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Leah Coates</div>
+      <div class="card-sub">QA Manager · Perforce Software · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p3">P3</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Hansard: 8 weeks → 5 weeks</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Cisco: 35% regression reduction</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-11">
+Dev tool platforms like Perforce that ship across a broad integration ecosystem tend to see regression sprawl as each new connector adds coverage surface area. One enterprise team reduced their regression by 35% without cutting coverage using AI to focus on the areas that change most. If managing that sprawl would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-11', this)">Copy</button>
+    </div>
+    <div class="word-count">~56 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#1b7a3c;font-weight:600;">✅ 1st degree (connected) → FREE · Sales Nav → Messages → search "Leah" → open thread → reply</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-11')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-11')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-11')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B9-12: Kylie Summer -->
+<div class="card urgent" id="b9-12">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Kylie Summer</div>
+      <div class="card-sub">QA/QC Manager · Quizizz · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p3">P3</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Spendflo: 50% manual testing cut</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">CRED: 90% automation, 5x faster</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-12">
+EdTech platforms shipping new activity types and gamification features frequently tend to see test suites fall behind in the areas that ship fastest. One team automated 90% of their regression and ran tests 5x faster. If keeping pace with Quizizz's release cadence without adding QA capacity would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-12', this)">Copy</button>
+    </div>
+    <div class="word-count">~51 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 2nd degree → 1 InMail credit · Sales Nav → Inbox → search "Kylie" → open thread → send</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-12')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-12')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-12')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B9-13: Kanan Hasanzade -->
+<div class="card urgent" id="b9-13">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Kanan Hasanzade</div>
+      <div class="card-sub">SDET · Datto, Inc. · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p2">P2</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">70% maintenance reduction vs Selenium</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Medibuddy: 2,500 tests, 50% maintenance</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-13">
+Backup and DR platforms covering cloud and on-prem deployments usually see test suites fragment across coverage areas. One team managing 2,500 tests cut their maintenance overhead by 50% using a single shared framework. If consolidating coverage across Datto's product suite would help, what day works for a quick look?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-13', this)">Copy</button>
+    </div>
+    <div class="word-count">~50 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 2nd degree → 1 InMail credit · Sales Nav → Inbox → search "Kanan" → open thread → send</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-13')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-13')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-13')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B9-14: Azam Quraishi -->
+<div class="card urgent" id="b9-14">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Azam Quraishi</div>
+      <div class="card-sub">Senior Quality Engineer · MTX Group · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p2">P2</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">70% maintenance reduction vs Selenium</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Sanofi: 3 days → 80 min</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-14">
+For a consulting firm like MTX managing QA across multiple Salesforce implementations, regression cycles that run days per engagement compound across accounts. One team compressed their cycle from 3 days to 80 minutes. If shortening turnaround across your client projects would help, what day works to see how they did it?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-14', this)">Copy</button>
+    </div>
+    <div class="word-count">~51 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 2nd degree → 1 InMail credit · Sales Nav → Inbox → search "Azam" → open thread → send</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-14')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-14')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-14')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B9-15: Yuliya A -->
+<div class="card urgent" id="b9-15">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Yuliya A</div>
+      <div class="card-sub">SDET · Planview · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p2">P2</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Medibuddy: 2,500 tests, 50% maintenance</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Hansard: 8 weeks → 5 weeks</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-15">
+Portfolio management platforms that span work management, resource planning, and project delivery tend to see regression cycles stretch as the product scope grows. One enterprise team cut their window from 8 weeks to 5 without reducing coverage. If compressing that cycle as Planview's suite expands would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-15', this)">Copy</button>
+    </div>
+    <div class="word-count">~52 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 2nd degree → 1 InMail credit · Sales Nav → Inbox → search "Yuliya" → open thread → send</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-15')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-15')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-15')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B9-16: Grant Anderson -->
+<div class="card urgent" id="b9-16">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Grant Anderson</div>
+      <div class="card-sub">QA Manager · Lucid Software · South Jordan, UT</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p2">P2</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Medibuddy: 50% maintenance reduction</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">CRED: 90% automation, 5x faster</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-16">
+Collaboration platforms shipping new canvas features and integrations frequently tend to see coverage fall behind in the connectors that change most. One product team automated 90% of their regression and ran tests 5x faster. If closing that gap without slowing Lucid's releases would help, what day works for a quick look?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-16', this)">Copy</button>
+    </div>
+    <div class="word-count">~51 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 2nd degree → 1 InMail credit · Sales Nav → Inbox → search "Grant" → open thread → send</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-16')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-16')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-16')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B9-17: Denise Barnett -->
+<div class="card urgent" id="b9-17">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Denise Barnett</div>
+      <div class="card-sub">QA Manager · Progress Software · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-urgent">⚡ Due TODAY</span>
+      <span class="badge badge-p2">P2</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Cisco: 35% regression reduction</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Hansard: 8 weeks → 5 weeks</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b9-17">
+Platform companies covering developer tooling across multiple products tend to find test maintenance grows faster than coverage does. One enterprise software team cut their regression window from 8 weeks to 5 as the product suite expanded. If compressing that cycle at Progress's scale would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b9-17', this)">Copy</button>
+    </div>
+    <div class="word-count">~48 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 2nd degree → 1 InMail credit · Sales Nav → Inbox → search "Denise" → open thread → send</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b9-17')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b9-17')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b9-17')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end B9 cards -->
+
+
+<!-- SECTION 2: B10 -->
+<div class="section-header section-normal">
+  <div>
+    <h2>📅 BATCH 10 — Touch 2 Due Mar 11</h2>
+    <div class="section-sub">Sent Mar 6 · 9 confirmed sent · T2 window opens Mar 11</div>
+  </div>
+  <span class="count">9 prospects</span>
+</div>
+
+<div class="cards-grid">
+
+<!-- B10-1: Tim Wiseman -->
+<div class="card normal" id="b10-1">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Tim Wiseman</div>
+      <div class="card-sub">Director of QA · Upland Software · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-ok">Due Mar 11</span>
+      <span class="badge badge-p4">P4 HOT</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Hansard: 8 weeks → 5 weeks</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Medibuddy: 2,500 tests, 50% maintenance</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b10-1">
+Multi-product regression at Upland's scale usually means coverage sprawls across product teams that don't share test suites. One team managing similar complexity created 2,500 tests and cut maintenance by 50% from a single shared framework. If consolidating coverage across Upland's product lines would help, what day works for a quick look?
+      <button class="copy-btn" onclick="copyDraft('draft-b10-1', this)">Copy</button>
+    </div>
+    <div class="word-count">~51 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#886600;font-weight:600;">⚠️ Degree not verified — check in Sales Nav before sending. Likely 1 credit. Due Mar 11</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b10-1')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b10-1')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b10-1')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B10-2: Josh Thayer -->
+<div class="card normal" id="b10-2">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Josh Thayer</div>
+      <div class="card-sub">VP Engineering Manager-QA · Jenius Bank · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-ok">Due Mar 11</span>
+      <span class="badge badge-p4">P4 HOT</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">CRED: 90% regression, 5x faster</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Sanofi: 3 days → 80 min</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b10-2">
+Building a QA practice from scratch at a de novo bank means compliance regression has to be airtight before each release, and the team is still standing everything up. One regulated team compressed their cycle from 3 days to 80 minutes without compromising coverage. If that kind of speed would help before Jenius's next release, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b10-2', this)">Copy</button>
+    </div>
+    <div class="word-count">~58 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#886600;font-weight:600;">⚠️ Degree not verified — check in Sales Nav before sending. Likely 1 credit. Due Mar 11</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b10-2')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b10-2')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b10-2')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B10-3: Elena Lysenko -->
+<div class="card normal" id="b10-3">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Elena Lysenko</div>
+      <div class="card-sub">VP QA Manager · CFSB Banking / BaaS · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-ok">Due Mar 11</span>
+      <span class="badge badge-p4">P4 HOT</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Medibuddy: 2,500 tests, 50% maintenance</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Cisco: 35% regression reduction</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b10-3">
+BaaS platforms serving multiple clients tend to see shared test coverage fragment as each client's configuration diverges. One enterprise team reduced their regression by 35% without cutting coverage, using AI to maintain shared test paths across configurations. If keeping shared coverage stable as CFSB's client base grows would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b10-3', this)">Copy</button>
+    </div>
+    <div class="word-count">~54 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#886600;font-weight:600;">⚠️ Degree not verified — check in Sales Nav before sending. Likely 1 credit. Due Mar 11</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b10-3')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b10-3')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b10-3')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B10-4: Jason Poole -->
+<div class="card normal" id="b10-4">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Jason Poole</div>
+      <div class="card-sub">Director of QA · Vergent LMS · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-ok">Due Mar 11</span>
+      <span class="badge badge-p4">P4 HOT</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Nagra DTV: 2,500 tests, 4x faster</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Sanofi: 3 days → 80 min</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b10-4">
+Lending platforms adding new product capabilities usually find compliance workflow regression takes longer than feature regression. One team in a similar environment compressed their compliance regression from 3 days to 80 minutes as new capabilities shipped. If shortening that window as Vergent's platform expands would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b10-4', this)">Copy</button>
+    </div>
+    <div class="word-count">~50 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#886600;font-weight:600;">⚠️ Degree not verified — check in Sales Nav before sending. Likely 1 credit. Due Mar 11</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b10-4')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b10-4')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b10-4')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B10-5: Tom Goody -->
+<div class="card normal" id="b10-5">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Tom Goody</div>
+      <div class="card-sub">QA Lead · Ncontracts · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-ok">Due Mar 11</span>
+      <span class="badge badge-p4">P4 HOT</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Hansard: 8 weeks → 5 weeks</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Sanofi: 3 days → 80 min</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b10-5">
+Compliance platforms adding AI features face a specific regression problem: AI behavior is harder to validate than deterministic workflows. One team in regulated software compressed their cycle from 3 days to 80 minutes as new features shipped. If shortening that window around Ncontracts' AI releases would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b10-5', this)">Copy</button>
+    </div>
+    <div class="word-count">~51 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#886600;font-weight:600;">⚠️ Degree not verified — check in Sales Nav before sending. Likely 1 credit. Due Mar 11</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b10-5')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b10-5')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b10-5')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B10-6: LP Guo -->
+<div class="card normal" id="b10-6">
+  <div class="card-head">
+    <div>
+      <div class="card-name">LP Guo</div>
+      <div class="card-sub">Director of QA · Moody's Analytics · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-ok">Due Mar 11</span>
+      <span class="badge badge-p4">P4 HOT</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Cisco: 35% regression reduction</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Medibuddy: 2,500 tests, 50% maintenance</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b10-6">
+Financial data platforms at Moody's scale tend to accumulate test debt in the product areas that evolve most often. One team managing similar complexity built 2,500 tests and cut maintenance by 50% from a unified framework. If keeping coverage current without the growing maintenance load would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b10-6', this)">Copy</button>
+    </div>
+    <div class="word-count">~50 words</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 2nd degree → 1 credit (verified) · Due Mar 11</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b10-6')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b10-6')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b10-6')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B10-7: Francesco Leising -->
+<div class="card normal" id="b10-7">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Francesco Leising</div>
+      <div class="card-sub">VP QA · Fairfax Software · Remote · 1st Degree Connection</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-ok">Due Mar 11</span>
+      <span class="badge badge-p3">P3</span>
+      <span class="badge" style="background:#e8f5e9;color:#1b5e20;">FREE DM</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">70% maintenance reduction vs Selenium</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Hansard: 8 weeks → 5 weeks</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b10-7">
+Library management upgrades at Quick Modules 5.0 scale usually surface coverage gaps in workflows that passed on the previous version. One team going through a similar major upgrade cut their regression window from 8 weeks to 5 without reducing coverage. If compressing the post-upgrade validation period would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b10-7', this)">Copy</button>
+    </div>
+    <div class="word-count">~51 words</div>
+    <div class="status-row">
+      <span class="inmail-note">📩 1st degree: Sales Nav → Messages → Find thread OR LinkedIn DM directly (FREE)</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b10-7')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b10-7')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b10-7')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B10-8: Chet West -->
+<div class="card normal" id="b10-8">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Chet West</div>
+      <div class="card-sub">QA Lead · TempWorks Software · Remote · Open Profile</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-ok">Due Mar 11</span>
+      <span class="badge badge-p3">P3</span>
+      <span class="badge" style="background:#e8f5e9;color:#1b5e20;">OPEN PROFILE</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Nagra DTV: 2,500 tests, 4x faster</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Medibuddy: 2,500 tests, 50% maintenance</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b10-8">
+Maintaining regression across TempWorks Enterprise and Beyond usually means test changes in one product have to be replicated manually in the other. One team in a dual-product environment built shared coverage for both and cut maintenance overhead by 50%. If managing that duplication more efficiently would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b10-8', this)">Copy</button>
+    </div>
+    <div class="word-count">~51 words</div>
+    <div class="status-row">
+      <span class="inmail-note">📩 Sales Nav → Inbox → Find T1 thread → Add reply (FREE — thread continuation)</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b10-8')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b10-8')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b10-8')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B10-9: Clint Parker -->
+<div class="card normal" id="b10-9">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Clint Parker</div>
+      <div class="card-sub">VP Engineering · Simpro Software · Remote · Open Profile</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-ok">Due Mar 11</span>
+      <span class="badge badge-p2">P2</span>
+      <span class="badge" style="background:#e8f5e9;color:#1b5e20;">OPEN PROFILE</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Fortune 100: 3x productivity</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">CRED: 90% automation, 5x faster</span>
+    </div>
+    <div class="draft-label">T2 Draft Message</div>
+    <div class="draft-box" id="draft-b10-9">
+Field service platforms rolling out AI features to tens of thousands of customers face a coverage problem: validating AI behavior across configurations doesn't scale manually. One platform team automated 90% of their regression and ran tests 5x faster. If scaling AI feature coverage at Simpro's volume would help, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b10-9', this)">Copy</button>
+    </div>
+    <div class="word-count">~50 words</div>
+    <div class="status-row">
+      <span class="inmail-note">📩 Sales Nav → Inbox → Find T1 thread → Add reply (FREE — thread continuation)</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b10-9')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b10-9')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b10-9')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end B10 cards -->
+
+
+<!-- SECTION 3: B11 -->
+<div class="section-header section-normal">
+  <div>
+    <h2>📅 BATCH 11 — Touch 2 Due Mar 11</h2>
+    <div class="section-sub">Sent Mar 6 · 4 confirmed sent · T2 drafts pre-built</div>
+  </div>
+  <span class="count">4 prospects</span>
+</div>
+
+<div class="cards-grid">
+
+<!-- B11-1: Brad Askins -->
+<div class="card normal" id="b11-1">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Brad Askins</div>
+      <div class="card-sub">Director, QA Engineering · Trimble · Westminster, CO</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-ok">Due Mar 11</span>
+      <span class="badge badge-p4">P4</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Regression at scale / platform breadth</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Coverage growth without headcount add</span>
+    </div>
+    <div class="draft-label">T2 Draft Message (Pre-built)</div>
+    <div class="draft-box prebuilt" id="draft-b11-1">
+Adding SDET capacity is one approach to scaling QA coverage, but teams at your scale often find that test maintenance takes more headcount than expected.
+
+One enterprise team kept coverage growing without adding to their QA headcount. If that kind of efficiency is something you're looking at, what day works to compare approaches?
+      <button class="copy-btn" onclick="copyDraft('draft-b11-1', this)">Copy</button>
+    </div>
+    <div class="word-count">~52 words · Pre-built in B11 tracker</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#886600;font-weight:600;">⚠️ Degree not verified — check in Sales Nav before sending. Likely 1 credit. Due Mar 11</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b11-1')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b11-1')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b11-1')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B11-2: Dan Heintzelman -->
+<div class="card normal" id="b11-2">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Dan Heintzelman</div>
+      <div class="card-sub">Director of Engineering · Prevail Legal · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-ok">Due Mar 11</span>
+      <span class="badge badge-p4">P4</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">28+ releases/yr, lean team regression</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">Plain English lets engineers write tests</span>
+    </div>
+    <div class="draft-label">T2 Draft Message (Pre-built)</div>
+    <div class="draft-box prebuilt" id="draft-b11-2">
+One thing teams at Prevail's shipping pace run into is that QA can't always write tests fast enough to keep up with engineering. Testsigma's plain English approach lets engineers write tests without a dedicated QA skillset. If keeping up with your release cadence is the real challenge, what day works?
+      <button class="copy-btn" onclick="copyDraft('draft-b11-2', this)">Copy</button>
+    </div>
+    <div class="word-count">~52 words · Pre-built in B11 tracker</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#886600;font-weight:600;">⚠️ Degree not verified — check in Sales Nav before sending. Likely 1 credit. Due Mar 11</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b11-2')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b11-2')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b11-2')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B11-3: Georgii Petrosian -->
+<div class="card normal" id="b11-3">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Georgii Petrosian</div>
+      <div class="card-sub">QA Manager · AuditBoard · Remote</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-ok">Due Mar 11</span>
+      <span class="badge badge-p3">P3</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Playwright locator updates post-UI change</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">AI coverage gap mapping, not just healing</span>
+    </div>
+    <div class="draft-label">T2 Draft Message (Pre-built)</div>
+    <div class="draft-box prebuilt" id="draft-b11-3">
+One thing QA teams using Playwright often miss is how much coverage they're actually leaving out as the product evolves. Testsigma's AI can map coverage gaps automatically, not just fix broken tests. If identifying where your test suite has blind spots would help, what day works for a quick look?
+      <button class="copy-btn" onclick="copyDraft('draft-b11-3', this)">Copy</button>
+    </div>
+    <div class="word-count">~51 words · Pre-built in B11 tracker</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#886600;font-weight:600;">⚠️ Degree not verified — check in Sales Nav before sending. Likely 1 credit. Due Mar 11</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b11-3')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b11-3')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b11-3')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B11-4: Madhu Nedunuri -->
+<div class="card normal" id="b11-4">
+  <div class="card-head">
+    <div>
+      <div class="card-name">Madhu Nedunuri</div>
+      <div class="card-sub">QA Manager · IDB Bank · Plainsboro, NJ</div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-ok">Due Mar 11</span>
+      <span class="badge badge-p3">P3</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="proof-row">
+      <span class="proof-label">T1:</span>
+      <span class="proof-t1">Platform migration regression rebuild</span>
+      <span class="proof-arrow">→</span>
+      <span class="proof-label">T2:</span>
+      <span class="proof-t2">UI + API + integration from same setup</span>
+    </div>
+    <div class="draft-label">T2 Draft Message (Pre-built)</div>
+    <div class="draft-box prebuilt" id="draft-b11-4">
+After a platform migration, API coverage is often the first thing that gets missed. Testsigma covers UI, API, and integration tests from the same setup, so new workflows get validated end to end. If that kind of post-migration coverage would help, what day works to see how a similar team handled it?
+      <button class="copy-btn" onclick="copyDraft('draft-b11-4', this)">Copy</button>
+    </div>
+    <div class="word-count">~52 words · Pre-built in B11 tracker</div>
+    <div class="status-row">
+      <span class="inmail-note" style="color:#cc4400;font-weight:600;">💳 2nd degree → 1 credit (verified) · Due Mar 11</span>
+      <div class="status-btns">
+        <button class="status-btn btn-draft active" onclick="setStatus(this, 'b11-4')">Draft</button>
+        <button class="status-btn btn-ready" onclick="setStatus(this, 'b11-4')">Ready</button>
+        <button class="status-btn btn-sent" onclick="setStatus(this, 'b11-4')">Sent ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end B11 cards -->
+
+<div style="height:40px;"></div>
+
+<script>
+function copyDraft(id, btn) {
+  const el = document.getElementById(id);
+  const text = el.innerText.replace('Copy', '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function setStatus(btn, id) {
+  const card = document.getElementById(id);
+  const btns = btn.parentElement.querySelectorAll('.status-btn');
+  btns.forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  // Update card styling
+  if (btn.classList.contains('btn-sent')) {
+    card.classList.add('sent');
+    card.classList.remove('urgent', 'normal');
+  } else {
+    card.classList.remove('sent');
+  }
+
+  // Persist to localStorage
+  const statuses = JSON.parse(localStorage.getItem('t2-statuses') || '{}');
+  statuses[id] = btn.textContent.trim();
+  localStorage.setItem('t2-statuses', JSON.stringify(statuses));
+}
+
+// Restore statuses on load
+window.addEventListener('load', () => {
+  const statuses = JSON.parse(localStorage.getItem('t2-statuses') || '{}');
+  for (const [id, status] of Object.entries(statuses)) {
+    const card = document.getElementById(id);
+    if (!card) continue;
+    const btns = card.querySelectorAll('.status-btn');
+    btns.forEach(b => {
+      b.classList.remove('active');
+      if (b.textContent.trim() === status) b.classList.add('active');
+    });
+    if (status.includes('Sent')) {
+      card.classList.add('sent');
+      card.classList.remove('urgent', 'normal');
+    }
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testsigma Intent Outreach Pipeline | Rob Gorham BDR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0f1419;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR NAVIGATION */
+        .sidebar {
+            width: 240px;
+            background: #1a1f26;
+            border-right: 1px solid #2a3038;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px 0;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            padding: 0 20px 30px;
+            border-bottom: 1px solid #2a3038;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-brand h1 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-brand p {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin: 0;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 12px 20px;
+            color: #a0a0a0;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover {
+            background: #25303a;
+            color: #fff;
+            border-left-color: #4a9eff;
+        }
+
+        .sidebar-menu a.active {
+            background: #25303a;
+            color: #4a9eff;
+            border-left-color: #4a9eff;
+            font-weight: 600;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            margin-left: 240px;
+            padding: 40px;
+            max-width: 1600px;
+        }
+
+        /* HEADER */
+        .page-header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #2a3038;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            font-size: 14px;
+            color: #888;
+        }
+
+        /* SECTIONS */
+        .section {
+            margin-bottom: 50px;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #4a9eff;
+            display: inline-block;
+        }
+
+        /* ACCOUNT CARDS */
+        .accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .account-card {
+            background: #1a1f26;
+            border: 1px solid #2a3038;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .account-card:hover {
+            border-color: #4a9eff;
+            background: #22283f;
+        }
+
+        .account-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .account-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .priority-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .priority-hot {
+            background: #ff4444;
+            color: #fff;
+        }
+
+        .priority-warm {
+            background: #ff9900;
+            color: #fff;
+        }
+
+        .priority-research {
+            background: #4a9eff;
+            color: #fff;
+        }
+
+        .priority-low {
+            background: #555;
+            color: #fff;
+        }
+
+        .account-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meta-label {
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .meta-value {
+            color: #bbb;
+        }
+
+        .account-qa-relevance {
+            background: #0f1419;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            border-left: 3px solid #4a9eff;
+        }
+
+        .account-qa-relevance strong {
+            display: block;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .account-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-small {
+            flex: 1;
+            padding: 8px 12px;
+            background: #25303a;
+            border: 1px solid #3a4550;
+            color: #a0a0a0;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .btn-small:hover {
+            background: #4a9eff;
+            border-color: #4a9eff;
+            color: #fff;
+        }
+
+        .account-details {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #2a3038;
+        }
+
+        .account-details.expanded {
+            display: block;
+        }
+
+        .detail-section {
+            margin-bottom: 20px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #4a9eff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .detail-content {
+            font-size: 13px;
+            color: #bbb;
+            line-height: 1.6;
+        }
+
+        /* LEAD ASSIGNMENTS */
+        .leads-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+
+        .leads-table thead {
+            background: #1a1f26;
+            border-bottom: 2px solid #2a3038;
+        }
+
+        .leads-table th {
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 700;
+            color: #4a9eff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .leads-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #2a3038;
+            font-size: 13px;
+        }
+
+        .leads-table tbody tr:hover {
+            background: #25303a;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-hot {
+            background: #ff4444;
+            color: #fff;
+        }
+
+        .status-in-progress {
+            background: #ff9900;
+            color: #fff;
+        }
+
+        .status-follow-up {
+            background: #4a9eff;
+            color: #fff;
+        }
+
+        /* EMAIL TEMPLATES */
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .template-card {
+            background: #1a1f26;
+            border: 1px solid #2a3038;
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .template-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #2a3038;
+        }
+
+        .template-section {
+            margin-bottom: 20px;
+        }
+
+        .template-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #4a9eff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .template-text {
+            background: #0f1419;
+            border: 1px solid #2a3038;
+            border-radius: 4px;
+            padding: 12px;
+            font-size: 13px;
+            color: #bbb;
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        .btn-copy {
+            background: #4a9eff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-copy:hover {
+            background: #3a8edf;
+        }
+
+        .btn-copy.copied {
+            background: #44aa44;
+        }
+
+        /* PIPELINE STEPS */
+        .pipeline-container {
+            background: #1a1f26;
+            border: 1px solid #2a3038;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 40px;
+        }
+
+        .pipeline-steps {
+            display: grid;
+            gap: 24px;
+        }
+
+        .step {
+            padding: 20px;
+            background: #0f1419;
+            border-left: 4px solid #4a9eff;
+            border-radius: 4px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #4a9eff;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .step-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .step-details {
+            font-size: 13px;
+            color: #bbb;
+            line-height: 1.6;
+        }
+
+        .step-details ul {
+            list-style: none;
+            margin-top: 10px;
+            padding-left: 0;
+        }
+
+        .step-details li {
+            padding: 4px 0 4px 24px;
+            position: relative;
+        }
+
+        .step-details li:before {
+            content: "→";
+            position: absolute;
+            left: 8px;
+            color: #4a9eff;
+        }
+
+        /* CREDIT BUDGET */
+        .credit-card {
+            background: #1a1f26;
+            border: 1px solid #2a3038;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 40px;
+        }
+
+        .credit-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #2a3038;
+            font-size: 14px;
+        }
+
+        .credit-row:last-child {
+            border-bottom: none;
+        }
+
+        .credit-label {
+            color: #888;
+        }
+
+        .credit-value {
+            font-weight: 700;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .credit-progress {
+            width: 150px;
+            height: 8px;
+            background: #2a3038;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .credit-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4a9eff, #3a8edf);
+            border-radius: 4px;
+        }
+
+        /* ACTIVE DEALS */
+        .deals-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .deal-card {
+            background: #1a1f26;
+            border: 1px solid #2a3038;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid #44aa44;
+        }
+
+        .deal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .deal-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .deal-contact {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .deal-status {
+            font-size: 12px;
+            font-weight: 700;
+            color: #44aa44;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .deal-notes {
+            font-size: 13px;
+            color: #bbb;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+
+        /* UTILITIES */
+        .text-muted {
+            color: #888;
+        }
+
+        .text-small {
+            font-size: 12px;
+        }
+
+        .mb-0 {
+            margin-bottom: 0;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .section {
+                display: block !important;
+                page-break-inside: avoid;
+            }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1400px) {
+            .accounts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .deals-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* EXPANDABLE CONTENT */
+        .expandable-header {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #25303a;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            user-select: none;
+        }
+
+        .expandable-header:hover {
+            background: #2a3545;
+        }
+
+        .expand-icon {
+            display: inline-block;
+            transition: transform 0.3s;
+            font-size: 14px;
+        }
+
+        .expand-icon.expanded {
+            transform: rotate(180deg);
+        }
+
+        .expandable-content {
+            display: none;
+            padding: 15px;
+            background: #0f1419;
+            border-radius: 4px;
+            border-left: 3px solid #4a9eff;
+        }
+
+        .expandable-content.expanded {
+            display: block;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #44aa44;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-brand">
+                <h1>Testsigma</h1>
+                <p>Intent Outreach Pipeline</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#section-accounts" class="nav-link active" data-section="accounts">Account Research</a></li>
+                <li><a href="#section-leads" class="nav-link" data-section="leads">Lead Assignments</a></li>
+                <li><a href="#section-email" class="nav-link" data-section="email">Email Formula</a></li>
+                <li><a href="#section-pipeline" class="nav-link" data-section="pipeline">Intent-to-Sequence</a></li>
+                <li><a href="#section-deals" class="nav-link" data-section="deals">Active Deals</a></li>
+                <li><a href="#section-credits" class="nav-link" data-section="credits">Apollo Credits</a></li>
+            </ul>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- HEADER -->
+            <div class="page-header">
+                <h1>Intent Outreach Pipeline</h1>
+                <p>Transferred Accounts & Active Deals | Rob Gorham, BDR | Updated Feb 26, 2026</p>
+            </div>
+
+            <!-- SECTION 1: ACCOUNT RESEARCH -->
+            <div id="section-accounts" class="section active">
+                <h2 class="section-title">Transferred Account Research (Priority-Ranked)</h2>
+
+                <h3 style="color: #4a9eff; font-size: 16px; margin-bottom: 16px; margin-top: 24px;">HIGH PRIORITY</h3>
+
+                <div class="accounts-grid">
+                    <!-- Mastercard -->
+                    <div class="account-card">
+                        <div class="account-header">
+                            <div>
+                                <div class="account-name">Mastercard</div>
+                                <div class="text-small text-muted">Payment Technology</div>
+                            </div>
+                            <span class="priority-badge priority-hot">HOT</span>
+                        </div>
+                        <div class="account-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Employees</span>
+                                <span class="meta-value">36,000</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Revenue</span>
+                                <span class="meta-value">$32.8B</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Engineers</span>
+                                <span class="meta-value">10,496</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Status</span>
+                                <span class="meta-value">INBOUND</span>
+                            </div>
+                        </div>
+                        <div class="account-qa-relevance">
+                            <strong>QA Relevance: CRITICAL</strong>
+                            Payment tech with massive engineering footprint. PCI compliance + 24/7 uptime = rigorous QA requirements. Flaky tests could cost millions.
+                        </div>
+                        <div class="account-actions">
+                            <button class="btn-small" onclick="toggleDetails(this)">View Details</button>
+                            <button class="btn-small" onclick="copyToClipboard('Soumyajit Banerjee, Mastercard - INBOUND - Intro calls scheduled today/tomorrow')">Copy Lead</button>
+                        </div>
+                        <div class="account-details">
+                            <div class="detail-section">
+                                <span class="detail-label">Contact</span>
+                                <div class="detail-content">Soumyajit Banerjee</div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Outreach Angle</span>
+                                <div class="detail-content">Payment processing = zero tolerance for test brittleness. AI auto-healing eliminates the manual regression cleanup that slows deployment cycles.</div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Best Proof Point</span>
+                                <div class="detail-content">Sanofi: regression testing 3 days → 80 minutes with AI-driven maintenance. For Mastercard: "Imagine cutting your regression suite execution by 96% while improving coverage."</div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Predicted Objection</span>
+                                <div class="detail-content"><strong>"We already have a tool."</strong><br><br>Pre-loaded response: "Totally fair. Most Fortune 500 teams we work with had Selenium or Katalon too. The gap they kept hitting was maintenance overhead on new test addition. AI self-healing let them scale coverage without scaling headcount."</div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Next Action</span>
+                                <div class="detail-content">⚡ PRIORITY: Schedule intro calls today or tomorrow. This is inbound momentum. Rob should prep meeting materials emphasizing payment-industry test reliability.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lexia Learning -->
+                    <div class="account-card">
+                        <div class="account-header">
+                            <div>
+                                <div class="account-name">Lexia Learning</div>
+                                <div class="text-small text-muted">EdTech / Learning Platforms</div>
+                            </div>
+                            <span class="priority-badge priority-hot">HOT</span>
+                        </div>
+                        <div class="account-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Employees</span>
+                                <span class="meta-value">870</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Revenue</span>
+                                <span class="meta-value">$380M</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Engineers</span>
+                                <span class="meta-value">74</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Status</span>
+                                <span class="meta-value">INBOUND</span>
+                            </div>
+                        </div>
+                        <div class="account-qa-relevance">
+                            <strong>QA Relevance: HIGH</strong>
+                            Adaptive learning platforms (Core5, PowerUp) require cross-browser, cross-device testing. Large teacher/student base = zero tolerance for downtime.
+                        </div>
+                        <div class="account-actions">
+                            <button class="btn-small" onclick="toggleDetails(this)">View Details</button>
+                            <button class="btn-small" onclick="copyToClipboard('Joe Casale, Lexia Learning - INBOUND - Intro call 11:30 AM EST TODAY')">Copy Lead</button>
+                        </div>
+                        <div class="account-details">
+                            <div class="detail-section">
+                                <span class="detail-label">Contact</span>
+                                <div class="detail-content">Joe Casale</div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Outreach Angle</span>
+                                <div class="detail-content">EdTech platforms live and die on cross-browser + mobile QA. Teacher adoption = consistent user experience across all devices. AI auto-healing cuts regression flakiness that ruins student learning experiences.</div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Best Proof Point</span>
+                                <div class="detail-content">Medibuddy: 2,500 tests, 50% maintenance reduction while scaling coverage. "Imagine adding 50% more tests without adding QA headcount."</div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Predicted Objection</span>
+                                <div class="detail-content"><strong>"We're still assessing our testing strategy."</strong><br><br>Pre-loaded response: "Totally fair. A lot of EdTech teams use our free trial to baseline their current test coverage and see what's possible. Takes 15 minutes to run."</div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Next Action</span>
+                                <div class="detail-content">⚡ MEETING TODAY 11:30 AM EST with Joe Casale. Prep 3-min discovery: (1) How many learning platforms? (2) Current test stack? (3) Biggest pain in regression testing?</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Infinera -->
+                    <div class="account-card">
+                        <div class="account-header">
+                            <div>
+                                <div class="account-name">Infinera</div>
+                                <div class="text-small text-muted">Telecom / Optical Networking</div>
+                            </div>
+                            <span class="priority-badge priority-warm">WARM</span>
+                        </div>
+                        <div class="account-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Employees</span>
+                                <span class="meta-value">3,400</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Revenue</span>
+                                <span class="meta-value">$1.4B</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Owner</span>
+                                <span class="meta-value">Nokia</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Status</span>
+                                <span class="meta-value">IN PROGRESS</span>
+                            </div>
+                        </div>
+                        <div class="account-qa-relevance">
+                            <strong>QA Relevance: HIGH</strong>
+                            Network automation + optical tech = mission-critical software. Cross-browser + API testing for network control planes. Auto-healing saves weeks of regression cycles.
+                        </div>
+                        <div class="account-actions">
+                            <button class="btn-small" onclick="toggleDetails(this)">View Details</button>
+                            <button class="btn-small" onclick="copyToClipboard('Pedro, Infinera - IN PROGRESS - Follow-up sent on cross-browser testing')">Copy Lead</button>
+                        </div>
+                        <div class="account-details">
+                            <div class="detail-section">
+                                <span class="detail-label">Contact</span>
+                                <div class="detail-content">Pedro (full name TBD - from inbound message)</div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Outreach Angle</span>
+                                <div class="detail-content">Telecom networks = 24/7 uptime requirement. Cross-browser automation for control planes + APIs. Flaky tests delay critical network deployments. AI self-healing reduces regression overhead by 70%+.</div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Best Proof Point</span>
+                                <div class="detail-content">Sanofi: 3 days → 80 minutes regression (96% reduction). For Infinera: "Imagine shrinking your network automation regression cycle from weeks to days."</div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Predicted Objection</span>
+                                <div class="detail-content"><strong>"Multi-browser testing is already handled."</strong><br><br>Pre-loaded response: "Agreed. The gap most telecom teams hit is MAINTAINING those multi-browser tests as the control plane UI changes. AI auto-healing let us reduce that by 70% for a Fortune 100 network company."</div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Next Action</span>
+                                <div class="detail-content">Follow-up sent on cross-browser capabilities. Await Pedro's response. If no reply in 7 days, send Touch 2 with Sanofi proof point on API testing side-by-side with UI.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charlie Health -->
+                    <div class="account-card">
+                        <div class="account-header">
+                            <div>
+                                <div class="account-name">Charlie Health</div>
+                                <div class="text-small text-muted">Digital Mental Health / Healthcare SaaS</div>
+                            </div>
+                            <span class="priority-badge priority-research">RESEARCH</span>
+                        </div>
+                        <div class="account-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Employees</span>
+                                <span class="meta-value">1,500</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Founded</span>
+                                <span class="meta-value">2017</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Focus</span>
+                                <span class="meta-value">Virtual Care</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Status</span>
+                                <span class="meta-value">NEEDS RESEARCH</span>
+                            </div>
+                        </div>
+                        <div class="account-qa-relevance">
+                            <strong>QA Relevance: HIGH</strong>
+                            HIPAA-regulated virtual care platform. Patient data = strict compliance. Mobile + web + video calling = complex QA matrix. Healthcare compliance adds 2-3x test maintenance overhead.
+                        </div>
+                        <div class="account-actions">
+                            <button class="btn-small" onclick="toggleDetails(this)">View Details</button>
+                            <button class="btn-small" onclick="copyToClipboard('Charlie Health - Healthcare QA Outreach')">Copy Name</button>
+                        </div>
+                        <div class="account-details">
+                            <div class="detail-section">
+                                <span class="detail-label">Research Needed</span>
+                                <div class="detail-content">
+                                    ✓ LinkedIn: Find QA/QA Engineering Manager<br>
+                                    ✓ Apollo: Enrich for tech stack (likely cloud, mobile)<br>
+                                    ✓ Company: Check for job postings (QA/SDET hiring = signal)
+                                </div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Probable Tech Stack</span>
+                                <div class="detail-content">Cloud (AWS/GCP), React/React Native mobile, HIPAA compliance middleware, video calling API (Twilio/Vonage)</div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Next Action</span>
+                                <div class="detail-content">Run 3-source research (LinkedIn + Apollo + company site). If hiring for QA → add to high-priority batch. If quiet hiring → standard batch.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Veradigm -->
+                    <div class="account-card">
+                        <div class="account-header">
+                            <div>
+                                <div class="account-name">Veradigm</div>
+                                <div class="text-small text-muted">Healthcare IT / EHR Systems</div>
+                            </div>
+                            <span class="priority-badge priority-research">RESEARCH</span>
+                        </div>
+                        <div class="account-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Employees</span>
+                                <span class="meta-value">2,500</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Status</span>
+                                <span class="meta-value">NEEDS RESEARCH</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Focus</span>
+                                <span class="meta-value">EHR / Health IT</span>
+                            </div>
+                        </div>
+                        <div class="account-qa-relevance">
+                            <strong>QA Relevance: CRITICAL</strong>
+                            EHR systems = patient safety + HIPAA + FDA compliance. Massive test matrices (integrations with 100+ hospital systems). Regression = potential patient harm.
+                        </div>
+                        <div class="account-actions">
+                            <button class="btn-small" onclick="toggleDetails(this)">View Details</button>
+                            <button class="btn-small" onclick="copyToClipboard('Veradigm - Healthcare IT Outreach')">Copy Name</button>
+                        </div>
+                        <div class="account-details">
+                            <div class="detail-section">
+                                <span class="detail-label">Contact Discovery</span>
+                                <div class="detail-content">LinkedIn: Look for "QA" or "Test" in title + EHR/healthcare keywords. Target Director of QA or higher.</div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Proof Point Match</span>
+                                <div class="detail-content">Sanofi (pharma compliance) → Veradigm (healthcare compliance). "Healthcare companies that switched from manual regression testing to AI-driven automation cut compliance validation cycles by 60%."</div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Next Action</span>
+                                <div class="detail-content">Apollo enrichment to find verified emails. Check job postings for QA hiring signals. If found → move to HIGH priority.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Springboard -->
+                    <div class="account-card">
+                        <div class="account-header">
+                            <div>
+                                <div class="account-name">Springboard</div>
+                                <div class="text-small text-muted">E-Learning / EdTech</div>
+                            </div>
+                            <span class="priority-badge priority-research">RESEARCH</span>
+                        </div>
+                        <div class="account-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Employees</span>
+                                <span class="meta-value">1,900</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Status</span>
+                                <span class="meta-value">NEEDS RESEARCH</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Model</span>
+                                <span class="meta-value">Cohort-based courses</span>
+                            </div>
+                        </div>
+                        <div class="account-qa-relevance">
+                            <strong>QA Relevance: MEDIUM</strong>
+                            Online learning platform. Course authoring + video delivery + student portal. SaaS QA but not as mission-critical as payment or healthcare.
+                        </div>
+                        <div class="account-actions">
+                            <button class="btn-small" onclick="toggleDetails(this)">View Details</button>
+                            <button class="btn-small" onclick="copyToClipboard('Springboard - EdTech Outreach')">Copy Name</button>
+                        </div>
+                        <div class="account-details">
+                            <div class="detail-section">
+                                <span class="detail-label">Research Priority</span>
+                                <div class="detail-content">MEDIUM. Check LinkedIn for QA Manager roles. EdTech = moderate QA complexity.</div>
+                            </div>
+                            <div class="detail-section">
+                                <span class="detail-label">Next Action</span>
+                                <div class="detail-content">Run Apollo enrichment. If 75+ employees in QA org → add to batch. Otherwise defer to future quarter.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color: #888; font-size: 16px; margin-bottom: 16px; margin-top: 32px;">DEPRIORITIZED (not outreach targets)</h3>
+                <div style="background: #1a1f26; padding: 20px; border-radius: 8px; border-left: 3px solid #555;">
+                    <p style="font-size: 13px; color: #bbb; margin: 0;">
+                        <strong>Georgia-Pacific</strong> (manufacturing, not software) •
+                        <strong>Market of Choice</strong> (retail, limited QA) •
+                        <strong>Plenty</strong> (too small, 240 employees) •
+                        <strong>EquiDeFi</strong> (9 employees, pre-product)
+                    </p>
+                </div>
+            </div>
+
+            <!-- SECTION 2: LEAD ASSIGNMENTS -->
+            <div id="section-leads" class="section">
+                <h2 class="section-title">Lead Assignments & Status</h2>
+
+                <table class="leads-table">
+                    <thead>
+                        <tr>
+                            <th>Contact</th>
+                            <th>Company</th>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th>Assigned Date</th>
+                            <th>Next Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Soumyajit Banerjee</strong></td>
+                            <td>Mastercard</td>
+                            <td>QA Lead / Engineering</td>
+                            <td><span class="status-badge status-hot">HOT</span></td>
+                            <td>Feb 26</td>
+                            <td>Intro calls today/tomorrow</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Joe Casale</strong></td>
+                            <td>Lexia Learning</td>
+                            <td>QA Manager</td>
+                            <td><span class="status-badge status-hot">HOT</span></td>
+                            <td>Feb 26</td>
+                            <td>Intro call 11:30 AM EST TODAY</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pedro</strong></td>
+                            <td>Infinera / Nokia</td>
+                            <td>Engineering Manager</td>
+                            <td><span class="status-badge status-in-progress">IN PROGRESS</span></td>
+                            <td>Feb 24</td>
+                            <td>Await reply to cross-browser follow-up</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Theresa Lawrence</strong></td>
+                            <td>CVS Health</td>
+                            <td>QA Manager</td>
+                            <td><span class="status-badge status-follow-up">FOLLOW-UP</span></td>
+                            <td>Feb 13</td>
+                            <td>Send Touch 2 InMail (if no reply by Feb 27)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Jayaraj Anthraj</strong></td>
+                            <td>Nokia</td>
+                            <td>QA Director</td>
+                            <td><span class="status-badge status-follow-up">FOLLOW-UP</span></td>
+                            <td>Feb 11</td>
+                            <td>Send Touch 2 InMail + Email</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Peter Chen</strong></td>
+                            <td>Walmart</td>
+                            <td>Senior SDET</td>
+                            <td><span class="status-badge status-follow-up">FOLLOW-UP</span></td>
+                            <td>Feb 5</td>
+                            <td>Send Touch 3 Email (if no reply by Feb 28)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Razorpay Lead</strong></td>
+                            <td>Razorpay (FinTech)</td>
+                            <td>QA/SDET</td>
+                            <td><span class="status-badge status-follow-up">FOLLOW-UP</span></td>
+                            <td>Feb 10</td>
+                            <td>Send Touch 2 + 3 (sequence behind schedule)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="background: #1a1f26; padding: 20px; border-radius: 8px; margin-top: 30px; border-left: 3px solid #ff9900;">
+                    <p style="font-size: 13px; color: #bbb; margin: 0;"><strong>Note:</strong> 194 existing Apollo tasks (mostly calls) are SKIPPED per Rob's direction. These can be triaged in a future session if needed.</p>
+                </div>
+            </div>
+
+            <!-- SECTION 3: EMAIL FORMULA -->
+            <div id="section-email" class="section">
+                <h2 class="section-title">Email Outreach Formula (Touch 3)</h2>
+
+                <div style="background: #1a1f26; padding: 24px; border-radius: 8px; margin-bottom: 30px; border-left: 3px solid #4a9eff;">
+                    <h3 style="color: #fff; font-size: 14px; margin-bottom: 12px;">📊 Email Performance Data</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; font-size: 13px;">
+                        <div>
+                            <div style="color: #888;">Cold Email Reply Rate</div>
+                            <div style="font-size: 18px; font-weight: 700; color: #fff; margin-top: 4px;">1.0%</div>
+                            <div style="color: #666; font-size: 11px; margin-top: 4px;">Overall</div>
+                        </div>
+                        <div>
+                            <div style="color: #888;">Best Performer</div>
+                            <div style="font-size: 18px; font-weight: 700; color: #fff; margin-top: 4px;">1.4%</div>
+                            <div style="color: #666; font-size: 11px; margin-top: 4px;">QA Engineers</div>
+                        </div>
+                        <div>
+                            <div style="color: #888;">Worst Performer</div>
+                            <div style="font-size: 18px; font-weight: 700; color: #fff; margin-top: 4px;">0.5%</div>
+                            <div style="color: #666; font-size: 11px; margin-top: 4px;">VPs/C-Level</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #1a1f26; padding: 24px; border-radius: 8px; margin-bottom: 30px; border-left: 3px solid #ff9900;">
+                    <h3 style="color: #fff; font-size: 14px; margin-bottom: 12px;">⚠️ Email is Touch 3 (Follow-Up Channel)</h3>
+                    <p style="font-size: 13px; color: #bbb; margin: 0;">Email serves as the 3rd touch AFTER LinkedIn InMail Touches 1 and 2. Use email only if:<br>
+                    • Prospect has not replied to Touches 1 or 2 (Day 10+)<br>
+                    • You have a verified email address from Apollo enrichment<br>
+                    • You have a fresh proof point not used in the InMail sequence
+                    </p>
+                </div>
+
+                <h3 style="color: #4a9eff; font-size: 15px; margin-bottom: 16px; margin-top: 24px;">Email Structure Formula (95-110 words max)</h3>
+
+                <div class="template-grid">
+                    <!-- Template A -->
+                    <div class="template-card">
+                        <div class="template-title">Template A: Legacy + Cloud Context</div>
+
+                        <div class="template-section">
+                            <label class="template-label">Subject Line</label>
+                            <div class="template-text">Regression across [their stack]</div>
+                            <button class="btn-copy" onclick="copyTemplate('Regression across [their stack]')">Copy Subject</button>
+                        </div>
+
+                        <div class="template-section">
+                            <label class="template-label">Email Body</label>
+                            <div class="template-text">Hello [Name],
+
+How is your team managing test coverage as [company] balances [legacy system] and [new platform]? Keeping regression stable while shipping on both is usually where things get brittle.
+
+[Customer] was in a similar spot and cut regression from [X] to [Y] with Testsigma's AI-driven test maintenance.
+
+If [outcome] would help before [their deadline/event], what day works for a quick look at how they did it?
+
+Best,
+Rob</div>
+                            <button class="btn-copy" onclick="copyTemplate('Hello [Name],\n\nHow is your team managing test coverage as [company] balances [legacy system] and [new platform]? Keeping regression stable while shipping on both is usually where things get brittle.\n\n[Customer] was in a similar spot and cut regression from [X] to [Y] with Testsigma'\''s AI-driven test maintenance.\n\nIf [outcome] would help before [their deadline/event], what day works for a quick look at how they did it?\n\nBest,\nRob')">Copy Body</button>
+                        </div>
+
+                        <div class="template-section">
+                            <label class="template-label">Best For</label>
+                            <div style="font-size: 13px; color: #bbb;">Companies migrating legacy systems to cloud or managing dual platforms (on-prem + cloud)</div>
+                        </div>
+                    </div>
+
+                    <!-- Template B -->
+                    <div class="template-card">
+                        <div class="template-title">Template B: Org Scaling</div>
+
+                        <div class="template-section">
+                            <label class="template-label">Subject Line</label>
+                            <div class="template-text">Coverage ahead of [their growth signal]</div>
+                            <button class="btn-copy" onclick="copyTemplate('Coverage ahead of [their growth signal]')">Copy Subject</button>
+                        </div>
+
+                        <div class="template-section">
+                            <label class="template-label">Email Body</label>
+                            <div class="template-text">Hello [Name],
+
+With [company] growing [specific signal], is test coverage keeping up with the release pace, or is the team spending more time on maintenance than new tests?
+
+Medibuddy automated 2,500 tests and cut maintenance in half while scaling coverage across their platform.
+
+What day works to see how they kept coverage ahead of releases without adding headcount?
+
+Best,
+Rob</div>
+                            <button class="btn-copy" onclick="copyTemplate('Hello [Name],\n\nWith [company] growing [specific signal], is test coverage keeping up with the release pace, or is the team spending more time on maintenance than new tests?\n\nMedibuddy automated 2,500 tests and cut maintenance in half while scaling coverage across their platform.\n\nWhat day works to see how they kept coverage ahead of releases without adding headcount?\n\nBest,\nRob')">Copy Body</button>
+                        </div>
+
+                        <div class="template-section">
+                            <label class="template-label">Best For</label>
+                            <div style="font-size: 13px; color: #bbb;">Growing companies (funding rounds, expansion, acquisition) with scaling QA pressure</div>
+                        </div>
+                    </div>
+
+                    <!-- Template C -->
+                    <div class="template-card">
+                        <div class="template-title">Template C: Tool Migration</div>
+
+                        <div class="template-section">
+                            <label class="template-label">Subject Line</label>
+                            <div class="template-text">[Their current tool] maintenance load</div>
+                            <button class="btn-copy" onclick="copyTemplate('[Their current tool] maintenance load')">Copy Subject</button>
+                        </div>
+
+                        <div class="template-section">
+                            <label class="template-label">Email Body</label>
+                            <div class="template-text">Hello [Name],
+
+How much of your team's week goes to maintaining [Selenium/Cypress/current tool] scripts vs actually improving coverage? Most teams using [tool] tell us it is about 60/40 the wrong way.
+
+[Customer] cut [tool] maintenance by 70% after switching, freeing the team to focus on releases that matter.
+
+If getting that time back before [their event] sounds useful, what day works for a quick look?
+
+Best,
+Rob</div>
+                            <button class="btn-copy" onclick="copyTemplate('Hello [Name],\n\nHow much of your team'\''s week goes to maintaining [Selenium/Cypress/current tool] scripts vs actually improving coverage? Most teams using [tool] tell us it is about 60/40 the wrong way.\n\n[Customer] cut [tool] maintenance by 70% after switching, freeing the team to focus on releases that matter.\n\nIf getting that time back before [their event] sounds useful, what day works for a quick look?\n\nBest,\nRob')">Copy Body</button>
+                        </div>
+
+                        <div class="template-section">
+                            <label class="template-label">Best For</label>
+                            <div style="font-size: 13px; color: #bbb;">Companies using older tools (Selenium, Cypress, Playwright) with high maintenance burden</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #1a1f26; padding: 24px; border-radius: 8px; margin-top: 30px; border-left: 3px solid #44aa44;">
+                    <h3 style="color: #fff; font-size: 14px; margin-bottom: 12px;">✅ Hard Constraints (Auto-Reject if Violated)</h3>
+                    <ul style="font-size: 13px; color: #bbb; list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 8px 0; border-bottom: 1px solid #2a3038;">❌ No "I noticed/saw" phrasing (-13.4pp reply rate)</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #2a3038;">❌ No AI/ML/self-healing as headline feature (-9.2pp)</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #2a3038;">❌ No messages over 120 words (sweet spot: 95-110 words)</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #2a3038;">❌ No sends after 6 PM (12.1% vs 56.5% at lunch)</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #2a3038;">❌ No bullet-point feature dumps (-2.2pp)</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #2a3038;">❌ No 3+ question marks (14.3% vs 34.8% for exactly 2)</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #2a3038;">❌ No em dashes. Max 1 hyphen in body.</li>
+                        <li style="padding: 8px 0;">❌ MUST have 4+ paragraph breaks for mobile</li>
+                    </ul>
+                </div>
+
+                <div style="background: #1a1f26; padding: 24px; border-radius: 8px; margin-top: 24px; border-left: 3px solid #4a9eff;">
+                    <h3 style="color: #fff; font-size: 14px; margin-bottom: 12px;">⏰ Optimal Send Timing</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; font-size: 13px;">
+                        <div>
+                            <strong style="color: #44aa44;">Best Time</strong>
+                            <div style="color: #bbb; margin-top: 4px;">12-1 PM local<br><span style="color: #666;">(56.5% reply)</span></div>
+                        </div>
+                        <div>
+                            <strong style="color: #44aa44;">Best Day</strong>
+                            <div style="color: #bbb; margin-top: 4px;">Thursday<br><span style="color: #666;">(42.1% reply)</span></div>
+                        </div>
+                        <div>
+                            <strong style="color: #ff4444;">Worst Window</strong>
+                            <div style="color: #bbb; margin-top: 4px;">6-8 PM local<br><span style="color: #666;">(12.1% reply)</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: INTENT-TO-SEQUENCE PIPELINE -->
+            <div id="section-pipeline" class="section">
+                <h2 class="section-title">Intent-to-Sequence Pipeline</h2>
+
+                <div style="background: #1a1f26; padding: 24px; border-radius: 8px; margin-bottom: 30px;">
+                    <h3 style="color: #fff; font-size: 14px; margin-bottom: 16px;">Full Process Overview</h3>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; font-size: 12px;">
+                        <div style="background: #0f1419; padding: 12px; border-radius: 4px; border-left: 3px solid #4a9eff;">
+                            <strong style="color: #fff;">Step 1</strong><br>
+                            <span style="color: #888; margin-top: 4px; display: block;">Intent Detection</span>
+                        </div>
+                        <div style="background: #0f1419; padding: 12px; border-radius: 4px; border-left: 3px solid #4a9eff;">
+                            <strong style="color: #fff;">Step 2</strong><br>
+                            <span style="color: #888; margin-top: 4px; display: block;">Lead Qualification</span>
+                        </div>
+                        <div style="background: #0f1419; padding: 12px; border-radius: 4px; border-left: 3px solid #4a9eff;">
+                            <strong style="color: #fff;">Step 3</strong><br>
+                            <span style="color: #888; margin-top: 4px; display: block;">Deduplication Check</span>
+                        </div>
+                        <div style="background: #0f1419; padding: 12px; border-radius: 4px; border-left: 3px solid #4a9eff;">
+                            <strong style="color: #fff;">Step 4</strong><br>
+                            <span style="color: #888; margin-top: 4px; display: block;">Apollo Enrichment</span>
+                        </div>
+                        <div style="background: #0f1419; padding: 12px; border-radius: 4px; border-left: 3px solid #4a9eff;">
+                            <strong style="color: #fff;">Step 5</strong><br>
+                            <span style="color: #888; margin-top: 4px; display: block;">Deep Research (3 sources)</span>
+                        </div>
+                        <div style="background: #0f1419; padding: 12px; border-radius: 4px; border-left: 3px solid #4a9eff;">
+                            <strong style="color: #fff;">Step 6</strong><br>
+                            <span style="color: #888; margin-top: 4px; display: block;">Message Personalization</span>
+                        </div>
+                        <div style="background: #0f1419; padding: 12px; border-radius: 4px; border-left: 3px solid #4a9eff;">
+                            <strong style="color: #fff;">Step 7</strong><br>
+                            <span style="color: #888; margin-top: 4px; display: block;">Sequence Enrollment</span>
+                        </div>
+                        <div style="background: #0f1419; padding: 12px; border-radius: 4px; border-left: 3px solid #4a9eff;">
+                            <strong style="color: #fff;">Step 8</strong><br>
+                            <span style="color: #888; margin-top: 4px; display: block;">Manual Send Execution</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pipeline-container">
+                    <div class="pipeline-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-title">Intent Detection</div>
+                            <div class="step-details">
+                                <strong>Source:</strong> Sales Navigator Buyer Intent signals, website analytics<br>
+                                <strong>Frequency:</strong> Check daily<br>
+                                <strong>Signals to capture:</strong>
+                                <ul>
+                                    <li>Research activity on Sales Nav</li>
+                                    <li>Competitor comparisons (visiting Selenium, Playwright, etc.)</li>
+                                    <li>Tool evaluation activity</li>
+                                    <li>Job postings for QA/SDET roles</li>
+                                </ul>
+                                <strong>Output:</strong> List of companies/people showing intent
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-title">Lead Qualification</div>
+                            <div class="step-details">
+                                <strong>ICP Requirements:</strong>
+                                <ul>
+                                    <li>QA Manager/Lead (primary)</li>
+                                    <li>Director/VP of QA (primary)</li>
+                                    <li>Software Eng Manager (secondary)</li>
+                                    <li>VP Eng/CTO (secondary, only with signals)</li>
+                                </ul>
+                                <strong>Company Requirements:</strong>
+                                <ul>
+                                    <li>US-based (unless specified otherwise)</li>
+                                    <li>Software QA/engineering (not pharma manufacturing, biotech lab)</li>
+                                    <li>Software products or digital platforms</li>
+                                    <li>Minimum 50+ employees</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-title">Deduplication Check (CRITICAL)</div>
+                            <div class="step-details">
+                                <strong>6-Month Lookback Rules:</strong>
+                                <ul>
+                                    <li>Check Apollo contacts: Has this person been contacted in last 6 months?</li>
+                                    <li>Check Apollo sequences: Is this person in ANY active sequence?</li>
+                                    <li>Check Salesforce: Is this lead owned by another BDR?</li>
+                                    <li>If assigned to another BDR → DO NOT CONTACT</li>
+                                    <li>If untouched 6+ months and not in active sequence → PROCEED</li>
+                                </ul>
+                                <strong>Goal:</strong> Find "hidden gems" – leads that haven't been touched in ages
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-title">Apollo Enrichment</div>
+                            <div class="step-details">
+                                <strong>Person Enrichment:</strong> Verified email, phone, current title, department<br>
+                                <strong>Organization Enrichment:</strong> Employee count, industry, technologies, funding, revenue<br>
+                                <strong>Tech Stack:</strong> Log testing tools, CI/CD, cloud providers<br>
+                                <strong>Budget:</strong> ~25 credits per batch of 25 prospects
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-title">Deep Research (3 Sources)</div>
+                            <div class="step-details">
+                                <strong>Source 1: LinkedIn Profile (Sales Navigator)</strong>
+                                <ul>
+                                    <li>QA scope, team size signals, tech stack clues</li>
+                                    <li>Career trajectory, pain signals</li>
+                                    <li>Capture Sales Navigator profile URL</li>
+                                </ul>
+                                <strong>Source 2: Apollo Enrichment</strong>
+                                <ul>
+                                    <li>Tech stack, company size, industry, contact data</li>
+                                </ul>
+                                <strong>Source 3: Company External Research</strong>
+                                <ul>
+                                    <li>Product pages, engineering blogs, job postings, press releases</li>
+                                    <li>QA-relevant signals: release process, testing stack, QA org pressure</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">6</div>
+                            <div class="step-title">Message Personalization</div>
+                            <div class="step-details">
+                                <strong>Pre-Draft Steps:</strong>
+                                <ul>
+                                    <li>Single Theme Rule: "This message is about ______"</li>
+                                    <li>QA-Relevant Research Filter: Only use research affecting QA outcomes</li>
+                                    <li>Plain Language Pass: Replace buzzwords, sentences under 15 words</li>
+                                    <li>Close Construction: Proof point outcome + prospect's version + "what day works"</li>
+                                </ul>
+                                <strong>Write all 4 touches:</strong>
+                                <ul>
+                                    <li>Touch 1 (LinkedIn InMail, Day 1): 80-120 words, full C2 message</li>
+                                    <li>Touch 2 (LinkedIn InMail Follow-up, Day 5): 40-70 words, new angle</li>
+                                    <li>Touch 3 (Email, Day 10): 60-100 words, fresh proof point</li>
+                                    <li>Touch 4 (Call, Day 15): 30-second talk track for Rob</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">7</div>
+                            <div class="step-title">Sequence Enrollment</div>
+                            <div class="step-details">
+                                <strong>Apollo Sequence:</strong> "Q1 Priority Accounts"<br>
+                                <strong>Steps:</strong> 4 manual steps (no auto-sends)<br>
+                                <ul>
+                                    <li>Step 1: Manual LinkedIn InMail (Day 1)</li>
+                                    <li>Step 2: Manual LinkedIn InMail Follow-up (Day 5)</li>
+                                    <li>Step 3: Manual Email (Day 10)</li>
+                                    <li>Step 4: Manual Call (Day 15)</li>
+                                </ul>
+                                <strong>Send from:</strong> robert.gorham@testsigma.net (default email account)
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">8</div>
+                            <div class="step-title">Manual Send Execution</div>
+                            <div class="step-details">
+                                <strong>All steps are MANUAL:</strong>
+                                <ul>
+                                    <li>Follow LinkedIn Sales Navigator Live Send SOP for InMail touches</li>
+                                    <li>Follow email formula for Touch 3 email (send via Gmail)</li>
+                                    <li>Touch 4: Rob makes the call using talk track from prep card</li>
+                                    <li>Log everything in cycle log</li>
+                                </ul>
+                                <strong>Important:</strong> No automated sends. Claude drafts, Rob executes.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: ACTIVE DEALS MONITOR -->
+            <div id="section-deals" class="section">
+                <h2 class="section-title">Active Deals Monitor</h2>
+
+                <div class="deals-container">
+                    <div class="deal-card">
+                        <div class="deal-header">
+                            <div>
+                                <div class="deal-name">Mastercard</div>
+                                <div class="deal-contact">Soumyajit Banerjee</div>
+                            </div>
+                            <div class="deal-status">INBOUND</div>
+                        </div>
+                        <div class="deal-notes">
+                            <strong>Status:</strong> Intro calls scheduled for today/tomorrow<br>
+                            <strong>Next:</strong> Prepare meeting materials. Focus on payment-industry test reliability, PCI compliance QA, regression cycle acceleration.<br>
+                            <strong>Proof Points:</strong> Sanofi (3 days → 80 min), 70% Selenium maintenance reduction
+                        </div>
+                    </div>
+
+                    <div class="deal-card">
+                        <div class="deal-header">
+                            <div>
+                                <div class="deal-name">Lexia Learning</div>
+                                <div class="deal-contact">Joe Casale</div>
+                            </div>
+                            <div class="deal-status">INBOUND</div>
+                        </div>
+                        <div class="deal-notes">
+                            <strong>Status:</strong> Intro call 11:30 AM EST TODAY (Feb 26)<br>
+                            <strong>Next:</strong> Prep 3-min discovery: (1) How many learning platforms? (2) Current test stack? (3) Regression pain points?<br>
+                            <strong>Proof Points:</strong> Medibuddy (2,500 tests, 50% maintenance cut), CRED (90% coverage, 5x faster)
+                        </div>
+                    </div>
+
+                    <div class="deal-card">
+                        <div class="deal-header">
+                            <div>
+                                <div class="deal-name">Infinera / Nokia</div>
+                                <div class="deal-contact">Pedro</div>
+                            </div>
+                            <div class="deal-status">IN PROGRESS</div>
+                        </div>
+                        <div class="deal-notes">
+                            <strong>Status:</strong> Follow-up sent on cross-browser testing capabilities<br>
+                            <strong>Next:</strong> Await Pedro's response. If no reply in 7 days → send Touch 2 InMail with Sanofi proof point<br>
+                            <strong>Proof Points:</strong> Sanofi (API + UI testing), Fortune 100 (3X productivity at network company scale)
+                        </div>
+                    </div>
+
+                    <div class="deal-card">
+                        <div class="deal-header">
+                            <div>
+                                <div class="deal-name">CVS Health / Aetna</div>
+                                <div class="deal-contact">Theresa Lawrence</div>
+                            </div>
+                            <div class="deal-status">FOLLOW-UP</div>
+                        </div>
+                        <div class="deal-notes">
+                            <strong>Status:</strong> Assigned Feb 13. Tyler following up on POC/Trial<br>
+                            <strong>Next:</strong> Coordinate with Tyler on POC status. If still running → send progress check. If stalled → trigger re-engagement<br>
+                            <strong>Proof Points:</strong> Sanofi (healthcare compliance QA), Oscar Health (digital health platform testing)
+                        </div>
+                    </div>
+
+                    <div class="deal-card">
+                        <div class="deal-header">
+                            <div>
+                                <div class="deal-name">BlackRock</div>
+                                <div class="deal-contact">Tyler (AE)</div>
+                            </div>
+                            <div class="deal-status">FOLLOW-UP</div>
+                        </div>
+                        <div class="deal-notes">
+                            <strong>Status:</strong> Tyler discussing pricing & user count (200 users)<br>
+                            <strong>Next:</strong> Coordinate with Tyler on commercial terms. If pricing discussion needed → connect with Prakash (Finance)<br>
+                            <strong>Proof Points:</strong> Fortune 100 (3X productivity), high-volume test scaling
+                        </div>
+                    </div>
+
+                    <div class="deal-card">
+                        <div class="deal-header">
+                            <div>
+                                <div class="deal-name">Recent Call Summaries</div>
+                                <div class="deal-contact">Multiple prospects</div>
+                            </div>
+                            <div class="deal-status">SUMMARY</div>
+                        </div>
+                        <div class="deal-notes">
+                            <strong>Feb 23 calls:</strong> Austin Chu, Tom Weaver, Tauras Liubinskas<br>
+                            <strong>Next:</strong> Gather call notes from Rob. Update prospect cards with key discovery findings and next meeting dates.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6: APOLLO CREDITS -->
+            <div id="section-credits" class="section">
+                <h2 class="section-title">Apollo Credit Budget & Usage</h2>
+
+                <div class="credit-card">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 30px;">
+                        <div>
+                            <h3 style="color: #fff; font-size: 14px; margin-bottom: 16px;">Lead Credits</h3>
+                            <div class="credit-row">
+                                <span class="credit-label">Starting Balance</span>
+                                <span class="credit-value">7,104</span>
+                            </div>
+                            <div class="credit-row">
+                                <span class="credit-label">Current Balance</span>
+                                <span class="credit-value">6,875</span>
+                            </div>
+                            <div class="credit-row">
+                                <span class="credit-label">Used</span>
+                                <span class="credit-value">229</span>
+                            </div>
+                            <div class="credit-row">
+                                <span class="credit-label">% Remaining</span>
+                                <span class="credit-value">96.8%</span>
+                            </div>
+                            <div class="credit-progress">
+                                <div class="credit-bar" style="width: 96.8%;"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 style="color: #fff; font-size: 14px; margin-bottom: 16px;">Budget per Batch (25 prospects)</h3>
+                            <div class="credit-row">
+                                <span class="credit-label">Person Enrichment</span>
+                                <span class="credit-value">25</span>
+                            </div>
+                            <div class="credit-row">
+                                <span class="credit-label">Org Enrichment</span>
+                                <span class="credit-value">15-20</span>
+                            </div>
+                            <div class="credit-row">
+                                <span class="credit-label">Contact Creation</span>
+                                <span class="credit-value">Free</span>
+                            </div>
+                            <div class="credit-row">
+                                <span class="credit-label">Sequence Enrollment</span>
+                                <span class="credit-value">Free</span>
+                            </div>
+                            <div class="credit-row">
+                                <span class="credit-label"><strong>Total per Batch</strong></span>
+                                <span class="credit-value"><strong>~40-45</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="border-top: 1px solid #2a3038; padding-top: 24px;">
+                        <h3 style="color: #fff; font-size: 14px; margin-bottom: 16px;">Other Resources</h3>
+                        <div class="credit-row">
+                            <span class="credit-label">Direct Dial Credits</span>
+                            <span class="credit-value">600 available</span>
+                        </div>
+                        <div class="credit-row">
+                            <span class="credit-label">AI Credits</span>
+                            <span class="credit-value">50,000,000 available</span>
+                        </div>
+                        <div class="credit-row">
+                            <span class="credit-label">Email Accounts Linked</span>
+                            <span class="credit-value">4 (all @testsigma domains)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #1a1f26; padding: 24px; border-radius: 8px; border-left: 3px solid #4a9eff; margin-top: 24px;">
+                    <h3 style="color: #fff; font-size: 14px; margin-bottom: 12px;">📊 Batch Burn Rate</h3>
+                    <p style="font-size: 13px; color: #bbb; margin: 0;">At 40-45 credits per batch of 25 prospects, current 6,875 credit balance = <strong>~153 batches remaining</strong> (or ~3,825 prospects over the next quarter). Budget is healthy. Prioritize enrichment for high-intent prospects first.</p>
+                </div>
+
+                <div style="background: #1a1f26; padding: 24px; border-radius: 8px; border-left: 3px solid #ff9900; margin-top: 24px;">
+                    <h3 style="color: #fff; font-size: 14px; margin-bottom: 12px;">✉️ Email Account Strategy</h3>
+                    <p style="font-size: 13px; color: #bbb; margin: 0;"><strong>Default sending account:</strong> robert.gorham@testsigma.net<br>
+                    <br>Rotate domains across batches to avoid spam flagging (one email per batch if possible). All 4 accounts are verified and ready to use.</p>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div style="margin-top: 60px; padding-top: 30px; border-top: 1px solid #2a3038; text-align: center; color: #666; font-size: 12px;">
+                <p style="margin: 0;">Testsigma Intent Outreach Pipeline | Last Updated: Feb 26, 2026</p>
+                <p style="margin: 8px 0 0 0;">Rob Gorham, BDR | Contact: robert.gorham@testsigma.net</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Navigation
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.section');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const sectionId = link.getAttribute('data-section');
+
+                // Remove active class from all
+                navLinks.forEach(l => l.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+
+                // Add active class
+                link.classList.add('active');
+                document.getElementById(`section-${sectionId}`).classList.add('active');
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Copied to clipboard!');
+            });
+        }
+
+        // Copy template
+        function copyTemplate(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Template copied!');
+            });
+        }
+
+        // Show toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // Toggle account details
+        function toggleDetails(btn) {
+            const card = btn.closest('.account-card');
+            const details = card.querySelector('.account-details');
+            details.classList.toggle('expanded');
+            btn.textContent = details.classList.contains('expanded') ? 'Hide Details' : 'View Details';
+        }
+
+        // Print friendly
+        function printPage() {
+            window.print();
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'p') {
+                e.preventDefault();
+                printPage();
+            }
+        });
+    </script>
+</body>
+</html>

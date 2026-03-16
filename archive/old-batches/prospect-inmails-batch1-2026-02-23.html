@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Touch 1 InMails - Batch 1 - Feb 23, 2026</title>
+<style>
+  :root {
+    --bg: #0f172a; --card: #1e293b; --card2: #334155; --text: #f1f5f9;
+    --muted: #94a3b8; --border: #475569; --accent: #38bdf8;
+    --hot: #ef4444; --warm: #f97316; --std: #eab308; --intent: #10b981;
+    --qa: #8b5cf6; --vpeng: #3b82f6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.6; max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 1.6rem; text-align: center; margin-bottom: 4px; }
+  .subtitle { text-align: center; color: var(--muted); font-size: 0.85rem; margin-bottom: 20px; }
+  .rules-box { background: var(--card); border-radius: 8px; padding: 14px; margin-bottom: 20px; font-size: 0.8rem; color: var(--muted); border-left: 3px solid var(--accent); }
+  .rules-box strong { color: var(--accent); }
+  .prospect-card { background: var(--card); border-radius: 10px; padding: 20px; margin-bottom: 16px; border-left: 4px solid var(--border); }
+  .prospect-card.hot { border-left-color: var(--hot); }
+  .prospect-card.warm { border-left-color: var(--warm); }
+  .prospect-card.std { border-left-color: var(--std); }
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; flex-wrap: wrap; gap: 6px; }
+  .card-num { font-size: 1.4rem; font-weight: 800; color: var(--accent); margin-right: 10px; }
+  .card-name { font-size: 1.05rem; font-weight: 700; }
+  .card-meta { font-size: 0.78rem; color: var(--muted); }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; margin: 1px 2px; }
+  .badge-hot { background: var(--hot); color: white; }
+  .badge-warm { background: var(--warm); color: white; }
+  .badge-std { background: var(--std); color: #1e1e1e; }
+  .badge-intent { background: var(--intent); color: white; }
+  .badge-qa { background: var(--qa); color: white; }
+  .badge-vpeng { background: var(--vpeng); color: white; }
+  .badge-score { background: var(--card2); color: var(--accent); border: 1px solid var(--accent); }
+  .research-note { font-size: 0.78rem; color: var(--muted); background: var(--card2); border-radius: 6px; padding: 8px 10px; margin: 8px 0 12px; }
+  .subject-line { font-size: 0.85rem; margin-bottom: 6px; }
+  .subject-line strong { color: var(--accent); }
+  .message-box { background: #0f172a; border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-size: 0.9rem; line-height: 1.7; white-space: pre-line; position: relative; }
+  .copy-btn { position: absolute; top: 8px; right: 8px; background: var(--accent); color: var(--bg); border: none; padding: 4px 12px; border-radius: 4px; font-size: 0.7rem; cursor: pointer; font-weight: 700; }
+  .copy-btn:hover { opacity: 0.85; }
+  .copy-btn.copied { background: var(--intent); }
+  .copy-subject { background: var(--card2); color: var(--text); border: 1px solid var(--border); padding: 3px 10px; border-radius: 4px; font-size: 0.68rem; cursor: pointer; font-weight: 600; margin-left: 8px; }
+  .proof-used { font-size: 0.72rem; color: var(--muted); margin-top: 8px; }
+  .proof-used span { color: var(--intent); }
+  .word-count { font-size: 0.68rem; color: var(--border); margin-top: 4px; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+  .section-label { font-size: 0.9rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--accent); }
+  .stats-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 12px 0 20px; }
+  .stat { background: var(--card); border-radius: 8px; padding: 10px 16px; text-align: center; min-width: 100px; }
+  .stat .num { font-size: 1.3rem; font-weight: 700; color: var(--accent); }
+  .stat .label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<h1>Touch 1 InMails - All Qualified Prospects</h1>
+<div class="subtitle">23 Personalized Messages | C1 Structure | Feb 23, 2026</div>
+
+<div class="stats-row">
+  <div class="stat"><div class="num">23</div><div class="label">Messages</div></div>
+  <div class="stat"><div class="num">7</div><div class="label">Priority 5</div></div>
+  <div class="stat"><div class="num">8</div><div class="label">Priority 4</div></div>
+  <div class="stat"><div class="num">8</div><div class="label">Priority 3</div></div>
+  <div class="stat"><div class="num">6</div><div class="label">Buyer Intent</div></div>
+</div>
+
+<div class="rules-box">
+  <strong>SOP Compliance:</strong> Every message follows C1 structure (opening question, context, proof point with Testsigma named once, question-mark close). No em dashes. No "I noticed/I saw." No easy-outs. No feature dumping. 75-120 words. Proof points matched to vertical and pain. Each prospect gets a unique research-driven opener.
+</div>
+
+<!-- ============================================ -->
+<div class="section-label">Priority 5 - Hot (Work First Every Morning)</div>
+<!-- ============================================ -->
+
+<!-- #1 -->
+<div class="prospect-card hot" id="p1">
+  <div class="card-header">
+    <div>
+      <span class="card-num">1</span>
+      <span class="card-name">Kumarswamy Dontamsetti</span>
+      <span class="badge badge-hot">P5 HOT</span>
+      <span class="badge badge-intent">BUYER INTENT</span>
+      <span class="badge badge-qa">QA</span>
+    </div>
+  </div>
+  <div class="card-meta">Director, AI Cloud Quality Engineering (Agentforce) | Salesforce | San Francisco Bay Area</div>
+  <div class="research-note">Salesforce 80K+ employees. Agentforce launched as core platform. 75% Apex coverage mandate doesn't cover AI behavior. Agentforce Testing Center uses synthetic scenarios but can't measure hallucination or guardrail violations. AI test adoption jumped 7% to 16% (2023-2025).</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Quick question <button class="copy-subject" onclick="copyText(this, 'Quick question')">Copy Subject</button></div>
+  <div class="message-box" id="msg1">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg1')">Copy Message</button>Kumarswamy, with Agentforce agents handling multi-turn conversations and taking live actions across Salesforce, how is your team validating that agents aren't hallucinating or violating guardrails?
+
+That's the gap most AI platform QA teams are running into right now. Apex coverage confirms the code works, but it can't tell you whether the agent gave a correct answer.
+
+A Fortune 100 QA team brought in Testsigma and saw 3x productivity after switching to AI-powered test creation for this kind of validation. 15 minutes to walk through how that maps to Agentforce testing?</div>
+  <div class="proof-used">Proof: <span>Fortune 100 3x productivity</span> | Personalization: <span class="badge badge-score">3 Deep</span></div>
+  <div class="word-count">~82 words</div>
+</div>
+
+<!-- #2 -->
+<div class="prospect-card hot" id="p2">
+  <div class="card-header">
+    <div>
+      <span class="card-num">2</span>
+      <span class="card-name">Rahul Rajendra Prasad</span>
+      <span class="badge badge-hot">P5 HOT</span>
+      <span class="badge badge-intent">BUYER INTENT</span>
+      <span class="badge badge-intent">NEW HIRE</span>
+      <span class="badge badge-vpeng">VP Eng</span>
+    </div>
+  </div>
+  <div class="card-meta">Director - Platform & SRE Operations | Citizens Financial Group | Charlotte Metro</div>
+  <div class="research-note">Citizens 20K+ employees. "Bank of the Year" (Dec 2025). Crossed 50% cloud migration, targeting 100%. Scaling 750→1,000+ engineers. Opened Cognizant hub in Hyderabad for testing. Microsoft Copilot to 1,000 engineers. Uses Selenium, Cucumber, EggPlant, Appium, ReadyAPI.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Cloud migration QA <button class="copy-subject" onclick="copyText(this, 'Cloud migration QA')">Copy Subject</button></div>
+  <div class="message-box" id="msg2">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg2')">Copy Message</button>Rahul, Citizens just crossed the 50% cloud migration mark and is scaling engineering past 1,000. Is the test automation keeping up with that shift, or are Selenium tests breaking faster than the team can fix them?
+
+That's the pattern with banks mid-migration. Copilot speeds up code output, but the test suite becomes the bottleneck.
+
+Sanofi's QA director hit the same wall and brought in Testsigma. Regression went from 3 days to 80 minutes with AI self-healing. 15 minutes to walk through how banks are handling this transition?</div>
+  <div class="proof-used">Proof: <span>Sanofi 3 days → 80 min</span> | Personalization: <span class="badge badge-score">3 Deep</span></div>
+  <div class="word-count">~85 words</div>
+</div>
+
+<!-- #3 -->
+<div class="prospect-card hot" id="p3">
+  <div class="card-header">
+    <div>
+      <span class="card-num">3</span>
+      <span class="card-name">Shashin Surkund</span>
+      <span class="badge badge-hot">P5 HOT</span>
+      <span class="badge badge-intent">BUYER INTENT</span>
+      <span class="badge badge-vpeng">VP Eng</span>
+    </div>
+  </div>
+  <div class="card-meta">Vice President, Big Data Platforms | Fidelity Investments | Cary, North Carolina</div>
+  <div class="research-note">Fidelity 35K+ employees. Building next-gen data pipeline on Hadoop 3.4.2+/Spark 4.0.1+. Migrating to AWS cloud-first. Uses Selenium, Playwright, TestNG, Cucumber, JUnit. Active hiring for QA roles across 5+ locations. Data democratization initiative.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Data pipeline QA <button class="copy-subject" onclick="copyText(this, 'Data pipeline QA')">Copy Subject</button></div>
+  <div class="message-box" id="msg3">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg3')">Copy Message</button>Shashin, building a next-gen data pipeline on Hadoop and Spark is one thing. Keeping the test suite stable when those configs change weekly is another. Is your team spending more time fixing broken tests than writing new ones?
+
+That's the wall data platform teams hit once the pipeline gets complex enough. Every schema change cascades through the regression suite.
+
+Hansard's QA team brought in Testsigma and cut regression from 8 weeks to 5 with AI self-healing. 15 minutes to see if that applies to what you're building?</div>
+  <div class="proof-used">Proof: <span>Hansard 8 weeks → 5 weeks</span> | Personalization: <span class="badge badge-score">3 Deep</span></div>
+  <div class="word-count">~84 words</div>
+</div>
+
+<!-- #4 -->
+<div class="prospect-card hot" id="p4">
+  <div class="card-header">
+    <div>
+      <span class="card-num">4</span>
+      <span class="card-name">Florentin Stafie</span>
+      <span class="badge badge-hot">P5 HOT</span>
+      <span class="badge badge-intent">BUYER INTENT</span>
+      <span class="badge badge-vpeng">VP Eng</span>
+    </div>
+  </div>
+  <div class="card-meta">Vice President of Software Engineering | NetApp | Redmond, Washington</div>
+  <div class="research-note">NetApp 10K+ employees. 4 releases/year for Trident + ONTAP. Multi-protocol testing (NFS, SMB, FC, NVMe/TCP). HA failover and distributed system complexity. Trident 25.10 just released. New AI Data Engine launched 2025. OpenShift Virtualization for test infra.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Release velocity <button class="copy-subject" onclick="copyText(this, 'Release velocity')">Copy Subject</button></div>
+  <div class="message-box" id="msg4">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg4')">Copy Message</button>Florentin, four releases a year across Trident and ONTAP while testing NFS, SMB, FC, and NVMe simultaneously is an aggressive cadence. Is the QA cycle keeping pace, or is flaky test maintenance starting to eat into release timelines?
+
+That's the pressure point for storage platform teams shipping this fast. Protocol edge cases and HA failover scenarios compound quickly.
+
+Nagra DTV brought in Testsigma and built 2,500 tests in 8 months, running them 4x faster. 15 minutes to see if that maps to your release cycle?</div>
+  <div class="proof-used">Proof: <span>Nagra DTV 2,500 tests, 4x faster</span> | Personalization: <span class="badge badge-score">3 Deep</span></div>
+  <div class="word-count">~83 words</div>
+</div>
+
+<!-- #5 -->
+<div class="prospect-card hot" id="p5">
+  <div class="card-header">
+    <div>
+      <span class="card-num">5</span>
+      <span class="card-name">Shadi Sleiman</span>
+      <span class="badge badge-hot">P5 HOT</span>
+      <span class="badge badge-intent">BUYER INTENT</span>
+      <span class="badge badge-vpeng">VP Eng</span>
+    </div>
+  </div>
+  <div class="card-meta">Vice President of Software Engineering | Careem | San Francisco Bay Area</div>
+  <div class="research-note">Careem 2K+ employees, $3.1B valuation. Super-app strategy: rides + food + payments + financial services. Microservices on Java/AWS/Redis. Uses Sofy, Maestro, Postman, Selenium, Appium, JMeter, K6. Hiring Director of QA. 70+ cities, multi-currency.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Super-app QA <button class="copy-subject" onclick="copyText(this, 'Super-app QA')">Copy Subject</button></div>
+  <div class="message-box" id="msg5">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg5')">Copy Message</button>Shadi, when rides, food delivery, payments, and financial services all need to work as one seamless experience, how is your team testing the cross-service flows without everything breaking when one microservice changes?
+
+That's the challenge with super-app architecture. Individual service tests pass, but the integrated user journey fails at the seams.
+
+CRED faced the same complexity and used Testsigma to automate 90% of regression, running it 5x faster. 15 minutes to walk through how cross-service testing works at that scale?</div>
+  <div class="proof-used">Proof: <span>CRED 90% regression, 5x faster</span> | Personalization: <span class="badge badge-score">3 Deep</span></div>
+  <div class="word-count">~80 words</div>
+</div>
+
+<!-- #6 -->
+<div class="prospect-card hot" id="p6">
+  <div class="card-header">
+    <div>
+      <span class="card-num">6</span>
+      <span class="card-name">Kunal Shah</span>
+      <span class="badge badge-hot">P5 HOT</span>
+      <span class="badge badge-intent">BUYER INTENT</span>
+      <span class="badge badge-vpeng">VP Eng</span>
+    </div>
+  </div>
+  <div class="card-meta">Senior Vice President, Software Engineering | o9 Solutions | United States</div>
+  <div class="research-note">o9 500+ employees. 30+ customer go-lives in 2025. +60% YoY new logos. Neurosymbolic AI agents for planning. Enterprise Knowledge Graph (EKG). Integrates with SAP, Salesforce, Oracle, JD Edwards, NetSuite. Gartner Customers' Choice 2025. Uses JMeter, Postman, Selenium, Robot Framework.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Agent testing <button class="copy-subject" onclick="copyText(this, 'Agent testing')">Copy Subject</button></div>
+  <div class="message-box" id="msg6">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg6')">Copy Message</button>Kunal, 30+ go-lives in 2025 with neurosymbolic AI agents making planning decisions across SAP, Oracle, and Salesforce is impressive velocity. How is your team validating that the agent chose the right allocation, not just that the API call succeeded?
+
+That's a different kind of testing than JMeter or Selenium can handle. Planning logic validation needs a different approach.
+
+A Fortune 100 company brought in Testsigma and saw 3x productivity for exactly this kind of AI validation. 15 minutes to compare approaches?</div>
+  <div class="proof-used">Proof: <span>Fortune 100 3x productivity</span> | Personalization: <span class="badge badge-score">3 Deep</span></div>
+  <div class="word-count">~80 words</div>
+</div>
+
+<!-- #7 -->
+<div class="prospect-card hot" id="p7">
+  <div class="card-header">
+    <div>
+      <span class="card-num">7</span>
+      <span class="card-name">Tauhid Khan</span>
+      <span class="badge badge-hot">P5 HOT</span>
+      <span class="badge badge-qa">QA</span>
+    </div>
+  </div>
+  <div class="card-meta">Director, QA, Test Automation, Release Management | Optum/UHG | Stone Mountain, Georgia</div>
+  <div class="research-note">Optum 300K+ employees, parent UHG $200B+. Launched AI Marketplace 2025. Optum Real AI claims processing in pilot. Built sandbox testing environments for third-party AI integrations. Uses Automation Anywhere (RPA), Tableau, Redgate. HIPAA compliance mandatory.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Sandbox testing <button class="copy-subject" onclick="copyText(this, 'Sandbox testing')">Copy Subject</button></div>
+  <div class="message-box" id="msg7">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg7')">Copy Message</button>Tauhid, with the AI Marketplace live and sandbox environments spinning up for third-party integrations, is the testing velocity keeping pace with compliance requirements, or is it becoming the bottleneck for onboarding new AI partners?
+
+That's the tradeoff healthcare platform teams face. You can't skip HIPAA validation, but you also can't take weeks per integration.
+
+Sanofi's QA team brought in Testsigma and cut regression from 3 days to 80 minutes without compromising compliance rigor. 15 minutes to see if that maps to your sandbox workflow?</div>
+  <div class="proof-used">Proof: <span>Sanofi 3 days → 80 min</span> | Personalization: <span class="badge badge-score">3 Deep</span></div>
+  <div class="word-count">~82 words</div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-label">Priority 4 - Warm (Start Sequence Within 24 Hours)</div>
+<!-- ============================================ -->
+
+<!-- #8 -->
+<div class="prospect-card warm" id="p8">
+  <div class="card-header">
+    <div>
+      <span class="card-num">8</span>
+      <span class="card-name">Valerie Terrell</span>
+      <span class="badge badge-warm">P4 WARM</span>
+      <span class="badge badge-qa">QA</span>
+    </div>
+  </div>
+  <div class="card-meta">Director of Quality Engineering | Travelers Insurance | Stone Mountain, Georgia</div>
+  <div class="research-note">Travelers 30K+ employees, $48.4B revenue, Dow Jones company. Rolling out Salesforce FSC as CRM. Einstein AI automation. Agentforce for claims optimization. Multi-channel: web, mobile, agent portals. Insurance compliance requirements.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> CRM regression <button class="copy-subject" onclick="copyText(this, 'CRM regression')">Copy Subject</button></div>
+  <div class="message-box" id="msg8">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg8')">Copy Message</button>Valerie, rolling out Salesforce FSC across a $48 billion insurance operation with Einstein AI and Agentforce for claims is a major lift. Is the test automation keeping up with the customization changes, or is regression starting to stack?
+
+That's the pattern with enterprise CRM implementations. Every policy, claims, and portal change ripples through the test suite.
+
+Hansard Insurance brought in Testsigma and cut regression from 8 weeks to 5 with AI self-healing. 15 minutes to see if that applies to your Salesforce rollout?</div>
+  <div class="proof-used">Proof: <span>Hansard 8 weeks → 5 weeks</span> | Personalization: <span class="badge badge-score">2 Medium</span></div>
+  <div class="word-count">~80 words</div>
+</div>
+
+<!-- #9 -->
+<div class="prospect-card warm" id="p9">
+  <div class="card-header">
+    <div>
+      <span class="card-num">9</span>
+      <span class="card-name">David Muczynski</span>
+      <span class="badge badge-warm">P4 WARM</span>
+      <span class="badge badge-vpeng">VP Eng</span>
+    </div>
+  </div>
+  <div class="card-meta">Vice President of Software Engineering | Persefoni | St. Petersburg, Florida</div>
+  <div class="research-note">Persefoni $194M Series C. "ERP of Carbon." PersefoniGPT AI copilot for emissions. Acquired Diligent's carbon accounting customers. Targeting profitability H2 2025. Compliance testing for SEC, CSRD, GRI standards. Smart emission factor matching on roadmap.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Quick question <button class="copy-subject" onclick="copyText(this, 'Quick question')">Copy Subject</button></div>
+  <div class="message-box" id="msg9">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg9')">Copy Message</button>David, with PersefoniGPT handling emissions calculations and Diligent's customer base now on your platform, is the QA infrastructure scaling with the product, or are coverage gaps starting to show?
+
+When AI outputs feed compliance reports for SEC and CSRD, accuracy isn't optional. Most teams discover gaps too late.
+
+Spendflo was at a similar growth stage and used Testsigma to cut manual testing 50%, seeing ROI in the first quarter. 15 minutes to see if that changes the equation for your compliance testing?</div>
+  <div class="proof-used">Proof: <span>Spendflo 50% manual testing cut</span> | Personalization: <span class="badge badge-score">3 Deep</span></div>
+  <div class="word-count">~78 words</div>
+</div>
+
+<!-- #10 -->
+<div class="prospect-card warm" id="p10">
+  <div class="card-header">
+    <div>
+      <span class="card-num">10</span>
+      <span class="card-name">Pathik Desai</span>
+      <span class="badge badge-warm">P4 WARM</span>
+      <span class="badge badge-vpeng">VP Eng</span>
+    </div>
+  </div>
+  <div class="card-meta">Head of Global IT | TriNetX | Greater Boston</div>
+  <div class="research-note">TriNetX 281 employees. Connects 65+ US healthcare systems, 182+ global. Federated real-world data platform. HIPAA/GDPR compliant. Launching conversational AI interface early 2026. Fujitsu JV for Japan. Most cited EHR dataset. Common Data Models (OMOP, FHIR, HL7).</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Integration testing <button class="copy-subject" onclick="copyText(this, 'Integration testing')">Copy Subject</button></div>
+  <div class="message-box" id="msg10">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg10')">Copy Message</button>Pathik, connecting 65+ healthcare systems with different EHR platforms means 65+ sets of data mapping rules to validate. How much engineering time goes into maintaining integration tests versus building new integrations?
+
+That's where healthcare data platforms hit the wall. Each new partner multiplies the testing surface, and HIPAA compliance doesn't allow shortcuts.
+
+Medibuddy used Testsigma to automate 2,500 tests and cut maintenance 50%. 15 minutes to see if that changes the equation for your integration pipeline?</div>
+  <div class="proof-used">Proof: <span>Medibuddy 2,500 tests, 50% maintenance cut</span> | Personalization: <span class="badge badge-score">3 Deep</span></div>
+  <div class="word-count">~78 words</div>
+</div>
+
+<!-- #11 -->
+<div class="prospect-card warm" id="p11">
+  <div class="card-header">
+    <div>
+      <span class="card-num">11</span>
+      <span class="card-name">Theresa Naramore</span>
+      <span class="badge badge-warm">P4 WARM</span>
+      <span class="badge badge-qa">QA</span>
+    </div>
+  </div>
+  <div class="card-meta">Director of Quality Assurance | Spectrio | Columbia, South Carolina</div>
+  <div class="research-note">Spectrio ~434 employees, $47.7M revenue, $445M+ funded. Digital signage for 150K+ locations, 21M daily visitors. SOC 2 Type II. 19 acquisitions integrated. Real-time analytics and content delivery. Screenverse monetization partnership (Oct 2025).</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Scale testing <button class="copy-subject" onclick="copyText(this, 'Scale testing')">Copy Subject</button></div>
+  <div class="message-box" id="msg11">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg11')">Copy Message</button>Theresa, 150,000 locations with different display hardware, real-time content streaming, and 19 acquired products to integrate. Is the QA team able to cover all of that, or is device fragmentation creating blind spots?
+
+That's the scaling challenge with distributed platforms. Each location is a potential failure point, and 21 million daily visitors means no room for regressions.
+
+Nagra DTV used Testsigma to build 2,500 tests in 8 months and run them 4x faster across their media platform. 15 minutes to see if that model fits your scale?</div>
+  <div class="proof-used">Proof: <span>Nagra DTV 2,500 tests, 4x faster</span> | Personalization: <span class="badge badge-score">3 Deep</span></div>
+  <div class="word-count">~84 words</div>
+</div>
+
+<!-- #12 -->
+<div class="prospect-card warm" id="p12">
+  <div class="card-header">
+    <div>
+      <span class="card-num">12</span>
+      <span class="card-name">Abe J.</span>
+      <span class="badge badge-warm">P4 WARM</span>
+      <span class="badge badge-vpeng">VP Eng</span>
+    </div>
+  </div>
+  <div class="card-meta">Senior Vice President of Software Engineering | Origence | Laguna Niguel, California</div>
+  <div class="research-note">Origence 30+ year fintech. $53B in loans closed 2024. 1,100+ credit union clients, 2M+ members. C#/SQL/MongoDB stack. Aggressive engineering hiring. 124 credit union shareholders. Lending Tech Live conference participant.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Lending scale <button class="copy-subject" onclick="copyText(this, 'Lending scale')">Copy Subject</button></div>
+  <div class="message-box" id="msg12">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg12')">Copy Message</button>Abe, closing $53 billion in loans across 1,100+ credit unions with different core banking systems is a massive integration surface. Is QA scaling proportionally with the engineering hiring, or is test coverage starting to lag behind?
+
+That's the gap fintech platforms hit during growth. Engineers ship fast, but the test suite can't keep pace with 1,100 different integration behaviors.
+
+CRED used Testsigma to build 90% regression coverage and run it 5x faster. 15 minutes to see if that changes your QA math?</div>
+  <div class="proof-used">Proof: <span>CRED 90% regression, 5x faster</span> | Personalization: <span class="badge badge-score">2 Medium</span></div>
+  <div class="word-count">~80 words</div>
+</div>
+
+<!-- #13 -->
+<div class="prospect-card warm" id="p13">
+  <div class="card-header">
+    <div>
+      <span class="card-num">13</span>
+      <span class="card-name">Debbie Almeida</span>
+      <span class="badge badge-warm">P4 WARM</span>
+      <span class="badge badge-qa">QA</span>
+    </div>
+  </div>
+  <div class="card-meta">Director of IT Quality Assurance | loanDepot</div>
+  <div class="research-note">loanDepot 5-6K employees, public fintech. $6.7B originations Q2 2025 (30% QoQ growth). CEO Anthony Hsieh returned. New CDO (Dominick Marchetti) + CIO (Sean DeJulia). $80M tech investment. mello smartloan targeting 8-day close. Rapid release cycles.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Release velocity <button class="copy-subject" onclick="copyText(this, 'Release velocity')">Copy Subject</button></div>
+  <div class="message-box" id="msg13">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg13')">Copy Message</button>Debbie, $6.7 billion in originations last quarter with an 8-day close target means your team is shipping constantly. Is the test suite keeping pace with that velocity, or is regression maintenance slowing things down?
+
+That's where fast-moving lending teams get stuck. New features ship daily, but brittle tests become the bottleneck between builds.
+
+CRED used Testsigma to automate 90% of regression and cut execution time by 5x. 15 minutes to see if that applies to your release cadence?</div>
+  <div class="proof-used">Proof: <span>CRED 90% regression, 5x faster</span> | Personalization: <span class="badge badge-score">2 Medium</span></div>
+  <div class="word-count">~78 words</div>
+</div>
+
+<!-- #14 -->
+<div class="prospect-card warm" id="p14">
+  <div class="card-header">
+    <div>
+      <span class="card-num">14</span>
+      <span class="card-name">Jayashree Karnam</span>
+      <span class="badge badge-warm">P4 WARM</span>
+      <span class="badge badge-qa">QA</span>
+    </div>
+  </div>
+  <div class="card-meta">Director Quality Engineering | NCR Voyix | Atlanta, Georgia</div>
+  <div class="research-note">NCR Voyix 14K employees, $2.7B revenue. Just completed microservices modernization on Voyix Commerce Platform. Worldpay payments partnership. AI-accelerated testing tools unveiled Jan 2026. Uses Katalon, Selenium, Playwright, Cucumber, Practitest, Jenkins, GitHub Actions, GCP. Morrisons implementation.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Post-migration QA <button class="copy-subject" onclick="copyText(this, 'Post-migration QA')">Copy Subject</button></div>
+  <div class="message-box" id="msg14">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg14')">Copy Message</button>Jayashree, finishing the microservices migration on the Voyix Commerce Platform is a huge milestone. But how is the test suite holding up now that payments, POS, and omnichannel all run on new architecture?
+
+Modernization creates a second wave of QA pain. The code is modern, but tests built for the old system break constantly against new services.
+
+Medibuddy used Testsigma to automate 2,500 tests and cut maintenance 50% during a similar platform shift. 15 minutes to see how that maps to post-migration reality?</div>
+  <div class="proof-used">Proof: <span>Medibuddy 2,500 tests, 50% maintenance cut</span> | Personalization: <span class="badge badge-score">3 Deep</span></div>
+  <div class="word-count">~80 words</div>
+</div>
+
+<!-- #15 -->
+<div class="prospect-card warm" id="p15">
+  <div class="card-header">
+    <div>
+      <span class="card-num">15</span>
+      <span class="card-name">Tim Attuquayefio</span>
+      <span class="badge badge-warm">P4 WARM</span>
+      <span class="badge badge-qa">QA</span>
+    </div>
+  </div>
+  <div class="card-meta">Director - QA Software Engineering and Development | 2K Games</div>
+  <div class="research-note">2K Games (Take-Two Interactive, NASDAQ: TTWO). 2K Vegas is primary NA QA hub. Migrating from proprietary Fusion Engine → Unreal Engine 5. Mafia: The Old Country launching mid-2025. Testing across console (PS5, Xbox), mobile, PC, handheld, and VR. UE5 Automation Test Framework is new to team.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Engine migration <button class="copy-subject" onclick="copyText(this, 'Engine migration')">Copy Subject</button></div>
+  <div class="message-box" id="msg15">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg15')">Copy Message</button>Tim, moving from Fusion to Unreal Engine 5 across console, mobile, PC, and VR means rebuilding the test infrastructure almost from scratch. Is the QA pipeline keeping pace with that transition, or are you still catching up?
+
+Engine migrations are one of the hardest testing transitions. The automation that worked for Fusion won't map cleanly to UE5's framework.
+
+Nagra DTV used Testsigma to build 2,500 tests in 8 months at 4x speed during a similar platform shift. 15 minutes to see if that approach works for UE5?</div>
+  <div class="proof-used">Proof: <span>Nagra DTV 2,500 tests in 8 months, 4x faster</span> | Personalization: <span class="badge badge-score">3 Deep</span></div>
+  <div class="word-count">~86 words</div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-label">Priority 3 - Standard (Normal Cadence)</div>
+<!-- ============================================ -->
+
+<!-- #16 -->
+<div class="prospect-card std" id="p16">
+  <div class="card-header">
+    <div>
+      <span class="card-num">16</span>
+      <span class="card-name">Vishal Tiwari</span>
+      <span class="badge badge-std">P3 STD</span>
+      <span class="badge badge-qa">QA</span>
+    </div>
+  </div>
+  <div class="card-meta">Director of Quality Assurance | 3E | Charlottesville, Virginia</div>
+  <div class="research-note">3E serves 5,000+ customers including 9/10 top chemical manufacturers, 8/10 top retailers, 7/10 top pharma. EHS/ESG compliance (OSHA, EPA, ISO 45001). Recently acquired Quick-FDS, Chemycal, Toxnot. Backed by New Mountain Capital ($122M LBO). 30+ year platform.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Compliance coverage <button class="copy-subject" onclick="copyText(this, 'Compliance coverage')">Copy Subject</button></div>
+  <div class="message-box" id="msg16">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg16')">Copy Message</button>Vishal, integrating Quick-FDS, Chemycal, and Toxnot into a single EHS platform while maintaining OSHA and EPA compliance across every jurisdiction is a lot of testing surface. Is the QA team covering all of that, or are the acquisitions creating gaps?
+
+Compliance platforms face a compounding problem. Each acquisition adds new data schemas and regulatory rules that multiply the regression scope.
+
+Sanofi used Testsigma to maintain full compliance rigor while cutting regression from 3 days to 80 minutes. 15 minutes to see if that applies to your integration workload?</div>
+  <div class="proof-used">Proof: <span>Sanofi 3 days → 80 min (compliance)</span> | Personalization: <span class="badge badge-score">3 Deep</span></div>
+  <div class="word-count">~84 words</div>
+</div>
+
+<!-- #17 -->
+<div class="prospect-card std" id="p17">
+  <div class="card-header">
+    <div>
+      <span class="card-num">17</span>
+      <span class="card-name">Chuck Smith</span>
+      <span class="badge badge-std">P3 STD</span>
+      <span class="badge badge-qa">QA</span>
+    </div>
+  </div>
+  <div class="card-meta">Director Quality Engineering | Aventiv Technologies | Flemington, New Jersey</div>
+  <div class="research-note">Aventiv $360M Platinum Equity investment (Apr 2025). Parent of Securus Technologies. Launching Securus One + OMNILens. Serves 1,800+ corrections agencies. Migrating legacy → cloud-native on AWS (Batch, CloudFront, Redshift, Lambda, Docker). CTO: Ligit Mathew.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Platform modernization <button class="copy-subject" onclick="copyText(this, 'Platform modernization')">Copy Subject</button></div>
+  <div class="message-box" id="msg17">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg17')">Copy Message</button>Chuck, launching Securus One and OMNILens across 1,800+ corrections agencies while migrating from legacy to cloud is a heavy lift. Is the test automation keeping pace with the new platform, or is the old infrastructure holding things back?
+
+Cloud migrations in regulated environments have unique pressure. You can't afford regressions when public safety depends on uptime.
+
+Hansard used Testsigma to cut regression cycles during a similar modernization with AI self-healing. 15 minutes to see if that approach fits your timeline?</div>
+  <div class="proof-used">Proof: <span>Hansard regression reduction</span> | Personalization: <span class="badge badge-score">3 Deep</span></div>
+  <div class="word-count">~80 words</div>
+</div>
+
+<!-- #18 -->
+<div class="prospect-card std" id="p18">
+  <div class="card-header">
+    <div>
+      <span class="card-num">18</span>
+      <span class="card-name">Aditi Agrawal</span>
+      <span class="badge badge-std">P3 STD</span>
+      <span class="badge badge-qa">QA</span>
+    </div>
+  </div>
+  <div class="card-meta">Director, Quality Engineering & Automation | Myridius</div>
+  <div class="research-note">Myridius (formerly RCG Global Services). QA consulting firm, 50+ year history. Offices in US, India, Philippines. Spoke at Dreamforce 2025 on Agentforce testing. "Just Enough Quality" philosophy. Focus: quality engineering, data quality, Salesforce testing, AI/ML test automation.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Delivery speed <button class="copy-subject" onclick="copyText(this, 'Delivery speed')">Copy Subject</button></div>
+  <div class="message-box" id="msg18">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg18')">Copy Message</button>Aditi, delivering quality engineering to enterprise clients means configuring test automation for a different tech stack on every engagement. Is setup time per client eating into delivery speed, or does your team have a standard approach that scales?
+
+That's the bottleneck for most QA services firms. The faster the setup, the better the margins.
+
+One team used Testsigma's plain English test creation to build 2,500 tests in 8 months across diverse environments. 15 minutes to see if it sharpens your delivery model?</div>
+  <div class="proof-used">Proof: <span>Nagra DTV 2,500 tests, 8 months</span> | Personalization: <span class="badge badge-score">2 Medium</span></div>
+  <div class="word-count">~78 words</div>
+</div>
+
+<!-- #19 -->
+<div class="prospect-card std" id="p19">
+  <div class="card-header">
+    <div>
+      <span class="card-num">19</span>
+      <span class="card-name">Veeresh Erched</span>
+      <span class="badge badge-std">P3 STD</span>
+      <span class="badge badge-vpeng">VP Eng</span>
+    </div>
+  </div>
+  <div class="card-meta">Vice President of Software Engineering | Amadeus North America</div>
+  <div class="research-note">Amadeus 270+ NA employees, 23K global. Travel tech: airlines, hotels, agencies, payment processors. Reservations, check-in, inventory systems. AWS + GCP + Kubernetes. API-driven microservices. AI-driven biometric systems. Real-time transaction reliability critical.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Integration reliability <button class="copy-subject" onclick="copyText(this, 'Integration reliability')">Copy Subject</button></div>
+  <div class="message-box" id="msg19">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg19')">Copy Message</button>Veeresh, connecting airlines, hotels, travel agencies, and payment processors in real time means every integration point is a potential failure. Is your team able to test all of those flows at the speed the travel industry demands?
+
+Multi-system integration testing at scale is where most teams discover their automation can't keep up with the permutations.
+
+Nagra DTV used Testsigma to build 2,500 tests across complex integrations in 8 months, running 4x faster. 15 minutes to see how that maps to travel tech complexity?</div>
+  <div class="proof-used">Proof: <span>Nagra DTV 2,500 tests, 4x faster</span> | Personalization: <span class="badge badge-score">2 Medium</span></div>
+  <div class="word-count">~82 words</div>
+</div>
+
+<!-- #20 -->
+<div class="prospect-card std" id="p20">
+  <div class="card-header">
+    <div>
+      <span class="card-num">20</span>
+      <span class="card-name">Izzie Alvarez</span>
+      <span class="badge badge-std">P3 STD</span>
+      <span class="badge badge-qa">QA</span>
+    </div>
+  </div>
+  <div class="card-meta">Director of Quality Engineering | Harbor.ai</div>
+  <div class="research-note">Harbor.ai: AI-powered insurance underwriting automation. Founded 2018, NYC. Also has open-source Harbor agent evaluation framework. Tech: Go, Rust, Python, React, TypeScript, Docker, AWS, LiteLLM. Containerized testing environments. Early-stage but technically sophisticated.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Agent evaluation <button class="copy-subject" onclick="copyText(this, 'Agent evaluation')">Copy Subject</button></div>
+  <div class="message-box" id="msg20">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg20')">Copy Message</button>Izzie, building an AI agent evaluation framework with containerized testing environments means your team knows how hard it is to validate non-deterministic systems. Is the internal QA keeping pace as the platform scales, or is test reliability becoming its own challenge?
+
+Testing AI outputs is a different problem than testing APIs. The assertion model has to adapt when the "right answer" isn't always the same.
+
+A Fortune 100 team used Testsigma and saw 3x productivity in AI-related test creation. 15 minutes to compare approaches?</div>
+  <div class="proof-used">Proof: <span>Fortune 100 3x productivity</span> | Personalization: <span class="badge badge-score">2 Medium</span></div>
+  <div class="word-count">~82 words</div>
+</div>
+
+<!-- #21 -->
+<div class="prospect-card std" id="p21">
+  <div class="card-header">
+    <div>
+      <span class="card-num">21</span>
+      <span class="card-name">Kowsick Venkatachalapathi</span>
+      <span class="badge badge-std">P3 STD</span>
+      <span class="badge badge-vpeng">VP Eng</span>
+    </div>
+  </div>
+  <div class="card-meta">Vice President of Software Development | BNY | New York City Metropolitan Area</div>
+  <div class="research-note">BNY (Bank of New York Mellon). Major custodian bank. Complex financial systems, regulatory testing requirements (SEC, FINRA, SOX). Large enterprise with mature engineering. Multi-system integrations across custody, clearing, and asset servicing.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Quick question <button class="copy-subject" onclick="copyText(this, 'Quick question')">Copy Subject</button></div>
+  <div class="message-box" id="msg21">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg21')">Copy Message</button>Kowsick, managing software development at BNY means regulatory testing, multi-system integrations, and regression cycles that can hold up releases. Is your team spending more time maintaining tests than expanding coverage?
+
+That's the pattern at enterprise banks. Selenium-based suites become maintenance nightmares at scale, and compliance timelines don't flex.
+
+Hansard Insurance brought in Testsigma and cut regression from 8 weeks to 5 with AI self-healing. 15 minutes to see if that applies to your environment?</div>
+  <div class="proof-used">Proof: <span>Hansard 8 weeks → 5 weeks</span> | Personalization: <span class="badge badge-score">1 Light</span></div>
+  <div class="word-count">~76 words</div>
+</div>
+
+<!-- #22 -->
+<div class="prospect-card std" id="p22">
+  <div class="card-header">
+    <div>
+      <span class="card-num">22</span>
+      <span class="card-name">Dan Cowles</span>
+      <span class="badge badge-std">P3 STD</span>
+      <span class="badge badge-vpeng">VP Eng</span>
+    </div>
+  </div>
+  <div class="card-meta">Senior Vice President of Software Engineering | Rate | Irvine, California</div>
+  <div class="research-note">Rate (formerly Guaranteed Rate). Mortgage fintech. Similar space to loanDepot. Fast-moving lending platform with compliance requirements. Irvine-based engineering team.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Lending QA <button class="copy-subject" onclick="copyText(this, 'Lending QA')">Copy Subject</button></div>
+  <div class="message-box" id="msg22">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg22')">Copy Message</button>Dan, mortgage fintech moves fast, but lending compliance doesn't. Is your QA team able to ship at the pace engineering demands, or is regression testing creating a bottleneck between builds?
+
+That's the tension in lending platforms. State regulations, underwriting rules, and payment flows all need coverage, but manual testing can't scale with feature velocity.
+
+Spendflo used Testsigma to cut manual testing 50% and saw ROI in the first quarter. 15 minutes to see if that fits your release cadence?</div>
+  <div class="proof-used">Proof: <span>Spendflo 50% manual testing cut</span> | Personalization: <span class="badge badge-score">1 Light</span></div>
+  <div class="word-count">~76 words</div>
+</div>
+
+<!-- #23 -->
+<div class="prospect-card std" id="p23">
+  <div class="card-header">
+    <div>
+      <span class="card-num">23</span>
+      <span class="card-name">Troy Thompson</span>
+      <span class="badge badge-std">P3 STD</span>
+      <span class="badge badge-vpeng">VP Eng</span>
+    </div>
+  </div>
+  <div class="card-meta">Sr. Manager of Software Engineering | Xplor Technologies | Denver Metropolitan Area</div>
+  <div class="research-note">Xplor Technologies. SaaS platform for SMBs. Payment processing, business management tools. Mid-size tech company. Denver engineering team.</div>
+
+  <div class="subject-line"><strong>Subject:</strong> Quick question <button class="copy-subject" onclick="copyText(this, 'Quick question')">Copy Subject</button></div>
+  <div class="message-box" id="msg23">
+    <button class="copy-btn" onclick="copyMsg(this, 'msg23')">Copy Message</button>Troy, building SaaS platforms for SMBs means shipping features fast to stay competitive. Is your team's test coverage keeping up with the release pace, or is maintenance starting to slow things down?
+
+That's where mid-size SaaS engineering teams hit the wall. You're moving fast, but brittle tests become the tax on every sprint.
+
+Spendflo used Testsigma to cut manual testing 50% in the first quarter. 15 minutes to see if that model works for your team's velocity?</div>
+  <div class="proof-used">Proof: <span>Spendflo 50% manual testing cut</span> | Personalization: <span class="badge badge-score">1 Light</span></div>
+  <div class="word-count">~76 words</div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-label">Summary & Proof Point Distribution</div>
+<!-- ============================================ -->
+
+<div class="prospect-card" style="border-left-color: var(--accent);">
+  <h3 style="color: var(--accent); margin-bottom: 12px;">Proof Point Usage</h3>
+  <table style="width:100%;font-size:0.82rem;border-collapse:collapse;">
+    <thead>
+      <tr style="border-bottom:1px solid var(--border);">
+        <th style="text-align:left;padding:6px;color:var(--muted);">Proof Point</th>
+        <th style="text-align:center;padding:6px;color:var(--muted);">Used</th>
+        <th style="text-align:left;padding:6px;color:var(--muted);">Prospects</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:6px;">Fortune 100 3x productivity</td><td style="text-align:center;">3</td><td style="padding:6px;color:var(--muted);">Kumarswamy, Kunal, Izzie</td></tr>
+      <tr><td style="padding:6px;">Sanofi 3 days → 80 min</td><td style="text-align:center;">3</td><td style="padding:6px;color:var(--muted);">Rahul, Tauhid, Vishal</td></tr>
+      <tr><td style="padding:6px;">Hansard 8 weeks → 5 weeks</td><td style="text-align:center;">3</td><td style="padding:6px;color:var(--muted);">Shashin, Valerie, Kowsick</td></tr>
+      <tr><td style="padding:6px;">Nagra DTV 2,500 tests, 4x faster</td><td style="text-align:center;">4</td><td style="padding:6px;color:var(--muted);">Florentin, Theresa, Aditi, Veeresh</td></tr>
+      <tr><td style="padding:6px;">CRED 90% regression, 5x faster</td><td style="text-align:center;">3</td><td style="padding:6px;color:var(--muted);">Shadi, Abe, Debbie</td></tr>
+      <tr><td style="padding:6px;">Medibuddy 2,500 tests, 50% cut</td><td style="text-align:center;">2</td><td style="padding:6px;color:var(--muted);">Pathik, Jayashree</td></tr>
+      <tr><td style="padding:6px;">Spendflo 50% manual testing cut</td><td style="text-align:center;">3</td><td style="padding:6px;color:var(--muted);">David, Dan, Troy</td></tr>
+      <tr><td style="padding:6px;">Hansard (general modernization)</td><td style="text-align:center;">1</td><td style="padding:6px;color:var(--muted);">Chuck</td></tr>
+      <tr style="border-top:1px solid var(--border);font-weight:600;"><td style="padding:6px;">Total unique messages</td><td style="text-align:center;">23</td><td></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="prospect-card" style="border-left-color: var(--accent);">
+  <h3 style="color: var(--accent); margin-bottom: 12px;">Personalization Score Distribution</h3>
+  <table style="width:100%;font-size:0.82rem;border-collapse:collapse;">
+    <thead>
+      <tr style="border-bottom:1px solid var(--border);">
+        <th style="text-align:left;padding:6px;color:var(--muted);">Score</th>
+        <th style="text-align:center;padding:6px;color:var(--muted);">Count</th>
+        <th style="text-align:left;padding:6px;color:var(--muted);">Expected Reply Rate</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:6px;">3 (Deep) - References specific project, initiative, or capability</td><td style="text-align:center;">15</td><td style="padding:6px;color:var(--muted);">2-3x baseline</td></tr>
+      <tr><td style="padding:6px;">2 (Medium) - References company specifically, role-appropriate</td><td style="text-align:center;">5</td><td style="padding:6px;color:var(--muted);">1.5-2x baseline</td></tr>
+      <tr><td style="padding:6px;">1 (Light) - Industry/vertical-level personalization</td><td style="text-align:center;">3</td><td style="padding:6px;color:var(--muted);">Baseline (~1%)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+function copyMsg(btn, id) {
+  const el = document.getElementById(id);
+  const text = el.innerText.replace('Copy Message', '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy Message'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy Subject'; }, 1500);
+  });
+}
+</script>
+
+</body>
+</html>

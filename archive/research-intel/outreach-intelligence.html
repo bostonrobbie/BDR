@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outreach Intelligence Engine</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a1a; color: #e0e0e0; }
+
+        /* Layout */
+        .sidebar { position: fixed; top: 0; left: 0; width: 220px; height: 100vh; background: #0f1629; border-right: 1px solid #1e2a4a; padding: 20px 0; z-index: 100; display: flex; flex-direction: column; }
+        .main { margin-left: 220px; padding: 24px 32px; min-height: 100vh; }
+        .sidebar-logo { padding: 0 20px 20px; border-bottom: 1px solid #1e2a4a; margin-bottom: 12px; }
+        .sidebar-logo h2 { font-size: 16px; color: #0f9ff8; letter-spacing: 0.5px; }
+        .sidebar-logo span { font-size: 11px; color: #555; display: block; margin-top: 4px; }
+        .nav-item { padding: 10px 20px; cursor: pointer; font-size: 13px; color: #888; transition: all 0.15s; border-left: 3px solid transparent; }
+        .nav-item:hover { background: #1a2240; color: #ccc; }
+        .nav-item.active { background: #0f1e3d; color: #0f9ff8; border-left-color: #0f9ff8; font-weight: 600; }
+        .nav-section { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #444; padding: 16px 20px 6px; }
+        .sidebar-footer { margin-top: auto; padding: 12px 20px; border-top: 1px solid #1e2a4a; }
+        .sidebar-footer .db-stats { font-size: 11px; color: #555; }
+        .sidebar-footer .db-stats span { color: #0f9ff8; }
+
+        /* Page header */
+        .page-header { margin-bottom: 28px; }
+        .page-header h1 { font-size: 22px; color: #fff; margin-bottom: 4px; }
+        .page-header p { font-size: 13px; color: #666; }
+
+        /* Cards */
+        .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+        .kpi { background: #111b2e; border: 1px solid #1e2a4a; border-radius: 8px; padding: 16px 18px; }
+        .kpi-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #666; margin-bottom: 6px; }
+        .kpi-value { font-size: 26px; font-weight: 700; color: #0f9ff8; }
+        .kpi-value.green { color: #1caf5e; }
+        .kpi-value.orange { color: #f57c00; }
+        .kpi-value.red { color: #d32f2f; }
+        .kpi-sub { font-size: 11px; color: #555; margin-top: 4px; }
+
+        /* Charts */
+        .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+        .chart-card { background: #111b2e; border: 1px solid #1e2a4a; border-radius: 8px; padding: 20px; }
+        .chart-card.full { grid-column: 1 / -1; }
+        .chart-card h3 { font-size: 14px; color: #ccc; margin-bottom: 14px; }
+        .chart-container { position: relative; height: 260px; }
+        .chart-container.tall { height: 340px; }
+
+        /* Tables */
+        .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .data-table th { background: #0f1e3d; color: #0f9ff8; padding: 10px 12px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; border-bottom: 2px solid #0f9ff8; }
+        .data-table td { padding: 10px 12px; border-bottom: 1px solid #1e2a4a; }
+        .data-table tbody tr:hover { background: #0f1e3d; }
+        .data-table .num { color: #0f9ff8; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+        /* Pre-brief */
+        .prebrief { background: #111b2e; border: 1px solid #1e2a4a; border-radius: 8px; padding: 22px; margin-bottom: 28px; }
+        .prebrief h3 { font-size: 14px; color: #0f9ff8; margin-bottom: 14px; }
+        .prebrief-item { display: flex; gap: 10px; margin-bottom: 10px; font-size: 13px; }
+        .prebrief-label { color: #f57c00; font-weight: 600; min-width: 130px; }
+        .prebrief-value { color: #ccc; }
+        .prebrief .no-data { color: #555; font-style: italic; font-size: 13px; }
+
+        /* Import section */
+        .import-zone { background: #111b2e; border: 2px dashed #1e2a4a; border-radius: 8px; padding: 40px; text-align: center; margin-bottom: 28px; cursor: pointer; transition: all 0.2s; }
+        .import-zone:hover, .import-zone.dragover { border-color: #0f9ff8; background: #0f1e3d; }
+        .import-zone h3 { font-size: 15px; color: #ccc; margin-bottom: 8px; }
+        .import-zone p { font-size: 12px; color: #666; }
+        .import-zone input[type="file"] { display: none; }
+
+        /* Bayesian weights */
+        .weight-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .weight-label { font-size: 12px; color: #888; min-width: 140px; }
+        .weight-track { flex: 1; height: 8px; background: #1e2a4a; border-radius: 4px; overflow: hidden; }
+        .weight-fill { height: 100%; background: #0f9ff8; border-radius: 4px; transition: width 0.3s; }
+        .weight-num { font-size: 12px; color: #0f9ff8; font-weight: 600; min-width: 40px; text-align: right; }
+
+        /* Prospect lifecycle */
+        .funnel-row { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+        .funnel-step { background: #111b2e; border: 1px solid #1e2a4a; border-radius: 6px; padding: 10px 14px; text-align: center; flex: 1; min-width: 100px; }
+        .funnel-step .f-num { font-size: 20px; font-weight: 700; color: #0f9ff8; }
+        .funnel-step .f-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #666; margin-top: 2px; }
+
+        /* Tabs */
+        .tab-bar { display: flex; gap: 4px; margin-bottom: 20px; }
+        .tab-btn { padding: 8px 16px; background: #111b2e; border: 1px solid #1e2a4a; border-radius: 4px 4px 0 0; cursor: pointer; font-size: 12px; color: #888; transition: all 0.15s; }
+        .tab-btn:hover { color: #ccc; }
+        .tab-btn.active { background: #0f1e3d; color: #0f9ff8; border-bottom-color: #0f1e3d; }
+
+        /* Toast */
+        .toast { position: fixed; bottom: 24px; right: 24px; background: #1caf5e; color: #fff; padding: 12px 20px; border-radius: 6px; font-size: 13px; font-weight: 600; opacity: 0; transform: translateY(10px); transition: all 0.3s; z-index: 999; pointer-events: none; }
+        .toast.show { opacity: 1; transform: translateY(0); }
+
+        /* Buttons */
+        .btn { padding: 8px 16px; border-radius: 4px; border: none; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.15s; }
+        .btn-primary { background: #0f9ff8; color: #fff; }
+        .btn-primary:hover { background: #3db5ff; }
+        .btn-danger { background: #d32f2f; color: #fff; }
+        .btn-danger:hover { background: #e53935; }
+        .btn-ghost { background: transparent; border: 1px solid #1e2a4a; color: #888; }
+        .btn-ghost:hover { border-color: #0f9ff8; color: #0f9ff8; }
+        .btn-row { display: flex; gap: 8px; margin-bottom: 20px; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a1a; }
+        ::-webkit-scrollbar-thumb { background: #1e2a4a; border-radius: 3px; }
+
+        /* Sections */
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* Badge */
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+        .badge-hot { background: #d32f2f; color: #fff; }
+        .badge-warm { background: #f57c00; color: #fff; }
+        .badge-std { background: #1976d2; color: #fff; }
+
+        /* A/B card */
+        .ab-card { background: #111b2e; border: 1px solid #1e2a4a; border-radius: 8px; padding: 18px; margin-bottom: 16px; }
+        .ab-card h4 { font-size: 13px; color: #ccc; margin-bottom: 10px; }
+        .ab-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .ab-variant { background: #0f1629; border-radius: 6px; padding: 14px; text-align: center; }
+        .ab-variant-label { font-size: 12px; color: #888; margin-bottom: 6px; }
+        .ab-variant-rate { font-size: 28px; font-weight: 700; }
+        .ab-variant-rate.winner { color: #1caf5e; }
+        .ab-variant-rate.loser { color: #888; }
+        .ab-variant-n { font-size: 11px; color: #555; margin-top: 4px; }
+
+        /* Prospect detail */
+        .prospect-timeline { position: relative; padding-left: 24px; }
+        .prospect-timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: #1e2a4a; }
+        .timeline-event { position: relative; margin-bottom: 16px; padding: 10px 14px; background: #111b2e; border-radius: 6px; font-size: 12px; }
+        .timeline-event::before { content: ''; position: absolute; left: -20px; top: 14px; width: 10px; height: 10px; background: #0f9ff8; border-radius: 50%; }
+        .timeline-event .te-date { color: #666; }
+        .timeline-event .te-action { color: #ccc; font-weight: 600; }
+
+        /* Empty state */
+        .empty-state { text-align: center; padding: 60px 20px; }
+        .empty-state h3 { font-size: 18px; color: #555; margin-bottom: 10px; }
+        .empty-state p { font-size: 13px; color: #444; max-width: 400px; margin: 0 auto; }
+
+        /* Manual entry form */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+        .form-field { display: flex; flex-direction: column; gap: 4px; }
+        .form-field label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #666; }
+        .form-field input, .form-field select { background: #0f1629; border: 1px solid #1e2a4a; border-radius: 4px; padding: 8px 10px; color: #e0e0e0; font-size: 13px; }
+        .form-field input:focus, .form-field select:focus { outline: none; border-color: #0f9ff8; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="sidebar-logo">
+        <h2>OUTREACH ENGINE</h2>
+        <span>Intelligence Backend v1.0</span>
+    </div>
+    <div class="nav-section">Analytics</div>
+    <div class="nav-item active" onclick="showSection('overview')">Overview</div>
+    <div class="nav-item" onclick="showSection('performance')">Performance</div>
+    <div class="nav-item" onclick="showSection('bayesian')">Bayesian Scores</div>
+    <div class="nav-item" onclick="showSection('abtests')">A/B Tests</div>
+    <div class="nav-section">Data</div>
+    <div class="nav-item" onclick="showSection('prospects')">All Prospects</div>
+    <div class="nav-item" onclick="showSection('batches')">Batches</div>
+    <div class="nav-item" onclick="showSection('import')">Import Data</div>
+    <div class="nav-section">Actions</div>
+    <div class="nav-item" onclick="showSection('prebrief')">Pre-Brief</div>
+    <div class="nav-item" onclick="showSection('manual')">Manual Entry</div>
+    <div class="sidebar-footer">
+        <div class="db-stats" id="db-stats">Loading...</div>
+    </div>
+</div>
+
+<div class="main">
+    <!-- OVERVIEW -->
+    <div class="section active" id="sec-overview">
+        <div class="page-header">
+            <h1>Outreach Overview</h1>
+            <p>Cross-batch analytics from all imported data</p>
+        </div>
+        <div class="kpi-row" id="kpi-row"></div>
+        <div class="funnel-row" id="funnel-row"></div>
+        <div class="chart-grid">
+            <div class="chart-card">
+                <h3>Reply Rate by Persona</h3>
+                <div class="chart-container"><canvas id="chart-persona"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <h3>Reply Rate by Vertical</h3>
+                <div class="chart-container"><canvas id="chart-vertical"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <h3>Reply Rate by Proof Point</h3>
+                <div class="chart-container"><canvas id="chart-proofpoint"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <h3>Reply Rate by Personalization Score</h3>
+                <div class="chart-container"><canvas id="chart-pscore"></canvas></div>
+            </div>
+            <div class="chart-card full">
+                <h3>Batch Trend</h3>
+                <div class="chart-container"><canvas id="chart-trend"></canvas></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PERFORMANCE -->
+    <div class="section" id="sec-performance">
+        <div class="page-header">
+            <h1>Performance Breakdown</h1>
+            <p>Granular metrics across all dimensions</p>
+        </div>
+        <div class="tab-bar">
+            <div class="tab-btn active" onclick="showPerfTab('persona')">Persona</div>
+            <div class="tab-btn" onclick="showPerfTab('vertical')">Vertical</div>
+            <div class="tab-btn" onclick="showPerfTab('proofpoint')">Proof Point</div>
+            <div class="tab-btn" onclick="showPerfTab('opener')">Opener Type</div>
+            <div class="tab-btn" onclick="showPerfTab('painhook')">Pain Hook</div>
+            <div class="tab-btn" onclick="showPerfTab('ask')">Ask Intensity</div>
+        </div>
+        <div id="perf-table-container"></div>
+    </div>
+
+    <!-- BAYESIAN -->
+    <div class="section" id="sec-bayesian">
+        <div class="page-header">
+            <h1>Bayesian Priority Weights</h1>
+            <p>Dynamically updated based on actual reply data. Initial weights from your SOP are adjusted after each reply.</p>
+        </div>
+        <div class="chart-card" style="margin-bottom: 20px;">
+            <h3>Current Weights vs. Default</h3>
+            <div id="bayesian-bars"></div>
+        </div>
+        <div class="chart-card">
+            <h3>Weight History</h3>
+            <div class="chart-container tall"><canvas id="chart-bayesian-history"></canvas></div>
+        </div>
+        <div class="btn-row" style="margin-top: 16px;">
+            <button class="btn btn-ghost" onclick="resetBayesianWeights()">Reset to Default Weights</button>
+        </div>
+    </div>
+
+    <!-- A/B TESTS -->
+    <div class="section" id="sec-abtests">
+        <div class="page-header">
+            <h1>A/B Test Results</h1>
+            <p>Comparing variants across batches. Minimum 10 sends per variant for reliable signal.</p>
+        </div>
+        <div id="ab-results"></div>
+    </div>
+
+    <!-- PROSPECTS -->
+    <div class="section" id="sec-prospects">
+        <div class="page-header">
+            <h1>All Prospects</h1>
+            <p>Every prospect across all batches</p>
+        </div>
+        <div class="btn-row">
+            <button class="btn btn-primary" onclick="exportProspects()">Export JSON</button>
+            <button class="btn btn-ghost" onclick="refreshProspects()">Refresh</button>
+        </div>
+        <div id="prospects-table-container"></div>
+    </div>
+
+    <!-- BATCHES -->
+    <div class="section" id="sec-batches">
+        <div class="page-header">
+            <h1>Batches</h1>
+            <p>All imported batches</p>
+        </div>
+        <div id="batches-list"></div>
+    </div>
+
+    <!-- IMPORT -->
+    <div class="section" id="sec-import">
+        <div class="page-header">
+            <h1>Import Batch Data</h1>
+            <p>Drop your prospect-outreach HTML files here to import them into the intelligence engine</p>
+        </div>
+        <div class="import-zone" id="import-zone" onclick="document.getElementById('file-input').click()">
+            <h3>Drop HTML batch file here or click to browse</h3>
+            <p>Supports prospect-outreach-*.html files</p>
+            <input type="file" id="file-input" accept=".html" multiple>
+        </div>
+        <div id="import-log" style="font-size: 12px; color: #888; margin-top: 12px;"></div>
+        <div class="btn-row" style="margin-top: 20px;">
+            <button class="btn btn-danger" onclick="clearAllData()">Clear All Data</button>
+        </div>
+    </div>
+
+    <!-- PRE-BRIEF -->
+    <div class="section" id="sec-prebrief">
+        <div class="page-header">
+            <h1>Pre-Brief Generator</h1>
+            <p>Auto-generated insights for your next batch based on accumulated data</p>
+        </div>
+        <div class="prebrief" id="prebrief-content"></div>
+        <div class="btn-row">
+            <button class="btn btn-primary" onclick="copyPrebrief()">Copy Pre-Brief</button>
+            <button class="btn btn-ghost" onclick="generatePrebrief()">Regenerate</button>
+        </div>
+    </div>
+
+    <!-- MANUAL ENTRY -->
+    <div class="section" id="sec-manual">
+        <div class="page-header">
+            <h1>Manual Entry</h1>
+            <p>Update prospect status and reply tags directly. Changes persist to IndexedDB.</p>
+        </div>
+        <div class="chart-card" style="margin-bottom: 20px;">
+            <h3>Quick Status Update</h3>
+            <div class="form-grid">
+                <div class="form-field">
+                    <label>Prospect</label>
+                    <select id="manual-prospect"></select>
+                </div>
+                <div class="form-field">
+                    <label>Status</label>
+                    <select id="manual-status">
+                        <option value="">Select...</option>
+                        <option>Not Started</option><option>Touch 1 Sent</option><option>Call 1 Made</option>
+                        <option>Touch 3 Sent</option><option>Call 2 Made</option><option>Touch 5 Sent</option>
+                        <option>Touch 6 Sent</option><option>Replied</option><option>Meeting Booked</option>
+                        <option>Not Interested</option><option>Bounced</option><option>Dormant</option><option>Re-Engaged</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label>Reply Tag</label>
+                    <select id="manual-reply-tag">
+                        <option value="">Select...</option>
+                        <option>Opener</option><option>Pain hook</option><option>Proof point</option>
+                        <option>Timing</option><option>Referral</option><option>Not interested</option><option>Unknown</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label>Reply Touch #</label>
+                    <select id="manual-reply-touch">
+                        <option value="">Select...</option>
+                        <option value="1">Touch 1</option><option value="2">Touch 2</option><option value="3">Touch 3</option>
+                        <option value="4">Touch 4</option><option value="5">Touch 5</option><option value="6">Touch 6</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="saveManualEntry()">Save</button>
+        </div>
+        <div class="chart-card">
+            <h3>Recent Updates</h3>
+            <div id="recent-updates"></div>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===========================================
+// DATABASE LAYER (IndexedDB)
+// ===========================================
+const DB_NAME = 'OutreachEngine';
+const DB_VERSION = 2;
+let db = null;
+
+function openDB() {
+    return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = (e) => {
+            const d = e.target.result;
+            if (!d.objectStoreNames.contains('batches')) {
+                const bs = d.createObjectStore('batches', { keyPath: 'id', autoIncrement: true });
+                bs.createIndex('batchNumber', 'batchNumber', { unique: false });
+                bs.createIndex('filename', 'filename', { unique: false });
+            }
+            if (!d.objectStoreNames.contains('prospects')) {
+                const ps = d.createObjectStore('prospects', { keyPath: 'id', autoIncrement: true });
+                ps.createIndex('batchId', 'batchId', { unique: false });
+                ps.createIndex('status', 'status', { unique: false });
+                ps.createIndex('personaType', 'personaType', { unique: false });
+                ps.createIndex('vertical', 'vertical', { unique: false });
+                ps.createIndex('name', 'name', { unique: false });
+            }
+            if (!d.objectStoreNames.contains('touches')) {
+                const ts = d.createObjectStore('touches', { keyPath: 'id', autoIncrement: true });
+                ts.createIndex('prospectId', 'prospectId', { unique: false });
+                ts.createIndex('proofPointUsed', 'proofPointUsed', { unique: false });
+            }
+            if (!d.objectStoreNames.contains('updates')) {
+                const us = d.createObjectStore('updates', { keyPath: 'id', autoIncrement: true });
+                us.createIndex('prospectId', 'prospectId', { unique: false });
+                us.createIndex('timestamp', 'timestamp', { unique: false });
+            }
+            if (!d.objectStoreNames.contains('bayesian')) {
+                d.createObjectStore('bayesian', { keyPath: 'id' });
+            }
+        };
+        req.onsuccess = (e) => { db = e.target.result; resolve(db); };
+        req.onerror = (e) => reject(e.target.error);
+    });
+}
+
+function dbGet(store) {
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(store, 'readonly');
+        const s = tx.objectStore(store);
+        const req = s.getAll();
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+    });
+}
+
+function dbPut(store, data) {
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(store, 'readwrite');
+        const s = tx.objectStore(store);
+        const req = s.put(data);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+    });
+}
+
+function dbAdd(store, data) {
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(store, 'readwrite');
+        const s = tx.objectStore(store);
+        const req = s.add(data);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+    });
+}
+
+function dbClear(store) {
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(store, 'readwrite');
+        const s = tx.objectStore(store);
+        const req = s.clear();
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject(req.error);
+    });
+}
+
+// ===========================================
+// BATCH HTML PARSER
+// ===========================================
+function parseBatchHTML(htmlString, filename) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, 'text/html');
+    const batch = { filename, importedAt: new Date().toISOString() };
+    const prospects = [];
+    const touches = [];
+
+    // Extract batch info
+    const title = doc.querySelector('title')?.textContent || '';
+    const batchMatch = title.match(/Batch\s*(\d+)/i) || filename.match(/outreach-(\d+)/i);
+    batch.batchNumber = batchMatch ? parseInt(batchMatch[1]) : 0;
+
+    const dateMatch = title.match(/\d{4}-\d{2}-\d{2}/) || filename.match(/(\d{4}-\d{2}-\d{2})/);
+    batch.date = dateMatch ? dateMatch[0] : new Date().toISOString().slice(0, 10);
+
+    // Try to get A/B test info
+    const abInfo = doc.querySelector('.ab-info');
+    if (abInfo) {
+        const abText = abInfo.textContent;
+        const parts = abText.split('|').map(s => s.trim());
+        batch.abTestVariable = parts[0]?.replace('Testing:', '').trim() || '';
+        batch.abTestDescription = parts.slice(1).join(' | ') || '';
+    }
+
+    // Parse prospect rows - handle both formats
+    // Format 1 (Batch 1 style): data-id, data-priority, data-persona attributes
+    const prospectRows = doc.querySelectorAll('tr.prospect-row, tbody tr');
+
+    prospectRows.forEach((row) => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length < 4) return;
+
+        let prospect = { status: 'Not Started', replyTag: '', tags: [] };
+
+        // Format 1: has data attributes
+        if (row.dataset.id) {
+            prospect.name = cells[2]?.textContent?.trim() || '';
+            prospect.title = cells[3]?.textContent?.trim() || '';
+            prospect.company = cells[4]?.textContent?.trim() || '';
+            prospect.vertical = cells[5]?.textContent?.trim() || '';
+            prospect.personaType = row.dataset.persona || '';
+            prospect.priorityScore = parseInt(row.dataset.priority) || 3;
+
+            const abSpan = row.querySelector('.ab-group');
+            if (abSpan) {
+                const abParts = abSpan.textContent.trim().split('\n');
+                prospect.abGroup = abParts[0]?.trim() || '';
+                prospect.abDescription = abParts[1]?.trim() || '';
+            }
+
+            const scoreSpan = row.querySelector('.score');
+            prospect.personalizationScore = parseInt(scoreSpan?.textContent) || 2;
+
+            const link = row.querySelector('a[href*="linkedin"]');
+            prospect.linkedinUrl = link?.getAttribute('href') || '';
+
+            const statusSelect = row.querySelector('.status-dropdown');
+            if (statusSelect) prospect.status = statusSelect.value || 'Not Started';
+        }
+        // Format 2: basic table (prospect-outreach-25 style)
+        else {
+            const idx = parseInt(cells[0]?.textContent);
+            if (isNaN(idx)) return;
+            prospect.name = cells[1]?.textContent?.trim() || '';
+            prospect.title = cells[2]?.textContent?.trim() || '';
+            prospect.company = cells[3]?.textContent?.trim() || '';
+
+            // Extract persona from badges
+            const badges = row.querySelectorAll('.badge');
+            badges.forEach(b => {
+                const text = b.textContent.trim();
+                if (b.classList.contains('badge-qa') || text === 'QA') prospect.personaType = 'QA';
+                else if (b.classList.contains('badge-vp') || text.includes('VP')) prospect.personaType = 'Eng';
+                else if (b.classList.contains('badge-bi')) prospect.tags.push('Buyer Intent');
+                prospect.tags.push(text);
+            });
+
+            // Extract vertical from badges
+            const vertBadges = row.querySelectorAll('.badge-fin, .badge-tech');
+            vertBadges.forEach(b => {
+                const text = b.textContent.trim();
+                if (!['QA', 'VP Eng'].includes(text)) prospect.vertical = text;
+            });
+
+            // Research
+            const researchCells = row.querySelectorAll('.research');
+            if (researchCells[0]) prospect.profileResearch = researchCells[0].textContent.trim();
+            if (researchCells[1]) prospect.companyResearch = researchCells[1].textContent.trim();
+
+            // Angle
+            const angleCellIdx = Array.from(cells).findIndex((c, i) => i > 4 && !c.querySelector('.badge') && !c.classList.contains('research') && !c.querySelector('a'));
+            if (cells[7]) prospect.outreachAngle = cells[7]?.textContent?.trim() || '';
+
+            // LinkedIn
+            const link = row.querySelector('a[href*="linkedin"]');
+            prospect.linkedinUrl = link?.getAttribute('href') || '';
+
+            prospect.priorityScore = 3;
+            prospect.personalizationScore = 2;
+            prospect.abGroup = '';
+        }
+
+        if (!prospect.name || prospect.name.length < 2) return;
+
+        // Parse the expanded card if present
+        const cardId = row.dataset?.id;
+        let cardContent = null;
+        if (cardId) {
+            cardContent = doc.getElementById('card-content-' + cardId);
+        }
+
+        if (cardContent) {
+            // Extract research
+            const researchValues = cardContent.querySelectorAll('.research-value');
+            if (researchValues[0]) prospect.profileResearch = researchValues[0].textContent.trim();
+            if (researchValues[1]) prospect.companyResearch = researchValues[1].textContent.trim();
+
+            // Extract objection
+            const objTrigger = cardContent.querySelector('.trigger-badge');
+            const objText = cardContent.querySelector('.objection-text');
+            const objResponse = cardContent.querySelector('.response-box');
+            if (objTrigger) prospect.predictedObjection = objTrigger.textContent.trim();
+            if (objText) prospect.objectionText = objText.textContent.trim();
+            if (objResponse) prospect.objectionResponse = objResponse.textContent.trim();
+
+            // Extract touches
+            const sections = cardContent.querySelectorAll('.card-section');
+            sections.forEach(sec => {
+                const titleEl = sec.querySelector('.card-section-title');
+                if (!titleEl) return;
+                const sTitle = titleEl.textContent.trim();
+
+                if (sTitle.startsWith('Touch') || sTitle.startsWith('Call')) {
+                    const touch = { channel: '', touchNumber: 0, subject: '', messageBody: '', proofPointUsed: '' };
+
+                    if (sTitle.includes('InMail') || sTitle.includes('Email') || sTitle.includes('Follow-up') || sTitle.includes('Break-up')) {
+                        touch.channel = sTitle.includes('Email') ? 'Email' : 'InMail';
+                        const msgBody = sec.querySelector('.message-body');
+                        if (msgBody) touch.messageBody = msgBody.textContent.trim();
+                        const subj = sec.querySelector('.subject-line');
+                        if (subj) touch.subject = subj.textContent.replace('Subject:', '').trim();
+                    } else if (sTitle.includes('Call')) {
+                        touch.channel = 'Call';
+                        const script = sec.querySelector('.call-script');
+                        if (script) touch.messageBody = script.textContent.trim();
+                    }
+
+                    // Determine touch number
+                    const tMatch = sTitle.match(/Touch\s*(\d+)/i);
+                    if (tMatch) touch.touchNumber = parseInt(tMatch[1]);
+                    else if (sTitle.includes('Call Script') && !sTitle.includes('4')) touch.touchNumber = 2;
+                    else if (sTitle.includes('4')) touch.touchNumber = 4;
+
+                    // Extract proof point from message
+                    touch.proofPointUsed = extractProofPoint(touch.messageBody);
+                    touch.openerType = classifyOpener(touch.messageBody);
+                    touch.painHook = classifyPainHook(touch.messageBody);
+                    touch.wordCount = touch.messageBody.split(/\s+/).filter(w => w.length > 0).length;
+
+                    if (touch.touchNumber > 0) touches.push({ ...touch, _prospectName: prospect.name });
+                }
+            });
+        }
+
+        prospects.push(prospect);
+    });
+
+    return { batch, prospects, touches };
+}
+
+function extractProofPoint(text) {
+    const lower = (text || '').toLowerCase();
+    if (lower.includes('hansard')) return 'Hansard';
+    if (lower.includes('medibuddy')) return 'Medibuddy';
+    if (lower.includes('cred')) return 'CRED';
+    if (lower.includes('sanofi')) return 'Sanofi';
+    if (lower.includes('nagra')) return 'Nagra DTV';
+    if (lower.includes('spendflo')) return 'Spendflo';
+    if (lower.includes('fortune 100')) return 'Fortune 100';
+    if (lower.includes('selenium') || lower.includes('70% maintenance')) return '70% vs Selenium';
+    if (lower.includes('90% maintenance') || lower.includes('self-healing')) return '90% Self-Healing';
+    return 'Unknown';
+}
+
+function classifyOpener(text) {
+    const lower = (text || '').toLowerCase();
+    if (lower.match(/your (role|work|experience|background)/)) return 'career-reference';
+    if (lower.match(/(revenue|growth|raised|launched|expanded|employees|customers)/)) return 'company-metric';
+    if (lower.match(/(teams in|industry|across the|companies like)/)) return 'industry-trend';
+    return 'other';
+}
+
+function classifyPainHook(text) {
+    const lower = (text || '').toLowerCase();
+    if (lower.match(/(maintenance|flaky|brittle|broken|self-heal)/)) return 'maintenance';
+    if (lower.match(/(velocity|speed|fast|release|cycle|regression time)/)) return 'velocity';
+    if (lower.match(/(coverage|scale|expand|automat.*more|gap)/)) return 'coverage';
+    return 'other';
+}
+
+// ===========================================
+// IMPORT LOGIC
+// ===========================================
+async function importBatchFile(file) {
+    const text = await file.text();
+    const { batch, prospects, touches } = parseBatchHTML(text, file.name);
+
+    // Check if already imported
+    const existingBatches = await dbGet('batches');
+    const already = existingBatches.find(b => b.filename === file.name);
+    if (already) {
+        return { status: 'skipped', reason: 'Already imported', filename: file.name };
+    }
+
+    // Save batch
+    const batchId = await dbAdd('batches', batch);
+
+    // Save prospects and their touches
+    let prospectCount = 0;
+    let touchCount = 0;
+    for (const p of prospects) {
+        p.batchId = batchId;
+        p.createdAt = new Date().toISOString();
+        p.updatedAt = new Date().toISOString();
+        const pId = await dbAdd('prospects', p);
+        prospectCount++;
+
+        // Save touches linked to this prospect
+        const pTouches = touches.filter(t => t._prospectName === p.name);
+        for (const t of pTouches) {
+            delete t._prospectName;
+            t.prospectId = pId;
+            t.createdAt = new Date().toISOString();
+            await dbAdd('touches', t);
+            touchCount++;
+        }
+    }
+
+    return { status: 'success', filename: file.name, prospects: prospectCount, touches: touchCount, batchNumber: batch.batchNumber };
+}
+
+// ===========================================
+// ANALYTICS ENGINE
+// ===========================================
+async function computeAnalytics() {
+    const prospects = await dbGet('prospects');
+    const touches = await dbGet('touches');
+    const batches = await dbGet('batches');
+
+    const analytics = {
+        total: prospects.length,
+        replied: prospects.filter(p => ['Replied', 'Meeting Booked', 'Not Interested', 'Re-Engaged'].includes(p.status) || p.replyTag).length,
+        meetings: prospects.filter(p => p.status === 'Meeting Booked').length,
+        notInterested: prospects.filter(p => p.status === 'Not Interested').length,
+        touched: prospects.filter(p => p.status !== 'Not Started').length,
+        byPersona: {},
+        byVertical: {},
+        byProofPoint: {},
+        byPScore: {},
+        byOpener: {},
+        byPainHook: {},
+        byAsk: {},
+        byBatch: [],
+        funnel: {}
+    };
+
+    const replyStatuses = new Set(['Replied', 'Meeting Booked', 'Not Interested', 'Re-Engaged']);
+    const isReply = (p) => replyStatuses.has(p.status) || (p.replyTag && p.replyTag !== '');
+
+    // Funnel
+    const statusCounts = {};
+    prospects.forEach(p => { statusCounts[p.status] = (statusCounts[p.status] || 0) + 1; });
+    analytics.funnel = statusCounts;
+
+    // Reply rate by dimension
+    function calcRateByDim(dim) {
+        const groups = {};
+        prospects.forEach(p => {
+            const key = p[dim] || 'Unknown';
+            if (!groups[key]) groups[key] = { total: 0, replied: 0 };
+            groups[key].total++;
+            if (isReply(p)) groups[key].replied++;
+        });
+        return groups;
+    }
+
+    analytics.byPersona = calcRateByDim('personaType');
+    analytics.byVertical = calcRateByDim('vertical');
+
+    // By personalization score
+    [1, 2, 3].forEach(s => {
+        const group = prospects.filter(p => p.personalizationScore === s);
+        analytics.byPScore[s] = { total: group.length, replied: group.filter(isReply).length };
+    });
+
+    // By proof point (from Touch 1 messages)
+    const prospectTouchMap = {};
+    touches.forEach(t => {
+        if (t.touchNumber === 1 && t.proofPointUsed) {
+            prospectTouchMap[t.prospectId] = t;
+        }
+    });
+
+    const ppGroups = {};
+    prospects.forEach(p => {
+        const t1 = prospectTouchMap[p.id];
+        const pp = t1?.proofPointUsed || 'Unknown';
+        if (!ppGroups[pp]) ppGroups[pp] = { total: 0, replied: 0 };
+        ppGroups[pp].total++;
+        if (isReply(p)) ppGroups[pp].replied++;
+    });
+    analytics.byProofPoint = ppGroups;
+
+    // By opener type (from Touch 1)
+    const opGroups = {};
+    prospects.forEach(p => {
+        const t1 = prospectTouchMap[p.id];
+        const op = t1?.openerType || 'other';
+        if (!opGroups[op]) opGroups[op] = { total: 0, replied: 0 };
+        opGroups[op].total++;
+        if (isReply(p)) opGroups[op].replied++;
+    });
+    analytics.byOpener = opGroups;
+
+    // By pain hook
+    const phGroups = {};
+    prospects.forEach(p => {
+        const t1 = prospectTouchMap[p.id];
+        const ph = t1?.painHook || 'other';
+        if (!phGroups[ph]) phGroups[ph] = { total: 0, replied: 0 };
+        phGroups[ph].total++;
+        if (isReply(p)) phGroups[ph].replied++;
+    });
+    analytics.byPainHook = phGroups;
+
+    // By batch
+    batches.sort((a, b) => (a.batchNumber || 0) - (b.batchNumber || 0));
+    batches.forEach(b => {
+        const bProspects = prospects.filter(p => p.batchId === b.id);
+        analytics.byBatch.push({
+            batchNumber: b.batchNumber,
+            date: b.date,
+            total: bProspects.length,
+            replied: bProspects.filter(isReply).length,
+            meetings: bProspects.filter(p => p.status === 'Meeting Booked').length
+        });
+    });
+
+    // A/B test data
+    analytics.abTests = {};
+    batches.forEach(b => {
+        if (!b.abTestVariable) return;
+        const bProspects = prospects.filter(p => p.batchId === b.id);
+        const groups = {};
+        bProspects.forEach(p => {
+            const g = p.abGroup || 'Unknown';
+            if (!groups[g]) groups[g] = { total: 0, replied: 0, label: p.abDescription || g };
+            groups[g].total++;
+            if (isReply(p)) groups[g].replied++;
+        });
+        analytics.abTests[b.abTestVariable + ' (Batch ' + b.batchNumber + ')'] = groups;
+    });
+
+    return analytics;
+}
+
+// ===========================================
+// BAYESIAN SCORING ENGINE
+// ===========================================
+const DEFAULT_WEIGHTS = {
+    'Buyer Intent': 2.0,
+    'QA-titled leader': 1.0,
+    'Top vertical': 1.0,
+    'Recently hired': 1.0,
+    'Digital transformation': 1.0,
+    'Uses competitor tool': 1.0,
+    'VP Eng at 50K+ co': -1.0
+};
+
+async function getBayesianWeights() {
+    const stored = await dbGet('bayesian');
+    const w = stored.find(s => s.id === 'weights');
+    return w ? w.weights : { ...DEFAULT_WEIGHTS };
+}
+
+async function saveBayesianWeights(weights) {
+    await dbPut('bayesian', { id: 'weights', weights, updatedAt: new Date().toISOString() });
+}
+
+async function updateBayesianWeights() {
+    const prospects = await dbGet('prospects');
+    const replyStatuses = new Set(['Replied', 'Meeting Booked', 'Re-Engaged']);
+    const isPositiveReply = (p) => replyStatuses.has(p.status) || (p.replyTag && !['Not interested', ''].includes(p.replyTag));
+
+    // Only update if we have enough data
+    const touchedProspects = prospects.filter(p => p.status !== 'Not Started');
+    if (touchedProspects.length < 5) return await getBayesianWeights();
+
+    const weights = { ...DEFAULT_WEIGHTS };
+    const learningRate = 0.15;
+
+    // For each factor, compute reply rate with factor vs without
+    function factorSignal(filterFn) {
+        const withFactor = touchedProspects.filter(filterFn);
+        const withoutFactor = touchedProspects.filter(p => !filterFn(p));
+        if (withFactor.length < 2 || withoutFactor.length < 2) return 0;
+        const rateWith = withFactor.filter(isPositiveReply).length / withFactor.length;
+        const rateWithout = withoutFactor.filter(isPositiveReply).length / withoutFactor.length;
+        return rateWith - rateWithout;
+    }
+
+    // QA vs non-QA
+    const qaSignal = factorSignal(p => p.personaType === 'QA');
+    weights['QA-titled leader'] = DEFAULT_WEIGHTS['QA-titled leader'] + (qaSignal * 10 * learningRate);
+
+    // VP Eng signal
+    const vpSignal = factorSignal(p => p.personaType === 'Eng');
+    if (vpSignal < -0.05) weights['VP Eng at 50K+ co'] = DEFAULT_WEIGHTS['VP Eng at 50K+ co'] + (vpSignal * 5 * learningRate);
+
+    // Buyer Intent (check tags)
+    const biSignal = factorSignal(p => (p.tags || []).some(t => t.toLowerCase().includes('buyer intent')));
+    weights['Buyer Intent'] = DEFAULT_WEIGHTS['Buyer Intent'] + (biSignal * 10 * learningRate);
+
+    // Recently hired
+    const rhSignal = factorSignal(p => (p.profileResearch || '').toLowerCase().match(/(joined|started|new to|first \d+ days|recently)/));
+    weights['Recently hired'] = DEFAULT_WEIGHTS['Recently hired'] + (rhSignal * 10 * learningRate);
+
+    // Top vertical
+    const topVerticals = ['FinTech', 'FinServ', 'SaaS', 'Healthcare'];
+    const tvSignal = factorSignal(p => topVerticals.some(v => (p.vertical || '').includes(v)));
+    weights['Top vertical'] = DEFAULT_WEIGHTS['Top vertical'] + (tvSignal * 10 * learningRate);
+
+    // Competitor tool signal
+    const compSignal = factorSignal(p => {
+        const r = ((p.profileResearch || '') + ' ' + (p.companyResearch || '')).toLowerCase();
+        return r.match(/(tosca|katalon|selenium|testim|mabl|cypress|playwright)/);
+    });
+    weights['Uses competitor tool'] = DEFAULT_WEIGHTS['Uses competitor tool'] + (compSignal * 10 * learningRate);
+
+    // Clamp weights to reasonable range
+    Object.keys(weights).forEach(k => {
+        weights[k] = Math.max(-3, Math.min(5, weights[k]));
+        weights[k] = Math.round(weights[k] * 100) / 100;
+    });
+
+    await saveBayesianWeights(weights);
+    return weights;
+}
+
+async function resetBayesianWeights() {
+    await saveBayesianWeights({ ...DEFAULT_WEIGHTS });
+    toast('Bayesian weights reset to defaults');
+    renderBayesian();
+}
+
+// ===========================================
+// PRE-BRIEF GENERATOR
+// ===========================================
+async function generatePrebrief() {
+    const analytics = await computeAnalytics();
+    const el = document.getElementById('prebrief-content');
+
+    if (analytics.total < 5) {
+        el.innerHTML = '<div class="no-data">Not enough data yet. Import at least one batch to generate a pre-brief.</div>';
+        return;
+    }
+
+    const items = [];
+
+    // Best persona
+    const personaEntries = Object.entries(analytics.byPersona).filter(([k, v]) => v.total >= 3);
+    personaEntries.sort((a, b) => (b[1].replied / b[1].total) - (a[1].replied / a[1].total));
+    if (personaEntries.length > 0) {
+        const [best, data] = personaEntries[0];
+        const rate = data.total > 0 ? ((data.replied / data.total) * 100).toFixed(1) : '0';
+        items.push({ label: 'Best persona', value: `${best} at ${rate}% reply rate (${data.replied}/${data.total})` });
+    } else {
+        items.push({ label: 'Best persona', value: 'Not enough data to determine' });
+    }
+
+    // Best proof point
+    const ppEntries = Object.entries(analytics.byProofPoint).filter(([k, v]) => v.total >= 2 && k !== 'Unknown');
+    ppEntries.sort((a, b) => (b[1].replied / b[1].total) - (a[1].replied / a[1].total));
+    if (ppEntries.length > 0) {
+        const [best, data] = ppEntries[0];
+        const rate = data.total > 0 ? ((data.replied / data.total) * 100).toFixed(1) : '0';
+        items.push({ label: 'Best proof point', value: `${best} at ${rate}% (${data.replied}/${data.total})` });
+    } else {
+        items.push({ label: 'Best proof point', value: 'Not enough data yet' });
+    }
+
+    // Best vertical
+    const vertEntries = Object.entries(analytics.byVertical).filter(([k, v]) => v.total >= 2 && k !== 'Unknown');
+    vertEntries.sort((a, b) => (b[1].replied / b[1].total) - (a[1].replied / a[1].total));
+    if (vertEntries.length > 0) {
+        const [best, data] = vertEntries[0];
+        const rate = data.total > 0 ? ((data.replied / data.total) * 100).toFixed(1) : '0';
+        items.push({ label: 'Best vertical', value: `${best} at ${rate}% (${data.replied}/${data.total})` });
+    } else {
+        items.push({ label: 'Best vertical', value: 'Not enough data yet' });
+    }
+
+    // Best pattern (check opener types)
+    const opEntries = Object.entries(analytics.byOpener).filter(([k, v]) => v.total >= 3 && k !== 'other');
+    opEntries.sort((a, b) => (b[1].replied / b[1].total) - (a[1].replied / a[1].total));
+    if (opEntries.length > 0) {
+        const [best, data] = opEntries[0];
+        const rate = data.total > 0 ? ((data.replied / data.total) * 100).toFixed(1) : '0';
+        items.push({ label: 'Best pattern', value: `${best} openers at ${rate}% (${data.replied}/${data.total})` });
+    } else {
+        items.push({ label: 'Best pattern', value: 'Not enough data yet' });
+    }
+
+    // Stop doing
+    const worstPersona = personaEntries.length > 1 ? personaEntries[personaEntries.length - 1] : null;
+    const worstVertical = vertEntries.length > 1 ? vertEntries[vertEntries.length - 1] : null;
+    let stopDoing = 'Not enough data yet';
+    if (worstPersona && worstPersona[1].total >= 5 && worstPersona[1].replied === 0) {
+        stopDoing = `${worstPersona[0]}: 0 replies across ${worstPersona[1].total} sends. Consider reducing allocation.`;
+    } else if (worstVertical && worstVertical[1].total >= 5 && worstVertical[1].replied === 0) {
+        stopDoing = `${worstVertical[0]} vertical: 0 replies across ${worstVertical[1].total} sends. Deprioritize.`;
+    }
+    items.push({ label: 'Stop doing', value: stopDoing });
+
+    el.innerHTML = '<h3>Pre-Brief: What\'s Working</h3>' + items.map(i =>
+        `<div class="prebrief-item"><div class="prebrief-label">${i.label}</div><div class="prebrief-value">${i.value}</div></div>`
+    ).join('');
+
+    // Store for copy
+    el.dataset.text = items.map(i => `${i.label}: ${i.value}`).join('\n');
+}
+
+function copyPrebrief() {
+    const el = document.getElementById('prebrief-content');
+    navigator.clipboard.writeText(el.dataset.text || el.textContent);
+    toast('Pre-brief copied');
+}
+
+// ===========================================
+// RENDER FUNCTIONS
+// ===========================================
+const chartInstances = {};
+
+function destroyChart(id) {
+    if (chartInstances[id]) { chartInstances[id].destroy(); delete chartInstances[id]; }
+}
+
+const COLORS = ['#0f9ff8', '#1caf5e', '#f57c00', '#d32f2f', '#9c27b0', '#00bcd4', '#ff5722', '#4caf50', '#e91e63', '#607d8b'];
+
+function rateBarChart(canvasId, data, label) {
+    destroyChart(canvasId);
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+    const entries = Object.entries(data).filter(([k]) => k !== 'Unknown').sort((a, b) => {
+        const rA = a[1].total > 0 ? a[1].replied / a[1].total : 0;
+        const rB = b[1].total > 0 ? b[1].replied / b[1].total : 0;
+        return rB - rA;
+    });
+    chartInstances[canvasId] = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: entries.map(([k]) => k),
+            datasets: [{
+                label: 'Reply Rate %',
+                data: entries.map(([, v]) => v.total > 0 ? ((v.replied / v.total) * 100).toFixed(1) : 0),
+                backgroundColor: entries.map((_, i) => COLORS[i % COLORS.length] + '99'),
+                borderColor: entries.map((_, i) => COLORS[i % COLORS.length]),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        afterLabel: (ctx) => {
+                            const e = entries[ctx.dataIndex];
+                            return `${e[1].replied} replies / ${e[1].total} sent`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: { beginAtZero: true, title: { display: true, text: 'Reply Rate %', color: '#666' }, ticks: { color: '#666' }, grid: { color: '#1e2a4a' } },
+                x: { ticks: { color: '#888', maxRotation: 45 }, grid: { display: false } }
+            }
+        }
+    });
+}
+
+function trendChart(canvasId, batchData) {
+    destroyChart(canvasId);
+    const ctx = document.getElementById(canvasId);
+    if (!ctx || batchData.length === 0) return;
+    chartInstances[canvasId] = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: batchData.map(b => `Batch ${b.batchNumber}`),
+            datasets: [
+                {
+                    label: 'Reply Rate %',
+                    data: batchData.map(b => b.total > 0 ? ((b.replied / b.total) * 100).toFixed(1) : 0),
+                    borderColor: '#0f9ff8',
+                    backgroundColor: '#0f9ff833',
+                    fill: true,
+                    tension: 0.3
+                },
+                {
+                    label: 'Meeting Rate %',
+                    data: batchData.map(b => b.total > 0 ? ((b.meetings / b.total) * 100).toFixed(1) : 0),
+                    borderColor: '#1caf5e',
+                    backgroundColor: '#1caf5e33',
+                    fill: true,
+                    tension: 0.3
+                }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#888' } } },
+            scales: {
+                y: { beginAtZero: true, title: { display: true, text: '%', color: '#666' }, ticks: { color: '#666' }, grid: { color: '#1e2a4a' } },
+                x: { ticks: { color: '#888' }, grid: { color: '#1e2a4a' } }
+            }
+        }
+    });
+}
+
+async function renderOverview() {
+    const analytics = await computeAnalytics();
+
+    // KPIs
+    const replyRate = analytics.touched > 0 ? ((analytics.replied / analytics.touched) * 100).toFixed(1) : '0.0';
+    const meetingRate = analytics.touched > 0 ? ((analytics.meetings / analytics.touched) * 100).toFixed(1) : '0.0';
+    document.getElementById('kpi-row').innerHTML = `
+        <div class="kpi"><div class="kpi-label">Total Prospects</div><div class="kpi-value">${analytics.total}</div></div>
+        <div class="kpi"><div class="kpi-label">Touched</div><div class="kpi-value">${analytics.touched}</div><div class="kpi-sub">${analytics.total > 0 ? ((analytics.touched / analytics.total) * 100).toFixed(0) : 0}% of total</div></div>
+        <div class="kpi"><div class="kpi-label">Replies</div><div class="kpi-value ${analytics.replied > 0 ? 'green' : ''}">${analytics.replied}</div><div class="kpi-sub">${replyRate}% reply rate</div></div>
+        <div class="kpi"><div class="kpi-label">Meetings</div><div class="kpi-value ${analytics.meetings > 0 ? 'green' : ''}">${analytics.meetings}</div><div class="kpi-sub">${meetingRate}% meeting rate</div></div>
+        <div class="kpi"><div class="kpi-label">Not Interested</div><div class="kpi-value ${analytics.notInterested > 0 ? 'orange' : ''}">${analytics.notInterested}</div></div>
+    `;
+
+    // Funnel
+    const funnelSteps = ['Not Started', 'Touch 1 Sent', 'Call 1 Made', 'Touch 3 Sent', 'Call 2 Made', 'Touch 5 Sent', 'Touch 6 Sent', 'Replied', 'Meeting Booked'];
+    document.getElementById('funnel-row').innerHTML = funnelSteps.map(s =>
+        `<div class="funnel-step"><div class="f-num">${analytics.funnel[s] || 0}</div><div class="f-label">${s}</div></div>`
+    ).join('');
+
+    // Charts
+    rateBarChart('chart-persona', analytics.byPersona, 'Persona');
+    rateBarChart('chart-vertical', analytics.byVertical, 'Vertical');
+    rateBarChart('chart-proofpoint', analytics.byProofPoint, 'Proof Point');
+    rateBarChart('chart-pscore', analytics.byPScore, 'Personalization Score');
+    trendChart('chart-trend', analytics.byBatch);
+}
+
+async function renderBayesian() {
+    const weights = await updateBayesianWeights();
+    const el = document.getElementById('bayesian-bars');
+
+    const maxAbs = Math.max(...Object.values(weights).map(Math.abs), 3);
+    el.innerHTML = Object.entries(weights).map(([k, v]) => {
+        const pct = Math.abs(v) / maxAbs * 100;
+        const color = v > 0 ? '#0f9ff8' : '#d32f2f';
+        const defaultVal = DEFAULT_WEIGHTS[k] || 0;
+        const delta = v - defaultVal;
+        const deltaStr = delta > 0 ? `+${delta.toFixed(2)}` : delta.toFixed(2);
+        return `<div class="weight-bar">
+            <div class="weight-label">${k}</div>
+            <div class="weight-track"><div class="weight-fill" style="width:${pct}%; background:${color}"></div></div>
+            <div class="weight-num" style="color:${color}">${v > 0 ? '+' : ''}${v.toFixed(2)}</div>
+            <div style="font-size:10px; color:#555; min-width:50px;">(${deltaStr})</div>
+        </div>`;
+    }).join('');
+}
+
+async function renderABTests() {
+    const analytics = await computeAnalytics();
+    const el = document.getElementById('ab-results');
+
+    if (Object.keys(analytics.abTests).length === 0) {
+        el.innerHTML = '<div class="empty-state"><h3>No A/B test data</h3><p>Import batches with A/B group assignments to see results here.</p></div>';
+        return;
+    }
+
+    el.innerHTML = Object.entries(analytics.abTests).map(([testName, groups]) => {
+        const entries = Object.entries(groups);
+        const rates = entries.map(([, v]) => v.total > 0 ? v.replied / v.total : 0);
+        const maxRate = Math.max(...rates);
+
+        return `<div class="ab-card">
+            <h4>${testName}</h4>
+            <div class="ab-compare">
+                ${entries.map(([group, data]) => {
+                    const rate = data.total > 0 ? ((data.replied / data.total) * 100).toFixed(1) : '0.0';
+                    const isWinner = data.total > 0 && (data.replied / data.total) === maxRate && data.replied > 0;
+                    return `<div class="ab-variant">
+                        <div class="ab-variant-label">${data.label || group}</div>
+                        <div class="ab-variant-rate ${isWinner ? 'winner' : 'loser'}">${rate}%</div>
+                        <div class="ab-variant-n">${data.replied} / ${data.total} sent</div>
+                    </div>`;
+                }).join('')}
+            </div>
+        </div>`;
+    }).join('');
+}
+
+async function renderPerformance(dimension = 'persona') {
+    const analytics = await computeAnalytics();
+    const el = document.getElementById('perf-table-container');
+
+    const dimMap = {
+        persona: analytics.byPersona,
+        vertical: analytics.byVertical,
+        proofpoint: analytics.byProofPoint,
+        opener: analytics.byOpener,
+        painhook: analytics.byPainHook,
+    };
+
+    const data = dimMap[dimension] || {};
+    const entries = Object.entries(data).sort((a, b) => {
+        const rA = a[1].total > 0 ? a[1].replied / a[1].total : 0;
+        const rB = b[1].total > 0 ? b[1].replied / b[1].total : 0;
+        return rB - rA;
+    });
+
+    if (entries.length === 0) {
+        el.innerHTML = '<div class="empty-state"><h3>No data</h3><p>Import batch files to populate this view.</p></div>';
+        return;
+    }
+
+    el.innerHTML = `<table class="data-table">
+        <thead><tr><th>${dimension}</th><th>Sent</th><th>Replied</th><th>Reply Rate</th><th>Signal</th></tr></thead>
+        <tbody>${entries.map(([k, v]) => {
+            const rate = v.total > 0 ? ((v.replied / v.total) * 100).toFixed(1) : '0.0';
+            const signal = v.total >= 5 && v.replied === 0 ? '<span style="color:#d32f2f">Cold</span>' :
+                           v.total >= 3 && parseFloat(rate) > 3 ? '<span style="color:#1caf5e">Hot</span>' :
+                           v.total < 3 ? '<span style="color:#666">Low N</span>' : '';
+            return `<tr><td>${k}</td><td class="num">${v.total}</td><td class="num">${v.replied}</td><td class="num">${rate}%</td><td>${signal}</td></tr>`;
+        }).join('')}</tbody>
+    </table>`;
+}
+
+async function renderProspects() {
+    const prospects = await dbGet('prospects');
+    const batches = await dbGet('batches');
+    const el = document.getElementById('prospects-table-container');
+    const batchMap = {};
+    batches.forEach(b => { batchMap[b.id] = b; });
+
+    prospects.sort((a, b) => (b.priorityScore || 0) - (a.priorityScore || 0));
+
+    if (prospects.length === 0) {
+        el.innerHTML = '<div class="empty-state"><h3>No prospects</h3><p>Import batch files to see all prospects here.</p></div>';
+        return;
+    }
+
+    el.innerHTML = `<table class="data-table">
+        <thead><tr><th>Pri</th><th>Name</th><th>Title</th><th>Company</th><th>Vertical</th><th>Persona</th><th>Batch</th><th>Status</th><th>Reply Tag</th><th>P-Score</th></tr></thead>
+        <tbody>${prospects.map(p => {
+            const bNum = batchMap[p.batchId]?.batchNumber || '?';
+            const priBadge = p.priorityScore >= 5 ? 'badge-hot' : p.priorityScore >= 4 ? 'badge-warm' : 'badge-std';
+            return `<tr>
+                <td><span class="badge ${priBadge}">${p.priorityScore || '?'}</span></td>
+                <td>${p.name}</td>
+                <td>${p.title || ''}</td>
+                <td>${p.company || ''}</td>
+                <td>${p.vertical || ''}</td>
+                <td>${p.personaType || ''}</td>
+                <td class="num">${bNum}</td>
+                <td>${p.status || 'Not Started'}</td>
+                <td>${p.replyTag || ''}</td>
+                <td class="num">${p.personalizationScore || ''}</td>
+            </tr>`;
+        }).join('')}</tbody>
+    </table>`;
+
+    // Also populate manual entry dropdown
+    const select = document.getElementById('manual-prospect');
+    select.innerHTML = '<option value="">Select prospect...</option>' +
+        prospects.map(p => `<option value="${p.id}">${p.name} (${p.company})</option>`).join('');
+}
+
+async function renderBatches() {
+    const batches = await dbGet('batches');
+    const prospects = await dbGet('prospects');
+    const el = document.getElementById('batches-list');
+
+    if (batches.length === 0) {
+        el.innerHTML = '<div class="empty-state"><h3>No batches imported</h3><p>Go to Import Data to add batch files.</p></div>';
+        return;
+    }
+
+    batches.sort((a, b) => (b.batchNumber || 0) - (a.batchNumber || 0));
+    el.innerHTML = batches.map(b => {
+        const bProspects = prospects.filter(p => p.batchId === b.id);
+        const replied = bProspects.filter(p => ['Replied', 'Meeting Booked', 'Not Interested', 'Re-Engaged'].includes(p.status) || p.replyTag).length;
+        const rate = bProspects.length > 0 ? ((replied / bProspects.length) * 100).toFixed(1) : '0.0';
+        return `<div class="chart-card" style="margin-bottom:12px;">
+            <h3>Batch ${b.batchNumber} - ${b.date}</h3>
+            <div style="font-size:12px; color:#888; margin-bottom:8px;">${b.filename} | ${b.abTestVariable || 'No A/B test'}</div>
+            <div style="display:flex; gap:20px; font-size:13px;">
+                <div>Prospects: <span class="num">${bProspects.length}</span></div>
+                <div>Replied: <span class="num">${replied}</span></div>
+                <div>Reply Rate: <span class="num">${rate}%</span></div>
+            </div>
+            <div style="margin-top:8px;"><button class="btn btn-danger" style="font-size:11px; padding:4px 10px;" onclick="deleteBatch(${b.id})">Delete Batch</button></div>
+        </div>`;
+    }).join('');
+}
+
+async function renderManualRecentUpdates() {
+    const updates = await dbGet('updates');
+    const prospects = await dbGet('prospects');
+    const el = document.getElementById('recent-updates');
+    const pMap = {};
+    prospects.forEach(p => { pMap[p.id] = p; });
+
+    const recent = updates.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 20);
+
+    if (recent.length === 0) {
+        el.innerHTML = '<div style="font-size:12px; color:#555;">No updates yet. Use the form above to log status changes.</div>';
+        return;
+    }
+
+    el.innerHTML = '<div class="prospect-timeline">' + recent.map(u => {
+        const p = pMap[u.prospectId];
+        return `<div class="timeline-event">
+            <div class="te-date">${new Date(u.timestamp).toLocaleString()}</div>
+            <div class="te-action">${p ? p.name : 'Unknown'}: ${u.field} changed to "${u.value}"</div>
+        </div>`;
+    }).join('') + '</div>';
+}
+
+// ===========================================
+// EVENT HANDLERS
+// ===========================================
+function showSection(name) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('sec-' + name)?.classList.add('active');
+    event.target.classList.add('active');
+
+    // Render section-specific content
+    switch (name) {
+        case 'overview': renderOverview(); break;
+        case 'performance': renderPerformance(); break;
+        case 'bayesian': renderBayesian(); break;
+        case 'abtests': renderABTests(); break;
+        case 'prospects': renderProspects(); break;
+        case 'batches': renderBatches(); break;
+        case 'prebrief': generatePrebrief(); break;
+        case 'manual': renderProspects(); renderManualRecentUpdates(); break;
+    }
+}
+
+function showPerfTab(dim) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    renderPerformance(dim);
+}
+
+async function saveManualEntry() {
+    const prospectId = parseInt(document.getElementById('manual-prospect').value);
+    const status = document.getElementById('manual-status').value;
+    const replyTag = document.getElementById('manual-reply-tag').value;
+    const replyTouch = document.getElementById('manual-reply-touch').value;
+
+    if (!prospectId) { toast('Select a prospect first'); return; }
+
+    const prospects = await dbGet('prospects');
+    const prospect = prospects.find(p => p.id === prospectId);
+    if (!prospect) { toast('Prospect not found'); return; }
+
+    if (status) {
+        prospect.status = status;
+        await dbAdd('updates', { prospectId, field: 'status', value: status, timestamp: new Date().toISOString() });
+    }
+    if (replyTag) {
+        prospect.replyTag = replyTag;
+        await dbAdd('updates', { prospectId, field: 'replyTag', value: replyTag, timestamp: new Date().toISOString() });
+    }
+    if (replyTouch) {
+        prospect.replyTouchNumber = parseInt(replyTouch);
+        await dbAdd('updates', { prospectId, field: 'replyTouchNumber', value: replyTouch, timestamp: new Date().toISOString() });
+    }
+
+    prospect.updatedAt = new Date().toISOString();
+    await dbPut('prospects', prospect);
+
+    // Recompute Bayesian weights
+    await updateBayesianWeights();
+
+    toast(`Updated ${prospect.name}`);
+    renderManualRecentUpdates();
+
+    // Clear form
+    document.getElementById('manual-status').value = '';
+    document.getElementById('manual-reply-tag').value = '';
+    document.getElementById('manual-reply-touch').value = '';
+}
+
+async function deleteBatch(batchId) {
+    if (!confirm('Delete this batch and all its prospects?')) return;
+
+    // Delete prospects in this batch
+    const prospects = await dbGet('prospects');
+    const toDelete = prospects.filter(p => p.batchId === batchId);
+    const tx1 = db.transaction('prospects', 'readwrite');
+    const store1 = tx1.objectStore('prospects');
+    for (const p of toDelete) { store1.delete(p.id); }
+
+    // Delete touches
+    const touches = await dbGet('touches');
+    const touchesToDelete = touches.filter(t => toDelete.some(p => p.id === t.prospectId));
+    const tx2 = db.transaction('touches', 'readwrite');
+    const store2 = tx2.objectStore('touches');
+    for (const t of touchesToDelete) { store2.delete(t.id); }
+
+    // Delete batch
+    const tx3 = db.transaction('batches', 'readwrite');
+    tx3.objectStore('batches').delete(batchId);
+
+    toast('Batch deleted');
+    renderBatches();
+    updateDBStats();
+}
+
+async function clearAllData() {
+    if (!confirm('This will delete ALL data from the intelligence engine. Are you sure?')) return;
+    if (!confirm('Really? This cannot be undone.')) return;
+    await dbClear('batches');
+    await dbClear('prospects');
+    await dbClear('touches');
+    await dbClear('updates');
+    await dbClear('bayesian');
+    toast('All data cleared');
+    updateDBStats();
+    renderOverview();
+}
+
+async function exportProspects() {
+    const prospects = await dbGet('prospects');
+    const batches = await dbGet('batches');
+    const touches = await dbGet('touches');
+    const updates = await dbGet('updates');
+    const blob = new Blob([JSON.stringify({ prospects, batches, touches, updates }, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `outreach-data-export-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('Data exported');
+}
+
+function refreshProspects() { renderProspects(); toast('Refreshed'); }
+
+function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+async function updateDBStats() {
+    const batches = await dbGet('batches');
+    const prospects = await dbGet('prospects');
+    const el = document.getElementById('db-stats');
+    el.innerHTML = `<span>${batches.length}</span> batches<br><span>${prospects.length}</span> prospects`;
+}
+
+// ===========================================
+// FILE IMPORT HANDLERS
+// ===========================================
+const importZone = document.getElementById('import-zone');
+const fileInput = document.getElementById('file-input');
+
+importZone.addEventListener('dragover', (e) => { e.preventDefault(); importZone.classList.add('dragover'); });
+importZone.addEventListener('dragleave', () => { importZone.classList.remove('dragover'); });
+importZone.addEventListener('drop', async (e) => {
+    e.preventDefault();
+    importZone.classList.remove('dragover');
+    const files = Array.from(e.dataTransfer.files).filter(f => f.name.endsWith('.html'));
+    await processImportFiles(files);
+});
+
+fileInput.addEventListener('change', async () => {
+    const files = Array.from(fileInput.files);
+    await processImportFiles(files);
+    fileInput.value = '';
+});
+
+async function processImportFiles(files) {
+    const logEl = document.getElementById('import-log');
+    logEl.innerHTML = '';
+
+    for (const file of files) {
+        logEl.innerHTML += `<div>Importing ${file.name}...</div>`;
+        try {
+            const result = await importBatchFile(file);
+            if (result.status === 'skipped') {
+                logEl.innerHTML += `<div style="color:#f57c00;">Skipped ${file.name}: ${result.reason}</div>`;
+            } else {
+                logEl.innerHTML += `<div style="color:#1caf5e;">Imported ${file.name}: ${result.prospects} prospects, ${result.touches} touches (Batch ${result.batchNumber})</div>`;
+            }
+        } catch (err) {
+            logEl.innerHTML += `<div style="color:#d32f2f;">Error importing ${file.name}: ${err.message}</div>`;
+        }
+    }
+
+    await updateDBStats();
+    toast(`Import complete: ${files.length} file(s) processed`);
+}
+
+// ===========================================
+// INIT
+// ===========================================
+async function init() {
+    await openDB();
+    await updateDBStats();
+    await renderOverview();
+}
+
+init();
+</script>
+</body>
+</html>

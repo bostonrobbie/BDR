@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prospect Research Bank - Feb 23, 2026</title>
+<style>
+  :root {
+    --hot: #ef4444;
+    --warm: #f97316;
+    --standard: #eab308;
+    --lower: #6b7280;
+    --qa: #8b5cf6;
+    --vpeng: #3b82f6;
+    --intent: #10b981;
+    --newhire: #06b6d4;
+    --finserv: #f59e0b;
+    --tech: #6366f1;
+    --healthcare: #ec4899;
+    --gaming: #a855f7;
+    --existing: #dc2626;
+    --bg: #0f172a;
+    --card: #1e293b;
+    --card2: #334155;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --border: #475569;
+    --accent: #38bdf8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.5; }
+  h1 { font-size: 1.8rem; margin-bottom: 4px; }
+  h2 { font-size: 1.3rem; margin-bottom: 12px; color: var(--accent); }
+  h3 { font-size: 1.1rem; margin-bottom: 8px; }
+  .header { text-align: center; padding: 24px 0 16px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .header .subtitle { color: var(--muted); font-size: 0.9rem; }
+  .stats-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 16px 0; }
+  .stat { background: var(--card); border-radius: 8px; padding: 12px 20px; text-align: center; min-width: 120px; }
+  .stat .num { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+  .stat .label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; align-items: center; }
+  .filters label { font-size: 0.8rem; color: var(--muted); margin-right: 4px; }
+  .filters select, .filters input { background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 0.85rem; }
+  .filters input[type="text"] { width: 200px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; margin: 1px 2px; }
+  .badge-hot { background: var(--hot); color: white; }
+  .badge-warm { background: var(--warm); color: white; }
+  .badge-standard { background: var(--standard); color: #1e1e1e; }
+  .badge-lower { background: var(--lower); color: white; }
+  .badge-qa { background: var(--qa); color: white; }
+  .badge-vpeng { background: var(--vpeng); color: white; }
+  .badge-intent { background: var(--intent); color: white; }
+  .badge-newhire { background: var(--newhire); color: white; }
+  .badge-finserv { background: var(--finserv); color: #1e1e1e; }
+  .badge-tech { background: var(--tech); color: white; }
+  .badge-healthcare { background: var(--healthcare); color: white; }
+  .badge-gaming { background: var(--gaming); color: white; }
+  .badge-existing { background: var(--existing); color: white; }
+  .badge-weak { background: #374151; color: #9ca3af; }
+  .badge-strong { background: #065f46; color: #6ee7b7; }
+  .badge-moderate { background: #78350f; color: #fbbf24; }
+
+  /* Prospect Table */
+  .table-wrap { overflow-x: auto; margin: 16px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th { background: var(--card2); padding: 10px 8px; text-align: left; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); position: sticky; top: 0; z-index: 10; cursor: pointer; white-space: nowrap; }
+  th:hover { color: var(--accent); }
+  td { padding: 8px; border-bottom: 1px solid #1e293b; vertical-align: top; }
+  tr:hover { background: rgba(56, 189, 248, 0.05); }
+  tr.excluded { opacity: 0.4; }
+
+  /* Company Research Cards */
+  .company-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 20px 0; }
+  .company-card { background: var(--card); border-radius: 10px; padding: 20px; border-left: 4px solid var(--border); }
+  .company-card.tier-hot { border-left-color: var(--hot); }
+  .company-card.tier-warm { border-left-color: var(--warm); }
+  .company-card.tier-standard { border-left-color: var(--standard); }
+  .company-card.tier-lower { border-left-color: var(--lower); }
+  .company-card .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+  .company-card .card-header h3 { font-size: 1.15rem; }
+  .company-card .meta { display: flex; gap: 6px; flex-wrap: wrap; }
+  .section-title { font-size: 0.8rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin: 12px 0 6px; }
+  .pain-list { list-style: none; padding: 0; }
+  .pain-list li { padding: 4px 0; font-size: 0.85rem; color: var(--muted); }
+  .pain-list li::before { content: "→ "; color: var(--accent); }
+  .tech-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+  .tech-tag { background: var(--card2); color: var(--muted); padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; }
+  .outreach-angle { background: var(--card2); border-radius: 6px; padding: 12px; margin: 8px 0; font-size: 0.85rem; color: var(--text); border-left: 3px solid var(--accent); }
+  .outreach-angle .hook-label { font-size: 0.7rem; color: var(--accent); font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
+  .proof-match { background: rgba(16, 185, 129, 0.1); border-radius: 6px; padding: 10px; margin: 6px 0; font-size: 0.82rem; border-left: 3px solid var(--intent); }
+  .objection-box { background: rgba(239, 68, 68, 0.08); border-radius: 6px; padding: 10px; margin: 6px 0; font-size: 0.82rem; border-left: 3px solid var(--hot); }
+  .call-snippet { background: rgba(56, 189, 248, 0.08); border-radius: 6px; padding: 10px; margin: 6px 0; font-size: 0.82rem; border-left: 3px solid var(--accent); font-style: italic; }
+  .collapsible { cursor: pointer; user-select: none; }
+  .collapsible::after { content: " ▸"; font-size: 0.8em; }
+  .collapsible.open::after { content: " ▾"; }
+  .collapse-content { display: none; }
+  .collapse-content.show { display: block; }
+  .copy-btn { background: var(--accent); color: var(--bg); border: none; padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; cursor: pointer; font-weight: 600; }
+  .copy-btn:hover { opacity: 0.85; }
+  .copy-btn.copied { background: var(--intent); }
+  .prospect-in-company { background: var(--card2); border-radius: 6px; padding: 8px 12px; margin: 4px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; }
+  .prospect-in-company .pname { font-weight: 600; font-size: 0.85rem; }
+  .prospect-in-company .ptitle { font-size: 0.78rem; color: var(--muted); }
+  .tabs { display: flex; gap: 4px; margin: 20px 0 12px; border-bottom: 2px solid var(--border); }
+  .tab { padding: 8px 16px; cursor: pointer; font-size: 0.85rem; font-weight: 600; color: var(--muted); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .warning { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--hot); border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 0.85rem; }
+  .key-insight { background: rgba(56, 189, 248, 0.08); border-radius: 8px; padding: 14px; margin: 8px 0; }
+  .key-insight strong { color: var(--accent); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+  .mini-table { width: 100%; font-size: 0.8rem; }
+  .mini-table th { padding: 6px; font-size: 0.7rem; }
+  .mini-table td { padding: 6px; }
+  .section-divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+  .nav-anchor { scroll-margin-top: 20px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Prospect Research Bank</h1>
+  <div class="subtitle">53 Fresh ICP Prospects | 24 Companies Researched | Feb 23, 2026</div>
+  <div class="stats-row">
+    <div class="stat"><div class="num">53</div><div class="label">Prospects</div></div>
+    <div class="stat"><div class="num">24</div><div class="label">Companies</div></div>
+    <div class="stat"><div class="num">6</div><div class="label">Buyer Intent</div></div>
+    <div class="stat"><div class="num">28</div><div class="label">Strong ICP</div></div>
+    <div class="stat"><div class="num">8</div><div class="label">Priority 5 (Hot)</div></div>
+  </div>
+</div>
+
+<div class="warning">
+  <strong>⚠ SANOFI is an existing Testsigma customer.</strong> Chris Farrell (Head of Quality, Sanofi) should NOT receive cold outreach. Use for case study expansion or referrals only.
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('prospects')">All Prospects</div>
+  <div class="tab" onclick="switchTab('companies')">Company Research</div>
+  <div class="tab" onclick="switchTab('angles')">Outreach Angles</div>
+  <div class="tab" onclick="switchTab('insights')">Key Insights</div>
+</div>
+
+<!-- TAB 1: ALL PROSPECTS -->
+<div id="tab-prospects" class="tab-content active">
+  <h2>Full Prospect List (Sorted by Priority)</h2>
+  <div class="filters">
+    <label>Filter:</label>
+    <select id="filter-priority" onchange="filterTable()">
+      <option value="all">All Priorities</option>
+      <option value="5">Hot (5)</option>
+      <option value="4">Warm (4)</option>
+      <option value="3">Standard (3)</option>
+      <option value="2">Lower (2)</option>
+    </select>
+    <select id="filter-persona" onchange="filterTable()">
+      <option value="all">All Personas</option>
+      <option value="QA">QA Titles</option>
+      <option value="VP Eng">VP Eng</option>
+    </select>
+    <select id="filter-icp" onchange="filterTable()">
+      <option value="all">All ICP Fit</option>
+      <option value="strong">Strong</option>
+      <option value="moderate">Moderate</option>
+    </select>
+    <select id="filter-intent" onchange="filterTable()">
+      <option value="all">All</option>
+      <option value="intent">Buyer Intent Only</option>
+      <option value="newhire">Recently Hired Only</option>
+    </select>
+    <input type="text" id="filter-search" placeholder="Search name/company..." oninput="filterTable()">
+  </div>
+
+  <div class="table-wrap">
+    <table id="prospect-table">
+      <thead>
+        <tr>
+          <th onclick="sortTable(0)">Pri</th>
+          <th onclick="sortTable(1)">Name</th>
+          <th onclick="sortTable(2)">Title</th>
+          <th onclick="sortTable(3)">Company</th>
+          <th>Tags</th>
+          <th onclick="sortTable(5)">Vertical</th>
+          <th>ICP</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody id="prospect-tbody">
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 2: COMPANY RESEARCH -->
+<div id="tab-companies" class="tab-content">
+  <h2>Company Research Deep Dives</h2>
+  <div class="filters">
+    <label>Show:</label>
+    <select id="filter-company-tier" onchange="filterCompanies()">
+      <option value="all">All Tiers</option>
+      <option value="hot">Hot (5) Only</option>
+      <option value="warm">Warm (4) Only</option>
+      <option value="standard">Standard (3) Only</option>
+    </select>
+  </div>
+  <div id="company-cards" class="company-grid"></div>
+</div>
+
+<!-- TAB 3: OUTREACH ANGLES -->
+<div id="tab-angles" class="tab-content">
+  <h2>Outreach Angles by Company</h2>
+  <div id="angle-cards" class="company-grid"></div>
+</div>
+
+<!-- TAB 4: KEY INSIGHTS -->
+<div id="tab-insights" class="tab-content">
+  <h2>Key Insights for Outreach Strategy</h2>
+
+  <div class="key-insight">
+    <strong>1. AI Testing is the Bleeding Edge Pain</strong><br>
+    Salesforce (Agentforce), o9 Solutions (Neurosymbolic agents), Persefoni (PersefoniGPT), and TriNetX (Conversational AI) all face new testing challenges that Selenium/Cypress/Playwright can't solve. "AI agents require AI test automation" is the sharpest hook for these accounts.
+  </div>
+  <div class="key-insight">
+    <strong>2. Cloud Migration = Immediate 6-12 Month Window</strong><br>
+    Citizens (50% to 100% cloud), Fidelity (data pipeline modernization), NetApp (OpenShift infra), and loanDepot ($80M tech investment) all have urgent cloud migration testing pain. Self-healing is gold here because infrastructure changes break everything.
+  </div>
+  <div class="key-insight">
+    <strong>3. Compliance Testing is Under-Automated</strong><br>
+    Persefoni (SEC/CSRD), TriNetX (HIPAA), Origence (state lending laws), 3E (OSHA/EPA), Optum (HIPAA), Travelers (insurance regs). Plain English test creation is the unlock - compliance teams can write test cases in English instead of learning Selenium.
+  </div>
+  <div class="key-insight">
+    <strong>4. Self-Healing Resonates Everywhere</strong><br>
+    All researched companies use Selenium or similar brittle tools. Rapid releases (NetApp 4x/year, Careem weekly, o9 30+ go-lives) mean test flakiness is costing velocity. The "90% maintenance reduction" stat is the most universally relevant proof point.
+  </div>
+  <div class="key-insight">
+    <strong>5. Microservices Testing is Hard and Growing</strong><br>
+    Careem (super-app), o9 (ERP integrations), NetApp (Trident/Kubernetes), NCR Voyix (commerce modernization). Cross-service state validation and cascading failure testing are unsolved problems for most of these teams.
+  </div>
+  <div class="key-insight">
+    <strong>6. Best Buyer Intent Signals</strong><br>
+    6 prospects flagged with buyer intent: Shashin Surkund (Fidelity), RAHUL RAJENDRA PRASAD (Citizens + recently hired), Kumarswamy Dontamsetti (Salesforce Agentforce QA), Florentin Stafie (NetApp), Shadi Sleiman (Careem), Kunal Shah (o9 Solutions). These should be worked first every morning.
+  </div>
+
+  <hr class="section-divider">
+  <h2>Proof Point Matching Guide</h2>
+  <table class="mini-table">
+    <thead>
+      <tr><th>Pain</th><th>Best Proof Point</th><th>Stat</th><th>Best For</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>CRM/Enterprise complexity</td><td>Hansard Insurance</td><td>8 weeks → 5 weeks</td><td>FinServ, insurance, long regression</td></tr>
+      <tr><td>Fintech velocity</td><td>CRED</td><td>90% coverage, 5x faster</td><td>FinTech, high-velocity teams</td></tr>
+      <tr><td>Maintenance burden</td><td>Medibuddy</td><td>2,500 tests, 50% maintenance cut</td><td>Healthcare, mid-size teams</td></tr>
+      <tr><td>Compliance + scale</td><td>Sanofi</td><td>3 days → 80 min</td><td>Pharma, healthcare, regulated</td></tr>
+      <tr><td>Small team, big impact</td><td>Spendflo</td><td>50% manual testing cut</td><td>SaaS, smaller teams</td></tr>
+      <tr><td>Enterprise productivity</td><td>Fortune 100</td><td>3X productivity increase</td><td>Enterprise, VP-level</td></tr>
+      <tr><td>Media/API complexity</td><td>Nagra DTV</td><td>2,500 tests in 8 months, 4X faster</td><td>Media, API + UI</td></tr>
+      <tr><td>Selenium replacement</td><td>Industry benchmark</td><td>70% maintenance reduction</td><td>Anyone on Selenium/Cypress</td></tr>
+    </tbody>
+  </table>
+
+  <hr class="section-divider">
+  <h2>Vertical Heat Map</h2>
+  <div class="grid-2">
+    <div class="key-insight">
+      <strong>FinServ / FinTech (Hottest)</strong><br>
+      Fidelity, Citizens, Origence, loanDepot, Travelers, BNY, First Community CU, Banamex, Rate<br>
+      <em>9 prospects, compliance-heavy, big budgets, cloud migration pain</em>
+    </div>
+    <div class="key-insight">
+      <strong>Healthcare (High Priority)</strong><br>
+      TriNetX, Optum/UHG, Sanofi (existing)<br>
+      <em>3 companies, HIPAA pain, AI adoption, massive scale</em>
+    </div>
+    <div class="key-insight">
+      <strong>Tech / SaaS (Broad)</strong><br>
+      Salesforce, o9 Solutions, NetApp, NCR Voyix, Careem, Harbor.ai, Myridius, OPAQUE, VUI, Xplor<br>
+      <em>10+ prospects, diverse pain points, AI testing bleeding edge</em>
+    </div>
+    <div class="key-insight">
+      <strong>Climate / EHS / Sustainability</strong><br>
+      Persefoni, 3E<br>
+      <em>2 companies, compliance-first, growing fast</em>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+  <h2>Exclusions & Flags</h2>
+  <table class="mini-table">
+    <thead><tr><th>Prospect</th><th>Reason</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td>Chris Farrell (Sanofi)</td><td class="badge badge-existing">Existing Customer</td><td>Use for referrals/case study only</td></tr>
+      <tr><td>Bill Crider (AMETEK)</td><td class="badge badge-weak">Manufacturing QA</td><td>Exclude - not software QA</td></tr>
+      <tr><td>Steven Halliday (Anomatic)</td><td class="badge badge-weak">Packaging company</td><td>Exclude - manufacturing QA</td></tr>
+      <tr><td>Greg Crow (Cummings Aero)</td><td class="badge badge-weak">Aerospace mfg</td><td>Exclude - manufacturing QA</td></tr>
+      <tr><td>Matthew Smith (Olgam Life)</td><td class="badge badge-weak">Regulatory Affairs</td><td>Exclude - not software QA</td></tr>
+      <tr><td>Mauricio La Borde (Mini-Circuits)</td><td class="badge badge-weak">Electronics mfg</td><td>Exclude - hardware QA</td></tr>
+      <tr><td>Mark Heravi (Modus Advanced)</td><td class="badge badge-weak">Manufacturing</td><td>Exclude - manufacturing QA</td></tr>
+      <tr><td>Julian Gorfajn (Metalenz)</td><td class="badge badge-weak">Hardware/Optics</td><td>Exclude - hardware company</td></tr>
+      <tr><td>Mariana Cuyler (Club FSW)</td><td class="badge badge-weak">Education/Cyber</td><td>Exclude - educational institution</td></tr>
+      <tr><td>DiiZen company</td><td class="badge badge-lower">Cannot verify</td><td>Verify spelling with original source</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+// =====================================================
+// DATA
+// =====================================================
+const prospects = [
+  {id:1,name:"Kumarswamy Dontamsetti",title:"Director, AI Cloud Quality Engineering (Agentforce)",company:"Salesforce",location:"San Francisco Bay Area",intent:true,newHire:false,icp:"strong",persona:"QA",vertical:"Tech/SaaS",priority:5,note:"Agentforce AI testing - bleeding edge pain. Salesforce 80K+ employees."},
+  {id:2,name:"RAHUL RAJENDRA PRASAD",title:"Director - Platform & SRE Operations",company:"Citizens",location:"Charlotte Metro",intent:true,newHire:true,icp:"strong",persona:"VP Eng",vertical:"Banking/FinServ",priority:5,note:"Buyer intent + recently hired. Citizens mid-cloud migration (50%→100%), scaling 750→1000 engineers."},
+  {id:3,name:"Shashin Surkund",title:"Vice President, Big Data Platforms",company:"Fidelity Investments",location:"Cary, North Carolina",intent:true,newHire:false,icp:"strong",persona:"VP Eng",vertical:"FinServ",priority:5,note:"Buyer intent. Fidelity building next-gen data pipeline. Uses Selenium/Playwright/TestNG."},
+  {id:4,name:"Florentin Stafie",title:"Vice President of Software Engineering",company:"NetApp",location:"Redmond, Washington",intent:true,newHire:false,icp:"strong",persona:"VP Eng",vertical:"Tech/Storage",priority:5,note:"Buyer intent. NetApp 4 releases/year. Multi-protocol storage testing complexity."},
+  {id:5,name:"Shadi Sleiman",title:"Vice President of Software Engineering",company:"Careem",location:"San Francisco Bay Area",intent:true,newHire:false,icp:"strong",persona:"VP Eng",vertical:"Tech/Ride-sharing",priority:5,note:"Buyer intent. Careem super-app strategy. Microservices + mobile + payments testing."},
+  {id:6,name:"Kunal Shah",title:"Senior Vice President, Software Engineering",company:"o9 Solutions",location:"United States",intent:true,newHire:false,icp:"strong",persona:"VP Eng",vertical:"Tech/SaaS/Supply Chain",priority:5,note:"Buyer intent. o9 had 30+ go-lives in 2025, +60% YoY growth. Neurosymbolic AI agents."},
+  {id:7,name:"Tauhid Khan",title:"Director, QA, Test Automation, Release Management",company:"Optum/UHG",location:"Stone Mountain, Georgia",intent:false,newHire:false,icp:"strong",persona:"QA",vertical:"Healthcare",priority:5,note:"Optum 300K+ employees. AI Marketplace launch 2025. Sandbox testing environments."},
+  {id:8,name:"Valerie Terrell",title:"Director of Quality Engineering",company:"Travelers",location:"Stone Mountain, Georgia",intent:false,newHire:false,icp:"strong",persona:"QA",vertical:"Insurance/FinServ",priority:4,note:"Travelers $48.4B revenue. Salesforce FSC migration. Einstein AI rollout."},
+  {id:9,name:"David Muczynski",title:"Vice President of Software Engineering",company:"Persefoni",location:"St. Petersburg, Florida",intent:false,newHire:false,icp:"strong",persona:"VP Eng",vertical:"ClimateTech/SaaS",priority:4,note:"Persefoni $194M Series C. PersefoniGPT AI copilot. Compliance testing (SEC/CSRD)."},
+  {id:10,name:"Pathik Desai",title:"Head of Global IT",company:"TriNetX",location:"Greater Boston",intent:false,newHire:false,icp:"moderate",persona:"VP Eng",vertical:"Healthcare/Data",priority:4,note:"TriNetX 281 employees. 65+ healthcare system integrations. HIPAA compliance."},
+  {id:11,name:"Theresa Naramore",title:"Director of Quality Assurance",company:"Spectrio",location:"Columbia, South Carolina",intent:false,newHire:false,icp:"strong",persona:"QA",vertical:"Tech/SaaS",priority:4,note:"Spectrio 434 employees, 150K+ locations, $47.7M revenue. SOC 2 certified."},
+  {id:12,name:"Abe J.",title:"Senior Vice President of Software Engineering",company:"Origence",location:"Laguna Niguel, California",intent:false,newHire:false,icp:"moderate",persona:"VP Eng",vertical:"FinTech",priority:4,note:"Origence $53B transaction volume 2024. 1,100+ credit unions. Hiring aggressively."},
+  {id:13,name:"Debbie Almeida",title:"Director of IT Quality Assurance",company:"loanDepot",location:"Unknown",intent:false,newHire:false,icp:"strong",persona:"QA",vertical:"FinTech",priority:4,note:"loanDepot $6.7B originations Q2 2025 (30% QoQ growth). $80M tech investment."},
+  {id:14,name:"Jayashree Karnam",title:"Director Quality Engineering",company:"NCR Voyix",location:"Atlanta, Georgia",intent:false,newHire:false,icp:"strong",persona:"QA",vertical:"Tech/Retail",priority:4,note:"NCR Voyix 14K employees, $2.7B revenue. Uses Katalon, Selenium, Playwright, Cucumber."},
+  {id:15,name:"Tim Attuquayefio",title:"Director - QA Software Engineering and Development",company:"2K",location:"Unknown",intent:false,newHire:false,icp:"strong",persona:"QA",vertical:"Gaming/Tech",priority:4,note:"2K Games migrating Fusion→UE5. 6+ platforms (console, mobile, PC, VR)."},
+  {id:16,name:"Sarat Ramineni",title:"Head of Quality Engineering & DevOps",company:"DiiZen",location:"United States",intent:false,newHire:false,icp:"strong",persona:"QA",vertical:"Tech",priority:3,note:"Company could not be verified. Verify spelling before outreach."},
+  {id:17,name:"Vishal Tiwari",title:"Director of Quality Assurance",company:"3E",location:"Charlottesville, Virginia",intent:false,newHire:false,icp:"strong",persona:"QA",vertical:"SaaS",priority:3,note:"3E serves 5,000+ customers. OSHA/EPA compliance testing. Acquired Quick-FDS, Chemycal, Toxnot."},
+  {id:18,name:"Aditi Agrawal",title:"Director, Quality Engineering & Automation",company:"Myridius",location:"Unknown",intent:false,newHire:false,icp:"strong",persona:"QA",vertical:"Tech",priority:3,note:"Myridius is a QA consulting firm. May be self-sufficient. Position as accelerator."},
+  {id:19,name:"Veeresh Erched",title:"Vice President of Software Engineering",company:"Amadeus North America",location:"Unknown",intent:false,newHire:false,icp:"strong",persona:"VP Eng",vertical:"Travel Tech",priority:3,note:"Amadeus 270+ NA employees, 23K global. Travel tech integrations."},
+  {id:20,name:"Chuck Smith",title:"Director Quality Engineering",company:"Aventiv Technologies",location:"Flemington, New Jersey",intent:false,newHire:false,icp:"strong",persona:"QA",vertical:"Tech",priority:3,note:"Aventiv $360M funding (Apr 2025). Securus One platform launch. 1,800+ corrections agencies."},
+  {id:21,name:"Izzie Álvarez",title:"Director of Quality Engineering",company:"Harbor.ai",location:"Unknown",intent:false,newHire:false,icp:"strong",persona:"QA",vertical:"Tech/AI",priority:3,note:"Harbor.ai early-stage AI platform. Containerized testing. Watch for Series A/B."},
+  {id:22,name:"Kowsick Venkatachalapathi",title:"Vice President of Software Development",company:"BNY",location:"New York City Metropolitan Area",intent:false,newHire:false,icp:"moderate",persona:"VP Eng",vertical:"Banking/FinServ",priority:3,note:"BNY large bank. Moderate fit - may have mature testing infrastructure."},
+  {id:23,name:"Yoram Tal",title:"Vice President of Software Engineering",company:"OPAQUE Systems",location:"Unknown",intent:false,newHire:false,icp:"moderate",persona:"VP Eng",vertical:"Tech/Security",priority:3,note:"Confidential computing company. Niche security focus."},
+  {id:24,name:"Ivan Fajardo",title:"SVP Software Engineering Head",company:"Banamex",location:"Unknown",intent:false,newHire:false,icp:"moderate",persona:"VP Eng",vertical:"Banking/FinServ",priority:3,note:"Mexican bank. May not be US-based. Verify location."},
+  {id:25,name:"Nag R.",title:"Senior Vice President Software Engineering",company:"First Community Credit Union",location:"Greater Houston",intent:false,newHire:false,icp:"moderate",persona:"VP Eng",vertical:"FinServ",priority:3,note:"Small credit union. Moderate fit."},
+  {id:26,name:"Dan Cowles",title:"Senior Vice President of Software Engineering",company:"Rate",location:"Irvine, California",intent:false,newHire:false,icp:"moderate",persona:"VP Eng",vertical:"FinTech/Mortgage",priority:3,note:"Mortgage fintech. Similar space to loanDepot."},
+  {id:27,name:"Troy Thompson",title:"Sr. Manager of Software Engineering",company:"Xplor Technologies",location:"Denver Metropolitan Area",intent:false,newHire:false,icp:"moderate",persona:"VP Eng",vertical:"Tech/SaaS",priority:3,note:"SaaS platform for SMBs. Mid-size tech company."},
+  {id:28,name:"Avi Afik",title:"Director of QA",company:"BERA",location:"Unknown",intent:false,newHire:false,icp:"strong",persona:"QA",vertical:"Tech/SaaS",priority:2,note:"BERA acquired by Harris Poll (July 2024). In integration phase. Wait 12+ months."},
+  {id:29,name:"Charles Teague",title:"Director of Quality Assurance",company:"Noetic",location:"Unknown",intent:false,newHire:false,icp:"strong",persona:"QA",vertical:"Tech",priority:2,note:"Noetic acquired by Rapid7 (July 2024). Now using Rapid7 QA infrastructure."},
+  {id:30,name:"Chris Farrell",title:"Head of Quality",company:"Sanofi",location:"Pelham, New Hampshire",intent:false,newHire:false,icp:"strong",persona:"QA",vertical:"Pharma",priority:0,note:"⚠ EXISTING TESTSIGMA CUSTOMER. Do NOT cold outreach. Use for referrals only."},
+  {id:31,name:"Mehool Patel",title:"VP Software Engineering",company:"VUI, Inc.",location:"Unknown",intent:false,newHire:false,icp:"moderate",persona:"VP Eng",vertical:"Tech",priority:2,note:"Limited company info available."},
+  {id:32,name:"Scott Holmecki",title:"Vice President of Product Engineering & Quality",company:"CREO Group",location:"Unknown",intent:false,newHire:false,icp:"moderate",persona:"VP Eng",vertical:"Unknown",priority:2,note:"Limited company info."},
+  {id:33,name:"Norman Paulsen",title:"VP of Software Engineering",company:"Accion Group",location:"Unknown",intent:false,newHire:false,icp:"moderate",persona:"VP Eng",vertical:"Unknown",priority:2,note:"Limited company info."},
+  {id:34,name:"Jeremiah Clark",title:"Director of Quality Assurance",company:"Unknown",location:"Unknown",intent:false,newHire:false,icp:"strong",persona:"QA",vertical:"Unknown",priority:2,note:"Company unknown. Needs further research."},
+  {id:35,name:"Adrian (Ray) Morgan",title:"Unknown",company:"Unknown",location:"Unknown",intent:false,newHire:false,icp:"unknown",persona:"Unknown",vertical:"Unknown",priority:1,note:"Insufficient data."},
+  // Weak ICP - excluded from active outreach
+  {id:36,name:"Bill Crider",title:"Director Of Quality and Sustaining Engineering",company:"AMETEK Aerospace and Defense",location:"Tulsa, Oklahoma",intent:false,newHire:false,icp:"weak",persona:"QA",vertical:"Aerospace",priority:0,note:"Manufacturing QA, not software. EXCLUDE."},
+  {id:37,name:"Steven Halliday",title:"Director of Quality Assurance",company:"Anomatic Corporation",location:"Grove City, Ohio",intent:false,newHire:true,icp:"weak",persona:"QA",vertical:"Manufacturing",priority:0,note:"Packaging company. Manufacturing QA. EXCLUDE."},
+  {id:38,name:"Greg Crow",title:"Corporate Director of Quality Assurance",company:"Cummings Aerospace",location:"Unknown",intent:false,newHire:false,icp:"weak",persona:"QA",vertical:"Aerospace",priority:0,note:"Aerospace manufacturing. EXCLUDE."},
+  {id:39,name:"Matthew Smith",title:"Head of Quality Assurance and Regulatory Affairs",company:"Olgam Life",location:"Unknown",intent:false,newHire:false,icp:"weak",persona:"QA",vertical:"Pharma",priority:0,note:"Regulatory affairs focus. Not software QA. EXCLUDE."},
+  {id:40,name:"Mauricio La Borde",title:"Director of Quality and Engineering",company:"Mini-Circuits",location:"Unknown",intent:false,newHire:false,icp:"weak",persona:"QA",vertical:"Electronics",priority:0,note:"Electronics hardware manufacturer. EXCLUDE."},
+  {id:41,name:"Mark Heravi",title:"Head of Quality",company:"Modus Advanced",location:"Unknown",intent:false,newHire:false,icp:"weak",persona:"QA",vertical:"Manufacturing",priority:0,note:"Manufacturing company. EXCLUDE."},
+  {id:42,name:"Julian Gorfajn",title:"VP of Software Engineering",company:"Metalenz",location:"Unknown",intent:false,newHire:false,icp:"weak",persona:"VP Eng",vertical:"Hardware/Optics",priority:0,note:"Hardware optics company. EXCLUDE."},
+  {id:43,name:"Mariana Cuyler",title:"Vice President Cyber",company:"Club FSW / Florida SouthWestern",location:"Unknown",intent:false,newHire:false,icp:"weak",persona:"VP Eng",vertical:"Education/Cyber",priority:0,note:"Cybersecurity at educational institution. EXCLUDE."}
+];
+
+// Company research data
+const companies = [
+  {
+    name: "Salesforce",
+    tier: "hot",
+    priority: 5,
+    employees: "80,000+",
+    revenue: "Public (CRM)",
+    vertical: "Tech/SaaS",
+    hq: "San Francisco, CA",
+    prospects: ["Kumarswamy Dontamsetti"],
+    techStack: ["Apex", "Lightning Web Components", "Jest", "REST/SOAP APIs", "Einstein AI", "Agentforce", "Flow Automation"],
+    testingTools: ["Apex Testing (75% coverage mandate)", "Jest for LWC", "Agentforce Testing Center", "Synthetic scenario generation"],
+    painPoints: [
+      "Agentforce AI agent testing - multi-turn conversation validation, guardrail testing, bias/hallucination detection",
+      "75% code coverage mandate doesn't apply to LLM behavior testing",
+      "AI-based testing adoption jumped 7% to 16% (2023-2025)",
+      "Need to test AI agent actions across Salesforce (create records, trigger flows, update data)"
+    ],
+    recentNews: "Agentforce launched as core platform. Testing Center released for synthetic scenarios. Einstein Trust Layer enhancements. AI testing adoption doubling year-over-year.",
+    bestProofPoint: "Agentforce Testing Center + Gartner 7%→16% AI testing adoption",
+    fitRating: "VERY HIGH + STRATEGIC",
+    fitReason: "THE company struggling with AI agent testing at scale. Traditional approaches don't work for conversation validation, guardrail testing, and bias detection."
+  },
+  {
+    name: "o9 Solutions",
+    tier: "hot",
+    priority: 5,
+    employees: "500+",
+    revenue: "Private ($1B+ target)",
+    vertical: "Tech/SaaS/Supply Chain",
+    hq: "Dallas, TX",
+    prospects: ["Kunal Shah"],
+    techStack: ["Enterprise Knowledge Graph (EKG)", "Graph-Cube", "Neurosymbolic AI", "Batch ETL + Real-time APIs", "SAP/Salesforce/Oracle/JD Edwards integrations"],
+    testingTools: ["JMeter", "Postman", "Selenium", "Robot Framework"],
+    painPoints: [
+      "Testing autonomous AI planning agents that make multi-step decisions",
+      "Graph database testing - validating traversals, relationships, query correctness",
+      "5+ ERP integration testing (SAP, Salesforce, Oracle, JD Edwards, NetSuite)",
+      "30+ customer go-lives in 2025 alone creating massive test scale pressure",
+      "+60% YoY new customer acquisition"
+    ],
+    recentNews: "30+ go-lives in 2025. Neurosymbolic AI agents launched. Gartner Customers' Choice 2025. +60% YoY growth.",
+    bestProofPoint: "Fortune 100 3x productivity + Salesforce Agentforce parallel",
+    fitRating: "VERY HIGH",
+    fitReason: "Rapid growth + complex AI agent + graph database + ERP integrations = testing bottleneck. Traditional tools can't validate planning agent logic."
+  },
+  {
+    name: "Citizens Financial Group",
+    tier: "hot",
+    priority: 5,
+    employees: "~20,000+",
+    revenue: "Public",
+    vertical: "Banking/FinServ",
+    hq: "Providence, RI",
+    prospects: ["RAHUL RAJENDRA PRASAD"],
+    techStack: ["AWS", "Azure (hybrid cloud)", "Selenium", "Cucumber", "Test Complete", "EggPlant", "Appium", "Perfecto", "ReadyAPI", "Informatica", "DevSecOps CI/CD"],
+    testingTools: ["Selenium", "Cucumber", "Test Complete", "EggPlant", "Appium", "Perfecto", "ReadyAPI"],
+    painPoints: [
+      "Cloud migration testing (50%→100% cloud by end of 2025) across hybrid AWS/Azure",
+      "Scaling engineering team 750→1,000+ while QA can't keep pace",
+      "Opened Cognizant testing hub in India - explicit outsourcing of testing",
+      "Microsoft Copilot rollout to 1,000 engineers means faster code, same QA bottleneck",
+      "Legacy-to-cloud test translation - tests break during migration"
+    ],
+    recentNews: "Bank of the Year (The Banker Dec 2025). 50% cloud migration crossed mid-2024. Cognizant Hyderabad hub for testing. Microsoft Copilot to 1,000 engineers.",
+    bestProofPoint: "Sanofi 3 days → 80 minutes (compliance + cloud migration parallel)",
+    fitRating: "VERY HIGH - Immediate need",
+    fitReason: "Mid-transformation with aggressive timeline, scaling 750→1000+ engineers, explicitly investing in testing outsourcing. Current Selenium approach won't scale."
+  },
+  {
+    name: "Optum/UHG",
+    tier: "hot",
+    priority: 5,
+    employees: "300,000+",
+    revenue: "$200B+ (parent UHG)",
+    vertical: "Healthcare",
+    hq: "Minnetonka, MN",
+    prospects: ["Tauhid Khan"],
+    techStack: ["Tableau", "Microsoft Clarity", "Automation Anywhere (RPA)", "Redgate", "TypeScript", "AWS/Azure (likely)", "Custom AI models"],
+    testingTools: ["Likely HP UFT/Micro Focus", "RPA testing tools", "Custom frameworks"],
+    painPoints: [
+      "Healthcare compliance (HIPAA, SOC2, audits) = extensive manual testing",
+      "Claims processing criticality - any regression costs millions",
+      "AI Marketplace launched 2025 - sandbox testing for third-party AI integrations",
+      "Massive scale: 300K+ employees, millions of claims/year",
+      "Optum Real AI system in pilot/testing phase"
+    ],
+    recentNews: "AI Marketplace launch 2025. Optum Real claims processing AI in pilot. Leader in Everest Group RCM PEAK Matrix. Sandbox environments for AI integration testing.",
+    bestProofPoint: "Sanofi 3 days → 80 minutes (healthcare compliance parallel)",
+    fitRating: "VERY HIGH (HOT)",
+    fitReason: "Massive enterprise with heavy AI investment, healthcare compliance, and emerging sandbox testing pain. Self-healing test automation is a perfect fit."
+  },
+  {
+    name: "Fidelity Investments",
+    tier: "hot",
+    priority: 5,
+    employees: "35,000+",
+    revenue: "Private",
+    vertical: "FinServ",
+    hq: "Boston, MA",
+    prospects: ["Shashin Surkund"],
+    techStack: ["Hadoop 3.4.2+", "Apache Spark 4.0.1+", "AWS (S3, EC2)", "Selenium", "Playwright", "TestNG", "Cucumber", "JUnit", "Jenkins", "Git/GitHub"],
+    testingTools: ["Selenium", "Playwright", "TestNG", "Cucumber", "JUnit", "Jenkins"],
+    painPoints: [
+      "Data pipeline testing complexity across Hadoop/Spark distributed systems",
+      "Selenium/Playwright maintenance across multiple platforms",
+      "Jenkins pipeline scaling and parallel test execution",
+      "Multiple QA hiring openings suggest coverage gaps",
+      "Cross-platform testing across data sources and integrations"
+    ],
+    recentNews: "Heavy investment in data pipeline modernization. Cloud-first architecture migration (AWS). Active hiring for QA/testing roles across multiple locations.",
+    bestProofPoint: "Hansard 8 weeks → 5 weeks (insurance, complex data pipelines)",
+    fitRating: "HIGH",
+    fitReason: "Scale and maintenance challenges with legacy Selenium/Playwright. AI self-healing would reduce brittle tests in data pipeline testing."
+  },
+  {
+    name: "NetApp",
+    tier: "hot",
+    priority: 5,
+    employees: "10,000+",
+    revenue: "Public",
+    vertical: "Tech/Storage",
+    hq: "San Jose, CA",
+    prospects: ["Florentin Stafie"],
+    techStack: ["ONTAP", "Trident (Kubernetes)", "Red Hat OpenShift", "NFS/SMB/FC/NVMe/iSCSI protocols", "AWS/GCP/Azure", "FlexClone", "AI Data Engine"],
+    testingTools: ["QA Automation Engineer roles", "Custom storage testing tools", "OpenShift Virtualization for test environments"],
+    painPoints: [
+      "4 releases per year (like Kubernetes) requires fast test automation",
+      "Multi-protocol testing (NFS, SMB, FC, NVMe/TCP) simultaneously",
+      "HA failover and distributed system testing complexity",
+      "New AI Data Engine (2025) creates new testing liability",
+      "Trident Kubernetes integration edge cases"
+    ],
+    recentNews: "Trident 25.10 release. ONTAP AI (AFX) disaggregated storage. AI Data Engine launched. OpenShift Virtualization for test infrastructure. NVIDIA integration.",
+    bestProofPoint: "Nagra DTV 2,500 tests in 8 months, 4X faster",
+    fitRating: "HIGH",
+    fitReason: "Complex distributed systems + rapid 4-release/year cycle = test maintenance nightmare. Self-healing catches assertion drift automatically."
+  },
+  {
+    name: "Careem",
+    tier: "hot",
+    priority: 5,
+    employees: "2,000+",
+    revenue: "Private ($3.1B valuation)",
+    vertical: "Tech/Ride-sharing",
+    hq: "Dubai, UAE (SF Bay Area eng)",
+    prospects: ["Shadi Sleiman"],
+    techStack: ["Java", "AWS", "Redis", "Google Cloud", "Microservices", "Sofy", "Maestro", "Postman", "REST-assured", "JMeter", "K6", "Cucumber", "Selenium", "Appium", "Jenkins", "Bitrise"],
+    testingTools: ["Sofy", "Maestro", "Postman", "Selenium", "Appium", "Cucumber", "JMeter", "K6"],
+    painPoints: [
+      "Super-app strategy: rides + food + payments + financial services must work together",
+      "Microservices interdependencies - payment failures cascade",
+      "Mobile-first testing across iOS/Android (Maestro/Sofy adoption suggests Appium issues)",
+      "70+ cities, multi-language, multi-currency testing",
+      "Real-time data consistency (Redis caching, location tracking)"
+    ],
+    recentNews: "Super-app strategy acceleration. Oracle AI for invoice automation (70% reduction). Hiring Director of QA. Aggressive feature releases.",
+    bestProofPoint: "CRED 90% regression, 5x faster (super-app parallel)",
+    fitRating: "HIGH",
+    fitReason: "Super-app cross-service integration testing at scale. Microservices + payments = brittle tests. Director of QA hiring signals testing infrastructure overhaul."
+  },
+  {
+    name: "Travelers Insurance",
+    tier: "warm",
+    priority: 4,
+    employees: "30,000+",
+    revenue: "$48.4B",
+    vertical: "Insurance/FinServ",
+    hq: "Hartford, CT",
+    prospects: ["Valerie Terrell"],
+    techStack: ["Salesforce FSC", "MuleSoft APIs", "Einstein AI", "Agentforce", "Policy administration systems"],
+    testingTools: ["Likely Selenium", "Salesforce Apex testing", "TestNG (probable)"],
+    painPoints: [
+      "Salesforce FSC implementation requires extensive regression testing",
+      "CRM migrations carry high data integrity risk",
+      "Frequent Salesforce updates demand rapid test creation",
+      "Multi-channel testing (web, mobile, agent portals)",
+      "Insurance compliance and automated workflow testing"
+    ],
+    recentNews: "Moving to Salesforce FSC for CRM. Einstein AI automation. Agentforce integration for claims optimization. AI-powered personalization.",
+    bestProofPoint: "Hansard Insurance 8 weeks → 5 weeks",
+    fitRating: "WARM (4)",
+    fitReason: "Large enterprise, heavy Salesforce reliance, regulated industry. Ongoing CRM testing demand."
+  },
+  {
+    name: "Persefoni",
+    tier: "warm",
+    priority: 4,
+    employees: "Not disclosed",
+    revenue: "Private ($194M funded)",
+    vertical: "ClimateTech/SaaS",
+    hq: "New York, NY",
+    prospects: ["David Muczynski"],
+    techStack: ["Cloud SaaS", "Custom Persefoni LLM", "OpenAI/GPT", "ERP/financial system APIs"],
+    testingTools: ["Not disclosed (likely Selenium, API testing)"],
+    painPoints: [
+      "AI output validation - PersefoniGPT copilot needs accuracy testing for compliance reports",
+      "Multi-source data reconciliation (utility bills, supply chain, ERP, financial data)",
+      "Regulatory compliance testing (SEC, CSRD, GRI standards)",
+      "Audit trail integrity for emissions reporting",
+      "Series C growth + Diligent customer acquisition = scaling QA fast"
+    ],
+    recentNews: "Series C Extension $23M (Apr 2025). Acquired Diligent carbon accounting customers. Targeting profitability H2 2025. PersefoniGPT, analytics builder on roadmap.",
+    bestProofPoint: "Sanofi 3 days → 80 minutes (compliance parallel)",
+    fitRating: "HIGH (Tier 1 in batch 1c)",
+    fitReason: "Series C growth, AI-driven platform, compliance complexity. AI output testing is critical for SEC/ESG reporting accuracy."
+  },
+  {
+    name: "TriNetX",
+    tier: "warm",
+    priority: 4,
+    employees: "281",
+    revenue: "Private",
+    vertical: "Healthcare/Data",
+    hq: "Cambridge, MA",
+    prospects: ["Pathik Desai"],
+    techStack: ["OMOP/FHIR/HL7", "HIPAA-compliant cloud", "Custom EHR connectors", "RESTful APIs", "Conversational AI (2026)"],
+    testingTools: ["Healthcare-specific testing (implied)", "Data validation testing"],
+    painPoints: [
+      "65+ healthcare system integrations with different EHR vendors",
+      "HIPAA compliance validation and PHI masking accuracy",
+      "Federated data consistency across disparate sources",
+      "New conversational AI interface requires new testing scenarios",
+      "Most cited EHR dataset - data accuracy is mission-critical"
+    ],
+    recentNews: "Conversational AI interface launch early 2026. Fujitsu joint venture for Japan expansion. Top 25 Healthcare Software Companies 2025. Active hiring.",
+    bestProofPoint: "Medibuddy 2,500 tests, 50% maintenance cut",
+    fitRating: "HIGH (Tier 1 in batch 1c)",
+    fitReason: "Healthcare scale, 65+ system integrations, HIPAA compliance, new AI interface. Data validation testing likely hand-rolled."
+  },
+  {
+    name: "Spectrio",
+    tier: "warm",
+    priority: 4,
+    employees: "~434",
+    revenue: "$47.7M",
+    vertical: "Digital Signage",
+    hq: "Multi-location",
+    prospects: ["Theresa Naramore"],
+    techStack: ["Cloud SaaS", "Real-time analytics", "Multi-screen distribution", "SOC 2 certified", "APIs"],
+    testingTools: ["Not disclosed"],
+    painPoints: [
+      "150K+ locations = 150K potential failure points",
+      "Video/audio streaming quality assurance across locations",
+      "Real-time analytics accuracy validation",
+      "Cross-hardware compatibility (multiple display manufacturers)",
+      "19 acquisitions integrated into platform"
+    ],
+    recentNews: "Screenverse partnership (Oct 2025). $47.7M revenue. 150K+ locations, 21M daily visitors. SOC 2 Type II certified.",
+    bestProofPoint: "Nagra DTV 2,500 tests, 4X faster (media/streaming parallel)",
+    fitRating: "HIGH (Tier 2 in batch 1c)",
+    fitReason: "Scale (150K locations), real-time data challenges, 19 acquisitions creating integration testing complexity."
+  },
+  {
+    name: "Origence",
+    tier: "warm",
+    priority: 4,
+    employees: "Growing",
+    revenue: "Private ($53B transaction vol)",
+    vertical: "FinTech/Lending",
+    hq: "Irvine, CA",
+    prospects: ["Abe J."],
+    techStack: ["C#", "SQL", "MongoDB", "NoSQL", "Figma", "Cross-platform mobile", "RESTful APIs"],
+    testingTools: ["Not disclosed (likely xUnit/Selenium)"],
+    painPoints: [
+      "Complex lending workflow testing (application → underwriting → approval → disbursement)",
+      "1,100+ credit union integrations with different core banking systems",
+      "State-level lending law compliance variations",
+      "Performance under $53B annual transaction volume",
+      "Aggressive engineering hiring without proportional QA growth"
+    ],
+    recentNews: "Hiring spree for Sr. Software Engineers. $53B in loans closed 2024. 1,100+ credit union clients. Lending Tech Live participation.",
+    bestProofPoint: "CRED 90% regression, 5x faster",
+    fitRating: "HIGH (Tier 1 in batch 1c)",
+    fitReason: "Aggressive hiring, massive transaction volume, fintech scale. Engineering growing faster than QA can keep up."
+  },
+  {
+    name: "loanDepot",
+    tier: "warm",
+    priority: 4,
+    employees: "5-6K",
+    revenue: "Public",
+    vertical: "FinTech/Mortgage",
+    hq: "Irvine, CA",
+    prospects: ["Debbie Almeida"],
+    techStack: ["Proprietary mello LOS", "Node.js/JavaScript (likely)", "Microservices", "AI (recent push)"],
+    testingTools: ["Not confirmed (likely Jest, Cypress, Postman)"],
+    painPoints: [
+      "Rapid feature releases with 8-day close timeline",
+      "Loan origination workflow integrations (credit bureaus, underwriting, docs)",
+      "$6.7B originations/quarter = load/stress testing need",
+      "State-specific lending regulation compliance",
+      "$80M tech investment creating rapid development velocity"
+    ],
+    recentNews: "Q2 2025: $6.7B originations (30% QoQ growth). CEO returned. New CDO + CIO hired. $80M tech investment for smartloan.",
+    bestProofPoint: "CRED 90% coverage, 5x faster",
+    fitRating: "WARM (4)",
+    fitReason: "Fast-growing fintech, compliance-heavy, new tech leadership signals QA modernization."
+  },
+  {
+    name: "NCR Voyix",
+    tier: "warm",
+    priority: 4,
+    employees: "14,000",
+    revenue: "$2.7B",
+    vertical: "Retail/Payments",
+    hq: "Atlanta, GA",
+    prospects: ["Jayashree Karnam"],
+    techStack: ["Cloud-to-edge microservices", "Worldpay integration", "AI-accelerated tools (2026)", "API-driven omnichannel"],
+    testingTools: ["Katalon Studio", "Playwright", "Selenium", "Cucumber", "Practitest", "Jira", "Jenkins", "GitHub Actions", "GCP"],
+    painPoints: [
+      "Massive microservices modernization = constant refactoring and regression risk",
+      "Omnichannel retail (POS + online + mobile + payments) testing",
+      "Payments testing is high-stakes (fraud, PCI compliance)",
+      "Deployed in 1000s of retail/restaurant locations globally",
+      "Managing legacy POS code AND new microservices architecture"
+    ],
+    recentNews: "Jan 2026: AI-accelerated app suite on Voyix Commerce Platform. Microservices modernization complete. Worldpay partnership. Morrisons implementation.",
+    bestProofPoint: "Sanofi 3 days → 80 min (compliance + modernization parallel)",
+    fitRating: "WARM (4)",
+    fitReason: "Large enterprise, active modernization, payments criticality. Already using modern tools - may be open to better alternatives."
+  },
+  {
+    name: "2K Games",
+    tier: "warm",
+    priority: 4,
+    employees: "100+ (2K Vegas)",
+    revenue: "Public (TTWO parent)",
+    vertical: "Gaming",
+    hq: "Las Vegas, NV",
+    prospects: ["Tim Attuquayefio"],
+    techStack: ["Unreal Engine 5 (migrating from Fusion)", "C++", "Python", "PS5/Xbox/Switch/PC/Mobile/VR"],
+    testingTools: ["UE5 Automation Test Framework", "Proprietary QA tools", "Cross-platform test management"],
+    painPoints: [
+      "Engine migration (Fusion → UE5) = test infrastructure reset",
+      "6+ different platforms with different performance profiles",
+      "Graphics-heavy testing, framerate validation across hardware",
+      "UE5 Automation Test Framework is new to team"
+    ],
+    recentNews: "Abandoning Fusion Engine for UE5 (Mafia: The Old Country launching mid-2025). Continued QA hiring.",
+    bestProofPoint: "CRED 5x faster (velocity parallel)",
+    fitRating: "WARM (Tier 2)",
+    fitReason: "Complex cross-platform, engine migration creating test rewrite. High complexity but not traditional Testsigma vertical."
+  },
+  {
+    name: "Aventiv Technologies",
+    tier: "standard",
+    priority: 3,
+    employees: "1,000-1,600",
+    revenue: "Private ($360M funded)",
+    vertical: "Gov/Corrections",
+    hq: "Carrollton, TX",
+    prospects: ["Chuck Smith"],
+    techStack: ["AWS (Batch, CloudFront, Redshift, Lambda)", "Elasticsearch", "Docker"],
+    testingTools: ["Not confirmed"],
+    painPoints: [
+      "Mission-critical corrections systems with compliance/legal implications",
+      "1,800+ agency distributed deployments",
+      "Legacy → cloud-native transition (Securus One)",
+      "Real-time communication and facility ops testing"
+    ],
+    recentNews: "$360M Platinum Equity investment (Apr 2025). Securus One + OMNILens platform launches. Cloud modernization.",
+    bestProofPoint: "Hansard regression reduction during modernization",
+    fitRating: "STANDARD (3)",
+    fitReason: "Cloud modernization + new funding = budget available. But corrections tech is not a top Testsigma vertical."
+  },
+  {
+    name: "3E Environmental",
+    tier: "standard",
+    priority: 3,
+    employees: "Not disclosed",
+    revenue: "Private ($122M LBO)",
+    vertical: "EHS/Compliance",
+    hq: "US",
+    prospects: ["Vishal Tiwari"],
+    techStack: ["Enterprise SaaS", "APIs for ERP/HRIS", "Compliance data structures"],
+    testingTools: ["Not disclosed"],
+    painPoints: [
+      "OSHA/EPA/ISO 45001 regulatory compliance testing",
+      "Multi-jurisdiction configuration (different safety regs per geography)",
+      "Complex ERP/HRIS integration testing",
+      "Acquired Quick-FDS, Chemycal, Toxnot - integration testing"
+    ],
+    recentNews: "Acquired Quick-FDS (Apr 2024), Chemycal, Toxnot. 5,000+ customers. New Mountain Capital backing.",
+    bestProofPoint: "Sanofi compliance story",
+    fitRating: "STANDARD (3)",
+    fitReason: "Compliance-heavy, 30+ year platform. May have mature but slow testing practices."
+  },
+  {
+    name: "Myridius",
+    tier: "standard",
+    priority: 3,
+    employees: "Not disclosed",
+    revenue: "Private",
+    vertical: "QA Services",
+    hq: "Iselin, NJ",
+    prospects: ["Aditi Agrawal"],
+    techStack: ["Multi-cloud (AWS/Azure/GCP)", "Standard automation tools", "Salesforce testing"],
+    testingTools: ["Industry-standard automation", "Salesforce testing", "AI/ML test automation"],
+    painPoints: [
+      "Legacy system modernization projects",
+      "AI agent testing (Agentforce batch testing, synthetic scenarios)",
+      "Multi-platform testing at scale",
+      "'Just Enough Quality' philosophy suggests efficiency focus"
+    ],
+    recentNews: "Dreamforce 2025: Speaking on AI agent testing. Active in quality automation consulting.",
+    bestProofPoint: "Position as accelerator for their consulting delivery",
+    fitRating: "STANDARD (3)",
+    fitReason: "QA consulting firm - may be self-sufficient. Position as tool that accelerates their delivery."
+  },
+  {
+    name: "Amadeus North America",
+    tier: "standard",
+    priority: 3,
+    employees: "270+",
+    revenue: "Public parent",
+    vertical: "Travel Tech",
+    hq: "Dallas, TX",
+    prospects: ["Veeresh Erched"],
+    techStack: ["AWS", "GCP", "Kubernetes", "Cloudflare", "API-driven microservices"],
+    testingTools: ["Likely Selenium, TestNG, REST API testing"],
+    painPoints: [
+      "Multi-system integration (airlines, hotels, agencies, payment processors)",
+      "Real-time transaction reliability (booking, check-in)",
+      "Global compliance across different regions",
+      "Legacy system integration with modern APIs"
+    ],
+    recentNews: "Expanding NA operations. AI-driven solutions investment. Biometric systems.",
+    bestProofPoint: "Nagra DTV parallel (media/travel tech)",
+    fitRating: "STANDARD (3)",
+    fitReason: "Mature enterprise, complex integrations. May have stable testing infrastructure but slow sales cycle."
+  },
+  {
+    name: "Harbor.ai",
+    tier: "standard",
+    priority: 3,
+    employees: "Not disclosed (small)",
+    revenue: "Private, early-stage",
+    vertical: "Tech/AI/Insurance",
+    hq: "New York, NY",
+    prospects: ["Izzie Álvarez"],
+    techStack: ["Go", "Rust", "Python", "React", "TypeScript", "Docker", "AWS", "LiteLLM"],
+    testingTools: ["Harbor (open-source agent eval framework)", "Python test framework", "Containerized testing"],
+    painPoints: [
+      "AI agent evaluation and verification",
+      "Non-deterministic AI system testing",
+      "Containerized environment consistency",
+      "Multi-model LLM testing coordination"
+    ],
+    recentNews: "Active in AI agent evaluation. Open-source Harbor framework. Early stage.",
+    bestProofPoint: "Watch for Series A/B before outreach",
+    fitRating: "STANDARD (3) - Future prospect",
+    fitReason: "Early-stage, limited QA budget. Revisit when they scale to 50+ engineers."
+  },
+  {
+    name: "BERA Brand Analytics",
+    tier: "lower",
+    priority: 2,
+    employees: "Not disclosed",
+    revenue: "Acquired",
+    vertical: "Brand Tech",
+    hq: "US",
+    prospects: ["Avi Afik"],
+    techStack: ["Cloud SaaS", "ML/AI", "Census data", "Predictive analytics"],
+    testingTools: ["Not disclosed"],
+    painPoints: ["ML model validation", "Real-time analytics accuracy", "Data panel testing"],
+    recentNews: "Acquired by Harris Poll (Stagwell) July 2024. Integrating into Harris Quest.",
+    bestProofPoint: "Wait 12+ months for integration to stabilize",
+    fitRating: "LOWER (2)",
+    fitReason: "Recently acquired. In product integration phase. May not have separate QA budget."
+  },
+  {
+    name: "Noetic Cyber",
+    tier: "lower",
+    priority: 2,
+    employees: "Not disclosed",
+    revenue: "Acquired",
+    vertical: "Cybersecurity",
+    hq: "Unknown",
+    prospects: ["Charles Teague"],
+    techStack: ["Graph database", "Cloud security platform", "Security tool integrations"],
+    testingTools: ["Security automation", "Asset discovery testing"],
+    painPoints: ["Integration reliability with security tools", "Graph DB consistency", "Automation workflow reliability"],
+    recentNews: "Acquired by Rapid7 (July 2024). Integrated into Surface Command. Data science capabilities added.",
+    bestProofPoint: "Approach Rapid7 directly if you have Rapid7 motion",
+    fitRating: "LOWER (2)",
+    fitReason: "Acquired and integrated. Using Rapid7 QA infrastructure. Not independent budget holder."
+  }
+];
+
+// Outreach angles data
+const outreachAngles = [
+  {
+    company: "Salesforce",
+    angles: [
+      {hook: "AI Agent Testing", message: "Agentforce testing is broken. You can't use Selenium to test AI agents that handle multi-turn conversations, take actions across Salesforce, and validate guardrails. Your 75% code coverage mandate doesn't apply to LLM hallucination, bias, or toxicity."},
+      {hook: "Adoption Trajectory", message: "Gartner shows AI-based test adoption jumped from 7% (2023) to 16% (2025). Leading Salesforce orgs have already figured out traditional Apex testing won't cut it for Einstein agents."}
+    ],
+    callSnippet: "Hey [Name], Rob from Testsigma. I know Salesforce is rolling out Agentforce hard. How do you test whether your agents are giving correct answers or hallucinating? Traditional Apex testing doesn't catch that. We specialize in AI agent testing. Worth a quick sync?",
+    objection: {trigger: "We have Apex testing best practices covered", response: "100%. The issue isn't Apex coverage, it's agent behavior coverage. Your code passes tests, but did the agent give a correct answer? Did it hallucinate? Apex tests can't measure that. AI testing tools can."}
+  },
+  {
+    company: "o9 Solutions",
+    angles: [
+      {hook: "Growth Velocity", message: "You're growing 60% YoY with 30+ customer go-lives in 2025 alone, and you just released Neurosymbolic AI agents. Testing autonomous planning agents that integrate with SAP, Salesforce, Oracle is exponentially harder than traditional QA."},
+      {hook: "Planning Logic Testing", message: "Traditional test automation validates API responses. But you need to validate 'did the agent choose the right SKU allocation?' That's planning logic testing, not API testing."}
+    ],
+    callSnippet: "Hey [Name], Rob from Testsigma. o9 had 30+ go-lives in 2025 and just launched Neurosymbolic AI agents. When your planning agents integrate with 5+ ERPs, how do you test that the agent chose the right allocation decision? Worth 60 seconds to compare approaches?",
+    objection: {trigger: "We have JMeter and Selenium for API/UI testing", response: "That works for data validation. The gap: you can't test 'did the AI agent choose the right plan?' with JMeter. You're validating API calls, not planning decisions. AI testing fills that gap."}
+  },
+  {
+    company: "Citizens Financial Group",
+    angles: [
+      {hook: "Cloud Migration Scale", message: "You're migrating from on-prem to hybrid cloud (AWS/Azure) and scaling from 750 to 1,000 engineers. Your Selenium tests won't survive the cloud transition."},
+      {hook: "Testing Outsourcing Alternative", message: "Citizens opened a Cognizant testing hub because they need to scale QA faster than engineering. Test automation that heals itself cuts testing costs and lets your in-house team own quality without outsourcing."}
+    ],
+    callSnippet: "Hey [Name], Rob from Testsigma. Citizens is hitting cloud migration and scaling QA from 750 to 1,000 engineers. When you migrate Selenium tests from on-prem to AWS/Azure, how much of them break? We've helped banks cut test maintenance by 70%. Worth 60 seconds?",
+    objection: {trigger: "Security/procurement takes 6 months", response: "Many banks tell us the same thing. We offer on-prem, private cloud, and hybrid. Several Fortune 500 banks run us behind their firewall. SOC2/ISO certified."}
+  },
+  {
+    company: "Optum/UHG",
+    angles: [
+      {hook: "AI Marketplace Sandbox", message: "You launched the AI Marketplace and built sandbox testing environments. Testing velocity on those sandboxes with compliance requirements becomes the bottleneck for new AI partners."},
+      {hook: "Claims Processing Scale", message: "Claims processing system criticality at 300K+ employees. Any regression in Optum Real costs millions in customer impact."}
+    ],
+    callSnippet: "Hey [Name], Rob from Testsigma. I saw you're working on the AI Marketplace initiative at Optum, building sandbox testing environments for third-party integrations. Most healthcare teams struggle with testing velocity on sandboxes with compliance requirements. We helped Sanofi cut regression from 3 days to 80 minutes. Worth 60 seconds?",
+    objection: {trigger: "Compliance/security won't allow third-party", response: "Totally fair in healthcare. Sanofi is Pharma (FDA regulated). We run on-prem, private cloud, and hybrid. Compliance built in."}
+  },
+  {
+    company: "Fidelity Investments",
+    angles: [
+      {hook: "Data Pipeline Testing", message: "Your Big Data Platform needs to test Hadoop/Spark pipelines at scale. Selenium + manual frameworks won't keep pace with data volume and transformation complexity."},
+      {hook: "NLP for Data Teams", message: "Non-technical data analysts can write test scenarios in English instead of learning Java/Selenium. That's a coverage unlock for data-heavy teams."}
+    ],
+    callSnippet: "Hey [Name], Rob from Testsigma. Fidelity's building out that next-gen data pipeline. When Hadoop or Spark configs change, how much of your test maintenance time goes into re-writing brittle tests? We've helped data-heavy teams cut maintenance by 70%.",
+    objection: {trigger: "We already have Selenium/TestNG frameworks", response: "Data teams using Selenium often hit the same wall: every change to Hadoop/Spark configs breaks tests. 90% of maintenance time is re-writing locators and assertions. We've seen teams cut that by 70% because self-healing adapts when schemas change."}
+  },
+  {
+    company: "NetApp",
+    angles: [
+      {hook: "Rapid Release Pressure", message: "Your 4-releases-per-year cadence is hitting QA scaling limits. Testing NFS, SMB, FC, NVMe/TCP simultaneously across HA scenarios is complex. Your test suite is slowing releases."},
+      {hook: "AI Data Engine Testing", message: "The new AI Data Engine (2025) requires end-to-end testing of data transformation, governance, and metadata management. That's a new testing surface."}
+    ],
+    callSnippet: "Hey [Name], Rob from Testsigma. NetApp's 4 releases a year for Trident + ONTAP is aggressive. How much of your QA cycle is spent fixing flaky storage tests versus writing new tests? We've helped teams reduce maintenance by 70%. Worth a conversation?",
+    objection: {trigger: "We have internal tools built for storage", response: "That's smart. The bottleneck is maintenance. When you release Trident 25.11, 25.12, 25.13, your test assertions drift. Self-healing catches that drift automatically."}
+  },
+  {
+    company: "Careem",
+    angles: [
+      {hook: "Super-App Integration", message: "Your super-app requires testing that rides, food, payments, and financial services work together seamlessly. Microservices architecture means flaky tests in one service break the whole flow."},
+      {hook: "Tool Consolidation", message: "You're using Maestro, Sofy, Postman, Selenium. The challenge is orchestrating them. Individual tests pass, but the integrated flow fails."}
+    ],
+    callSnippet: "Hey [Name], Rob from Testsigma. Careem is hiring a Director of QA for the super-app push. How do you test that rides, food, payments, and financial services work together without tests breaking every time one service changes? We've helped platforms your size reduce cross-service test flakiness by 70%. Worth a sync?",
+    objection: {trigger: "We're already using Maestro, Sofy, Postman, Selenium", response: "That's comprehensive. The challenge is orchestrating them. Maestro tests pass, Postman tests pass, but the integrated flow fails. We unify that integration testing."}
+  },
+  {
+    company: "Persefoni",
+    angles: [
+      {hook: "AI Output Validation", message: "You're adding AI to carbon accounting (PersefoniGPT). When AI outputs get wrong, it's not just a UI glitch, it's a compliance violation. Most teams test this manually."},
+      {hook: "Scale from Acquisition", message: "With Diligent's customer base now under your platform, that's a lot of new data schemas to test. Plain English test creation + parallel execution would let you cover new integrations without hiring 10 QA engineers."}
+    ],
+    callSnippet: "Hey [Name], Rob from Testsigma. Persefoni just closed the Series C extension and acquired Diligent's customer base. Is the QA infrastructure keeping pace with that growth, or is coverage starting to gap? Sanofi's QA team was in the same spot and cut regression from 3 days to 80 minutes. Worth a quick chat?",
+    objection: {trigger: "We're a startup, budget is tight", response: "Totally get it. One company your size (Spendflo) cut manual testing 50% and saw ROI in the first quarter."}
+  },
+  {
+    company: "TriNetX",
+    angles: [
+      {hook: "Complex Integration", message: "You're connecting 65+ healthcare systems with different EHR vendors. Each integration has different mapping rules. How much time do your engineers spend writing integration tests instead of writing integration code?"},
+      {hook: "New AI Feature Testing", message: "The conversational AI interface is powerful for researchers, but it introduces new failure modes. How are you planning to test NLP output accuracy across edge cases?"}
+    ],
+    callSnippet: "Hey [Name], Rob from Testsigma. TriNetX connects 65+ healthcare systems with different EHR platforms. That's a lot of integration testing. We helped Medibuddy automate 2,500 tests and cut maintenance 50%. Is integration testing becoming a bottleneck for your team? Worth a quick chat?",
+    objection: {trigger: "HIPAA compliance is complex", response: "We work with Sanofi (FDA regulated) and Oscar Health. Happy to walk through our compliance story. On-prem and private cloud options available."}
+  },
+  {
+    company: "Origence",
+    angles: [
+      {hook: "Scaling with Growth", message: "You're hiring engineering but probably not QA proportionally. We see this often in fintech. Plain English tests let your engineers write tests, not just devs. Would that change your hiring equation?"},
+      {hook: "Maintenance Burden", message: "With 1,100+ credit union integrations, each with slightly different behavior, your regression test suite probably breaks constantly. Self-healing fixes broken tests automatically, 90% less maintenance."}
+    ],
+    callSnippet: "Hey [Name], Rob from Testsigma. Origence closed $53B in loans last year with 1,100+ credit union integrations. That's a lot of different systems to test. CRED built 90% regression coverage and runs it 5x faster. Is testing keeping pace with your engineering growth?",
+    objection: {trigger: "We already have a tool", response: "Totally fair. The gap fintech teams keep hitting with existing tools is maintenance. 1,100+ integrations means tests break constantly. Self-healing catches those breaks automatically."}
+  }
+];
+
+// =====================================================
+// RENDER FUNCTIONS
+// =====================================================
+
+function getPriorityBadge(p) {
+  if (p >= 5) return '<span class="badge badge-hot">5 HOT</span>';
+  if (p >= 4) return '<span class="badge badge-warm">4 WARM</span>';
+  if (p >= 3) return '<span class="badge badge-standard">3 STD</span>';
+  if (p >= 2) return '<span class="badge badge-lower">2 LOW</span>';
+  if (p <= 0) return '<span class="badge badge-lower">EXCL</span>';
+  return '<span class="badge badge-lower">1</span>';
+}
+
+function getPersonaBadge(p) {
+  if (p === "QA") return '<span class="badge badge-qa">QA</span>';
+  if (p === "VP Eng") return '<span class="badge badge-vpeng">VP Eng</span>';
+  return '<span class="badge badge-lower">' + p + '</span>';
+}
+
+function getICPBadge(icp) {
+  return '<span class="badge badge-' + icp + '">' + icp + '</span>';
+}
+
+function renderProspectTable() {
+  const tbody = document.getElementById('prospect-tbody');
+  const sorted = [...prospects].sort((a, b) => b.priority - a.priority);
+  tbody.innerHTML = sorted.map(p => {
+    const tags = [];
+    if (p.intent) tags.push('<span class="badge badge-intent">BUYER INTENT</span>');
+    if (p.newHire) tags.push('<span class="badge badge-newhire">NEW HIRE</span>');
+    tags.push(getPersonaBadge(p.persona));
+    const excluded = p.priority <= 0 ? ' class="excluded"' : '';
+    return `<tr${excluded} data-priority="${p.priority}" data-persona="${p.persona}" data-icp="${p.icp}" data-intent="${p.intent}" data-newhire="${p.newHire}" data-search="${(p.name + ' ' + p.company + ' ' + p.title).toLowerCase()}">
+      <td>${getPriorityBadge(p.priority)}</td>
+      <td><strong>${p.name}</strong></td>
+      <td style="font-size:0.78rem;color:var(--muted)">${p.title}</td>
+      <td><strong>${p.company}</strong></td>
+      <td>${tags.join(' ')}</td>
+      <td><span style="font-size:0.75rem">${p.vertical}</span></td>
+      <td>${getICPBadge(p.icp)}</td>
+      <td style="font-size:0.75rem;color:var(--muted);max-width:250px">${p.note || ''}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderCompanyCards() {
+  const container = document.getElementById('company-cards');
+  container.innerHTML = companies.map(c => {
+    const tierClass = 'tier-' + (c.priority >= 5 ? 'hot' : c.priority >= 4 ? 'warm' : c.priority >= 3 ? 'standard' : 'lower');
+    return `<div class="company-card ${tierClass}" data-tier="${c.tier}">
+      <div class="card-header">
+        <h3>${c.name}</h3>
+        <div class="meta">
+          ${getPriorityBadge(c.priority)}
+          <span class="badge badge-${c.tier === 'hot' ? 'hot' : c.tier === 'warm' ? 'warm' : c.tier === 'standard' ? 'standard' : 'lower'}">${c.vertical}</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:0.8rem;color:var(--muted);margin-bottom:8px">
+        <span>Employees: ${c.employees}</span>
+        <span>Revenue: ${c.revenue}</span>
+        <span>HQ: ${c.hq}</span>
+      </div>
+
+      <div class="section-title">Prospects at Company</div>
+      ${c.prospects.map(pName => {
+        const pr = prospects.find(p => p.name === pName);
+        if (!pr) return `<div class="prospect-in-company"><span class="pname">${pName}</span></div>`;
+        return `<div class="prospect-in-company">
+          <div><span class="pname">${pr.name}</span> <span class="ptitle">${pr.title}</span></div>
+          <div>${pr.intent ? '<span class="badge badge-intent">BUYER INTENT</span>' : ''} ${pr.newHire ? '<span class="badge badge-newhire">NEW HIRE</span>' : ''} ${getPersonaBadge(pr.persona)}</div>
+        </div>`;
+      }).join('')}
+
+      <div class="section-title collapsible" onclick="toggleCollapse(this)">Tech Stack & Testing Tools</div>
+      <div class="collapse-content">
+        <div class="tech-tags" style="margin-bottom:6px">
+          ${c.techStack.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+        </div>
+        <div style="font-size:0.8rem;color:var(--muted);margin-top:4px"><strong>Testing Tools:</strong> ${c.testingTools.join(', ')}</div>
+      </div>
+
+      <div class="section-title collapsible" onclick="toggleCollapse(this)">QA Pain Points</div>
+      <div class="collapse-content">
+        <ul class="pain-list">${c.painPoints.map(p => `<li>${p}</li>`).join('')}</ul>
+      </div>
+
+      <div class="section-title collapsible" onclick="toggleCollapse(this)">Recent News & Developments</div>
+      <div class="collapse-content">
+        <p style="font-size:0.82rem;color:var(--muted)">${c.recentNews}</p>
+      </div>
+
+      <div class="section-title">Testsigma Fit</div>
+      <div class="proof-match">
+        <strong>${c.fitRating}</strong> - ${c.fitReason}
+        <br><em style="font-size:0.78rem">Best proof point: ${c.bestProofPoint}</em>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderOutreachAngles() {
+  const container = document.getElementById('angle-cards');
+  container.innerHTML = outreachAngles.map(a => {
+    const company = companies.find(c => c.name === a.company);
+    const tierClass = company ? 'tier-' + (company.priority >= 5 ? 'hot' : company.priority >= 4 ? 'warm' : 'standard') : '';
+    return `<div class="company-card ${tierClass}">
+      <div class="card-header">
+        <h3>${a.company}</h3>
+        ${company ? getPriorityBadge(company.priority) : ''}
+      </div>
+
+      <div class="section-title">Pain Hook Angles</div>
+      ${a.angles.map(angle => `
+        <div class="outreach-angle">
+          <div class="hook-label">${angle.hook}</div>
+          ${angle.message}
+        </div>
+      `).join('')}
+
+      <div class="section-title">Cold Call Snippet</div>
+      <div class="call-snippet">
+        ${a.callSnippet}
+        <br><button class="copy-btn" style="margin-top:6px" onclick="copyText(this, '${a.callSnippet.replace(/'/g, "\\'")}')">Copy Script</button>
+      </div>
+
+      <div class="section-title">Predicted Objection</div>
+      <div class="objection-box">
+        <strong>Trigger:</strong> "${a.objection.trigger}"<br>
+        <strong>Response:</strong> ${a.objection.response}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// =====================================================
+// INTERACTION
+// =====================================================
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function filterTable() {
+  const priority = document.getElementById('filter-priority').value;
+  const persona = document.getElementById('filter-persona').value;
+  const icp = document.getElementById('filter-icp').value;
+  const intent = document.getElementById('filter-intent').value;
+  const search = document.getElementById('filter-search').value.toLowerCase();
+  document.querySelectorAll('#prospect-tbody tr').forEach(row => {
+    let show = true;
+    if (priority !== 'all' && row.dataset.priority !== priority) show = false;
+    if (persona !== 'all' && row.dataset.persona !== persona) show = false;
+    if (icp !== 'all' && row.dataset.icp !== icp) show = false;
+    if (intent === 'intent' && row.dataset.intent !== 'true') show = false;
+    if (intent === 'newhire' && row.dataset.newhire !== 'true') show = false;
+    if (search && !row.dataset.search.includes(search)) show = false;
+    row.style.display = show ? '' : 'none';
+  });
+}
+
+function filterCompanies() {
+  const tier = document.getElementById('filter-company-tier').value;
+  document.querySelectorAll('#company-cards .company-card').forEach(card => {
+    if (tier === 'all') { card.style.display = ''; return; }
+    card.style.display = card.dataset.tier === tier ? '' : 'none';
+  });
+}
+
+function toggleCollapse(el) {
+  el.classList.toggle('open');
+  const content = el.nextElementSibling;
+  content.classList.toggle('show');
+}
+
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy Script'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+let sortDir = {};
+function sortTable(col) {
+  const tbody = document.getElementById('prospect-tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  sortDir[col] = !sortDir[col];
+  rows.sort((a, b) => {
+    const aVal = a.children[col].textContent.trim();
+    const bVal = b.children[col].textContent.trim();
+    const numA = parseFloat(aVal); const numB = parseFloat(bVal);
+    if (!isNaN(numA) && !isNaN(numB)) return sortDir[col] ? numA - numB : numB - numA;
+    return sortDir[col] ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+  });
+  rows.forEach(r => tbody.appendChild(r));
+}
+
+// Initialize
+renderProspectTable();
+renderCompanyCards();
+renderOutreachAngles();
+</script>
+
+</body>
+</html>
