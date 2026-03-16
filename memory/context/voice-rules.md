@@ -142,12 +142,24 @@ Named customer + specific metric. Frame as what their team stopped doing / start
 - NO: "Testsigma's AI writes tests in plain English and auto-heals broken locators." (feature framing)
 - NO: "That speed and stability tends to resonate with QA directors in [vertical]." (meta/awkward)
 
-**Para 3 — Stakes + CTA:**
-One stakes sentence specific to their vertical/company context, then CTA. "What day works for a quick look at how they got there?" ties the ask directly back to the proof, which is stronger than a generic meeting ask.
-- YES: "Game quality at that level doesn't leave room for regression gaps. What day works for a quick look at how they got there?"
-- YES: "FinTech teams can't afford slow regression cycles. What day works for a quick look at how they made the shift?"
+**Para 3 — Stakes + CTA (Updated Mar 16, 2026):**
+One stakes sentence specific to their vertical/company context, then an engagement question (NOT a meeting ask). The question must invite the prospect to share their current situation tied to the specific pain angle.
+- YES: "Game quality at that level doesn't leave room for regression gaps. How much of your regression scope is automated today?"
+- YES: "FinTech teams can't afford slow regression cycles. What does your current regression-to-release timeline look like for major releases?"
+- NO: "What day works for a quick look at how they got there?" (DO NOT use — meeting ask, not engagement)
 - NO: "Worth a look if this sounds relevant." (easy out)
 - NO: "Happy to walk through how they got there." (permission-based)
+
+**CTA Angle Mapping — Engagement Questions by Proof Point:**
+- **Maintenance angle (Medibuddy proof)** → "How much of your current sprint capacity is going to test maintenance versus building new coverage?"
+- **Brittleness/Locator angle (Cisco proof)** → "How often are false failures from broken locators showing up in your runs right now?"
+- **Cycle Length angle (Hansard proof)** → "What does your current regression-to-release timeline look like for major releases?"
+- **Velocity/Compliance angle (Sanofi proof)** → "How long does a full regression cycle take for your team right now?"
+- **Coverage/Scale angle (CRED proof)** → "How much of your critical regression scope does your current suite cover today?"
+- **Multi-Platform angle (Samsung proof)** → "How are you currently managing regression consistency across your different platforms?"
+- **Scale/Build angle (Nagra DTV proof)** → "How long did it take to build out your current test suite, and how much of it is still running clean today?"
+- **SDET/Framework angle** → "How much of your automation work right now is framework maintenance versus writing new test logic?"
+- **Compliance Coverage angle (CRED + regulatory)** → "How much of your critical workflow coverage is automated today?"
 
 **Hard constraints:**
 - Always "Hi {First}," — never skip the greeting

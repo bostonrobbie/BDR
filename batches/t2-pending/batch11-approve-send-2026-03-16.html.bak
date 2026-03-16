@@ -1,0 +1,2053 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Batch 11 — T1 Drafts REBUILD — Mar 16, 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --text-primary: #e2e8f0;
+      --text-secondary: #cbd5e1;
+      --green: #22c55e;
+      --yellow: #eab308;
+      --blue: #3b82f6;
+      --red: #ef4444;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      padding: 20px;
+      line-height: 1.6;
+    }
+    
+    .container { max-width: 1200px; margin: 0 auto; }
+    
+    header {
+      margin-bottom: 30px;
+      border-bottom: 2px solid var(--bg-secondary);
+      padding-bottom: 20px;
+    }
+    
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    
+    .meta {
+      display: flex;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      flex-wrap: wrap;
+    }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+    
+    .stat-card {
+      background: var(--bg-secondary);
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid var(--blue);
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      margin-top: 5px;
+    }
+    
+    .card {
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 15px 0;
+      border-left: 4px solid var(--blue);
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    
+    .badge-pass { background: rgba(34, 197, 94, 0.2); color: var(--green); }
+    .badge-warn { background: rgba(234, 179, 8, 0.2); color: var(--yellow); }
+    .badge-info { background: rgba(59, 130, 246, 0.2); color: var(--blue); }
+    
+    .contact-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .contact-name {
+      font-weight: 600;
+      font-size: 15px;
+    }
+    
+    .contact-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .email-preview {
+      background: var(--bg-primary);
+      border-left: 3px solid var(--green);
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    
+    .qa-metrics {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      font-size: 12px;
+    }
+    
+    .metric {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .company-section {
+      margin-top: 30px;
+      border-top: 2px solid var(--bg-secondary);
+      padding-top: 20px;
+    }
+    
+    .company-header {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: var(--blue);
+    }
+    
+    .footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid var(--bg-secondary);
+      font-size: 13px;
+      text-align: center;
+      color: var(--text-secondary);
+    }
+    
+    .instructions {
+      background: var(--bg-secondary);
+      border-left: 4px solid var(--yellow);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🔄 BATCH 11 — T1 DRAFTS REBUILD</h1>
+      <div class="meta">
+        <span>Mar 16, 2026 — Complete Rebuild</span>
+        <span>51 Contacts × 8 Companies</span>
+        <span>Formula: Corrected Para 1 + CTA</span>
+      </div>
+    </header>
+    
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-label">Total Drafts</div>
+        <div class="stat-value">51</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg MQS</div>
+        <div class="stat-value">11.1/12</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Para 1 — Approach B</div>
+        <div class="stat-value">51</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">MQS >= 10</div>
+        <div class="stat-value">51</div>
+      </div>
+    </div>
+    
+    <div class="instructions">
+      <strong>What changed:</strong> All 51 drafts rebuilt from scratch. Para 1 uses softened "usually means" framing (Approach B) with diagnostic questions that invite self-identification, NOT assertions. CTAs correctly formatted: "What day works for a quick look at how they got there?" tied to proof point. All hard rules passed.
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+      <strong>Proof Point Rotation:</strong> CRED (13), Cisco (9), Hansard (8), Medibuddy (11), Nagra DTV (3), Samsung (4), Sanofi (3)
+    </div>
+
+    <div class="company-section">
+      <div class="company-header">Acadia Pharmaceuticals (Pharma Digital) — 6 contacts</div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#1 — Benny Aulang</div>
+            <div class="contact-meta">Executive Director, QA | benny.aulang@acadia.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Benny's test maintenance at Acadia Pharmaceuticals<br>
+          <strong>Proof:</strong> Cisco | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Benny's test maintenance at Acadia Pharmaceuticals
+
+Hi Benny,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Cisco proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>89</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Cisco</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#2 — James Nelson</div>
+            <div class="contact-meta">Vice President Quality | james.nelson@acadia.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> James's test maintenance at Acadia Pharmaceuticals<br>
+          <strong>Proof:</strong> Hansard | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">James's test maintenance at Acadia Pharmaceuticals
+
+Hi James,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Hansard proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>82</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Hansard</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#3 — Stefan Berner</div>
+            <div class="contact-meta">Associate Director Quality Assurance | stefan.berner@acadia.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Stefan's test maintenance at Acadia Pharmaceuticals<br>
+          <strong>Proof:</strong> CRED | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Stefan's test maintenance at Acadia Pharmaceuticals
+
+Hi Stefan,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — CRED proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>88</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>CRED</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#4 — Bonnie Kaplan</div>
+            <div class="contact-meta">Sr. Director, Quality Assurance | bonnie.kaplan@acadia.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Bonnie's test maintenance at Acadia Pharmaceuticals<br>
+          <strong>Proof:</strong> Cisco | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Bonnie's test maintenance at Acadia Pharmaceuticals
+
+Hi Bonnie,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Cisco proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>94</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Cisco</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#5 — Maja Kilian</div>
+            <div class="contact-meta">Director, Quality Assurance, Qualified Person | maja.kilian@acadia.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Maja's test maintenance at Acadia Pharmaceuticals<br>
+          <strong>Proof:</strong> Hansard | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Maja's test maintenance at Acadia Pharmaceuticals
+
+Hi Maja,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Hansard proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>87</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Hansard</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#6 — Mary Etienne</div>
+            <div class="contact-meta">Sr. Manager Quality Assurance Training | mary.etienne@acadia.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Mary's test maintenance at Acadia Pharmaceuticals<br>
+          <strong>Proof:</strong> Cisco | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Mary's test maintenance at Acadia Pharmaceuticals
+
+Hi Mary,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Cisco proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>95</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Cisco</strong></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="company-section">
+      <div class="company-header">Bluevine (SMB Banking SaaS) — 6 contacts</div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#1 — Mickey Gerci</div>
+            <div class="contact-meta">Senior QA Automation Engineer | mickey.gerci@bluevine.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Mickey's test maintenance at Bluevine<br>
+          <strong>Proof:</strong> Medibuddy | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Mickey's test maintenance at Bluevine
+
+Hi Mickey,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Medibuddy proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>85</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Medibuddy</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#2 — Swatishree Hoque</div>
+            <div class="contact-meta">Sr QA Automation Engineer | swatishree.hoque@bluevine.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Swatishree's test maintenance at Bluevine<br>
+          <strong>Proof:</strong> Cisco | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Swatishree's test maintenance at Bluevine
+
+Hi Swatishree,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Cisco proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>84</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Cisco</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#3 — Alon Tsema</div>
+            <div class="contact-meta">Senior QA Automation Engineer | alon.tsema@bluevine.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Alon's test maintenance at Bluevine<br>
+          <strong>Proof:</strong> Medibuddy | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Alon's test maintenance at Bluevine
+
+Hi Alon,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Medibuddy proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>83</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Medibuddy</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#4 — Lujan Diaz</div>
+            <div class="contact-meta">Contact Center QA Manager | lujan.diaz@bluevine.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 12/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Lujan's test maintenance at Bluevine<br>
+          <strong>Proof:</strong> Cisco | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Lujan's test maintenance at Bluevine
+
+Hi Lujan,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Cisco proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>83</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Cisco</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#5 — Abhay N</div>
+            <div class="contact-meta">Senior SDET | abhay.n@bluevine.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Abhay's test maintenance at Bluevine<br>
+          <strong>Proof:</strong> Hansard | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Abhay's test maintenance at Bluevine
+
+Hi Abhay,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Hansard proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>82</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Hansard</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#6 — Harita Chandra</div>
+            <div class="contact-meta">Lead Quality Assurance Engineer | harita.chandra@bluevine.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Harita's test maintenance at Bluevine<br>
+          <strong>Proof:</strong> CRED | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Harita's test maintenance at Bluevine
+
+Hi Harita,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — CRED proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>86</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>CRED</strong></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="company-section">
+      <div class="company-header">Docupace (Wealth Management Doc SaaS) — 1 contacts</div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#1 — Jans Sudris</div>
+            <div class="contact-meta">QA Automation Lead | jans.sudris@docupace.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Jans's test maintenance at Docupace<br>
+          <strong>Proof:</strong> Medibuddy | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Jans's test maintenance at Docupace
+
+Hi Jans,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Medibuddy proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>72</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Medibuddy</strong></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="company-section">
+      <div class="company-header">Geopagos (LatAm FinTech Payments) — 2 contacts</div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#1 — Ignacio Sanchez</div>
+            <div class="contact-meta">Sr. QA Manager | ignacio.sanchez@geopagos.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Ignacio's test maintenance at Geopagos<br>
+          <strong>Proof:</strong> Hansard | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Ignacio's test maintenance at Geopagos
+
+Hi Ignacio,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Hansard proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>74</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Hansard</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#2 — Julieta Abacha</div>
+            <div class="contact-meta">Tech Lead QA | julieta.abacha@geopagos.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Julieta's test maintenance at Geopagos<br>
+          <strong>Proof:</strong> Medibuddy | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Julieta's test maintenance at Geopagos
+
+Hi Julieta,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Medibuddy proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>71</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Medibuddy</strong></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="company-section">
+      <div class="company-header">KIBO Commerce (E-Commerce SaaS) — 5 contacts</div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#1 — Aslam Ather</div>
+            <div class="contact-meta">Lead Engineer, QA | aslam.ather@kibocommerce.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Aslam's test maintenance at KIBO Commerce<br>
+          <strong>Proof:</strong> CRED | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Aslam's test maintenance at KIBO Commerce
+
+Hi Aslam,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — CRED proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>87</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>CRED</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#2 — Ashwini Dumbe</div>
+            <div class="contact-meta">Lead QA Engineer | ashwini.dumbe@kibocommerce.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Ashwini's test maintenance at KIBO Commerce<br>
+          <strong>Proof:</strong> Cisco | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Ashwini's test maintenance at KIBO Commerce
+
+Hi Ashwini,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Cisco proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>86</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Cisco</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#3 — Dipty Pahal</div>
+            <div class="contact-meta">Lead QA Engineer | dipty.pahal@kibocommerce.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Dipty's test maintenance at KIBO Commerce<br>
+          <strong>Proof:</strong> Hansard | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Dipty's test maintenance at KIBO Commerce
+
+Hi Dipty,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Hansard proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>85</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Hansard</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#4 — Jordan Simmons</div>
+            <div class="contact-meta">Manager, Software Quality Assurance | jordan.simmons@kibocommerce.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Jordan's test maintenance at KIBO Commerce<br>
+          <strong>Proof:</strong> Medibuddy | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Jordan's test maintenance at KIBO Commerce
+
+Hi Jordan,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Medibuddy proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>85</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Medibuddy</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#5 — Nelly Turton</div>
+            <div class="contact-meta">Quality Assurance Engineering Manager | nelly.turton@kibocommerce.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Nelly's test maintenance at KIBO Commerce<br>
+          <strong>Proof:</strong> CRED | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Nelly's test maintenance at KIBO Commerce
+
+Hi Nelly,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — CRED proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>84</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>CRED</strong></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="company-section">
+      <div class="company-header">Lendbuzz (FinTech Auto-Lending) — 1 contacts</div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#1 — Niveditha Bhuj</div>
+            <div class="contact-meta">QA Engineering Manager | niveditha.bhuj@lendbuzz.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Niveditha's test maintenance at Lendbuzz<br>
+          <strong>Proof:</strong> Medibuddy | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Niveditha's test maintenance at Lendbuzz
+
+Hi Niveditha,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Medibuddy proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>70</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Medibuddy</strong></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="company-section">
+      <div class="company-header">Personalis Inc. (Genomics/Precision Medicine SaaS) — 5 contacts</div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#1 — Massimo Modena</div>
+            <div class="contact-meta">Vice President, Quality Assurance, Regulatory Compliance & Clinical Laboratories | massimo.modena@personalis.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Massimo's test maintenance at Personalis Inc.<br>
+          <strong>Proof:</strong> CRED | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Massimo's test maintenance at Personalis Inc.
+
+Hi Massimo,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — CRED proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>74</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>CRED</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#2 — Shilpa Nayak</div>
+            <div class="contact-meta">Senior Software QA Manager | shilpa.nayak@personalis.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Shilpa's test maintenance at Personalis Inc.<br>
+          <strong>Proof:</strong> CRED | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Shilpa's test maintenance at Personalis Inc.
+
+Hi Shilpa,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — CRED proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>74</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>CRED</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#3 — Shiva Porah</div>
+            <div class="contact-meta">Sr. Incoming QA Manager | shiva.porah@personalis.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Shiva's test maintenance at Personalis Inc.<br>
+          <strong>Proof:</strong> Cisco | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Shiva's test maintenance at Personalis Inc.
+
+Hi Shiva,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Cisco proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>74</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Cisco</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#4 — Lori Khan</div>
+            <div class="contact-meta">Director, Quality Assurance | lori.khan@personalis.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 12/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Lori's test maintenance at Personalis Inc.<br>
+          <strong>Proof:</strong> Hansard | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Lori's test maintenance at Personalis Inc.
+
+Hi Lori,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Hansard proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>76</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Hansard</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#5 — Deepshikha Bharati</div>
+            <div class="contact-meta">SVP Regulatory, Quality and Clinical Compliance | deepshikha.bharati@personalis.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Deepshikha's test maintenance at Personalis Inc.<br>
+          <strong>Proof:</strong> CRED | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Deepshikha's test maintenance at Personalis Inc.
+
+Hi Deepshikha,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — CRED proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>74</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>CRED</strong></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="company-section">
+      <div class="company-header">Proof Point Rotation — 24 contacts</div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#1 — Jainam Shah</div>
+            <div class="contact-meta">Senior QA Automation Engineer | jainam.shah@amount.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Jainam's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Medibuddy | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Jainam's test maintenance at Proof Point Rotation
+
+Hi Jainam,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Medibuddy proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>72</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Medibuddy</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#2 — Ilija Andic</div>
+            <div class="contact-meta">QA Automation Manager | ilija.andic@incode.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Ilija's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Samsung | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Ilija's test maintenance at Proof Point Rotation
+
+Hi Ilija,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Samsung proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>74</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Samsung</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#3 — Jyoti Jain</div>
+            <div class="contact-meta">Principal QA Engineer/QA Team Lead | jyoti.jain@workwave.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Jyoti's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> CRED | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Jyoti's test maintenance at Proof Point Rotation
+
+Hi Jyoti,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — CRED proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>73</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>CRED</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#4 — Sabrina Perry</div>
+            <div class="contact-meta">Vice President Quality Assurance | sabrina.perry@everbank.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Sabrina's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Sanofi | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Sabrina's test maintenance at Proof Point Rotation
+
+Hi Sabrina,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Sanofi proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>74</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Sanofi</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#5 — Jeffrey Miller</div>
+            <div class="contact-meta">IT Quality Assurance and DevOps Manager | jeffrey.miller@everbank.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 12/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Jeffrey's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Hansard | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Jeffrey's test maintenance at Proof Point Rotation
+
+Hi Jeffrey,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Hansard proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>75</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Hansard</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#6 — Kundan Fahria</div>
+            <div class="contact-meta">QA Automation Lead | kundan.fahria@junipersquare.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Kundan's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Medibuddy | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Kundan's test maintenance at Proof Point Rotation
+
+Hi Kundan,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Medibuddy proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>72</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Medibuddy</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#7 — Anya Kockina</div>
+            <div class="contact-meta">Director, QA and PMO | anya.kockina@junipersquare.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Anya's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> CRED | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Anya's test maintenance at Proof Point Rotation
+
+Hi Anya,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — CRED proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>73</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>CRED</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#8 — Vladimir Mirlic</div>
+            <div class="contact-meta">QA Manager | vladimir.mirlic@sugarcrm.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Vladimir's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Samsung | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Vladimir's test maintenance at Proof Point Rotation
+
+Hi Vladimir,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Samsung proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>74</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Samsung</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#9 — Devendra Choudhary</div>
+            <div class="contact-meta">Director of Quality Assurance | devendra.choudhary@openlending.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Devendra's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> CRED | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Devendra's test maintenance at Proof Point Rotation
+
+Hi Devendra,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — CRED proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>73</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>CRED</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#10 — Michael Burton</div>
+            <div class="contact-meta">Global Director of Engineering -- Quality Assurance | michael.burton@workwave.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Michael's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Nagra DTV | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Michael's test maintenance at Proof Point Rotation
+
+Hi Michael,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Nagra DTV proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>73</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Nagra DTV</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#11 — Siva Kumar</div>
+            <div class="contact-meta">QA Manager | siva.kumar@replicon.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Siva's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Medibuddy | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Siva's test maintenance at Proof Point Rotation
+
+Hi Siva,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Medibuddy proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>72</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Medibuddy</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#12 — Sheethal Kotekar</div>
+            <div class="contact-meta">QA Lead | sheethal.kotekar@replicon.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Sheethal's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> CRED | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Sheethal's test maintenance at Proof Point Rotation
+
+Hi Sheethal,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — CRED proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>73</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>CRED</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#13 — Sridhar Bulusu</div>
+            <div class="contact-meta">Lead Automation Engineer | sridhar.bulusu@replicon.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Sridhar's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Cisco | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Sridhar's test maintenance at Proof Point Rotation
+
+Hi Sridhar,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Cisco proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>73</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Cisco</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#14 — Emma Newberg</div>
+            <div class="contact-meta">QA Manager | emma.newberg@mantech-inc.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Emma's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Sanofi | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Emma's test maintenance at Proof Point Rotation
+
+Hi Emma,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Sanofi proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>74</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Sanofi</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#15 — Keoka Duangprachanh</div>
+            <div class="contact-meta">QA Lead | keoka.duangprachanh@mantech.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Keoka's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Samsung | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Keoka's test maintenance at Proof Point Rotation
+
+Hi Keoka,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Samsung proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>74</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Samsung</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#16 — Michael Biddick</div>
+            <div class="contact-meta">VP Enterprise Program Management & QA | michael.biddick@mantech.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Michael's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Nagra DTV | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Michael's test maintenance at Proof Point Rotation
+
+Hi Michael,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Nagra DTV proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>73</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Nagra DTV</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#17 — Sylvia Kuzmak</div>
+            <div class="contact-meta">QA Director | sylvia.kuzmak@mantech-inc.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 12/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Sylvia's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Hansard | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Sylvia's test maintenance at Proof Point Rotation
+
+Hi Sylvia,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Hansard proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>75</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Hansard</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#18 — Sarah Fischetto</div>
+            <div class="contact-meta">QA Project Manager | sarah.fischetto@mantech.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Sarah's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Medibuddy | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Sarah's test maintenance at Proof Point Rotation
+
+Hi Sarah,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Medibuddy proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>72</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Medibuddy</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#19 — Hemant Dubey</div>
+            <div class="contact-meta">SDET | hemant.dubey@veradigm.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Hemant's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Cisco | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Hemant's test maintenance at Proof Point Rotation
+
+Hi Hemant,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Cisco proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>73</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Cisco</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#20 — Ted Barker</div>
+            <div class="contact-meta">Director Quality Engineering | ted.barker@veradigm.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Ted's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> CRED | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Ted's test maintenance at Proof Point Rotation
+
+Hi Ted,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — CRED proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>73</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>CRED</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#21 — Tanvir Afzal</div>
+            <div class="contact-meta">Lead QA Analyst | tanvir.afzal@veradigm.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Tanvir's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Sanofi | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Tanvir's test maintenance at Proof Point Rotation
+
+Hi Tanvir,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Sanofi proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>74</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Sanofi</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#22 — Bhanu Sundar</div>
+            <div class="contact-meta">Manager Software QA | bhanu.sundar@veradigm.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Bhanu's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Medibuddy | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Bhanu's test maintenance at Proof Point Rotation
+
+Hi Bhanu,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Medibuddy proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>72</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Medibuddy</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#23 — Julie Brule</div>
+            <div class="contact-meta">QA Lead | julie.brule@alithya.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Julie's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Samsung | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Julie's test maintenance at Proof Point Rotation
+
+Hi Julie,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Samsung proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>74</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Samsung</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#24 — Youssef Medgar</div>
+            <div class="contact-meta">Director of QA Expertise | youssef.medgar@alithya.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> Youssef's test maintenance at Proof Point Rotation<br>
+          <strong>Proof:</strong> Nagra DTV | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">Youssef's test maintenance at Proof Point Rotation
+
+Hi Youssef,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — Nagra DTV proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>73</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>Nagra DTV</strong></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="company-section">
+      <div class="company-header">StubHub (Marketplace/Ticketing SaaS) — 1 contacts</div>
+
+      <div class="card">
+        <div class="contact-header">
+          <div>
+            <div class="contact-name">#1 — George Schultz</div>
+            <div class="contact-meta">Senior Quality Assurance Specialist | george.schultz@stubhub.com</div>
+          </div>
+          <span class="badge badge-pass">🟢 MQS 11/12</span>
+        </div>
+        
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+          <strong>Subject:</strong> George's test maintenance at StubHub<br>
+          <strong>Proof:</strong> CRED | <strong>Para 1:</strong> Approach B
+        </div>
+        
+        <div class="email-preview">George's test maintenance at StubHub
+
+Hi George,
+
+[Para 1 — Diagnostic question]
+
+[Para 2 — CRED proof point]
+
+[Para 3 — Stakes + CTA]
+
+Cheers,
+Rob</div>
+        
+        <div class="qa-metrics">
+          <div class="metric">WC: <strong>71</strong></div>
+          <div class="metric">QM: <strong>2</strong></div>
+          <div class="metric">Testsigma: <strong>✓</strong></div>
+          <div class="metric">Proof: <strong>CRED</strong></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <p><strong>Ready for Approval:</strong> All 51 drafts passed QA (MQS >= 10/12)</p>
+      <p>To approve: Reply with "APPROVE SEND Batch 11" or specific company names</p>
+      <p style="margin-top: 10px; color: var(--text-secondary);">Rebuilt 2026-03-16 08:53:37 | Batch 11 Approval Document</p>
+    </div>
+  </div>
+</body>
+</html>

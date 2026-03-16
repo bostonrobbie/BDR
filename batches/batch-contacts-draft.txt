@@ -1,0 +1,42 @@
+## BATCH 11 - Contact Candidate List (Raw)
+
+### Amount (Banking-as-a-Service, FinTech, ~400 emp)
+- Jainam Shah | Senior QA Automation Engineer | jainam.shah@amount.com | VERIFIED | SDET persona
+
+### Incode Technologies (Biometrics/Identity SaaS, ~500 emp, iOS/Android/Web complex testing)
+- Ilija Andic | QA Automation Manager | ilija.andic@incode.com | VERIFIED | SDET-adjacent
+- Dragana Jovic | QA Manager | needs email enrichment
+
+### WorkWave (Field Service Mgmt SaaS, ~500 emp)
+- Jyoti Jain | Principal QA Engineer/QA Team Lead | jyoti.jain@workwave.com | VERIFIED | QA Lead
+- Michael Burton | Global Director of Engineering -- Quality Assurance | needs email enrichment
+- Chethika Dirasingh | Senior Quality Assurance Automation Engineer | needs email enrichment
+
+### EverBank (Digital Banking, ~600 emp)
+- Sabrina Perry | VP Quality Assurance | sabrina.perry@everbank.com | VERIFIED | VP QA
+- Jeffrey Miller | IT Quality Assurance and DevOps Manager | jeffrey.miller@everbank.com | VERIFIED | QA Manager
+- Tonya Jenkins | Quality Assurance Manager | needs email enrichment
+- Mohd Azhar | Quality Assurance Lead | needs email enrichment
+
+### Juniper Square (Investment Mgmt SaaS, ~300 emp)
+Contacts found with emails (need verification):
+- Kundan Fahria | QA Automation Lead | has_email: true
+- Chetan Serapon | QA Manager | has_email: true  
+- Anya Kockina | Director, QA and PMO | has_email: true
+- Anup Bhargavi | Engineering Manager - QA | has_email: true
+- Zoheb Baror | Senior QA Lead | has_email: true
+- Rahul Patidar | Senior QA Lead | has_email: true
+
+### SugarCRM (CRM SaaS, ~500 emp)
+- Vladimir Mirlic | QA Manager | has_email: true
+- Iuliana Fireup | Manager, Software QA Engineering | has_email: true
+
+### OpenLending (Auto Lending Decisioning SaaS, ~400 emp)
+- Devendra Choudhary | Director of Quality Assurance | has_email: true
+
+=== Next steps ===
+Get emails for remaining contacts via apollo_people_match (individual)
+Verify domains in tam-accounts-mar26.csv for all companies
+Dedup against MASTER_SENT_LIST.csv
+Research each company for triggers
+Write T1 drafts following v4.3 formula with SDET persona focus

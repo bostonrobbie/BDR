@@ -1,0 +1,22 @@
+## BATCH 11 FINAL ENROLLMENT LIST (After Dedup & QA)
+
+CONTACTS TO ENROLL (9 total — all PASS dedup):
+
+1. Jainam Shah | jainam.shah@amount.com | Senior QA Automation Engineer | Amount | VERIFIED
+2. Ilija Andic | ilija.andic@incode.com | QA Automation Manager | Incode | VERIFIED
+3. Jyoti Jain | jyoti.jain@workwave.com | Principal QA Engineer/QA Team Lead | WorkWave | VERIFIED
+4. Jeffrey Miller | jeffrey.miller@everbank.com | IT QA and DevOps Manager | EverBank | VERIFIED
+5. Kundan Fahria | kundan.fahria@junipersquare.com | QA Automation Lead | Juniper Square | UNVERIFIED (Apollo has_email: true)
+6. Anya Kockina | anya.kockina@junipersquare.com | Director, QA and PMO | Juniper Square | UNVERIFIED (Apollo has_email: true)
+7. Vladimir Mirlic | vladimir.mirlic@sugarcrm.com | QA Manager | SugarCRM | UNVERIFIED (Apollo has_email: true)
+8. Devendra Choudhary | devendra.choudhary@openlending.com | Director of Quality Assurance | OpenLending | UNVERIFIED (Apollo has_email: true)
+9. Michael Burton | michael.burton@workwave.com | Global Director of Engineering -- QA | WorkWave | UNVERIFIED (Apollo has_email: true)
+
+EXCLUDED:
+- Sabrina Perry (EverBank, VP QA) — DUPLICATE (sent Mar 12 W6B2, within 60-day re-engagement window)
+
+SEQUENCE DETAILS:
+- Sequence ID: 69afff8dc8897c0019b78c7e
+- Emailer Campaign ID: 69afff8dc8897c0019b78c7e
+- Send-from Email Account ID: 68e3b53ceaaf74001d36c206 (robert.gorham@testsigma.com)
+- Send-from Email: robert.gorham@testsigma.com
