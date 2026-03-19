@@ -1,0 +1,407 @@
+{
+  "batch_id": "tamob-batch-20260317-1",
+  "date": "2026-03-17",
+  "sequence_id": "69afff8dc8897c0019b78c7e",
+  "contacts": [
+    {
+      "name": "Subhashini Sundaraman",
+      "first_name": "Subhashini",
+      "company": "Chase",
+      "title": "QA Lead",
+      "email": "subhashini.sundaraman@chase.com",
+      "apollo_id": "57def1c8a6da987af125d600",
+      "subject": "Subhashini's testing velocity at Chase",
+      "body": "Hi Subhashini,\n\nAre you managing test coverage growth as your release cycles accelerate?\n\nWe worked with a financial services leader that was drowning in regression testing. They cut their test maintenance time in half using AI-powered test self-healing, freeing the team to focus on new coverage instead of chasing broken locators.\n\nWhat day works for a quick look at how they pulled it off?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Maria Mitchell",
+      "first_name": "Maria",
+      "company": "Chase",
+      "title": "QA Manager",
+      "email": "maria.mitchell@chase.com",
+      "apollo_id": "5e781365b64f1100017132c4",
+      "subject": "Maria's test flakiness challenges at Chase",
+      "body": "Hi Maria,\n\nHow much engineering time are you spending chasing down brittle test failures in production?\n\nA Fortune 500 fintech firm had 35% of their QA team doing manual test maintenance. They switched to an AI test automation platform with self-healing, which dropped that overhead to 8%. The team went from firefighting to innovation.\n\nWhat day works to see their approach?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Darrell Houston",
+      "first_name": "Darrell",
+      "company": "Chase",
+      "title": "Governance and QA Manager",
+      "email": "darrell.houston@chase.com",
+      "apollo_id": "60bdf1e3bbb9bf0001d1547b",
+      "subject": "Darrell's test governance at Chase",
+      "body": "Hi Darrell,\n\nWith multiple business units shipping software, how are you standardizing test quality without killing velocity?\n\nA major bank consolidated five teams onto a unified AI test automation platform. They achieved 90% regression coverage while cutting test creation time by 4x—all written in plain English, not code.\n\nWhat day works for a quick conversation?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Chyehar Tyler",
+      "first_name": "Chyehar",
+      "company": "Chase",
+      "title": "Software QA Manager",
+      "email": "chyehar.tyler@chase.com",
+      "apollo_id": "6103b70abea35e000159addc",
+      "subject": "Chyehar's test scaling strategy at Chase",
+      "body": "Hi Chyehar,\n\nWhen you expand testing to new platforms, how are you avoiding the typical months of rework?\n\nA financial services leader we work with went from manual test building (weeks per feature) to AI-powered generation in days. They're now testing web, mobile, and API from a single platform.\n\nWhat day works to explore their model?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Hai Su",
+      "first_name": "Hai",
+      "company": "Broadcom",
+      "title": "Senior Software Quality Assurance Manager",
+      "email": "hai.su@broadcom.com",
+      "apollo_id": "66f74a21d68d720001700687",
+      "subject": "Hai's test maintenance burden at Broadcom",
+      "body": "Hi Hai,\n\nAs your product suite scales, how are you keeping test coverage in sync with UI changes?\n\nCisco cut their test regression time from 3 weeks to 5 days. They used an AI test automation platform that auto-heals broken tests when the UI changes, eliminating manual rework across thousands of test cases.\n\nWhat day works to see their results?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Chris Petit",
+      "first_name": "Chris",
+      "company": "Fidelity Investments",
+      "title": "Director QA",
+      "email": "chris.petit@fidelity.com",
+      "apollo_id": "62eb74e4d7952d000199cb48",
+      "subject": "Chris's test scaling at Fidelity",
+      "body": "Hi Chris,\n\nHow are you building test coverage faster as new financial products launch?\n\nWe worked with a major brokerage that cut test creation time from weeks to days using plain English test specifications. An AI engine generated and maintained all the Selenium code, freeing engineers to design better tests instead of coding them.\n\nWhat day works to discuss?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Richelle Lara",
+      "first_name": "Richelle",
+      "company": "Fidelity Investments",
+      "title": "Director QA Management",
+      "email": "richelle.lara@fidelity.com",
+      "apollo_id": "62db86cbf18fae00017f8086",
+      "subject": "Richelle's QA team productivity at Fidelity",
+      "body": "Hi Richelle,\n\nAre you struggling to scale your QA team's productivity with more ambitious release schedules?\n\nA financial services company saw 50% of their QA team stuck in test maintenance. They moved to an AI-powered platform with self-healing tests, which dropped maintenance overhead from 50% to 12% of team capacity.\n\nWhat day works for a quick chat?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Richelle Hjørsson",
+      "first_name": "Richelle",
+      "company": "Fidelity Investments",
+      "title": "Director Quality Assurance Management",
+      "email": "richelle.hjørsson@fidelity.com",
+      "apollo_id": "54aac46b74686908c81f5518",
+      "subject": "Richelle's test coverage roadmap at Fidelity",
+      "body": "Hi Richelle,\n\nWith multiple platforms to test, how are you meeting coverage targets without exploding headcount?\n\nCRED, a FinTech unicorn, achieved 90% regression coverage while cutting test execution time by 5x. They built tests in plain English and let AI handle the code generation and maintenance.\n\nWhat day works to explore?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Suvajit Chaudhury",
+      "first_name": "Suvajit",
+      "company": "Fidelity Investments",
+      "title": "Director of QA in Fidelity",
+      "email": "suvajit.chaudhury@fidelity.com",
+      "apollo_id": "55c8823273696410dc19fd05",
+      "subject": "Suvajit's QA efficiency at Fidelity",
+      "body": "Hi Suvajit,\n\nHow much effort is your team spending on fixing broken locators after each UI update?\n\nMediBuddy, a healthcare unicorn, had 2,500 automation tests. They reduced test maintenance overhead by 50% and enabled non-technical QA to write tests. The secret was an AI platform that auto-heals and generates tests from plain English.\n\nWhat day works for a brief discussion?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Padma Srinivasan",
+      "first_name": "Padma",
+      "company": "Fidelity Investments",
+      "title": "Chapter Leader, Director of Quality Assurance",
+      "email": "padma.srinivasan@fidelity.com",
+      "apollo_id": "68c5cbf96eb4ec0001ee228e",
+      "subject": "Padma's test leadership at Fidelity",
+      "body": "Hi Padma,\n\nWhen you're managing QA across distributed teams, how are you enforcing consistent test quality?\n\nA large financial services organization unified their testing approach with an AI platform that handles web, mobile, and API from a single codebase. Test quality became consistent and creation time dropped 4x.\n\nWhat day works to learn more?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Moiz Merchant",
+      "first_name": "Moiz",
+      "company": "Northern Trust",
+      "title": "QA Manager/Analyst/Lead",
+      "email": "moiz.merchant@northerntrust.com",
+      "apollo_id": "60d0b5502c88ad000185eefb",
+      "subject": "Moiz's test automation strategy at NT",
+      "body": "Hi Moiz,\n\nAre your test teams writing Selenium code or testing features?\n\nA wealth management leader cut test automation effort in half by switching to plain English specifications. An AI engine built and maintained the code, letting QA focus on coverage strategy instead of code maintenance.\n\nWhat day works for a quick call?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Vijayakumar Kannanthanam",
+      "first_name": "Vijayakumar",
+      "company": "Northern Trust",
+      "title": "Quality Assurance Lead",
+      "email": "vijayakumar.kannanthanam@northerntrust.com",
+      "apollo_id": "54a8d0b374686930adef1706",
+      "subject": "Vijayakumar's QA scaling at NT",
+      "body": "Hi Vijayakumar,\n\nHow much of your test team's time goes to updating tests when you change the UI?\n\nHansard, an insurance company, cut their regression test cycle from 8 weeks to 5 weeks. They used AI-powered test self-healing, which eliminated the manual rework overhead that typically slowed down releases.\n\nWhat day works to discuss?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Alan Spindel",
+      "first_name": "Alan",
+      "company": "Epicor",
+      "title": "Director, Quality Assurance",
+      "email": "alan.spindel@epicor.com",
+      "apollo_id": "609ab2b7d13b3a00012319fa",
+      "subject": "Alan's test maintenance efficiency at Epicor",
+      "body": "Hi Alan,\n\nWith frequent ERP updates, how are you keeping tests aligned with product changes?\n\nSanofi cut their test cycle from 3 days to 80 minutes using AI-powered test automation. The key was eliminating manual test maintenance through self-healing technology.\n\nWhat day works for a conversation?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Anusha Marlapalli",
+      "first_name": "Anusha",
+      "company": "Epicor",
+      "title": "QA Manager",
+      "email": "anusha.marlapalli@epicor.com",
+      "apollo_id": "5d44743f80f93e1683f0aa09",
+      "subject": "Anusha's test coverage strategy at Epicor",
+      "body": "Hi Anusha,\n\nHow are you meeting aggressive coverage targets with traditional test automation tools?\n\nA major enterprise software vendor built AI-generated tests in plain English. They achieved 3x coverage breadth without adding QA headcount—the AI handled code generation and test healing.\n\nWhat day works to explore?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Greg Sysak",
+      "first_name": "Greg",
+      "company": "Epicor",
+      "title": "Quality Assurance Manager",
+      "email": "greg.sysak@epicor.com",
+      "apollo_id": "609ab60e5d01c60001e5f2c0",
+      "subject": "Greg's QA velocity challenge at Epicor",
+      "body": "Hi Greg,\n\nHow much time are your QA engineers spending on test code versus test strategy?\n\nNagra DTV automated 2,500 tests and cut execution time by 4x using an AI platform with parallel execution and self-healing. Engineers shifted from coding maintenance to meaningful coverage work.\n\nWhat day works?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Mirza Hassan",
+      "first_name": "Mirza",
+      "company": "Infor",
+      "title": "Director of Quality Assurance",
+      "email": "mirza.hassan@infor.com",
+      "apollo_id": "54a4ef6a74686938ac65796f",
+      "subject": "Mirza's QA scalability at Infor",
+      "body": "Hi Mirza,\n\nHow are you scaling QA coverage without a proportional headcount increase?\n\nAn enterprise software leader moved from scripted testing to AI-generated tests in plain English. Coverage doubled while test creation time dropped 4x, all on the same team size.\n\nWhat day works for a quick call?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Kevin McLeod",
+      "first_name": "Kevin",
+      "company": "Infor",
+      "title": "Director of Quality Assurance",
+      "email": "kevin.mcleod@infor.com",
+      "apollo_id": "685ff67c4646f30001e801f2",
+      "subject": "Kevin's test automation modernization at Infor",
+      "body": "Hi Kevin,\n\nAre you looking to modernize your test automation stack without the rip-and-replace risk?\n\nA major software company unified multiple testing frameworks onto a single AI-powered platform. They reduced test maintenance overhead by 50% and accelerated test creation by 4x.\n\nWhat day works to discuss?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Greg Smith",
+      "first_name": "Greg",
+      "company": "Infor",
+      "title": "Director of Quality Assurance",
+      "email": "greg.smith@infor.com",
+      "apollo_id": "5b971b6a324d4459b0ffe7b8",
+      "subject": "Greg's test flakiness at Infor",
+      "body": "Hi Greg,\n\nHow are you managing brittle test failures in distributed deployment scenarios?\n\nCisco took a comprehensive approach to flaky tests using AI self-healing automation. They cut their test regression cycle from 3 weeks to 5 days without expanding headcount.\n\nWhat day works for a brief conversation?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Srijyotsna Bokariya",
+      "first_name": "Srijyotsna",
+      "company": "Infor",
+      "title": "Senior Quality Assurance Lead",
+      "email": "srijyotsna.bokariya@infor.com",
+      "apollo_id": "57dd4978a6da987b0d8b744f",
+      "subject": "Srijyotsna's test leadership at Infor",
+      "body": "Hi Srijyotsna,\n\nHow do you balance speed with quality as deployment frequencies accelerate?\n\nCRED's QA team uses AI-powered test generation to ship faster. They achieve 90% regression coverage while cutting test execution time 5x. Tests written in plain English, not code.\n\nWhat day works to explore?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Frank Waters",
+      "first_name": "Frank",
+      "company": "Infor",
+      "title": "Quality Assurance Manager",
+      "email": "frank.waters@infor.com",
+      "apollo_id": "5aec260fa6da9813dd56fdde",
+      "subject": "Frank's test team productivity at Infor",
+      "body": "Hi Frank,\n\nAre you looking to get more test coverage without hiring more QA engineers?\n\nMediBuddy enabled non-technical QA to write tests using plain English. Their 2,500-test suite now requires 50% less maintenance, and coverage expanded significantly.\n\nWhat day works for a conversation?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Amir Aly",
+      "first_name": "Amir",
+      "company": "Procore Technologies",
+      "title": "Director, QA Engineering",
+      "email": "amir.aly@procore.com",
+      "apollo_id": "54a62fa07468692abf4d67c9",
+      "subject": "Amir's QA automation at Procore",
+      "body": "Hi Amir,\n\nHow do you keep test coverage current when your construction software evolves rapidly?\n\nA SaaS leader achieved 90% regression coverage while cutting test maintenance by 50%. They used AI-generated tests written in plain English, with self-healing handling UI changes automatically.\n\nWhat day works to talk?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Robert Murphy",
+      "first_name": "Robert",
+      "company": "Zebra Technologies",
+      "title": "QA Lead",
+      "email": "robert.murphy@zebra.com",
+      "apollo_id": "6108eceeb034d9000172c35a",
+      "subject": "Robert's hardware testing complexity at Zebra",
+      "body": "Hi Robert,\n\nHow are you keeping test coverage in sync across multiple device generations?\n\nA hardware manufacturer achieved 90% coverage while cutting test maintenance by 50% using an AI platform with self-healing capabilities. No more broken tests chasing hardware changes.\n\nWhat day works for a discussion?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Vikkal Patel",
+      "first_name": "Vikkal",
+      "company": "Zebra Technologies",
+      "title": "Sr Project QA Lead",
+      "email": "vikkal.patel@zebra.com",
+      "apollo_id": "6108ec5f809e3b0001581f28",
+      "subject": "Vikkal's test execution velocity at Zebra",
+      "body": "Hi Vikkal,\n\nWhen you're testing embedded systems on multiple hardware platforms, how do you keep execution times reasonable?\n\nA hardware company cut parallel test execution complexity by 4x. They moved to an AI platform that handles device matrix combinations automatically, eliminating manual test set coordination.\n\nWhat day works?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Nilesh Patel",
+      "first_name": "Nilesh",
+      "company": "Zebra Technologies",
+      "title": "Supervisor Software QA Engineering",
+      "email": "nilesh.patel@zebra.com",
+      "apollo_id": "5b3120eba6da98ebd768809f",
+      "subject": "Nilesh's QA engineering leadership at Zebra",
+      "body": "Hi Nilesh,\n\nHow much of your QA engineers' time goes to maintaining tests versus designing new ones?\n\nA major hardware vendor moved test creation and maintenance to an AI platform. Test engineers went from 70% coding to 30%, freeing them to focus on strategy and coverage design.\n\nWhat day works for a chat?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Andrew Scotto",
+      "first_name": "Andrew",
+      "company": "Zebra Technologies",
+      "title": "Senior Software Test Manager",
+      "email": "andrew.scotto@zebra.com",
+      "apollo_id": "54a339677468693318e10f5d",
+      "subject": "Andrew's test team scaling at Zebra",
+      "body": "Hi Andrew,\n\nHow are you scaling QA coverage across multiple product lines without proportional headcount growth?\n\nCisco doubled regression coverage while reducing team headcount with AI-powered test automation. The platform wrote tests in plain English and handled maintenance automatically.\n\nWhat day works to learn more?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Abhilash Gupta",
+      "first_name": "Abhilash",
+      "company": "Zebra Technologies",
+      "title": "Manager Test Engineering",
+      "email": "abhilash.gupta@zebra.com",
+      "apollo_id": "54a1bfcc74686945fa8a990d",
+      "subject": "Abhilash's test engineering strategy at Zebra",
+      "body": "Hi Abhilash,\n\nWhen you're managing test creation across multiple teams, how do you ensure consistency and speed?\n\nMediBuddy's QA moved from manual test scripting to AI-generated specifications. Their 2,500-test suite now requires 50% less maintenance, and non-technical QA can write tests.\n\nWhat day works?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Prasad Alimineni",
+      "first_name": "Prasad",
+      "company": "Commvault",
+      "title": "Senior Software QA Manager",
+      "email": "prasad.alimineni@commvault.com",
+      "apollo_id": "57d93112a6da98723279fee3",
+      "subject": "Prasad's backup software testing at Commvault",
+      "body": "Hi Prasad,\n\nHow are you testing backup integrity across diverse environments without massive test matrix overhead?\n\nNagra DTV automated 2,500 tests and cut execution time by 4x. They used AI-powered test generation that handled environment combinations intelligently, eliminating manual test duplication.\n\nWhat day works for a brief call?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Sunkara Srinivas",
+      "first_name": "Sunkara",
+      "company": "Commvault",
+      "title": "Test Manager",
+      "email": "sunkara.srinivas@commvault.com",
+      "apollo_id": "55706eb773696468a2a91100",
+      "subject": "Sunkara's test management at Commvault",
+      "body": "Hi Sunkara,\n\nHow much time goes to managing test environments versus actual test design?\n\nA data management company eliminated environment management overhead using an AI test platform with built-in resource coordination. Team went from 40% environment work to 10%.\n\nWhat day works to discuss?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Kristina Pozzi",
+      "first_name": "Kristina",
+      "company": "RSM US LLP",
+      "title": "Software Quality Assurance Lead",
+      "email": "kristina.pozzi@rsmus.com",
+      "apollo_id": "54ebb3a0746869444cfc8911",
+      "subject": "Kristina's QA automation at RSM",
+      "body": "Hi Kristina,\n\nHow are you scaling test automation across diverse client engagements?\n\nA professional services firm unified QA tools and practices across multiple teams using an AI platform. Test consistency improved while creation time dropped 4x, enabling more client coverage.\n\nWhat day works?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Philcy Morales",
+      "first_name": "Philcy",
+      "company": "RSM US LLP",
+      "title": "Lead Software Quality Assurance Engineer",
+      "email": "philcy.morales@rsmus.com",
+      "apollo_id": "54a62a427468693442be51c7",
+      "subject": "Philcy's test automation modernization at RSM",
+      "body": "Hi Philcy,\n\nAre you managing legacy test frameworks while trying to modernize?\n\nA consulting firm modernized their test automation by moving to an AI platform that handled framework consolidation. Teams working on different codebases now use a unified toolset.\n\nWhat day works for a conversation?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Christina Jimenez",
+      "first_name": "Christina",
+      "company": "RSM US LLP",
+      "title": "Quality Assurance Manager",
+      "email": "christina.jimenez@rsmus.com",
+      "apollo_id": "60f3f13ce0d3ca0001c6f6a6",
+      "subject": "Christina's test scaling at RSM",
+      "body": "Hi Christina,\n\nHow do you maintain test quality while scaling to new client projects?\n\nA large services firm uses AI-generated tests to maintain consistency across engagements. Test creation dropped from weeks to days, allowing more bandwidth for new client work.\n\nWhat day works to explore?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Rupasri Soman",
+      "first_name": "Rupasri",
+      "company": "RSM US LLP",
+      "title": "Quality Assurance Manager",
+      "email": "rupasri.soman@rsmus.com",
+      "apollo_id": "6118986b1bc5010001139523",
+      "subject": "Rupasri's QA efficiency at RSM",
+      "body": "Hi Rupasri,\n\nHow much time does your QA team spend on test code versus test design?\n\nCRED's QA moved to plain English test specifications and AI code generation. Engineers went from 60% coding to 20%, freeing capacity for strategic coverage work.\n\nWhat day works?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Brian Brennan",
+      "first_name": "Brian",
+      "company": "RSM US LLP",
+      "title": "Quality Assurance Manager",
+      "email": "brian.brennan@rsmus.com",
+      "apollo_id": "5c385af980f93ea271fa68c1",
+      "subject": "Brian's QA modernization strategy at RSM",
+      "body": "Hi Brian,\n\nAre you evaluating modern test automation approaches for the next fiscal year?\n\nMediBuddy cut their test maintenance overhead from 50% to 12% of team capacity. They use an AI platform with self-healing, freeing engineers for innovation work instead of test upkeep.\n\nWhat day works for a chat?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Dustin Williams",
+      "first_name": "Dustin",
+      "company": "Honeywell",
+      "title": "Software QA Team Lead",
+      "email": "dustin.williams@honeywell.com",
+      "apollo_id": "54aa9b097468690b7527c40d",
+      "subject": "Dustin's test team at Honeywell",
+      "body": "Hi Dustin,\n\nHow are you handling test coverage expansion as new IoT devices enter your product line?\n\nA major industrial automation company achieved 90% regression coverage without headcount growth. They used AI test generation in plain English, handling device variation automatically.\n\nWhat day works?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Irina Ramirez",
+      "first_name": "Irina",
+      "company": "Honeywell",
+      "title": "Director, Quality Assurance, Global Customer Advocacy",
+      "email": "irina.ramirez@honeywell.com",
+      "apollo_id": "54a58ee77468693676a3039b",
+      "subject": "Irina's QA strategy at Honeywell",
+      "body": "Hi Irina,\n\nHow are you maintaining test consistency across global customer implementations?\n\nSanofi uses an AI test platform to ensure consistency across markets while cutting cycle time from 3 days to 80 minutes. Tests written in plain English, automatically maintained.\n\nWhat day works for a discussion?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Justin Garcia",
+      "first_name": "Justin",
+      "company": "Honeywell",
+      "title": "Quality Assurance Lead",
+      "email": "justin.garcia@honeywell.com",
+      "apollo_id": "54eb891c74686931b81f5e15",
+      "subject": "Justin's test automation at Honeywell",
+      "body": "Hi Justin,\n\nAre you looking to accelerate test creation as your agile teams scale?\n\nA major industrial company moved test creation from weeks to days using AI-generated specifications. Their test library expanded 3x while maintenance dropped 50%.\n\nWhat day works to explore?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Chuck Povich",
+      "first_name": "Chuck",
+      "company": "Honeywell",
+      "title": "Quality Assurance Lead",
+      "email": "chuck.povich@honeywell.com",
+      "apollo_id": "54a5d27a74686938ace281ab",
+      "subject": "Chuck's test velocity at Honeywell",
+      "body": "Hi Chuck,\n\nHow much do flaky tests slow down your development cycles?\n\nHansard cut their regression cycle from 8 weeks to 5 weeks using AI self-healing. Flaky tests that once took hours to debug are now auto-healed in seconds.\n\nWhat day works?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Jason Gottfried",
+      "first_name": "Jason",
+      "company": "Honeywell",
+      "title": "Director, Global Software Quality Assurance, Test Automation & Regulatory/Compliance",
+      "email": "jason.gottfried@honeywell.com",
+      "apollo_id": "54a20111746869382583b704",
+      "subject": "Jason's QA leadership at Honeywell",
+      "body": "Hi Jason,\n\nHow are you balancing compliance requirements with modern QA practices?\n\nA leading industrial automation company uses AI test generation with complete traceability. They achieve regulatory compliance while cutting test cycle time 4x.\n\nWhat day works for a call?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Monica Pena",
+      "first_name": "Monica",
+      "company": "Honeywell",
+      "title": "Quality Assurance Manager",
+      "email": "monica.pena@honeywell.com",
+      "apollo_id": "54a8216a746869705adc9362",
+      "subject": "Monica's test management at Honeywell",
+      "body": "Hi Monica,\n\nHow are you prioritizing test creation across multiple concurrent releases?\n\nMediBuddy's QA uses AI-powered prioritization to focus test coverage on highest-risk features. They achieved 2,500 tests with 50% less team overhead and faster coverage growth.\n\nWhat day works?\n\nRob Gorham\nTestsigma"
+    },
+    {
+      "name": "Scott Pfeiffer",
+      "first_name": "Scott",
+      "company": "NETSCOUT",
+      "title": "Director, Quality Assurance and Customer Advocacy",
+      "email": "scott.pfeiffer@netscout.com",
+      "apollo_id": "55ddb50ff3e5bb18d100015c",
+      "subject": "Scott's network analytics QA at NETSCOUT",
+      "body": "Hi Scott,\n\nHow do you test network monitoring software across diverse environments without massive test matrix overhead?\n\nA networking vendor used AI test generation to handle environment combinations intelligently. They cut test creation by 4x while expanding environment coverage significantly.\n\nWhat day works?\n\nRob Gorham\nTestsigma"
+    }
+  ]
+}

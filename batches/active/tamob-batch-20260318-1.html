@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAM Outbound Batch 13 — Mar 18, 2026 (T1 Email)</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f9fafb; margin: 0; padding: 20px; color: #1f2937; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .header h1 { margin: 0 0 10px 0; font-size: 28px; color: #111827; }
+        .header .meta { display: flex; gap: 30px; font-size: 14px; color: #6b7280; flex-wrap: wrap; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge-enrolled { background: #d1fae5; color: #065f46; }
+        .badge-skipped { background: #fee2e2; color: #991b1b; }
+        .badge-manual-skip { background: #fef3c7; color: #92400e; }
+        .badge-total { background: #dbeafe; color: #1e40af; }
+        .badge-pending { background: #fef3c7; color: #92400e; }
+        .summary-box { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .summary-box h2 { margin: 0 0 15px 0; font-size: 16px; font-weight: 600; }
+        .summary-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; }
+        .summary-item { padding: 15px; background: #f3f4f6; border-radius: 6px; }
+        .summary-item strong { display: block; font-size: 13px; color: #6b7280; margin-bottom: 5px; text-transform: uppercase; }
+        .summary-item span { display: block; font-size: 20px; font-weight: 600; color: #111827; }
+        .contacts-section { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .contacts-section h2 { margin: 0 0 20px 0; font-size: 18px; font-weight: 600; }
+        .company-group { margin-bottom: 40px; }
+        .company-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #e5e7eb; }
+        .company-name { font-size: 16px; font-weight: 700; color: #111827; }
+        .company-count { font-size: 13px; color: #6b7280; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { background: #f3f4f6; padding: 10px 12px; text-align: left; font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb; }
+        td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; vertical-align: top; }
+        tr:hover td { background: #fafafa; }
+        .status-enrolled { color: #065f46; font-weight: 600; }
+        .status-blocked { color: #991b1b; font-weight: 600; }
+        .status-manual-skip { color: #92400e; font-weight: 600; }
+        .mqs-score { display: inline-block; padding: 2px 8px; background: #d1fae5; color: #065f46; border-radius: 4px; font-weight: 700; font-size: 12px; }
+        .proof-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+        .proof-cred { background: #ede9fe; color: #5b21b6; }
+        .proof-medibuddy { background: #dbeafe; color: #1e40af; }
+        .proof-cisco { background: #d1fae5; color: #065f46; }
+        .proof-hansard { background: #fef3c7; color: #92400e; }
+        .proof-sanofi { background: #fce7f3; color: #9d174d; }
+        .proof-fortune100 { background: #f3f4f6; color: #374151; }
+        .subject-cell { font-style: italic; color: #4b5563; max-width: 220px; }
+        .body-preview { color: #6b7280; font-size: 12px; max-width: 400px; line-height: 1.5; }
+        .word-count { color: #9ca3af; font-size: 12px; }
+        .blocked-section { background: #fff5f5; border: 1px solid #fecaca; border-radius: 8px; padding: 20px; margin-bottom: 30px; }
+        .blocked-section h2 { margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #991b1b; }
+        .blocked-note { font-size: 13px; color: #7f1d1d; margin-bottom: 15px; padding: 10px; background: #fee2e2; border-radius: 6px; }
+        .manual-skip-section { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 20px; margin-bottom: 30px; }
+        .manual-skip-section h2 { margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #92400e; }
+        .skip-note { font-size: 13px; color: #78350f; margin-bottom: 15px; padding: 10px; background: #fef3c7; border-radius: 6px; }
+        .apollo-id { font-family: monospace; font-size: 11px; color: #9ca3af; }
+        .footer-note { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 13px; color: #6b7280; }
+        .footer-note strong { color: #374151; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>TAM Outbound Batch 13 — Mar 18, 2026</h1>
+        <div class="meta">
+            <span><strong>File:</strong> tamob-batch-20260318-1.html</span>
+            <span><strong>Sequence:</strong> TAM Outbound - Rob Gorham</span>
+            <span><strong>Sequence ID:</strong> 69afff8dc8897c0019b78c7e</span>
+            <span><strong>Send From:</strong> robert.gorham@testsigma.com</span>
+            <span><strong>Channel:</strong> Email (Apollo T1)</span>
+        </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-box">
+        <h2>Batch Summary</h2>
+        <div class="summary-content">
+            <div class="summary-item">
+                <strong>Total Drafted</strong>
+                <span>44</span>
+            </div>
+            <div class="summary-item">
+                <strong>Enrolled</strong>
+                <span style="color:#065f46">32</span>
+            </div>
+            <div class="summary-item">
+                <strong>Apollo Blocked</strong>
+                <span style="color:#991b1b">10</span>
+            </div>
+            <div class="summary-item">
+                <strong>Manual Skips</strong>
+                <span style="color:#92400e">2</span>
+            </div>
+            <div class="summary-item">
+                <strong>MQS Pass Rate</strong>
+                <span>44/44</span>
+            </div>
+            <div class="summary-item">
+                <strong>Avg MQS Score</strong>
+                <span>12/12</span>
+            </div>
+            <div class="summary-item">
+                <strong>Companies</strong>
+                <span>10</span>
+            </div>
+            <div class="summary-item">
+                <strong>T2 Status</strong>
+                <span style="font-size:14px; color:#6b7280">Day 4+</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- APOLLO BLOCKED -->
+    <div class="blocked-section">
+        <h2>&#x26D4; Apollo Blocked — 10 Contacts (Square + JetBlue)</h2>
+        <div class="blocked-note">All 10 contacts returned <code>contacts_active_in_other_campaigns</code> or <code>contacts_finished_in_other_campaigns</code> during enrollment. Not added to MASTER_SENT_LIST. Do not re-enroll without checking Apollo sequence status first.</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Title</th>
+                    <th>Company</th>
+                    <th>Email</th>
+                    <th>Apollo ID</th>
+                    <th>Block Reason</th>
+                    <th>Proof</th>
+                    <th>MQS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><strong>Greg Maddox</strong></td>
+                    <td>Quality Assurance Lead</td>
+                    <td>Square</td>
+                    <td>gmaddox@squareup.com</td>
+                    <td class="apollo-id">5ae020b2a6da984dd3cc9059</td>
+                    <td class="status-blocked">Active in other campaign</td>
+                    <td><span class="proof-tag proof-cred">CRED</span></td>
+                    <td><span class="mqs-score">12/12</span></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><strong>Sheena Ramachandran</strong></td>
+                    <td>QA Automation Lead</td>
+                    <td>Square</td>
+                    <td>sheenar@squareup.com</td>
+                    <td class="apollo-id">57d7f77fa6da980a1e3093c8</td>
+                    <td class="status-blocked">Active in other campaign</td>
+                    <td><span class="proof-tag proof-fortune100">Fortune 100</span></td>
+                    <td><span class="mqs-score">12/12</span></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><strong>Katherine Beckner</strong></td>
+                    <td>QA Program Manager</td>
+                    <td>Square</td>
+                    <td>kbeckner@squareup.com</td>
+                    <td class="apollo-id">65603d3fe16b5500017faeb1</td>
+                    <td class="status-blocked">Finished in other campaign</td>
+                    <td><span class="proof-tag proof-cred">CRED</span></td>
+                    <td><span class="mqs-score">12/12</span></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><strong>Maulik Bhavsar</strong></td>
+                    <td>Software QA Team Lead</td>
+                    <td>Square</td>
+                    <td>maulik@squareup.com</td>
+                    <td class="apollo-id">55714872736964581ef42e00</td>
+                    <td class="status-blocked">Finished in other campaign</td>
+                    <td><span class="proof-tag proof-medibuddy">Medibuddy</span></td>
+                    <td><span class="mqs-score">12/12</span></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><strong>Sadia Niazi</strong></td>
+                    <td>Quality Assurance Manager</td>
+                    <td>JetBlue</td>
+                    <td>sadia.niazi@jetblue.com</td>
+                    <td class="apollo-id">54a812957468696b7fb3795e</td>
+                    <td class="status-blocked">Active in other campaign</td>
+                    <td><span class="proof-tag proof-cisco">Cisco</span></td>
+                    <td><span class="mqs-score">12/12</span></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td><strong>Arkadii Koval</strong></td>
+                    <td>Sr SDET</td>
+                    <td>JetBlue</td>
+                    <td>arkadii.koval@jetblue.com</td>
+                    <td class="apollo-id">65d603024a0a8a000121c24e</td>
+                    <td class="status-blocked">Active in other campaign</td>
+                    <td><span class="proof-tag proof-cred">CRED</span></td>
+                    <td><span class="mqs-score">12/12</span></td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td><strong>Shilpa Kodali</strong></td>
+                    <td>Senior SDET</td>
+                    <td>JetBlue</td>
+                    <td>shilpa.kodali@jetblue.com</td>
+                    <td class="apollo-id">67eff34b905ca40001441b87</td>
+                    <td class="status-blocked">Active in other campaign</td>
+                    <td><span class="proof-tag proof-fortune100">Fortune 100</span></td>
+                    <td><span class="mqs-score">12/12</span></td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td><strong>Rahul Sharma</strong></td>
+                    <td>Lead Engineer SDET</td>
+                    <td>JetBlue</td>
+                    <td>rahul.sharma@jetblue.com</td>
+                    <td class="apollo-id">5e896be7394e8a00013f2215</td>
+                    <td class="status-blocked">Active in other campaign</td>
+                    <td><span class="proof-tag proof-cred">CRED</span></td>
+                    <td><span class="mqs-score">12/12</span></td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td><strong>Joseleo Johncharles</strong></td>
+                    <td>Manager Enterprise Quality Assurance</td>
+                    <td>JetBlue</td>
+                    <td>joseleo.johncharles@jetblue.com</td>
+                    <td class="apollo-id">668fa320a4be4e0001fe8676</td>
+                    <td class="status-blocked">Finished in other campaign</td>
+                    <td><span class="proof-tag proof-cisco">Cisco</span></td>
+                    <td><span class="mqs-score">12/12</span></td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td><strong>Daniel Freiman</strong></td>
+                    <td>Senior Software Engineering Manager</td>
+                    <td>JetBlue</td>
+                    <td>daniel.freiman@jetblue.com</td>
+                    <td class="apollo-id">54a5bed57468693b8c5518a5</td>
+                    <td class="status-blocked">Active in other campaign</td>
+                    <td><span class="proof-tag proof-fortune100">Fortune 100</span></td>
+                    <td><span class="mqs-score">12/12</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- MANUAL SKIPS -->
+    <div class="manual-skip-section">
+        <h2>&#x26A0; Manual Skips — 2 Contacts</h2>
+        <div class="skip-note">These contacts were drafted and passed MQS but were excluded from enrollment due to pre-existing Apollo sequence conflicts confirmed during session.</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Title</th>
+                    <th>Company</th>
+                    <th>Email</th>
+                    <th>Apollo ID</th>
+                    <th>Skip Reason</th>
+                    <th>Proof</th>
+                    <th>MQS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>24</td>
+                    <td><strong>Omayra Marrero</strong></td>
+                    <td>VP, Head of QA for Private Markets</td>
+                    <td>FactSet</td>
+                    <td>omayra.marrero@factset.com</td>
+                    <td class="apollo-id">64b7ae933f638e000173cfc5</td>
+                    <td class="status-manual-skip">Already active in TAM Outbound sequence</td>
+                    <td><span class="proof-tag proof-hansard">Hansard</span></td>
+                    <td><span class="mqs-score">12/12</span></td>
+                </tr>
+                <tr>
+                    <td>32</td>
+                    <td><strong>John Adamo</strong></td>
+                    <td>Director of Quality Engineering</td>
+                    <td>Ahold Delhaize USA</td>
+                    <td>john.adamo@adusa.com</td>
+                    <td class="apollo-id">60fa5c5f521c4600016edca4</td>
+                    <td class="status-manual-skip">Active in different Apollo sequence</td>
+                    <td><span class="proof-tag proof-medibuddy">Medibuddy</span></td>
+                    <td><span class="mqs-score">12/12</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ENROLLED CONTACTS -->
+    <div class="contacts-section">
+        <h2>&#x2705; Enrolled Contacts — 32 Total</h2>
+
+        <!-- J&J MEDTECH -->
+        <div class="company-group">
+            <div class="company-header">
+                <span class="company-name">Johnson &amp; Johnson MedTech</span>
+                <span class="company-count">6 contacts enrolled</span>
+                <span class="badge badge-enrolled">Enrolled</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Email</th>
+                        <th>Apollo ID</th>
+                        <th>Subject Line</th>
+                        <th>Proof</th>
+                        <th>Words</th>
+                        <th>MQS</th>
+                        <th>Body Preview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>11</td>
+                        <td><strong>Robert Maullon</strong></td>
+                        <td>QA Manager</td>
+                        <td>rmaullo@its.jnj.com</td>
+                        <td class="apollo-id">54c1cbd17468697af7c33c49</td>
+                        <td class="subject-cell">Robert's QA work at J&amp;J MedTech</td>
+                        <td><span class="proof-tag proof-sanofi">Sanofi</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">Sanofi cut a 3-day compliance test cycle down to 80 minutes, which changed how quickly they could move validated changes through the system...</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td><strong>James Kenney</strong></td>
+                        <td>Quality Assurance Manager</td>
+                        <td>kjames@jnj.com</td>
+                        <td class="apollo-id">60be664ff4d64c000155cd81</td>
+                        <td class="subject-cell">James's QA team at J&amp;J MedTech</td>
+                        <td><span class="proof-tag proof-medibuddy">Medibuddy</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">Medibuddy automated 2,500 tests and cut maintenance time in half using Testsigma, which gave their QA team capacity back for higher-value validation work...</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td><strong>Fabiola Pina</strong></td>
+                        <td>Associate Director, QA PMO</td>
+                        <td>fpina@its.jnj.com</td>
+                        <td class="apollo-id">6514090d9ec2e300016c0580</td>
+                        <td class="subject-cell">Fabiola's QA PMO at J&amp;J MedTech</td>
+                        <td><span class="proof-tag proof-sanofi">Sanofi</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">Sanofi cut a 3-day compliance test cycle down to 80 minutes using Testsigma's agentic automation, giving their PMO significantly more predictable delivery windows...</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td><strong>Dave Miller</strong></td>
+                        <td>Senior QA Manager</td>
+                        <td>dmille73@its.jnj.com</td>
+                        <td class="apollo-id">5ae81cfca6da983021540b81</td>
+                        <td class="subject-cell">Dave's QA program at J&amp;J MedTech</td>
+                        <td><span class="proof-tag proof-medibuddy">Medibuddy</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">Medibuddy automated 2,500 tests and cut maintenance time in half with Testsigma, which freed their senior QA engineers to focus on validation strategy...</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td><strong>Magaly Espinoza</strong></td>
+                        <td>Quality Assurance Manager</td>
+                        <td>mhurtado@jnj.com</td>
+                        <td class="apollo-id">57e04257a6da980d9fa65fc5</td>
+                        <td class="subject-cell">Magaly's QA work at J&amp;J MedTech</td>
+                        <td><span class="proof-tag proof-sanofi">Sanofi</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">Sanofi cut a 3-day compliance test cycle down to 80 minutes using Testsigma's automation, without compromising audit trail integrity...</td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td><strong>Chih Hsieh</strong></td>
+                        <td>Quality Engineering Manager, Systems</td>
+                        <td>chsieh@jnj.com</td>
+                        <td class="apollo-id">54a293667468693fda87442d</td>
+                        <td class="subject-cell">Chih's quality engineering at J&amp;J MedTech</td>
+                        <td><span class="proof-tag proof-cisco">Cisco</span></td>
+                        <td class="word-count">77</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">Cisco reduced regression failures by 35% in 90 days using Testsigma across their enterprise systems environment, without replacing existing test infrastructure...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- BEYONDTRUST -->
+        <div class="company-group">
+            <div class="company-header">
+                <span class="company-name">BeyondTrust</span>
+                <span class="company-count">3 contacts enrolled</span>
+                <span class="badge badge-enrolled">Enrolled</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Email</th>
+                        <th>Apollo ID</th>
+                        <th>Subject Line</th>
+                        <th>Proof</th>
+                        <th>Words</th>
+                        <th>MQS</th>
+                        <th>Body Preview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>17</td>
+                        <td><strong>Allen McGehee</strong></td>
+                        <td>Quality Assurance Manager</td>
+                        <td>amcgehee@beyondtrust.com</td>
+                        <td class="apollo-id">56311709a6da9829480001f5</td>
+                        <td class="subject-cell">Allen's QA team at BeyondTrust</td>
+                        <td><span class="proof-tag proof-cred">CRED</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">CRED built 90% regression coverage and cut cycle time 5x using Testsigma's agentic AI, without adding headcount or changing their existing stack...</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td><strong>Tiffany Hsu</strong></td>
+                        <td>Software Engineering Manager</td>
+                        <td>thsu@beyondtrust.com</td>
+                        <td class="apollo-id">5ea2be5813a9100001a32aa8</td>
+                        <td class="subject-cell">Tiffany's engineering team at BeyondTrust</td>
+                        <td><span class="proof-tag proof-fortune100">Fortune 100</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">A Fortune 100 retailer tripled test coverage in 4 months without adding headcount, by replacing custom test frameworks with Testsigma's plain English test approach...</td>
+                    </tr>
+                    <tr>
+                        <td>19</td>
+                        <td><strong>Aaron Kimbrell</strong></td>
+                        <td>Lead QA Automation Engineer</td>
+                        <td>akimbrell@beyondtrust.com</td>
+                        <td class="apollo-id">60e563f438733e0001d8aa6f</td>
+                        <td class="subject-cell">Aaron's QA automation work at BeyondTrust</td>
+                        <td><span class="proof-tag proof-cred">CRED</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">CRED built 90% regression coverage and cut cycle time 5x with Testsigma, using AI healing to absorb the maintenance burden and grow net-new coverage...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- NICE -->
+        <div class="company-group">
+            <div class="company-header">
+                <span class="company-name">NICE</span>
+                <span class="company-count">4 contacts enrolled</span>
+                <span class="badge badge-enrolled">Enrolled</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Email</th>
+                        <th>Apollo ID</th>
+                        <th>Subject Line</th>
+                        <th>Proof</th>
+                        <th>Words</th>
+                        <th>MQS</th>
+                        <th>Body Preview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>20</td>
+                        <td><strong>Gowtham Challa</strong></td>
+                        <td>SDET and Test Automation Lead</td>
+                        <td>gowtham.challa@nice.com</td>
+                        <td class="apollo-id">57d4b00ca6da985386bfcdb3</td>
+                        <td class="subject-cell">Gowtham's test automation at NICE</td>
+                        <td><span class="proof-tag proof-medibuddy">Medibuddy</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">Medibuddy automated 2,500 tests and cut maintenance time in half using Testsigma's AI self-healing, which let their automation team redirect time from maintenance to coverage...</td>
+                    </tr>
+                    <tr>
+                        <td>21</td>
+                        <td><strong>Trevor Holzman</strong></td>
+                        <td>Manager/Lead QA Engineer</td>
+                        <td>t.holzman@nice.com</td>
+                        <td class="apollo-id">57de2049a6da987aec233d21</td>
+                        <td class="subject-cell">Trevor's QA work at NICE</td>
+                        <td><span class="proof-tag proof-cisco">Cisco</span></td>
+                        <td class="word-count">77</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">Cisco reduced regression failures by 35% in 90 days using Testsigma across their enterprise environment, without replacing their existing test infrastructure...</td>
+                    </tr>
+                    <tr>
+                        <td>22</td>
+                        <td><strong>Sandeep Malik</strong></td>
+                        <td>QA Test Lead</td>
+                        <td>sandeep.malik@nice.com</td>
+                        <td class="apollo-id">5d5dffd7a3ae61d67874efb7</td>
+                        <td class="subject-cell">Sandeep's QA work at NICE</td>
+                        <td><span class="proof-tag proof-cred">CRED</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">CRED built 90% regression coverage and cut cycle time 5x using Testsigma, by letting AI handle the test repair when the product changed...</td>
+                    </tr>
+                    <tr>
+                        <td>23</td>
+                        <td><strong>Alexander Boyle</strong></td>
+                        <td>Lead Quality Assurance Architect</td>
+                        <td>alexander.boyle@nice.com</td>
+                        <td class="apollo-id">54a533cc74686938ac3a4c85</td>
+                        <td class="subject-cell">Alexander's QA architecture at NICE</td>
+                        <td><span class="proof-tag proof-fortune100">Fortune 100</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">A Fortune 100 retailer tripled test coverage in 4 months without adding headcount by rethinking their automation architecture with Testsigma's plain English and AI-driven approach...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- FACTSET -->
+        <div class="company-group">
+            <div class="company-header">
+                <span class="company-name">FactSet</span>
+                <span class="company-count">3 contacts enrolled (1 manual skip)</span>
+                <span class="badge badge-enrolled">Enrolled</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Email</th>
+                        <th>Apollo ID</th>
+                        <th>Subject Line</th>
+                        <th>Proof</th>
+                        <th>Words</th>
+                        <th>MQS</th>
+                        <th>Body Preview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>25</td>
+                        <td><strong>Michael Lomsky</strong></td>
+                        <td>Software Engineering Manager</td>
+                        <td>mlomsky@factset.com</td>
+                        <td class="apollo-id">54ebbc4d746869444c382019</td>
+                        <td class="subject-cell">Michael's engineering team at FactSet</td>
+                        <td><span class="proof-tag proof-cred">CRED</span></td>
+                        <td class="word-count">76</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">CRED built 90% regression coverage and cut cycle time 5x using Testsigma, without growing the QA team or changing the stack...</td>
+                    </tr>
+                    <tr>
+                        <td>26</td>
+                        <td><strong>Max Markhonko</strong></td>
+                        <td>Software Engineering Manager</td>
+                        <td>mmarkhonko@factset.com</td>
+                        <td class="apollo-id">57dfe297a6da980b024faa31</td>
+                        <td class="subject-cell">Max's engineering work at FactSet</td>
+                        <td><span class="proof-tag proof-hansard">Hansard</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">Hansard cut their regression window from 8 to 5 weeks with Testsigma, which let their teams ship more predictably without expanding the QA headcount...</td>
+                    </tr>
+                    <tr>
+                        <td>27</td>
+                        <td><strong>Newton Acho</strong></td>
+                        <td>VP, Software Engineering Manager</td>
+                        <td>newton.acho@factset.com</td>
+                        <td class="apollo-id">57e18006a6da987dace33d6c</td>
+                        <td class="subject-cell">Newton's engineering leadership at FactSet</td>
+                        <td><span class="proof-tag proof-hansard">Hansard</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">Hansard cut their regression window from 8 to 5 weeks using Testsigma, which changed how their engineering leadership thought about release cadence and test investment...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- AHOLD DELHAIZE -->
+        <div class="company-group">
+            <div class="company-header">
+                <span class="company-name">Ahold Delhaize USA</span>
+                <span class="company-count">5 contacts enrolled (1 manual skip)</span>
+                <span class="badge badge-enrolled">Enrolled</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Email</th>
+                        <th>Apollo ID</th>
+                        <th>Subject Line</th>
+                        <th>Proof</th>
+                        <th>Words</th>
+                        <th>MQS</th>
+                        <th>Body Preview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>28</td>
+                        <td><strong>Gregory Lux</strong></td>
+                        <td>Director of Quality Assurance</td>
+                        <td>glux@adusa.com</td>
+                        <td class="apollo-id">54a436ca74686936762d8a35</td>
+                        <td class="subject-cell">Gregory's QA leadership at Ahold Delhaize</td>
+                        <td><span class="proof-tag proof-medibuddy">Medibuddy</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">Medibuddy automated 2,500 tests and cut maintenance time in half using Testsigma's agentic automation...</td>
+                    </tr>
+                    <tr>
+                        <td>29</td>
+                        <td><strong>Aaron Smith</strong></td>
+                        <td>Quality Assurance Manager</td>
+                        <td>aaron.smith@retailbusinessservices.com</td>
+                        <td class="apollo-id">62eacc83a1de8c0001d7b6c2</td>
+                        <td class="subject-cell">Aaron's QA team at Ahold Delhaize</td>
+                        <td><span class="proof-tag proof-cred">CRED</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">CRED built 90% regression coverage and cut cycle time 5x using Testsigma's agentic AI automation, without adding headcount...</td>
+                    </tr>
+                    <tr>
+                        <td>30</td>
+                        <td><strong>Madhu Katakam</strong></td>
+                        <td>Software Quality Assurance Lead</td>
+                        <td>madhu.katakam@peapoddigitallabs.com</td>
+                        <td class="apollo-id">5f568a635ab40700017c02df</td>
+                        <td class="subject-cell">Madhu's QA work at Ahold Delhaize</td>
+                        <td><span class="proof-tag proof-medibuddy">Medibuddy</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">Medibuddy automated 2,500 tests and cut maintenance time in half with Testsigma's AI healing, which freed their team to focus on net-new coverage instead of repairs...</td>
+                    </tr>
+                    <tr>
+                        <td>31</td>
+                        <td><strong>Sateesh Palla</strong></td>
+                        <td>Senior Software Engineering Manager</td>
+                        <td>sateesh.palla@adusa.com</td>
+                        <td class="apollo-id">61f4f2675e9a120001c23a35</td>
+                        <td class="subject-cell">Sateesh's engineering team at Ahold Delhaize</td>
+                        <td><span class="proof-tag proof-fortune100">Fortune 100</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">A Fortune 100 retailer tripled test coverage in 4 months without adding headcount using Testsigma. Given Ahold Delhaize's scale, the math on that kind of coverage leverage is probably worth a conversation...</td>
+                    </tr>
+                    <tr>
+                        <td>33</td>
+                        <td><strong>Michelle Cash</strong></td>
+                        <td>Senior Software Engineering Manager</td>
+                        <td>michelle.cash@adusa.com</td>
+                        <td class="apollo-id">6453b70bc471660001e92615</td>
+                        <td class="subject-cell">Michelle's engineering team at Ahold Delhaize</td>
+                        <td><span class="proof-tag proof-cred">CRED</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">CRED built 90% regression coverage and cut cycle time 5x using Testsigma's agentic AI, without restructuring their engineering team...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- PACIFIC LIFE -->
+        <div class="company-group">
+            <div class="company-header">
+                <span class="company-name">Pacific Life</span>
+                <span class="company-count">1 contact enrolled</span>
+                <span class="badge badge-enrolled">Enrolled</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Email</th>
+                        <th>Apollo ID</th>
+                        <th>Subject Line</th>
+                        <th>Proof</th>
+                        <th>Words</th>
+                        <th>MQS</th>
+                        <th>Body Preview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>34</td>
+                        <td><strong>Komal Shinde</strong></td>
+                        <td>Sr QA Lead/Analyst</td>
+                        <td>komal.shinde@pacificlife.com</td>
+                        <td class="apollo-id">612a078018af200001b9dfbd</td>
+                        <td class="subject-cell">Komal's QA work at Pacific Life</td>
+                        <td><span class="proof-tag proof-hansard">Hansard</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">Hansard cut their regression window from 8 to 5 weeks using Testsigma, which changed how their QA team collaborated with release planning...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- OVERDRIVE -->
+        <div class="company-group">
+            <div class="company-header">
+                <span class="company-name">OverDrive</span>
+                <span class="company-count">3 contacts enrolled</span>
+                <span class="badge badge-enrolled">Enrolled</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Email</th>
+                        <th>Apollo ID</th>
+                        <th>Subject Line</th>
+                        <th>Proof</th>
+                        <th>Words</th>
+                        <th>MQS</th>
+                        <th>Body Preview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>35</td>
+                        <td><strong>Casey Braun</strong></td>
+                        <td>QA Team Lead</td>
+                        <td>cbraun@overdrive.com</td>
+                        <td class="apollo-id">5d45919ea3ae616488281ed9</td>
+                        <td class="subject-cell">Casey's QA team at OverDrive</td>
+                        <td><span class="proof-tag proof-cred">CRED</span></td>
+                        <td class="word-count">76</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">CRED built 90% regression coverage and cut cycle time 5x using Testsigma, by letting their QA team write tests in plain English instead of maintaining brittle custom scripts...</td>
+                    </tr>
+                    <tr>
+                        <td>36</td>
+                        <td><strong>Robert Hays</strong></td>
+                        <td>Software QA Team Lead</td>
+                        <td>rhays@overdrive.com</td>
+                        <td class="apollo-id">5abf30c2a6da98ce5a46f0f0</td>
+                        <td class="subject-cell">Robert's QA work at OverDrive</td>
+                        <td><span class="proof-tag proof-fortune100">Fortune 100</span></td>
+                        <td class="word-count">77</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">A Fortune 100 retailer tripled test coverage in 4 months without adding headcount using Testsigma, by letting engineers write tests in plain English...</td>
+                    </tr>
+                    <tr>
+                        <td>37</td>
+                        <td><strong>Scott Kunsman</strong></td>
+                        <td>Software QA Team Lead</td>
+                        <td>skunsman@overdrive.com</td>
+                        <td class="apollo-id">5fcdda6a87777a000141968e</td>
+                        <td class="subject-cell">Scott's QA work at OverDrive</td>
+                        <td><span class="proof-tag proof-medibuddy">Medibuddy</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">Medibuddy automated 2,500 tests and cut maintenance time in half with Testsigma's AI self-healing...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- STUBHUB -->
+        <div class="company-group">
+            <div class="company-header">
+                <span class="company-name">StubHub</span>
+                <span class="company-count">2 contacts enrolled</span>
+                <span class="badge badge-enrolled">Enrolled</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Email</th>
+                        <th>Apollo ID</th>
+                        <th>Subject Line</th>
+                        <th>Proof</th>
+                        <th>Words</th>
+                        <th>MQS</th>
+                        <th>Body Preview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>38</td>
+                        <td><strong>Allen Chang</strong></td>
+                        <td>Software Engineering Manager</td>
+                        <td>allen.chang@stubhub.com</td>
+                        <td class="apollo-id">622a6cdb27b97800013535d8</td>
+                        <td class="subject-cell">Allen's engineering team at StubHub</td>
+                        <td><span class="proof-tag proof-cred">CRED</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">CRED built 90% regression coverage and cut cycle time 5x using Testsigma, without expanding their engineering team or touching their framework...</td>
+                    </tr>
+                    <tr>
+                        <td>39</td>
+                        <td><strong>Alex Gonzalez</strong></td>
+                        <td>Software Engineering Leader</td>
+                        <td>alex.gonzalez@stubhub.com</td>
+                        <td class="apollo-id">54a47e1f746869344290e34b</td>
+                        <td class="subject-cell">Alex's engineering leadership at StubHub</td>
+                        <td><span class="proof-tag proof-fortune100">Fortune 100</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">A Fortune 100 retailer tripled test coverage in 4 months without adding headcount using Testsigma's agentic approach...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- RYDER SYSTEM -->
+        <div class="company-group">
+            <div class="company-header">
+                <span class="company-name">Ryder System</span>
+                <span class="company-count">4 contacts enrolled</span>
+                <span class="badge badge-enrolled">Enrolled</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Email</th>
+                        <th>Apollo ID</th>
+                        <th>Subject Line</th>
+                        <th>Proof</th>
+                        <th>Words</th>
+                        <th>MQS</th>
+                        <th>Body Preview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>40</td>
+                        <td><strong>Veronica Harper</strong></td>
+                        <td>Software QA Lead</td>
+                        <td>veronica_harper@ryder.com</td>
+                        <td class="apollo-id">613040c0c5a4f6000187f220</td>
+                        <td class="subject-cell">Veronica's software QA work at Ryder</td>
+                        <td><span class="proof-tag proof-cisco">Cisco</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">Cisco reduced regression failures by 35% in 90 days using Testsigma's agentic automation across their enterprise environment, without a rip-and-replace...</td>
+                    </tr>
+                    <tr>
+                        <td>41</td>
+                        <td><strong>Umair Salam</strong></td>
+                        <td>Sr. Quality Assurance Lead</td>
+                        <td>umair_salam@ryder.com</td>
+                        <td class="apollo-id">5fa0f260beb5200001e99183</td>
+                        <td class="subject-cell">Umair's QA work at Ryder</td>
+                        <td><span class="proof-tag proof-cred">CRED</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">CRED built 90% regression coverage and cut cycle time 5x using Testsigma's AI healing, which absorbed the ongoing maintenance burden as the product evolved...</td>
+                    </tr>
+                    <tr>
+                        <td>42</td>
+                        <td><strong>Mathew Kellogg</strong></td>
+                        <td>Director, Engineering</td>
+                        <td>mathew_kellogg@ryder.com</td>
+                        <td class="apollo-id">6006a19e164c1e0001ed231d</td>
+                        <td class="subject-cell">Mathew's engineering team at Ryder</td>
+                        <td><span class="proof-tag proof-fortune100">Fortune 100</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">A Fortune 100 retailer tripled test coverage in 4 months without adding headcount using Testsigma, by replacing manual test creation with AI-driven automation...</td>
+                    </tr>
+                    <tr>
+                        <td>43</td>
+                        <td><strong>Tracy Suggs</strong></td>
+                        <td>Quality Assurance Manager</td>
+                        <td>tracy_suggs@ryder.com</td>
+                        <td class="apollo-id">54ab5b82746869084ba94104</td>
+                        <td class="subject-cell">Tracy's QA team at Ryder</td>
+                        <td><span class="proof-tag proof-cisco">Cisco</span></td>
+                        <td class="word-count">75</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">Cisco reduced regression failures by 35% in 90 days using Testsigma across their enterprise stack...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ID.ME -->
+        <div class="company-group">
+            <div class="company-header">
+                <span class="company-name">ID.me</span>
+                <span class="company-count">1 contact enrolled</span>
+                <span class="badge badge-enrolled">Enrolled</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Email</th>
+                        <th>Apollo ID</th>
+                        <th>Subject Line</th>
+                        <th>Proof</th>
+                        <th>Words</th>
+                        <th>MQS</th>
+                        <th>Body Preview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>44</td>
+                        <td><strong>Miles Sitcawich</strong></td>
+                        <td>Automation and AI Lead</td>
+                        <td>miles.sitcawich@id.me</td>
+                        <td class="apollo-id">640f2ecf2c3f2c00013c8db2</td>
+                        <td class="subject-cell">Miles's automation work at ID.me</td>
+                        <td><span class="proof-tag proof-cred">CRED</span></td>
+                        <td class="word-count">80</td>
+                        <td><span class="mqs-score">12/12</span></td>
+                        <td class="body-preview">CRED built 90% regression coverage and cut cycle time 5x with Testsigma's agentic AI, which self-heals when the product changes...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div><!-- end contacts-section -->
+
+    <!-- FOOTER NOTES -->
+    <div class="footer-note">
+        <strong>T2 Window:</strong> Touch 2 follow-ups are eligible on Day 4+ (on or after <strong>Mar 22, 2026</strong>). Do not send T2 before Day 4.<br><br>
+        <strong>Proof Point Distribution:</strong>
+        CRED (13) &bull; Medibuddy (10) &bull; Fortune 100 (8) &bull; Cisco (7) &bull; Sanofi (3) &bull; Hansard (5) — across 44 drafted contacts.<br><br>
+        <strong>Apollo Sequence:</strong> TAM Outbound - Rob Gorham &bull; ID: 69afff8dc8897c0019b78c7e &bull; Enrolled as: <code>active</code><br><br>
+        <strong>MASTER_SENT_LIST:</strong> 32 rows appended 2026-03-18. Apollo-blocked (10) and manual skips (2) excluded.<br><br>
+        <strong>Sends JSON:</strong> batches/sends-json/batch13_sends.json — 32 enrolled contacts, 12 skipped.<br><br>
+        <strong>Next Steps:</strong> Apollo will queue T1 emails as manual_email step tasks. Execute sends via Apollo task queue using INC-012 two-gate protocol (JS readback + screenshot before every Send Now click). APPROVE SEND required from Rob before executing.
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,7 +1,13 @@
 # Playbook: T2 Follow-Up Drafting
 
+## Version: v5 — Locked Mar 16, 2026
+Previous version (v4) retired. Canonical source: `memory/sop-tam-outbound.md` Part 7.
+
+---
+
 ## When to Use
-When T2 (Touch 2) tasks surface in Apollo's task queue, typically Day 5 after T1 was sent.
+
+When T2 tasks surface in Apollo's task queue, typically Day 5 after T1 was sent. Also use when manually calculating T2 due dates from MASTER_SENT_LIST.csv.
 
 ---
 
@@ -11,174 +17,190 @@ When T2 (Touch 2) tasks surface in Apollo's task queue, typically Day 5 after T1
 |-------|----------|---------|--------|
 | T2 | Day 4 from T1 | Day 5 from T1 | Day 8 from T1 |
 
-**HARD RULE:** Touch 2 NOT before Day 4 of the sequence. Violating this was INC-001.
+HARD RULE: Touch 2 NOT before Day 4. Violating this was INC-001.
 
 ---
 
-## T2 Email Formula — Deep-Dive v4 (canonical source: sop-tam-outbound.md Part 7, Updated Mar 12)
+## T2 Email Formula — Reply + Piggyback v5 (Locked Mar 16, 2026)
 
-### Structure (4 parts, 140-190 words total)
+### Core Principle
 
-T2 is intentionally **longer than T1**. It goes deeper on pain, pitches the solution, and tells a customer story. Every word must earn its spot.
+T2 is a genuine reply to T1, not a second cold email. It acknowledges the first note, shows you actually researched the person, goes deeper on their specific pain, and asks for a concrete next step. The prospect should feel like you thought about them between sends.
 
-**Threading:** Send as a reply to the T1 thread when possible. Having T1 visible adds context and improves open rates.
+### Format Rules
 
-**Tone:** Casual, direct, plain language. No enterprise-speak. Write like a real person, not a template.
-
----
-
-**Part 1 — "I imagine" + deeper pain speculation (~2-3 sentences)**
-Build directly on the T1 angle but go one level deeper. T1 named the problem; T2 describes what that problem actually FEELS like day-to-day for THIS person in THIS role at THIS company.
-- Reference specific details from T1 (their tech stack, migration, team structure, company trigger)
-- Speculate on the downstream consequences they're living with
-- Make it specific enough that they think "yeah, that's exactly right"
-- OPEN with "I imagine..." — this is the mandatory entry phrase
-
-**Part 2 — Testsigma solution pitch (~2 sentences)**
-NOT a generic pitch. Directly answer the specific pain from Part 1. Connect the feature to the pain so the "why" is obvious. Match the feature to the pain:
-- Plain English tests (no framework lock-in) → use when pain is framework migration or dual-stack maintenance
-- AI self-healing (auto-fixes locators) → use when pain is maintenance overhead or test brittleness
-- NLP test creation → use when pain is test creation speed or coverage gaps
-- Unified platform → use when pain is toolchain fragmentation
-
-**Part 3 — Customer story (~2 sentences)**
-Name a specific Testsigma customer that maps to their situation. Explain WHY this customer is relevant (similar industry, similar challenge, similar scale), give the outcome, and add one insight about what changed for them beyond the headline metric.
-
-**Part 4 — Tie-back CTA (~1-2 sentences)**
-Reference "what I mentioned last time" or the T1 topic explicitly. Then ask for **15 minutes** to walk through the customer story and see if it applies to their situation.
+- 155-180 words
+- Blank line between every paragraph
+- "Hi [First Name]," greeting always opens
+- Sign-off: Rob Gorham (line break) Testsigma
+- Threading: send as reply to T1 thread
+- No em dashes anywhere
 
 ---
 
-### CTA Phrasing (15-minute meeting ask — mandatory for T2)
-
-- "Would 15 minutes make sense to walk through how [Customer] made that shift and see if it applies?"
-- "Would 15 minutes be worth it to see how [Customer] handled [their exact problem] and whether there's a fit?"
-- "If [pain from Part 1] is real for your team, would 15 minutes make sense to walk through what [Customer] did?"
-
-**Note:** T2 CTA is a 15-minute meeting ask — NOT an engagement question. Engagement question CTAs belong to T1. Save "What day works" for T3 if needed.
+### Structure (4 paragraphs, no exceptions)
 
 ---
 
-### BANNED Phrases (non-negotiable, hard fail)
+**Para 1 — Greeting + re-engagement hook**
 
-- "Circling back" / "Following up" / "Reaching back out"
+Open with "Hi [First Name],"
+
+Then acknowledge you're back without using "following up" or "circling back." Signal that this note is more specific than the last one. Reference their actual role and what it means at their company.
+
+Locked formula:
+"I know my last note wasn't specific enough to be worth your time. Looking at your [role/background] at [Company], I think this angle is a lot more relevant to what you're actually dealing with."
+
+Personalization rule: Must name their role or something specific about what they manage. Never reference only the company name.
+
+---
+
+**Para 2 — Personalized pain speculation**
+
+Role/vertical/company-specific observation about what they are likely dealing with. Then "I imagine [specific operational consequence]." End with the salvage clause.
+
+"I imagine" is mandatory in this paragraph. It is the engine of Para 2, not the email opener.
+
+Salvage clause (pick one, end of paragraph):
+- "If I'm reading that wrong, correct me."
+- "If that's not the right read, set me straight."
+- "If I'm off on that, let me know."
+- "If that's not exactly right, set me straight."
+
+Personalization depth: Name actual surfaces, products, workflows, or team dynamics specific to their company and role. The more specific, the better. Generic persona-level pain is a QA fail.
+
+---
+
+**Para 3 — Customer proof point with bridge**
+
+Open with a bridge that connects Para 2's pain to the customer story. Never drop the customer story cold.
+
+Bridge formula: "It's the same [problem / tension / pressure] [Customer] was dealing with."
+
+Then: metric + one insight beyond the headline number that shows what actually changed for them.
+
+Different proof point from T1. No exceptions.
+
+---
+
+**Para 4 — CTA**
+
+Echo the specific pain from Para 2 (not generic language). Ask for 15 minutes framed as an evaluation.
+
+CTA formula: "If [specific pain echo] is [real for your team / something you're working on], would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?"
+
+HARD RULE: Closing sentence must end with a question mark.
+
+---
+
+### BANNED (hard fail)
+
+- Em dashes (—) anywhere
+- "Following up" / "Circling back" / "Reaching back out"
 - "Different lens from my last note"
 - "One more angle worth adding/sharing"
 - "Thought this was worth adding"
-- Any bridge/opener that apologizes for taking up space
-- No em dashes (—) anywhere
+- Any opener that apologizes for taking up space
+- Closing without a question mark
+- Intro that only names the company (must name role or responsibility)
 
 ---
 
-### Word Count: 140-190 words
+### Proof Point Rotation
 
-- T2 is longer than T1 (75-100 words) by design
-- Minimum 140 words — if under, expand Part 1 pain speculation or Part 3 customer story context
-- Maximum 190 words — cut from Part 2 pitch if over
+| T1 Used | T2 Must Use |
+|---------|------------|
+| Hansard (regression 8→5 weeks) | CRED or MediBuddy |
+| Fortune 100 / 3x productivity | Cisco or Hansard |
+| Nagra DTV (2,500 tests, 4x faster) | CRED or MediBuddy |
+| CRED (90% coverage, 5x faster) | MediBuddy or Hansard |
+| MediBuddy (50% maintenance cut) | Nagra DTV or Cisco |
+| Sanofi (3 days → 80 min) | Hansard or CRED |
+
+Vertical matching rule: If a same-vertical customer exists and was not the T1 proof point, prioritize it. Sanofi for healthcare/pharma, Nagra DTV for media/streaming, CRED for FinTech, Hansard for insurance.
+
+Same-company rule: No two contacts at the same company get the same T2 proof point.
 
 ---
 
-### Subject Line
-
-- Reply format: "Re: [T1 subject]" — use when threading in Apollo
-- Fresh subject (if not threaded): Same SMYKM personal format as T1 but with a different angle
-
----
-
-## Process
-
-### Step 1: Check which T2s are due
-Open Apollo Tasks tab. Filter by sequence "TAM Outbound" and look for Step 2 tasks.
-
-Or calculate from MASTER_SENT_LIST.csv:
-- Find all contacts with send_date 5-8 days ago
-- Those are due for T2
-
-### Step 2: Pull T1 content for each contact
-Open the relevant batch tracker HTML. For each contact due for T2:
-- Read their T1 subject and body
-- Note which proof point was used (MUST use a different one for T2)
-- Note their company, title, trigger, tech stack, and any research notes
-
-### Step 3: Draft T2 for each contact
-Using the Deep-Dive v4 formula above:
-- Write Part 1: "I imagine" + deeper day-to-day pain (reference T1 specifics)
-- Write Part 2: Testsigma solution matched to that pain
-- Write Part 3: Customer story with WHY they're relevant + metric + insight
-- Write Part 4: T1 callback + 15-min CTA
-- Keep to 140-190 words
-- NO banned phrases — re-read before submitting
-
-### Step 4: QA Gate the T2
+### QA Gate (pass threshold: 10/12)
 
 | # | Check | Points |
 |---|-------|--------|
-| 1 | Word count 140-190 | 1 |
-| 2 | "I imagine" opener in Part 1 | 1 |
-| 3 | Different proof point from T1 | 1 |
-| 4 | No banned phrases ("Circling back" etc.) | 1 |
-| 5 | Named customer with specific metric | 1 |
-| 6 | WHY customer story is relevant to them | 1 |
-| 7 | 15-minute CTA (not engagement question) | 1 |
-| 8 | No placeholder text | 1 |
-| 9 | No em dashes | 1 |
-
-**Pass threshold:** 7/9
-
-### Step 5: Add to tracker or create T2 draft file
-Either:
-- Add T2 draft section to the existing batch tracker HTML (below each contact's T1 draft)
-- Or create a separate T2 draft file: `tamob-t2-drafts-{date}.html`
-
-### Step 6: Present for APPROVE SEND
-Same as T1: show Rob the drafts, wait for APPROVE SEND, then send via Apollo task queue using INC-012 two-gate protocol.
+| 1 | Word count 155-180 | 1 |
+| 2 | "Hi [First Name]," greeting | 1 |
+| 3 | Para 1 references role or specific responsibility | 1 |
+| 4 | "I imagine" present in Para 2 | 1 |
+| 5 | Salvage clause in Para 2 | 1 |
+| 6 | Bridge line opens Para 3 | 1 |
+| 7 | Named customer with specific metric | 1 |
+| 8 | Different proof point from T1 | 1 |
+| 9 | Closing sentence ends with question mark | 1 |
+| 10 | No em dashes anywhere | 1 |
+| 11 | No banned phrases | 1 |
+| 12 | Blank line between every paragraph | 1 |
 
 ---
 
-## T2 Proof Point Rotation
+### Process
 
-**Rotation table (T1 used → T2 should use):**
-- T1: Hansard (regression 8→5 weeks) → T2: CRED (90% coverage, 5x faster) or MediBuddy (50% maintenance cut)
-- T1: Fortune 100 / 3x productivity → T2: Cisco (35% regression reduction) or Hansard
-- T1: Nagra DTV (2,500 tests, 4x faster) → T2: CRED or MediBuddy
-- T1: CRED → T2: Hansard or MediBuddy
-- T1: MediBuddy → T2: CRED or Cisco
+**Step 1: Identify T2s due**
+Open Apollo task queue, filter TAM Outbound Step 2 tasks. Or calculate from MASTER_SENT_LIST: contacts with send_date 5-8 days ago.
 
-**Rule:** Different customer story, different metric, but relevant to the same industry if possible.
+**Step 2: Pull T1 content**
+Open relevant batch tracker HTML or batch{N}_sends.json. For each contact: note T1 subject, body, proof point used, company, title, vertical.
 
----
+**Step 3: Research the person**
+Check LinkedIn for specific role details, responsibilities, team structure. Note anything that makes Para 1 and Para 2 more specific to this person.
 
-## Reference Example (validated Mar 12, 168 words)
+**Step 4: Draft using v5 formula**
+- Para 1: Greeting + re-engagement hook with role personalization
+- Para 2: Pain speculation with "I imagine" + salvage clause
+- Para 3: Bridge line + customer story + insight beyond the metric
+- Para 4: Pain echo + 15-min question mark CTA
 
-**Rick Brandt — Director of QA, Cboe Global Markets**
-T1 angle: Dual Selenium/Playwright migration, maintenance overhead, hiring for Playwright on clearing systems
-T1 proof point: Hansard (8→5 week regression)
+**Step 5: QA Gate**
+Score each draft 0-12. Must pass 10/12 minimum before presenting.
 
-**T2:**
-
-> Rick,
->
-> I imagine running two frameworks at once at Cboe means your team is fighting two separate maintenance queues that never sync up. Locator breaks from the Selenium side don't line up with Playwright issues on the newer clearing systems, and your engineers are context-switching between both every sprint instead of building new coverage.
->
-> That's exactly the kind of problem Testsigma was built for. Tests are written in plain English instead of framework-specific code, so there's no Selenium vs. Playwright split to maintain. And AI self-healing handles locator changes automatically, which is what keeps both queues from piling up.
->
-> CRED, a financial platform dealing with a similar coverage-to-complexity ratio, hit 90% regression coverage 5x faster after switching to Testsigma. The big shift for them wasn't just speed, it was getting their team off the maintenance treadmill and back to building net-new tests.
->
-> Between the dual-stack pressure I mentioned last time and the coverage demands that come with Cboe's product breadth, I think there's a real parallel to what CRED was facing. Would 15 minutes make sense to walk through how they made that shift and see if it applies?
->
-> Rob Gorham
-> Testsigma
+**Step 6: Present for APPROVE SEND**
+Show Rob all drafts. Wait for explicit APPROVE SEND before touching Apollo. Then use INC-012 two-gate protocol for every send.
 
 ---
 
-## Batch Processing Tips
+### Reference Example (validated Mar 16, 2026 — Batch 10)
 
-For large T2 batches (20+ contacts):
-- Group by company first (all contacts at same company together)
-- Ensure no company gets the same T2 proof point twice
-- Process in order: highest-priority accounts first
-- Commit after every 5 drafts (mid-session commit protocol)
+**Dawn McCartha — Testing Manager, EmblemHealth**
+T1 angle: Regression cycle / Hansard
+T2 proof point: Sanofi (healthcare vertical match)
+Word count: 168
+
+Hi Dawn,
+
+I know my last note wasn't specific enough to be worth your time. Looking at your role managing testing at a health plan like EmblemHealth, I think this angle is a lot more relevant to what you're actually dealing with.
+
+Testing at a health plan means you can't skip compliance workflows to save time. Member applications, claims, and benefits platforms all have to pass before anything ships, and I imagine that obligation is what keeps the cycle from getting shorter no matter how much pressure there is to release faster. If I'm reading that wrong, set me straight.
+
+It's the same tension Sanofi was dealing with. They got their regression window from 3 days down to 80 minutes on Testsigma, not by cutting what gets tested, but by running those compliance workflows in parallel instead of one at a time. The manual patching work between releases stopped eating into sprint time too.
+
+If that speed-versus-coverage tension is real for your team right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma
 
 ---
 
-*Last updated: 2026-03-13 (Session 34) — FULL REWRITE to match sop-tam-outbound.md Part 7 Deep-Dive v4. Previous version had critical formula errors: 50-70 word count (correct is 140-190), endorsed "Circling back" as good (it is BANNED), used engagement question CTA (correct is 15-minute meeting ask). All three errors corrected.*
+### Batch Processing Tips
+
+For batches with multiple contacts at the same company:
+- Draft all same-company contacts together
+- Ensure no two get the same T2 proof point
+- Vary the Para 2 pain angle even if the vertical is the same
+
+For large batches (10+ contacts):
+- Process by company grouping
+- QA score after every 5 drafts
+- Commit to tracker after every 5 drafts (mid-session safety)
+
+---
+
+*Last updated: 2026-03-16 (Session 42) — FULL REWRITE to v5 Reply + Piggyback formula. Previous v4 had cold "I imagine" opener (no greeting, no re-engagement hook), no personalization requirement in Para 1, no bridge line requirement in Para 3, and no question mark rule on closing. All corrected in v5. Reference example updated to Dawn McCartha / EmblemHealth / Sanofi (replaces Rick Brandt / Cboe).*

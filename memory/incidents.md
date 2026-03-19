@@ -439,3 +439,55 @@ Before executing ANY Apollo task send (individual or batch), re-read the relevan
 Rob's "APPROVE SEND" approves the MESSAGE CONTENT. It does NOT authorize clicking "Send Now" without completing Rule 12-C verification. Content approval and send-click approval are two separate gates.
 
 ---
+
+## INC-013: 20 Contacts Enrolled With Placeholder Bodies — Near Miss (2026-03-17)
+**Severity:** HIGH (near-miss — no placeholder actually sent, but could have been)
+
+### What Happened
+During the Mar 17 send session, the TAM Outbound task queue was filtered to show 20 Step 1 (T1) email tasks, all overdue (due Mar 13-16). Every single one had Apollo's default placeholder body: "Placeholder - replace with personalized email before sending. Robert Gorham - BDR Robert.gorham@testsigma.com www.testsigma.com." These contacts were enrolled in earlier sessions (Mar 13-16 batches) without approved personalized T1 bodies being ready. If any of these tasks had been executed without the full INC-012 verification flow, 20 placeholder emails would have gone out — repeating INC-007 at larger scale.
+
+### Root Cause
+Contacts were enrolled in the Apollo TAM Outbound sequence BEFORE their T1 email bodies were written, QA'd, and approved. The enrollment process created tasks in the queue with a default placeholder body. No gate existed to prevent enrollment without a ready, approved draft.
+
+### Affected Contacts (20 — no emails sent)
+Check Point Software (Tomer Weinberger, Doron Lehmann), Celonis (Bogdan Minciu, Brian Oppenheim), EBlock (Ignacio Sanchez, Jans Sudris), WorkWave (Jyoti Jain), Replicon (Harita Chandra, Abhay N), Geopagos (Lori Khan, Shiva Porah), Personalis (Stefan Berner, James Nelson), FormAssembly (Julieta Abacha, Massimo Modena, Shilpa Nayak), AppSumo (Benny Aulang, Deepshikha Bharati), EverBank (Jeffrey Miller), KIBO (Ashwini Dumbe).
+
+### Remediation
+- No sends executed. Near-miss caught before any placeholder went out.
+- All 20 T1 drafts written to v2 formula, QA'd 12/12, and built into `batches/t2-pending/tamob-mar13-16-placeholder-fix-2026-03-17.html` for APPROVE SEND review.
+- INC-013 rules added below (permanent).
+
+### PERMANENT RULES — INC-013 (effective 2026-03-17)
+
+**⛔ RULE 13-A: DRAFT BEFORE ENROLL. Never enroll contacts in any Apollo email sequence until their T1 email body has been (1) written to the locked formula, (2) QA'd to MQS ≥ 9/12, and (3) received explicit APPROVE SEND from Rob.**
+
+**⛔ RULE 13-B: PRE-ENROLLMENT BODY CHECK. Before any `apollo_emailer_campaigns_add_contact_ids` call, confirm the draft HTML file exists and contains an approved body for every contact being enrolled. If any contact lacks an approved body: STOP. Do not enroll that contact until the draft is ready.**
+
+**⛔ RULE 13-C: PLACEHOLDER TEXT IS A STOP SIGNAL. If any Apollo task body contains "Placeholder" or "replace with personalized email," that task MUST NOT be sent. Stop the entire send session. Flag to Rob. Write real drafts first.**
+
+**⛔ RULE 13-D: UPDATE RULE 12-D. Before every Apollo send session, re-read INC-007, INC-008, INC-012, AND INC-013. All four incidents describe the same root failure: sending placeholder or wrong content because a verification gate was skipped.**
+
+---
+
+## INC-014: T2 Emails Sent as New Threads Instead of Replies (2026-03-19)
+**Severity:** MEDIUM
+
+### What Happened
+TAM Outbound sequence Step 2 (T2 email) was configured as "New Thread" instead of "Reply to previous thread." This meant all 83 T2 emails already delivered went to recipients' inboxes as standalone new emails rather than threading with the T1, reducing open rates and appearing spammy.
+
+### Root Cause
+When the TAM Outbound sequence was originally built, Step 2 was left on the default "New Thread" setting. No verification check existed in any SOP to confirm reply threading for follow-up steps.
+
+### Remediation (applied 2026-03-19)
+- Step 2 "Reply to previous thread" checkbox enabled in Apollo sequence builder
+- Verified change saved: Step 2 now shows "A Reply" on sequence overview
+- 83 already-delivered T2s: cannot be retroactively threaded (sent as new threads)
+- 300 remaining active contacts: will now receive threaded T2 replies
+
+### PERMANENT RULES — INC-014 (effective 2026-03-19)
+
+**⛔ RULE 14-A: REPLY THREADING CHECK. Before every T2 send session, navigate to Sequences > TAM Outbound > Overview and verify Step 2 shows "A Reply" (not "A New Thread"). If it shows New Thread, fix before sending.**
+
+**⛔ RULE 14-B: SUBJECT PREFIX CHECK. Every T2 task subject must start with "RE:" when opened. If the subject does NOT start with "RE:", reply threading may be broken. STOP and investigate.**
+
+---

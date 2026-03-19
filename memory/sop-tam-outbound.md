@@ -19,7 +19,8 @@ The TAM outbound process works accounts from a prioritized list, identifies the 
 
 **Apollo Sequence:** TAM Outbound - Rob Gorham (`69afff8dc8897c0019b78c7e`)
 - 7 steps, **ALL MANUAL** — zero auto-send steps. Nothing ever goes out automatically.
-- Step 1: Email T1 (Day 1) · Step 2: Email T2 (Day 5) · Step 3: LinkedIn connection request (Day 10) · Steps 4-6: Phone calls (Day 15/21/28) · Step 7: Breakup email (Day 35)
+- Step 1: Email T1 (Day 1) · Step 2: Email T2 (Day 5, **MUST be "Reply to previous thread"**) · Step 3: LinkedIn connection request (Day 10) · Steps 4-6: Phone calls (Day 15/21/28) · Step 7: Breakup email (Day 35)
+- **CRITICAL (INC-014, Mar 19 2026):** Step 2 MUST have "Reply to previous thread" checked in the Apollo sequence builder. This ensures the T2 threads with the T1 in the recipient's inbox. If Step 2 shows "New Thread" instead of "Reply", fix it BEFORE sending any T2s. Verified and fixed Mar 19.
 - Enrollment email: `robert.gorham@testsigma.com` (.com ONLY — never .net, .in, or .com.in)
 - **Verify before every session:** Apollo → Sequences → TAM Outbound → Edit → confirm all 7 steps = Manual Task. If any step shows "Automated," stop and alert Rob.
 
@@ -424,93 +425,126 @@ Para 3 ends with a relevant diagnostic engagement question tied to the specific 
 
 ---
 
-## Part 7: T2 Draft Rules (Deep-Dive Formula v4 — Updated Mar 12)
+## Part 7: T2 Draft Rules (Reply + Piggyback Formula v5 — Locked Mar 16, 2026)
 
 T2 sends on Day 5 from T1. Via Apollo TAM Outbound Step 2 (manual email task).
 
-**Threading:** T2 should be sent as a reply to the T1 thread when possible. The T2 builds directly on T1 content, so having T1 visible in the thread adds context and improves open rates.
+**Threading:** Send as a reply to the T1 thread. T1 visible in the thread adds context and improves open rates.
 
-**Word count:** 140-190 words. This is intentionally longer than T1. The T2 goes deeper on pain, pitches the solution, and tells a customer story. Every word must earn its spot.
+**Word count:** 155-180 words. Longer than T1 by design. Every word must earn its spot.
 
-**Tone:** Casual, direct, plain language. No enterprise-speak. Write like a real person, not a template.
+**Tone:** Casual, direct, plain language. Short sentences. Easy to read on a phone. No enterprise-speak. Write like a real person, not a template.
 
-**BANNED phrases:**
-- "Different lens from my last note" / "One more angle worth adding/sharing"
+**Spacing:** Blank line between every paragraph. No exceptions.
+
+---
+
+### BANNED (hard fail, non-negotiable)
+
+- Em dashes (—) anywhere in the email
 - "Following up" / "Circling back" / "Reaching back out"
+- "Different lens from my last note"
+- "One more angle worth adding/sharing"
 - "Thought this was worth adding"
-- Any bridge/opener that apologizes for taking up space
+- Any opener that apologizes for taking up space
+- Closing sentence without a question mark
 
 ---
 
-### T2 Structure (4 parts, every email follows this)
+### T2 Structure (4 paragraphs, every email follows this exactly)
 
-**Part 1 — "I imagine" + deeper pain speculation (~2-3 sentences)**
-Build directly on the T1 angle but go one level deeper. T1 named the problem; T2 describes what that problem actually feels like day-to-day for THIS person in THIS role at THIS company. Use "I imagine" to show you've thought about their specific situation.
-- Reference specific details from T1 (their tech stack, migration, team structure)
-- Speculate on the downstream consequences they're living with
-- Make it specific enough that they think "yeah, that's exactly right"
+**Para 1 — Greeting + re-engagement hook**
 
-**Part 2 — Testsigma solution pitch (~2 sentences)**
-NOT a generic pitch. Directly answer the specific pain from Part 1. Explain what Testsigma does that solves THEIR problem, in plain language. Connect the feature to the pain so the "why" is obvious.
-- Plain English tests (no framework lock-in) — use when pain is framework migration or dual-stack maintenance
-- AI self-healing (auto-fixes locators) — use when pain is maintenance overhead or test brittleness
-- NLP test creation (write tests in English) — use when pain is test creation speed or coverage gaps
-- Unified platform (web, mobile, API, desktop) — use when pain is toolchain fragmentation
+Always open with "Hi [First Name],"
 
-**Part 3 — Customer story (~2 sentences)**
-Name a specific Testsigma customer that maps to their situation. Explain WHY this customer is relevant (similar industry, similar challenge, similar scale), give the outcome, and add one insight about what changed for them beyond the headline metric.
+Then 1-2 sentences that acknowledge you're back without saying "following up" or "circling back," and signal that this note is more specific than the last one. Reference their actual role and what it means at their specific company. This must feel like you looked at them, not just their company.
 
-**Part 4 — Tie-back CTA (~1-2 sentences)**
-Connect T1 + T2 together. Reference "what I mentioned last time" or the T1 topic explicitly. Then ask for 15 minutes to walk through the customer story and see if it applies to their situation.
+Formula: "I know my last note wasn't specific enough to be worth your time. Looking at your [role/background] at [Company], I think this angle is a lot more relevant to what you're actually dealing with."
+
+Personalization rule: The intro must name their role or reference something specific about what they manage. Never just reference the company name alone.
+
+**Para 2 — Personalized pain speculation**
+
+Lead with a role/vertical/company observation that is specific to THIS person. Then use "I imagine" to go into the specific operational consequence they are likely living with. End with a mandatory salvage clause so wrong research doesn't kill the reply.
+
+"I imagine" must appear in this paragraph. It is no longer the email opener. It is the engine of this paragraph.
+
+Salvage clause options (pick one, place at end of paragraph):
+- "If I'm reading that wrong, correct me."
+- "If that's not the right read, set me straight."
+- "If I'm off on that, let me know."
+- "If that's not exactly right, set me straight."
+
+**Para 3 — Customer proof point with bridge**
+
+Open with a bridge line that connects Para 2's pain directly to the customer story. Do not just drop the customer story cold.
+
+Bridge line formula: "It's the same [problem / tension / pressure] [Customer] was dealing with."
+
+Then: metric + one insight about what actually changed for them beyond the headline number.
+
+Different proof point from T1. No company gets the same proof point twice across T1 and T2.
+
+**Para 4 — Specific CTA**
+
+Echo the specific pain from Para 2 (not generic language). Ask for 15 minutes framed as an evaluation, not just a meeting.
+
+CTA formula: "If [specific pain echo from Para 2] is [real for your team / something you're working on], would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?"
+
+HARD RULE: The closing sentence MUST end with a question mark.
+
+Sign-off: Rob Gorham (line break) Testsigma
 
 ---
 
-### CTA phrasing (15-minute meeting ask)
-- "Would 15 minutes make sense to walk through how [Customer] made that shift and see if it applies?"
-- "Would 15 minutes be worth it to see how [Customer] handled [their exact problem] and whether there's a fit?"
-- "If [pain from Part 1] is real for your team, would 15 minutes make sense to walk through what [Customer] did?"
+### Proof Point Rotation (T1 used → T2 must use different)
 
----
-
-### Rules
-- 140-190 words — substantially longer than T1, every part must be present
-- Reply in same thread as T1 (when possible)
-- Must reference T1 content explicitly (the pain, the tech stack, the trigger)
-- "I imagine" opener to go deeper on pain — NOT a repeat of T1
-- Testsigma pitch must be specific to their pain (not generic product overview)
-- Customer story must explain WHY that customer is relevant to them
-- CTA = 15 minutes, tied to customer story + their situation
-- NEW proof point — do not repeat T1's customer story
-- No em dashes
-- Plain language throughout
-- Sign-off: Rob Gorham / Testsigma
-
-**Proof point rotation (T1 → T2):**
 - T1: Hansard (regression 8→5 weeks) → T2: CRED (90% coverage, 5x faster) or MediBuddy (50% maintenance cut)
 - T1: Fortune 100 / 3x productivity → T2: Cisco (35% regression reduction) or Hansard
 - T1: Nagra DTV (2,500 tests, 4x faster) → T2: CRED or MediBuddy
-- T1: CRED → T2: Hansard or MediBuddy
-- T1: MediBuddy → T2: CRED or Cisco
+- T1: CRED → T2: MediBuddy or Hansard
+- T1: MediBuddy → T2: Nagra DTV (media/streaming match) or Cisco
+
+Vertical matching rule: If a same-vertical customer exists and is not the T1 proof point, use it. Example: Sanofi for healthcare, Nagra DTV for media/streaming, CRED for FinTech.
+
+Same-company rule: No two contacts at the same company get the same T2 proof point.
 
 ---
 
-### Reference Example (validated Mar 12)
+### QA Gate (pass threshold: 8/9)
 
-**Rick Brandt — Director of QA, Cboe Global Markets**
-T1 angle: Dual Selenium/Playwright migration, maintenance overhead peaking, hiring for Playwright on newer clearing systems
-T1 proof point: Hansard (8→5 week regression)
+| # | Check |
+|---|-------|
+| 1 | Word count 155-180 |
+| 2 | "Hi [First Name]," greeting present |
+| 3 | Para 1 references role or specific responsibility (not just company name) |
+| 4 | "I imagine" present in Para 2 |
+| 5 | Salvage clause present in Para 2 |
+| 6 | Bridge line opens Para 3 ("It's the same [problem/tension/pressure]...") |
+| 7 | Named customer with specific metric |
+| 8 | Different proof point from T1 |
+| 9 | Closing sentence ends with a question mark |
+| 10 | No em dashes anywhere |
+| 11 | No banned phrases |
+| 12 | Blank line between every paragraph |
 
-**T2 (threaded reply, 168w):**
+---
 
-Rick,
+### Reference Example (validated Mar 16, 2026)
 
-I imagine running two frameworks at once at Cboe means your team is fighting two separate maintenance queues that never sync up. Locator breaks from the Selenium side don't line up with Playwright issues on the newer clearing systems, and your engineers are context-switching between both every sprint instead of building new coverage.
+**Dawn McCartha — Testing Manager, EmblemHealth**
+T1 angle: Regression cycle / Hansard
+T2 proof point: Sanofi (healthcare/compliance vertical match)
 
-That's exactly the kind of problem Testsigma was built for. Tests are written in plain English instead of framework-specific code, so there's no Selenium vs. Playwright split to maintain. And AI self-healing handles locator changes automatically, which is what keeps both queues from piling up.
+Hi Dawn,
 
-CRED, a financial platform dealing with a similar coverage-to-complexity ratio, hit 90% regression coverage 5x faster after switching to Testsigma. The big shift for them wasn't just speed, it was getting their team off the maintenance treadmill and back to building net-new tests.
+I know my last note wasn't specific enough to be worth your time. Looking at your role managing testing at a health plan like EmblemHealth, I think this angle is a lot more relevant to what you're actually dealing with.
 
-Between the dual-stack pressure I mentioned last time and the coverage demands that come with Cboe's product breadth, I think there's a real parallel to what CRED was facing. Would 15 minutes make sense to walk through how they made that shift and see if it applies?
+Testing at a health plan means you can't skip compliance workflows to save time. Member applications, claims, and benefits platforms all have to pass before anything ships, and I imagine that obligation is what keeps the cycle from getting shorter no matter how much pressure there is to release faster. If I'm reading that wrong, set me straight.
+
+It's the same tension Sanofi was dealing with. They got their regression window from 3 days down to 80 minutes on Testsigma, not by cutting what gets tested, but by running those compliance workflows in parallel instead of one at a time. The manual patching work between releases stopped eating into sprint time too.
+
+If that speed-versus-coverage tension is real for your team right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
 
 Rob Gorham
 Testsigma

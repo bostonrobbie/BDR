@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAM Outbound Batch Mar 17 — T1 Outreach (v2 Rewrite)</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f9fafb; margin: 0; padding: 20px; color: #1f2937; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .header h1 { margin: 0 0 10px 0; font-size: 28px; color: #111827; }
+        .header .meta { display: flex; gap: 30px; font-size: 14px; color: #6b7280; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge-pending { background: #fef3c7; color: #92400e; }
+        .badge-total { background: #dbeafe; color: #1e40af; }
+        .summary-box { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .summary-box h2 { margin: 0 0 15px 0; font-size: 16px; font-weight: 600; }
+        .summary-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .summary-item { padding: 15px; background: #f3f4f6; border-radius: 6px; }
+        .summary-item strong { display: block; font-size: 13px; color: #6b7280; margin-bottom: 5px; text-transform: uppercase; }
+        .summary-item span { display: block; font-size: 20px; font-weight: 600; color: #111827; }
+        .contacts-section { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .company-group { margin-bottom: 40px; }
+        .company-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #e5e7eb; }
+        .company-header h3 { margin: 0; font-size: 18px; font-weight: 600; }
+        .company-header .contact-count { background: #e0e7ff; color: #3730a3; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+        .contact-card { border: 1px solid #e5e7eb; border-radius: 6px; padding: 20px; margin-bottom: 15px; background: #fafafa; }
+        .contact-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px; }
+        .contact-name { font-size: 15px; font-weight: 600; color: #111827; }
+        .contact-title { font-size: 13px; color: #6b7280; margin-top: 3px; }
+        .contact-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; font-size: 13px; }
+        .contact-detail { display: flex; align-items: center; gap: 8px; }
+        .contact-detail label { font-weight: 600; color: #6b7280; min-width: 70px; }
+        .contact-detail value { color: #111827; word-break: break-all; font-family: monospace; font-size: 12px; }
+        .email-draft { background: white; border: 1px solid #d1d5db; border-radius: 4px; padding: 15px; margin-top: 15px; font-size: 13px; line-height: 1.6; }
+        .email-subject { font-weight: 600; color: #111827; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #e5e7eb; font-size: 12px; }
+        .email-body { white-space: pre-wrap; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; }
+        .qa-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-top: 10px; }
+        .qa-pass { background: #d1fae5; color: #065f46; }
+        .qa-warning { background: #fef3c7; color: #92400e; }
+        .enrolled-badge { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; margin-left: 8px; }
+        .skipped-badge { background: #fee2e2; color: #991b1b; }
+        .blocked-badge { background: #fce7f3; color: #9d174d; }
+        .compliance-hold { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 6px; padding: 12px; color: #991b1b; font-size: 13px; margin-top: 10px; }
+        .pending-notice { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 6px; padding: 16px; color: #075985; font-size: 13px; }
+        .footer { background: white; padding: 20px 30px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-align: center; color: #6b7280; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>TAM Outbound Batch — Mar 17, 2026</h1>
+            <div class="meta">
+                <span><strong>Type:</strong> T1 Email Outreach (v2 Rewrite)</span>
+                <span><strong>Formula:</strong> v2 Locked Mar 14, 2026</span>
+                <span><strong>Date Generated:</strong> Mar 17, 2026</span>
+            </div>
+        </div>
+
+        <div class="summary-box">
+            <h2>Batch Summary — TAM Outbound Batch 12 Mar17</h2>
+            <div style="margin-bottom: 20px; padding: 12px; background: #d1fae5; border-radius: 6px; color: #065f46; font-size: 13px;">
+                <strong>✅ ENROLLMENT COMPLETE (Session 43, 2026-03-17):</strong> 27/27 contacts enrolled in "TAM Outbound - Rob Gorham" sequence. Status: ACTIVE at Step 1. All Apollo IDs updated below.
+            </div>
+            <div style="margin-bottom: 20px; padding: 12px; background: #fef3c7; border-radius: 6px; color: #92400e; font-size: 13px;">
+                <strong>⚠️ COMPLIANCE FLAGS (RESOLVED):</strong><br>
+                1. Honeywell: 6 contacts BLOCKED — domain not in tam-accounts-mar26.csv + existing Testsigma customer. Hard blocked, not enrolled.<br>
+                2. Procore: Amir Aly BLOCKED — already contacted Mar 6, 2026 (Wave 6 MASTER_SENT_LIST dup). Not enrolled.<br>
+                3. Fidelity: Richelle Hjørsson SKIPPED — non-ASCII email (ø character). Bad data, not enrolled.<br>
+                4. Northern Trust: Moiz Merchant name-similarity flag CLEARED — different last name from Wave 5 contact Moiz Meer. Enrolled.<br>
+                5. Chase: STILL PENDING — 3 contacts deleted by prior agent, 1 review (Chyehar Tyler). Section on hold.
+            </div>
+            <div class="summary-content">
+                <div class="summary-item">
+                    <strong>Enrolled</strong>
+                    <span style="color: #065f46;">27 ✅</span>
+                </div>
+                <div class="summary-item">
+                    <strong>Companies</strong>
+                    <span>8 (Fidelity 4, NT 2, Epicor 3, Infor 5, Zebra 5, Commvault 2, RSM 5, Netscout 1)</span>
+                </div>
+                <div class="summary-item">
+                    <strong>Blocked</strong>
+                    <span style="color: #991b1b;">7 (6 Honeywell + 1 Procore dup)</span>
+                </div>
+                <div class="summary-item">
+                    <strong>Skipped (bad data)</strong>
+                    <span>1 (Richelle Hjørsson — non-ASCII email)</span>
+                </div>
+                <div class="summary-item">
+                    <strong>Pending</strong>
+                    <span>Chase (3 deleted + 1 review)</span>
+                </div>
+                <div class="summary-item">
+                    <strong>MASTER_SENT_LIST</strong>
+                    <span>662 → 689 (+27) ✅</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="contacts-section">
+
+            <!-- CHASE — PENDING RESOLUTION -->
+            <div class="company-group">
+                <div class="company-header">
+                    <h3>Chase</h3>
+                    <span class="contact-count">PENDING</span>
+                </div>
+                <div class="pending-notice">
+                    <strong>⚠️ PENDING RESOLUTION:</strong> 3 valid Chase contacts (Darrell Houston, Maria Mitchell, Subhashini) were accidentally deleted by prior agent and cannot be restored without Rob's input. Chyehar Tyler is flagged for compliance review (duplicate name with Wave 4 Broadcom contact). Do not draft until resolution. Entire company section on hold.
+                </div>
+            </div>
+
+            <!-- FIDELITY INVESTMENTS -->
+            <div class="company-group">
+                <div class="company-header">
+                    <h3>Fidelity Investments</h3>
+                    <span class="contact-count">5</span>
+                </div>
+
+                <!-- Contact 1: Chris Petit -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Chris Petit <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Director QA</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>chris.petit@fidelity.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b98fe7e0fde0001190a3d1</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Cisco (35% regression time)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Chris' regression cycle at Fidelity</div>
+                        <div class="email-body">Hi Chris,
+
+Managing test suites across multiple trading platforms usually means chasing broken locators pulls engineers away from building new coverage. How often are false failures from broken tests showing up in your regression runs right now?
+
+Cisco was dealing with the same brittleness issue and cut regression runtime by 35% on Testsigma, without adding engineers. Their team stopped manually patching broken locators every sprint.
+
+At Fidelity's scale, test maintenance can eat 30-40% of your release cycle. Is brittleness something your team is actively trying to get ahead of?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 2: Richelle Lara -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Richelle Lara <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Director QA Management</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>richelle.lara@fidelity.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b98fe92efe2e0015095621</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>MediBuddy (2,500 tests, 50% maint cut)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Richelle's test maintenance at Fidelity</div>
+                        <div class="email-body">Hi Richelle,
+
+Leading QA across a multi-billion dollar digital platform usually means test maintenance becomes the bottleneck that keeps your team from shipping new coverage. How much of your current sprint capacity is going to test upkeep versus building new regression tests?
+
+MediBuddy was dealing with the same maintenance drain and cut their test overhead in half on Testsigma, with 2,500 tests. Their team stopped treating test fixes as emergency firefighting every sprint.
+
+At Fidelity's scale, automation debt compounds fast. Is reducing your maintenance burden something you're prioritizing right now?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 3: Richelle Hjørsson -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Richelle Hjørsson <span class="badge skipped-badge">SKIPPED ⚠️</span></div>
+                            <div class="contact-title">Director Quality Assurance Management</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>richelle.hjørsson@fidelity.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>54aac46b74686908c81f5518</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>CRED (90% coverage, 5x faster)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Richelle's coverage gaps at Fidelity</div>
+                        <div class="email-body">Hi Richelle,
+
+Running QA across fast-moving fintech platforms usually means coverage gaps widen faster than your team can fill them. How much of your critical regression scope does your current suite actually cover today?
+
+CRED was dealing with the same coverage problem and achieved 90% regression coverage in a fraction of the time on Testsigma, running 5x faster. Their team stopped manual test bloat and focused on coverage density.
+
+At Fidelity's scale, uncovered functionality is uncovered risk. Are you struggling to keep coverage velocity matched to your product release cycle?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 4: Suvajit Chaudhury -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Suvajit Chaudhury <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Director of QA</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>suvajit.chaudhury@fidelity.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b98feba220c10015d9cae3</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Hansard (8→5 week regression)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Suvajit's regression timeline at Fidelity</div>
+                        <div class="email-body">Hi Suvajit,
+
+Running regression cycles across a global financial platform usually means every week of cycle time is capital tied up in release delays. What does your current regression-to-release timeline look like for major quarterly releases?
+
+Hansard was dealing with the same cycle pressure and compressed regression from 8 weeks down to 5 on Testsigma, without cutting coverage. Their team stopped manual test creation bottlenecks in the critical path.
+
+At Fidelity's scale, a single week saved is millions in release velocity. How much capacity is your team spending on the regression-to-release process itself?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 5: Padma Srinivasan -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Padma Srinivasan <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Chapter Leader, Director of Quality Assurance</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>padma.srinivasan@fidelity.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b98feda220c10015d9cae8</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Samsung (cross-platform coverage)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Padma's cross-platform consistency at Fidelity</div>
+                        <div class="email-body">Hi Padma,
+
+Leading QA across multiple desktop, web, and mobile platforms usually means test coverage drifts between channels and you end up releasing to inconsistent levels. How are you currently managing regression consistency across your different platforms?
+
+Samsung was dealing with the same platform fragmentation problem and achieved consistent coverage across all device types on Testsigma. Their team stopped duplicating test logic across separate test suites.
+
+At Fidelity's scale, platform inconsistency is compliance risk. Are you confident your coverage is at parity across all channels your customers use?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NORTHERN TRUST -->
+            <div class="company-group">
+                <div class="company-header">
+                    <h3>Northern Trust</h3>
+                    <span class="contact-count">2</span>
+                </div>
+
+                <!-- Contact 6: Moiz Merchant -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Moiz Merchant <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">QA Manager/Analyst/Lead</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>moiz.merchant@northerntrust.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>60d0b5502c88ad000185eefb</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>MediBuddy (2,500 tests, 50% maint cut)</value></div>
+                        <div class="contact-detail"><label>Compliance:</label> <value>⚠️ Name check vs Wave 5 Moiz Meer</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Moiz's test maintenance at Northern Trust</div>
+                        <div class="email-body">Hi Moiz,
+
+Running QA for wealth management platforms usually means your test suite becomes a liability when UX changes happen and you're patching broken tests instead of building new tests. How much of your current sprint is spent fixing broken test locators rather than expanding your regression scope?
+
+MediBuddy was dealing with the same maintenance problem and cut their test overhead in half on Testsigma, managing 2,500 tests. Their team stopped reacting to every UI change with manual fixes.
+
+At Northern Trust's scale, tech debt directly impacts release velocity. Is test brittleness something your team is addressing?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 7: Vijayakumar Kannanthanam -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Vijayakumar Kannanthanam <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Quality Assurance Lead</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>vijayakumar.kannanthanam@northerntrust.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b9900ee0fde0001190a436</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Cisco (35% regression time)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Vijayakumar's regression pace at Northern Trust</div>
+                        <div class="email-body">Hi Vijayakumar,
+
+Managing test suites for institutional banking platforms usually means broken locators cascade into every release cycle and you're chasing false failures instead of hunting real bugs. How often are broken test locators causing rework in your regression runs?
+
+Cisco was dealing with the same brittleness problem and cut regression runtime by 35% on Testsigma, without scaling headcount. Their team stopped spending sprint cycles manually fixing test locators.
+
+At Northern Trust's scale, failed tests that aren't real bugs are expensive noise. Is test brittleness costing you release time right now?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EPICOR -->
+            <div class="company-group">
+                <div class="company-header">
+                    <h3>Epicor</h3>
+                    <span class="contact-count">3</span>
+                </div>
+
+                <!-- Contact 8: Alan Spindel -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Alan Spindel <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Director, Quality Assurance</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>alan.spindel@epicor.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>609ab2b7d13b3a00012319fa</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Hansard (8→5 week regression)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Alan's regression timeline at Epicor</div>
+                        <div class="email-body">Hi Alan,
+
+Running QA for a multi-module ERP platform usually means your regression cycle becomes a release bottleneck because covering all modules and integrations takes longer than your release window. What does your regression-to-release timeline look like for major quarterly releases?
+
+Hansard was dealing with the same cycle pressure and compressed their regression from 8 weeks down to 5 on Testsigma, without cutting coverage depth. Their team stopped manual test creation delays in the critical path.
+
+At Epicor's scale, cycle time is market competitiveness. How much of your release plan is being constrained by test timeline right now?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 9: Anusha Marlapalli -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Anusha Marlapalli <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">QA Manager</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>anusha.marlapalli@epicor.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b990108146de001150872c</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>CRED (90% coverage, 5x faster)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Anusha's coverage gaps at Epicor</div>
+                        <div class="email-body">Hi Anusha,
+
+Managing QA for enterprise ERP usually means coverage is always lagging feature velocity because you can't scale test creation fast enough. How much of your critical end-to-end workflows does your current regression suite cover today?
+
+CRED was dealing with the same coverage scaling problem and achieved 90% regression coverage in parallel on Testsigma, running 5x faster. Their team stopped waiting for manual test buildup and used NLP to close coverage gaps.
+
+At Epicor's scale, coverage gaps mean production incidents. Are you confident your regression is catching the failures that matter most?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 10: Greg Sysak -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Greg Sysak <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Quality Assurance Manager</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>greg.sysak@epicor.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>609ab60e5d01c60001e5f2c0</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Nagra DTV (2,500 tests, 4x faster)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Greg's execution speed at Epicor</div>
+                        <div class="email-body">Hi Greg,
+
+Running test execution across a large ERP usually means your test environments are constantly bottlenecked and sequential test runs add weeks to your cycle time. How much of your release timeline is consumed by serial test execution and environment setup?
+
+Nagra DTV was dealing with the same execution bottleneck and cut their test runtime by 4x on Testsigma, automating 2,500 tests. Their team stopped waiting for sequential test runs and switched to parallel execution.
+
+At Epicor's scale, execution overhead is release velocity left on the table. Is parallel test execution something your architecture supports right now?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INFOR -->
+            <div class="company-group">
+                <div class="company-header">
+                    <h3>Infor</h3>
+                    <span class="contact-count">5</span>
+                </div>
+
+                <!-- Contact 11: Mirza Hassan -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Mirza Hassan <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Director of Quality Assurance</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>mirza.hassan@infor.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b990118146de000d3b5870</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Cisco (35% regression time)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Mirza's test brittleness at Infor</div>
+                        <div class="email-body">Hi Mirza,
+
+Running QA for multiple cloud ERP product lines usually means test suite brittleness gets amplified across each product and you're patching locators instead of advancing coverage. How often does UI change cascade into broken test locators across your different products?
+
+Cisco was dealing with the same brittleness problem and cut regression runtime by 35% on Testsigma, without adding engineers. Their team stopped manually fixing broken locators every release cycle.
+
+At Infor's scale, brittleness costs time across multiple product lines. Is test maintenance consuming more capacity than building new regression coverage?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 12: Kevin McLeod -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Kevin McLeod <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Director of Quality Assurance</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>kevin.mcleod@infor.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b99013e0fde00017017277</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Hansard (8→5 week regression)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Kevin's regression cycles at Infor</div>
+                        <div class="email-body">Hi Kevin,
+
+Managing regression across enterprise cloud ERP usually means your release timeline is compressed and cycle time becomes the gating constraint on feature velocity. What does your current regression cycle look like for major releases?
+
+Hansard was dealing with the same cycle pressure and compressed regression from 8 weeks down to 5 on Testsigma, without losing coverage. Their team stopped manual test creation as the bottleneck.
+
+At Infor's scale, every week of cycle time is feature velocity you lose. How much of your release plan is being constrained by test timeline right now?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 13: Greg Smith -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Greg Smith <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Director of Quality Assurance</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>greg.smith@infor.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>5b971b6a324d4459b0ffe7b8</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>MediBuddy (2,500 tests, 50% maint cut)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Greg's test maintenance at Infor</div>
+                        <div class="email-body">Hi Greg,
+
+Leading QA across a multi-product SaaS platform usually means test maintenance becomes the drain that stops your team from building new coverage depth. How much of your team's capacity is going to fixing broken tests versus writing new test cases?
+
+MediBuddy was dealing with the same maintenance drain and cut their test overhead in half on Testsigma, with 2,500 automated tests. Their team stopped treating test fixes as reactive firefighting.
+
+At Infor's scale, maintenance bottlenecks directly impact release cadence. Is reducing your test maintenance load something you're prioritizing this year?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 14: Srijyotsna Bokariya -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Srijyotsna Bokariya <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Senior Quality Assurance Lead</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>srijyotsna.bokariya@infor.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>57dd4978a6da987b0d8b744f</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>CRED (90% coverage, 5x faster)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Srijyotsna's coverage gaps at Infor</div>
+                        <div class="email-body">Hi Srijyotsna,
+
+Running QA for cloud ERP usually means coverage is always behind feature velocity because manual test creation can't scale with product release cadence. How much of your end-to-end critical workflows does your regression suite actually cover today?
+
+CRED was dealing with the same coverage scaling challenge and achieved 90% regression coverage in parallel on Testsigma, running 5x faster. Their team stopped waiting for manual test buildup cycles.
+
+At Infor's scale, coverage gaps mean production incidents your customers catch first. How confident are you that your regression is catching failures before release?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 15: Frank Waters -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Frank Waters <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Quality Assurance Manager</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>frank.waters@infor.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>5aec260fa6da9813dd56fdde</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Fortune 100 firm (3x coverage in 4 months)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Frank's coverage velocity at Infor</div>
+                        <div class="email-body">Hi Frank,
+
+Managing QA for enterprise cloud products usually means your portfolio coverage is fragmented and building consistent test depth across all modules consumes months of effort. How much of your test coverage is currently keeping pace with your product release velocity?
+
+A Fortune 100 financial firm was dealing with the same coverage scaling problem and tripled their regression coverage in 4 months on Testsigma. Their team stopped manual test scripting from being the blocker.
+
+At Infor's scale, coverage velocity is competitive advantage. Are you confident your regression is scaling with your product roadmap?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROCORE — COMPLIANCE HOLD -->
+            <div class="company-group">
+                <div class="company-header">
+                    <h3>Procore Technologies</h3>
+                    <span class="contact-count">1</span>
+                </div>
+
+                <!-- Contact 16: Amir Aly — SKIP -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Amir Aly <span class="badge blocked-badge">BLOCKED 🚫</span></div>
+                            <div class="contact-title">Director, QA Engineering</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>amir.aly@procore.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b99015e0fde0001701727c</value></div>
+                    </div>
+                    <div class="compliance-hold">
+                        <strong>⚠️ COMPLIANCE HOLD:</strong> This contact was already contacted on Mar 6, 2026 (per MASTER_SENT_LIST). Do not draft. No T1 email generated.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ZEBRA TECHNOLOGIES -->
+            <div class="company-group">
+                <div class="company-header">
+                    <h3>Zebra Technologies</h3>
+                    <span class="contact-count">5</span>
+                </div>
+
+                <!-- Contact 17: Robert Murphy -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Robert Murphy <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">QA Lead</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>robert.murphy@zebra.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>6108eceeb034d9000172c35a</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Nagra DTV (2,500 tests, 4x faster)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Robert's execution speed at Zebra</div>
+                        <div class="email-body">Hi Robert,
+
+Managing QA for hardware and software usually means your test environments span multiple device types and OS versions, and test execution becomes a serial bottleneck. How much of your release overhead does managing test environment complexity across your platform matrix add?
+
+Nagra DTV was dealing with the same execution bottleneck and cut their test runtime by 4x on Testsigma, automating 2,500 tests. Their team stopped waiting for sequential execution across multiple platform configurations.
+
+At Zebra's scale, test execution speed directly impacts release cadence. Is parallel test execution something you're currently able to achieve?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 18: Vikkal Patel -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Vikkal Patel <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Sr Project QA Lead</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>vikkal.patel@zebra.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>6108ec5f809e3b0001581f28</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Cisco (35% regression time)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Vikkal's regression brittleness at Zebra</div>
+                        <div class="email-body">Hi Vikkal,
+
+Running QA for hardware/software integration usually means test suite brittleness compounds across multiple platforms and you're chasing broken locators instead of hunting real issues. How often are broken test locators creating false failures in your hardware-software integration tests?
+
+Cisco was dealing with the same brittleness problem across distributed systems and cut regression runtime by 35% on Testsigma. Their team stopped manually patching broken locators every sprint.
+
+At Zebra's scale, brittleness across multiple platforms is compounded noise. Is test brittleness something your team is actively trying to reduce?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 19: Nilesh Patel -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Nilesh Patel <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Supervisor Software QA Engineering</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>nilesh.patel@zebra.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b990235d78d5001939b606</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>MediBuddy (2,500 tests, 50% maint cut)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Nilesh's test maintenance at Zebra</div>
+                        <div class="email-body">Hi Nilesh,
+
+Running QA for hardware and software usually means test maintenance becomes a constant drag as you support multiple device types and OS versions. How much of your team's sprint capacity is going to maintaining existing tests versus building new coverage?
+
+MediBuddy was dealing with the same maintenance drain and cut their test overhead in half on Testsigma, managing 2,500 automated tests. Their team stopped treating test fixes as reactive work.
+
+At Zebra's scale, maintenance across multiple platforms can easily consume 40-50% of capacity. Is test maintenance your biggest QA bottleneck right now?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 20: Andrew Scotto -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Andrew Scotto <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Senior Software Test Manager</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>andrew.scotto@zebra.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b990258146de000d3b5881</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Hansard (8→5 week regression)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Andrew's regression timeline at Zebra</div>
+                        <div class="email-body">Hi Andrew,
+
+Managing regression for hardware-software products usually means covering all combinations of devices and OS versions stretches your regression cycle and becomes a release bottleneck. What does your current regression-to-release timeline look like?
+
+Hansard was dealing with the same cycle pressure and compressed regression from 8 weeks down to 5 on Testsigma, without cutting coverage depth. Their team stopped manual test creation from being the bottleneck.
+
+At Zebra's scale, regression cycle time is direct release velocity. How much of your release plan is being constrained by test timeline right now?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 21: Abhilash Gupta -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Abhilash Gupta <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Manager Test Engineering</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>abhilash.gupta@zebra.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b99027a220c10015d9cb2b</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>CRED (90% coverage, 5x faster)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Abhilash's coverage gaps at Zebra</div>
+                        <div class="email-body">Hi Abhilash,
+
+Leading QA for multi-platform hardware and software usually means coverage consistency drifts across device types and you're always playing catch-up on coverage depth. How much of your critical regression scope does your suite currently cover across all platforms?
+
+CRED was dealing with the same coverage scaling problem and achieved 90% regression coverage in parallel on Testsigma, 5x faster. Their team stopped treating coverage as a manual test accumulation problem.
+
+At Zebra's scale, coverage gaps across platforms are production risk. How confident are you in your coverage parity across all device and OS combinations?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMMVAULT -->
+            <div class="company-group">
+                <div class="company-header">
+                    <h3>Commvault</h3>
+                    <span class="contact-count">2</span>
+                </div>
+
+                <!-- Contact 22: Prasad Alimineni -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Prasad Alimineni <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Senior Software QA Manager</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>prasad.alimineni@commvault.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>57d93112a6da98723279fee3</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Nagra DTV (2,500 tests, 4x faster)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Prasad's execution speed at Commvault</div>
+                        <div class="email-body">Hi Prasad,
+
+Managing test automation for data protection software usually means your test environments span multiple storage types and cloud platforms, and test execution becomes serial and slow. How much overhead does managing test environments across your platform matrix add to each release cycle?
+
+Nagra DTV was dealing with the same execution bottleneck and cut test runtime by 4x on Testsigma, automating 2,500 tests. Their team stopped waiting for sequential execution across storage and cloud configurations.
+
+At Commvault's scale, execution speed directly impacts release velocity. Is parallel test execution something you're currently achieving?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 23: Sunkara Srinivas -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Sunkara Srinivas <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Test Manager</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>sunkara.srinivas@commvault.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b99028e0fde0001190a44f</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>MediBuddy (2,500 tests, 50% maint cut)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Sunkara's test maintenance at Commvault</div>
+                        <div class="email-body">Hi Sunkara,
+
+Running QA for backup and recovery software usually means your test suite gets brittle quickly because UI changes cascade across multiple backup/restore workflows. How much of your sprint is being spent fixing broken tests versus expanding coverage?
+
+MediBuddy was dealing with the same maintenance drain and cut their test overhead in half on Testsigma, managing 2,500 automated tests. Their team stopped treating test fixes as emergency firefighting.
+
+At Commvault's scale, test brittleness directly impacts release velocity. Is test maintenance your biggest capacity constraint right now?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RSM US LLP -->
+            <div class="company-group">
+                <div class="company-header">
+                    <h3>RSM US LLP</h3>
+                    <span class="contact-count">5</span>
+                </div>
+
+                <!-- Contact 24: Kristina Pozzi -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Kristina Pozzi <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Software Quality Assurance Lead</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>kristina.pozzi@rsmus.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b9902ae0fde0000d194099</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Cisco (35% regression time)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Kristina's regression brittleness at RSM</div>
+                        <div class="email-body">Hi Kristina,
+
+Running QA for professional services software usually means supporting multiple client integrations and test suite brittleness becomes a constant pain point. How often are broken test locators creating rework in your regression cycles?
+
+Cisco was dealing with the same brittleness issue across complex integrations and cut regression runtime by 35% on Testsigma. Their team stopped manually patching broken locators every sprint.
+
+At RSM's scale, brittleness across client-facing features is customer trust risk. Is test brittleness something your team is actively addressing?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 25: Philcy Morales -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Philcy Morales <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Lead Software Quality Assurance Engineer</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>philcy.morales@rsmus.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b99057e0fde0000d1940b9</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Hansard (8→5 week regression)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Philcy's regression timeline at RSM</div>
+                        <div class="email-body">Hi Philcy,
+
+Running regression for professional services platforms usually means your regression cycle is constrained by multiple client-facing workflows and becomes a release bottleneck. What does your regression-to-release timeline look like for major releases?
+
+Hansard was dealing with the same cycle pressure and compressed regression from 8 weeks down to 5 on Testsigma, without cutting coverage. Their team stopped manual test creation from blocking the path.
+
+At RSM's scale, regression cycle time is release velocity. How much of your release plan is being constrained by test timeline right now?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 26: Christina Jimenez -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Christina Jimenez <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Quality Assurance Manager</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>christina.jimenez@rsmus.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b990595d78d50015bcb318</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>CRED (90% coverage, 5x faster)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Christina's coverage gaps at RSM</div>
+                        <div class="email-body">Hi Christina,
+
+Managing QA for professional services software usually means coverage lags behind feature velocity because manual test creation can't keep pace with client demands. How much of your critical client-facing workflows does your current regression suite cover?
+
+CRED was dealing with the same coverage scaling problem and achieved 90% regression coverage in parallel on Testsigma, running 5x faster. Their team stopped waiting for manual test buildup.
+
+At RSM's scale, coverage gaps mean client escalations. How confident are you that your regression is catching failures before clients do?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 27: Rupasri Soman -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Rupasri Soman <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Quality Assurance Manager</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>rupasri.soman@rsmus.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b990ede0fde000151fbe88</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Fortune 100 firm (3x coverage in 4 months)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Rupasri's coverage velocity at RSM</div>
+                        <div class="email-body">Hi Rupasri,
+
+Leading QA for professional services usually means coverage is always fragmented and scaling coverage depth across all client-facing modules requires months of effort. How much of your test coverage is currently keeping pace with your feature release velocity?
+
+A Fortune 100 financial firm was dealing with the same coverage scaling problem and tripled their regression coverage in 4 months on Testsigma. Their team stopped manual test scripting from being the constraint.
+
+At RSM's scale, coverage velocity is competitive advantage. Are you confident your regression is scaling with your roadmap?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 28: Brian Brennan -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Brian Brennan <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Quality Assurance Manager</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>brian.brennan@rsmus.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b990efe0fde000151fbe8d</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>MediBuddy (2,500 tests, 50% maint cut)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Brian's test maintenance at RSM</div>
+                        <div class="email-body">Hi Brian,
+
+Running QA for professional services platforms usually means test maintenance becomes a constant drain as you support multiple client integrations and workflows. How much of your sprint is consumed by fixing broken tests versus building new coverage?
+
+MediBuddy was dealing with the same maintenance burden and cut their test overhead in half on Testsigma, managing 2,500 automated tests. Their team stopped treating test fixes as reactive work.
+
+At RSM's scale, maintenance across multiple client integrations is expensive overhead. Is test brittleness your biggest QA bottleneck?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HONEYWELL -->
+            <div class="company-group">
+                <div class="company-header">
+                    <h3>Honeywell</h3>
+                    <span class="contact-count">6</span>
+                    <span class="badge blocked-badge">ALL BLOCKED 🚫</span>
+                </div>
+                <div class="compliance-hold">
+                    <strong>🚫 HARD BLOCKED — DO NOT ENROLL:</strong> Honeywell domain not found in tam-accounts-mar26.csv. Additionally, Honeywell is listed as an existing Testsigma customer (CLAUDE.md Key Customers). All 6 contacts blocked per TAM-only prospecting rule. No drafts sent.
+                </div>
+
+                <!-- Contact 29: Dustin Williams -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Dustin Williams <span class="badge blocked-badge">BLOCKED 🚫</span></div>
+                            <div class="contact-title">Software QA Team Lead</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>dustin.williams@honeywell.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b990415d78d50015bcb2fe</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>CRED (90% coverage, 5x faster)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Dustin's coverage gaps at Honeywell</div>
+                        <div class="email-body">Hi Dustin,
+
+Running QA for industrial automation software usually means coverage struggles to keep pace with feature velocity because manual test creation is too slow. How much of your critical end-to-end workflows does your regression suite currently cover?
+
+CRED was dealing with the same coverage scaling challenge and achieved 90% regression coverage in parallel on Testsigma, running 5x faster. Their team stopped waiting for manual test accumulation cycles.
+
+At Honeywell's scale, coverage gaps mean production issues your customers find first. How confident are you in your regression coverage today?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 30: Irina Ramirez -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Irina Ramirez <span class="badge blocked-badge">BLOCKED 🚫</span></div>
+                            <div class="contact-title">Director, Quality Assurance, Global Customer Advocacy</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>irina.ramirez@honeywell.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b990432efe2e0011d39a4a</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Sanofi (test creation 3 days → 80 min)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Irina's test creation speed at Honeywell</div>
+                        <div class="email-body">Hi Irina,
+
+Running global QA for industrial IoT and controls usually means test creation velocity is the gating constraint on release cycles because handwritten tests require weeks of engineering. How long does it typically take your team to build out coverage for a major product release?
+
+Sanofi was dealing with the same test creation bottleneck and compressed test creation time from 3 days to 80 minutes on Testsigma. Their team stopped manual test scripting from being the blocker.
+
+At Honeywell's scale, test creation speed is release velocity. Is speeding up test creation something you're prioritizing?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 31: Justin Garcia -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Justin Garcia <span class="badge blocked-badge">BLOCKED 🚫</span></div>
+                            <div class="contact-title">Quality Assurance Lead</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>justin.garcia@honeywell.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b990452efe2e0011d39a50</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>MediBuddy (2,500 tests, 50% maint cut)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Justin's test maintenance at Honeywell</div>
+                        <div class="email-body">Hi Justin,
+
+Managing QA for industrial software usually means test maintenance becomes the work that crowds out coverage expansion because UI changes cascade constantly. How much of your team's capacity is going to fixing broken tests versus building new coverage?
+
+MediBuddy was dealing with the same maintenance drain and cut their test overhead in half on Testsigma, with 2,500 automated tests. Their team stopped treating test fixes as reactive firefighting.
+
+At Honeywell's scale, maintenance bottlenecks directly impact feature velocity. Is reducing your maintenance load something you're actively trying to solve?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 32: Chuck Povich -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Chuck Povich <span class="badge blocked-badge">BLOCKED 🚫</span></div>
+                            <div class="contact-title">Quality Assurance Lead</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>chuck.povich@honeywell.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b99052e0fde0001190a4b0</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Hansard (8→5 week regression)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Chuck's regression cycle at Honeywell</div>
+                        <div class="email-body">Hi Chuck,
+
+Running QA for complex industrial products usually means your regression cycle is compressed and becomes the gating constraint on release cadence. What does your current regression-to-release timeline look like for major releases?
+
+Hansard was dealing with the same cycle pressure and compressed regression from 8 weeks down to 5 on Testsigma, without cutting coverage depth. Their team stopped manual test creation from being the bottleneck.
+
+At Honeywell's scale, cycle time is competitive velocity. How much of your release plan is being constrained by test timeline?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 33: Jason Gottfried -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Jason Gottfried <span class="badge blocked-badge">BLOCKED 🚫</span></div>
+                            <div class="contact-title">Director, Global Software Quality Assurance, Test Automation & Regulatory/Compliance</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>jason.gottfried@honeywell.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b99053e0fde0000d1940ae</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Cisco (35% regression time)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Jason's regression brittleness at Honeywell</div>
+                        <div class="email-body">Hi Jason,
+
+Running global QA for compliance-heavy industrial automation usually means test suite brittleness compounds across multiple product lines and creates false failure noise. How often are broken test locators creating rework in your regression cycles?
+
+Cisco was dealing with the same brittleness problem across distributed systems and cut regression runtime by 35% on Testsigma, without adding headcount. Their team stopped manually patching broken locators every sprint.
+
+At Honeywell's scale, brittleness across multiple product lines is amplified noise. Is test brittleness something your team is actively trying to reduce?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+
+                <!-- Contact 34: Monica Pena -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Monica Pena <span class="badge blocked-badge">BLOCKED 🚫</span></div>
+                            <div class="contact-title">Quality Assurance Manager</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>monica.pena@honeywell.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b99055a220c10015d9cb5e</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Fortune 100 firm (3x coverage in 4 months)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Monica's coverage velocity at Honeywell</div>
+                        <div class="email-body">Hi Monica,
+
+Managing QA across a global industrial conglomerate usually means coverage is fragmented and building coverage depth across all product lines consumes months of engineering time. How much of your test coverage is currently keeping pace with your product release velocity?
+
+A Fortune 100 financial firm was dealing with the same coverage scaling problem and tripled their regression coverage in 4 months on Testsigma. Their team stopped manual test scripting from being the constraint.
+
+At Honeywell's scale, coverage velocity is business capability. Are you confident your regression is scaling with your roadmap?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NETSCOUT -->
+            <div class="company-group">
+                <div class="company-header">
+                    <h3>Netscout</h3>
+                    <span class="contact-count">1</span>
+                </div>
+
+                <!-- Contact 35: Scott Pfeiffer -->
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div>
+                            <div class="contact-name">Scott Pfeiffer <span class="badge enrolled-badge">ENROLLED ✅</span></div>
+                            <div class="contact-title">Director, Quality Assurance and Customer Advocacy</div>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-detail"><label>Email:</label> <value>scott.pfeiffer@netscout.com</value></div>
+                        <div class="contact-detail"><label>Apollo ID:</label> <value>69b990f1e0fde000151fbe92</value></div>
+                        <div class="contact-detail"><label>Proof Point:</label> <value>Cisco (35% regression time)</value></div>
+                    </div>
+                    <div class="email-draft">
+                        <div class="email-subject">Subject: Scott's regression brittleness at Netscout</div>
+                        <div class="email-body">Hi Scott,
+
+Running QA for network management software usually means test brittleness becomes a chronic pain point as UI and network configurations change frequently. How often are broken test locators consuming rework cycles in your regression runs?
+
+Cisco was dealing with the same brittleness problem and cut regression runtime by 35% on Testsigma, without adding engineers. Their team stopped manually fixing broken locators every sprint cycle.
+
+At Netscout's scale, brittleness across complex network scenarios is expensive noise. Is test brittleness something your team is actively trying to eliminate?
+
+Cheers,
+Rob Gorham
+Business Development · Testsigma
+robert.gorham@testsigma.com</div>
+                        <span class="qa-badge qa-pass">QA: 12/12 ✅</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <p><strong>Batch Generated:</strong> Mar 17, 2026 | <strong>Formula Version:</strong> v2 Locked Mar 14, 2026 | <strong>QA Status:</strong> All 33 drafts pass v2 compliance | <strong>Compliance Holds:</strong> 1 (Procore) | <strong>Pending Resolution:</strong> Chase (3 deleted + 1 review)</p>
+        </div>
+
+    </div>
+</body>
+</html>

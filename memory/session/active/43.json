@@ -1,0 +1,10 @@
+{
+  "session_number": 43,
+  "started_at": "2026-03-17T17:29:46Z",
+  "last_heartbeat": "2026-03-17T17:45:12Z",
+  "status": "active",
+  "task": "TAM T1 Batch 12 Mar17 — COMPLETE. 27 contacts enrolled (Fidelity 4, Northern Trust 2, Epicor 3, Infor 5, Zebra 5, Commvault 2, RSM 5, Netscout 1). Honeywell 6 blocked (not in TAM + existing customer). Procore 1 blocked (dup). Hjørsson 1 skipped (non-ASCII email). Chase 4 pending. AWAITING ROB APPROVE SEND. TASK-046 in work-queue.",
+  "claimed_companies": ["Fidelity Investments", "Northern Trust", "Epicor", "Infor", "Zebra Technologies", "Commvault", "RSM US LLP", "NETSCOUT"],
+  "files_editing": ["MASTER_SENT_LIST.csv", "batches/active/tamob-batch-20260317-1.html"],
+  "agent_type": "cowork"
+}

@@ -1,0 +1,24 @@
+{
+  "batch": "TAM Outbound Batch 15 Mar18",
+  "date": "2026-03-18",
+  "file": "tamob-batch-20260318-3.html",
+  "sequence_id": "69afff8dc8897c0019b78c7e",
+  "sequence_name": "TAM Outbound - Rob Gorham",
+  "send_from": "robert.gorham@testsigma.com",
+  "enrolled_count": 11,
+  "skipped_count": 7,
+  "notes": "1 contact blocked (Vishal Shah, Cboe — contacts_finished_in_other_campaigns). 6 contacts already enrolled in prior batches (Glenn Chambers, Raghda Sakka, Prasad Alapati, Tonya Jennings, Mehul Savalia, Amir Aly). PARTIAL BATCH: 21 more candidates identified but not enrolled due to context limits — continue in next session.",
+  "sends": [
+    {"idx": 1, "name": "Slim Zouari", "first": "Slim", "title": "QA Manager", "company": "NICE", "email": "slim.zouari@nice.com", "apollo_id": "69bacfae23a8c300181f5645", "status": "enrolled"},
+    {"idx": 2, "name": "Ekambreshwar Goshimath", "first": "Ekambreshwar", "title": "QA Manager", "company": "NICE", "email": "ekambreshwar.goshimath@nice.com", "apollo_id": "69bacfd460e41e00150f3b5f", "status": "enrolled"},
+    {"idx": 3, "name": "Eshcol Levi", "first": "Eshcol", "title": "QA Manager", "company": "NICE", "email": "eshcol.levi@nice.com", "apollo_id": "69bacfd623a8c3001341aaf4", "status": "enrolled"},
+    {"idx": 4, "name": "Jack Susans", "first": "Jack", "title": "QA Manager", "company": "NICE", "email": "jack.susans@nice.com", "apollo_id": "69bacfd8bdb7c30011778266", "status": "enrolled"},
+    {"idx": 5, "name": "Kobi Baram", "first": "Kobi", "title": "QA Lead", "company": "NICE", "email": "kobi.baram@nice.com", "apollo_id": "69bacfd9bdb7c30019c217b7", "status": "enrolled"},
+    {"idx": 6, "name": "Aaron Holdsworth", "first": "Aaron", "title": "Quality Assurance Lead", "company": "NICE", "email": "aaron.holdsworth@nice.com", "apollo_id": "69bacfdbbdb7c30019c217c0", "status": "enrolled"},
+    {"idx": 7, "name": "Javier Leypon", "first": "Javier", "title": "QA Manager - Enterprise", "company": "NETSCOUT", "email": "javier.leypon@netscout.com", "apollo_id": "69bacfb460e41e000d91d850", "status": "enrolled"},
+    {"idx": 8, "name": "Graeme Clifford", "first": "Graeme", "title": "Director, Engineering", "company": "Iridium", "email": "graeme.clifford@iridium.com", "apollo_id": "69bacfb623a8c3000e2a54ae", "status": "enrolled"},
+    {"idx": 9, "name": "Carlos Moran", "first": "Carlos", "title": "QA Manager", "company": "Iridium", "email": "carlos.moran@iridium.com", "apollo_id": "69bad00a4ed5080015a37949", "status": "enrolled"},
+    {"idx": 10, "name": "Amit Ugane", "first": "Amit", "title": "Director of Engineering", "company": "KIBO", "email": "amit.ugane@kibocommerce.com", "apollo_id": "681876fa3bafe90001b59d0b", "status": "enrolled"},
+    {"idx": 11, "name": "Rakesh Rallapalli", "first": "Rakesh", "title": "QA Manager", "company": "Commvault", "email": "rrallapalli@commvault.com", "apollo_id": "668414419479d5040cd89968", "status": "enrolled"}
+  ]
+}

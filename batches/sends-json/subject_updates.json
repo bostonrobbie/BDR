@@ -1,0 +1,452 @@
+[
+  {
+    "num": 1,
+    "name": "Jainam Shah",
+    "company": "Amount",
+    "title": "Senior QA Automation Engineer",
+    "email": "jainam.shah@amount.com",
+    "old": "Test maintenance at Amount",
+    "new": "Jainam \u2014 when Amount ships, how many tests break?"
+  },
+  {
+    "num": 2,
+    "name": "Ilija Andic",
+    "company": "Incode",
+    "title": "QA Automation Manager",
+    "email": "ilija.andic@incode.com",
+    "old": "Test coverage across iOS, Android, and Web at Incode",
+    "new": "Ilija \u2014 which platform breaks Incode tests first?"
+  },
+  {
+    "num": 3,
+    "name": "Jyoti Jain",
+    "company": "WorkWave",
+    "title": "Principal QA Engineer/QA Team Lead",
+    "email": "jyoti.jain@workwave.com",
+    "old": "Regression coverage at WorkWave",
+    "new": "Jyoti \u2014 keeping coverage across WorkWave's 4 verticals?"
+  },
+  {
+    "num": 4,
+    "name": "Jeffrey Miller",
+    "company": "EverBank",
+    "title": "IT Quality Assurance and DevOps Manager",
+    "email": "jeffrey.miller@everbank.com",
+    "old": "Test brittleness at EverBank",
+    "new": "Jeffrey \u2014 how much of EverBank's sprint is fixing tests?"
+  },
+  {
+    "num": 5,
+    "name": "Kundan Fahria",
+    "company": "Juniper Square",
+    "title": "QA Automation Lead",
+    "email": "kundan.fahria@junipersquare.com",
+    "old": "Test automation scale at Juniper Square",
+    "new": "Kundan \u2014 automation coverage keeping up at Juniper Square?"
+  },
+  {
+    "num": 6,
+    "name": "Anya Kockina",
+    "company": "Juniper Square",
+    "title": "Director, QA and PMO",
+    "email": "anya.kockina@junipersquare.com",
+    "old": "Release velocity at Juniper Square",
+    "new": "Anya \u2014 what's blocking release velocity at Juniper Square?"
+  },
+  {
+    "num": 7,
+    "name": "Vladimir Mirlic",
+    "company": "SugarCRM",
+    "title": "QA Manager",
+    "email": "vladimir.mirlic@sugarcrm.com",
+    "old": "Cross-browser testing at SugarCRM",
+    "new": "Vladimir \u2014 cross-browser regression clean across SugarCRM?"
+  },
+  {
+    "num": 8,
+    "name": "Devendra Choudhary",
+    "company": "Open Lending",
+    "title": "Director of Quality Assurance",
+    "email": "devendra.choudhary@openlending.com",
+    "old": "Regression automation at OpenLending",
+    "new": "Devendra \u2014 full regression cycle length at Open Lending?"
+  },
+  {
+    "num": 9,
+    "name": "Michael Burton",
+    "company": "WorkWave",
+    "title": "Global Director of Engineering \u2014 QA",
+    "email": "michael.burton@workwave.com",
+    "old": "Enterprise test scale at WorkWave",
+    "new": "Running QA across 16 WorkWave brands \u2014 how do you scale?"
+  },
+  {
+    "num": 10,
+    "name": "Siva Kumar",
+    "company": "Replicon",
+    "title": "QA Manager",
+    "email": "siva.kumar@replicon.com",
+    "old": "Test maintenance at Replicon",
+    "new": "Siva \u2014 test maintenance eating sprints at Replicon?"
+  },
+  {
+    "num": 11,
+    "name": "Sheethal Kotekar",
+    "company": "Replicon",
+    "title": "QA Lead",
+    "email": "sheethal.kotekar@replicon.com",
+    "old": "Regression coverage growth at Replicon",
+    "new": "Sheethal \u2014 how much of Replicon's scope is covered?"
+  },
+  {
+    "num": 12,
+    "name": "Sridhar Bulusu",
+    "company": "Replicon",
+    "title": "Lead Automation Engineer",
+    "email": "sridhar.bulusu@replicon.com",
+    "old": "Flaky test reduction at Replicon",
+    "new": "Sridhar \u2014 false failures per run on Replicon's 20yr stack?"
+  },
+  {
+    "num": 13,
+    "name": "Emma Newberg",
+    "company": "ManTech",
+    "title": "QA Manager",
+    "email": "emma.newberg@mantech-inc.com",
+    "old": "Release velocity at ManTech",
+    "new": "Emma \u2014 how long does ManTech's full regression take?"
+  },
+  {
+    "num": 14,
+    "name": "Keoka Duangprachanh",
+    "company": "ManTech",
+    "title": "QA Lead",
+    "email": "keoka.duangprachanh@mantech.com",
+    "old": "Test coverage across platforms at ManTech",
+    "new": "Keoka \u2014 managing regression across ManTech's tech stacks?"
+  },
+  {
+    "num": 15,
+    "name": "Michael Biddick",
+    "company": "ManTech",
+    "title": "VP Enterprise Program Management & QA",
+    "email": "michael.biddick@mantech.com",
+    "old": "Test automation scalability across ManTech programs",
+    "new": "Consistent QA tooling across ManTech programs \u2014 how?"
+  },
+  {
+    "num": 16,
+    "name": "Sylvia Kuzmak",
+    "company": "ManTech",
+    "title": "QA Director",
+    "email": "sylvia.kuzmak@mantech-inc.com",
+    "old": "Regression cycle time at ManTech",
+    "new": "Sylvia \u2014 what does ManTech's pre-release regression look like?"
+  },
+  {
+    "num": 17,
+    "name": "Sarah Fischetto",
+    "company": "ManTech",
+    "title": "QA Project Manager",
+    "email": "sarah.fischetto@mantech.com",
+    "old": "Test maintenance at ManTech",
+    "new": "Sarah \u2014 test upkeep slowing ManTech project timelines?"
+  },
+  {
+    "num": 18,
+    "name": "Hemant Dubey",
+    "company": "Veradigm",
+    "title": "SDET",
+    "email": "hemant.dubey@veradigm.com",
+    "old": "Flaky test automation at Veradigm",
+    "new": "Hemant \u2014 false failures burning Veradigm automation hours?"
+  },
+  {
+    "num": 19,
+    "name": "Ted Barker",
+    "company": "Veradigm",
+    "title": "Director Quality Engineering",
+    "email": "ted.barker@veradigm.com",
+    "old": "Regression coverage at Veradigm",
+    "new": "Ted \u2014 how much of Veradigm's EHR scope is automated?"
+  },
+  {
+    "num": 20,
+    "name": "Tanvir Afzal",
+    "company": "Veradigm",
+    "title": "Lead QA Analyst",
+    "email": "tanvir.afzal@veradigm.com",
+    "old": "Release velocity for Veradigm",
+    "new": "Tanvir \u2014 how long does Veradigm's compliance regression take?"
+  },
+  {
+    "num": 21,
+    "name": "Bhanu Sundar",
+    "company": "Veradigm",
+    "title": "Manager Software QA",
+    "email": "bhanu.sundar@veradigm.com",
+    "old": "Test maintenance at Veradigm",
+    "new": "Bhanu \u2014 maintenance overhead on Veradigm's HIPAA stack?"
+  },
+  {
+    "num": 22,
+    "name": "Julie Brule",
+    "company": "Alithya",
+    "title": "QA Lead",
+    "email": "julie.brule@alithya.com",
+    "old": "Test coverage across platforms at Alithya",
+    "new": "Julie \u2014 regression consistency across Alithya client stacks?"
+  },
+  {
+    "num": 23,
+    "name": "Youssef Medgar",
+    "company": "Alithya",
+    "title": "Director of QA Expertise",
+    "email": "youssef.medgar@alithya.com",
+    "old": "Test automation scaling for Alithya",
+    "new": "Standardizing QA tooling across Alithya engagements?"
+  },
+  {
+    "num": 24,
+    "name": "Niveditha Bhuj",
+    "company": "Lendbuzz",
+    "title": "QA Engineering Manager",
+    "email": "niveditha.bhuj@lendbuzz.com",
+    "old": "Niveditha's test maintenance at Lendbuzz",
+    "new": "Niveditha \u2014 test debt compounding at Lendbuzz?"
+  },
+  {
+    "num": 25,
+    "name": "Aslam Ather",
+    "company": "KIBO",
+    "title": "Lead Engineer, QA",
+    "email": "aslam.ather@kibocommerce.com",
+    "old": "Coverage scale at KIBO",
+    "new": "Aslam \u2014 coverage across KIBO's merchant tenants?"
+  },
+  {
+    "num": 26,
+    "name": "Ashwini Dumbe",
+    "company": "KIBO",
+    "title": "Lead QA Engineer",
+    "email": "ashwini.dumbe@kibocommerce.com",
+    "old": "Locator stability at KIBO",
+    "new": "Ashwini \u2014 merchant theme changes breaking KIBO tests?"
+  },
+  {
+    "num": 27,
+    "name": "Dipty Pahal",
+    "company": "KIBO",
+    "title": "Lead QA Engineer",
+    "email": "dipty.pahal@kibocommerce.com",
+    "old": "Regression timeline at KIBO",
+    "new": "Dipty \u2014 how long does KIBO's full regression run?"
+  },
+  {
+    "num": 28,
+    "name": "Jordan Simmons",
+    "company": "KIBO",
+    "title": "Manager, Software Quality Assurance",
+    "email": "jordan.simmons@kibocommerce.com",
+    "old": "QA capacity at KIBO",
+    "new": "Jordan \u2014 test maintenance vs new coverage ratio at KIBO?"
+  },
+  {
+    "num": 29,
+    "name": "Nelly Turton",
+    "company": "KIBO",
+    "title": "QA Engineering Manager",
+    "email": "nelly.turton@kibocommerce.com",
+    "old": "Regression coverage at KIBO",
+    "new": "Nelly \u2014 staying ahead of regression gaps at KIBO?"
+  },
+  {
+    "num": 30,
+    "name": "Mickey Gerci",
+    "company": "Bluevine",
+    "title": "Senior QA Automation Engineer",
+    "email": "mickey.gerci@bluevine.com",
+    "old": "Test maintenance at Bluevine",
+    "new": "Mickey \u2014 fintech UI churn killing Bluevine test suite?"
+  },
+  {
+    "num": 31,
+    "name": "Swatishree Hoque",
+    "company": "Bluevine",
+    "title": "Sr QA Automation Engineer",
+    "email": "swatishree.hoque@bluevine.com",
+    "old": "Locator churn at Bluevine",
+    "new": "Swatishree \u2014 locator breaks on Bluevine's banking UI?"
+  },
+  {
+    "num": 32,
+    "name": "Alon Tsema",
+    "company": "Bluevine",
+    "title": "Senior QA Automation Engineer",
+    "email": "alon.tsema@bluevine.com",
+    "old": "Automation maintenance at Bluevine",
+    "new": "Alon \u2014 how much of your Bluevine week is patching tests?"
+  },
+  {
+    "num": 33,
+    "name": "Lujan Diaz",
+    "company": "Bluevine",
+    "title": "Contact Center QA Manager",
+    "email": "lujan.diaz@bluevine.com",
+    "old": "Test reliability at Bluevine",
+    "new": "Lujan \u2014 false failures eroding confidence in Bluevine suite?"
+  },
+  {
+    "num": 34,
+    "name": "Abhay N",
+    "company": "Bluevine",
+    "title": "Senior SDET",
+    "email": "abhay.n@bluevine.com",
+    "old": "Test infrastructure at Bluevine",
+    "new": "Abhay \u2014 framework maintenance vs new coverage at Bluevine?"
+  },
+  {
+    "num": 35,
+    "name": "Harita Chandra",
+    "company": "Bluevine",
+    "title": "Lead Quality Assurance Engineer",
+    "email": "harita.chandra@bluevine.com",
+    "old": "Coverage breadth at Bluevine",
+    "new": "Harita \u2014 mobile, web, and API coverage in sync at Bluevine?"
+  },
+  {
+    "num": 36,
+    "name": "Jans Sudris",
+    "company": "Docupace",
+    "title": "QA Automation Lead",
+    "email": "jans.sudris@docupace.com",
+    "old": "Test upkeep at Docupace",
+    "new": "Jans \u2014 advisor workflow tests holding up at Docupace?"
+  },
+  {
+    "num": 37,
+    "name": "George Schultz",
+    "company": "StubHub",
+    "title": "Senior Quality Assurance Specialist",
+    "email": "george.schultz@stubhub.com",
+    "old": "Marketplace coverage at StubHub",
+    "new": "George \u2014 regression keeping pace with StubHub transaction volume?"
+  },
+  {
+    "num": 38,
+    "name": "Ignacio Sanchez",
+    "company": "Geopagos",
+    "title": "Sr. QA Manager",
+    "email": "ignacio.sanchez@geopagos.com",
+    "old": "Release cycles at Geopagos",
+    "new": "Ignacio \u2014 compliance requirements slowing Geopagos releases?"
+  },
+  {
+    "num": 39,
+    "name": "Julieta Abacha",
+    "company": "Geopagos",
+    "title": "Tech Lead QA",
+    "email": "julieta.abacha@geopagos.com",
+    "old": "Test maintainability at Geopagos",
+    "new": "Julieta \u2014 payment flow test suite healthy at Geopagos?"
+  },
+  {
+    "num": 40,
+    "name": "Massimo Modena",
+    "company": "Personalis",
+    "title": "VP, QA, Regulatory Compliance & Clinical Labs",
+    "email": "massimo.modena@personalis.com",
+    "old": "Coverage scope at Personalis",
+    "new": "Clinical workflow coverage automated at Personalis?"
+  },
+  {
+    "num": 41,
+    "name": "Shilpa Nayak",
+    "company": "Personalis",
+    "title": "Senior Software QA Manager",
+    "email": "shilpa.nayak@personalis.com",
+    "old": "Test coverage at Personalis",
+    "new": "Shilpa \u2014 genomics platform test coverage keeping up?"
+  },
+  {
+    "num": 42,
+    "name": "Shiva Porah",
+    "company": "Personalis",
+    "title": "Sr. Incoming QA Manager",
+    "email": "shiva.porah@personalis.com",
+    "old": "Test brittleness at Personalis",
+    "new": "Shiva \u2014 test reliability on Personalis genomics platform?"
+  },
+  {
+    "num": 43,
+    "name": "Lori Khan",
+    "company": "Personalis",
+    "title": "Director, Quality Assurance",
+    "email": "lori.khan@personalis.com",
+    "old": "QA velocity at Personalis",
+    "new": "Lori \u2014 QA velocity vs compliance tradeoff at Personalis?"
+  },
+  {
+    "num": 44,
+    "name": "Deepshikha Bharati",
+    "company": "Personalis",
+    "title": "SVP Regulatory, Quality & Clinical Compliance",
+    "email": "deepshikha.bharati@personalis.com",
+    "old": "Compliance coverage at Personalis",
+    "new": "Compliance workflow gaps creating audit risk at Personalis?"
+  },
+  {
+    "num": 45,
+    "name": "Benny Aulang",
+    "company": "Acadia",
+    "title": "Executive Director, QA",
+    "email": "benny.aulang@acadia.com",
+    "old": "Test reliability at Acadia",
+    "new": "Benny \u2014 brittle tests creating regulatory risk at Acadia?"
+  },
+  {
+    "num": 46,
+    "name": "James Nelson",
+    "company": "Acadia",
+    "title": "VP Quality",
+    "email": "james.nelson@acadia.com",
+    "old": "Release cycles at Acadia",
+    "new": "How long does Acadia's regulatory regression cycle run?"
+  },
+  {
+    "num": 47,
+    "name": "Stefan Berner",
+    "company": "Acadia",
+    "title": "Associate Director QA",
+    "email": "stefan.berner@acadia.com",
+    "old": "Coverage expansion at Acadia",
+    "new": "Stefan \u2014 how much of Acadia's critical workflows are automated?"
+  },
+  {
+    "num": 48,
+    "name": "Bonnie Kaplan",
+    "company": "Acadia",
+    "title": "Sr. Director, QA",
+    "email": "bonnie.kaplan@acadia.com",
+    "old": "Test maintainability at Acadia",
+    "new": "Bonnie \u2014 brittle tests creating audit exposure at Acadia?"
+  },
+  {
+    "num": 49,
+    "name": "Maja Kilian",
+    "company": "Acadia",
+    "title": "Director, QA, Qualified Person",
+    "email": "maja.kilian@acadia.com",
+    "old": "Regression velocity at Acadia",
+    "new": "Maja \u2014 QP regression cycle eating release windows at Acadia?"
+  },
+  {
+    "num": 50,
+    "name": "Mary Etienne",
+    "company": "Acadia",
+    "title": "Sr. Manager QA Training",
+    "email": "mary.etienne@acadia.com",
+    "old": "QA team scale at Acadia",
+    "new": "Mary \u2014 how much Acadia QA onboarding is fixing broken tests?"
+  }
+]

@@ -1,0 +1,687 @@
+QA FAILURE DETAILS - 114 DRAFTS
+================================================================================
+
+1. Iain Duffield (ANAPLAN)
+   Email: iain.duffield@anaplan.com
+   Word Count: 161
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+2. Jason Cowley (ANAPLAN)
+   Email: jason.cowley@anaplan.com
+   Word Count: 158
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+3. Michelina Vitello (ANAPLAN)
+   Email: michelina.vitello@anaplan.com
+   Word Count: 158
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+4. Stephen O&#x27;Neill (ANAPLAN)
+   Email: stephen.oneill@anaplan.com
+   Word Count: 154
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+5. Tom Baldwin (ANAPLAN)
+   Email: tom.baldwin@anaplan.com
+   Word Count: 158
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+6. Daniel Ward (BETHESDA)
+   Email: daniel.ward@bethesda.net
+   Word Count: 156
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+7. Joseph Farrell (BETHESDA)
+   Email: joseph.farrell@bethesda.net
+   Word Count: 158
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+8. Yousef Ebrahimi (BETHESDA)
+   Email: yousef.ebrahimi@bethesda.net
+   Word Count: 157
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+9. Bogdan Minciu (CELONIS)
+   Email: bogdan.minciu@celonis.de
+   Word Count: 158
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+10. Brian Oppenheim (CELONIS)
+   Email: brian.oppenheim@celonis.de
+   Word Count: 160
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+11. Doron Lehmann (CHECKPOINT)
+   Email: doronl@checkpoint.com
+   Word Count: 156
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+12. Jesse Ybarra (CHECKPOINT)
+   Email: jessee@checkpoint.com
+   Word Count: 159
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+13. Shlomo Yeret (CHECKPOINT)
+   Email: shlomoy@checkpoint.com
+   Word Count: 156
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+14. Tomer Weinberger (CHECKPOINT)
+   Email: tomerw@checkpoint.com
+   Word Count: 156
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+15. Yogesh Garg (CHECKPOINT)
+   Email: yogeshg@checkpoint.com
+   Word Count: 150
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+16. Bret Wiener (FARMERS)
+   Email: bret.wiener@farmers.com
+   Word Count: 160
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+17. Suresh Vincent (FARMERS)
+   Email: suresh.vincent@farmers.com
+   Word Count: 156
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+18. Elad Moshe (LEMONADE)
+   Email: elad.moshe@lemonade.com
+   Word Count: 158
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+19. Itay Benari (LEMONADE)
+   Email: itay.benari@lemonade.com
+   Word Count: 155
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+20. Glenn Chambers (ROCKETSOFTWARE)
+   Email: gchambers@rocketsoftware.com
+   Word Count: 156
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+21. Jianhua Zhou (ROCKETSOFTWARE)
+   Email: jzhou@rocketsoftware.com
+   Word Count: 153
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+22. Kishor Chaudhary (ROCKETSOFTWARE)
+   Email: kchaudhary@rocketsoftware.com
+   Word Count: 157
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+23. Mandar Bapat (ROCKETSOFTWARE)
+   Email: mbapat@rocketsoftware.com
+   Word Count: 163
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+24. Mingtao Liu (ROCKETSOFTWARE)
+   Email: mliu@rocketsoftware.com
+   Word Count: 155
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+25. Cory Davies (SAILPOINT)
+   Email: cdavies@sailpoint.com
+   Word Count: 166
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+26. Matt Domsch (SAILPOINT)
+   Email: mdomsch@sailpoint.com
+   Word Count: 159
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+27. Matt Ramirez (SAILPOINT)
+   Email: mramirez@sailpoint.com
+   Word Count: 157
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+28. Remi Philippe (SAILPOINT)
+   Email: rphilippe@sailpoint.com
+   Word Count: 157
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+29. Sandeep Enagala (SAILPOINT)
+   Email: senagala@sailpoint.com
+   Word Count: 157
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+30. Swapna B (WINSUPPLYINC)
+   Email: swapna.b@winsupplyinc.com
+   Word Count: 156
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+31. Amit Maheshwari (ZEBRA)
+   Email: amit.maheshwari@zebra.com
+   Word Count: 157
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+32. Bob Liu (ZEBRA)
+   Email: bob.liu@zebra.com
+   Word Count: 158
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+33. Jorge Dominguez (ZEBRA)
+   Email: jorge.dominguez@zebra.com
+   Word Count: 151
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+34. Marek Kana (ZEBRA)
+   Email: marek.kana@zebra.com
+   Word Count: 150
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+35. Matthew Horner (ZEBRA)
+   Email: matthew.horner@zebra.com
+   Word Count: 157
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+36. Kamran Shamaei (ZIMMERBIOMET)
+   Email: kamran.shamaei@zimmerbiomet.com
+   Word Count: 152
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+37. Marc Blair (ZIMMERBIOMET)
+   Email: marc.blair@zimmerbiomet.com
+   Word Count: 163
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+38. Abhishek Ravishankara (HIMS)
+   Email: abhishek.ravishankara@hims.com
+   Word Count: 158
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+39. Eric Spencer (HIMS)
+   Email: eric.spencer@hims.com
+   Word Count: 163
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+40. Jen Moltke (HIMS)
+   Email: jen.moltke@hims.com
+   Word Count: 158
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+41. Maria Mata (HIMS)
+   Email: maria.mata@hims.com
+   Word Count: 156
+   Source: batch9-t2-approve-send-2026-03-17.html
+   Failed Checks: valid_subject
+
+42. Chyehar Tyler (UNKNOWN)
+   Email: N/A
+   Word Count: 130
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+43. Hai Su (UNKNOWN)
+   Email: N/A
+   Word Count: 137
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+44. Jeremy Sabin (UNKNOWN)
+   Email: N/A
+   Word Count: 138
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+45. Justin Yune (UNKNOWN)
+   Email: N/A
+   Word Count: 131
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+46. Piyamas Sattaboot (HUMANA)
+   Email: N/A
+   Word Count: 133
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+47. Aswini Nagabooshanam (UNKNOWN)
+   Email: N/A
+   Word Count: 131
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+48. Vibha Singh (UNKNOWN)
+   Email: N/A
+   Word Count: 136
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+49. Sakib Alam (COREWELL HEALTH)
+   Email: N/A
+   Word Count: 134
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+50. Kris Berg (UNKNOWN)
+   Email: N/A
+   Word Count: 130
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+51. Ranjith Reddy (UNKNOWN)
+   Email: N/A
+   Word Count: 137
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+52. Yvonne Stephen (MASTERCARD)
+   Email: N/A
+   Word Count: 135
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+53. Glen Hudson (UNKNOWN)
+   Email: N/A
+   Word Count: 128
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+54. Sibghatullah Veedy (UNKNOWN)
+   Email: N/A
+   Word Count: 125
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+55. Vijay Durairaj (UNKNOWN)
+   Email: N/A
+   Word Count: 134
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+56. Ketan Rathod (UNKNOWN)
+   Email: N/A
+   Word Count: 130
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+57. Geethavani Dodda (ANAPLAN)
+   Email: N/A
+   Word Count: 133
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+58. Irina Baxter (DRAFTKINGS)
+   Email: N/A
+   Word Count: 139
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+59. Mike Seal (UNKNOWN)
+   Email: N/A
+   Word Count: 134
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+60. Ted Machicek (GEICO)
+   Email: N/A
+   Word Count: 135
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+61. Satish Krishnan (UNKNOWN)
+   Email: N/A
+   Word Count: 133
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+62. April Brenay (UNKNOWN)
+   Email: N/A
+   Word Count: 134
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+63. Manohar Shrestha (UNKNOWN)
+   Email: N/A
+   Word Count: 130
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+64. Ketan Peddabachi (HASHICORP)
+   Email: N/A
+   Word Count: 138
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+65. Adit Shah (UNKNOWN)
+   Email: N/A
+   Word Count: 134
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+66. Devashish Patel (KKR)
+   Email: N/A
+   Word Count: 134
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+67. Josh Klesel (UNKNOWN)
+   Email: N/A
+   Word Count: 129
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+68. Kenny Qi (DATAMATICS)
+   Email: N/A
+   Word Count: 131
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+69. Mohan Raj (UNKNOWN)
+   Email: N/A
+   Word Count: 132
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+70. Shilendra Sharma (UNKNOWN)
+   Email: N/A
+   Word Count: 132
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+71. Poonam Patil (ONEMAIN FINANCIAL)
+   Email: N/A
+   Word Count: 136
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+72. Michelle Crawford (UNKNOWN)
+   Email: N/A
+   Word Count: 130
+   Source: wave4-t2-approve-send-2026-03-17.html
+   Failed Checks: word_count_in_range
+
+73. Marcela Fetters (GEICO)
+   Email: N/A
+   Word Count: 61
+   Source: tamob-wave2-t2-drafts-mar12.html
+   Failed Checks: word_count_in_range, has_greeting, has_cta, valid_signature, valid_subject
+
+74. Roberto Bouza (GEICO)
+   Email: N/A
+   Word Count: 58
+   Source: tamob-wave2-t2-drafts-mar12.html
+   Failed Checks: word_count_in_range, has_greeting, has_cta, valid_signature, valid_subject
+
+75. Sambhav Taneja (GEICO)
+   Email: N/A
+   Word Count: 61
+   Source: tamob-wave2-t2-drafts-mar12.html
+   Failed Checks: word_count_in_range, has_greeting, has_cta, valid_signature, valid_subject
+
+76. Chandni Jain (Checkr)
+   Email: N/A
+   Word Count: 61
+   Source: tamob-wave2-t2-drafts-mar12.html
+   Failed Checks: word_count_in_range, has_greeting, has_cta, valid_signature, valid_subject
+
+77. Sarah Kneedler (Checkr)
+   Email: N/A
+   Word Count: 54
+   Source: tamob-wave2-t2-drafts-mar12.html
+   Failed Checks: word_count_in_range, has_greeting, has_cta, valid_signature, valid_subject
+
+78. Krista Moroder (Checkr)
+   Email: N/A
+   Word Count: 61
+   Source: tamob-wave2-t2-drafts-mar12.html
+   Failed Checks: word_count_in_range, has_greeting, has_cta, valid_signature, valid_subject
+
+79. Cristian Brotto (Checkr)
+   Email: N/A
+   Word Count: 66
+   Source: tamob-wave2-t2-drafts-mar12.html
+   Failed Checks: word_count_in_range, has_greeting, has_cta, valid_signature, valid_subject
+
+80. Yu Jin (EA)
+   Email: N/A
+   Word Count: 65
+   Source: tamob-wave2-t2-drafts-mar12.html
+   Failed Checks: word_count_in_range, has_greeting, has_cta, valid_signature, valid_subject
+
+81. Maalika Tadinada (EA)
+   Email: N/A
+   Word Count: 66
+   Source: tamob-wave2-t2-drafts-mar12.html
+   Failed Checks: word_count_in_range, has_greeting, has_cta, valid_signature, valid_subject
+
+82. Richelle Paulsen (Cetera Financial)
+   Email: N/A
+   Word Count: 68
+   Source: tamob-wave2-t2-drafts-mar12.html
+   Failed Checks: word_count_in_range, has_greeting, has_cta, valid_signature, valid_subject
+
+83. Anton Aleksandrov (Cetera Financial)
+   Email: N/A
+   Word Count: 59
+   Source: tamob-wave2-t2-drafts-mar12.html
+   Failed Checks: word_count_in_range, has_greeting, has_cta, valid_signature, valid_subject
+
+84. Saeyed Shamlou (OneMain Financial)
+   Email: N/A
+   Word Count: 64
+   Source: tamob-wave2-t2-drafts-mar12.html
+   Failed Checks: word_count_in_range, has_greeting, has_cta, valid_signature, valid_subject
+
+85. Karen Teng (Mindbody)
+   Email: N/A
+   Word Count: 61
+   Source: tamob-wave2-t2-drafts-mar12.html
+   Failed Checks: word_count_in_range, has_greeting, has_cta, valid_signature, valid_subject
+
+86. Henry Rose (Mindbody)
+   Email: N/A
+   Word Count: 59
+   Source: tamob-wave2-t2-drafts-mar12.html
+   Failed Checks: word_count_in_range, has_greeting, has_cta, valid_signature, valid_subject
+
+87. Bipin Bhoite (Mindbody)
+   Email: N/A
+   Word Count: 73
+   Source: tamob-wave2-t2-drafts-mar12.html
+   Failed Checks: word_count_in_range, has_greeting, has_cta, valid_signature, valid_subject
+
+88. Georgii Petrosian (AuditBoard)
+   Email: gpetrosian@auditboard.com
+   Word Count: 108
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+89. Mohan Guruswamy (Tavant)
+   Email: mohan.guruswamy@tavant.com
+   Word Count: 106
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+90. Lueanne Fitzhugh (Cerner)
+   Email: lueanne.fitzhugh@cerner.com
+   Word Count: 102
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+91. Jeremy Cira (Kaseya)
+   Email: jeremy.cira@kaseya.com
+   Word Count: 109
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+92. Chandana Ray (Persistent Systems)
+   Email: chandana_ray@persistent.com
+   Word Count: 102
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+93. Martha Horns (Greenway Health)
+   Email: martha.horns@greenwayhealth.com
+   Word Count: 101
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+94. David Gustafson (HG Insights)
+   Email: david.gustafson@hginsights.com
+   Word Count: 110
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+95. Jiaping Shen (HackerRank)
+   Email: jiaping@hackerrank.com
+   Word Count: 97
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+96. Sravanti Krothapalli (Quorum Software)
+   Email: sravanti_krothapalli@qbsol.com
+   Word Count: 106
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+97. Cooper Morrow (Jama Software)
+   Email: cmorrow@jamasoftware.com
+   Word Count: 109
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+98. Manigandan Kanagasabai (Mediaocean)
+   Email: mkanagasabai@mediaocean.com
+   Word Count: 103
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+99. Leah Coates (Perforce)
+   Email: lcoates@perforce.com
+   Word Count: 107
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+100. Kanan Hasanzade (Datto)
+   Email: khasanzade@datto.com
+   Word Count: 108
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+101. Azam Quraishi (MTX Group)
+   Email: azam.quraishi@mtxb2b.com
+   Word Count: 99
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+102. Grant Anderson (Lucid)
+   Email: ganderson@lucid.co
+   Word Count: 108
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+103. Denise Barnett (Progress Software)
+   Email: dbarnett@progress.com
+   Word Count: 107
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+104. Tim Wiseman (Upland Software)
+   Email: twiseman@uplandsoftware.com
+   Word Count: 117
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+105. Josh Thayer (Jenius Bank)
+   Email: jthayer@jeniusbank.com
+   Word Count: 100
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+106. Elena Lysenko (CFSB)
+   Email: elysenko@cfsb.com
+   Word Count: 107
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+107. Jason Poole (Vergent LMS)
+   Email: jpoole@vergentlms.com
+   Word Count: 106
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+108. Tom Goody (Ncontracts)
+   Email: tom.goody@ncontracts.com
+   Word Count: 111
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+109. LP Guo (Moody's Analytics)
+   Email: liping.guo@moodys.com
+   Word Count: 113
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+110. Francesco Leising (Fairfax Software)
+   Email: francesco.leising@fairfaxsoftware.com
+   Word Count: 110
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+111. Chet West (Tempworks)
+   Email: chet.west@tempworks.com
+   Word Count: 110
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+112. Clint Parker (Simpro Group)
+   Email: clint.parker@simprogroup.com
+   Word Count: 110
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+113. Brad Askins (Trimble)
+   Email: brad_askins@trimble.com
+   Word Count: 115
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+
+114. Dan Heintzelman (Prevail Legal)
+   Email: dan.heintzelman@prevail.io
+   Word Count: 106
+   Source: t2-email-drafts-mar9.html
+   Failed Checks: word_count_in_range, has_testsigma, has_greeting, has_cta, valid_signature, valid_subject
+

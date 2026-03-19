@@ -1,0 +1,245 @@
+[
+  {
+    "id": "niveditha.bhuj@lendbuzz.com",
+    "num": 1,
+    "name": "Niveditha Bhuj — QA Engineering Manager",
+    "first_name": "Niveditha",
+    "email": "niveditha.bhuj@lendbuzz.com",
+    "subject": "Niveditha — test debt compounding at Lendbuzz?",
+    "body": "Hi Niveditha,\n\nManaging QA for an auto-lending platform usually means your test base is constantly chasing broken locators and API schema shifts. Is test maintenance eating more of your team's sprint capacity than building new coverage?\n\nMedibuddy was dealing with the same maintenance drag and cut it 50% on Testsigma. Their team stopped spending sprints patching locators and started writing new compliance coverage.\n\nAt Lendbuzz's scale, that maintenance overhead multiplies across every release. How much of your current sprint capacity is going to test maintenance versus building new coverage?\n\nCheers,\nRob"
+  },
+  {
+    "id": "aslam.ather@kibocommerce.com",
+    "num": 2,
+    "name": "Aslam Ather — Lead Engineer, QA",
+    "first_name": "Aslam",
+    "email": "aslam.ather@kibocommerce.com",
+    "subject": "Aslam — coverage across KIBO's merchant tenants?",
+    "body": "Hi Aslam,\n\nScaling test coverage for a multi-tenant commerce platform usually means you're running parallel test infrastructure across tenant configs and picking up gaps in edge cases. How much of your cycle time goes to coverage catch-up versus new functionality testing?\n\nCRED was dealing with similar coverage-to-complexity pressure and hit 90% regression coverage 5x faster on Testsigma. Their team went from chasing coverage debt to building ahead.\n\nAt KIBO's growth pace, release confidence depends on coverage depth. How much of your critical regression scope does your current suite cover today?\n\nCheers,\nRob"
+  },
+  {
+    "id": "ashwini.dumbe@kibocommerce.com",
+    "num": 3,
+    "name": "Ashwini Dumbe — Lead QA Engineer",
+    "first_name": "Ashwini",
+    "email": "ashwini.dumbe@kibocommerce.com",
+    "subject": "Ashwini — merchant theme changes breaking KIBO tests?",
+    "body": "Hi Ashwini,\n\nBuilding automation for a commerce platform usually means your test suite is sensitive to DOM changes when merchants update store layouts or theme settings. Are false failures from brittle locators a constant source of noise in your runs?\n\nCisco was dealing with the same brittleness problem and cut regression noise by 35% on Testsigma without adding engineers. Their team stopped manually patching broken selectors each sprint.\n\nAt KIBO's merchant velocity, locator churn creates release risk. How often are false failures from broken locators showing up in your runs right now?\n\nCheers,\nRob"
+  },
+  {
+    "id": "dipty.pahal@kibocommerce.com",
+    "num": 4,
+    "name": "Dipty Pahal — Lead QA Engineer",
+    "first_name": "Dipty",
+    "email": "dipty.pahal@kibocommerce.com",
+    "subject": "Dipty — how long does KIBO's full regression run?",
+    "body": "Hi Dipty,\n\nRunning QA for a multi-tenant SaaS platform usually means your regression cycles stretch because you're testing across config variants and upgrade paths. How long does a full regression take from feature ready to release confidence?\n\nHansard was dealing with similar regression pressure and cut their cycle from 8 weeks to 5 weeks on Testsigma. Their team gained three weeks of capacity for new functionality without hiring.\n\nAt KIBO's release cadence, cycle length is a competitive constraint. What does your current regression-to-release timeline look like for major releases?\n\nCheers,\nRob"
+  },
+  {
+    "id": "jordan.simmons@kibocommerce.com",
+    "num": 5,
+    "name": "Jordan Simmons — Manager, Software Quality Assurance",
+    "first_name": "Jordan",
+    "email": "jordan.simmons@kibocommerce.com",
+    "subject": "Jordan — test maintenance vs new coverage ratio at KIBO?",
+    "body": "Hi Jordan,\n\nManaging a QA team at a commerce SaaS scale usually means you're caught between test creation velocity and test maintenance overhead, neither team happy. How much time is your team spending fixing broken tests versus building new ones?\n\nMedibuddy was dealing with the same capacity split and cut maintenance by 50% on Testsigma. Their QA team went from 40% maintenance work to 15% and redeployed that time to coverage.\n\nAt KIBO's size, test maintenance is a salary line item worth optimizing. How much of your current sprint capacity is going to test maintenance versus building new coverage?\n\nCheers,\nRob"
+  },
+  {
+    "id": "nelly.turton@kibocommerce.com",
+    "num": 6,
+    "name": "Nelly Turton — Quality Assurance Engineering Manager",
+    "first_name": "Nelly",
+    "email": "nelly.turton@kibocommerce.com",
+    "subject": "Nelly — staying ahead of regression gaps at KIBO?",
+    "body": "Hi Nelly,\n\nManaging QA for a multi-product commerce platform usually means regression coverage is your constant constraint — every release adds features faster than you can add tests. How far behind are you on your target regression coverage?\n\nCRED was dealing with similar coverage pressure and went from 60% to 90% regression coverage in half the time on Testsigma. The breakthrough was using plain English test specs instead of code, which let non-engineers contribute.\n\nAt KIBO's product velocity, coverage gaps become release risk. How much of your critical regression scope does your current suite cover today?\n\nCheers,\nRob"
+  },
+  {
+    "id": "mickey.gerci@bluevine.com",
+    "num": 7,
+    "name": "Mickey Gerci — Senior QA Automation Engineer",
+    "first_name": "Mickey",
+    "email": "mickey.gerci@bluevine.com",
+    "subject": "Mickey — fintech UI churn killing Bluevine test suite?",
+    "body": "Hi Mickey,\n\nBuilding automation for a fintech platform usually means your test suite has tight coupling to banking UI patterns and API contracts, making every migration a locator nightmare. How much sprint time does your automation team spend fixing broken tests?\n\nMedibuddy was dealing with the same maintenance burden and cut it 50% on Testsigma. Their automation engineers stopped patching locators every sprint and started building new test coverage instead.\n\nAt Bluevine's scale, test brittleness delays releases. How much of your current sprint capacity is going to test maintenance versus building new coverage?\n\nCheers,\nRob"
+  },
+  {
+    "id": "swatishree.hoque@bluevine.com",
+    "num": 8,
+    "name": "Swatishree Hoque — Sr QA Automation Engineer",
+    "first_name": "Swatishree",
+    "email": "swatishree.hoque@bluevine.com",
+    "subject": "Swatishree — locator breaks on Bluevine's banking UI?",
+    "body": "Hi Swatishree,\n\nAutomating tests for a banking platform usually means you're fighting both CSS selector fragility and responsive design shifts as the product evolves. Are false failures from brittle locators eating time you'd rather spend on new test coverage?\n\nCisco was dealing with the same brittleness issue and cut regression noise by 35% on Testsigma. Their automation team stopped manually patching broken selectors and got AI-driven healing instead.\n\nAt Bluevine's release cadence, locator stability directly impacts reliability. How often are false failures from broken locators showing up in your runs right now?\n\nCheers,\nRob"
+  },
+  {
+    "id": "alon.tsema@bluevine.com",
+    "num": 9,
+    "name": "Alon Tsema — Senior QA Automation Engineer",
+    "first_name": "Alon",
+    "email": "alon.tsema@bluevine.com",
+    "subject": "Alon — how much of your Bluevine week is patching tests?",
+    "body": "Hi Alon,\n\nWorking on test automation for fintech usually means you're managing complex flows across account types and compliance states, and every UI tweak breaks multiple tests. How much of your week goes to maintaining vs. building new tests?\n\nMedibuddy was dealing with the same maintenance load and cut it 50% on Testsigma. Their team reallocated that time from upkeep to building new compliance test coverage.\n\nAt Bluevine's scale, test maintenance is a velocity bottleneck. How much of your current sprint capacity is going to test maintenance versus building new coverage?\n\nCheers,\nRob"
+  },
+  {
+    "id": "lujan.diaz@bluevine.com",
+    "num": 10,
+    "name": "Lujan Diaz — Contact Center QA Manager",
+    "first_name": "Lujan",
+    "email": "lujan.diaz@bluevine.com",
+    "subject": "Lujan — false failures eroding confidence in Bluevine suite?",
+    "body": "Hi Lujan,\n\nManaging QA for a banking platform usually means test reliability is critical to operations, and brittle tests erode confidence in the entire automation suite. Are you spending time chasing false failures instead of finding real bugs?\n\nCisco was dealing with similar test brittleness and cut regression failures by 35% on Testsigma using AI-driven locator healing. Their QA team got their confidence back.\n\nAt Bluevine's scale, unreliable tests cost more than they save. How often are false failures from broken locators showing up in your runs right now?\n\nCheers,\nRob"
+  },
+  {
+    "id": "abhay.n@bluevine.com",
+    "num": 11,
+    "name": "Abhay N — Senior SDET",
+    "first_name": "Abhay",
+    "email": "abhay.n@bluevine.com",
+    "subject": "Abhay — framework maintenance vs new coverage at Bluevine?",
+    "body": "Hi Abhay,\n\nArchitecting test infrastructure for a fintech SaaS usually means you're fighting framework constraints and test code fragility as the test suite grows. Does your automation stack require constant refactoring to handle new patterns?\n\nHansard was dealing with similar test infrastructure pressure and simplified their approach on Testsigma by moving away from brittle framework dependencies. Their team cut regression cycles from 8 to 5 weeks by removing maintenance overhead.\n\nAt Bluevine's scale, test framework flexibility is a competitive advantage. How much of your automation work right now is framework maintenance versus writing new test logic?\n\nCheers,\nRob"
+  },
+  {
+    "id": "harita.chandra@bluevine.com",
+    "num": 12,
+    "name": "Harita Chandra — Lead Quality Assurance Engineer",
+    "first_name": "Harita",
+    "email": "harita.chandra@bluevine.com",
+    "subject": "Harita — mobile, web, and API coverage in sync at Bluevine?",
+    "body": "Hi Harita,\n\nLeading QA for a SaaS platform usually means building coverage across mobile, web, and API, and keeping all three in sync is a constant puzzle. How much of your QA scope are you currently covering with automated regression tests?\n\nCRED was dealing with similar multi-channel coverage gaps and went from 60% to 90% regression coverage 5x faster on Testsigma by using a platform that handled all channels natively. Their team stopped maintaining separate test suites.\n\nAt Bluevine's scale, coverage breadth directly impacts release confidence. How much of your critical regression scope does your current suite cover today?\n\nCheers,\nRob"
+  },
+  {
+    "id": "jans.sudris@docupace.com",
+    "num": 13,
+    "name": "Jans Sudris — QA Automation Lead",
+    "first_name": "Jans",
+    "email": "jans.sudris@docupace.com",
+    "subject": "Jans — advisor workflow tests holding up at Docupace?",
+    "body": "Hi Jans,\n\nManaging automation for a wealth management platform usually means your test suite is complex and brittle — templates break frequently and advisor workflows have long chains of dependencies. How much time does your team spend maintaining tests versus building new ones?\n\nMedibuddy was dealing with similar test maintenance burden and cut it 50% on Testsigma. Their automation team stopped firefighting broken tests and started scaling coverage.\n\nAt Docupace's scale, maintenance overhead eats into new feature coverage. How much of your current sprint capacity is going to test maintenance versus building new coverage?\n\nCheers,\nRob"
+  },
+  {
+    "id": "george.schultz@stubhub.com",
+    "num": 14,
+    "name": "George Schultz — Senior Quality Assurance Specialist",
+    "first_name": "George",
+    "email": "george.schultz@stubhub.com",
+    "subject": "George — regression keeping pace with StubHub transaction volume?",
+    "body": "Hi George,\n\nTesting a high-volume marketplace usually means your regression scope expands constantly because buyer/seller flows interact in unexpected ways. How far behind is your regression coverage relative to the scope of live features?\n\nCRED was dealing with similar coverage pressure on a financial marketplace and went from 60% to 90% regression coverage 5x faster on Testsigma. Their team went from chasing coverage debt to building ahead.\n\nAt StubHub's transaction volume, coverage gaps create risk. How much of your critical regression scope does your current suite cover today?\n\nCheers,\nRob"
+  },
+  {
+    "id": "ignacio.sanchez@geopagos.com",
+    "num": 15,
+    "name": "Ignacio Sanchez — Sr. QA Manager",
+    "first_name": "Ignacio",
+    "email": "ignacio.sanchez@geopagos.com",
+    "subject": "Ignacio — compliance requirements slowing Geopagos releases?",
+    "body": "Hi Ignacio,\n\nManaging QA for a payments platform usually means your regression cycles are long because compliance requirements force thorough testing, and every test iteration takes time. How long does your current regression cycle take from feature ready to release?\n\nHansard was dealing with similar cycle length pressure and cut their regression from 8 weeks to 5 weeks on Testsigma without cutting corners. Their team gained three weeks of deployment velocity.\n\nAt Geopagos's scale, release cadence is competitive. What does your current regression-to-release timeline look like for major releases?\n\nCheers,\nRob"
+  },
+  {
+    "id": "julieta.abacha@geopagos.com",
+    "num": 16,
+    "name": "Julieta Abacha — Tech Lead QA",
+    "first_name": "Julieta",
+    "email": "julieta.abacha@geopagos.com",
+    "subject": "Julieta — payment flow test suite healthy at Geopagos?",
+    "body": "Hi Julieta,\n\nLeading QA for a payments platform usually means your test suite bears the weight of compliance and regulatory scope, and every test is critical but also fragile. How much time is your team spending keeping tests healthy versus expanding coverage?\n\nMedibuddy was dealing with similar test maintenance burden and cut it 50% on Testsigma, freeing their team to focus on coverage expansion instead of constant refactoring.\n\nAt Geopagos's regulatory scale, maintainable tests are an operational necessity. How much of your current sprint capacity is going to test maintenance versus building new coverage?\n\nCheers,\nRob"
+  },
+  {
+    "id": "massimo.modena@personalis.com",
+    "num": 17,
+    "name": "Massimo Modena — Vice President, Quality Assurance, Regulatory Compliance & Clinical Laboratories",
+    "first_name": "Massimo",
+    "email": "massimo.modena@personalis.com",
+    "subject": "Clinical workflow coverage automated at Personalis?",
+    "body": "Hi Massimo,\n\nManaging QA for a precision medicine platform usually means your test scope is massive because clinical accuracy matters and regulatory compliance is non-negotiable. How much of your clinical test scope is covered by automated regression today?\n\nCRED was dealing with similar coverage scope and went from 60% to 90% regression coverage 5x faster on Testsigma by moving to plain English specs and AI self-healing. Their team got confidence in both speed and compliance.\n\nAt Personalis's regulatory scale, comprehensive coverage is a business requirement. How much of your critical workflow coverage is automated today?\n\nCheers,\nRob"
+  },
+  {
+    "id": "shilpa.nayak@personalis.com",
+    "num": 18,
+    "name": "Shilpa Nayak — Senior Software QA Manager",
+    "first_name": "Shilpa",
+    "email": "shilpa.nayak@personalis.com",
+    "subject": "Shilpa — genomics platform test coverage keeping up?",
+    "body": "Hi Shilpa,\n\nLeading QA for a genomics platform usually means your test suite needs to be both comprehensive and fast because clinical workflows can't wait and sample processing has tight timelines. How much of your critical workflow coverage is automated?\n\nCRED was dealing with similar coverage-to-speed tension and hit 90% regression coverage 5x faster on Testsigma using AI-assisted test creation. Their team went from months of backlog to current.\n\nAt Personalis's scale, comprehensive coverage is a competitive advantage. How much of your critical workflow coverage is automated today?\n\nCheers,\nRob"
+  },
+  {
+    "id": "shiva.porah@personalis.com",
+    "num": 19,
+    "name": "Shiva Porah — Sr. Incoming QA Manager",
+    "first_name": "Shiva",
+    "email": "shiva.porah@personalis.com",
+    "subject": "Shiva — test reliability on Personalis genomics platform?",
+    "body": "Hi Shiva,\n\nManaging QA for a genomics SaaS usually means your test suite is sensitive to data schema shifts and API contract changes, because upstream sample data affects downstream analysis accuracy. Are brittle tests creating false confidence or false failures in your regression suite?\n\nCisco was dealing with similar test brittleness and cut regression noise by 35% on Testsigma using AI-driven locator healing. Their QA team got reliable signal instead of noise.\n\nAt Personalis's clinical scale, reliable tests are essential. How often are false failures from broken locators showing up in your runs right now?\n\nCheers,\nRob"
+  },
+  {
+    "id": "lori.khan@personalis.com",
+    "num": 20,
+    "name": "Lori Khan — Director, Quality Assurance",
+    "first_name": "Lori",
+    "email": "lori.khan@personalis.com",
+    "subject": "Lori — QA velocity vs compliance tradeoff at Personalis?",
+    "body": "Hi Lori,\n\nDirecting QA for a precision medicine platform usually means balancing regulatory compliance with velocity, and most test teams end up choosing compliance over speed. How much time does your QA org spend on test creation versus maintenance?\n\nHansard was dealing with similar velocity pressure and cut their regression cycle from 8 weeks to 5 weeks on Testsigma, winning back time for both compliance validation and new feature coverage.\n\nAt Personalis's scale, QA velocity is a release bottleneck. What does your current regression-to-release timeline look like for major releases?\n\nCheers,\nRob"
+  },
+  {
+    "id": "deepshikha.bharati@personalis.com",
+    "num": 21,
+    "name": "Deepshikha Bharati — SVP Regulatory, Quality and Clinical Compliance",
+    "first_name": "Deepshikha",
+    "email": "deepshikha.bharati@personalis.com",
+    "subject": "Compliance workflow gaps creating audit risk at Personalis?",
+    "body": "Hi Deepshikha,\n\nOverseeing regulatory QA for a clinical genomics platform usually means your test scope is massive because every test is a compliance artifact and every gap is an audit risk. How much of your critical clinical workflow scope is covered by automated tests?\n\nCRED was dealing with similar compliance scope and expanded their automation from 60% to 90% coverage 5x faster on Testsigma by using plain English specs that both QA and clinical teams could own. Their audit confidence increased.\n\nAt Personalis's regulatory scale, automated compliance testing is a business necessity. How much of your critical workflow coverage is automated today?\n\nCheers,\nRob"
+  },
+  {
+    "id": "benny.aulang@acadia.com",
+    "num": 22,
+    "name": "Benny Aulang — Executive Director, QA",
+    "first_name": "Benny",
+    "email": "benny.aulang@acadia.com",
+    "subject": "Benny — brittle tests creating regulatory risk at Acadia?",
+    "body": "Hi Benny,\n\nLeading QA for a pharma company usually means your test suite is under regulatory scrutiny and false failures erode confidence faster than they can be fixed. Are brittle tests affecting your team's ability to ship with confidence?\n\nCisco was dealing with similar test brittleness and cut regression noise by 35% on Testsigma using AI-driven healing. Their QA team went from fighting false failures to catching real bugs.\n\nAt Acadia's scale, reliable tests are a regulatory and operational necessity. How often are false failures from broken locators showing up in your runs right now?\n\nCheers,\nRob"
+  },
+  {
+    "id": "james.nelson@acadia.com",
+    "num": 23,
+    "name": "James Nelson — Vice President Quality",
+    "first_name": "James",
+    "email": "james.nelson@acadia.com",
+    "subject": "How long does Acadia's regulatory regression cycle run?",
+    "body": "Hi James,\n\nManaging QA at a pharma company scale usually means your regression cycles are long because regulatory validation is thorough, and every test iteration must be documented. How long does your full regression take from feature ready to release approval?\n\nHansard was dealing with similar cycle time pressure and cut their regression from 8 weeks to 5 weeks on Testsigma without cutting the rigor. Their team gained deployment velocity while maintaining compliance.\n\nAt Acadia's regulatory scale, release velocity is a market advantage. What does your current regression-to-release timeline look like for major releases?\n\nCheers,\nRob"
+  },
+  {
+    "id": "stefan.berner@acadia.com",
+    "num": 24,
+    "name": "Stefan Berner — Associate Director Quality Assurance",
+    "first_name": "Stefan",
+    "email": "stefan.berner@acadia.com",
+    "subject": "Stefan — how much of Acadia's critical workflows are automated?",
+    "body": "Hi Stefan,\n\nWorking in QA for a pharma digital platform usually means your test scope grows faster than your coverage can keep up, and regulatory requirements force comprehensive testing. How much of your critical workflow coverage is automated versus manual?\n\nCRED was dealing with similar scope pressure and expanded their coverage from 60% to 90% on Testsigma 5x faster using plain English test specs. Their team caught up to scope and kept ahead.\n\nAt Acadia's scale, comprehensive coverage is both a regulatory requirement and a competitive advantage. How much of your critical workflow coverage is automated today?\n\nCheers,\nRob"
+  },
+  {
+    "id": "bonnie.kaplan@acadia.com",
+    "num": 25,
+    "name": "Bonnie Kaplan — Sr. Director, Quality Assurance",
+    "first_name": "Bonnie",
+    "email": "bonnie.kaplan@acadia.com",
+    "subject": "Bonnie — brittle tests creating audit exposure at Acadia?",
+    "body": "Hi Bonnie,\n\nDirecting QA for a pharma company usually means your test suite is a regulatory asset, but brittle tests create both false signals and compliance risk. Are you spending time chasing test failures that aren't real bugs?\n\nCisco was dealing with similar test brittleness and cut regression noise by 35% on Testsigma using AI self-healing. Their QA team went from maintenance firefighting to strategic testing.\n\nAt Acadia's scale, maintainable tests are a business continuity issue. How often are false failures from broken locators showing up in your runs right now?\n\nCheers,\nRob"
+  },
+  {
+    "id": "maja.kilian@acadia.com",
+    "num": 26,
+    "name": "Maja Kilian — Director, Quality Assurance, Qualified Person",
+    "first_name": "Maja",
+    "email": "maja.kilian@acadia.com",
+    "subject": "Maja — QP regression cycle eating release windows at Acadia?",
+    "body": "Hi Maja,\n\nRunning QA as a Qualified Person for pharma usually means your regression cycles have to balance speed with regulatory documentation, and one delays the other. How long does your current regression-to-release cycle take?\n\nHansard was dealing with similar cycle length pressure and cut their regression from 8 weeks to 5 weeks on Testsigma while maintaining full compliance documentation. Their team gained three weeks of deployment windows.\n\nAt Acadia's scale, regression velocity is both an operational and regulatory consideration. What does your current regression-to-release timeline look like for major releases?\n\nCheers,\nRob"
+  },
+  {
+    "id": "mary.etienne@acadia.com",
+    "num": 27,
+    "name": "Mary Etienne — Sr. Manager Quality Assurance Training",
+    "first_name": "Mary",
+    "email": "mary.etienne@acadia.com",
+    "subject": "Mary — how much Acadia QA onboarding is fixing broken tests?",
+    "body": "Hi Mary,\n\nManaging QA training at a pharma company scale usually means your team is growing but test maintenance continues to eat training time, and new people spend their first months firefighting broken tests instead of building skills. How much of your new hire onboarding is test maintenance troubleshooting?\n\nCisco was dealing with similar maintenance overhead and cut test brittleness by 35% on Testsigma, which freed their team to focus training on building test strategy instead of locator repair.\n\nAt Acadia's team scale, training efficiency directly impacts QA velocity. How often are false failures from broken locators showing up in your runs right now?\n\nCheers,\nRob"
+  }
+]

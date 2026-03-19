@@ -18,6 +18,20 @@ Whenever you need to create contacts in Apollo and enroll them in the TAM Outbou
 
 ---
 
+## ⛔ MANDATORY PRE-ENROLLMENT GATE (INC-013 — added 2026-03-17)
+
+**NEVER enroll contacts until ALL of the following are true for EVERY contact being enrolled:**
+
+1. **Draft exists:** A T1 email body written to the locked v2 formula is in an approved batch HTML file.
+2. **QA passed:** Draft scored MQS ≥ 9/12.
+3. **APPROVE SEND received:** Rob has explicitly said "APPROVE SEND" for this specific batch in the current session.
+
+If any contact lacks an approved, QA'd draft: **STOP. Write the draft first. Enroll after approval.**
+
+This gate exists because INC-007, INC-008, INC-012, and INC-013 all trace to the same root failure: contacts enrolled or tasks executed without a verified, approved body ready. The Apollo sequence step default is a placeholder — it will send "Placeholder - replace with personalized email before sending" if the task is executed without a real body being typed/pasted.
+
+---
+
 ## Step-by-Step Process
 
 ### 1. Create the Contact (if not already in Apollo)

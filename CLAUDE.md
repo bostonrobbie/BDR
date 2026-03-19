@@ -210,6 +210,7 @@ archive/                       ← HISTORICAL — all completed/superseded files
 | Incidents | `memory/incidents.md` |
 | Scoring/feedback | `memory/scoring-feedback.md` |
 | Target accounts | `memory/target-accounts.md` |
+| **Domain block list** | `memory/domain-block-list.md` — domains where emails bounce. Check BEFORE enrollment. |
 | Email analytics | `memory/email-analytics-sop.md` |
 | **Active batch trackers** | `batches/active/` — all tamob-batch-*.html files |
 | **T2 drafts for approval** | `batches/t2-pending/` |

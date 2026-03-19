@@ -6,6 +6,28 @@ _Auto-appended after every system-diagnostics run._
 
 _No runs yet. First entry will appear after March 22, 2026 automated run._
 
+### stage-monitor 2026-03-19 — B9+Wave4 T2 due today (81 contacts), Waves 1-3/B8/Tyler T2 overdue (171 contacts), 4 new bounces (Commvault×1, Equiniti×2, Square×1), 1 unsubscribe (Peter Rimshnick/Yext — DNC), 442 Apollo tasks queued, status: WARN
+
+### stage-monitor 2026-03-17 — 74 T2 overdue (Wave 1+2+3), 36 T3 overdue, 8 new bounces (KIBO×3, Acadia×2, Replicon×1, WorkWave×1, Veradigm×1), status: WARN
+
+### morning-briefing Run #1 — 2026-03-17 06:12 EDT
+- **Result:** Full morning briefing dashboard generated. Status pill: RED (TELUS P0 callbacks 5–6 days overdue + 13 new overnight bounces from Batch 11 + Wave 3 T2s 1 day overdue). File saved to analytics/dashboards/morning-briefing-2026-03-17.html (34 KB).
+- **Key metrics:** Overnight replies: 0 prospect replies (13 bounce NDRs + 4 Slack notifications + 1 Apollo tasks email + 1 internal GTM invite) | Calendar events: 7 (0 prospect meetings, 2 dial blocks, AE sync at 2:30 PM) | T2/T3 due: Wave 1+2 closing TODAY (last day), Wave 3 overdue 1–2 days, Batch 8 due tomorrow | Work queue: 5 unclaimed P0/P1 tasks | Warm leads displayed: 5 (3×P0 TELUS, 1×P1 Namita, 1×P2 Pallavi)
+- **Anomalies:** 13 new bounce NDRs from Batch 11 sends (Kibo Commerce ×4 may be domain-blocking). TELUS callbacks are 5–6 days overdue — flagged prominently. Apollo reports 344 tasks due. Shashi Menon DM re: SF event Mar 20 surfaced via Gmail Slack notification.
+- **Adjustments made this run:** Slack section hidden by default (no MCP connected, Gmail-only signal surfaced in Overnight Replies section instead). Company updates section rendered but collapsed. Warning banner added given 3+ critical items.
+- **Output quality:** Accurate
+- **File generated:** analytics/dashboards/morning-briefing-2026-03-17.html (34 KB, confirmed ✅)
+
+### morning-briefing Run #2 — 2026-03-19 06:10 EDT
+- **Result:** Full morning briefing dashboard generated. Status pill: RED (TELUS P0 x3 callbacks 7–8 days overdue + 8 new bounce NDRs + 442 Apollo tasks due + TASK-060 orphaned with 27 T1 sends remaining). File saved to analytics/dashboards/morning-briefing-2026-03-19.html (33 KB).
+- **Key metrics:** Overnight replies: 0 prospect replies (8 bounce NDRs + 1 Apollo missed call notification + 1 Apollo 442-tasks email + 6 Slack email digests + 1 calendar invite) | Calendar events: 6 (0 prospect meetings — Travel block 10AM–5PM, OB sync 9AM, GTM biweekly 10:30AM, "calls" with William Dalley 2:30PM, 2 dial blocks) | T2/T3 due: Mar 15 batch T2 DUE TODAY (Day 4), Mar 11 batch window closing TODAY (Day 8), 442 Apollo tasks pending | Work queue: 10 open tasks (4×P0 critical + 4×P1 + 2×P2) | Warm leads displayed: 5 (3×P0 TELUS, 1×P1 Namita Jain, 1×P2 Pallavi Sheshadri) + 1 meeting booked (Anewgo Apr 13)
+- **Anomalies:** TASK-060 orphaned from Session 48 (27 T1 sends remain). New bounces: Commvault (Rakesh Rallapalli), Equiniti x2 (Craig Telling, Mahesh Tolapu), Square (Sheena Ramachandran), Epicor (Alan Spindel — already TASK-061), Check Point x2 (Shlomo Yeret, Yogesh Garg). Travel day — calendar shows Rob unavailable 10AM–5PM.
+- **Adjustments made this run:** Slack section hidden by default (no MCP, Gmail digest captured). Warning banner added for travel day + TASK-060 orphan. New bounce from Commvault added (not yet in work queue — surfaced in overnight replies).
+- **Output quality:** Accurate
+- **File generated:** analytics/dashboards/morning-briefing-2026-03-19.html (33 KB, confirmed ✅)
+
+### linkedin-signal-monitor 2026-03-19 — 0 profile views, 0 InMail reads, 0 connections — Chrome MCP timeout (3rd consecutive failure), status: WARN
+### linkedin-signal-monitor 2026-03-17 — 0 profile views, 0 InMail reads, 0 connections — Chrome MCP timeout, status: WARN
 ### linkedin-signal-monitor 2026-03-16 — 0 profile views (24h), 7 total (14d), 0 InMail reads, 1 new connection, status: OK
 
 ### trigger-monitor 2026-03-16 — 30 accounts scanned, 2 signals found, status: OK

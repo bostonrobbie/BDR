@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Briefing — 2026-03-19</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #f0f2f5;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .header {
+      background: #1a1d23;
+      color: white;
+      padding: 20px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 2px; }
+    .header .date-line { font-size: 13px; color: #aab; }
+
+    .status-pill {
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.3px;
+    }
+    .pill-red    { background: #f8d7da; color: #721c24; }
+    .pill-yellow { background: #fff3cd; color: #856404; }
+    .pill-green  { background: #d4edda; color: #155724; }
+
+    /* BANNER */
+    .warning-banner {
+      background: #fff3cd;
+      border-left: 4px solid #f0ad4e;
+      padding: 10px 20px;
+      font-size: 13px;
+      color: #856404;
+      font-weight: 500;
+    }
+
+    /* MAIN LAYOUT */
+    .dashboard-container {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* CARDS */
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.09);
+      overflow: hidden;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 1px solid #eee;
+    }
+    .card-header:hover { background: #fafafa; }
+    .card-header .icon { font-size: 18px; }
+    .card-header h2 { flex: 1; font-size: 15px; font-weight: 600; color: #111; }
+    .toggle-btn {
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 26px;
+      height: 26px;
+      font-size: 16px;
+      cursor: pointer;
+      color: #666;
+      line-height: 1;
+    }
+    .card-content { padding: 16px 18px; }
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: #eee;
+      color: #555;
+    }
+    .badge-red    { background: #f8d7da; color: #721c24; }
+    .badge-orange { background: #ffe5cc; color: #7a3a00; }
+    .badge-blue   { background: #cce5ff; color: #004085; }
+    .badge-green  { background: #d4edda; color: #155724; }
+    .badge-gray   { background: #eee;    color: #555; }
+
+    /* SECTION ACCENTS */
+    .card-warm-leads  .card-header { border-left: 4px solid #e74c3c; }
+    .card-replies     .card-header { border-left: 4px solid #3498db; }
+    .card-calendar    .card-header { border-left: 4px solid #27ae60; }
+    .card-t2t3        .card-header { border-left: 4px solid #f39c12; }
+    .card-pipeline    .card-header { border-left: 4px solid #95a5a6; }
+    .card-slack       .card-header { border-left: 4px solid #4a154b; }
+    .card-workqueue   .card-header { border-left: 4px solid #9b59b6; }
+
+    /* TABLES */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { text-align: left; padding: 7px 10px; background: #f5f5f5; color: #555; font-weight: 600; font-size: 12px; border-bottom: 1px solid #e0e0e0; }
+    td { padding: 8px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+
+    /* CONTACT ROWS */
+    .contact-name { font-weight: 600; color: #111; }
+    .contact-company { color: #666; font-size: 12px; }
+    .contact-meta { color: #888; font-size: 11px; }
+
+    /* PRIORITY LABELS */
+    .p0 { background: #f8d7da; color: #721c24; padding: 2px 7px; border-radius: 3px; font-weight: 700; font-size: 11px; }
+    .p1 { background: #ffe5cc; color: #7a3a00; padding: 2px 7px; border-radius: 3px; font-weight: 700; font-size: 11px; }
+    .p2 { background: #fff3cd; color: #856404; padding: 2px 7px; border-radius: 3px; font-weight: 700; font-size: 11px; }
+    .p3 { background: #d4edda; color: #155724; padding: 2px 7px; border-radius: 3px; font-weight: 700; font-size: 11px; }
+    .p4 { background: #eee;    color: #555;    padding: 2px 7px; border-radius: 3px; font-weight: 600; font-size: 11px; }
+
+    /* PIPELINE METRICS */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .metric-box {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 12px 14px;
+      text-align: center;
+    }
+    .metric-value { font-size: 26px; font-weight: 700; color: #1a1d23; }
+    .metric-label { font-size: 11px; color: #888; margin-top: 2px; font-weight: 500; }
+
+    /* TASK ITEMS */
+    .task-item {
+      background: #f9f9f9;
+      border-left: 3px solid #9b59b6;
+      border-radius: 0 6px 6px 0;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+    }
+    .task-item.task-critical { border-left-color: #e74c3c; }
+    .task-item.task-p1       { border-left-color: #f39c12; }
+    .task-item.task-p2       { border-left-color: #3498db; }
+    .task-id   { font-size: 11px; color: #999; font-weight: 600; }
+    .task-desc { font-size: 13px; font-weight: 600; color: #111; margin: 2px 0 4px; }
+    .task-meta { font-size: 12px; color: #888; }
+
+    /* EVENT ITEMS */
+    .event-item {
+      border-left: 3px solid #27ae60;
+      background: #f0faf4;
+      border-radius: 0 6px 6px 0;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+    }
+    .event-time  { font-size: 12px; font-weight: 700; color: #27ae60; }
+    .event-title { font-size: 14px; font-weight: 600; color: #111; }
+    .event-flag  { font-size: 12px; color: #e74c3c; font-weight: 600; margin-top: 3px; }
+    .event-note  { font-size: 12px; color: #888; }
+
+    /* BOUNCE ITEMS */
+    .bounce-item {
+      background: #fff5f5;
+      border-left: 3px solid #e74c3c;
+      border-radius: 0 6px 6px 0;
+      padding: 7px 12px;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    .bounce-item .bounce-name { font-weight: 600; color: #721c24; }
+    .bounce-item .bounce-email { color: #888; font-size: 12px; font-family: monospace; }
+
+    /* MISC */
+    .empty-state { color: #aaa; font-style: italic; font-size: 13px; padding: 8px 0; }
+    .section-label { font-size: 11px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 8px; margin-top: 14px; }
+    .section-label:first-child { margin-top: 0; }
+    .alert-box {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #856404;
+      margin-bottom: 12px;
+    }
+    .alert-box strong { color: #6d4c00; }
+    .telus-box {
+      background: #fff5f5;
+      border: 1px solid #f8d7da;
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 14px;
+    }
+    .telus-box .telus-header { font-size: 14px; font-weight: 700; color: #721c24; margin-bottom: 8px; }
+    .telus-contact { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #fce; font-size: 13px; }
+    .telus-contact:last-child { border-bottom: none; }
+    .telus-contact .tname { font-weight: 600; }
+    .telus-contact .taction { font-size: 12px; color: #e74c3c; font-weight: 600; }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 8px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .header { padding: 14px 16px; }
+      .header h1 { font-size: 18px; }
+      .card-content { padding: 12px 14px; }
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+      table { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>Good morning, Rob 👋</h1>
+    <div class="date-line">Thursday, March 19, 2026 &nbsp;·&nbsp; Generated at 06:10 ET</div>
+  </div>
+  <span class="status-pill pill-red">🔴 ACTION REQUIRED</span>
+</div>
+
+<!-- WARNING BANNER -->
+<div class="warning-banner">
+  ⚠️ <strong>Travel day:</strong> Calendar shows Travel block 10 AM–5 PM. You also have 27 T1 sends from yesterday's session still pending (TASK-060 orphaned). TELUS P0 x3 are 7-8 days overdue.
+</div>
+
+<div class="dashboard-container">
+
+  <!-- ====== 1. WARM LEADS ====== -->
+  <div class="card card-warm-leads">
+    <div class="card-header" onclick="toggle(this)">
+      <span class="icon">🔥</span>
+      <h2>Warm Leads — Action Required</h2>
+      <span class="badge badge-red">5 contacts</span>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-content">
+
+      <div class="alert-box">
+        <strong>🚨 TELUS P0 — 3 contacts called you back 7-8 days ago. They are significantly overdue for follow-up.</strong> Krystal tried 4 times in a row. This account is hot.
+      </div>
+
+      <div class="section-label">P0 — TELUS (Call Back ASAP)</div>
+      <div class="telus-box">
+        <div class="telus-header">🏢 TELUS — 3 Contacts (Telecom, ~40K employees)</div>
+        <div class="telus-contact">
+          <div>
+            <div class="tname">Krystal Jackson-Lennon</div>
+            <div style="font-size:12px;color:#888;">Manager, Tech Strategy / SRE / Performance Eng &nbsp;|&nbsp; +1 416-906-2317</div>
+            <div style="font-size:12px;color:#e74c3c;">4 missed calls Mar 12 (3:55–3:56 PM) — 7 DAYS AGO</div>
+          </div>
+          <div class="taction">📞 CALL NOW</div>
+        </div>
+        <div class="telus-contact">
+          <div>
+            <div class="tname">Mike Brown</div>
+            <div style="font-size:12px;color:#888;">Quality Assurance Manager &nbsp;|&nbsp; +1 604-999-8592 (North Vancouver BC)</div>
+            <div style="font-size:12px;color:#e74c3c;">2 missed calls Mar 11 (3:25 + 3:40 PM) — 8 DAYS AGO</div>
+          </div>
+          <div class="taction">📞 CALL NOW</div>
+        </div>
+        <div class="telus-contact">
+          <div>
+            <div class="tname">Rajesh Ranjan</div>
+            <div style="font-size:12px;color:#888;">Engineering Manager, Data Engineering &nbsp;|&nbsp; +1 647-936-7954 (Toronto ON)</div>
+            <div style="font-size:12px;color:#e74c3c;">1 missed call Mar 11 (3:00 PM) — 8 DAYS AGO</div>
+          </div>
+          <div class="taction">📞 CALL NOW</div>
+        </div>
+        <div style="font-size:12px;color:#888;margin-top:8px;">💡 Lead with performance engineering / SRE angle for Krystal. Sequence FINISHED for Krystal + Mike. Rajesh still at Step 4.</div>
+      </div>
+
+      <div class="section-label">P1 — Monitor / Respond</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th><th>Company</th><th>Title</th><th>Last Touch</th><th>Days Since</th><th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="p1">P1</span> <span class="contact-name">Namita Jain</span></td>
+            <td>OverDrive<br><span class="contact-meta">overdrive.com · 540 emp · KKR</span></td>
+            <td>Software QA</td>
+            <td>T1 Email (Feb 27)<br><span class="contact-meta">"coverage angle"</span></td>
+            <td><strong>20 days</strong></td>
+            <td>Webinar Attendee (x2)</td>
+          </tr>
+          <tr>
+            <td><span class="p2">P2</span> <span class="contact-name">Pallavi Sheshadri</span></td>
+            <td>Origami Risk</td>
+            <td>QA</td>
+            <td>Email follow-up (Mar 2)<br><span class="contact-meta">Hansard proof point sent</span></td>
+            <td><strong>17 days</strong></td>
+            <td>Warm Reply (INC-001 orphan)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-label">Meeting Booked ✅</div>
+      <div style="background:#f0faf4;border:1px solid #b2dfdb;border-radius:6px;padding:10px 14px;font-size:13px;">
+        📅 <strong>Elias E. del Real</strong> — Anewgo (anewgo.com)<br>
+        <span style="color:#555;">Mon Apr 13, 2026 · 12:00–12:15 PM EDT · Confirmed</span><br>
+        <span style="color:#888;font-size:12px;">AE: William Dalley also accepted. 25 days out.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ====== 2. OVERNIGHT REPLIES ====== -->
+  <div class="card card-replies">
+    <div class="card-header" onclick="toggle(this)">
+      <span class="icon">📬</span>
+      <h2>Overnight Replies</h2>
+      <span class="badge badge-blue">0 prospect replies · 8 bounces</span>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-content">
+
+      <div class="alert-box" style="background:#e8f4f8;border-color:#3498db;color:#1a5276;">
+        ℹ️ <strong>No warm prospect replies overnight.</strong> Inbox contained bounces and internal notifications only.
+      </div>
+
+      <div class="section-label">New Bounces (8 contacts) — Need Apollo cleanup</div>
+
+      <div class="bounce-item">
+        <div class="bounce-name">Rakesh Rallapalli — Commvault</div>
+        <div class="bounce-email">rrallapalli@commvault.com · "The email address couldn't be found"</div>
+        <div style="font-size:12px;color:#888;">Batch 15 · Received Mar 18 7:03 PM</div>
+      </div>
+      <div class="bounce-item">
+        <div class="bounce-name">Craig Telling — Equiniti</div>
+        <div class="bounce-email">Equiniti postmaster · "Undeliverable: Craig's QA coverage"</div>
+        <div style="font-size:12px;color:#888;">Batch 14 · Received Mar 18 10:39 PM</div>
+      </div>
+      <div class="bounce-item">
+        <div class="bounce-name">Mahesh Tolapu — Equiniti</div>
+        <div class="bounce-email">Equiniti postmaster · "Undeliverable: Mahesh's QA coverage"</div>
+        <div style="font-size:12px;color:#888;">Batch 14 · Received Mar 18 10:23 PM</div>
+      </div>
+      <div class="bounce-item">
+        <div class="bounce-name">Sheena Ramachandran — Square (Block)</div>
+        <div class="bounce-email">sheenar@squareup.com · "Address couldn't be found"</div>
+        <div style="font-size:12px;color:#888;">Received Mar 18 9:27 PM</div>
+      </div>
+      <div class="bounce-item">
+        <div class="bounce-name">Alan Spindel — Epicor ← Already tracked as TASK-061</div>
+        <div class="bounce-email">alan.spindel@epicor.com · "Address couldn't be found"</div>
+        <div style="font-size:12px;color:#888;">Received Mar 18 1:57 PM</div>
+      </div>
+      <div class="bounce-item">
+        <div class="bounce-name">Shlomo Yeret — Check Point</div>
+        <div class="bounce-email">shlomoy@checkpoint.com · "Undeliverable: Shlomo's software engineering"</div>
+        <div style="font-size:12px;color:#888;">Received Mar 18 4:36 PM IST</div>
+      </div>
+      <div class="bounce-item">
+        <div class="bounce-name">Yogesh Garg — Check Point</div>
+        <div class="bounce-email">yogeshg@checkpoint.com · "Undeliverable: Yogesh's QA management"</div>
+        <div style="font-size:12px;color:#888;">Received Mar 18 4:32 PM IST</div>
+      </div>
+
+      <div class="section-label" style="margin-top:14px;">Other Notifications</div>
+      <table>
+        <thead><tr><th>Type</th><th>Details</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-orange">CALL</span></td>
+            <td><strong>Missed call from +16263319807</strong> (Mar 18, 4:55 PM)<br>
+            <span class="contact-meta">Apollo notification · TASK-062 — needs ID</span></td>
+            <td style="color:#e74c3c;font-weight:600;font-size:12px;">Check Apollo call log</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-gray">APOLLO</span></td>
+            <td><strong>442 Tasks Due</strong><br>
+            <span class="contact-meta">Rachel Fingeroth (L3Harris), Saeyed Shamlou (OneMain) listed first · Many T2s pending</span></td>
+            <td style="color:#888;font-size:12px;">T2 work queue</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-gray">SLACK</span></td>
+            <td><strong>6 Slack email digests</strong> (Shashi Menon + William Dalley)<br>
+            <span class="contact-meta">Testsigma internal — print shop / PDF discussion + @mentions</span></td>
+            <td style="color:#888;font-size:12px;">Review in Slack</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- ====== 3. CALENDAR ====== -->
+  <div class="card card-calendar">
+    <div class="card-header" onclick="toggle(this)">
+      <span class="icon">📅</span>
+      <h2>Today's Calendar</h2>
+      <span class="badge badge-gray">6 events · 0 prospect meetings</span>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-content">
+
+      <div class="alert-box" style="background:#fff8e1;border-color:#ffc107;color:#856404;">
+        ✈️ <strong>Travel day:</strong> 10:00 AM – 5:00 PM block. Calls / sends may be limited. Prioritize TELUS callback and TASK-060 continuation around travel.
+      </div>
+
+      <div class="event-item">
+        <div class="event-time">9:00 – 9:30 AM EDT</div>
+        <div class="event-title">OB team Sync up</div>
+        <div class="event-note">Internal — Outbound team. Organizer: Mithun Dharanendraiah. Response: Pending.</div>
+      </div>
+
+      <div class="event-item" style="background:#fff8e1;border-left-color:#f0ad4e;">
+        <div class="event-time" style="color:#856404;">10:00 AM – 5:00 PM EDT</div>
+        <div class="event-title">✈️ Travel</div>
+        <div class="event-note">Full-day block · Created by Rob. Plan work around this window.</div>
+      </div>
+
+      <div class="event-item">
+        <div class="event-time">10:30 – 11:30 AM EDT</div>
+        <div class="event-title">GTM biweekly (NA hours)</div>
+        <div class="event-note">Internal GTM all-hands. Organizer: Sathyanarain Muralidharan. William Dalley attending. Response: Pending.</div>
+      </div>
+
+      <div class="event-item">
+        <div class="event-time">11:00 AM – 12:00 PM EDT</div>
+        <div class="event-title">Morning Dials (can schedule over)</div>
+        <div class="event-note">Rob's dial block — overlaps with GTM biweekly. Schedulable over.</div>
+      </div>
+
+      <div class="event-item">
+        <div class="event-time">2:30 – 3:30 PM EDT</div>
+        <div class="event-title">calls</div>
+        <div class="event-note">With William Dalley (AE). Accepted by both. Likely TELUS / warm lead review — good timing to loop in AE for TELUS P0s.</div>
+      </div>
+
+      <div class="event-item">
+        <div class="event-time">3:00 – 5:00 PM EDT</div>
+        <div class="event-title">Afternoon Dials</div>
+        <div class="event-note">Rob's afternoon dial block. Overlaps with "calls" event.</div>
+      </div>
+
+      <div style="font-size:12px;color:#888;margin-top:10px;">No prospect or customer meetings today. All events are internal Testsigma team.</div>
+    </div>
+  </div>
+
+  <!-- ====== 4. T2/T3 DUE ====== -->
+  <div class="card card-t2t3">
+    <div class="card-header" onclick="toggle(this)">
+      <span class="icon">⏰</span>
+      <h2>T2/T3 Due Today</h2>
+      <span class="badge badge-orange">442 Apollo tasks · Mar 15 batch due today</span>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-content">
+
+      <div class="alert-box">
+        <strong>Apollo reports 442 tasks due.</strong> Mar 15 batch (tamob-batch-20260315-1.html) hit Day 4 today — T2 window is open. Multiple earlier batches also have T2s pending in Apollo queue. Check T2-pending folder below.
+      </div>
+
+      <div class="section-label">T2 Due by Batch (Day 4 = earliest T2)</div>
+      <table>
+        <thead>
+          <tr><th>Batch</th><th>Send Date</th><th>T2 Window (Day 4–8)</th><th>Status</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>tamob-batch-20260311-1/2</td>
+            <td>Mar 11</td>
+            <td>Mar 15–19</td>
+            <td><span class="badge badge-red">WINDOW CLOSING TODAY</span></td>
+            <td style="font-weight:600;color:#e74c3c;">Last day for T2</td>
+          </tr>
+          <tr>
+            <td>tamob-batch-20260312-1 through 7</td>
+            <td>Mar 12</td>
+            <td>Mar 16–20</td>
+            <td><span class="badge badge-orange">Due this week</span></td>
+            <td>Check Apollo queue</td>
+          </tr>
+          <tr>
+            <td>tamob-batch-20260313-1/2</td>
+            <td>Mar 13</td>
+            <td>Mar 17–21</td>
+            <td><span class="badge badge-orange">Due this week</span></td>
+            <td>Check Apollo queue</td>
+          </tr>
+          <tr>
+            <td>tamob-batch-20260315-1</td>
+            <td>Mar 15</td>
+            <td>Mar 19–23</td>
+            <td><span class="badge badge-red">DUE TODAY (Day 4)</span></td>
+            <td style="font-weight:600;color:#e74c3c;">SEND T2 NOW</td>
+          </tr>
+          <tr>
+            <td>tamob-batch-20260316-2/3/11</td>
+            <td>Mar 16</td>
+            <td>Mar 20–24</td>
+            <td><span class="badge badge-gray">Due tomorrow</span></td>
+            <td>Prep T2 today</td>
+          </tr>
+          <tr>
+            <td>B12 (tamob-batch-20260317-1)</td>
+            <td>Mar 17</td>
+            <td>Mar 21–25</td>
+            <td><span class="badge badge-gray">Not yet due</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>B13/B14/B15 (tamob-batch-20260318-1/2/3)</td>
+            <td>Mar 18</td>
+            <td>Mar 22–26</td>
+            <td><span class="badge badge-gray">Not yet due</span></td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-label" style="margin-top:14px;">T2-Pending Folder (Staged, Awaiting APPROVE SEND)</div>
+      <table>
+        <thead><tr><th>File</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>batch8-t2-approve-send-2026-03-17.html</td><td>Batch 8 T2s staged Mar 17</td></tr>
+          <tr><td>batch9-t2-approve-send-2026-03-17.html</td><td>Batch 9 T2s staged Mar 17</td></tr>
+          <tr><td>batch10-t2-approve-send-2026-03-16.html</td><td>Batch 10 T2s staged Mar 16</td></tr>
+          <tr><td>batch11-approve-send-2026-03-16.html</td><td>Batch 11 T2s staged Mar 16</td></tr>
+          <tr><td>wave1-t2 / wave4-t2 / wave5batch4-t2</td><td>Wave T2 files staged Mar 17</td></tr>
+          <tr><td>tamob-wave1-t2-drafts-v5-mar16.html</td><td>Latest wave1 T2 draft version</td></tr>
+          <tr><td>MASTER-APPROVE-SEND-2026-03-17.html</td><td>Master combined approve-send file</td></tr>
+          <tr><td>+ 13 more files</td><td>linkedin-t2, touch2-review, etc.</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- ====== 5. PIPELINE SNAPSHOT ====== -->
+  <div class="card card-pipeline">
+    <div class="card-header" onclick="toggle(this)">
+      <span class="icon">📊</span>
+      <h2>Pipeline Snapshot</h2>
+      <span class="badge badge-gray">Mar 19 · 06:10 AM</span>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-content">
+
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <div class="metric-value">768</div>
+          <div class="metric-label">Active Contacts<br>in Sequence</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-value" style="color:#e74c3c;">27</div>
+          <div class="metric-label">T1 Sends<br>Remaining (TASK-060)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-value" style="color:#f39c12;">5</div>
+          <div class="metric-label">Warm Leads<br>P0–P2 Active</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-value" style="color:#27ae60;">1</div>
+          <div class="metric-label">Meetings<br>Booked</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-value" style="color:#3498db;">442</div>
+          <div class="metric-label">Apollo Tasks<br>Due</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-value">19</div>
+          <div class="metric-label">Active Batch<br>Trackers</div>
+        </div>
+      </div>
+
+      <div class="section-label">Send Queue (sends-json/)</div>
+      <table>
+        <thead><tr><th>File</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>wave1_t2_sends.json</td><td>Wave 1 T2</td></tr>
+          <tr><td>batch10_sends.json</td><td>Batch 10</td></tr>
+          <tr><td>batch11_sends.json</td><td>Batch 11</td></tr>
+          <tr><td>batch12p2_sends.json</td><td>Batch 12 Part 2</td></tr>
+          <tr><td>batch12p3_sends.json</td><td>Batch 12 Part 3</td></tr>
+          <tr><td>batch13_sends.json</td><td>Batch 13</td></tr>
+          <tr><td>batch14_sends.json</td><td>Batch 14</td></tr>
+          <tr><td>batch15_sends.json</td><td>Batch 15</td></tr>
+          <tr><td>batch17_mar17_sends.json</td><td>Mar 17 sends</td></tr>
+          <tr><td>subject_updates.json</td><td>Subject line updates</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-label" style="margin-top:14px;">Next Milestones</div>
+      <div style="font-size:13px;color:#555;line-height:1.8;">
+        📌 <strong>Today:</strong> Finish 27 remaining T1 sends (TASK-060) · Call TELUS x3 · Mar 15 T2s due<br>
+        📌 <strong>Mar 22–26:</strong> B13/B14/B15 T2 window opens (88 contacts)<br>
+        📌 <strong>Apr 13:</strong> Anewgo meeting (Elias del Real) — 25 days out<br>
+        📌 <strong>Ongoing:</strong> Batch 15 enrollment (21 candidates) + Bounce cleanup (30+ contacts)
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ====== 6. SLACK UPDATES ====== -->
+  <div class="card card-slack">
+    <div class="card-header" onclick="toggle(this)">
+      <span class="icon">💬</span>
+      <h2>Company &amp; Team Updates</h2>
+      <span class="badge badge-gray">Slack emails only</span>
+      <button class="toggle-btn">+</button>
+    </div>
+    <div class="card-content" style="display:none;">
+      <div style="font-size:13px;color:#888;font-style:italic;margin-bottom:10px;">
+        Direct Slack MCP access not configured. Email digest captured these Slack updates:
+      </div>
+      <table>
+        <thead><tr><th>Channel / Thread</th><th>Summary</th><th>Time</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Shashi Menon + William Dalley</td>
+            <td>Print shop discussion — PDF format issues, print quote follow-up. Shashi: "Yup that should work." Multiple messages about a docs/spreadsheet link.</td>
+            <td>Mar 18 10:33 AM – 3:26 PM</td>
+          </tr>
+          <tr>
+            <td>#gtm-product-engineering</td>
+            <td>Hemant Singh shared a prospect story: "Vered-li from Wix replied from the middle of a rocket alert" — Narain MS also commented.</td>
+            <td>Mar 12 9:28 AM</td>
+          </tr>
+          <tr>
+            <td>Calendar invite from Shashi</td>
+            <td>"Qonfx SF - Briefing" — Mar 18 11:30 AM–12 PM EDT (past event). Invite sent to Rob + William Dalley.</td>
+            <td>Mar 18 2:34 PM</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="font-size:12px;color:#aaa;margin-top:8px;">To enable live Slack reads: connect Slack MCP and add channel list to memory/apollo-config.md</div>
+    </div>
+  </div>
+
+  <!-- ====== 7. WORK QUEUE ====== -->
+  <div class="card card-workqueue">
+    <div class="card-header" onclick="toggle(this)">
+      <span class="icon">📋</span>
+      <h2>Work Queue</h2>
+      <span class="badge" style="background:#e8d5f5;color:#6a1b9a;">10 open tasks</span>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-content">
+
+      <div class="alert-box" style="background:#fff5f5;border-color:#e74c3c;color:#721c24;">
+        ⚠️ <strong>TASK-060 is orphaned (Session 48 crashed or ended).</strong> 27 T1 sends remain. Resume this task at session start — open Apollo Step 1 queue and continue from Task 62.
+      </div>
+
+      <div class="section-label">🔴 P0 Critical</div>
+
+      <div class="task-item task-critical">
+        <div class="task-id">TASK-060 · IN_PROGRESS (Orphaned)</div>
+        <div class="task-desc">Execute 27 remaining T1 sends — B13/B14/B15 + carryover</div>
+        <div class="task-meta">Resume from Task 62 in Apollo Step 1 queue · INC-012 two-gate protocol · Batch trust mode APPROVED</div>
+      </div>
+
+      <div class="task-item task-critical">
+        <div class="task-id">TASK-054 · UNCLAIMED</div>
+        <div class="task-desc">APPROVE SEND — Batch 13 (32 contacts, Mar 18)</div>
+        <div class="task-meta">Companies: J&J MedTech, NICE, Ahold Delhaize, Ryder, BeyondTrust, FactSet, OverDrive, StubHub · Tracker: batches/active/tamob-batch-20260318-1.html</div>
+      </div>
+
+      <div class="task-item task-critical">
+        <div class="task-id">TASK-046 · UNCLAIMED</div>
+        <div class="task-desc">APPROVE SEND — Batch 12 (27 contacts, Mar 17)</div>
+        <div class="task-meta">Companies: Fidelity, Northern Trust, Epicor, Infor, Zebra, Commvault, RSM, NETSCOUT · T2 window Mar 24–28</div>
+      </div>
+
+      <div class="task-item task-critical">
+        <div class="task-id">TASK-047 · UNCLAIMED</div>
+        <div class="task-desc">Identify missed caller — +19319221680 (called TWICE Mar 17)</div>
+        <div class="task-meta">Area code 931 = Clarksville/Tennessee. Two calls at 2:16 PM + 4:42 PM. Check Apollo call log for match.</div>
+      </div>
+
+      <div class="section-label" style="margin-top:14px;">🟠 P1 High Priority</div>
+
+      <div class="task-item task-p1">
+        <div class="task-id">TASK-059 · PENDING</div>
+        <div class="task-desc">Continue Batch 15 Enrollment (21 remaining candidates)</div>
+        <div class="task-meta">After TASK-060 sends complete · Cboe, Rocket Software, Commvault, EverBank, Citizens, Incode, KIBO, Iridium, Datamatics</div>
+      </div>
+
+      <div class="task-item task-p1">
+        <div class="task-id">TASK-048 · UNCLAIMED</div>
+        <div class="task-desc">Remove 19 Batch 12 bounces from Apollo sequence</div>
+        <div class="task-meta">Fidelity (4), Infor (5 — domain block), RSM US (5), Epicor (2), Commvault (2), NETSCOUT (1) · ~15-20 min in Apollo UI</div>
+      </div>
+
+      <div class="task-item task-p1">
+        <div class="task-id">TASK-049 · UNCLAIMED</div>
+        <div class="task-desc">Remove 14 additional Mar 17 bounces from Apollo</div>
+        <div class="task-meta">Kibo, Replicon, Personalis, GeoPagos, AppSumo, FormAssembly, Celonis, Check Point · ~10-15 min in Apollo UI</div>
+      </div>
+
+      <div class="section-label" style="margin-top:14px;">🔵 P2 Normal / New</div>
+
+      <div class="task-item task-p2">
+        <div class="task-id">TASK-050 · UNCLAIMED</div>
+        <div class="task-desc">Apollo Mobile Numbers Ready — 44 numbers available for calling</div>
+        <div class="task-meta">32 + 12 mobile deliveries from Mar 17. Download CSVs from Apollo emails. Useful for call prep today.</div>
+      </div>
+
+      <div class="task-item task-p2">
+        <div class="task-id">TASK-061 · UNCLAIMED</div>
+        <div class="task-desc">Alan Spindel (Epicor) bounce cleanup</div>
+        <div class="task-meta">alan.spindel@epicor.com — address not found. Remove from sequence.</div>
+      </div>
+
+      <div class="task-item task-p2">
+        <div class="task-id">TASK-062 · UNCLAIMED</div>
+        <div class="task-desc">Identify missed caller — +16263319807 (Mar 18, 4:55 PM)</div>
+        <div class="task-meta">Apollo notification received. Check Apollo call log for contact match.</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Generated at 06:10 ET · Thursday March 19, 2026 &nbsp;|&nbsp; Next update: Friday Mar 20 at 6:00 AM &nbsp;|&nbsp; Morning Briefing Skill v1.0
+</div>
+
+<script>
+  function toggle(header) {
+    const content = header.nextElementSibling;
+    const btn = header.querySelector('.toggle-btn');
+    if (content.style.display === 'none') {
+      content.style.display = 'block';
+      btn.textContent = '−';
+    } else {
+      content.style.display = 'none';
+      btn.textContent = '+';
+    }
+  }
+</script>
+
+</body>
+</html>

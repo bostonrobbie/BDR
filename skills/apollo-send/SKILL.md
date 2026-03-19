@@ -77,8 +77,9 @@ Note the first name, subject line, and full approved body before touching Apollo
 
 **Known issue:** If the search field doesn't respond to typing, you're still on the previous completed task page. Click the Tasks breadcrumb first, THEN search.
 
-### Step 2.3 — Stage check (MANDATORY)
-Verify the contact's Stage = "New" in the task panel.
+### Step 2.3 — Stage check + Reply threading check (MANDATORY)
+Verify the contact's Stage = "New" in the task panel (for T1) or "Attempted to Contact" (for T2).
+**Reply check (T2 only):** Confirm the task shows "Step 2" and the subject starts with "RE:". If the subject does NOT start with "RE:", the sequence's "Reply to previous thread" setting may have been unchecked. STOP and fix in Sequences > TAM Outbound > Edit Step 2 before sending. (See INC-014.)
 - Stage = "New" → proceed
 - Stage ≠ "New" → STOP. Tell Rob: "Stage check failed for [Name] — Stage shows [X]. Skip or investigate?"
 
@@ -109,6 +110,7 @@ The return value is the readback. It **must** match the first 120 characters of 
 
 ### Step 2.6 — QA Checklist (Gate 2 preflight)
 Before presenting to Rob for Gate 2, verify all:
+- [ ] **From field = `robert.gorham@testsigma.com`** — MUST be .com. If it shows .net, .in, or any other domain, click the From dropdown and select the .com address BEFORE injecting the body.
 - [ ] Subject has contact's first name and correct company/topic?
 - [ ] Body mentions their company by name?
 - [ ] Body has a specific proof point with numbers?

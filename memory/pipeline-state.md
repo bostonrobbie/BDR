@@ -2,6 +2,25 @@
 
 ---
 
+## Mar 18 Status — T1 Enrollment (Batch 13 + Batch 14)
+
+**Date:** 2026-03-18
+**Batch 13:** 32 contacts enrolled in TAM Outbound - Rob Gorham (~10:35 AM). Companies: J&J MedTech (6), BeyondTrust (3), NICE (4), FactSet (3), Ahold Delhaize USA (5), Pacific Life (1), OverDrive (3), StubHub (2), Ryder System (4), ID.me (1).
+**Batch 14:** 37 contacts enrolled in TAM Outbound - Rob Gorham (~12:03 PM). Companies: GXO Logistics (3), Equiniti (7), SugarCRM (8), Definity Financial (3), Integrity Marketing Group (6), bswift (2), Rimini Street (1), Kemper (1), AppLovin (1), ManTech (1), Peraton (4).
+**T1 due:** Day 1 = today (Apollo sequences auto-fire T1 on enrollment).
+**T2 due:** ~Mar 23 (Day 5).
+
+⚠️ POST-SEND VERIFICATION FLAG 2026-03-18 (NOON): 69 unconfirmed T1 sends — see messages.md for detail. Classification: send not executed yet / Apollo sequence pending. EOD verifier at 5:30 PM will re-check.
+
+⚠️ POST-SEND VERIFICATION FLAG 2026-03-18 (EOD 5:36 PM): 56 of 80 T1 sends unconfirmed — see messages.md for detail.
+- B13: 24/32 confirmed (21:03–21:28 UTC). 8 unconfirmed: Robert Maullon, Magaly Espinoza, Chih Hsieh (J&J MedTech), Newton Acho (FactSet), Komal Shinde (Pacific Life), Allen Chang, Alex Gonzalez (StubHub), Mathew Kellogg (Ryder). Possible Apollo task queue cutoff or skip.
+- B14: 0/37 confirmed — Apollo task execution had not started as of 5:30 PM EDT. Tasks likely queued; check Apollo.
+- B15: 0/11 confirmed — Same as B14. Note: kibocommerce.com contact (Amit Ugane) flagged as bounce-prone domain.
+- 8 unexpected T1 sends (JetBlue x4, Square x2, BlackRock x1, Epicor x1 — Epicor bounced, logged TASK-061).
+- ACTION: Verify B14/B15 Apollo tasks queued/executing. Check Apollo for 8 B13 skipped contacts. Manual Gmail check tomorrow AM for final B14/B15 status.
+
+---
+
 ## Mar 12 Status — Inbound Lead: Evely Perrella (Aetna/CVS Health)
 
 **Date:** 2026-03-12
@@ -177,6 +196,8 @@ Aetna is an ACTIVE account. Existing deal thread: Pranati Thankala (contact), Ty
 | Mar 12 | TAM Outbound Batch 5 — 5 enrolled (of 13 drafted). 5 non-TAM (DocuSign, Bentley) removed per INC-010. 2 Infor contacts (Mirza Hasan, Daniela Young) excluded (prior phone contact). 1 (Yogesh Garg, Check Point) enrollment blocked by Apollo ownership error — needs manual fix. | 5 enrolled (pending T1 send) | 368 |
 | Mar 13 | TAM Outbound Batch 8 — 55/56 T1 emails sent via Apollo Tasks tab (INC-012 protocol). 56 enrolled, 56 tasks expected. Monika Sharma (#15, Everbridge) task disappeared from Apollo queue — Rob confirmed skip. All 55 sends Gmail-verified within 60s. Subjects personalized (Apollo pre-fills "Firstname's QA coverage at Company" — must correct each). 14 accounts: WatchGuard (7), Everbridge (7 sent, 1 skipped), Procore (2), Pluralsight (4), Sysdig (3), Yext (3), SingleStore (1), Evernorth (3), Couchbase (4), Pathlock (5), Tandem Diabetes Care (5), Jack Henry (4), BMO Financial Group (5), Point32Health (2). T2 due Mar 18. | 55 sent | 423 (cumulative TAM Outbound T1s sent) |
 | Mar 14 | TAM Outbound Batch 9 — 44/45 T1 emails sent via Apollo Tasks tab (INC-012 protocol, execCommand injection). 45 enrolled, 1 DNC skipped (Bret Wiener, Farmers Insurance — prior meeting held). Subjects personalized per contact. 14 accounts: SailPoint (4), Farmers Insurance (4 sent/1 DNC), Bethesda Softworks (5), hims&hers (3), Rocket Software (5), Lemonade (1), Zimmer Biomet (2), Anaplan (6), Bungie (2), Celonis (2), Check Point (2), DraftKings (4), Zebra Technologies (4). Tracker: tamob-batch-20260313-2.html (44 × T1 Sent Mar 14, 1 × DNC, 11 × Not Enrolled). T2 due Mar 18-21. | 44 sent | 467 (cumulative TAM Outbound T1s sent) |
+| Mar 15 | TAM Outbound Batch 10 — 15 T1 emails sent via Apollo Tasks tab (INC-012 protocol). 15 contacts: Avani Vaidya, Swapna Bitra, Tarun Sharma, Divya Paul, Usman Khan, Mehul Savalia, Minu Prabhakaran, Jacob Wyman, Roger Tonneman, Shikha Jayant, Collins Chellaswamy, Brendan McCarthy, Dawn McCartha, Stacey Schmidt, Praveen Gali. Tracker: tamob-batch-20260315-1.html. T2 due Mar 20. | 15 sent | 482 (cumulative TAM Outbound T1s sent) |
+| Mar 16 | TAM Outbound Batches 11 + 12p2 + 12p3 — 31 T1 emails sent via Apollo Tasks tab (INC-012 two-gate protocol, execCommand injection). 50 enrolled total. 31 confirmed sent from Apollo task queue (19 pending — tasks not yet generated in Apollo queue). From field fixed from testsigma.net → testsigma.com per-contact as needed. Subjects all updated to approved personalized versions before send. Accounts: Amount (1), Incode (1), Juniper Square (2), SugarCRM (1), Open Lending (1), WorkWave (1), Lendbuzz (1), KIBO (3), Bluevine (4), Acadia (2), Replicon (3), ManTech (5), Veradigm (3), Alithya (2). Trackers: tamob-batch-20260316-11.html, tamob-batch-20260316-2.html, tamob-batch-20260316-3.html. T2 due Mar 21. | 31 sent | 513 (cumulative TAM Outbound T1s sent) |
 
 ### Email Send History
 | Date | Time | Recipients | Type | Status |
@@ -478,6 +499,10 @@ Q1 QA Outreach - US (ID: 699f4089628b940011da7fb7) fully resolved. 26 clean cont
 | tamob-batch-20260311-2.html | Wave 4 — 48 enrolled (E*TRADE, Broadcom, Humana, Corewell, BCBS, Mastercard, Anaplan, DraftKings, Cleveland Clinic, Microchip, GEICO, EA, HashiCorp, KKR, Datamatics, OneMain) | 37 T1SentMar11, 2 Blocked, 9 Ready (pending tasks). T2 due Mar 19. |
 | tamob-batch-20260313-1.html | Batch 8 — 56 enrolled (WatchGuard, Everbridge, Procore, Pluralsight, Sysdig, Yext, SingleStore, Evernorth, Couchbase, Pathlock, Tandem Diabetes Care, Jack Henry, BMO, Point32Health) | 55 T1SentMar13, 1 skipped (Monika Sharma/Everbridge — Rob confirmed skip). T2 due Mar 18. |
 | tamob-batch-20260313-2.html | Batch 9 — 56 drafted, 45 enrolled, 11 excluded (SailPoint, hims&hers, Lemonade, Winsupply, Celonis, Check Point, DraftKings dedup/step2 blocks) | 44 T1SentMar14, 1 DNC (Bret Wiener/Farmers), 11 NotEnrolled. T2 due Mar 18-21. |
+| tamob-batch-20260315-1.html | Batch 10 — 15 enrolled (various verticals) | 15 T1 Sent Mar 15. T2 due Mar 20. |
+| tamob-batch-20260316-11.html | Batch 11 — 9 enrolled (Amount, Incode, WorkWave, EverBank, Juniper Square x2, SugarCRM, Open Lending) | 7 T1 Sent Mar 16. 2 pending (Jyoti Jain/WorkWave, Jeffrey Miller/EverBank — Apollo tasks not in queue). T2 due Mar 21. |
+| tamob-batch-20260316-2.html | Batch 12 Part 2 — 27 enrolled (Lendbuzz, KIBO x5, Bluevine x6, Docupace, StubHub, Geopagos x2, Personalis x5, Acadia x6) | 11 T1 Sent Mar 16. 16 pending (tasks not yet in Apollo queue). T2 due Mar 21. |
+| tamob-batch-20260316-3.html | Batch 12 Part 3 — 14 enrolled (Replicon x3, ManTech x5, Veradigm x4, Alithya x2) | 13 T1 Sent Mar 16. 1 pending (Ted Barker/Veradigm). T2 due Mar 21. |
 
 ---
 
@@ -494,3 +519,23 @@ Q1 QA Outreach - US (ID: 699f4089628b940011da7fb7) fully resolved. 26 clean cont
 | testsigma-knowledge-bible.md | Product knowledge reference |
 | intent-outreach-pipeline-2026-02-26.html | Intent pipeline command center |
 | apollo-sequence-step-copy.md | Sequence copy guide |
+
+---
+
+## Mar 19 Status — Batch 16 T1 Enrollment (33 contacts)
+
+**Date:** 2026-03-19
+**Batch 16:** 33 contacts enrolled in TAM Outbound - Rob Gorham. 
+**Companies (12):** Northern Trust (6), Ryder System (5), Zebra Technologies (5), DISH Network (4), Jack Henry (3), Crown Equipment (3), Caterpillar (2), Great American Insurance (2), Constellation Brands (1), Safelite (1), hims & hers (1), 
+**Sequence:** TAM Outbound - Rob Gorham (69afff8dc8897c0019b78c7e)
+**Send-from:** robert.gorham@testsigma.com (68e3b53ceaaf74001d36c206)
+**MASTER_SENT_LIST:** 769 → 802 rows (+33)
+**T1 due:** Day 1 = today (Apollo sequences auto-queue T1 manual email tasks)
+**T2 due:** ~Mar 24 (Day 5)
+
+**Key notes:**
+- Reprospect batch: focused on under-covered big companies (Caterpillar had 66 QA contacts, only 2 sent prior; Zebra had 46, only ~3 sent prior)
+- Domain block list confirmed: infor.com, rsmus.com, checkpoint.com, kibocommerce.com, replicon.com, epicor.com, celonis.de, bungie.net, draftkings.com, ea.com, fidelity.com — all blocked from enrollment
+- 3 VPs at Northern Trust (Sivaprasad Subramanian, Likitha Lokesh, Kwabena Kumi) — highest-seniority contacts in this batch
+- Coverage tracking added to workflow — future batches will track contacts-per-company depth
+

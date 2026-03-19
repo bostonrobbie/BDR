@@ -1,0 +1,72 @@
+{
+  "batch": "TAM Outbound Batch 16 Phase 2 Enrichment & Enrollment (Mar19)",
+  "total_enriched": 4,
+  "total_clean": 4,
+  "total_enrolled": 4,
+  "total_skipped": 0,
+  "session_date": "2026-03-19",
+  "sequence_id": "69afff8dc8897c0019b78c7e",
+  "send_email_from_email_account_id": "68e3b53ceaaf74001d36c206",
+  "contacts": [
+    {
+      "name": "Chad Willis",
+      "email": "chad.willis@crown.com",
+      "email_status": "verified",
+      "title": "Software QA Manager",
+      "company": "Crown Equipment",
+      "domain": "crown.com",
+      "location": "Minster, Ohio",
+      "apollo_person_id": "54a465a37468693442c33b44",
+      "apollo_contact_id": "69bbf99dd5b8f3000d1f4f1a",
+      "status": "enrolled",
+      "skip_reason": null
+    },
+    {
+      "name": "Scott Shepherd",
+      "email": "scott.shepherd@crown.com",
+      "email_status": "verified",
+      "title": "Quality Engineering Manager",
+      "company": "Crown Equipment",
+      "domain": "crown.com",
+      "location": "Daleville, Indiana",
+      "apollo_person_id": "5abc2c19a6da9840bbb15b2c",
+      "apollo_contact_id": "69bbf99ed5b8f3000d1f4f22",
+      "status": "enrolled",
+      "skip_reason": null
+    },
+    {
+      "name": "Greg McKinney",
+      "email": "greg.mckinney@crown.com",
+      "email_status": "verified",
+      "title": "Quality Engineering Manager",
+      "company": "Crown Equipment",
+      "domain": "crown.com",
+      "location": "Kinston, North Carolina",
+      "apollo_person_id": "68e8ba54d2d46800014fec57",
+      "apollo_contact_id": "69bbf9a0d5b8f3000d1f4f2b",
+      "status": "enrolled",
+      "skip_reason": null
+    },
+    {
+      "name": "Frank Cabrera",
+      "email": "frank_h_cabrera@ryder.com",
+      "email_status": "verified",
+      "title": "Quality Assurance Manager",
+      "company": "Ryder System, Inc.",
+      "domain": "ryder.com",
+      "location": "Orlando, Florida",
+      "apollo_person_id": "66616f93ea91530001378ab9",
+      "apollo_contact_id": "69bbf9a1d5b8f3000d1f4f34",
+      "status": "enrolled",
+      "skip_reason": null
+    }
+  ],
+  "enrolled_contact_ids": [
+    "69bbf99dd5b8f3000d1f4f1a",
+    "69bbf99ed5b8f3000d1f4f22",
+    "69bbf9a0d5b8f3000d1f4f2b",
+    "69bbf9a1d5b8f3000d1f4f34"
+  ],
+  "skipped": [],
+  "notes": "Phase 2 enriched and enrolled additional QA contacts from provided person IDs. All 4 contacts passed compliance checks: verified emails, US-based, not in blocked domains, not previously in campaign. Enrollment successful - all contacts now active in TAM Outbound sequence with Step 1 (T1 email) pending."
+}

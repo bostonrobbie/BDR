@@ -1,0 +1,128 @@
+[
+  {
+    "id": "siva.kumar@replicon.com",
+    "num": 1,
+    "name": "Siva Kumar — QA Manager",
+    "first_name": "Siva",
+    "email": "siva.kumar@replicon.com",
+    "subject": "Siva — test maintenance eating sprints at Replicon?",
+    "body": "Hi Siva,\n\nBuilding automated tests for a workforce management platform usually means your test base is constantly patching broken locators when APIs shift. Is that something eating into your team's sprint time?\n\nMedibuddy was dealing with the same maintenance drag and cut it 50% on Testsigma. Their test engineering team stopped spending sprints on locator repair and started writing new coverage.\n\nAt Replicon's scale, regression stability compounds across every release cycle. How much of your current sprint capacity is going to test maintenance versus building new coverage?\n\nCheers,\nRob"
+  },
+  {
+    "id": "sheethal.kotekar@replicon.com",
+    "num": 2,
+    "name": "Sheethal Kotekar — QA Lead",
+    "first_name": "Sheethal",
+    "email": "sheethal.kotekar@replicon.com",
+    "subject": "Sheethal — how much of Replicon's scope is covered?",
+    "body": "Hi Sheethal,\n\nWith Replicon's platform spanning time tracking, project management, and PSA workflows, your test surface area probably grows faster than team headcount can keep up. Is that something your team is actively trying to scale coverage for?\n\nCRED hit 90% regression coverage and 5x faster execution with Testsigma. Their team stopped worrying about coverage gaps and started shipping velocity improvements instead.\n\nAt Replicon's scale, that compounds across every release. How much of your critical regression scope does your current suite cover today?\n\nCheers,\nRob"
+  },
+  {
+    "id": "sridhar.bulusu@replicon.com",
+    "num": 3,
+    "name": "Sridhar Bulusu — Lead Automation Engineer",
+    "first_name": "Sridhar",
+    "email": "sridhar.bulusu@replicon.com",
+    "subject": "Sridhar — false failures per run on Replicon's 20yr stack?",
+    "body": "Hi Sridhar,\n\nAutomating tests for a 20+ year SaaS platform means your test suite picks up brittleness quickly when UIs shift. Does your team spend too much time debugging intermittent failures instead of shipping new coverage?\n\nCisco cut test brittleness significantly with Testsigma's self-healing. Their automation team stopped firefighting flaky locators and started focusing on coverage expansion.\n\nAt Replicon's pace, that frees up meaningful velocity. How often are false failures from broken locators showing up in your runs right now?\n\nCheers,\nRob"
+  },
+  {
+    "id": "emma.newberg@mantech-inc.com",
+    "num": 4,
+    "name": "Emma Newberg — QA Manager",
+    "first_name": "Emma",
+    "email": "emma.newberg@mantech-inc.com",
+    "subject": "Emma — how long does ManTech's full regression take?",
+    "body": "Hi Emma,\n\nRunning QA for large-scale defense and IT systems usually means compliance and speed have to happen together, and regression testing becomes the slowdown. How long does a full regression cycle take before major releases?\n\nSanofi was dealing with the same velocity vs. compliance tension and cut their regression from 3 days to 80 minutes on Testsigma. Full traceability, zero shortcuts.\n\nAt ManTech's scale, that compounds across every quarterly release. How long does a full regression cycle take for your team right now?\n\nCheers,\nRob"
+  },
+  {
+    "id": "keoka.duangprachanh@mantech.com",
+    "num": 5,
+    "name": "Keoka Duangprachanh — QA Lead",
+    "first_name": "Keoka",
+    "email": "keoka.duangprachanh@mantech.com",
+    "subject": "Keoka — managing regression across ManTech's tech stacks?",
+    "body": "Hi Keoka,\n\nTesting ManTech systems across web, mobile, and desktop surfaces simultaneously means coordinating regression stability across three different tech stacks. How is your team managing that coordination at scale?\n\nSamsung got consistent regression coverage across iOS, Android, and web using Testsigma. No longer debugging different failures across platforms.\n\nAt ManTech's growth pace, fragmented test coverage creates compliance risk. How are you currently managing regression consistency across your different platforms?\n\nCheers,\nRob"
+  },
+  {
+    "id": "michael.biddick@mantech.com",
+    "num": 6,
+    "name": "Michael Biddick — VP Enterprise Program Management & QA",
+    "first_name": "Michael",
+    "email": "michael.biddick@mantech.com",
+    "subject": "Consistent QA tooling across ManTech programs — how?",
+    "body": "Hi Michael,\n\nAt a company your size managing multiple large contracts simultaneously, coordinating test automation practices across programs is a challenge. How are your QA teams standardizing on tooling while maintaining program velocity?\n\nNagra DTV built 2,500 tests in 8 months on Testsigma while managing multiple concurrent platforms. Their team stopped worrying about tooling friction and focused on coverage growth instead.\n\nAt ManTech's scale, that standardization compounds across all programs. How long did it take to build out your current test suite, and how much of it is still running clean today?\n\nCheers,\nRob"
+  },
+  {
+    "id": "sylvia.kuzmak@mantech-inc.com",
+    "num": 7,
+    "name": "Sylvia Kuzmak — QA Director",
+    "first_name": "Sylvia",
+    "email": "sylvia.kuzmak@mantech-inc.com",
+    "subject": "Sylvia — what does ManTech's pre-release regression look like?",
+    "body": "Hi Sylvia,\n\nManaging QA for large-scale systems integration usually means regression cycles compete with release velocity. What does a typical pre-release regression run look like for your largest programs?\n\nHansard was in the same boat and cut their regression from 8 weeks to 5 weeks on Testsigma through self-healing and parallel execution. Same coverage, better cycle time.\n\nAt ManTech's program scale, that compounds across all contract releases. What does your current regression-to-release timeline look like for major releases?\n\nCheers,\nRob"
+  },
+  {
+    "id": "sarah.fischetto@mantech.com",
+    "num": 8,
+    "name": "Sarah Fischetto — QA Project Manager",
+    "first_name": "Sarah",
+    "email": "sarah.fischetto@mantech.com",
+    "subject": "Sarah — test upkeep slowing ManTech project timelines?",
+    "body": "Hi Sarah,\n\nRunning test automation across multiple ManTech programs usually means your QA teams are constantly patching broken tests when client systems shift. Is test maintenance eating into your project timelines?\n\nMedibuddy was dealing with the same maintenance burden and cut it 50% on Testsigma. Their 2,500 test suite went from 6 weeks maintenance every cycle to 3 weeks.\n\nAt ManTech's scale, that frees up real project velocity. How much of your current sprint capacity is going to test maintenance versus building new coverage?\n\nCheers,\nRob"
+  },
+  {
+    "id": "hemant.dubey@veradigm.com",
+    "num": 9,
+    "name": "Hemant Dubey — SDET",
+    "first_name": "Hemant",
+    "email": "hemant.dubey@veradigm.com",
+    "subject": "Hemant — false failures burning Veradigm automation hours?",
+    "body": "Hi Hemant,\n\nAutomating tests for healthcare and data platforms means your test suite picks up brittleness quickly when health data integrations shift. Does your team spend too much time debugging intermittent failures instead of shipping new coverage?\n\nCisco cut test brittleness significantly with Testsigma's self-healing. Their automation team stopped firefighting flaky locators and started focusing on coverage expansion instead.\n\nAt Veradigm's pace, that frees up meaningful automation velocity. How often are false failures from broken locators showing up in your runs right now?\n\nCheers,\nRob"
+  },
+  {
+    "id": "ted.barker@veradigm.com",
+    "num": 10,
+    "name": "Ted Barker — Director Quality Engineering",
+    "first_name": "Ted",
+    "email": "ted.barker@veradigm.com",
+    "subject": "Ted — how much of Veradigm's EHR scope is automated?",
+    "body": "Hi Ted,\n\nWith Veradigm's platform spanning EHR, analytics, and data exchange surfaces, your test surface area probably grows faster than team headcount can keep up. Is that something your team is actively trying to scale coverage for?\n\nCRED hit 90% regression coverage and 5x faster execution with Testsigma. Their team stopped worrying about coverage gaps and started shipping velocity improvements instead.\n\nAt Veradigm's scale, that compounds across every release. How much of your critical regression scope does your current suite cover today?\n\nCheers,\nRob"
+  },
+  {
+    "id": "tanvir.afzal@veradigm.com",
+    "num": 11,
+    "name": "Tanvir Afzal — Lead QA Analyst",
+    "first_name": "Tanvir",
+    "email": "tanvir.afzal@veradigm.com",
+    "subject": "Tanvir — how long does Veradigm's compliance regression take?",
+    "body": "Hi Tanvir,\n\nManaging QA for healthcare data platforms usually means compliance and speed have to happen together, and regression testing becomes the bottleneck. How long does a typical regression cycle take for your releases?\n\nSanofi was dealing with the same velocity vs. compliance tension and cut their regression from 3 days to 80 minutes on Testsigma. Full audit trail, zero shortcuts.\n\nAt Veradigm's scale, that compounds across every quarterly release. How long does a full regression cycle take for your team right now?\n\nCheers,\nRob"
+  },
+  {
+    "id": "bhanu.sundar@veradigm.com",
+    "num": 12,
+    "name": "Bhanu Sundar — Manager Software QA",
+    "first_name": "Bhanu",
+    "email": "bhanu.sundar@veradigm.com",
+    "subject": "Bhanu — maintenance overhead on Veradigm's HIPAA stack?",
+    "body": "Hi Bhanu,\n\nBuilding automated tests for healthcare platforms usually means your test base is constantly patching broken locators when API integrations shift. Is that something eating into your team's sprint cycles?\n\nMedibuddy was dealing with the same maintenance drag and cut it 50% on Testsigma. Their test engineering team stopped spending sprints on locator repair and started writing new coverage.\n\nAt Veradigm's scale, regression stability compounds across every HIPAA-critical release. How much of your current sprint capacity is going to test maintenance versus building new coverage?\n\nCheers,\nRob"
+  },
+  {
+    "id": "julie.brule@alithya.com",
+    "num": 13,
+    "name": "Julie Brule — QA Lead",
+    "first_name": "Julie",
+    "email": "julie.brule@alithya.com",
+    "subject": "Julie — regression consistency across Alithya client stacks?",
+    "body": "Hi Julie,\n\nTesting Alithya client solutions across web, mobile, and desktop surfaces simultaneously means coordinating regression stability across three different tech stacks. How is your team managing that coordination at scale?\n\nSamsung got consistent regression coverage across iOS, Android, and web using Testsigma. No longer debugging different failures across platforms.\n\nAt Alithya's growth pace, fragmented test coverage creates client delivery risk. How are you currently managing regression consistency across your different platforms?\n\nCheers,\nRob"
+  },
+  {
+    "id": "youssef.medgar@alithya.com",
+    "num": 14,
+    "name": "Youssef Medgar — Director of QA Expertise",
+    "first_name": "Youssef",
+    "email": "youssef.medgar@alithya.com",
+    "subject": "Standardizing QA tooling across Alithya engagements?",
+    "body": "Hi Youssef,\n\nAt Alithya's size managing testing across multiple client engagements and delivery teams, coordinating test automation standards while maintaining velocity is a challenge. How are your QA teams aligning on tooling and practices?\n\nNagra DTV built 2,500 tests in 8 months on Testsigma while managing multiple concurrent platforms. Their team stopped worrying about tooling friction and focused on coverage growth instead.\n\nAt Alithya's scale, that standardization compounds across all client deliveries. How long did it take to build out your current test suite, and how much of it is still running clean today?\n\nCheers,\nRob"
+  }
+]

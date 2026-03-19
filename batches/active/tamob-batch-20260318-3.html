@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAM Outbound Batch 15 — Mar 18, 2026 (T1 Email)</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f9fafb; margin: 0; padding: 20px; color: #1f2937; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .header h1 { margin: 0 0 10px 0; font-size: 28px; color: #111827; }
+        .header .meta { display: flex; gap: 30px; font-size: 14px; color: #6b7280; flex-wrap: wrap; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge-enrolled { background: #d1fae5; color: #065f46; }
+        .badge-blocked { background: #fee2e2; color: #991b1b; }
+        .badge-already-enrolled { background: #fef3c7; color: #92400e; }
+        .badge-partial { background: #e0e7ff; color: #3730a3; }
+        .summary-box { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .summary-box h2 { margin: 0 0 15px 0; font-size: 16px; font-weight: 600; }
+        .summary-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; }
+        .summary-item { padding: 15px; background: #f3f4f6; border-radius: 6px; }
+        .summary-item strong { display: block; font-size: 13px; color: #6b7280; margin-bottom: 5px; text-transform: uppercase; }
+        .summary-item span { display: block; font-size: 20px; font-weight: 600; color: #111827; }
+        .contacts-section { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .contacts-section h2 { margin: 0 0 20px 0; font-size: 18px; font-weight: 600; }
+        .company-group { margin-bottom: 40px; }
+        .company-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #e5e7eb; }
+        .company-name { font-size: 16px; font-weight: 700; color: #111827; }
+        .company-count { font-size: 13px; color: #6b7280; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { background: #f3f4f6; padding: 10px 12px; text-align: left; font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb; }
+        td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; vertical-align: top; }
+        tr:hover td { background: #fafafa; }
+        .status-enrolled { color: #065f46; font-weight: 600; }
+        .status-blocked { color: #991b1b; font-weight: 600; }
+        .status-already-enrolled { color: #92400e; font-weight: 600; }
+        .apollo-id { font-family: monospace; font-size: 11px; color: #9ca3af; }
+        .blocked-section { background: #fff5f5; border: 1px solid #fecaca; border-radius: 8px; padding: 20px; margin-bottom: 30px; }
+        .blocked-section h2 { margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #991b1b; }
+        .blocked-note { font-size: 13px; color: #7f1d1d; margin-bottom: 15px; padding: 10px; background: #fee2e2; border-radius: 6px; }
+        .already-enrolled-section { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 20px; margin-bottom: 30px; }
+        .already-enrolled-section h2 { margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #92400e; }
+        .already-enrolled-note { font-size: 13px; color: #78350f; margin-bottom: 15px; padding: 10px; background: #fef3c7; border-radius: 6px; }
+        .partial-warning { background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 8px; padding: 20px; margin-bottom: 30px; }
+        .partial-warning h2 { margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: #3730a3; }
+        .partial-warning-note { font-size: 13px; color: #312e81; margin-bottom: 10px; padding: 10px; background: #e0e7ff; border-radius: 6px; }
+        .footer-note { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 13px; color: #6b7280; }
+        .footer-note strong { color: #374151; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>TAM Outbound Batch 15 — Mar 18, 2026</h1>
+        <div class="meta">
+            <span><strong>File:</strong> tamob-batch-20260318-3.html</span>
+            <span><strong>Sequence:</strong> TAM Outbound - Rob Gorham</span>
+            <span><strong>Sequence ID:</strong> 69afff8dc8897c0019b78c7e</span>
+            <span><strong>Send From:</strong> robert.gorham@testsigma.com</span>
+            <span><strong>Channel:</strong> Email (Apollo T1)</span>
+        </div>
+    </div>
+
+    <!-- PARTIAL BATCH WARNING -->
+    <div class="partial-warning">
+        <h2><span class="badge badge-partial">PARTIAL BATCH</span></h2>
+        <div class="partial-warning-note"><strong>Context Limits:</strong> This batch contains 11 enrolled contacts (5 companies). 21 additional candidates were identified and qualified but not enrolled due to session context constraints. Enrollment should resume in the next session using the enriched candidate list.</div>
+        <div class="partial-warning-note"><strong>Candidates for Next Session:</strong> Cboe SE Managers, Rocket Software QA, additional Commvault/NETSCOUT/EverBank/Citizens/Incode/KIBO/Iridium/Datamatics contacts.</div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-box">
+        <h2>Batch Summary</h2>
+        <div class="summary-content">
+            <div class="summary-item">
+                <strong>Total Drafted</strong>
+                <span>18</span>
+            </div>
+            <div class="summary-item">
+                <strong>Enrolled</strong>
+                <span style="color:#065f46">11</span>
+            </div>
+            <div class="summary-item">
+                <strong>Apollo Blocked</strong>
+                <span style="color:#991b1b">1</span>
+            </div>
+            <div class="summary-item">
+                <strong>Already Enrolled</strong>
+                <span style="color:#92400e">6</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ENROLLED CONTACTS -->
+    <div class="contacts-section">
+        <h2>Enrolled Contacts (11)</h2>
+
+        <!-- NICE -->
+        <div class="company-group">
+            <div class="company-header">
+                <div class="company-name">NICE</div>
+                <div class="company-count">6 contacts</div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Apollo ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Slim Zouari</td>
+                        <td>QA Manager</td>
+                        <td>slim.zouari@nice.com</td>
+                        <td class="status-enrolled">Enrolled</td>
+                        <td class="apollo-id">69bacfae23a8c300181f5645</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Ekambreshwar Goshimath</td>
+                        <td>QA Manager</td>
+                        <td>ekambreshwar.goshimath@nice.com</td>
+                        <td class="status-enrolled">Enrolled</td>
+                        <td class="apollo-id">69bacfd460e41e00150f3b5f</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Eshcol Levi</td>
+                        <td>QA Manager</td>
+                        <td>eshcol.levi@nice.com</td>
+                        <td class="status-enrolled">Enrolled</td>
+                        <td class="apollo-id">69bacfd623a8c3001341aaf4</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Jack Susans</td>
+                        <td>QA Manager</td>
+                        <td>jack.susans@nice.com</td>
+                        <td class="status-enrolled">Enrolled</td>
+                        <td class="apollo-id">69bacfd8bdb7c30011778266</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Kobi Baram</td>
+                        <td>QA Lead</td>
+                        <td>kobi.baram@nice.com</td>
+                        <td class="status-enrolled">Enrolled</td>
+                        <td class="apollo-id">69bacfd9bdb7c30019c217b7</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Aaron Holdsworth</td>
+                        <td>Quality Assurance Lead</td>
+                        <td>aaron.holdsworth@nice.com</td>
+                        <td class="status-enrolled">Enrolled</td>
+                        <td class="apollo-id">69bacfdbbdb7c30019c217c0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- NETSCOUT -->
+        <div class="company-group">
+            <div class="company-header">
+                <div class="company-name">NETSCOUT</div>
+                <div class="company-count">1 contact</div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Apollo ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>7</td>
+                        <td>Javier Leypon</td>
+                        <td>QA Manager - Enterprise</td>
+                        <td>javier.leypon@netscout.com</td>
+                        <td class="status-enrolled">Enrolled</td>
+                        <td class="apollo-id">69bacfb460e41e000d91d850</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Iridium -->
+        <div class="company-group">
+            <div class="company-header">
+                <div class="company-name">Iridium</div>
+                <div class="company-count">2 contacts</div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Apollo ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>8</td>
+                        <td>Graeme Clifford</td>
+                        <td>Director, Engineering</td>
+                        <td>graeme.clifford@iridium.com</td>
+                        <td class="status-enrolled">Enrolled</td>
+                        <td class="apollo-id">69bacfb623a8c3000e2a54ae</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Carlos Moran</td>
+                        <td>QA Manager</td>
+                        <td>carlos.moran@iridium.com</td>
+                        <td class="status-enrolled">Enrolled</td>
+                        <td class="apollo-id">69bad00a4ed5080015a37949</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- KIBO -->
+        <div class="company-group">
+            <div class="company-header">
+                <div class="company-name">KIBO</div>
+                <div class="company-count">1 contact</div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Apollo ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>10</td>
+                        <td>Amit Ugane</td>
+                        <td>Director of Engineering</td>
+                        <td>amit.ugane@kibocommerce.com</td>
+                        <td class="status-enrolled">Enrolled</td>
+                        <td class="apollo-id">681876fa3bafe90001b59d0b</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Commvault -->
+        <div class="company-group">
+            <div class="company-header">
+                <div class="company-name">Commvault</div>
+                <div class="company-count">1 contact</div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Apollo ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>11</td>
+                        <td>Rakesh Rallapalli</td>
+                        <td>QA Manager</td>
+                        <td>rrallapalli@commvault.com</td>
+                        <td class="status-enrolled">Enrolled</td>
+                        <td class="apollo-id">668414419479d5040cd89968</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- BLOCKED -->
+    <div class="blocked-section">
+        <h2>Blocked (1)</h2>
+        <div class="blocked-note"><strong>Reason:</strong> Contacts listed below could not be enrolled due to Apollo restrictions or compliance issues.</div>
+        <table style="font-size: 13px;">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Title</th>
+                    <th>Company</th>
+                    <th>Email</th>
+                    <th>Block Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Vishal Shah</td>
+                    <td>SE Manager</td>
+                    <td>Cboe</td>
+                    <td>vshah@cboe.com</td>
+                    <td class="status-blocked">contacts_finished_in_other_campaigns</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ALREADY ENROLLED -->
+    <div class="already-enrolled-section">
+        <h2>Already Enrolled in Prior Batches (6)</h2>
+        <div class="already-enrolled-note"><strong>Note:</strong> These contacts were identified as candidates for Batch 15 but have already been enrolled in earlier batches. They are not counted in enrollment totals.</div>
+        <table style="font-size: 13px;">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Company</th>
+                    <th>Email</th>
+                    <th>Title</th>
+                    <th>Prior Batch</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Glenn Chambers</td>
+                    <td>Rocket Software</td>
+                    <td>gchambers@rocketsoftware.com</td>
+                    <td>QA Manager</td>
+                    <td class="status-already-enrolled">TAM Outbound Step 3</td>
+                </tr>
+                <tr>
+                    <td>Raghda Sakka</td>
+                    <td>Procore</td>
+                    <td>rsakka@procore.com</td>
+                    <td>QA Lead</td>
+                    <td class="status-already-enrolled">TAM Outbound Step 2</td>
+                </tr>
+                <tr>
+                    <td>Prasad Alapati</td>
+                    <td>Commvault</td>
+                    <td>palapati@commvault.com</td>
+                    <td>Engineering Manager</td>
+                    <td class="status-already-enrolled">TAM Outbound Step 2</td>
+                </tr>
+                <tr>
+                    <td>Tonya Jennings</td>
+                    <td>EverBank</td>
+                    <td>tjennings@everbank.com</td>
+                    <td>QA Manager</td>
+                    <td class="status-already-enrolled">TAM Outbound Step 2</td>
+                </tr>
+                <tr>
+                    <td>Mehul Savalia</td>
+                    <td>Citizens</td>
+                    <td>msavalia@citizens.com</td>
+                    <td>Director of QA</td>
+                    <td class="status-already-enrolled">TAM Outbound Step 2</td>
+                </tr>
+                <tr>
+                    <td>Amir Aly</td>
+                    <td>Procore</td>
+                    <td>aaly@procore.com</td>
+                    <td>QA Engineer</td>
+                    <td class="status-already-enrolled">Active in other campaign</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer-note">
+        <strong>Batch Status:</strong> 11 contacts enrolled and active at Step 1 in "TAM Outbound - Rob Gorham" sequence. All have received T1 email. Expected T2 touch: Mar 22–26 (Day 4–8 after send). <strong>AWAITING APPROVE SEND:</strong> Ready for send via Apollo task queue with INC-012 two-gate protocol.
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 # Work Queue
-## Last Updated: 2026-03-16 (stage-monitor scheduled run — T2 due dates updated. TASK-020 marked READY_TO_SEND. TASK-042 added: 15 new Batch 9 bounces. TASK-043 added: 2 unidentified missed calls.)
+## Last Updated: 2026-03-19 (reply-classifier Run #18 — TASK-063 + TASK-064 added: 4 new bounces + Peter Rimshnick unsubscribe)
 
 ## ⚡ SESSION START PROTOCOL (read every time)
 Follow the 14-step startup in `AGENTS.md` (v2.0). Key steps:
@@ -19,6 +19,339 @@ Tasks are sorted by priority. Claim one task at a time by updating status to IN_
 ---
 
 ## 🔴 CRITICAL — Do First
+
+### TASK-060: Execute T1 Sends (88 contacts, B13/B14/B15 + carryover) — PRIORITY P0 URGENT
+**Status:** IN_PROGRESS (Session 48, started 2026-03-18 18:00Z)
+**Priority:** P0 URGENT — 61 of 88 sent (8 prior-batch on-the-fly + 53 from drafts file). 27 remaining.
+**Date Added:** 2026-03-18 (Session 48)
+**Expected duration:** Continuing sends in batches of 10, verifying every 10 via Gmail MCP
+
+**Drafts file:** `batches/t1-drafts-mar18.json` (80 entries, all MQS 12/12)
+**Batches included:**
+- B13 (32): J&J MedTech (6), BeyondTrust (3), NICE (4), FactSet (3), Ahold Delhaize (5), Pacific Life (1), OverDrive (3), StubHub (2), Ryder (3), ID.me (1)
+- B14 (37): GXO Logistics (3), Equiniti (6+), SugarCRM (8), Definity Financial (3), Integrity Marketing (6), bswift (2), others
+- B15 (11): NICE (6), NETSCOUT (1), Iridium (2), KIBO (1), Commvault (1)
+
+**Apollo sequence:** TAM Outbound - Rob Gorham (ID: 69afff8dc8897c0019b78c7e)
+**Apollo Step 1 queue:** 88 total tasks (80 from today + ~8 carryover) — 57 remaining
+**APPROVE SEND:** Confirmed by Rob (batch trust mode) ✅
+
+**Send protocol (per SOP Part 23 + INC-012):**
+1. Open Apollo task queue, filter Step 1
+2. For each task: open → clear placeholder body → read draft from JSON → inject via execCommand ('insertText', NOT Quill API)
+3. JS readback verify: `document.querySelector('.ql-editor').innerText.trim().slice(0, 120)`
+4. Click "Send Now"
+5. Every 10 sends: verify via Gmail MCP Sent folder
+6. Log each send (contact name, timestamp)
+
+**Contacts sent (61):**
+1-8: Prior batches (8 on-the-fly) + 9-61: From t1-drafts-mar18.json. Full list in in-progress.md.
+
+**Expected outcome:** All 27 remaining sent by EOM. MASTER_SENT_LIST will be updated post-send.
+
+**Next step after sends:** TASK-059 (enroll 21 remaining Batch 15 candidates). Resume from Task 62 in Apollo queue.
+
+---
+
+### TASK-059: Continue Batch 15 Enrollment (21 remaining candidates, Mar 18+ — P1)
+**Status:** PENDING
+**Priority:** P1 — After T1 sends complete, enroll remaining 21 high-value candidates
+**Date Added:** 2026-03-18 (Session 47)
+
+21 additional candidates identified and qualified in prior session. All enrichment completed, Apollo IDs obtained. Resume enrollment in this session AFTER TASK-060 sends finish.
+- Candidates from: Cboe SE Managers, Rocket Software QA, Commvault/NETSCOUT/EverBank/Citizens/Incode/KIBO/Iridium/Datamatics
+- Compliance gate + draft + enroll pipeline
+- Target: Complete before Batch 16 prospecting starts
+- Will bring Batch 15 to fuller size (currently 11/32)
+
+
+## ⚡ SESSION START PROTOCOL (read every time)
+Follow the 14-step startup in `AGENTS.md` (v2.0). Key steps:
+1. `git pull origin main`
+2. Read AGENTS.md → CLAUDE.md → handoff.md → this file → in-progress.md → messages.md
+3. Crash check (in-progress.md Status = ACTIVE → crash recovery)
+4. Parallel check (ls `memory/session/active/` → avoid conflicts)
+5. Register in `memory/session/active/{session-number}.json`
+6. Check Gmail MCP for replies to robert.gorham@testsigma.com — warm leads jump the queue
+7. Check warm-leads.md for overdue follow-ups
+8. Read relevant playbooks from `memory/playbooks/` before starting work
+9. **Start the new TAM T1 batch — this is the first priority every day**
+10. After T1 batch work is done: check Apollo Tasks tab for T2s due
+
+Tasks are sorted by priority. Claim one task at a time by updating status to IN_PROGRESS.
+
+---
+
+## 🔴 CRITICAL — Do First
+
+### TASK-054: APPROVE SEND — Batch 13 (32 contacts, Mar 18 — awaiting Rob)
+**Status:** UNCLAIMED — awaiting Rob's APPROVE SEND
+**Priority:** P0 — 32 contacts enrolled and ready. T1 emails queued in Apollo sequence.
+**Date Added:** 2026-03-18 (Session 45)
+
+32 contacts enrolled in "TAM Outbound - Rob Gorham" sequence. All active at Step 1.
+- Review tracker: `batches/active/tamob-batch-20260318-1.html`
+- Companies: J&J MedTech (6), NICE (4), Ahold Delhaize USA (5), Ryder System (4), BeyondTrust (3), FactSet (3), OverDrive (3), StubHub (2), Pacific Life (1), ID.me (1)
+- Send via Apollo task queue with INC-012 two-gate protocol (per `memory/playbooks/apollo-task-queue-sends.md`)
+- T2 window: Mar 22–26 (Day 4–8)
+- Note: 10 contacts Apollo-blocked (Square 4 + JetBlue 6 — already in/finished other sequences). 2 manual skips (Omayra Marrero FactSet, John Adamo Ahold).
+
+### TASK-046: APPROVE SEND — Batch 12 (27 contacts, Mar 17 — awaiting Rob)
+**Status:** UNCLAIMED — awaiting Rob's APPROVE SEND
+**Priority:** P0 — 27 contacts enrolled and ready. T1 emails queued in Apollo sequence.
+**Date Added:** 2026-03-17 (Session 43)
+
+27 contacts enrolled in "TAM Outbound - Rob Gorham" sequence. All active at Step 1.
+- Review tracker: `batches/active/tamob-batch-20260317-1.html`
+- Companies: Fidelity (4), Northern Trust (2), Epicor (3), Infor (5), Zebra (5), Commvault (2), RSM (5), NETSCOUT (1)
+- Send via Apollo task queue with INC-012 two-gate protocol (per `memory/playbooks/apollo-task-queue-sends.md`)
+- T2 window: Mar 24–28
+
+**BLOCKED from batch:** Honeywell 6 (not in TAM + existing customer), Procore 1 (dup), Fidelity Richelle Hjørsson 1 (non-ASCII email), Chase 4 (pending resolution)
+
+---
+
+### TASK-047: Identify Missed Call — +19319221680 (Mar 17, 2:16 PM AND 4:42 PM — TWO calls)
+**Status:** UNCLAIMED — Rob must identify caller
+**Priority:** P0 — could be warm prospect calling back (now called TWICE today)
+**Date Added:** 2026-03-17 (reply-classifier Run #11); updated Run #12
+
+⚠️ **Two calls from same number today:**
+- Call 1: 2:16 PM EDT (Apollo notification arrived 2:17 PM)
+- Call 2: 4:42 PM EDT (Apollo notification arrived 4:42 PM) — NEW, added by Run #12
+
+Number: +19319221680. Area code 931 = Clarksville/Tennessee area. Two calls in ~2.5 hours = high-priority warm signal.
+- Check Apollo call log for matched contact
+- If prospect: update warm-leads.md + contact-lifecycle.md
+- If unidentified after check: logged in contact-lifecycle.md Missed Calls table
+
+---
+
+### TASK-048: Remove 19 Batch 12 Bounces from Apollo Sequence
+**Status:** UNCLAIMED — Rob must remove manually from Apollo UI
+**Priority:** P1 — contacts stuck in sequence, will keep getting failed email attempts
+**Date Added:** 2026-03-17 (reply-classifier Run #11)
+**Effort:** ~15-20 min in Apollo UI
+
+19 bounce NDRs confirmed from today's Batch 12 sends (TASK-046 batch). Full details in `memory/contact-lifecycle.md` (Batch 12 Bounce Records section).
+
+| Contact | Company | Email (Bounced) | Note |
+|---------|---------|-----------------|------|
+| Padma Srinivasan | Fidelity | padma.srinivasan@fidelity.com | Address not found |
+| Suvajit Chaudhury | Fidelity | suvajit.chaudhury@fidelity.com | Address not found |
+| Richelle Lara | Fidelity | richelle.lara@fidelity.com | Address not found |
+| Chris Petit | Fidelity | chris.petit@fidelity.com | Address not found |
+| Anusha Marlapalli | Epicor | anusha.marlapalli@epicor.com | Address not found |
+| Greg Sysak | Epicor | greg.sysak@epicor.com | Address not found |
+| Kevin McLeod | Infor | kevin.mcleod@infor.com | 550 5.4.1 Access denied — domain block |
+| Frank Waters | Infor | frank.waters@infor.com | 550 5.4.1 Access denied — domain block |
+| Greg Smith | Infor | greg.smith@infor.com | 550 5.4.1 Access denied — domain block |
+| Srijyotsna Bokariya | Infor | srijyotsna.bokariya@infor.com | 550 5.4.1 Access denied — domain block |
+| Mirza Hassan | Infor | mirza.hassan@infor.com | 550 5.4.1 Access denied — domain block |
+| Sunkara Srinivas | Commvault | sunkara.srinivas@commvault.com | Undeliverable |
+| Prasad Alimineni | Commvault | prasad.alimineni@commvault.com | Undeliverable |
+| Brian Brennan | RSM US | brian.brennan@rsmus.com | Address not found |
+| Philcy Morales | RSM US | philcy.morales@rsmus.com | Address not found |
+| Kristina Pozzi | RSM US | kristina.pozzi@rsmus.com | Address not found |
+| Rupasri Soman | RSM US | rupasri.soman@rsmus.com | Address not found |
+| Christina Jimenez | RSM US | christina.jimenez@rsmus.com | Address not found |
+| Scott Pfeiffer | NETSCOUT | scott.pfeiffer@netscout.com | 550 hard bounce |
+
+**Key patterns:** Infor (5/5) domain firewall — do not re-enroll. RSM US (5/5) address-not-found — email format likely wrong. Fidelity (4 more today on top of prior bounces) — fidelity.com blocks external or format wrong.
+
+---
+
+### TASK-049: Remove 14 Additional Mar 17 Bounces from Apollo Sequence
+**Status:** UNCLAIMED — Rob must remove manually from Apollo UI
+**Priority:** P1 — contacts from other active sequences that bounced today
+**Date Added:** 2026-03-17 (reply-classifier Run #11)
+**Effort:** ~10-15 min in Apollo UI
+
+| Contact | Company | Email (Bounced) | Note |
+|---------|---------|-----------------|------|
+| Ashwini Dumbe | Kibo Commerce | ashwini.dumbe@kibocommerce.com | Domain block — 5th Kibo bounce |
+| Abhay N | Replicon | abhay.n@replicon.com | SMTP 550 — 4th Replicon bounce |
+| Harita Chandra | Replicon | harita.chandra@replicon.com | SMTP 550 — 5th Replicon bounce |
+| James Nelson | Personalis | james.nelson@personalis.com | 550 5.1.1 |
+| Stefan Berner | Personalis | stefan.berner@personalis.com | 550 5.1.1 |
+| Shiva Porah | GeoPagos | shiva.porah@geopagos.com | 550 5.1.1 |
+| Lori Khan | GeoPagos | lori.khan@geopagos.com | 550 5.1.1 |
+| (catchall) | AppSumo | catchall@appsumo.com | Blocked by enterprise admin — avoid catchall for AppSumo |
+| Shilpa Nayak | FormAssembly | shilpa.nayak@formassembly.com | 550 5.1.1 |
+| Massimo Modena | FormAssembly | massimo.modena@formassembly.com | 550 5.1.1 |
+| Julieta Abacha | FormAssembly | julieta.abacha@formassembly.com | 550 5.1.1 |
+| Brian Oppenheim | Celonis | brian.oppenheim@celonis.de | 550 5.1.1 — 3rd Celonis bounce |
+| Bogdan Minciu | Celonis | bogdan.minciu@celonis.de | 550 5.1.1 — 4th Celonis bounce |
+| Tomer Weinberger | Check Point | tomerw@checkpoint.com | Undeliverable (postmaster@checkpoint.com) |
+
+---
+
+### TASK-050: Apollo Mobile Numbers Ready — 44 Numbers Available
+**Status:** UNCLAIMED — Rob can act when convenient
+**Priority:** P2 — 44 mobile numbers delivered by Apollo, available for calling
+**Date Added:** 2026-03-17 (reply-classifier Run #11)
+
+Two Apollo mobile number deliveries arrived today:
+- 32 mobile numbers for 32 contacts (CSV ready — delivered 2:39 PM EDT)
+- 12 mobile numbers for 13 contacts (CSV ready — delivered 2:45 PM EDT)
+
+Action: Download CSVs from Apollo Mobile Numbers emails, match to contacts in Apollo for calling. Useful for the call-prep-card skill before dialing.
+
+---
+
+### TASK-051: Awareness — Testsigma x Coupa Intro Meeting Booked (Mar 31)
+**Status:** FYI — no action required from Rob unless he wants to prep
+**Priority:** P2 — awareness item
+**Date Added:** 2026-03-17 (reply-classifier Run #12)
+
+William Dalley (AE) accepted the "Testsigma x Coupa - Intro" calendar invite for Tue Mar 31, 2026 12pm–12:15pm EDT. Rob was on the original invite. If Rob is attending or supporting this meeting, he may want to use the call-prep-card skill to prepare. Coupa is an enterprise spend management platform — a relevant prospect vertical.
+
+---
+
+### TASK-052: Renew FactorsAI LinkedIn Token
+**Status:** UNCLAIMED — Rob must reconnect in Factors UI
+**Priority:** P2 — tool maintenance; affects LinkedIn signal monitoring
+**Date Added:** 2026-03-18 (reply-classifier Run #13)
+
+FactorsAI sent an automated alert: "Your LinkedIn token has expired." The LinkedIn integration in Rob's Factors project is broken. This may affect:
+- The `linkedin-signal-monitor` scheduled task (runs weekdays 6:05 AM)
+- Ability to track LinkedIn engagement signals through Factors.ai
+
+**Action:** Go to Factors project settings → Integrations → LinkedIn → Disconnect and reconnect to refresh the OAuth token.
+
+---
+
+### TASK-064: ❌ Peter Rimshnick (Yext) — Unsubscribe Reply — Recommend DNC
+**Status:** UNCLAIMED — Rob must approve DNC addition
+**Priority:** P0 — first prospect reply in 22 runs. Explicit unsubscribe.
+**Date Added:** 2026-03-19 (reply-classifier Run #18)
+
+Peter Rimshnick (primshnick@yext.com) replied "Unsubscribe" to T2 email (sent Mar 18 5:40 PM UTC). T1 was Batch 8 (Mar 13). Classification: P3 Negative — explicit opt-out.
+- **Action required:** Rob approve DNC addition to CLAUDE.md
+- **Action required:** Remove from Apollo sequence immediately
+- Logged in contact-lifecycle.md under "Prospect Reply — Peter Rimshnick @ Yext (P3 Negative)"
+
+---
+
+### TASK-063: Remove 4 New Bounce Contacts from Apollo Sequences
+**Status:** UNCLAIMED — Rob must remove manually from Apollo UI
+**Priority:** P1 — contacts stuck in sequences that will never deliver
+**Date Added:** 2026-03-19 (reply-classifier Run #18)
+**Effort:** ~5 min in Apollo UI
+
+4 new bounces from Mar 18 evening sends (TASK-060 B13/B14/B15):
+1. Rakesh Rallapalli — rrallapalli@commvault.com (Commvault, 3rd bounce)
+2. Craig Telling — Equiniti (B14, postmaster@group.internal NDR)
+3. Mahesh Tolapu — Equiniti (B14, postmaster@group.internal NDR)
+4. Sheena Ramachandran — sheenar@squareup.com (Square, address not found)
+
+**New domain pattern:** Equiniti (group.internal) — 2/2 bounced. Monitor for more before confirming domain block.
+
+---
+
+### TASK-062: Identify Missed Call — +16263319807 (Mar 18, 4:55 PM EDT)
+**Status:** UNCLAIMED — Rob must identify caller
+**Priority:** P0 — could be warm prospect calling back
+**Date Added:** 2026-03-18 (reply-classifier Run #17)
+
+Apollo missed call notification (email arrived 8:55 PM UTC, 4:55 PM EDT today). Number: +16263319807.
+- Area code 626 = San Gabriel Valley / Pasadena / Arcadia, CA area
+- Check Apollo call log for matched contact
+- If prospect: update warm-leads.md + contact-lifecycle.md
+- If unidentified after check: logged in contact-lifecycle.md Missed Calls table
+
+---
+
+### TASK-061: Remove alan.spindel@epicor.com Bounce from Apollo Sequence
+**Status:** UNCLAIMED — Rob must remove manually from Apollo UI
+**Priority:** P1 — contact stuck in sequence getting email attempts that will never deliver
+**Date Added:** 2026-03-18 (reply-classifier Run #17)
+**Effort:** ~2 min in Apollo UI
+
+New bounce NDR received Mar 18, ~9 PM UTC — alan.spindel@epicor.com bounced ("Address not found"). This is the 3rd Epicor contact to bounce (following anusha.marlapalli and greg.sysak from TASK-048). Contact appears to be from B13/B14/B15 sends (TASK-060).
+
+**Recommendation:** After removing, verify Epicor email format before any further Epicor sends. 3/3 bounced — possible format mismatch or departed employees.
+
+---
+
+### TASK-056: Remove 2 New Check Point Bounces from Apollo Sequence
+**Status:** UNCLAIMED — Rob must remove manually from Apollo UI
+**Priority:** P1 — contacts stuck in sequence getting email attempts that will never deliver
+**Date Added:** 2026-03-18 (reply-classifier Run #14)
+**Effort:** ~5 min in Apollo UI
+
+2 new bounce NDRs from checkpoint.com (today Mar 18). Check Point is now 3 total bounces — domain block pattern confirmed.
+
+| Contact | Company | Email (Bounced) | Note |
+|---------|---------|-----------------|------|
+| Shlomo Yeret | Check Point | shlomoy@checkpoint.com | Undeliverable — 2nd Check Point bounce |
+| Yogesh Garg | Check Point | yogeshg@checkpoint.com | Undeliverable — 3rd Check Point bounce |
+
+**Recommendation:** After removing from sequence, avoid new checkpoint.com enrollments until a verified email format or alternate contact path is found. See also Tomer Weinberger (tomerw@checkpoint.com) in TASK-049.
+
+---
+
+### TASK-055: Identify Missed Call — +17632288324 (Mar 18, 11:02 AM)
+**Status:** UNCLAIMED — Rob must identify caller
+**Priority:** P0 — could be warm prospect calling back
+**Date Added:** 2026-03-18 (reply-classifier Run #14)
+
+Apollo missed call notification (email arrived 3:02 PM UTC today). Number: +17632288324.
+- Area code 763 = NW Twin Cities suburbs (Plymouth, Maple Grove, Brooklyn Park, MN)
+- Check Apollo call log for matched contact
+- If prospect: update warm-leads.md + contact-lifecycle.md
+- If unidentified after check: already logged in contact-lifecycle.md Missed Calls table
+
+---
+
+### TASK-045: Identify Missed Call — +13218377968 (Mar 16, 3:39 PM)
+**Status:** UNCLAIMED — Rob must identify caller
+**Priority:** P0 — could be warm prospect calling back
+**Date Added:** 2026-03-17 (reply-classifier Run #7)
+
+Apollo missed call notification (email arrived 7:40 PM Mar 16). Number: +13218377968. Flagged by Run #6, formally logged Run #7.
+- Check Apollo call log for matched contact
+- Area code 321 = Orlando/Melbourne FL area
+- If prospect: update warm-leads.md + contact-lifecycle.md
+- If unidentified after check: log in contact-lifecycle.md Missed Calls table
+
+---
+
+### TASK-044: Remove 15 Batch 11/12 Bounces from Apollo Sequence
+**Status:** UNCLAIMED — Rob must remove manually from Apollo UI
+**Priority:** P1 — these contacts are stuck in sequence getting email attempts that will never deliver
+**Date Added:** 2026-03-17 (reply-classifier Run #7)
+**Effort:** ~10-15 min in Apollo UI
+
+15 email bounce NDRs confirmed from Mar 16 sends. All logged in `memory/contact-lifecycle.md` (Batch 11 Bounce Records section). Rob must go to Apollo > each contact > remove from TAM Outbound sequence to stop further touches.
+
+| Contact | Company | Email (Bounced) | Batch | Note |
+|---------|---------|-----------------|-------|------|
+| Jordan Simmons | Kibo Commerce | jordan.simmons@kibocommerce.com | 12p2 | Domain-level reject |
+| Aslam Ather | Kibo Commerce | aslam.ather@kibocommerce.com | 12p2 | Domain-level reject |
+| Dipty Pahal | Kibo Commerce | dipty.pahal@kibocommerce.com | 12p2 | Domain-level reject |
+| Nelly Turton | Kibo Commerce | nelly.turton@kibocommerce.com | 12p2 | Domain-level reject |
+| Bonnie Kaplan | Acadia Healthcare | bonnie.kaplan@acadiahealthcare.com | 12p2 | Bounced @acadiahealthcare.com — tracker had @acadia.com |
+| Maja Kilian | Acadia Healthcare | maja.kilian@acadiahealthcare.com | 12p2 | Bounced @acadiahealthcare.com — tracker had @acadia.com |
+| Niveditha Bhuj | LendBuzz | niveditha.bhuj@lendbuzz.com | 12p2 | 550 5.1.1 hard bounce |
+| Sridhar Bulusu | Replicon | sridhar.bulusu@replicon.com | 12p3 | SMTP 550 hard bounce |
+| Sheethal Kotekar | Replicon | sheethal.kotekar@replicon.com | 12p3 | SMTP 550 hard bounce |
+| Siva Kumar | Replicon | siva.kumar@replicon.com | 12p3 | SMTP 550 hard bounce |
+| Emma Newberg | ManTech | emma.newberg@mantech-inc.com | 12p3 | Address not found |
+| Sylvia Kuzmak | ManTech | sylvia.kuzmak@mantech-inc.com | 12p3 | Address not found |
+| Bhanu Sundar | Veradigm | bhanu.sundar@veradigm.com | 12p3 | Address not found |
+| Michael Burton | WorkWave | michael.burton@workwave.com | 11 | Address not found |
+| Devendra Choudhary | Open Lending | devendra.choudhary@openlending.com | 11 | Address not found |
+
+**Domain patterns:**
+- Kibo Commerce (4/4): likely domain-level block — do not re-enroll without verified alt emails
+- Replicon (3/3 SMTP 550): domain may block or all email formats wrong — avoid until verified
+- ManTech (2 bounced at mantech-inc.com, other ManTech contacts enrolled at mantech.com — format mismatch)
+- Acadia Healthcare: tracker had wrong domain (@acadia.com) — actual domain is @acadiahealthcare.com
+
+**Apollo enrichment needed:** Kibo Commerce and Replicon contacts — try alternate email formats or LinkedIn InMail.
+
+---
 
 ### TASK-040: APPROVE SEND — Batch 10 (15 contacts enrolled, Mar 15)
 **Status:** UNCLAIMED — waiting for Rob's APPROVE SEND
@@ -788,3 +1121,70 @@ Use sed or awk to do bulk replace. Verify row count unchanged after edit.
 - Citizens Bank: 3 contacts with obfuscated names (need enrichment by Apollo ID)
 - Bungie: 4 contacts with obfuscated names (3 QA Directors + 1 Sr QA Manager)
 Complete dedup, draft T1s, enroll in TAM Outbound.
+
+---
+
+### TASK-063: Execute T2 Mass Send (265 Drafts Approved) — PRIORITY P0 CRITICAL
+**Status:** PENDING (Session 45, awaiting next session pickup)
+**Priority:** P0 CRITICAL — All 265 T2 drafts APPROVE SEND granted by Rob (Mar 18)
+**Date Added:** 2026-03-18 (Session 45)
+**Expected Duration:** 4-6 hours (batch sending 265 contacts across 104 companies)
+**Output:** All 265 T2 emails sent via Apollo Tasks + verification in Gmail Sent folder
+
+**Background:**
+This is the largest T2 send operation to date. 265 approved drafts across 104 companies with 94.3% QA pass rate (MQS >= 9/12). Rob explicitly approved this mass send on March 18.
+
+**Master Files:**
+- Draft HTML: `batches/t2-pending/MASTER-T2-APPROVE-SEND-2026-03-18.html` (all 265 drafts with full subject/body)
+- JSON for scripting: `batches/t2-pending/master-t2-all-drafts-FIXED.json` (265 objects, searchable by contact name)
+- Source QA report: `batches/t2-pending/qa-all-265-drafts-mar18.html`
+
+**Drafts Composition:**
+- Batch 8 T2: 52 drafts (already partially sent in Session 45: 52/52 ✅)
+- Wave 5 Batch 4 T2: 6 drafts (already sent in Session 45: 6/6 ✅)
+- Batches 11-15 T2: 207 new T2 drafts (0/207 sent — PRIMARY TASK)
+
+**Send Process:**
+1. Open Apollo in Chrome (blue/Testsigma profile)
+2. Navigate to Tasks tab, filter by "TAM Outbound" sequence
+3. For each contact in master-t2-all-drafts-FIXED.json:
+   a. Search contact name in Apollo Tasks
+   b. If 0 results, skip (contact may have bounced or not be in sequence)
+   c. Open task — verify Step 2 "Manual email" and from: robert.gorham@testsigma.com
+   d. Triple-click subject field, paste T2 subject (must start with "Re:")
+   e. Use execCommand JS injection to set body: `document.querySelector('.ql-editor').innerHTML = draftBody`
+   f. JS readback to verify: `document.querySelector('.ql-editor').innerText.trim().slice(0, 25)` (first 25 chars) + last 25 chars + word count
+   g. Zoom screenshot of body area, present to next session for final verification
+   h. After approval: click "Send Now" (NEVER "Schedule and mark complete")
+   i. Move to next contact
+
+**CRITICAL SAFETY RULES (from incidents.md INC-012):**
+- APPROVE SEND = content approval only. APPROVE CLICK = separate gate for sending.
+- Before every "Send Now" click: JS readback + zoom screenshot mandatory
+- Wait for explicit "looks good" / "send it" from Rob AFTER showing screenshot
+- Post-send: verify via Gmail MCP within 60 seconds that email landed in Sent folder
+- Signature handling: Check if Apollo adds its own sig below .ql-editor. If yes, strip "Rob Gorham\nTestsigma" from injected body. If no, keep it in body.
+
+**Contacts NOT to send (Do Not Contact list from CLAUDE.md):**
+- Sanjay Singh, Lance Silverman, Clyde Faulkner, Ashok Prasad, Abe Blanco, Chuck Smith, Jitesh Biswal, Bret Wiener
+- If any of these appear in task search results, skip and move to next contact
+
+**Special Cases:**
+- Theepa Balakrishnan T2: eligibility window opens Mar 20 — do NOT send before Mar 20
+- Eric Spencer T2: one-off draft, needs manual send (not in master file) — find and send separately
+- 3 Batch 8 contacts had no task in Apollo: Anisha Jha, Jake Lai, Ajay Jeevanandam — skip if no task found
+- Monika Sharma: skipped per TASK-035 — do not send
+
+**Tracking:**
+- Create new session log entry: "TASK-063 T2 Mass Send — [N] sent today, [N] remaining"
+- After every 10 sends: verify in Gmail MCP that all 10 landed in Sent
+- Update master-t2-all-drafts-FIXED.json with "sent_date" field as you go
+- At end of session: tally total sent and update handoff.md
+
+**Next Session Handoff:**
+- If not all 265 sent: document progress (e.g., "207 of 265 sent"). Update this task status to IN_PROGRESS.
+- Update `memory/session/handoff.md` with final count
+- Update `memory/pipeline-state.md` with T2 send wave completion
+
+---
+*Updated by Claude — 2026-03-19 (Session 45 Handoff)*

@@ -1,0 +1,15 @@
+{
+  "session_number": 45,
+  "started_at": "2026-03-18T13:51:00Z",
+  "last_heartbeat": "2026-03-18T13:51:00Z",
+  "status": "active",
+  "task": "TAM T1 Batch 13 Mar18 — Source, dedup, draft, QA gate, enroll. Target: 50-100 contacts from untouched TAM accounts.",
+  "claimed_companies": [
+    "Square", "JetBlue Airways", "Johnson & Johnson MedTech", "BeyondTrust", "NICE",
+    "FactSet", "GXO Logistics", "Ahold Delhaize USA", "ID.me", "Incyte",
+    "Pacific Life", "HonorHealth", "Enterprise Mobility Inc", "Charles River Laboratories",
+    "Webex"
+  ],
+  "files_editing": ["MASTER_SENT_LIST.csv", "batches/active/tamob-batch-20260318-1.html"],
+  "agent_type": "cowork"
+}

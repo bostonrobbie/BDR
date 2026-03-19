@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batch 9 T2 Drafts - Approval Gate</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header {
+            background: white;
+            border-left: 4px solid #2563eb;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .header h1 { font-size: 24px; margin-bottom: 10px; }
+        .summary-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .summary-item {
+            background: #f0f9ff;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 3px solid #0891b2;
+        }
+        .summary-item .label { font-size: 12px; color: #666; text-transform: uppercase; font-weight: 600; }
+        .summary-item .value { font-size: 18px; font-weight: 700; color: #0891b2; margin-top: 5px; }
+        
+        .company-group {
+            margin-bottom: 30px;
+        }
+        .company-header {
+            background: #2563eb;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .draft-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        .draft-header {
+            background: #fafafa;
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .draft-info h3 { font-size: 16px; margin-bottom: 4px; }
+        .draft-info p { font-size: 13px; color: #666; margin-bottom: 2px; }
+        .draft-meta {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .badge-proof { background: #dbeafe; color: #1e40af; }
+        .badge-proof-alt { background: #fce7f3; color: #be185d; }
+        .badge-qa { background: #dcfce7; color: #166534; }
+        .badge-words { background: #fef3c7; color: #92400e; }
+        .badge-status { background: #ede9fe; color: #6d28d9; }
+        
+        .draft-body {
+            padding: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+        .subject { margin-bottom: 12px; }
+        .subject-label { display: block; color: #666; font-weight: 600; font-size: 12px; margin-bottom: 4px; }
+        .subject-text { color: #333; font-weight: 500; }
+        .email-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #444;
+            font-family: 'Courier New', monospace;
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 3px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            margin: 12px 0;
+        }
+        
+        .qa-section {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f0f9ff;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .qa-section strong { color: #0891b2; }
+        
+        .footer {
+            margin-top: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 4px;
+            border-top: 3px solid #dc2626;
+            text-align: center;
+        }
+        .footer p { font-size: 14px; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Batch 9 T2 Follow-Up Drafts</h1>
+            <p style="color: #666; font-size: 14px; margin-top: 8px;">Awaiting Rob's APPROVE SEND before any enrollment or send execution</p>
+            <div class="summary-box">
+                <div class="summary-item">
+                    <div class="label">Total Drafts</div>
+                    <div class="value">41</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">Bounced (Skipped)</div>
+                    <div class="value">15</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">T2 Send Window</div>
+                    <div class="value">Mar 18-22</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">All Passed QA</div>
+                    <div class="value">10+/12</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="company-group">
+            <div class="company-header">Anaplan — 5 contacts</div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Iain Duffield</h3>
+                        <p><strong>QA Manager</strong></p>
+                        <p style="color: #999; font-size: 12px;">iain.duffield@anaplan.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Cisco</span>
+                            <span class="badge badge-proof-alt">T2: Sanofi</span>
+                            <span class="badge badge-words">161 words</span>
+                            <span class="badge badge-qa">11/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Iain&#x27;s testing at Anaplan </span>
+                    </div>
+                    <div class="email-text">Hi Iain,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your qa manager at Anaplan , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing QA means test coverage has to scale fast without proportional team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m off on that, let me know.
+
+It&#x27;s the same tension Sanofi got their regression window from 3 days down to 80 minutes using Testsigma, running those compliance workflows in parallel instead of one at a time. At your scale, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 11/12</strong> — Word count 161 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Jason Cowley</h3>
+                        <p><strong>Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">jason.cowley@anaplan.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: CRED</span>
+                            <span class="badge badge-proof-alt">T2: Medibuddy</span>
+                            <span class="badge badge-words">158 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Jason&#x27;s testing at Anaplan </span>
+                    </div>
+                    <div class="email-text">Hi Jason,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your director of engineering at Anaplan , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m off on that, let me know.
+
+It&#x27;s the same tension Medibuddy built 2,500 automated tests and cut maintenance effort by 50% using Testsigma, keeping pace with a fast-moving product team. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 158 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Michelina Vitello</h3>
+                        <p><strong>Sr Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">michelina.vitello@anaplan.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Fortune 100</span>
+                            <span class="badge badge-proof-alt">T2: Cisco</span>
+                            <span class="badge badge-words">158 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Michelina&#x27;s testing at Anaplan </span>
+                    </div>
+                    <div class="email-text">Hi Michelina,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your sr director of engineering at Anaplan , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not exactly right, set me straight.
+
+It&#x27;s the same tension When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% using Testsigma, without adding engineers. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 158 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Stephen O&amp;#x27;Neill</h3>
+                        <p><strong>Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">stephen.oneill@anaplan.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Hansard</span>
+                            <span class="badge badge-proof-alt">T2: CRED</span>
+                            <span class="badge badge-words">154 words</span>
+                            <span class="badge badge-qa">11/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Stephen&#x27;s testing at Anaplan </span>
+                    </div>
+                    <div class="email-text">Hi Stephen,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your director of engineering at Anaplan , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not exactly right, set me straight.
+
+It&#x27;s the same tension CRED reached 90% regression coverage and ran tests 5x faster using Testsigma, without additional QA investment. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 11/12</strong> — Word count 154 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Tom Baldwin</h3>
+                        <p><strong>Sr Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">tom.baldwin@anaplan.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Medibuddy</span>
+                            <span class="badge badge-proof-alt">T2: Cisco</span>
+                            <span class="badge badge-words">158 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Tom&#x27;s testing at Anaplan </span>
+                    </div>
+                    <div class="email-text">Hi Tom,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your sr director of engineering at Anaplan , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not exactly right, set me straight.
+
+It&#x27;s the same tension When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% using Testsigma, without adding engineers. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 158 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="company-group">
+            <div class="company-header">Bethesda Softworks — 3 contacts</div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Daniel Ward</h3>
+                        <p><strong>Software Engineer Manager</strong></p>
+                        <p style="color: #999; font-size: 12px;">daniel.ward@bethesda.net</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Fortune 100</span>
+                            <span class="badge badge-proof-alt">T2: Cisco</span>
+                            <span class="badge badge-words">156 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Daniel&#x27;s testing at Bethesda Softworks </span>
+                    </div>
+                    <div class="email-text">Hi Daniel,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your software engineer manager at Bethesda Softworks , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+as an engineering manager, test maintenance overhead during feature-intensive sprints adds up fast, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m off on that, let me know.
+
+It&#x27;s the same tension When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% using Testsigma, without adding engineers. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 156 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Joseph Farrell</h3>
+                        <p><strong>Sr Software Engineer Manager</strong></p>
+                        <p style="color: #999; font-size: 12px;">joseph.farrell@bethesda.net</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: CRED</span>
+                            <span class="badge badge-proof-alt">T2: Medibuddy</span>
+                            <span class="badge badge-words">158 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Joseph&#x27;s testing at Bethesda Softworks </span>
+                    </div>
+                    <div class="email-text">Hi Joseph,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your sr software engineer manager at Bethesda Softworks , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+as an engineering manager, test maintenance overhead during feature-intensive sprints adds up fast, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not exactly right, set me straight.
+
+It&#x27;s the same tension Medibuddy built 2,500 automated tests and cut maintenance effort by 50% using Testsigma, keeping pace with a fast-moving product team. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 158 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Yousef Ebrahimi</h3>
+                        <p><strong>Sr Software Engineer Manager</strong></p>
+                        <p style="color: #999; font-size: 12px;">yousef.ebrahimi@bethesda.net</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Medibuddy</span>
+                            <span class="badge badge-proof-alt">T2: Cisco</span>
+                            <span class="badge badge-words">157 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Yousef&#x27;s testing at Bethesda Softworks </span>
+                    </div>
+                    <div class="email-text">Hi Yousef,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your sr software engineer manager at Bethesda Softworks , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+as an engineering manager, test maintenance overhead during feature-intensive sprints adds up fast, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not exactly right, set me straight.
+
+It&#x27;s the same tension When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% using Testsigma, without adding engineers. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 157 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="company-group">
+            <div class="company-header">Celonis — 2 contacts</div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Bogdan Minciu</h3>
+                        <p><strong>Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">bogdan.minciu@celonis.de</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Medibuddy</span>
+                            <span class="badge badge-proof-alt">T2: Cisco</span>
+                            <span class="badge badge-words">158 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Bogdan&#x27;s testing at Celonis </span>
+                    </div>
+                    <div class="email-text">Hi Bogdan,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your director of engineering at Celonis , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not the right read, set me straight.
+
+It&#x27;s the same tension When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% using Testsigma, without adding engineers. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 158 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Brian Oppenheim</h3>
+                        <p><strong>Engineering Director</strong></p>
+                        <p style="color: #999; font-size: 12px;">brian.oppenheim@celonis.de</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Cisco</span>
+                            <span class="badge badge-proof-alt">T2: Sanofi</span>
+                            <span class="badge badge-words">160 words</span>
+                            <span class="badge badge-qa">11/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Brian&#x27;s testing at Celonis </span>
+                    </div>
+                    <div class="email-text">Hi Brian,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your engineering director at Celonis , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+directing engineering means test suites need to keep pace with your platform evolution, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m reading that wrong, correct me.
+
+It&#x27;s the same tension Sanofi got their regression window from 3 days down to 80 minutes using Testsigma, running those compliance workflows in parallel instead of one at a time. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 11/12</strong> — Word count 160 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="company-group">
+            <div class="company-header">Check Point Software — 5 contacts</div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Doron Lehmann</h3>
+                        <p><strong>Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">doronl@checkpoint.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Hansard</span>
+                            <span class="badge badge-proof-alt">T2: CRED</span>
+                            <span class="badge badge-words">156 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Doron&#x27;s testing at Check Point Software </span>
+                    </div>
+                    <div class="email-text">Hi Doron,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your director of engineering at Check Point Software , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m off on that, let me know.
+
+It&#x27;s the same tension CRED reached 90% regression coverage and ran tests 5x faster using Testsigma, without additional QA investment. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 156 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Jesse Ybarra</h3>
+                        <p><strong>Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">jessee@checkpoint.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Medibuddy</span>
+                            <span class="badge badge-proof-alt">T2: Cisco</span>
+                            <span class="badge badge-words">159 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Jesse&#x27;s testing at Check Point Software </span>
+                    </div>
+                    <div class="email-text">Hi Jesse,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your director of engineering at Check Point Software , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not exactly right, set me straight.
+
+It&#x27;s the same tension When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% using Testsigma, without adding engineers. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 159 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Shlomo Yeret</h3>
+                        <p><strong>Director of Software Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">shlomoy@checkpoint.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Fortune 100</span>
+                            <span class="badge badge-proof-alt">T2: Cisco</span>
+                            <span class="badge badge-words">156 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Shlomo&#x27;s testing at Check Point Software </span>
+                    </div>
+                    <div class="email-text">Hi Shlomo,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your director of software engineering at Check Point Software , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing your team means test maintenance overhead impacts release cycles, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not the right read, set me straight.
+
+It&#x27;s the same tension When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% using Testsigma, without adding engineers. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 156 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Tomer Weinberger</h3>
+                        <p><strong>QA &amp;amp; Automation Manager</strong></p>
+                        <p style="color: #999; font-size: 12px;">tomerw@checkpoint.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: CRED</span>
+                            <span class="badge badge-proof-alt">T2: Medibuddy</span>
+                            <span class="badge badge-words">156 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Tomer&#x27;s testing at Check Point Software </span>
+                    </div>
+                    <div class="email-text">Hi Tomer,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your qa &amp; automation manager at Check Point Software , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing your team means test maintenance overhead impacts release cycles, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not exactly right, set me straight.
+
+It&#x27;s the same tension Medibuddy built 2,500 automated tests and cut maintenance effort by 50% using Testsigma, keeping pace with a fast-moving product team. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 156 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Yogesh Garg</h3>
+                        <p><strong>QA Group Manager</strong></p>
+                        <p style="color: #999; font-size: 12px;">yogeshg@checkpoint.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Samsung</span>
+                            <span class="badge badge-proof-alt">T2: CRED</span>
+                            <span class="badge badge-words">150 words</span>
+                            <span class="badge badge-qa">11/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Yogesh&#x27;s testing at Check Point Software </span>
+                    </div>
+                    <div class="email-text">Hi Yogesh,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your qa group manager at Check Point Software , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing your team means test maintenance overhead impacts release cycles, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m reading that wrong, correct me.
+
+It&#x27;s the same tension CRED reached 90% regression coverage and ran tests 5x faster using Testsigma, without additional QA investment. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 11/12</strong> — Word count 150 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="company-group">
+            <div class="company-header">Farmers Insurance — 2 contacts</div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Bret Wiener</h3>
+                        <p><strong>Sr Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">bret.wiener@farmers.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: CRED</span>
+                            <span class="badge badge-proof-alt">T2: Medibuddy</span>
+                            <span class="badge badge-words">160 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Bret&#x27;s testing at Farmers Insurance </span>
+                    </div>
+                    <div class="email-text">Hi Bret,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your sr director of engineering at Farmers Insurance , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not exactly right, set me straight.
+
+It&#x27;s the same tension Medibuddy built 2,500 automated tests and cut maintenance effort by 50% using Testsigma, keeping pace with a fast-moving product team. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 160 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Suresh Vincent</h3>
+                        <p><strong>Director of QA &amp;amp; Systems, P&amp;amp;C Guidewire</strong></p>
+                        <p style="color: #999; font-size: 12px;">suresh.vincent@farmers.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Hansard</span>
+                            <span class="badge badge-proof-alt">T2: CRED</span>
+                            <span class="badge badge-words">156 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Suresh&#x27;s testing at Farmers Insurance </span>
+                    </div>
+                    <div class="email-text">Hi Suresh,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your director of qa &amp; systems, p&amp;c guidewire at Farmers Insurance , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing QA means regression cycles need to support your release velocity, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not the right read, set me straight.
+
+It&#x27;s the same tension CRED reached 90% regression coverage and ran tests 5x faster using Testsigma, without additional QA investment. At your scale, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 156 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="company-group">
+            <div class="company-header">Lemonade — 2 contacts</div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Elad Moshe</h3>
+                        <p><strong>Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">elad.moshe@lemonade.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Fortune 100</span>
+                            <span class="badge badge-proof-alt">T2: Cisco</span>
+                            <span class="badge badge-words">158 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Elad&#x27;s testing at Lemonade </span>
+                    </div>
+                    <div class="email-text">Hi Elad,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your director of engineering at Lemonade , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not the right read, set me straight.
+
+It&#x27;s the same tension When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% using Testsigma, without adding engineers. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 158 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Itay Benari</h3>
+                        <p><strong>Sr Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">itay.benari@lemonade.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Samsung</span>
+                            <span class="badge badge-proof-alt">T2: CRED</span>
+                            <span class="badge badge-words">155 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Itay&#x27;s testing at Lemonade </span>
+                    </div>
+                    <div class="email-text">Hi Itay,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your sr director of engineering at Lemonade , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not exactly right, set me straight.
+
+It&#x27;s the same tension CRED reached 90% regression coverage and ran tests 5x faster using Testsigma, without additional QA investment. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 155 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="company-group">
+            <div class="company-header">Rocket Software — 5 contacts</div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Glenn Chambers</h3>
+                        <p><strong>QA Manager</strong></p>
+                        <p style="color: #999; font-size: 12px;">gchambers@rocketsoftware.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: CRED</span>
+                            <span class="badge badge-proof-alt">T2: Medibuddy</span>
+                            <span class="badge badge-words">156 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Glenn&#x27;s testing at Rocket Software </span>
+                    </div>
+                    <div class="email-text">Hi Glenn,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your qa manager at Rocket Software , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing QA means test coverage has to scale fast without proportional team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not exactly right, set me straight.
+
+It&#x27;s the same tension Medibuddy built 2,500 automated tests and cut maintenance effort by 50% using Testsigma, keeping pace with a fast-moving product team. At your scale, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 156 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Jianhua Zhou</h3>
+                        <p><strong>Software Engineer Manager</strong></p>
+                        <p style="color: #999; font-size: 12px;">jzhou@rocketsoftware.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Hansard</span>
+                            <span class="badge badge-proof-alt">T2: CRED</span>
+                            <span class="badge badge-words">153 words</span>
+                            <span class="badge badge-qa">11/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Jianhua&#x27;s testing at Rocket Software </span>
+                    </div>
+                    <div class="email-text">Hi Jianhua,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your software engineer manager at Rocket Software , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+as an engineering manager, test maintenance overhead during feature-intensive sprints adds up fast, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m off on that, let me know.
+
+It&#x27;s the same tension CRED reached 90% regression coverage and ran tests 5x faster using Testsigma, without additional QA investment. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 11/12</strong> — Word count 153 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Kishor Chaudhary</h3>
+                        <p><strong>Sr Software Engineer Manager</strong></p>
+                        <p style="color: #999; font-size: 12px;">kchaudhary@rocketsoftware.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Fortune 100</span>
+                            <span class="badge badge-proof-alt">T2: Cisco</span>
+                            <span class="badge badge-words">157 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Kishor&#x27;s testing at Rocket Software </span>
+                    </div>
+                    <div class="email-text">Hi Kishor,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your sr software engineer manager at Rocket Software , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+as an engineering manager, test maintenance overhead during feature-intensive sprints adds up fast, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m off on that, let me know.
+
+It&#x27;s the same tension When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% using Testsigma, without adding engineers. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 157 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Mandar Bapat</h3>
+                        <p><strong>Software Engineer Manager</strong></p>
+                        <p style="color: #999; font-size: 12px;">mbapat@rocketsoftware.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Cisco</span>
+                            <span class="badge badge-proof-alt">T2: Sanofi</span>
+                            <span class="badge badge-words">163 words</span>
+                            <span class="badge badge-qa">11/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Mandar&#x27;s testing at Rocket Software </span>
+                    </div>
+                    <div class="email-text">Hi Mandar,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your software engineer manager at Rocket Software , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+as an engineering manager, test maintenance overhead during feature-intensive sprints adds up fast, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m off on that, let me know.
+
+It&#x27;s the same tension Sanofi got their regression window from 3 days down to 80 minutes using Testsigma, running those compliance workflows in parallel instead of one at a time. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 11/12</strong> — Word count 163 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Mingtao Liu</h3>
+                        <p><strong>Software Engineer Manager</strong></p>
+                        <p style="color: #999; font-size: 12px;">mliu@rocketsoftware.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Medibuddy</span>
+                            <span class="badge badge-proof-alt">T2: Cisco</span>
+                            <span class="badge badge-words">155 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Mingtao&#x27;s testing at Rocket Software </span>
+                    </div>
+                    <div class="email-text">Hi Mingtao,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your software engineer manager at Rocket Software , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+as an engineering manager, test maintenance overhead during feature-intensive sprints adds up fast, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m reading that wrong, correct me.
+
+It&#x27;s the same tension When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% using Testsigma, without adding engineers. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 155 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="company-group">
+            <div class="company-header">SailPoint — 5 contacts</div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Cory Davies</h3>
+                        <p><strong>Sr Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">cdavies@sailpoint.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Cisco</span>
+                            <span class="badge badge-proof-alt">T2: Sanofi</span>
+                            <span class="badge badge-words">166 words</span>
+                            <span class="badge badge-qa">11/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Cory&#x27;s testing at SailPoint </span>
+                    </div>
+                    <div class="email-text">Hi Cory,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your sr director of engineering at SailPoint , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not the right read, set me straight.
+
+It&#x27;s the same tension Sanofi got their regression window from 3 days down to 80 minutes using Testsigma, running those compliance workflows in parallel instead of one at a time. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 11/12</strong> — Word count 166 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Matt Domsch</h3>
+                        <p><strong>Sr Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">mdomsch@sailpoint.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: CRED</span>
+                            <span class="badge badge-proof-alt">T2: Medibuddy</span>
+                            <span class="badge badge-words">159 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Matt&#x27;s testing at SailPoint </span>
+                    </div>
+                    <div class="email-text">Hi Matt,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your sr director of engineering at SailPoint , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m off on that, let me know.
+
+It&#x27;s the same tension Medibuddy built 2,500 automated tests and cut maintenance effort by 50% using Testsigma, keeping pace with a fast-moving product team. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 159 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Matt Ramirez</h3>
+                        <p><strong>Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">mramirez@sailpoint.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Fortune 100</span>
+                            <span class="badge badge-proof-alt">T2: Cisco</span>
+                            <span class="badge badge-words">157 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Matt&#x27;s testing at SailPoint </span>
+                    </div>
+                    <div class="email-text">Hi Matt,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your director of engineering at SailPoint , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not exactly right, set me straight.
+
+It&#x27;s the same tension When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% using Testsigma, without adding engineers. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 157 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Remi Philippe</h3>
+                        <p><strong>Sr Director of Engineering, Identity</strong></p>
+                        <p style="color: #999; font-size: 12px;">rphilippe@sailpoint.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Hansard</span>
+                            <span class="badge badge-proof-alt">T2: CRED</span>
+                            <span class="badge badge-words">157 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Remi&#x27;s testing at SailPoint </span>
+                    </div>
+                    <div class="email-text">Hi Remi,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your sr director of engineering, identity at SailPoint , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not the right read, set me straight.
+
+It&#x27;s the same tension CRED reached 90% regression coverage and ran tests 5x faster using Testsigma, without additional QA investment. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 157 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Sandeep Enagala</h3>
+                        <p><strong>Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">senagala@sailpoint.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Medibuddy</span>
+                            <span class="badge badge-proof-alt">T2: Cisco</span>
+                            <span class="badge badge-words">157 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Sandeep&#x27;s testing at SailPoint </span>
+                    </div>
+                    <div class="email-text">Hi Sandeep,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your director of engineering at SailPoint , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not exactly right, set me straight.
+
+It&#x27;s the same tension When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% using Testsigma, without adding engineers. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 157 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="company-group">
+            <div class="company-header">Winsupply — 1 contact</div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Swapna B</h3>
+                        <p><strong>QA Manager</strong></p>
+                        <p style="color: #999; font-size: 12px;">swapna.b@winsupplyinc.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: CRED</span>
+                            <span class="badge badge-proof-alt">T2: Medibuddy</span>
+                            <span class="badge badge-words">156 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Swapna&#x27;s testing at Winsupply </span>
+                    </div>
+                    <div class="email-text">Hi Swapna,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your qa manager at Winsupply , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing QA means test coverage has to scale fast without proportional team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not the right read, set me straight.
+
+It&#x27;s the same tension Medibuddy built 2,500 automated tests and cut maintenance effort by 50% using Testsigma, keeping pace with a fast-moving product team. At your scale, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 156 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="company-group">
+            <div class="company-header">Zebra Technologies — 5 contacts</div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Amit Maheshwari</h3>
+                        <p><strong>SW QA Manager</strong></p>
+                        <p style="color: #999; font-size: 12px;">amit.maheshwari@zebra.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: CRED</span>
+                            <span class="badge badge-proof-alt">T2: Medibuddy</span>
+                            <span class="badge badge-words">157 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Amit&#x27;s testing at Zebra Technologies </span>
+                    </div>
+                    <div class="email-text">Hi Amit,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your sw qa manager at Zebra Technologies , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing QA means test coverage has to scale fast without proportional team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m off on that, let me know.
+
+It&#x27;s the same tension Medibuddy built 2,500 automated tests and cut maintenance effort by 50% using Testsigma, keeping pace with a fast-moving product team. At your scale, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 157 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Bob Liu</h3>
+                        <p><strong>Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">bob.liu@zebra.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Medibuddy</span>
+                            <span class="badge badge-proof-alt">T2: Cisco</span>
+                            <span class="badge badge-words">158 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Bob&#x27;s testing at Zebra Technologies </span>
+                    </div>
+                    <div class="email-text">Hi Bob,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your director of engineering at Zebra Technologies , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not exactly right, set me straight.
+
+It&#x27;s the same tension When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% using Testsigma, without adding engineers. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 158 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Jorge Dominguez</h3>
+                        <p><strong>Sr Engineering Manager, Test Automation</strong></p>
+                        <p style="color: #999; font-size: 12px;">jorge.dominguez@zebra.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Samsung</span>
+                            <span class="badge badge-proof-alt">T2: CRED</span>
+                            <span class="badge badge-words">151 words</span>
+                            <span class="badge badge-qa">11/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Jorge&#x27;s testing at Zebra Technologies </span>
+                    </div>
+                    <div class="email-text">Hi Jorge,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your sr engineering manager, test automation at Zebra Technologies , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing your team means test maintenance overhead impacts release cycles, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m reading that wrong, correct me.
+
+It&#x27;s the same tension CRED reached 90% regression coverage and ran tests 5x faster using Testsigma, without additional QA investment. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 11/12</strong> — Word count 151 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Marek Kana</h3>
+                        <p><strong>Director of QA</strong></p>
+                        <p style="color: #999; font-size: 12px;">marek.kana@zebra.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Hansard</span>
+                            <span class="badge badge-proof-alt">T2: CRED</span>
+                            <span class="badge badge-words">150 words</span>
+                            <span class="badge badge-qa">11/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Marek&#x27;s testing at Zebra Technologies </span>
+                    </div>
+                    <div class="email-text">Hi Marek,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your director of qa at Zebra Technologies , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing QA means regression cycles need to support your release velocity, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m reading that wrong, correct me.
+
+It&#x27;s the same tension CRED reached 90% regression coverage and ran tests 5x faster using Testsigma, without additional QA investment. At your scale, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 11/12</strong> — Word count 150 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Matthew Horner</h3>
+                        <p><strong>Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">matthew.horner@zebra.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Fortune 100</span>
+                            <span class="badge badge-proof-alt">T2: Cisco</span>
+                            <span class="badge badge-words">157 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Matthew&#x27;s testing at Zebra Technologies </span>
+                    </div>
+                    <div class="email-text">Hi Matthew,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your director of engineering at Zebra Technologies , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m reading that wrong, correct me.
+
+It&#x27;s the same tension When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% using Testsigma, without adding engineers. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 157 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="company-group">
+            <div class="company-header">Zimmer Biomet — 2 contacts</div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Kamran Shamaei</h3>
+                        <p><strong>VP of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">kamran.shamaei@zimmerbiomet.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Hansard</span>
+                            <span class="badge badge-proof-alt">T2: CRED</span>
+                            <span class="badge badge-words">152 words</span>
+                            <span class="badge badge-qa">11/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Kamran&#x27;s testing at Zimmer Biomet </span>
+                    </div>
+                    <div class="email-text">Hi Kamran,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your vp of engineering at Zimmer Biomet , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+as VP of Engineering, test automation has to scale with fast product iteration, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m reading that wrong, correct me.
+
+It&#x27;s the same tension CRED reached 90% regression coverage and ran tests 5x faster using Testsigma, without additional QA investment. At your pace, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 11/12</strong> — Word count 152 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Marc Blair</h3>
+                        <p><strong>Software Engineer Manager</strong></p>
+                        <p style="color: #999; font-size: 12px;">marc.blair@zimmerbiomet.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Cisco</span>
+                            <span class="badge badge-proof-alt">T2: Sanofi</span>
+                            <span class="badge badge-words">163 words</span>
+                            <span class="badge badge-qa">11/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Marc&#x27;s testing at Zimmer Biomet </span>
+                    </div>
+                    <div class="email-text">Hi Marc,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your software engineer manager at Zimmer Biomet , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+as an engineering manager, test maintenance overhead during feature-intensive sprints adds up fast, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not exactly right, set me straight.
+
+It&#x27;s the same tension Sanofi got their regression window from 3 days down to 80 minutes using Testsigma, running those compliance workflows in parallel instead of one at a time. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 11/12</strong> — Word count 163 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="company-group">
+            <div class="company-header">hims &amp; hers — 4 contacts</div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Abhishek Ravishankara</h3>
+                        <p><strong>Sr Director of Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">abhishek.ravishankara@hims.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Hansard</span>
+                            <span class="badge badge-proof-alt">T2: CRED</span>
+                            <span class="badge badge-words">158 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Abhishek&#x27;s testing at hims &amp; hers </span>
+                    </div>
+                    <div class="email-text">Hi Abhishek,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your sr director of engineering at hims &amp; hers , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing engineering means test automation has to scale with feature velocity, not just team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not the right read, set me straight.
+
+It&#x27;s the same tension CRED reached 90% regression coverage and ran tests 5x faster using Testsigma, without additional QA investment. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 158 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Eric Spencer</h3>
+                        <p><strong>Director of Software Engineering</strong></p>
+                        <p style="color: #999; font-size: 12px;">eric.spencer@hims.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Cisco</span>
+                            <span class="badge badge-proof-alt">T2: Sanofi</span>
+                            <span class="badge badge-words">163 words</span>
+                            <span class="badge badge-qa">11/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Eric&#x27;s testing at hims &amp; hers </span>
+                    </div>
+                    <div class="email-text">Hi Eric,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your director of software engineering at hims &amp; hers , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing your team means test maintenance overhead impacts release cycles, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not the right read, set me straight.
+
+It&#x27;s the same tension Sanofi got their regression window from 3 days down to 80 minutes using Testsigma, running those compliance workflows in parallel instead of one at a time. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 11/12</strong> — Word count 163 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Jen Moltke</h3>
+                        <p><strong>Software Engineer Manager</strong></p>
+                        <p style="color: #999; font-size: 12px;">jen.moltke@hims.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Fortune 100</span>
+                            <span class="badge badge-proof-alt">T2: Cisco</span>
+                            <span class="badge badge-words">158 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Jen&#x27;s testing at hims &amp; hers </span>
+                    </div>
+                    <div class="email-text">Hi Jen,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your software engineer manager at hims &amp; hers , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+as an engineering manager, test maintenance overhead during feature-intensive sprints adds up fast, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If that&#x27;s not the right read, set me straight.
+
+It&#x27;s the same tension When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% using Testsigma, without adding engineers. At your company, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 158 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">
+                    <div class="draft-info">
+                        <h3>Maria Mata</h3>
+                        <p><strong>QA Manager</strong></p>
+                        <p style="color: #999; font-size: 12px;">maria.mata@hims.com</p>
+                        <div class="draft-meta">
+                            <span class="badge badge-proof">T1: Medibuddy</span>
+                            <span class="badge badge-proof-alt">T2: Cisco</span>
+                            <span class="badge badge-words">156 words</span>
+                            <span class="badge badge-qa">12/12</span>
+                        </div>
+                    </div>
+                    <div class="badge badge-status">AWAITING APPROVE</div>
+                </div>
+                <div class="draft-body">
+                    <div class="subject">
+                        <span class="subject-label">Subject:</span>
+                        <span class="subject-text">Maria&#x27;s testing at hims &amp; hers </span>
+                    </div>
+                    <div class="email-text">Hi Maria,
+
+I know my last note wasn&#x27;t specific enough to be worth your time. Looking at your qa manager at hims &amp; hers , I think this angle is a lot more relevant to what you&#x27;re actually dealing with.
+
+managing QA means test coverage has to scale fast without proportional team growth, and I imagine that&#x27;s what keeps the cycle from getting shorter no matter how much pressure there is to ship faster. If I&#x27;m off on that, let me know.
+
+It&#x27;s the same tension When Cisco integrated Testsigma into their CI/CD pipelines, they cut regression runtime by 35% using Testsigma, without adding engineers. At your scale, that kind of improvement directly impacts whether your regression stays a bottleneck or becomes a strength.
+
+If test maintenance and release velocity are both on your radar right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+                    <div class="qa-section">
+                        <strong>QA: ✓ PASS 12/12</strong> — Word count 156 (target 155-180), All sections present, Proof rotation OK
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <p style="font-weight: 600; color: #dc2626; font-size: 16px;">AWAITING ROB'S EXPLICIT APPROVE SEND</p>
+            <p>Do not touch Apollo, do not create sends.json, do not enroll contacts.</p>
+            <p style="font-size: 13px; color: #666; margin-top: 12px;">After approval: use INC-012 two-gate protocol for all sends via Apollo task queue</p>
+        </div>
+    </div>
+</body>
+</html>

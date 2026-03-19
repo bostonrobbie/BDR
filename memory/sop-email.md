@@ -11,6 +11,8 @@
 
 When email is used as Touch 2 in the LinkedIn Outbound sequence (Day 5 after T1 InMail).
 
+**CRITICAL — Reply Threading (INC-014, Mar 19 2026):** All T2 emails MUST be sent as replies to the T1 thread, NOT as new standalone emails. In the Apollo sequence builder, Step 2 must have "Reply to previous thread" checked. This was discovered unchecked Mar 19 and fixed. Before any T2 send session, verify this setting is still correct. Subject lines for T2 tasks will auto-inherit from the T1 thread with "RE:" prefix when reply mode is active.
+
 ### Locked Formula: Variant A (approved Mar 9, 2026)
 
 The T2 email follows a 5-part structure. Each part must be executed in order. The formula must be INVISIBLE — it should read as a human wrote one cohesive message, not as a fill-in-the-blank template.

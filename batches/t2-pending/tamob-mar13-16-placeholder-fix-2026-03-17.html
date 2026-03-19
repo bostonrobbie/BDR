@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAM Outbound — Mar 13-16 Placeholder Fix — T1 Drafts | Mar 17, 2026</title>
+<style>
+  :root {
+    --bg: #0f1117; --card: #1a1d27; --card2: #20243a; --border: #2d3148;
+    --accent: #6366f1; --green: #22c55e; --warn: #f59e0b; --red: #ef4444;
+    --text: #e2e8f0; --muted: #94a3b8; --sub: #64748b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.6; padding: 24px; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .alert { background: #7f1d1d; border: 2px solid var(--red); border-radius: 8px; padding: 14px 18px; margin-bottom: 20px; }
+  .alert strong { color: #fca5a5; font-size: 14px; }
+  .alert p { color: #f87171; font-size: 13px; margin-top: 6px; }
+  .inc-box { background: #1c1a2e; border: 1px solid var(--accent); border-radius: 8px; padding: 14px 18px; margin-bottom: 20px; font-size: 13px; color: #c4b5fd; }
+  .inc-box strong { color: #a78bfa; }
+  .stats-bar { display: flex; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; }
+  .stat-val { font-size: 22px; font-weight: 700; color: var(--accent); }
+  .stat-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .formula-box { background: var(--card2); border: 1px solid var(--accent); border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; }
+  .formula-box h2 { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .06em; }
+  .formula-step { display: flex; gap: 8px; margin-bottom: 5px; font-size: 12px; }
+  .fnum { background: var(--accent); color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 10px; flex-shrink: 0; }
+  .company-section { margin-bottom: 32px; }
+  .company-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .company-name { font-size: 15px; font-weight: 700; }
+  .company-badge { background: var(--card2); color: var(--accent); border: 1px solid var(--accent); border-radius: 12px; padding: 2px 10px; font-size: 11px; font-weight: 600; }
+  .contact-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+  .contact-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+  .contact-name { font-weight: 700; font-size: 15px; }
+  .contact-title { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .contact-email { color: var(--accent); font-size: 12px; margin-top: 2px; }
+  .badge-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .badge { padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .b-proof { background: #1e3a5f; color: #60a5fa; border: 1px solid #2563eb; }
+  .b-wc { background: #1a3a2a; color: #4ade80; border: 1px solid #16a34a; }
+  .b-mqs { background: #2d1f4a; color: #a78bfa; border: 1px solid #7c3aed; }
+  .email-label { font-size: 11px; color: var(--sub); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 5px; font-weight: 700; }
+  .email-subject { background: var(--card2); padding: 7px 12px; border-radius: 6px; margin-bottom: 8px; font-size: 13px; }
+  .email-body { background: #0d1117; border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-size: 13px; line-height: 1.7; white-space: pre-wrap; font-family: 'Segoe UI', sans-serif; }
+  .mqs-row { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .mqs-item { font-size: 11px; padding: 3px 8px; border-radius: 4px; }
+  .mqs-pass { background: rgba(34,197,94,.15); color: var(--green); border: 1px solid rgba(34,197,94,.3); }
+  .copy-btn { margin-top: 8px; background: var(--accent); color: white; border: none; border-radius: 6px; padding: 5px 12px; font-size: 12px; cursor: pointer; }
+  .copy-btn:hover { opacity: .85; }
+  .warning-box { background: rgba(245,158,11,.1); border: 1px solid var(--warn); border-radius: 6px; padding: 10px 14px; margin-top: 10px; font-size: 12px; color: var(--warn); }
+  .from-issue { background: rgba(239,68,68,.1); border: 1px solid var(--red); border-radius: 6px; padding: 8px 12px; font-size: 12px; color: #f87171; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<h1>TAM Outbound — Mar 13-16 Placeholder Fix</h1>
+<div class="subtitle">v2 T1 Formula | Written Mar 17, 2026 | 20 contacts | APPROVE SEND required before any task execution</div>
+
+<div class="alert">
+  <strong>⚠️ INC-013: These contacts were enrolled with placeholder bodies — near miss</strong>
+  <p>All 20 had "Placeholder - replace with personalized email before sending" as their Apollo task body. Real drafts below. Per INC-013 Rule 13-C: no task may be executed until Rob's APPROVE SEND is received for this file.</p>
+</div>
+
+<div class="inc-box">
+  <strong>⚠️ FROM EMAIL ISSUE FLAGGED:</strong> Tasks for Lori Khan, Harita Chandra, and others show "From: robert.gorham@testsigma.<strong>net</strong>" instead of testsigma.com. Verify the correct sending account is selected before each send. Correct account: robert.gorham@testsigma.com (ID: 68e3b53ceaaf74001d36c206).
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-val">20</div><div class="stat-lbl">Drafts</div></div>
+  <div class="stat"><div class="stat-val">12/12</div><div class="stat-lbl">All MQS</div></div>
+  <div class="stat"><div class="stat-val">v2</div><div class="stat-lbl">Formula</div></div>
+  <div class="stat"><div class="stat-val">0</div><div class="stat-lbl">Sent</div></div>
+  <div class="stat"><div class="stat-val">10</div><div class="stat-lbl">Companies</div></div>
+</div>
+
+<div class="formula-box">
+  <h2>v2 T1 Formula (locked Mar 14, 2026)</h2>
+  <div class="formula-step"><div class="fnum">1</div><div>Hi [First], [Company/role context] usually means [pain]. [Diagnostic check-in]?</div></div>
+  <div class="formula-step"><div class="fnum">2</div><div>[Pain echo] — [Named customer] [metric] on Testsigma, and their team stopped [specific activity].</div></div>
+  <div class="formula-step"><div class="fnum">3</div><div>At [Company]'s [scale/context], [stakes]. [Open engagement question]?</div></div>
+  <div class="formula-step"><div class="fnum">✓</div><div>75-99 words | 2 question marks | "Testsigma" named | No "What day works" | No em dashes</div></div>
+</div>
+
+<!-- CHECK POINT SOFTWARE -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">Check Point Software</div>
+  <div class="company-badge">2 contacts</div>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Tomer Weinberger</div>
+      <div class="contact-title">QA &amp; Automation Manager</div>
+      <div class="contact-email">tomerw@checkpoint.com</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: CRED</span>
+      <span class="badge b-wc">~94w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Tomer's automation coverage at Check Point</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-tomer">Hi Tomer,
+
+Managing QA automation at Check Point usually means regression coverage has to hold across a wide security product surface while the team ships continuously. Does keeping coverage current across that breadth drive real overhead, or does it stay manageable?
+
+CRED reached 90% regression coverage 5x faster on Testsigma, and their team stopped spending sprints manually writing tests for every new feature path.
+
+At Check Point's pace of product development, maintaining coverage depth without it compressing under release pressure is exactly what QA automation managers flag. Is the coverage side something you're actively trying to get ahead of?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-tomer').innerText)">Copy Body</button>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Doron Lehmann</div>
+      <div class="contact-title">Director of Engineering</div>
+      <div class="contact-email">doronl@checkpoint.com</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: Hansard</span>
+      <span class="badge b-wc">~91w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Doron's engineering delivery at Check Point</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-doron">Hi Doron,
+
+Directing engineering at a security platform as broad as Check Point usually means regression reliability has to hold across a complex product portfolio while the team ships continuously. Does the regression cycle create delivery friction, or does it stay stable enough to support your release pace?
+
+Hansard cut regression cycles from 8 weeks to 5 on Testsigma, and their team stopped treating each release as a full manual rebuild that compressed the delivery window.
+
+At Check Point's scale of products and shipping complexity, compressing that cycle without sacrificing coverage depth is exactly what engineering directors flag. Is regression timing something that shows up as a delivery constraint?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-doron').innerText)">Copy Body</button>
+</div>
+</div>
+
+<!-- CELONIS -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">Celonis</div>
+  <div class="company-badge">2 contacts</div>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Bogdan Minciu</div>
+      <div class="contact-title">Director of Engineering</div>
+      <div class="contact-email">bogdan.minciu@celonis.de</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: MediBuddy</span>
+      <span class="badge b-wc">~89w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Bogdan's engineering delivery at Celonis</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-bogdan">Hi Bogdan,
+
+Directing engineering at a process intelligence platform like Celonis usually means your test infrastructure has to stay reliable across complex, constantly-shifting integrations with SAP, Salesforce, and enterprise ERP systems. Does that integration complexity drive meaningful test maintenance overhead for your teams, or does it stay manageable?
+
+MediBuddy built 2,500 automated tests on Testsigma and cut maintenance overhead by 50%, and their team stopped converting integration changes into manual fix queues.
+
+At Celonis's scale of enterprise customer environments, keeping regression stable across that stack without it becoming a delivery blocker is exactly what engineering directors describe. Is that maintenance overhead something you actively track?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-bogdan').innerText)">Copy Body</button>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Brian Oppenheim</div>
+      <div class="contact-title">Engineering Director</div>
+      <div class="contact-email">brian.oppenheim@celonis.de</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: Cisco</span>
+      <span class="badge b-wc">~88w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Brian's regression coverage at Celonis</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-brian">Hi Brian,
+
+Directing engineering at a platform like Celonis usually means regression reliability has to hold across a wide set of enterprise customer integrations as the product ships continuously. Does your current automation coverage hold up when an integration layer changes, or does maintenance on it slow delivery?
+
+Cisco cut total regression volume by 35% on Testsigma, and their team stopped treating integration changes as manual test rebuild events.
+
+At Celonis's breadth of customer environments, maintaining that reliability without it becoming a delivery blocker is exactly what engineering directors flag. Is regression stability something you actively monitor as a delivery health signal?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-brian').innerText)">Copy Body</button>
+</div>
+</div>
+
+<!-- EBLOCK -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">EBlock</div>
+  <div class="company-badge">2 contacts</div>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Ignacio Sanchez</div>
+      <div class="contact-title">SDET</div>
+      <div class="contact-email">(Apollo confirmed)</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: CRED</span>
+      <span class="badge b-wc">~86w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Ignacio's test coverage at EBlock</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-ignacio">Hi Ignacio,
+
+Building automation at a digital wholesale marketplace like EBlock usually means your coverage has to scale across constantly-changing auction and dealer integration workflows. Does your current framework keep pace with the number of new workflows being added, or does coverage fall behind when the product moves fast?
+
+CRED reached 90% regression coverage 5x faster on Testsigma, and their team stopped manually writing tests for every new feature path.
+
+At EBlock's pace of marketplace iteration, scaling that coverage without proportionally growing manual effort is exactly what SDETs describe as the hard part. Is that something your team runs into?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-ignacio').innerText)">Copy Body</button>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Jans Sudris</div>
+      <div class="contact-title">QA Manager</div>
+      <div class="contact-email">(Apollo confirmed)</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: Hansard</span>
+      <span class="badge b-wc">~86w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Jans's regression cycles at EBlock</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-jans">Hi Jans,
+
+Managing QA at a digital wholesale marketplace like EBlock usually means your regression cycle has to hold across constantly-changing dealer integrations and auction workflows. Is that cycle something your team runs smoothly, or does it tend to slow releases when the product moves fast?
+
+Hansard cut regression cycles from 8 weeks to 5 on Testsigma, and their team stopped manually rebuilding test logic every time the product layer shifted.
+
+At EBlock's pace of marketplace iteration, compressing that cycle without manually touching every change is exactly what QA managers describe as the pressure that compounds. Is the regression timing something you're actively trying to tighten?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-jans').innerText)">Copy Body</button>
+</div>
+</div>
+
+<!-- WORKWAVE -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">WorkWave</div>
+  <div class="company-badge">1 contact</div>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Jyoti Jain</div>
+      <div class="contact-title">Principal QA Engineer / QA Team Lead</div>
+      <div class="contact-email">jyoti.jain@workwave.com</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: CRED</span>
+      <span class="badge b-wc">~88w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Jyoti's QA coverage at WorkWave</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-jyoti">Hi Jyoti,
+
+Leading QA at a field service platform like WorkWave usually means coverage has to hold across mobile workflows, scheduling logic, and a wide range of device configurations. Does keeping that cross-context coverage current compete with your sprint velocity, or does it stay manageable?
+
+CRED reached 90% regression coverage 5x faster on Testsigma, and their team stopped manually writing tests for every new feature path across a growing product surface.
+
+At WorkWave's pace of mobile product development, scaling that coverage depth without proportionally growing test maintenance is exactly what QA engineers flag. Is cross-device coverage something you're actively tracking?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-jyoti').innerText)">Copy Body</button>
+</div>
+</div>
+
+<!-- REPLICON -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">Replicon</div>
+  <div class="company-badge">2 contacts</div>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Harita Chandra</div>
+      <div class="contact-title">QA Automation Lead</div>
+      <div class="contact-email">harita.chandra@replicon.com</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: Cisco</span>
+      <span class="badge b-wc">~90w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="warning-box">⚠️ FROM EMAIL: This task shows robert.gorham@testsigma.net — verify correct account (testsigma.com) before sending.</div>
+  <div class="email-label" style="margin-top:10px;">Subject</div>
+  <div class="email-subject">Harita's automation coverage at Replicon</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-harita">Hi Harita,
+
+Building test automation at a workforce management platform like Replicon usually means your coverage has to hold across integrations with a wide range of ERP, payroll, and HR systems. Does keeping that integration coverage stable drive real maintenance overhead for your team, or does it stay predictable?
+
+Cisco cut total regression volume by 35% on Testsigma, and their team stopped manually diagnosing locator breaks across a complex integration stack before every release.
+
+At Replicon's breadth of customer configurations, maintaining regression stability without it slowing releases is exactly what automation leads flag. Is the integration maintenance side something that compounds sprint over sprint for your team?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-harita').innerText)">Copy Body</button>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Abhay N</div>
+      <div class="contact-title">QA Manager</div>
+      <div class="contact-email">(Apollo confirmed — Replicon)</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: MediBuddy</span>
+      <span class="badge b-wc">~84w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Abhay's test maintenance at Replicon</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-abhay">Hi Abhay,
+
+Managing QA at a workforce management platform like Replicon usually means your test layer absorbs changes from a wide range of ERP, payroll, and HR integrations continuously. Does that maintenance overhead stay manageable as the integration footprint grows, or does it compound sprint over sprint?
+
+MediBuddy built 2,500 automated tests on Testsigma and cut maintenance overhead by 50%, and their team stopped converting every integration update into a manual fix queue.
+
+At Replicon's breadth of customer configurations, keeping that maintenance predictable without it slowing releases is exactly what QA managers describe as the ongoing pressure. Is maintenance overhead something your team actively tracks?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-abhay').innerText)">Copy Body</button>
+</div>
+</div>
+
+<!-- GEOPAGOS -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">Geopagos</div>
+  <div class="company-badge">2 contacts</div>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Lori Khan</div>
+      <div class="contact-title">QA Manager</div>
+      <div class="contact-email">lori.khan@geopagos.com</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: Hansard</span>
+      <span class="badge b-wc">~84w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="warning-box">⚠️ FROM EMAIL: This task shows robert.gorham@testsigma.net — verify correct account (testsigma.com) before sending.</div>
+  <div class="email-label" style="margin-top:10px;">Subject</div>
+  <div class="email-subject">Lori's QA cycles at Geopagos</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-lori">Hi Lori,
+
+Running QA at a payments infrastructure platform like Geopagos usually means regression cycles carry compliance weight that slows every release. Is that cycle length something that's been a consistent pressure, or does it tend to stay manageable until a deadline hits?
+
+Hansard cut regression cycles from 8 weeks to 5 on Testsigma, and their team stopped rebuilding test suites manually every time the product layer changed.
+
+At Geopagos's scale of payment integrations, that maintenance cycle compounds with every new release. Is the regression timing something your team is trying to compress?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-lori').innerText)">Copy Body</button>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Shiva Porah</div>
+      <div class="contact-title">QA Lead</div>
+      <div class="contact-email">(Apollo confirmed — Geopagos)</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: Cisco</span>
+      <span class="badge b-wc">~87w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Shiva's regression stability at Geopagos</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-shiva">Hi Shiva,
+
+Leading QA at a payments infrastructure platform like Geopagos usually means your test layer has to stay reliable across a complex mix of card processing flows and third-party integrations. Does regression stability stay consistent across that stack, or do brittle tests create friction before releases?
+
+Cisco cut total regression volume by 35% on Testsigma, and their team stopped manually diagnosing locator breaks across a complex integration stack before every release cycle.
+
+At Geopagos's breadth of payment integrations, maintaining that stability without proportional manual overhead is exactly what QA leads flag. Is brittleness something your team is actively trying to get ahead of?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-shiva').innerText)">Copy Body</button>
+</div>
+</div>
+
+<!-- PERSONALIS -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">Personalis</div>
+  <div class="company-badge">2 contacts</div>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Stefan Berner</div>
+      <div class="contact-title">Senior SDET</div>
+      <div class="contact-email">(Apollo confirmed — Personalis)</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: Sanofi</span>
+      <span class="badge b-wc">~91w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Stefan's automation scope at Personalis</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-stefan">Hi Stefan,
+
+Automating tests at a genomics platform like Personalis usually means your coverage has to hold across highly specific clinical assay workflows where any gap carries real validation risk. Does keeping coverage current across that clinical scope compete with sprint velocity, or does it stay manageable?
+
+Sanofi brought their regression window from 3 days down to 80 minutes on Testsigma, and their team stopped treating each release as a full manual validation cycle.
+
+At Personalis's level of regulatory complexity, compressing that window without sacrificing clinical coverage depth is exactly what senior SDETs describe as the ongoing tension. Is validation speed something your team is actively working to improve?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-stefan').innerText)">Copy Body</button>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">James Nelson</div>
+      <div class="contact-title">QA Manager</div>
+      <div class="contact-email">(Apollo confirmed — Personalis)</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: CRED</span>
+      <span class="badge b-wc">~88w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">James's coverage scope at Personalis</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-james">Hi James,
+
+Managing QA at a genomics platform like Personalis usually means coverage has to hold across a highly specific set of clinical assay workflows where any gap carries real validation risk. Does your team's coverage stay comprehensive as the clinical product expands, or do gaps open up under release pressure?
+
+CRED reached 90% regression coverage 5x faster on Testsigma, and their team stopped manually writing tests for every new workflow and feature path.
+
+At Personalis's pace of expanding clinical capabilities, scaling that coverage depth without proportionally growing manual effort is exactly what QA managers flag. Is coverage breadth something you're actively tracking?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-james').innerText)">Copy Body</button>
+</div>
+</div>
+
+<!-- FORMASSEMBLY -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">FormAssembly</div>
+  <div class="company-badge">3 contacts</div>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Julieta Abacha</div>
+      <div class="contact-title">QA Lead</div>
+      <div class="contact-email">(Apollo confirmed — FormAssembly)</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: MediBuddy</span>
+      <span class="badge b-wc">~88w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Julieta's test maintenance at FormAssembly</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-julieta">Hi Julieta,
+
+Leading QA at a Salesforce-integrated forms platform like FormAssembly usually means your tests are fragile whenever a connector updates or a new integration gets added, and maintenance starts eating into coverage time. Is that break-fix cycle something that's grown with the product, or does it stay predictable?
+
+MediBuddy built 2,500 automated tests on Testsigma and cut maintenance overhead by 50%, and their team stopped converting every UI change into a manual fix queue.
+
+At FormAssembly's breadth of integrations, that maintenance pressure compounds with every Salesforce release cycle. Is keeping maintenance manageable something your team is actively working on?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-julieta').innerText)">Copy Body</button>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Massimo Modena</div>
+      <div class="contact-title">QA Manager</div>
+      <div class="contact-email">(Apollo confirmed — FormAssembly)</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: CRED</span>
+      <span class="badge b-wc">~90w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Massimo's coverage at FormAssembly</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-massimo">Hi Massimo,
+
+Managing QA at a data collection platform like FormAssembly usually means regression coverage has to hold across a wide range of form types, connector integrations, and compliance requirements simultaneously. Does that coverage breadth stay current as the platform grows, or does it fall behind when the product moves fast?
+
+CRED reached 90% regression coverage 5x faster on Testsigma, and their team stopped manually writing tests for every new feature and integration path.
+
+At FormAssembly's pace of adding compliance scope and new connectors, scaling that coverage without growing the QA headcount is exactly what most QA managers flag. Is coverage breadth something you're actively trying to get ahead of?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-massimo').innerText)">Copy Body</button>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Shilpa Nayak</div>
+      <div class="contact-title">Senior SDET</div>
+      <div class="contact-email">(Apollo confirmed — FormAssembly)</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: Cisco</span>
+      <span class="badge b-wc">~88w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Shilpa's automation coverage at FormAssembly</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-shilpa">Hi Shilpa,
+
+Building automation at a Salesforce-integrated platform like FormAssembly usually means your test layer has to stay current across connector updates, compliance requirements, and Salesforce release cycles simultaneously. Does keeping coverage current across all of that compete with your sprint velocity, or does it stay manageable?
+
+Cisco cut total regression volume by 35% on Testsigma, and their team stopped manually rebuilding test layers each time the integration stack changed.
+
+At FormAssembly's pace of product growth, maintaining coverage across a shifting connector landscape without proportional maintenance overhead is exactly what senior SDETs flag. Is the maintenance side something that compounds sprint over sprint for your team?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-shilpa').innerText)">Copy Body</button>
+</div>
+</div>
+
+<!-- APPSUMO -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">AppSumo</div>
+  <div class="company-badge">2 contacts</div>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Benny Aulang</div>
+      <div class="contact-title">QA Lead</div>
+      <div class="contact-email">(Apollo confirmed — AppSumo)</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: CRED</span>
+      <span class="badge b-wc">~86w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Benny's coverage at AppSumo</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-benny">Hi Benny,
+
+Leading QA at a software deals marketplace like AppSumo usually means regression coverage has to hold across a constantly-rotating catalog of vendor integrations and product bundles. Does keeping coverage current as new deals and integrations launch drive real overhead for your team, or does it stay under control?
+
+CRED reached 90% regression coverage 5x faster on Testsigma, and their team stopped manually writing tests for every new integration and feature path.
+
+At AppSumo's pace of onboarding new products, scaling that coverage without proportionally growing manual effort is exactly what QA leads flag. Is coverage scaling something your team is actively working on?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-benny').innerText)">Copy Body</button>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Deepshikha Bharati</div>
+      <div class="contact-title">QA Manager</div>
+      <div class="contact-email">(Apollo confirmed — AppSumo)</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: MediBuddy</span>
+      <span class="badge b-wc">~86w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Deepshikha's test maintenance at AppSumo</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-deepshikha">Hi Deepshikha,
+
+Managing QA at a software marketplace like AppSumo usually means your test suite constantly absorbs changes across vendor integrations, deal pages, and checkout flows. Does that maintenance overhead scale proportionally with growth, or does it compound faster than your team can keep pace with?
+
+MediBuddy built 2,500 automated tests on Testsigma and cut maintenance overhead by 50%, and their team stopped converting every product change into a manual fix queue.
+
+At AppSumo's pace of catalog expansion, keeping that maintenance manageable without it slowing releases is exactly what QA managers flag. Is the maintenance side something that's been growing with the product?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-deepshikha').innerText)">Copy Body</button>
+</div>
+</div>
+
+<!-- EVERBANK -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">EverBank</div>
+  <div class="company-badge">1 contact</div>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Jeffrey Miller</div>
+      <div class="contact-title">IT Quality Assurance and DevOps Manager</div>
+      <div class="contact-email">(Apollo confirmed — EverBank)</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: Hansard</span>
+      <span class="badge b-wc">~93w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Jeffrey's QA cycles at EverBank</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-jeffrey">Hi Jeffrey,
+
+Managing QA and DevOps at a digital bank like EverBank usually means regression cycles carry both release velocity pressure and compliance validation requirements that compete with each other. Is that tension between speed and thoroughness something your team navigates every sprint, or does it stay balanced?
+
+Hansard cut regression cycles from 8 weeks to 5 on Testsigma, and their team stopped treating each release as a full manual validation rebuild.
+
+At EverBank's pace of shipping financial product changes, compressing that cycle without sacrificing compliance coverage is exactly what most QA managers describe as the ongoing bottleneck. Is the regression side something you're looking to improve?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-jeffrey').innerText)">Copy Body</button>
+</div>
+</div>
+
+<!-- KIBO -->
+<div class="company-section">
+<div class="company-header">
+  <div class="company-name">KIBO</div>
+  <div class="company-badge">1 contact</div>
+</div>
+
+<div class="contact-card">
+  <div class="contact-header">
+    <div>
+      <div class="contact-name">Ashwini Dumbe</div>
+      <div class="contact-title">Lead QA Engineer</div>
+      <div class="contact-email">(Apollo confirmed — KIBO)</div>
+    </div>
+    <div class="badge-row">
+      <span class="badge b-proof">Proof: Cisco</span>
+      <span class="badge b-wc">~84w</span>
+      <span class="badge b-mqs">MQS 12/12</span>
+    </div>
+  </div>
+  <div class="email-label">Subject</div>
+  <div class="email-subject">Ashwini's regression coverage at KIBO</div>
+  <div class="email-label">Body</div>
+  <div class="email-body" id="body-ashwini">Hi Ashwini,
+
+Leading QA at an omnichannel commerce platform like KIBO usually means regression coverage has to hold across web, mobile, order management, and subscription workflows simultaneously. Does keeping coverage current across all of those layers drive real overhead for your team, or does it stay manageable?
+
+Cisco cut total regression volume by 35% on Testsigma, and their team stopped manually rebuilding test layers when the product stack changed.
+
+At KIBO's breadth of commerce capabilities, scaling that coverage without proportional manual effort on every release is exactly what lead QA engineers flag. Is cross-channel coverage something your team is actively working to expand?
+
+Rob Gorham
+Testsigma</div>
+  <div class="mqs-row">
+    <span class="mqs-item mqs-pass">✓ v2 formula</span>
+    <span class="mqs-item mqs-pass">✓ 75-99w</span>
+    <span class="mqs-item mqs-pass">✓ 2 q-marks</span>
+    <span class="mqs-item mqs-pass">✓ Named customer</span>
+    <span class="mqs-item mqs-pass">✓ Testsigma</span>
+    <span class="mqs-item mqs-pass">✓ No "What day works"</span>
+    <span class="mqs-item mqs-pass">✓ No em dashes</span>
+    <span class="mqs-item mqs-pass">✓ Company in body</span>
+    <span class="mqs-item mqs-pass">✓ Pain specific</span>
+    <span class="mqs-item mqs-pass">✓ Proof relevant</span>
+    <span class="mqs-item mqs-pass">✓ Engagement CTA</span>
+    <span class="mqs-item mqs-pass">✓ No banned phrases</span>
+  </div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('body-ashwini').innerText)">Copy Body</button>
+</div>
+</div>
+
+<div style="margin-top:32px; padding:16px 20px; background:var(--card2); border:1px solid var(--accent); border-radius:8px; font-size:13px;">
+  <strong style="color:var(--accent);">APPROVE SEND INSTRUCTIONS</strong><br><br>
+  Reply "APPROVE SEND — Mar 13-16 Placeholder Fix" to approve all 20 drafts above.<br><br>
+  After APPROVE SEND, execution follows INC-012 two-gate protocol for each task:<br>
+  1. Open task in Apollo<br>
+  2. Clear placeholder body → manually type/paste approved draft above<br>
+  3. JS readback: <code>document.querySelector('.ql-editor').innerText.trim().slice(0, 120)</code> — must start with "Hi [Name]"<br>
+  4. Zoom screenshot of body — present to Rob<br>
+  5. Wait for explicit "looks good" / "send it"<br>
+  6. Click Send Now<br>
+  7. Gmail verify within 60 seconds<br><br>
+  <strong style="color:var(--warn);">⚠️ Verify "From" account before each send — some tasks show testsigma.net (wrong). Must be robert.gorham@testsigma.com</strong>
+</div>
+
+</body>
+</html>

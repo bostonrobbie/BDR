@@ -6,7 +6,7 @@ _Following protocol in skills/_shared/learning-loop.md_
 ---
 
 ## Status
-**Runs completed:** 0 of 5 needed before first pattern review.
+**Runs completed:** 2 of 5 needed before first pattern review.
 
 ---
 

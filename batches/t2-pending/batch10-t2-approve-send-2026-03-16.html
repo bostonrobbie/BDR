@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Batch 10 T2 — APPROVE SEND Package — Mar 16, 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #1a1a2e; }
+
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+    padding: 28px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #4361ee;
+  }
+  .header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+  .header .meta { font-size: 13px; color: #a0aec0; margin-top: 4px; }
+  .badge { background: #4361ee; color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
+  .badge.warn { background: #f59e0b; }
+
+  .summary-bar {
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 16px 40px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat .num { font-size: 26px; font-weight: 800; color: #4361ee; line-height: 1; }
+  .stat .lbl { font-size: 11px; color: #718096; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .divider { width: 1px; height: 36px; background: #e2e8f0; }
+
+  .protocol-box {
+    margin: 24px 40px;
+    background: #fff8e1;
+    border: 1px solid #f59e0b;
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+    padding: 16px 20px;
+  }
+  .protocol-box h3 { font-size: 13px; font-weight: 700; color: #92400e; margin-bottom: 8px; letter-spacing: 0.3px; }
+  .protocol-box ol { padding-left: 18px; font-size: 13px; color: #78350f; line-height: 1.8; }
+  .protocol-box code { background: #fef3c7; padding: 1px 5px; border-radius: 3px; font-family: monospace; font-size: 12px; }
+
+  .send-window {
+    margin: 0 40px 20px;
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    border-radius: 8px;
+    padding: 14px 20px;
+    font-size: 13px;
+    color: #3730a3;
+  }
+  .send-window strong { color: #1e1b4b; }
+
+  .grid { padding: 0 40px 40px; display: grid; grid-template-columns: repeat(auto-fill, minmax(580px, 1fr)); gap: 20px; }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .card-header {
+    padding: 14px 20px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .card-name { font-size: 15px; font-weight: 700; color: #1a202c; }
+  .card-title { font-size: 12px; color: #718096; margin-top: 2px; }
+  .card-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .pill {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 12px;
+    letter-spacing: 0.3px;
+  }
+  .pill-blue { background: #dbeafe; color: #1e40af; }
+  .pill-green { background: #d1fae5; color: #065f46; }
+  .pill-purple { background: #ede9fe; color: #5b21b6; }
+  .pill-orange { background: #ffedd5; color: #c2410c; }
+  .pill-gray { background: #f1f5f9; color: #475569; }
+  .pill-teal { background: #ccfbf1; color: #0f766e; }
+
+  .card-meta {
+    padding: 10px 20px;
+    background: #fafafa;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    gap: 16px;
+    font-size: 11px;
+    color: #94a3b8;
+  }
+  .card-meta span { display: flex; align-items: center; gap: 4px; }
+  .card-meta strong { color: #64748b; }
+
+  .email-body {
+    padding: 18px 20px;
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: #374151;
+    white-space: pre-wrap;
+    font-family: 'Georgia', serif;
+  }
+
+  .qa-row {
+    padding: 12px 20px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+  }
+  .qa-pass { font-size: 13px; font-weight: 700; color: #059669; }
+  .word-count { font-size: 12px; color: #6b7280; }
+
+  .proof-rotation {
+    margin: 0 40px 24px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .proof-rotation h3 {
+    padding: 12px 20px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 13px;
+    font-weight: 700;
+    color: #374151;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { padding: 9px 16px; text-align: left; background: #f1f5f9; color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; }
+  td { padding: 10px 16px; border-bottom: 1px solid #f0f0f0; color: #374151; }
+  tr:last-child td { border-bottom: none; }
+  .check { color: #059669; font-weight: 700; }
+  .company-tag { font-size: 11px; color: #94a3b8; margin-left: 4px; }
+
+  .same-company { background: #fffbeb; }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #94a3b8;
+    border-top: 1px solid #e2e8f0;
+    background: white;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="h1" style="font-size:22px;font-weight:700;">Batch 10 T2 — APPROVE SEND Package</div>
+    <div class="meta">10 contacts &nbsp;|&nbsp; T1 sent Mar 16, 2026 &nbsp;|&nbsp; T2 window: Mar 20–24 &nbsp;|&nbsp; Formula: Reply + Piggyback v5</div>
+  </div>
+  <div style="display:flex;gap:10px;">
+    <div class="badge warn">AWAITING APPROVE SEND</div>
+    <div class="badge">QA 12/12 all 10</div>
+  </div>
+</div>
+
+<div class="summary-bar">
+  <div class="stat"><div class="num">10</div><div class="lbl">Contacts</div></div>
+  <div class="divider"></div>
+  <div class="stat"><div class="num">12/12</div><div class="lbl">QA Score (all)</div></div>
+  <div class="divider"></div>
+  <div class="stat"><div class="num">162–171</div><div class="lbl">Word Count Range</div></div>
+  <div class="divider"></div>
+  <div class="stat"><div class="num">5</div><div class="lbl">Companies</div></div>
+  <div class="divider"></div>
+  <div class="stat"><div class="num">Mar 20</div><div class="lbl">Earliest Send</div></div>
+  <div class="divider"></div>
+  <div class="stat"><div class="num">Mar 24</div><div class="lbl">Latest Send</div></div>
+</div>
+
+<div class="protocol-box" style="margin:24px 40px;">
+  <h3>INC-012 TWO-GATE PROTOCOL — Required for every Apollo send</h3>
+  <ol>
+    <li>JS readback before each send: <code>document.querySelector('.ql-editor').innerText.trim().slice(0, 120)</code> — must match approved draft</li>
+    <li>Zoom screenshot of body area — present to Rob</li>
+    <li>Wait for Rob's explicit "looks good" / "send it" (separate from this content APPROVE SEND)</li>
+    <li>After send: verify via Gmail MCP within 60 seconds</li>
+  </ol>
+</div>
+
+<div class="send-window">
+  <strong>Send Window:</strong> T1 sent March 16. Day 4 (earliest) = <strong>Thursday March 20</strong>. Day 5 (typical) = <strong>Friday March 21</strong>. Day 8 (latest) = <strong>Monday March 24</strong>. Recommended: Send Mar 20–21 via Apollo task queue.
+</div>
+
+<div class="proof-rotation">
+  <h3>Proof Point Rotation — Same-Company Uniqueness Verified</h3>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Contact</th><th>Company</th><th>T1 Proof</th><th>T2 Proof</th><th>Unique in Co.</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td><td>Usman Khan</td><td>Citizens Bank</td>
+        <td><span class="pill pill-gray">Hansard</span></td>
+        <td><span class="pill pill-blue">CRED</span></td>
+        <td class="check">✓</td>
+      </tr>
+      <tr class="same-company">
+        <td>2</td><td>Mehul Savalia</td><td>Citizens Bank</td>
+        <td><span class="pill pill-blue">CRED</span></td>
+        <td><span class="pill pill-teal">MediBuddy</span></td>
+        <td class="check">✓</td>
+      </tr>
+      <tr>
+        <td>3</td><td>Minu Prabhakaran</td><td>DISH Network</td>
+        <td><span class="pill pill-teal">MediBuddy</span></td>
+        <td><span class="pill pill-purple">Nagra DTV</span></td>
+        <td class="check">✓</td>
+      </tr>
+      <tr class="same-company">
+        <td>4</td><td>Jacob Wyman</td><td>DISH Network</td>
+        <td><span class="pill pill-orange">Fortune 100</span></td>
+        <td><span class="pill pill-gray">Cisco</span></td>
+        <td class="check">✓</td>
+      </tr>
+      <tr class="same-company">
+        <td>5</td><td>Roger Tonneman</td><td>DISH Network</td>
+        <td><span class="pill pill-blue">CRED</span></td>
+        <td><span class="pill pill-gray">Hansard</span></td>
+        <td class="check">✓</td>
+      </tr>
+      <tr>
+        <td>6</td><td>Shikha Jayant</td><td>Dun &amp; Bradstreet</td>
+        <td><span class="pill pill-gray">Hansard</span></td>
+        <td><span class="pill pill-blue">CRED</span></td>
+        <td class="check">✓</td>
+      </tr>
+      <tr class="same-company">
+        <td>7</td><td>Collins Chellaswamy</td><td>Dun &amp; Bradstreet</td>
+        <td><span class="pill pill-blue">CRED</span></td>
+        <td><span class="pill pill-teal">MediBuddy</span></td>
+        <td class="check">✓</td>
+      </tr>
+      <tr class="same-company">
+        <td>8</td><td>Brendan McCarthy</td><td>Dun &amp; Bradstreet</td>
+        <td><span class="pill pill-orange">Fortune 100</span></td>
+        <td><span class="pill pill-gray">Cisco</span></td>
+        <td class="check">✓</td>
+      </tr>
+      <tr>
+        <td>9</td><td>Dawn McCartha</td><td>EmblemHealth</td>
+        <td><span class="pill pill-gray">Hansard</span></td>
+        <td><span class="pill pill-green">Sanofi</span></td>
+        <td class="check">✓</td>
+      </tr>
+      <tr>
+        <td>10</td><td>Praveen Gali</td><td>Safelite</td>
+        <td><span class="pill pill-blue">CRED</span></td>
+        <td><span class="pill pill-teal">MediBuddy</span></td>
+        <td class="check">✓</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="grid">
+
+  <!-- 1. Usman Khan -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-name">1. Usman Khan</div>
+        <div class="card-title">QA Automation Lead &nbsp;·&nbsp; Citizens Bank</div>
+      </div>
+      <div class="card-badges">
+        <span class="pill pill-gray">T1: Hansard</span>
+        <span class="pill pill-blue">T2: CRED</span>
+      </div>
+    </div>
+    <div class="card-meta">
+      <span><strong>To:</strong> usman.khan@citizensbank.com</span>
+      <span><strong>Subject:</strong> Re: Usman's regression cycle at Citizens Bank</span>
+    </div>
+    <div class="email-body">Hi Usman,
+
+I know my last note wasn't specific enough to be worth your time. Looking at your role leading QA automation at Citizens Bank, I think this angle is a lot more relevant to what you're actually dealing with.
+
+Automation leads at banks tend to face a coverage problem more than a headcount one. Regulatory requirements, new product surfaces, and legacy system updates all keep adding testing scope faster than the team can build against them, and I imagine that keeps your engineers triaging which gaps matter most instead of closing all of them. If I'm reading that wrong, correct me.
+
+It's the same pressure CRED was dealing with. They hit 90% regression coverage running 5x faster on Testsigma, without adding engineers. The shift was plain English test creation, so the whole team could build coverage instead of just the engineers who knew how to code it.
+
+If coverage breadth is the real constraint for your automation team right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="qa-row">
+      <span class="qa-pass">✓ QA 12/12</span>
+      <span class="word-count">167 words</span>
+    </div>
+  </div>
+
+  <!-- 2. Mehul Savalia -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-name">2. Mehul Savalia</div>
+        <div class="card-title">QA Lead &nbsp;·&nbsp; Citizens Bank</div>
+      </div>
+      <div class="card-badges">
+        <span class="pill pill-blue">T1: CRED</span>
+        <span class="pill pill-teal">T2: MediBuddy</span>
+      </div>
+    </div>
+    <div class="card-meta">
+      <span><strong>To:</strong> mehul.savalia@citizensbank.com</span>
+      <span><strong>Subject:</strong> Re: Mehul's QA coverage at Citizens Bank</span>
+    </div>
+    <div class="email-body">Hi Mehul,
+
+I know my last note wasn't specific enough to be worth your time. Looking at your QA lead role at a financial services company like Citizens Bank, I think this angle is a lot more relevant to what you're actually dealing with.
+
+QA leads at banks spend a meaningful share of each sprint chasing broken tests rather than building new ones. Every UI refresh or backend change upstream can break a chain of existing tests, and I imagine your team is manually patching those failures between release cycles instead of building net-new coverage. If that's not the right read, set me straight.
+
+It's the same maintenance drain MediBuddy was dealing with. They scaled to 2,500 automated tests on Testsigma while cutting maintenance by 50%. The difference was AI self-healing, which stopped locator breakage from turning into a manual repair cycle after every sprint.
+
+If test maintenance is consuming more sprint capacity than your team can afford, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="qa-row">
+      <span class="qa-pass">✓ QA 12/12</span>
+      <span class="word-count">165 words</span>
+    </div>
+  </div>
+
+  <!-- 3. Minu Prabhakaran -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-name">3. Minu Prabhakaran</div>
+        <div class="card-title">QA Manager &nbsp;·&nbsp; DISH Network</div>
+      </div>
+      <div class="card-badges">
+        <span class="pill pill-teal">T1: MediBuddy</span>
+        <span class="pill pill-purple">T2: Nagra DTV</span>
+      </div>
+    </div>
+    <div class="card-meta">
+      <span><strong>To:</strong> minu.prabhakaran@dish.com</span>
+      <span><strong>Subject:</strong> Re: Minu's test maintenance at DISH Network</span>
+    </div>
+    <div class="email-body">Hi Minu,
+
+I know my last note wasn't specific enough to be worth your time. Looking at your QA manager role at a streaming and pay-TV company like DISH, I think this angle is a lot more relevant to what you're actually dealing with.
+
+QA managers at media companies usually deal with a platform footprint that keeps expanding. New device types, streaming features, and service integrations all need coverage, and I imagine that means your team is constantly making tradeoffs between keeping up with new features and maintaining what's already in the suite. If I'm off on that, let me know.
+
+It's the same tradeoff Nagra DTV was dealing with. They built 2,500 automated tests in 8 months on Testsigma, running 4x faster, across both UI and API surfaces. The team stopped hand-coding each test case and started scaling coverage without adding engineers.
+
+If that balance between coverage growth and maintenance overhead is a real constraint for your team, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="qa-row">
+      <span class="qa-pass">✓ QA 12/12</span>
+      <span class="word-count">171 words</span>
+    </div>
+  </div>
+
+  <!-- 4. Jacob Wyman -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-name">4. Jacob Wyman</div>
+        <div class="card-title">SQA Engineering Manager &nbsp;·&nbsp; DISH Network</div>
+      </div>
+      <div class="card-badges">
+        <span class="pill pill-orange">T1: Fortune 100</span>
+        <span class="pill pill-gray">T2: Cisco</span>
+      </div>
+    </div>
+    <div class="card-meta">
+      <span><strong>To:</strong> jake.wyman@dish.com</span>
+      <span><strong>Subject:</strong> Re: Jacob's SQA coverage at DISH Network</span>
+    </div>
+    <div class="email-body">Hi Jacob,
+
+I know my last note wasn't specific enough to be worth your time. Looking at your SQA engineering manager role at a company with DISH's infrastructure footprint, I think this angle is a lot more relevant to what you're actually dealing with.
+
+SQA managers at large media companies tend to deal with a regression suite that gets harder to run quickly as the product surface expands. More devices, more endpoints, more integration points all feed into a regression cycle that's difficult to compress without cutting scope, and I imagine the pressure to release faster only makes that tension harder to manage. If I'm reading that wrong, correct me.
+
+It's the same tension Cisco was dealing with. They cut regression runtime by 35% on Testsigma, without reducing coverage or adding engineers. Parallel execution and automated test repair were what made the cycle shorter instead of the coverage shallower.
+
+If your regression runtime is creating friction on DISH's release cadence, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="qa-row">
+      <span class="qa-pass">✓ QA 12/12</span>
+      <span class="word-count">168 words</span>
+    </div>
+  </div>
+
+  <!-- 5. Roger Tonneman -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-name">5. Roger Tonneman</div>
+        <div class="card-title">Senior QA Manager &nbsp;·&nbsp; DISH Network</div>
+      </div>
+      <div class="card-badges">
+        <span class="pill pill-blue">T1: CRED</span>
+        <span class="pill pill-gray">T2: Hansard</span>
+      </div>
+    </div>
+    <div class="card-meta">
+      <span><strong>To:</strong> roger.tonneman@dish.com</span>
+      <span><strong>Subject:</strong> Re: Roger's regression cycle at DISH Network</span>
+    </div>
+    <div class="email-body">Hi Roger,
+
+I know my last note wasn't specific enough to be worth your time. Looking at your senior QA manager role at a company with DISH's release volume and platform complexity, I think this angle is a lot more relevant to what you're actually dealing with.
+
+Senior QA managers at media companies often deal with regression cycles that have grown with the product and are now difficult to compress without cutting what gets tested. The pressure to release faster is real, and I imagine that tension between thoroughness and speed is something your team navigates every sprint. If that's not the right read, set me straight.
+
+It's the same tension Hansard was dealing with. They cut regression from 8 weeks to 5 on Testsigma, not by testing less, but by running in parallel and letting AI handle test repair when changes broke existing tests.
+
+If the regression cycle is a recurring constraint on DISH's release timelines, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="qa-row">
+      <span class="qa-pass">✓ QA 12/12</span>
+      <span class="word-count">163 words</span>
+    </div>
+  </div>
+
+  <!-- 6. Shikha Jayant -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-name">6. Shikha Jayant</div>
+        <div class="card-title">Software QA Manager &nbsp;·&nbsp; Dun &amp; Bradstreet</div>
+      </div>
+      <div class="card-badges">
+        <span class="pill pill-gray">T1: Hansard</span>
+        <span class="pill pill-blue">T2: CRED</span>
+      </div>
+    </div>
+    <div class="card-meta">
+      <span><strong>To:</strong> jayants@dnb.com</span>
+      <span><strong>Subject:</strong> Re: Shikha's regression cycle at Dun &amp; Bradstreet</span>
+    </div>
+    <div class="email-body">Hi Shikha,
+
+I know my last note wasn't specific enough to be worth your time. Looking at your QA manager role at a data platform like D&B with the breadth of products your team covers, I think this angle is a lot more relevant to what you're actually dealing with.
+
+QA managers at enterprise data platforms tend to face a coverage challenge as much as a cycle challenge. APIs, web interfaces, and data workflows each need testing against a constantly changing product surface, and I imagine your team is deciding which new features can ship with partial coverage rather than full because the manual capacity to build new tests isn't there. If I'm reading that wrong, correct me.
+
+It's the same coverage gap CRED was dealing with. They reached 90% regression coverage running 5x faster on Testsigma, without adding headcount. The shift was test creation that didn't require senior engineers to write code for each new case.
+
+If closing the coverage gap at D&B is something you're actively working on, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="qa-row">
+      <span class="qa-pass">✓ QA 12/12</span>
+      <span class="word-count">169 words</span>
+    </div>
+  </div>
+
+  <!-- 7. Collins Chellaswamy -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-name">7. Collins Chellaswamy</div>
+        <div class="card-title">Senior QA Manager &nbsp;·&nbsp; Dun &amp; Bradstreet</div>
+      </div>
+      <div class="card-badges">
+        <span class="pill pill-blue">T1: CRED</span>
+        <span class="pill pill-teal">T2: MediBuddy</span>
+      </div>
+    </div>
+    <div class="card-meta">
+      <span><strong>To:</strong> chellaswamyc@dnb.com</span>
+      <span><strong>Subject:</strong> Re: Collins's QA coverage at Dun &amp; Bradstreet</span>
+    </div>
+    <div class="email-body">Hi Collins,
+
+I know my last note wasn't specific enough to be worth your time. Looking at your senior QA manager role at a multi-product platform like D&B, I think this angle is a lot more relevant to what you're actually dealing with.
+
+Senior QA managers at enterprise data companies usually see maintenance costs grow alongside the product surface. More workflows, more data pipelines, more APIs all mean more tests to keep updated, and I imagine a meaningful share of each sprint goes to repairing what broke instead of building what's missing. If that's not the right read, set me straight.
+
+It's the same drain MediBuddy was dealing with. They scaled to 2,500 automated tests on Testsigma while cutting maintenance time by 50%. AI self-healing stopped broken locators from turning into manual repair cycles after every product change.
+
+If test maintenance is consuming more of your team's capacity than it should across D&B's product lines, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="qa-row">
+      <span class="qa-pass">✓ QA 12/12</span>
+      <span class="word-count">162 words</span>
+    </div>
+  </div>
+
+  <!-- 8. Brendan McCarthy -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-name">8. Brendan McCarthy</div>
+        <div class="card-title">Senior QA Manager &nbsp;·&nbsp; Dun &amp; Bradstreet</div>
+      </div>
+      <div class="card-badges">
+        <span class="pill pill-orange">T1: Fortune 100</span>
+        <span class="pill pill-gray">T2: Cisco</span>
+      </div>
+    </div>
+    <div class="card-meta">
+      <span><strong>To:</strong> mccarthyb@dnb.com</span>
+      <span><strong>Subject:</strong> Re: Brendan's coverage gap at Dun &amp; Bradstreet</span>
+    </div>
+    <div class="email-body">Hi Brendan,
+
+I know my last note wasn't specific enough to be worth your time. Looking at your senior quality engineering role at a data platform with D&B's product breadth, I think this angle is a lot more relevant to what you're actually dealing with.
+
+Quality engineering leaders at large data companies tend to deal with a regression suite that grows faster than the team's capacity to run it quickly. More APIs, more integrations, more data surfaces all extend what needs to be tested before each release, and I imagine that means your team is navigating cycle time pressure every sprint without a clean way to compress it. If I'm off on that, let me know.
+
+It's the same pressure Cisco was dealing with. They cut regression runtime by 35% on Testsigma, without cutting what they tested. Parallel execution and automated repair let them run more coverage in less time.
+
+If regression cycle time is a recurring constraint for your quality engineering team, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="qa-row">
+      <span class="qa-pass">✓ QA 12/12</span>
+      <span class="word-count">164 words</span>
+    </div>
+  </div>
+
+  <!-- 9. Dawn McCartha -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-name">9. Dawn McCartha</div>
+        <div class="card-title">Testing Manager &nbsp;·&nbsp; EmblemHealth</div>
+      </div>
+      <div class="card-badges">
+        <span class="pill pill-gray">T1: Hansard</span>
+        <span class="pill pill-green">T2: Sanofi</span>
+        <span class="pill pill-green" style="font-size:10px;">Reference Example</span>
+      </div>
+    </div>
+    <div class="card-meta">
+      <span><strong>To:</strong> dmccartha@emblemhealth.com</span>
+      <span><strong>Subject:</strong> Re: Dawn's regression cycle at EmblemHealth</span>
+    </div>
+    <div class="email-body">Hi Dawn,
+
+I know my last note wasn't specific enough to be worth your time. Looking at your role managing testing at a health plan like EmblemHealth, I think this angle is a lot more relevant to what you're actually dealing with.
+
+Testing at a health plan means you can't skip compliance workflows to save time. Member applications, claims, and benefits platforms all have to pass before anything ships, and I imagine that obligation is what keeps the cycle from getting shorter no matter how much pressure there is to release faster. If I'm reading that wrong, set me straight.
+
+It's the same tension Sanofi was dealing with. They got their regression window from 3 days down to 80 minutes on Testsigma, not by cutting what gets tested, but by running those compliance workflows in parallel instead of one at a time. The manual patching work between releases stopped eating into sprint time too.
+
+If that speed-versus-coverage tension is real for your team right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="qa-row">
+      <span class="qa-pass">✓ QA 12/12</span>
+      <span class="word-count">168 words</span>
+    </div>
+  </div>
+
+  <!-- 10. Praveen Gali -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-name">10. Praveen Gali</div>
+        <div class="card-title">Senior QE Lead &nbsp;·&nbsp; Safelite</div>
+      </div>
+      <div class="card-badges">
+        <span class="pill pill-blue">T1: CRED</span>
+        <span class="pill pill-teal">T2: MediBuddy</span>
+      </div>
+    </div>
+    <div class="card-meta">
+      <span><strong>To:</strong> praveen.gali@safelite.com</span>
+      <span><strong>Subject:</strong> Re: Praveen's QE coverage at Safelite</span>
+    </div>
+    <div class="email-body">Hi Praveen,
+
+I know my last note wasn't specific enough to be worth your time. Looking at your senior QE role at a company like Safelite, where customer-facing scheduling and service apps drive the core business, I think this angle is a lot more relevant to what you're actually dealing with.
+
+QE leads at service operations companies usually face a maintenance problem as much as a coverage one. Every update to a customer-facing workflow, a scheduling interface, or a mobile app creates new test breakage that has to be resolved before the next release, and I imagine your team is absorbing that repair work manually each sprint instead of spending that time on net-new coverage. If I'm reading that wrong, correct me.
+
+It's the same maintenance drain MediBuddy was dealing with. They scaled to 2,500 automated tests on Testsigma while cutting maintenance by 50%. AI self-healing stopped UI changes from triggering manual locator repairs every sprint.
+
+If test maintenance is the real constraint on your QE team's capacity at Safelite, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?
+
+Rob Gorham
+Testsigma</div>
+    <div class="qa-row">
+      <span class="qa-pass">✓ QA 12/12</span>
+      <span class="word-count">166 words</span>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Batch 10 T2 &nbsp;|&nbsp; Formula: Reply + Piggyback v5 (locked Mar 16, 2026) &nbsp;|&nbsp; Generated: 2026-03-16 &nbsp;|&nbsp; Send via Apollo task queue only &nbsp;|&nbsp; INC-012 two-gate required
+</footer>
+
+</body>
+</html>

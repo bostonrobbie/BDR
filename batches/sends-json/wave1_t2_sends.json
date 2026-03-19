@@ -1,0 +1,156 @@
+[
+  {
+    "name": "Rick Brandt",
+    "email": "rbrandt@cboe.com",
+    "subject": "RE: Rick's QA roadmap at Cboe",
+    "body": "Hi Rick,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your work leading QA Engineering at Cboe through a migration that still has Selenium and Playwright running side by side, I think this angle is a lot more relevant to what you're actually managing.\n\nI imagine your team is spending sprint time triaging two separate locator break queues, one from the Selenium layer and one from Playwright, instead of building net-new coverage. At Cboe's breadth, that maintenance backlog compounds faster than it clears. If I'm reading that wrong, correct me.\n\nIt's the same fragmentation CRED was dealing with. They reached 90% regression coverage 5x faster on Testsigma, not by adding headcount, but because AI self-healing absorbed the locator drift across both layers automatically, so the team stopped context-switching between maintenance cycles.\n\nIf that dual-stack maintenance pressure is real for your team right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "CRED"
+  },
+  {
+    "name": "Maurice Saunders",
+    "email": "msaunders@cboe.com",
+    "subject": "RE: Maurice's QA team at Cboe",
+    "body": "Hi Maurice,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your role managing Cboe's QA team through a framework transition, I think this angle is a lot more relevant to what you're actually dealing with.\n\nI imagine sprint planning at Cboe has a hidden line item that never shows up in demos: the time your team spends triaging locator breaks from two different frameworks before they get to actual testing work. That maintenance overhead lands on QA managers first, and it compounds every sprint. If that's not the right read, set me straight.\n\nIt's the same cycle MediBuddy was caught in. They automated 2,500 tests on Testsigma and cut maintenance overhead by 50%, not because their volume shrank, but because AI self-healing stopped converting every UI change into a manual fix queue.\n\nIf that break-fix cycle is real for your team right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "MediBuddy"
+  },
+  {
+    "name": "Snezhana Ruseva",
+    "email": "sruseva@cboe.com",
+    "subject": "RE: Snezhana's testing scope at Cboe",
+    "body": "Hi Snezhana,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your role managing software engineering and test for Data and Analytics at Cboe, I think this angle is a lot more relevant to what you're actually navigating.\n\nI imagine testing across pipeline logic, transformation accuracy, dashboards, and APIs means your team maintains four or five separate coverage areas that all break for different reasons, and Cboe's ongoing framework migration adds another layer of change on top of that. If I'm reading that wrong, correct me.\n\nIt's the same cross-layer problem Cisco was working through. They cut total regression volume by 35% on Testsigma by replacing per-layer framework maintenance with a unified plain-English test layer that AI self-healing keeps current as the stack evolves.\n\nIf that multi-layer maintenance pressure is real for your team, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "Cisco"
+  },
+  {
+    "name": "Seth Drummond",
+    "email": "seth.drummond@fidelity.com",
+    "subject": "RE: Seth's QA org at Fidelity",
+    "body": "Hi Seth,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your VP QA role inside Fidelity's chapter model, where coverage accountability spans dozens of squads rather than one team, I think this angle is a lot more relevant to what you're actually managing.\n\nI imagine the chapter structure makes coverage visibility your hardest problem, not coverage creation. Each squad runs its own framework, reports on its own metrics, and the aggregated picture you need at VP level gets stitched together manually from incompatible sources. If that's not exactly right, set me straight.\n\nIt's the same fragmentation Hansard was dealing with. They cut regression cycles from 8 weeks to 5 on Testsigma, and the shift that mattered most to their QA leadership was finally having one reporting layer across all teams instead of reconciling data from multiple tools every sprint.\n\nIf that cross-squad visibility gap is real for your organization, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "Hansard"
+  },
+  {
+    "name": "Chris Pendergast",
+    "email": "chris.pendergast@fidelity.com",
+    "subject": "RE: Chris's quality engineering approach at Fidelity",
+    "body": "Hi Chris,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your VP Quality Engineering role at Fidelity with the delivery pace the platform demands, I think this angle is a lot more relevant to what you're actually dealing with.\n\nI imagine the real pressure isn't test creation but test survival: your team builds coverage, and then a release cycle's worth of UI changes converts half of it into fix tickets. At Fidelity's scale, that maintenance work arrives faster than it can be cleared and new coverage falls behind. If I'm reading that wrong, correct me.\n\nIt's the same cycle CRED was in. They reached 90% regression coverage 5x faster on Testsigma, not by writing more tests, but because AI self-healing stopped converting UI changes into manual fix queues so the team's time went back to coverage expansion.\n\nIf that maintenance-versus-velocity tension is real for your team right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "CRED"
+  },
+  {
+    "name": "Christopher Bilcz",
+    "email": "christopher.bilcz@fmr.com",
+    "subject": "RE: Christopher's testing coverage at Fidelity",
+    "body": "Hi Christopher,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your VP Quality Engineering role managing coverage across Fidelity's scale, I think this angle is a lot more relevant to what you're actually dealing with.\n\nI imagine your headcount challenge is really a capacity challenge: you have enough engineers to build strong coverage, but too many of them spend sprint time fixing broken tests instead of extending the suite. At VP level that reads as a productivity gap, but the root cause is a tooling problem. If I'm off on that, let me know.\n\nIt's the same drain MediBuddy was experiencing. They automated 2,500 tests on Testsigma and cut maintenance overhead by 50%. The shift that mattered most was that engineers previously on full-time test repair went back to building net-new coverage instead.\n\nIf that maintenance-eating-capacity problem is real for your team, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "MediBuddy"
+  },
+  {
+    "name": "Eric Pearson",
+    "email": "ep@fidelity.com",
+    "subject": "RE: Eric's regression coverage at Fidelity",
+    "body": "Hi Eric,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your VP QA role over Asset Allocation Technology, where financial calculation accuracy makes every regression pass high stakes, I think this angle is a lot more relevant to what you're actually managing.\n\nI imagine the pressure at Asset Allocation is specific: you can't cut scope to make regression faster, because in financial technology, scope cuts mean confidence cuts. When the suite is slow and release windows tighten, the choice is usually delay the release or accept more risk. If I'm reading that wrong, correct me.\n\nIt's the same tradeoff CRED was navigating. They hit 90% regression coverage 5x faster on Testsigma, not by trimming scope, but by running full-coverage regressions in parallel and letting AI self-healing keep the suite current between cycles.\n\nIf that speed-versus-completeness pressure is real for your team, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "CRED"
+  },
+  {
+    "name": "Nithya Arunkumar",
+    "email": "n.arunkumar@fidelity.com",
+    "subject": "RE: Nithya's QA work at Fidelity",
+    "body": "Hi Nithya,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your QA Director role sitting between delivery teams and broader product accountability at Fidelity, I think this angle is a lot more relevant to what you're actually navigating.\n\nI imagine your maintenance queue never really clears because it's fed by two sources at once: ongoing UI changes from active development, and cross-product scope expanding in every direction. The engineers closest to delivery fix the urgent breaks, and strategic coverage work keeps getting deferred. If that's not exactly right, set me straight.\n\nIt's the same compounding problem Cisco was working through. They reduced total regression volume by 35% on Testsigma, not by shrinking the suite, but because AI self-healing absorbed the locator breaks that had been generating manual work and consuming sprint time.\n\nIf that maintenance spiral is real for your team right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "Cisco"
+  },
+  {
+    "name": "Richelle Lacamera",
+    "email": "richelle.lacamera@fidelity.com",
+    "subject": "RE: Richelle's QA team at Fidelity",
+    "body": "Hi Richelle,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your QA Management Director role, where you're accountable for both the people and the process at Fidelity, I think this angle is a lot more relevant to what you're actually dealing with.\n\nI imagine test maintenance is your least-discussed but most-expensive management problem. Your QA managers are triaging break-fix tickets instead of coaching their teams, and the overhead comes from the tooling, not the people. Standup time goes to locator breaks instead of coverage strategy, every sprint. If I'm reading that wrong, correct me.\n\nIt's the same management overhead CRED was carrying. They reached 90% regression coverage 5x faster on Testsigma, and the first thing their QA management layer noticed was the drop in triage meetings before the metrics even caught up.\n\nIf that maintenance-at-the-management-layer problem is real for your team, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "CRED"
+  },
+  {
+    "name": "Sourabh Roy",
+    "email": "sourabh.roy2@fmr.com",
+    "subject": "RE: Sourabh's testing approach at Fidelity",
+    "body": "Hi Sourabh,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your QA Director role over Green Meadows, one of Fidelity's faster-moving product areas, I think this angle is a lot more relevant to what you're actually managing.\n\nI imagine at Green Meadows' pace, even a one-sprint delay from regression failures creates a ripple. The tests that break aren't always the important ones, they're just the ones with stale locators. At that velocity, manual locator fixes are a release risk, not just a maintenance annoyance. If that's not the right read, set me straight.\n\nIt's the same velocity problem MediBuddy was facing. They automated 2,500 tests and cut maintenance overhead by 50% on Testsigma. The shift that mattered most for their release cadence was eliminating the stale-locator bottleneck that had been delaying releases every other cycle.\n\nIf that maintenance-versus-velocity problem is real for Green Meadows, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "MediBuddy"
+  },
+  {
+    "name": "Padma Srikanth",
+    "email": "padma.srikanth@fmr.com",
+    "subject": "RE: Padma's chapter leadership at Fidelity",
+    "body": "Hi Padma,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your Chapter Leader role inside Fidelity's model, setting automation standards across product teams without direct authority over how they implement them, I think this angle is a lot more relevant to what you're actually navigating.\n\nI imagine the hardest part of your role is driving standardization without creating adoption friction. Every chapter picks its own framework, and imposing a new coding standard on teams that didn't choose it creates resistance faster than it creates consistency. If I'm off on that, let me know.\n\nIt's the same challenge Hansard was dealing with. They cut regression cycles from 8 weeks to 5 on Testsigma, and the adoption story mattered as much as the metric: plain English tests meant teams didn't need framework retraining to standardize, they just wrote tests the way they already thought about them.\n\nIf that influence-without-authority standardization challenge is real for your chapter, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "Hansard"
+  },
+  {
+    "name": "Neeraj Tati",
+    "email": "neeraj.tati@chase.com",
+    "subject": "RE: Neeraj's testing coverage at Chase",
+    "body": "Hi Neeraj,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your engineering scope covering cloud platform, IAM, SRE, and DevOps at Chase, I think this angle is a lot more relevant to what you're actually managing.\n\nI imagine your test suite isn't really one suite. It's several, maintained by different teams, each with their own frameworks and their own maintenance overhead. When a platform change touches multiple domains at once, regression work multiplies across all of them simultaneously and coordination becomes the bottleneck. If I'm reading that wrong, correct me.\n\nIt's the same multi-domain compounding CRED was dealing with. They reached 90% regression coverage 5x faster on Testsigma by consolidating cross-domain testing into one platform, so a change touching three systems ran as a single pipeline instead of a multi-team coordination exercise.\n\nIf that cross-domain regression coordination problem is real for your organization, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "CRED"
+  },
+  {
+    "name": "Brahmaiah Vallabhaneni",
+    "email": "bvallabhaneni@commvault.com",
+    "subject": "RE: Brahmaiah's engineering org at Commvault",
+    "body": "Hi Brahmaiah,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your VP Engineering role at Commvault, where the platform spans data protection, backup, and recovery across enterprise environments, I think this angle is a lot more relevant to what you're actually dealing with.\n\nI imagine the test coverage challenge at VP level isn't about individual engineers being slow. It's about scenarios multiplying faster than the team can automate them. Every new customer configuration creates a new permutation, and the suite grows in complexity without the team growing with it. If that's not exactly right, set me straight.\n\nIt's the same scale pressure Hansard was navigating. They cut regression cycles from 8 weeks to 5 on Testsigma, and the VP-level shift was that engineering capacity previously absorbed by maintenance got redirected into new coverage expansion instead.\n\nIf that permutation-versus-capacity problem is real for your organization, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "Hansard"
+  },
+  {
+    "name": "Arun Amarendran",
+    "email": "aamarendran@commvault.com",
+    "subject": "RE: Arun's QA coverage at Commvault",
+    "body": "Hi Arun,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your VP Engineering role at Commvault, where customers depend on every release for data protection and backup reliability, I think this angle is a lot more relevant to what you're actually managing.\n\nI imagine release gating is your hardest tradeoff. Commvault's customers don't tolerate gaps in reliability, so the coverage bar is high, but the regression suite is slow, so shipping on schedule means either waiting longer or accepting more risk. Neither option works at VP level. If I'm reading that wrong, correct me.\n\nIt's the same pressure MediBuddy was navigating. They automated 2,500 tests on Testsigma and cut maintenance overhead by 50%. The shift that mattered most was that their release gating process went from a bottleneck to a formality because the suite stayed current automatically.\n\nIf that reliability-versus-velocity tradeoff is real for Commvault's release cycle, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "MediBuddy"
+  },
+  {
+    "name": "Jennifer Wang",
+    "email": "jenniferwang@commvault.com",
+    "subject": "RE: Jennifer's test coverage at Commvault",
+    "body": "Hi Jennifer,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your Engineering Director role at Commvault, where customer configuration complexity drives a large part of your test surface, I think this angle is a lot more relevant to what you're actually dealing with.\n\nI imagine your team spends as much sprint time updating tests for new customer configurations as writing tests for new features. Storage backends, cloud providers, backup policies, each new combination adds a coverage path, and the suite grows in maintenance weight faster than it grows in value. If that's not the right read, set me straight.\n\nIt's the same configuration-driven test debt Cisco was managing. They cut total regression volume by 35% on Testsigma by replacing per-configuration framework maintenance with AI self-healing that keeps the suite current as underlying systems change.\n\nIf that configuration-coverage maintenance problem is real for your team, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "Cisco"
+  },
+  {
+    "name": "Prasad Alapati",
+    "email": "palapati@commvault.com",
+    "subject": "RE: Prasad's QA workflow at Commvault",
+    "body": "Hi Prasad,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your Senior QA Manager role at Commvault, where the test surface covers storage, cloud, backup, and disaster recovery, I think this angle is a lot more relevant to what you're actually navigating.\n\nI imagine sprint planning looks predictable going in but not coming out. You set out to build new coverage, and by mid-sprint half the automation work is triaging locator breaks from the last release. That break-fix pattern is hard to escape with traditional frameworks because the maintenance is baked into the architecture. If I'm reading that wrong, correct me.\n\nIt's the same cycle CRED was stuck in. They reached 90% regression coverage 5x faster on Testsigma, and what their QA managers noticed first was finally being able to plan a sprint around new coverage instead of reactive maintenance.\n\nIf that sprint disruption from maintenance is real for your team, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "CRED"
+  },
+  {
+    "name": "Chamath Guneratne",
+    "email": "chamath.guneratne@trustage.com",
+    "subject": "RE: Chamath's QE approach at TruStage",
+    "body": "Hi Chamath,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your IT Director role over Quality Engineering at TruStage, where insurance compliance requirements layer on top of velocity pressure, I think this angle is a lot more relevant to what you're actually dealing with.\n\nI imagine your QE team is getting squeezed from three directions at once: compliance checkpoints that can't be skipped, release windows that keep tightening, and a maintenance backlog that never fully clears between cycles. In insurance, you can't trade coverage for speed, so the pressure has nowhere to go. If I'm reading that wrong, correct me.\n\nIt's the same three-way tension CRED was navigating. They reached 90% regression coverage 5x faster on Testsigma, not by reducing what gets tested, but by running compliance scenarios in parallel and letting AI self-healing absorb the maintenance overhead between cycles.\n\nIf that compliance-and-velocity squeeze is real for your QE team right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "CRED"
+  },
+  {
+    "name": "Maggie Redden",
+    "email": "maggie.redden@cunamutual.com",
+    "subject": "RE: Maggie's testing workflow at TruStage",
+    "body": "Hi Maggie,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your Software Engineering Director role at TruStage, where insurance delivery means accountability for both speed and quality, I think this angle is a lot more relevant to what you're actually dealing with.\n\nI imagine the recurring conversation at TruStage is: business wants faster releases, QA needs more regression time, and the compromise usually means less coverage per cycle rather than more efficiency. In insurance, that coverage gap carries real compliance risk and doesn't just affect delivery metrics. If I'm off on that, let me know.\n\nIt's the same delivery-quality tension MediBuddy was navigating. They automated 2,500 tests and cut maintenance by 50% on Testsigma. What changed for their engineering directors was that release cycles shortened without anyone having to argue for less testing.\n\nIf that delivery-versus-coverage tension is real at TruStage, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "MediBuddy"
+  },
+  {
+    "name": "Jennifer Drangstveit",
+    "email": "jennifer.drangstveit@cunamutual.com",
+    "subject": "RE: Jennifer's delivery quality at TruStage",
+    "body": "Hi Jennifer,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your IT Director role over Solution Delivery at TruStage, where you're accountable for what actually ships, I think this angle is a lot more relevant to what you're actually navigating.\n\nI imagine the hardest part of your role is that release delays trace back to an upstream testing process you don't directly control. When regression failures push a delivery date, you absorb the impact without owning the root cause. At TruStage's insurance complexity, that gap compounds quickly. If that's not exactly right, set me straight.\n\nIt's the same upstream-visibility problem Cisco was solving for. They cut total regression volume by 35% on Testsigma, and what their delivery leadership valued most was that releases became predictable rather than contingent on what the last regression pass surfaced.\n\nIf that delivery accountability gap is real in your role right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "Cisco"
+  },
+  {
+    "name": "John Harding",
+    "email": "jharding@youtube.com",
+    "subject": "RE: John's testing coverage at YouTube",
+    "body": "Hi John,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your VP Engineering role over YouTube Music and Premium, where paying subscribers make every regression failure a potential churn risk, I think this angle is a lot more relevant to what you're actually managing.\n\nI imagine the stakes at Music and Premium are different from free-tier YouTube. A regression bug affecting subscription workflows, playback quality, or billing is immediately visible to paying users in a way ad-supported issues aren't. That raises the bar on every release without giving your team more time to test. If I'm reading that wrong, correct me.\n\nIt's the same subscriber-stakes pressure Nagra DTV was navigating. They built a 2,500-test automation suite 4x faster on Testsigma and significantly cut execution time, so full regressions fit inside release windows without sacrificing scope.\n\nIf that subscriber-facing release pressure is real for your team right now, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "Nagra DTV"
+  },
+  {
+    "name": "Des Keane",
+    "email": "des@google.com",
+    "subject": "RE: Des's infrastructure testing at YouTube",
+    "body": "Hi Des,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your Engineering Director role over Video Infrastructure at YouTube, where changes at your layer ripple across billions of streams, I think this angle is a lot more relevant to what you're actually dealing with.\n\nI imagine infrastructure-level test suites need to run on every change but also carry the most maintenance overhead, because APIs and interfaces evolve constantly and the tests that break first cover the highest-blast-radius scenarios. When maintenance eats capacity, the coverage you most need starts slipping. If I'm off on that, let me know.\n\nIt's the same infrastructure test debt CRED was working through. They reached 90% regression coverage 5x faster on Testsigma, and the operational shift was that AI self-healing absorbed interface-change maintenance automatically, so the team stayed on coverage expansion instead of break-fix cycles.\n\nIf that infrastructure-scale maintenance problem is real for your team, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "CRED"
+  },
+  {
+    "name": "Hrishikesh Aradhye",
+    "email": "hrishi@google.com",
+    "subject": "RE: Hrishi's testing approach at YouTube",
+    "body": "Hi Hrishi,\n\nI know my last note wasn't specific enough to be worth your time. Looking at your Sr. Director role over Music and Podcasts at YouTube, where multiple product streams are releasing in parallel, I think this angle is a lot more relevant to what you're actually managing.\n\nI imagine your team isn't running one regression suite. They're running three, one per product stream, each with its own cadence and its own set of tests that need to stay current. When one stream's changes break another stream's suite, a release that's ready gets held by maintenance work that isn't related to it. If that's not the right read, set me straight.\n\nIt's the same multi-stream coordination problem Hansard was dealing with. They cut regression cycles from 8 weeks to 5 on Testsigma, and the operational shift was consolidating parallel release pipelines so one stream's changes stopped blocking another's.\n\nIf that cross-stream regression coordination is real for your team, would 15 minutes give you a pretty clear picture of whether Testsigma is worth a look?\n\nRob Gorham\nTestsigma",
+    "t2_proof": "Hansard"
+  }
+]

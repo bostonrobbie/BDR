@@ -1,0 +1,83 @@
+[
+  {
+    "id": "jainam.shah@amount.com",
+    "num": 1,
+    "name": "Jainam Shah — Senior QA Automation Engineer",
+    "first_name": "Jainam",
+    "email": "jainam.shah@amount.com",
+    "subject": "Jainam — when Amount ships, how many tests break?",
+    "body": "Hi Jainam,\n\nBuilding automated tests for a banking-as-a-service platform usually means your test base is constantly patching broken locators when APIs shift. Is that something eating into your team's sprint time?\n\nMedibuddy was dealing with the same maintenance drag and cut it 50% on Testsigma. Their test engineering team stopped spending sprints on locator repair and started writing new coverage.\n\nAt Amount's scale, regression stability compounds across every release cycle. How much of your current sprint capacity is going to test maintenance versus building new coverage?\n\nCheers,\nRob"
+  },
+  {
+    "id": "ilija.andic@incode.com",
+    "num": 2,
+    "name": "Ilija Andic — QA Automation Manager",
+    "first_name": "Ilija",
+    "email": "ilija.andic@incode.com",
+    "subject": "Ilija — which platform breaks Incode tests first?",
+    "body": "Hi Ilija,\n\nTesting a biometric identity platform means covering mobile, web, and API surfaces simultaneously — and keeping regressions stable across all three tends to be where test teams hit complexity walls. How is your team managing that coordination?\n\nSamsung was dealing with the same multi-platform challenge and got consistent regression coverage across iOS, Android, and web using Testsigma. No longer debugging different failures across platforms.\n\nAt Incode's growth pace, fragmented test coverage creates risk. How are you currently managing regression consistency across your different platforms?\n\nCheers,\nRob"
+  },
+  {
+    "id": "jyoti.jain@workwave.com",
+    "num": 3,
+    "name": "Jyoti Jain — Principal QA Engineer/QA Team Lead",
+    "first_name": "Jyoti",
+    "email": "jyoti.jain@workwave.com",
+    "subject": "Jyoti — keeping coverage across WorkWave's 4 verticals?",
+    "body": "Hi Jyoti,\n\nWith WorkWave's platform supporting field service, pest control, landscaping, and security workflows, test surface area probably grows faster than team headcount can cover. Is that something your team is actively trying to get ahead of?\n\nCRED hit 90% regression coverage and 5x faster execution with Testsigma. Their team stopped worrying about coverage gaps and started shipping velocity improvements instead.\n\nAt WorkWave's scale, that shift compounds across every release. How much of your critical regression scope does your current suite cover today?\n\nCheers,\nRob"
+  },
+  {
+    "id": "jeffrey.miller@everbank.com",
+    "num": 4,
+    "name": "Jeffrey Miller — IT Quality Assurance and DevOps Manager",
+    "first_name": "Jeffrey",
+    "email": "jeffrey.miller@everbank.com",
+    "subject": "Jeffrey — how much of EverBank's sprint is fixing tests?",
+    "body": "Hi Jeffrey,\n\nManaging QA at a digital bank usually means your team spends more time patching broken tests than building new ones. Is keeping regression tests stable from sprint to sprint something your team is actively wrestling with?\n\nHansard was dealing with the same brittleness problem and cut their regression cycle from 8 weeks to 5 weeks with Testsigma, without adding engineers. Their team stopped manually fixing locators every release.\n\nAt EverBank's release cadence, that maintenance compounds fast. How often are false failures from broken locators showing up in your runs right now?\n\nCheers,\nRob"
+  },
+  {
+    "id": "kundan.fahria@junipersquare.com",
+    "num": 5,
+    "name": "Kundan Fahria — QA Automation Lead",
+    "first_name": "Kundan",
+    "email": "kundan.fahria@junipersquare.com",
+    "subject": "Kundan — automation coverage keeping up at Juniper Square?",
+    "body": "Hi Kundan,\n\nBuilding automation for a regulated SaaS platform managing billions in capital usually means your test suite is a constant scaling challenge. Is keeping coverage ahead of product velocity something your team is actively tackling?\n\nMedibuddy automated 2,500 tests and cut maintenance 50% on Testsigma. Their QA team went from spending sprints on test repair to building coverage at scale.\n\nAt Juniper Square's growth rate, that shift makes the difference between bottleneck and breakaway. How long did it take to build out your current test suite, and how much of it is still running clean today?\n\nCheers,\nRob"
+  },
+  {
+    "id": "anya.kockina@junipersquare.com",
+    "num": 6,
+    "name": "Anya Kockina — Director, QA and PMO",
+    "first_name": "Anya",
+    "email": "anya.kockina@junipersquare.com",
+    "subject": "Anya — what's blocking release velocity at Juniper Square?",
+    "body": "Hi Anya,\n\nLeading QA for an investment management platform with multi-asset support means your regression test suite probably grows faster than your team can execute it. Is cutting execution time without cutting coverage something your team is evaluating?\n\nCRED hit 90% regression automation and 5x faster execution on Testsigma. Their QA organization went from being a release bottleneck to enabling faster shipping.\n\nAt Juniper Square's scale, that velocity shift is strategic. How much of your critical regression scope does your current suite cover today?\n\nCheers,\nRob"
+  },
+  {
+    "id": "vladimir.mirlic@sugarcrm.com",
+    "num": 7,
+    "name": "Vladimir Mirlic — QA Manager",
+    "first_name": "Vladimir",
+    "email": "vladimir.mirlic@sugarcrm.com",
+    "subject": "Vladimir — cross-browser regression clean across SugarCRM?",
+    "body": "Hi Vladimir,\n\nManaging QA for a CRM platform with 1.5M+ users usually means regression needs to work across browsers and devices simultaneously. Is keeping test consistency across Chrome, Firefox, Safari, and mobile something your team is managing right now?\n\nSamsung was dealing with the same multi-browser coverage gap and got consistent regression execution across all major browsers on Testsigma. No more browser-specific failures killing releases.\n\nAt SugarCRM's user scale, that consistency matters. How are you currently managing regression consistency across your different platforms?\n\nCheers,\nRob"
+  },
+  {
+    "id": "devendra.choudhary@openlending.com",
+    "num": 8,
+    "name": "Devendra Choudhary — Director of Quality Assurance",
+    "first_name": "Devendra",
+    "email": "devendra.choudhary@openlending.com",
+    "subject": "Devendra — full regression cycle length at Open Lending?",
+    "body": "Hi Devendra,\n\nRunning QA for an automated lending decisioning platform means your test suite has to match the platform's speed and reliability. Is getting regression coverage to 90%+ something your team has prioritized?\n\nCRED automated 90% of their regression suite and 5x faster execution with Testsigma. Their QA organization shifted from being a release gate to enabling faster shipping.\n\nAt OpenLending's velocity, that automation shift is table stakes. How much of your critical regression scope does your current suite cover today?\n\nCheers,\nRob"
+  },
+  {
+    "id": "michael.burton@workwave.com",
+    "num": 9,
+    "name": "Michael Burton — Global Director of Engineering -- Quality Assurance",
+    "first_name": "Michael",
+    "email": "michael.burton@workwave.com",
+    "subject": "Running QA across 16 WorkWave brands — how do you scale?",
+    "body": "Hi Michael,\n\nLeading QA for an enterprise field service platform with 16 suborganizations usually means your test footprint is massive and execution time is a bottleneck. Is scaling test coverage across all your brands something your team is actively solving for?\n\nNagra DTV built 2,500 automated tests in 8 months on Testsigma, 4x faster than traditional approaches. Their QA team went from wondering if they could scale to scaling continuously.\n\nAt WorkWave's organizational complexity, that test velocity is strategic. How long did it take to build out your current test suite, and how much of it is still running clean today?\n\nCheers,\nRob"
+  }
+]
